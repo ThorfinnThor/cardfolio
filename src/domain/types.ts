@@ -17,15 +17,24 @@ export interface CardSnapshot {
   setName: string;
   collectorNumber: string;
   collectorTotal?: string;
+  availableVariants?: CardVariantAvailability;
   imageBaseUrl?: string;
   category?: "pokemon" | "trainer" | "energy" | "other";
   physicalStatus: "physical" | "digital" | "unknown";
   fetchedAt: string;
 }
 
+export interface CardVariantAvailability {
+  normal: boolean;
+  holo: boolean;
+  reverse: boolean;
+  firstEdition: boolean;
+}
+
 export interface VariantSelection {
   finish: "normal" | "holo" | "reverse" | "other" | "unspecified";
   edition: "unlimited" | "first-edition" | "unspecified";
+  printing?: "shadowless" | "shadowed" | "unspecified";
   label?: string;
 }
 

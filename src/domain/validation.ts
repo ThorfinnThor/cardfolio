@@ -27,6 +27,14 @@ export const cardSnapshotSchema = z.object({
   setName: z.string().min(1).max(300),
   collectorNumber: z.string().min(1).max(50),
   collectorTotal: z.string().min(1).max(50).optional(),
+  availableVariants: z
+    .object({
+      normal: z.boolean(),
+      holo: z.boolean(),
+      reverse: z.boolean(),
+      firstEdition: z.boolean(),
+    })
+    .optional(),
   imageBaseUrl: imageUrlSchema.optional(),
   category: z.enum(["pokemon", "trainer", "energy", "other"]).optional(),
   physicalStatus: z.enum(["physical", "digital", "unknown"]),
@@ -39,6 +47,7 @@ export const plannedCardSchema = z.object({
   variant: z.object({
     finish: z.enum(["normal", "holo", "reverse", "other", "unspecified"]),
     edition: z.enum(["unlimited", "first-edition", "unspecified"]),
+    printing: z.enum(["shadowless", "shadowed", "unspecified"]).optional(),
     label: z.string().max(100).optional(),
   }),
   preferences: z.object({

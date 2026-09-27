@@ -67,7 +67,9 @@ async function mockCatalog(page: Page) {
           id: "base1-4",
           localId: "4",
           name: language === "de" ? "Glurak" : "Charizard",
+          image: language === "en" ? "https://assets.tcgdex.net/en/base/base1/4" : undefined,
           set: { cardCount: { official: 102 }, id: "base1", name: "Grundset" },
+          variants: { firstEdition: true, holo: true, normal: false, reverse: false },
         }),
         headers,
         status: 200,
@@ -279,10 +281,19 @@ test("searches German and English catalogs and labels the result language", asyn
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
   await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Glurak");
   const germanResult = page.getByRole("listitem").filter({ hasText: "Glurak" });
-  await expect(germanResult).toContainText("DE · Nr. 4");
+  await expect(germanResult).toContainText("DE · Nr. 4/102");
   await germanResult.getByRole("button", { name: "In Slot einsetzen" }).click();
 
-  await expect(page.getByRole("article", { name: "Glurak, Slot 1" })).toBeVisible();
+  const card = page.getByRole("article", { name: "Glurak, Slot 1" });
+  await expect(card).toBeVisible();
+  await card.getByRole("button", { name: "Version festlegen" }).click();
+  const variantDialog = page.getByRole("dialog", { name: "Version für „Glurak“ festlegen" });
+  await expect(variantDialog).toContainText("TCGdex meldet verfügbar: Holo, First Edition");
+  await variantDialog.getByLabel("Finish").selectOption("holo");
+  await variantDialog.getByLabel("Edition").selectOption("first-edition");
+  await variantDialog.getByLabel("Druckvariante").selectOption("shadowless");
+  await variantDialog.getByRole("button", { name: "Version speichern" }).click();
+  await expect(card).toContainText("Holo · First Edition · Shadowless");
 });
 
 test("finds and displays an exact full collector number", async ({ page }) => {

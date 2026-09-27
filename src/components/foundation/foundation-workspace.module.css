@@ -59,6 +59,8 @@
 .dragOverlay { display: inline-flex; align-items: center; gap: 7px; border: 1px solid #82aeb6; border-radius: 8px; background: #fff; color: #155363; padding: 10px 12px; box-shadow: 0 16px 36px rgb(23 33 43 / 18%); font-size: .78rem; font-weight: 800; }
 .slotActions { display: grid; gap: 6px; margin-top: 4px; }
 .slotActions button { margin-top: 0; font-size: .72rem; }
+.variantSummary { min-height: 18px; color: #52616b; font-size: .68rem; line-height: 1.35; }
+.variantAction { border-color: #82aeb6 !important; background: #eef5f6 !important; color: #155363 !important; }
 .ownershipAction { background: #f8fcf9; }
 .moveAction { border-color: #8b5cf6 !important; color: #6d28d9 !important; }
 .moveAction[aria-pressed="true"] { background: #f3e8ff; }
@@ -66,6 +68,7 @@
 .removeAction { border-color: #efc3c0 !important; color: #b42318 !important; }
 .removeAction:hover { background: #fff2f1 !important; }
 .imageFallback { display: grid; place-items: center; aspect-ratio: 245 / 342; border-radius: 8px; background: #e8edf5; color: var(--muted); }
+.imageFallback button { min-height: 36px; border: 1px solid #b8cbd0; border-radius: 7px; background: #fff; color: #155363; padding: 6px 9px; font-size: .66rem; font-weight: 750; }
 .pageControls { display: flex; align-items: center; gap: 7px; color: #52616b; font-size: 11px; }
 .pageToolbar { display: flex; align-items: flex-end; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
 .layoutSelect { display: grid; gap: 3px; color: #52616b; font-size: 10px; font-weight: 750; }
@@ -105,6 +108,10 @@
 .confirmDialog { width: min(100%, 440px); border: 1px solid #dee5e8; border-radius: 12px; background: #fff; padding: 24px; box-shadow: 0 20px 60px rgb(23 33 43 / 18%); }
 .confirmDialog h2 { margin: 8px 0 10px; color: #17212b; font-size: 20px; letter-spacing: -.025em; }
 .confirmDialog > p:not(.eyebrow) { margin: 0; color: #52616b; font-size: 13px; line-height: 1.5; }
+.variantForm { display: grid; gap: 12px; margin-top: 18px; }
+.variantForm label { display: grid; gap: 5px; color: #52616b; font-size: .75rem; font-weight: 750; }
+.variantForm select, .variantForm input { min-height: 42px; border: 1px solid #d8e2e6; border-radius: 7px; background: #fff; color: #17212b; padding: 8px 10px; }
+.variantHint { margin-top: 14px !important; border-left: 3px solid #82aeb6; background: #f5fafb; padding: 9px 11px; }
 .dialogActions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 22px; }
 .layoutPreview { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-top: 16px; }
 .layoutPreview span { display: grid; gap: 3px; border: 1px solid #d8e2e6; border-radius: 7px; background: #f8fbfb; color: #52616b; padding: 9px; font-size: .68rem; }

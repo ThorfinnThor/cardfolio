@@ -16,7 +16,7 @@ function missingItem(index = 1, overrides: Partial<MissingItem> = {}): MissingIt
       physicalStatus: "physical",
       fetchedAt: "2026-09-27T00:00:00.000Z",
     },
-    variant: { finish: "normal", edition: "unlimited" },
+    variant: { finish: "normal", edition: "unlimited", printing: "shadowed" },
     preferences: { minimumCondition: "near-mint" },
     quantity: 2,
     entryIds: [`00000000-0000-4000-8000-${String(index).padStart(12, "0")}`],
@@ -28,7 +28,7 @@ describe("Cardmarket handoff", () => {
   it("keeps the original printing preferences visible and requires review", () => {
     const exported = createCardmarketHandoff([missingItem()]);
 
-    expect(exported.parts[0].text).toBe("2x Bulbasaur | Base Set | Nr. 001 | EN | Normal | Unlimited | Near Mint");
+    expect(exported.parts[0].text).toBe("2x Bulbasaur | Base Set | Nr. 001 | EN | Normal | Unlimited | Mit Schatten / Standard | Near Mint");
     expect(exported.positionCount).toBe(1);
     expect(exported.totalQuantity).toBe(2);
     expect(exported.reviewRequiredCount).toBe(1);
@@ -55,12 +55,12 @@ describe("Cardmarket handoff", () => {
         setName: "Basis\rSet",
         collectorNumber: "044",
       },
-      variant: { finish: "other", edition: "first-edition", label: "Cosmos | Holo" },
+      variant: { finish: "other", edition: "first-edition", printing: "shadowless", label: "Cosmos | Holo" },
       preferences: { minimumCondition: "lightly-played" },
     });
 
     expect(createCardmarketHandoff([item]).parts[0].text).toBe(
-      "2x Bisa sam Sonderdruck | Basis Set | Nr. 044 | DE | Cosmos Holo | First Edition | Lightly Played",
+      "2x Bisa sam Sonderdruck | Basis Set | Nr. 044 | DE | Cosmos Holo | First Edition | Shadowless | Lightly Played",
     );
   });
 

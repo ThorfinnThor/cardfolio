@@ -1,6 +1,7 @@
 import type { ExportResult, MissingItem } from "./types";
+import { printingLabels, selectedPrinting } from "./variant-selection";
 
-const HEADERS = ["Menge", "Name", "Set", "Nummer", "Sprache", "Finish", "Edition", "Zustand", "Prüfhinweis"] as const;
+const HEADERS = ["Menge", "Name", "Set", "Nummer", "Sprache", "Finish", "Edition", "Druckvariante", "Zustand", "Prüfhinweis"] as const;
 
 const finishLabels = {
   normal: "Normal",
@@ -27,6 +28,7 @@ export function missingItemReviewNote(item: MissingItem): string {
   const unknown: string[] = [];
   if (item.variant.finish === "unspecified") unknown.push("Finish");
   if (item.variant.edition === "unspecified") unknown.push("Edition");
+  if (selectedPrinting(item.variant) === "unspecified") unknown.push("Druckvariante");
   if (item.card.physicalStatus !== "physical") unknown.push("physische Ausgabe");
   return unknown.length > 0
     ? `Manuell prüfen: ${unknown.join(", ")}`
@@ -42,6 +44,7 @@ function row(item: MissingItem): string[] {
     item.card.ref.language.toUpperCase(),
     item.variant.label?.trim() || finishLabels[item.variant.finish],
     editionLabels[item.variant.edition],
+    printingLabels[selectedPrinting(item.variant)],
     conditionLabels[item.preferences.minimumCondition],
     missingItemReviewNote(item),
   ];
@@ -50,7 +53,7 @@ function row(item: MissingItem): string[] {
 function warningsFor(items: readonly MissingItem[]): string[] {
   const warnings: string[] = [];
   const incompleteVariantCount = items.filter(
-    (item) => item.variant.finish === "unspecified" || item.variant.edition === "unspecified",
+    (item) => item.variant.finish === "unspecified" || item.variant.edition === "unspecified" || selectedPrinting(item.variant) === "unspecified",
   ).length;
   const unconfirmedPhysicalCount = items.filter((item) => item.card.physicalStatus !== "physical").length;
   if (incompleteVariantCount > 0) {

@@ -20,7 +20,7 @@ const card: CardSnapshot = {
 const entry: PlannedCard = {
   id: "00000000-0000-4000-8000-000000000001",
   cardKey: card.key,
-  variant: { finish: "normal", edition: "unlimited" },
+  variant: { finish: "holo", edition: "first-edition", printing: "shadowless" },
   preferences: { minimumCondition: "any" },
   owned: false,
   addedAt: "2026-09-27T00:00:00.000Z",
@@ -45,11 +45,14 @@ describe("BinderGrid", () => {
         onSelectMoveSource={onSelectMoveSource}
         onMove={vi.fn()}
         onToggleOwned={vi.fn()}
+        onRequestVariant={vi.fn()}
+        onRefreshCard={vi.fn()}
         onRequestRemove={vi.fn()}
       />,
     );
 
     expect(screen.getByRole("article", { name: "Bulbasaur, Slot 1" })).toBeInTheDocument();
+    expect(screen.getByText("Holo · First Edition · Shadowless")).toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: /Freier Platz \d+, Karte einsetzen/ })).toHaveLength(3);
 
     fireEvent.click(screen.getByRole("button", { name: "Verschieben" }));
@@ -72,6 +75,8 @@ describe("BinderGrid", () => {
         onSelectMoveSource={vi.fn()}
         onMove={onMove}
         onToggleOwned={vi.fn()}
+        onRequestVariant={vi.fn()}
+        onRefreshCard={vi.fn()}
         onRequestRemove={vi.fn()}
       />,
     );
@@ -89,6 +94,7 @@ describe("BinderGrid", () => {
       ...card,
       imageBaseUrl: "https://assets.tcgdex.net/en/base/base1/44",
     };
+    const onRefreshCard = vi.fn();
     render(
       <BinderGrid
         page={page}
@@ -98,6 +104,8 @@ describe("BinderGrid", () => {
         onSelectMoveSource={vi.fn()}
         onMove={vi.fn()}
         onToggleOwned={vi.fn()}
+        onRequestVariant={vi.fn()}
+        onRefreshCard={onRefreshCard}
         onRequestRemove={vi.fn()}
       />,
     );
@@ -105,5 +113,7 @@ describe("BinderGrid", () => {
     fireEvent.error(screen.getByRole("img", { name: "Bulbasaur, Base Set 044" }));
 
     expect(screen.getByRole("img", { name: "Bild für Bulbasaur nicht verfügbar" })).toHaveTextContent("Bild nicht verfügbar");
+    fireEvent.click(screen.getByRole("button", { name: "Kartendaten aktualisieren" }));
+    expect(onRefreshCard).toHaveBeenCalledWith(cardWithImage);
   });
 });

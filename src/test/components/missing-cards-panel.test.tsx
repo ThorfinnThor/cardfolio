@@ -19,7 +19,7 @@ const items: MissingItem[] = [
       physicalStatus: "physical",
       fetchedAt: "2026-09-27T00:00:00.000Z",
     },
-    variant: { finish: "normal", edition: "unlimited" },
+    variant: { finish: "normal", edition: "unlimited", printing: "shadowed" },
     preferences: { minimumCondition: "near-mint" },
     quantity: 2,
     entryIds: ["00000000-0000-4000-8000-000000000001"],
@@ -36,7 +36,7 @@ const items: MissingItem[] = [
       physicalStatus: "physical",
       fetchedAt: "2026-09-27T00:00:00.000Z",
     },
-    variant: { finish: "normal", edition: "unlimited" },
+    variant: { finish: "normal", edition: "unlimited", printing: "shadowed" },
     preferences: { minimumCondition: "any" },
     quantity: 1,
     entryIds: ["00000000-0000-4000-8000-000000000002"],
@@ -122,7 +122,7 @@ describe("MissingCardsPanel", () => {
     expect(screen.getByText(/Keine Exakt-Garantie/)).toBeInTheDocument();
     expect(screen.getByText(/kein automatisch zuordenbarer Pokémon-Decklistenimport/)).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: "Cardmarket-Prüflistenvorschau" })).toHaveValue(
-      "2x Pikachu | Wizards Black Star Promos | Nr. 001 | EN | Normal | Unlimited | Near Mint\n1x Bulbasaur | Base Set | Nr. 044 | EN | Normal | Unlimited | Beliebig",
+      "2x Pikachu | Wizards Black Star Promos | Nr. 001 | EN | Normal | Unlimited | Mit Schatten / Standard | Near Mint\n1x Bulbasaur | Base Set | Nr. 044 | EN | Normal | Unlimited | Mit Schatten / Standard | Beliebig",
     );
     expect(screen.getByRole("link", { name: /Auf Cardmarket suchen/ })).toHaveAttribute("rel", "noopener noreferrer");
     expect(screen.getByRole("link", { name: "Offizielles Importformat" })).toHaveAttribute("rel", "noopener noreferrer");

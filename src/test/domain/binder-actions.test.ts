@@ -9,6 +9,7 @@ import {
   placeCard,
   previewBinderLayoutChange,
   removeCard,
+  setCardVariant,
   setOwned,
 } from "@/domain/binder-actions";
 import { deriveBinderStats } from "@/domain/binder-stats";
@@ -84,6 +85,24 @@ describe("binder domain", () => {
     expect(() => placeCard(binder, { pageId: binder.pages[0].id, slotIndex: -1 }, entry)).toThrow();
     const placed = placeCard(binder, { pageId: binder.pages[0].id, slotIndex: 0 }, entry);
     expect(() => placeCard(placed, { pageId: binder.pages[0].id, slotIndex: 1 }, entry)).toThrow();
+  });
+
+  it("updates the selected finish, edition and printing without mutating the prior binder", () => {
+    const binder = createBinder("Variants");
+    const entry = createPlannedCard(card.key);
+    const placed = placeCard(binder, { pageId: binder.pages[0].id, slotIndex: 0 }, entry);
+    const updated = setCardVariant(placed, entry.id, {
+      finish: "holo",
+      edition: "first-edition",
+      printing: "shadowless",
+    });
+
+    expect(placed.pages[0].slots[0]?.variant).toEqual({ finish: "unspecified", edition: "unspecified" });
+    expect(updated.pages[0].slots[0]?.variant).toEqual({
+      finish: "holo",
+      edition: "first-edition",
+      printing: "shadowless",
+    });
   });
 
   it("reflows into 2x2 pages without losing card identity, ownership, variants or notes", () => {

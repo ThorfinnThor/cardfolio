@@ -9,6 +9,7 @@ import { createCardmarketHandoff, type CardmarketHandoffPart } from "@/domain/ca
 import { missingItemReviewNote } from "@/domain/missing-items-export";
 import { createTcgplayerMassEntryExport, type TcgplayerMassEntryExport } from "@/domain/tcgplayer-export";
 import type { MissingItem } from "@/domain/types";
+import { printingLabels, selectedPrinting } from "@/domain/variant-selection";
 
 import styles from "./missing-cards-panel.module.css";
 
@@ -220,6 +221,7 @@ export function MissingCardsPanel({
                 <span>{item.card.ref.language.toUpperCase()}</span>
                 <span>{item.variant.label || finishLabels[item.variant.finish]}</span>
                 <span>{editionLabels[item.variant.edition]}</span>
+                <span>{printingLabels[selectedPrinting(item.variant)]}</span>
                 <span>{conditionLabels[item.preferences.minimumCondition]}</span>
                 <span>{missingItemReviewNote(item).startsWith("Manuell") ? "Manuell prüfen" : "Prüfen"}</span>
               </div>

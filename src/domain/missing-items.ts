@@ -5,6 +5,7 @@ function identity(entry: PlannedCard): string {
     entry.cardKey,
     entry.variant.finish,
     entry.variant.edition,
+    entry.variant.printing ?? "unspecified",
     entry.variant.label ?? "",
     entry.preferences.minimumCondition,
   ]);

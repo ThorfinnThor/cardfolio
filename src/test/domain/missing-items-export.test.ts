@@ -16,7 +16,7 @@ function missingItem(overrides: Partial<MissingItem> = {}): MissingItem {
       physicalStatus: "physical",
       fetchedAt: "2026-09-27T00:00:00.000Z",
     },
-    variant: { finish: "normal", edition: "unlimited" },
+    variant: { finish: "normal", edition: "unlimited", printing: "shadowed" },
     preferences: { minimumCondition: "near-mint" },
     quantity: 2,
     entryIds: ["00000000-0000-4000-8000-000000000001", "00000000-0000-4000-8000-000000000002"],
@@ -29,8 +29,8 @@ describe("generic missing-item exports", () => {
     const exported = createMissingItemsTextExport([missingItem()]);
 
     expect(exported.mimeType).toBe("text/plain");
-    expect(exported.text).toContain("Menge | Name | Set | Nummer | Sprache | Finish | Edition | Zustand | Prüfhinweis");
-    expect(exported.text).toContain("2 | Bulbasaur | Base Set | 044 | EN | Normal | Unlimited | Near Mint");
+    expect(exported.text).toContain("Menge | Name | Set | Nummer | Sprache | Finish | Edition | Druckvariante | Zustand | Prüfhinweis");
+    expect(exported.text).toContain("2 | Bulbasaur | Base Set | 044 | EN | Normal | Unlimited | Mit Schatten / Standard | Near Mint");
     expect(exported.excludedEntryIds).toEqual([]);
     expect(exported.reviewRequiredCount).toBe(1);
     expect(exported.verifiedCount).toBe(0);
@@ -44,7 +44,7 @@ describe("generic missing-item exports", () => {
         setName: "Set, \"Special\"\nLine",
         collectorNumber: "001",
       },
-      variant: { finish: "other", edition: "first-edition", label: "@custom" },
+      variant: { finish: "other", edition: "first-edition", printing: "shadowless", label: "@custom" },
     });
     const exported = createMissingItemsCsvExport([item]);
 
@@ -63,8 +63,8 @@ describe("generic missing-item exports", () => {
     });
     const exported = createMissingItemsTextExport([item]);
 
-    expect(exported.text).toContain("Nicht angegeben | Nicht angegeben | Beliebig");
-    expect(exported.text).toContain("Manuell prüfen: Finish, Edition, physische Ausgabe");
+    expect(exported.text).toContain("Nicht angegeben | Nicht angegeben | Nicht festgelegt | Beliebig");
+    expect(exported.text).toContain("Manuell prüfen: Finish, Edition, Druckvariante, physische Ausgabe");
     expect(exported.warnings).toHaveLength(2);
   });
 
@@ -72,7 +72,7 @@ describe("generic missing-item exports", () => {
     const exported = createMissingItemsCsvExport([], { includeBom: false });
 
     expect(exported.text.startsWith("\uFEFF")).toBe(false);
-    expect(exported.text).toBe('"Menge","Name","Set","Nummer","Sprache","Finish","Edition","Zustand","Prüfhinweis"');
+    expect(exported.text).toBe('"Menge","Name","Set","Nummer","Sprache","Finish","Edition","Druckvariante","Zustand","Prüfhinweis"');
     expect(exported.reviewRequiredCount).toBe(0);
   });
 });

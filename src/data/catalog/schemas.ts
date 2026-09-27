@@ -20,6 +20,15 @@ export const tcgdexCardSchema = z.object({
   name: z.string().min(1),
   image: imageBaseUrl.optional(),
   category: z.string().optional(),
+  variants: z
+    .object({
+      firstEdition: z.boolean(),
+      holo: z.boolean(),
+      normal: z.boolean(),
+      reverse: z.boolean(),
+      wPromo: z.boolean().optional(),
+    })
+    .optional(),
   set: z.object({
     cardCount: z
       .object({

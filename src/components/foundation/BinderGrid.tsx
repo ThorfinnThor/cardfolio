@@ -21,6 +21,7 @@ import { useState, type CSSProperties, type ReactNode } from "react";
 import { cardImageUrl } from "@/data/catalog/images";
 import type { SlotLocation } from "@/domain/binder-actions";
 import { formatCollectorNumber } from "@/domain/catalog-search";
+import { formatVariantSelection } from "@/domain/variant-selection";
 import type { BinderPage, CardSnapshot, PlannedCard } from "@/domain/types";
 
 import styles from "./foundation-workspace.module.css";
@@ -35,6 +36,8 @@ interface BinderGridProps {
   onSelectMoveSource: (location: SlotLocation) => void;
   onMove: (from: SlotLocation, to: SlotLocation) => void;
   onToggleOwned: (entryId: string, owned: boolean) => void;
+  onRequestVariant: (entry: PlannedCard, card?: CardSnapshot) => void;
+  onRefreshCard: (card: CardSnapshot) => void;
   onRequestRemove: (location: SlotLocation, label: string) => void;
 }
 
@@ -46,6 +49,8 @@ interface OccupiedSlotProps {
   moving: boolean;
   onSelectMoveSource: (location: SlotLocation) => void;
   onToggleOwned: (entryId: string, owned: boolean) => void;
+  onRequestVariant: (entry: PlannedCard, card?: CardSnapshot) => void;
+  onRefreshCard: (card: CardSnapshot) => void;
   onRequestRemove: (location: SlotLocation, label: string) => void;
 }
 
@@ -69,6 +74,8 @@ function OccupiedSlot({
   moving,
   onSelectMoveSource,
   onToggleOwned,
+  onRequestVariant,
+  onRefreshCard,
   onRequestRemove,
 }: OccupiedSlotProps) {
   const imageSource = card?.imageBaseUrl ? cardImageUrl(card.imageBaseUrl) : undefined;
@@ -103,13 +110,18 @@ function OccupiedSlot({
               onError={() => setFailedImageSource(imageSource)}
             />
           ) : (
-            <div className={styles.imageFallback} role="img" aria-label={`Bild für ${card.name} nicht verfügbar`}>
-              Bild nicht verfügbar
+            <div className={styles.imageFallback}>
+              <span role="img" aria-label={`Bild für ${card.name} nicht verfügbar`}>Bild nicht verfügbar</span>
+              <button type="button" onClick={() => onRefreshCard(card)}>Kartendaten aktualisieren</button>
             </div>
           )}
           <strong>{card.name}</strong>
           <small>{card.setName} · {formatCollectorNumber(card.collectorNumber, card.collectorTotal)}</small>
+          <span className={styles.variantSummary}>{formatVariantSelection(entry.variant)}</span>
           <div className={styles.slotActions}>
+            <button type="button" className={styles.variantAction} onClick={() => onRequestVariant(entry, card)}>
+              Version festlegen
+            </button>
             <button type="button" className={styles.ownershipAction} onClick={() => onToggleOwned(entry.id, !entry.owned)}>
               {entry.owned ? "Als fehlend markieren" : "Als vorhanden markieren"}
             </button>
@@ -144,6 +156,8 @@ export function BinderGrid({
   onSelectMoveSource,
   onMove,
   onToggleOwned,
+  onRequestVariant,
+  onRefreshCard,
   onRequestRemove,
 }: BinderGridProps) {
   const sensors = useSensors(useSensor(MouseSensor, { activationConstraint: { distance: 7 } }));
@@ -178,6 +192,8 @@ export function BinderGrid({
                   moving={sameLocation(movingLocation, location)}
                   onSelectMoveSource={onSelectMoveSource}
                   onToggleOwned={onToggleOwned}
+                  onRequestVariant={onRequestVariant}
+                  onRefreshCard={onRefreshCard}
                   onRequestRemove={onRequestRemove}
                 />
               ) : (

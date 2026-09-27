@@ -220,6 +220,20 @@ export function setOwned(binder: Binder, entryId: UUID, owned: boolean): Binder 
   return withUpdatedPages(binder, pages);
 }
 
+export function setCardVariant(binder: Binder, entryId: UUID, variant: VariantSelection): Binder {
+  let found = false;
+  const pages = binder.pages.map((page) => ({
+    ...page,
+    slots: page.slots.map((entry) => {
+      if (entry?.id !== entryId) return entry;
+      found = true;
+      return { ...entry, variant: { ...variant } };
+    }),
+  }));
+  if (!found) throw new Error("Planned card does not exist.");
+  return withUpdatedPages(binder, pages);
+}
+
 export function addPage(binder: Binder): Binder {
   if (binder.pages.length >= 40) throw new Error("A binder can contain at most 40 pages.");
   return withUpdatedPages(binder, [...binder.pages, emptyPage(slotCount(binder))]);

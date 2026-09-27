@@ -14,6 +14,7 @@ import {
   placeCard,
   previewBinderLayoutChange,
   removeCard,
+  setCardVariant,
   setOwned,
   SUPPORTED_BINDER_LAYOUTS,
   type BinderLayoutPreview,
@@ -26,10 +27,11 @@ import { createMissingItemsCsvExport, createMissingItemsTextExport } from "@/dom
 import { deriveMissingItems } from "@/domain/missing-items";
 import type { CardmarketHandoffPart } from "@/domain/cardmarket-handoff";
 import type { TcgplayerMassEntryExport } from "@/domain/tcgplayer-export";
-import type { Binder, CardSnapshot, CatalogSearchItem, MissingItem } from "@/domain/types";
+import type { Binder, CardSnapshot, CatalogSearchItem, MissingItem, PlannedCard, VariantSelection } from "@/domain/types";
 import { FEATURES } from "@/config/feature-flags";
 import { PRODUCT_DESIGN } from "@/config/product";
 import { validateBackup } from "@/domain/validation";
+import { editionLabels, finishLabels, formatAvailableVariants, printingLabels, selectedPrinting } from "@/domain/variant-selection";
 import { catalogQueryKey, detailQueryKey, TCGdexCatalogAdapter } from "@/data/catalog/tcgdex";
 import { RevisionConflictError } from "@/data/persistence/binder-repository";
 import { IndexedDBBinderRepository } from "@/data/persistence/indexeddb-binder-repository";
@@ -45,6 +47,12 @@ type CopyState = "idle" | "copied" | "error";
 type ImportReport = { binderCount: number; cardCount: number; plannedCount: number; names: string[] };
 type BinderSyncMessage = { type: "binder-changed"; binderId: string; revision: number; deleted?: boolean };
 type LayoutChangeRequest = { binderId: string; layout: SupportedBinderLayout; preview: BinderLayoutPreview };
+type VariantEditRequest = {
+  entryId: string;
+  label: string;
+  variant: VariantSelection;
+  availableVariants?: CardSnapshot["availableVariants"];
+};
 
 export function FoundationWorkspace() {
   const repository = useMemo(() => new IndexedDBBinderRepository(), []);
@@ -67,6 +75,7 @@ export function FoundationWorkspace() {
   const [binderToDelete, setBinderToDelete] = useState<Binder>();
   const [cardToRemove, setCardToRemove] = useState<{ location: SlotLocation; label: string }>();
   const [layoutChange, setLayoutChange] = useState<LayoutChangeRequest>();
+  const [variantEdit, setVariantEdit] = useState<VariantEditRequest>();
   const [missingOpen, setMissingOpen] = useState(false);
   const [copyState, setCopyState] = useState<CopyState>("idle");
   const [tcgplayerCopyState, setTcgplayerCopyState] = useState<CopyState>("idle");
@@ -322,6 +331,7 @@ export function FoundationWorkspace() {
     setTcgplayerCopyState("idle");
     setCardmarketCopyState("idle");
     setLayoutChange(undefined);
+    setVariantEdit(undefined);
     setStorageConflict(false);
   }
 
@@ -440,6 +450,50 @@ export function FoundationWorkspace() {
       setStorageStatus("saved");
     } catch (error) {
       handleStorageError(error, "Besitzstatus konnte nicht gespeichert werden.");
+    }
+  }
+
+  function requestVariantEdit(entry: PlannedCard, card?: CardSnapshot) {
+    setMovingLocation(undefined);
+    setVariantEdit({
+      entryId: entry.id,
+      label: card?.name ?? "Karte",
+      variant: { ...entry.variant, printing: selectedPrinting(entry.variant) },
+      availableVariants: card?.availableVariants,
+    });
+  }
+
+  async function saveVariantEdit() {
+    if (!activeBinder || !variantEdit) return;
+    try {
+      const next = setCardVariant(activeBinder, variantEdit.entryId, variantEdit.variant);
+      setStorageStatus("saving");
+      const saved = await repository.save(next, [], activeBinder.revision);
+      publishBinderChange(saved);
+      setBinders((current) => current.map((binder) => (binder.id === saved.id ? saved : binder)));
+      setVariantEdit(undefined);
+      setStorageStatus("saved");
+      setMessage(`Version für „${variantEdit.label}“ wurde gespeichert.`);
+    } catch (error) {
+      handleStorageError(error, "Kartenversion konnte nicht gespeichert werden.");
+    }
+  }
+
+  async function refreshCardSnapshot(card: CardSnapshot) {
+    if (!activeBinder) return;
+    try {
+      setStorageStatus("saving");
+      const snapshot = await catalog.getCard(card.ref);
+      const saved = await repository.save(activeBinder, [snapshot], activeBinder.revision);
+      publishBinderChange(saved);
+      setBinders((current) => current.map((binder) => (binder.id === saved.id ? saved : binder)));
+      setCards((current) => new Map(current).set(snapshot.key, snapshot));
+      setStorageStatus("saved");
+      setMessage(snapshot.imageBaseUrl
+        ? `Kartendaten und Bild für „${snapshot.name}“ wurden aktualisiert.`
+        : `Kartendaten für „${snapshot.name}“ wurden aktualisiert; TCGdex stellt weiterhin kein Bild bereit.`);
+    } catch (error) {
+      handleStorageError(error, "Kartendaten konnten nicht aktualisiert werden.");
     }
   }
 
@@ -647,6 +701,71 @@ export function FoundationWorkspace() {
         </div>
       ) : null}
 
+      {variantEdit ? (
+        <div className={styles.dialogBackdrop} role="presentation">
+          <section className={styles.confirmDialog} role="dialog" aria-modal="true" aria-labelledby="variant-heading">
+            <p className={styles.eyebrow}>Kartenversion</p>
+            <h2 id="variant-heading">Version für „{variantEdit.label}“ festlegen</h2>
+            <p>Finish, Edition und Druckvariante werden getrennt gespeichert und in Fehlkartenlisten berücksichtigt.</p>
+            <div className={styles.variantForm}>
+              <label>
+                Finish
+                <select
+                  value={variantEdit.variant.finish}
+                  onChange={(event) => setVariantEdit((current) => current ? {
+                    ...current,
+                    variant: { ...current.variant, finish: event.target.value as VariantSelection["finish"] },
+                  } : current)}
+                >
+                  {Object.entries(finishLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
+                </select>
+              </label>
+              <label>
+                Edition
+                <select
+                  value={variantEdit.variant.edition}
+                  onChange={(event) => setVariantEdit((current) => current ? {
+                    ...current,
+                    variant: { ...current.variant, edition: event.target.value as VariantSelection["edition"] },
+                  } : current)}
+                >
+                  {Object.entries(editionLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
+                </select>
+              </label>
+              <label>
+                Druckvariante
+                <select
+                  value={selectedPrinting(variantEdit.variant)}
+                  onChange={(event) => setVariantEdit((current) => current ? {
+                    ...current,
+                    variant: { ...current.variant, printing: event.target.value as NonNullable<VariantSelection["printing"]> },
+                  } : current)}
+                >
+                  {Object.entries(printingLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
+                </select>
+              </label>
+              <label>
+                Eigene Variantenbezeichnung (optional)
+                <input
+                  value={variantEdit.variant.label ?? ""}
+                  maxLength={100}
+                  placeholder="z. B. Cosmos Holo"
+                  onChange={(event) => setVariantEdit((current) => current ? {
+                    ...current,
+                    variant: { ...current.variant, label: event.target.value || undefined },
+                  } : current)}
+                />
+              </label>
+            </div>
+            <p className={styles.variantHint}>{formatAvailableVariants(variantEdit.availableVariants)} Shadowless wird von TCGdex nicht separat geliefert und ist deshalb eine manuelle Auswahl.</p>
+            <div className={styles.dialogActions}>
+              <button type="button" className={styles.secondaryButton} onClick={() => setVariantEdit(undefined)}>Abbrechen</button>
+              <button type="button" className={styles.confirmButton} onClick={saveVariantEdit}>Version speichern</button>
+            </div>
+          </section>
+        </div>
+      ) : null}
+
       {layoutChange && activeBinder?.id === layoutChange.binderId ? (
         <div className={styles.dialogBackdrop} role="presentation">
           <section className={styles.confirmDialog} role="dialog" aria-modal="true" aria-labelledby="change-layout-heading">
@@ -739,6 +858,8 @@ export function FoundationWorkspace() {
                   onSelectMoveSource={selectMoveSource}
                   onMove={(from, to) => void moveCard(from, to)}
                   onToggleOwned={(entryId, owned) => void toggleOwned(entryId, owned)}
+                  onRequestVariant={requestVariantEdit}
+                  onRefreshCard={(card) => void refreshCardSnapshot(card)}
                   onRequestRemove={requestRemove}
                 />
               ) : null}

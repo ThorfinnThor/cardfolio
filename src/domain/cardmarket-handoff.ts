@@ -1,4 +1,5 @@
 import type { MissingItem } from "./types";
+import { printingLabels, selectedPrinting } from "./variant-selection";
 
 export const CARDMARKET_POKEMON_SINGLES_URL = "https://www.cardmarket.com/en/Pokemon/Products/Singles";
 export const CARDMARKET_POKEMON_WANTS_HELP_URL = "https://help.cardmarket.com/en/how-to-add-a-pkmn-decklist-to-wants";
@@ -56,6 +57,7 @@ function formatReferenceLine(item: MissingItem): string {
     item.card.ref.language.toUpperCase(),
     finish,
     editionLabels[item.variant.edition],
+    printingLabels[selectedPrinting(item.variant)],
     conditionLabels[item.preferences.minimumCondition],
   ].join(" | ");
 }
@@ -76,7 +78,7 @@ export function createCardmarketHandoff(items: readonly MissingItem[]): Cardmark
   const warnings = items.length
     ? [
         "Keine Exakt-Garantie: Cardmarket kann trotz Name eine andere Ausgabe oder Illustration zuordnen.",
-        "Vor dem Kauf jede Position anhand von Set, Kartennummer, Sprache, Finish, Edition und Zustand prüfen.",
+        "Vor dem Kauf jede Position anhand von Set, Kartennummer, Sprache, Finish, Edition, Druckvariante und Zustand prüfen.",
         "Diese Datei ist eine Prüfliste, kein automatisch zuordenbarer Pokémon-Decklistenimport: Cardfolio speichert Attacken und Fähigkeiten nicht verlässlich.",
       ]
     : [];

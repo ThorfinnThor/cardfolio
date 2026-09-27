@@ -10,6 +10,7 @@ import { makeCardKey } from "@/domain/binder-actions";
 import { sameCollectorPart } from "@/domain/catalog-search";
 
 import { tcgdexCardSchema, tcgdexSearchResponseSchema, tcgdexSetSchema } from "./schemas";
+import { collectorTotalForSearchItem } from "./set-counts";
 
 const BASE_URL = "https://api.tcgdex.net/v2";
 const MAX_ATTEMPTS = 3;
@@ -138,6 +139,7 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
         ref: { provider: "tcgdex" as const, id: item.id, language: query.language },
         name: item.name,
         collectorNumber: item.localId,
+        collectorTotal: collectorTotalForSearchItem(query.language, item.id, item.localId),
         imageBaseUrl: item.image,
       }));
     }
@@ -150,6 +152,15 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
   async getCard(ref: CardRef, signal?: AbortSignal): Promise<CardSnapshot> {
     const cardUrl = new URL(`${BASE_URL}/${ref.language}/cards/${encodeURIComponent(ref.id)}`);
     const card = tcgdexCardSchema.parse(await fetchJson(cardUrl, signal));
+    let imageBaseUrl = card.image;
+    if (!imageBaseUrl && ref.language === "de") {
+      try {
+        const englishCardUrl = new URL(`${BASE_URL}/en/cards/${encodeURIComponent(ref.id)}`);
+        imageBaseUrl = tcgdexCardSchema.parse(await fetchJson(englishCardUrl, signal)).image;
+      } catch (error) {
+        if (signal?.aborted) throw error;
+      }
+    }
     const setUrl = new URL(`${BASE_URL}/${ref.language}/sets/${encodeURIComponent(card.set.id)}`);
     const set = tcgdexSetSchema.parse(await fetchJson(setUrl, signal));
     return {
@@ -160,7 +171,13 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
       setName: card.set.name,
       collectorNumber: card.localId,
       collectorTotal: card.set.cardCount?.official === undefined ? undefined : String(card.set.cardCount.official),
-      imageBaseUrl: card.image,
+      availableVariants: card.variants ? {
+        normal: card.variants.normal,
+        holo: card.variants.holo,
+        reverse: card.variants.reverse,
+        firstEdition: card.variants.firstEdition,
+      } : undefined,
+      imageBaseUrl,
       category: category(card.category),
       physicalStatus: set.serie?.id === "tcgp" ? "digital" : set.serie ? "physical" : "unknown",
       fetchedAt: new Date().toISOString(),

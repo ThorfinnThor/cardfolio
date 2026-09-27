@@ -23,7 +23,7 @@ describe("TCGdexCatalogAdapter", () => {
 
     const adapter = new TCGdexCatalogAdapter();
     const search = await adapter.search({ name: "bulb", language: "en", page: 1, pageSize: 40 });
-    expect(search.items[0]).toMatchObject({ name: "Bulbasaur", collectorNumber: "001" });
+    expect(search.items[0]).toMatchObject({ name: "Bulbasaur", collectorNumber: "001", collectorTotal: "102" });
     expect(search.items[0].setName).toBeUndefined();
 
     const card = await adapter.getCard(search.items[0].ref);
@@ -95,5 +95,35 @@ describe("TCGdexCatalogAdapter", () => {
     const adapter = new TCGdexCatalogAdapter();
     const card = await adapter.getCard({ provider: "tcgdex", id: "A1-1", language: "en" });
     expect(card.physicalStatus).toBe("digital");
+  });
+
+  it("uses the English artwork when a German card has no localized image", async () => {
+    vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        id: "base1-4",
+        localId: "4",
+        name: "Glurak",
+        set: { cardCount: { official: 102 }, id: "base1", name: "Grundset" },
+        variants: { firstEdition: true, holo: true, normal: false, reverse: false },
+      })))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        id: "base1-4",
+        localId: "4",
+        name: "Charizard",
+        image: "https://assets.tcgdex.net/en/base/base1/4",
+        set: { cardCount: { official: 102 }, id: "base1", name: "Base Set" },
+      })))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        id: "base1",
+        name: "Grundset",
+        serie: { id: "base", name: "Grundserie" },
+      })));
+
+    const adapter = new TCGdexCatalogAdapter();
+    const card = await adapter.getCard({ provider: "tcgdex", id: "base1-4", language: "de" });
+
+    expect(card.imageBaseUrl).toBe("https://assets.tcgdex.net/en/base/base1/4");
+    expect(card.collectorTotal).toBe("102");
+    expect(card.availableVariants).toEqual({ normal: false, holo: true, reverse: false, firstEdition: true });
   });
 });
