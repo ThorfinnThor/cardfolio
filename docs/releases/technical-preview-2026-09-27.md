@@ -5,15 +5,15 @@ This record describes a technical preview, not an approved public production rel
 | Field | Value |
 |---|---|
 | Version | `0.1.0-technical-preview.20260927` |
-| Verified application commit | `a5ad85f4a997d8f806af27bf25b2b35abe8bd313` |
-| Build time | 2026-09-27 14:24 UTC |
+| Verified application commit | `30561f1bef5575cbce6ee214f8b6ab1eab99243e` |
+| Build time | 2026-09-27 17:22 UTC |
 | Preview origin | `https://cardfolio-780.pages.dev/` |
 | Cloudflare Pages project | `cardfolio` |
 | Database schema | IndexedDB `cardfolio`, version 1; binder schema 1; backup format 1 |
 | Browser tested | Codex in-app Chromium; exact browser version unavailable |
 | Mobile viewport tested | 375×812 CSS pixels |
-| GitHub CI | Passed: run `36335917139`, including all six Playwright scenarios |
-| Immutable deployment | `https://6cbb4716.cardfolio-780.pages.dev/` |
+| GitHub CI | Passed: run `36336618305`, including all seven Playwright scenarios |
+| Immutable deployment | `https://5ba85d1a.cardfolio-780.pages.dev/` |
 | Rights/privacy approval | Pending; operator details, project license and data/image/trademark review intentionally remain open |
 
 ## Active feature flags
@@ -33,6 +33,7 @@ This record describes a technical preview, not an approved public production rel
 - [x] CSP and every required security header from `public/_headers` are present on HTML responses.
 - [x] Next.js hydration completes without CSP or console errors.
 - [x] TCGdex English and German search/detail data were exercised.
+- [x] Full collector-number input was verified live with the exact query `Charizard 04/102` and result `EN · Nr. 4/102`.
 - [x] A valid direct TCGdex image loads and a missing image shows the accessible local fallback.
 - [x] Create, save, reload, controlled JSON import and multi-tab conflict handling pass on the preview origin.
 - [x] A real Blob-exported JSON backup was retained and validated as format 1 with one controlled test binder and one card snapshot.

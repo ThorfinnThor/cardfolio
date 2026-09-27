@@ -10,9 +10,9 @@ Cardfolio uses a static Next.js export and Cloudflare Pages Git integration. Do 
 - Technical-preview origin: `https://cardfolio-780.pages.dev/`
 - Automatic deployments from the public repository are enabled.
 - Build settings use **Next.js (Static HTML Export)**, `npm run build`, output directory `out` and `NODE_VERSION=24.19.0`.
-- Verified application deployment: `https://6cbb4716.cardfolio-780.pages.dev/`, commit `a5ad85f4a997d8f806af27bf25b2b35abe8bd313`, Cloudflare status `success`.
+- Verified application deployment: `https://5ba85d1a.cardfolio-780.pages.dev/`, commit `30561f1bef5575cbce6ee214f8b6ab1eab99243e`, Cloudflare status `success`.
 - The target-origin checks are recorded in `docs/releases/technical-preview-2026-09-27.md`.
-- GitHub CI run `36335917139` passed the complete remote suite for commit `432bbcd2bb5b4e79e744b89785f2047a72c25822`, including all six Playwright scenarios and the German-name search regression.
+- GitHub CI run `36336618305` passed the complete remote suite for commit `30561f1bef5575cbce6ee214f8b6ab1eab99243e`, including all seven Playwright scenarios and the exact full-number search regression.
 - Manually dispatched public-data run `36327563806` passed and committed refreshed English/German TCGdex set metadata as `336b95f5c3e4f7425cf39c05e1b7481507871f76`.
 
 ## Connect after the GitHub repository exists

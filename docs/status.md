@@ -324,3 +324,14 @@ Completed:
 - Added a sixth Playwright scenario that searches for `Glurak`, verifies the `DE` result label and inserts the German card fixture.
 - CI run `36335917139` passed audit, typecheck, lint, 45 unit/component tests, build, release checks and all six browser scenarios for commit `432bbcd2bb5b4e79e744b89785f2047a72c25822`.
 - Cloudflare deployment `95ee4a6d` succeeded. The production alias returned the visible live result `Glurak · DE · Nr. 001` with no browser-console warnings or errors.
+
+## 2026-09-27 — CF-26 exact collector-number search
+
+Completed:
+
+- Reproduced `Charizard 04/102`: TCGdex accepts only the local numerator as `localId=4`; the complete value `04/102` returns no provider match, while the provider's fuzzy number filter also returns values such as `14`, `40` and `74`.
+- Search now parses `Name 04/102`, number-only `04/102` and `Name #004`, normalizes leading numeric zeroes, then verifies both the exact local number and official set total against card details.
+- Search results and newly fetched binder snapshots retain and display the full printed number when the provider exposes the official set total, for example `4/102`.
+- Added focused parser/adapter tests and a seventh Playwright scenario covering exact result filtering, insertion and persisted full-number display.
+- GitHub CI run `36336618305` passed audit, typecheck, lint, 49 unit/component tests, build, release checks and all seven browser scenarios for commit `30561f1bef5575cbce6ee214f8b6ab1eab99243e`.
+- Cloudflare deployment `5ba85d1a-cd4b-4b66-b624-3f725f50af0b` succeeded. The production alias returned exactly one visible result for `Charizard 04/102`: `Charizard · EN · Nr. 4/102`.

@@ -223,3 +223,13 @@ Environment: live TCGdex German/English endpoints, GitHub-hosted Chromium and Cl
 - The UI now queries both supported languages, preserves the result language in `CardRef` and displays a `DE`/`EN` label beside each collector number.
 - GitHub CI run `36335917139` passed six Playwright scenarios, including the exact German-name regression.
 - On `https://cardfolio-780.pages.dev/`, `Glurak` rendered as `DE · Nr. 001`; the browser console contained no warnings or errors.
+
+## CF-26 collector-number regression — 2026-09-27
+
+Environment: live TCGdex endpoints, GitHub-hosted Chromium and Cloudflare Pages deployment `5ba85d1a-cd4b-4b66-b624-3f725f50af0b`.
+
+- Direct provider checks proved that `localId=04/102` produces no match, while `localId=4` is fuzzy and includes unrelated local IDs containing 4.
+- The application parser separates `Charizard 04/102` into name `Charizard`, local number `4` and official set total `102`.
+- The adapter applies exact normalized local-number filtering, loads only the remaining candidate details and rejects cards whose official set total differs.
+- CI run `36336618305` passed all seven Playwright scenarios, including exact matching against competing `4/100` and `14` fixtures and the full-number binder display.
+- On `https://cardfolio-780.pages.dev/`, the refreshed production alias returned one result: `Charizard · EN · Nr. 4/102`. The verification did not insert or alter a card.
