@@ -19,6 +19,14 @@
 .warning, .error { margin: 14px 0 0; border-radius: 7px; padding: 9px 11px; font-size: .78rem; line-height: 1.4; }
 .warning { background: #fff8e7; color: #805b00; }
 .error { background: #fff2f1; color: #b42318; }
+.marketplaceChoice { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 18px; border: 1px solid #d8e2e6; border-radius: 12px; background: #f8fbfb; padding: 14px 16px; }
+.marketplaceChoice h3 { margin: 0; color: #17212b; font-size: .92rem; }
+.marketplaceChoice p { margin: 4px 0 0; color: #52616b; font-size: .74rem; }
+.marketplaceChoiceActions { display: flex; flex: 0 0 auto; border: 1px solid #b8cbd0; border-radius: 8px; overflow: hidden; }
+.marketplaceChoiceActions button { min-height: 38px; border: 0; border-right: 1px solid #b8cbd0; background: #fff; color: #155363; padding: 7px 12px; font-size: .76rem; font-weight: 750; cursor: pointer; }
+.marketplaceChoiceActions button:last-child { border-right: 0; }
+.marketplaceChoiceActions button:hover { background: #e7f1f3; }
+.marketplaceChoiceActions button[aria-pressed="true"] { background: #155363; color: #fff; }
 .marketplacePanel { margin-top: 18px; border: 1px solid #b8cbd0; border-radius: 12px; background: #f8fbfb; padding: 16px; }
 .marketplaceHeader, .marketplaceActions { display: flex; align-items: center; }
 .marketplaceHeader { justify-content: space-between; gap: 16px; }
@@ -60,6 +68,9 @@
   .metadata { width: 100%; justify-content: flex-start; padding-left: 54px; }
   .marketplaceHeader { align-items: stretch; flex-direction: column; }
   .marketplaceHeader a { justify-content: center; }
+  .marketplaceChoice { align-items: stretch; flex-direction: column; }
+  .marketplaceChoiceActions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .marketplaceChoiceActions button { border-right: 1px solid #b8cbd0; }
 }
 
 @media (max-width: 420px) {

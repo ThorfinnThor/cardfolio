@@ -16,6 +16,7 @@ import styles from "./missing-cards-panel.module.css";
 const finishLabels = { normal: "Normal", holo: "Holo", reverse: "Reverse Holo", other: "Andere", unspecified: "Nicht angegeben" } as const;
 const editionLabels = { unlimited: "Unlimited", "first-edition": "First Edition", unspecified: "Nicht angegeben" } as const;
 const conditionLabels = { "near-mint": "Near Mint", "lightly-played": "Lightly Played", played: "Played", any: "Beliebig" } as const;
+type MarketplaceChoice = "tcgplayer" | "cardmarket";
 
 interface MissingCardsPanelProps {
   items: readonly MissingItem[];
@@ -54,6 +55,7 @@ export function MissingCardsPanel({
 }: MissingCardsPanelProps) {
   const [query, setQuery] = useState("");
   const [cardmarketPartIndex, setCardmarketPartIndex] = useState(0);
+  const [marketplaceChoice, setMarketplaceChoice] = useState<MarketplaceChoice>();
   const visibleItems = useMemo(() => {
     const normalizedQuery = query.trim().toLocaleLowerCase("de-DE");
     if (!normalizedQuery) return items;
@@ -104,7 +106,24 @@ export function MissingCardsPanel({
       {copyState === "error" ? <p className={styles.error} role="status">Kopieren wurde vom Browser nicht erlaubt. Nutze stattdessen TXT oder CSV.</p> : null}
       {warnings.map((warning) => <p className={styles.warning} role="note" key={warning}>{warning}</p>)}
 
-      {tcgplayerExport ? (
+      {tcgplayerEnabled || cardmarketEnabled ? (
+        <section className={styles.marketplaceChoice} aria-labelledby="marketplace-choice-heading">
+          <div>
+            <h3 id="marketplace-choice-heading">Marketplace-Übergabe</h3>
+            <p>Wähle einen Anbieter. Es wird immer nur die dazugehörige Übergabe angezeigt.</p>
+          </div>
+          <div className={styles.marketplaceChoiceActions} role="group" aria-label="Marketplace auswählen">
+            {tcgplayerEnabled ? (
+              <button type="button" aria-pressed={marketplaceChoice === "tcgplayer"} onClick={() => setMarketplaceChoice("tcgplayer")}>TCGplayer</button>
+            ) : null}
+            {cardmarketEnabled ? (
+              <button type="button" aria-pressed={marketplaceChoice === "cardmarket"} onClick={() => setMarketplaceChoice("cardmarket")}>Cardmarket</button>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
+
+      {marketplaceChoice === "tcgplayer" && tcgplayerExport ? (
         <section className={styles.marketplacePanel} aria-labelledby="tcgplayer-export-heading">
           <div className={styles.marketplaceHeader}>
             <div>
@@ -156,7 +175,7 @@ export function MissingCardsPanel({
         </section>
       ) : null}
 
-      {cardmarketHandoff && activeCardmarketPart ? (
+      {marketplaceChoice === "cardmarket" && cardmarketHandoff && activeCardmarketPart ? (
         <section className={styles.marketplacePanel} aria-labelledby="cardmarket-handoff-heading">
           <div className={styles.marketplaceHeader}>
             <div>

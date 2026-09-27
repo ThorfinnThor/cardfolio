@@ -84,3 +84,9 @@
 - Public source visibility is not described as open-source permission; without an explicit project license, no reuse grant is implied.
 - Public visibility restored GitHub-hosted runner allocation. CI run `36327453467` passed the complete pipeline, including all five Playwright scenarios.
 - The public-data workflow remains the only GitHub Action with `contents: write`; it validated and committed the first live refresh as `336b95f5c3e4f7425cf39c05e1b7481507871f76`.
+
+## 2026-09-27 — Card language and marketplace views are explicit choices
+
+- Card language is a search control independent of the German interface language. `Alle` is a balanced bilingual view; `Deutsch` and `English` query and display only the selected catalog.
+- Marketplace handoffs use progressive disclosure. TCGplayer and Cardmarket may both be enabled, but their detailed controls are never shown simultaneously.
+- Neither choice changes a stored card's language or variant, and neither marketplace view implies an exact product match beyond its documented verification status.

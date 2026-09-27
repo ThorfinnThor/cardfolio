@@ -347,3 +347,23 @@ Completed:
 - Selected variants are visible on binder cards, included in missing-card grouping, generic exports and Cardmarket review lists. Partial legacy selections visibly identify the open field.
 - CI run `36338067792` passed audit, typecheck, lint, 53 unit/component tests, build, release checks and all seven Playwright scenarios for commit `33b801f17783c16d6ef19cbd463a7303a7eba041`.
 - Cloudflare deployment `fd3f7b29-10a5-44f9-b286-abc47493c4d9` succeeded; the production alias passed the full-number and variant-dialog live checks without changing binder content.
+
+## 2026-09-27 — CF-28 language filter, marketplace disclosure and Design 3 audit
+
+Completed:
+
+- Card search now exposes `Alle`, `Deutsch` and `English` as an explicit card-language filter before the query field.
+- `Alle` interleaves German and English matches instead of allowing the first language to consume the twelve visible result rows. A same-name card such as Pikachu therefore remains distinguishable by its visible `DE` or `EN` label.
+- Disabled language queries are not sent to TCGdex when the user selects one language.
+- The missing-card view initially shows only a compact marketplace choice. TCGplayer and Cardmarket details are mutually exclusive and appear only after the user selects that provider.
+- Added a component regression for exclusive marketplace disclosure and an eighth Playwright scenario for same-name bilingual results and language switching.
+
+Verification completed:
+
+- Typecheck, ESLint, 54 unit/component tests, static Next.js build, release checks and `git diff --check` passed locally.
+
+Design audit:
+
+- The productive UI uses the Design 3 palette, KPI strip and some responsive behavior, but it is not yet a faithful implementation of the selected reference.
+- In particular, the reference's application shell, dense binder presentation and persistent right context panel with mutually exclusive details/search/purchase modes are still missing from the productive route.
+- Earlier status wording that called the productive overview and page “Design 3” described partial styling, not complete visual acceptance. Full Design 3 alignment remains open and must receive its own implementation and viewport review.

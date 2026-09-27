@@ -93,6 +93,7 @@ describe("MissingCardsPanel", () => {
       />,
     );
 
+    fireEvent.click(screen.getByRole("button", { name: "TCGplayer" }));
     expect(screen.getByRole("heading", { name: "TCGplayer Mass Entry" })).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue("1 Bulbasaur [BS] 044/102");
     expect(screen.getByText(/2× Pikachu · Wizards Black Star Promos · 001/)).toBeInTheDocument();
@@ -118,6 +119,7 @@ describe("MissingCardsPanel", () => {
       />,
     );
 
+    fireEvent.click(screen.getByRole("button", { name: "Cardmarket" }));
     expect(screen.getByRole("heading", { name: "Cardmarket Prüfliste" })).toBeInTheDocument();
     expect(screen.getByText(/Keine Exakt-Garantie/)).toBeInTheDocument();
     expect(screen.getByText(/kein automatisch zuordenbarer Pokémon-Decklistenimport/)).toBeInTheDocument();
@@ -132,5 +134,20 @@ describe("MissingCardsPanel", () => {
 
     expect(onCardmarketCopy).toHaveBeenCalledWith(expect.objectContaining({ index: 1, positionCount: 2 }));
     expect(onCardmarketTextExport).toHaveBeenCalledWith(expect.objectContaining({ index: 1, positionCount: 2 }));
+  });
+
+  it("shows only the marketplace selected by the user", () => {
+    render(<MissingCardsPanel {...props()} tcgplayerEnabled cardmarketEnabled />);
+
+    expect(screen.queryByRole("heading", { name: "TCGplayer Mass Entry" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Cardmarket Prüfliste" })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "TCGplayer" }));
+    expect(screen.getByRole("heading", { name: "TCGplayer Mass Entry" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Cardmarket Prüfliste" })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Cardmarket" }));
+    expect(screen.queryByRole("heading", { name: "TCGplayer Mass Entry" })).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Cardmarket Prüfliste" })).toBeInTheDocument();
   });
 });

@@ -17,7 +17,9 @@ async function mockCatalog(page: Page) {
       const cards = language === "de"
         ? query?.includes("glurak")
           ? [{ id: "base1-4", localId: "4", name: "Glurak" }]
-          : []
+          : query?.includes("pikachu")
+            ? [{ id: "base1-58", localId: "58", name: "Pikachu" }]
+            : []
         : query?.includes("charizard")
           ? [
               { id: "base1-4", localId: "4", name: "Charizard" },
@@ -26,6 +28,8 @@ async function mockCatalog(page: Page) {
             ]
           : query?.includes("ivysaur")
             ? [{ id: "base1-2", localId: "2", name: "Ivysaur" }]
+            : query?.includes("pikachu")
+              ? [{ id: "base1-58", localId: "58", name: "Pikachu" }]
             : [{ id: "base1-1", localId: "1", name: "Bulbasaur" }];
 
       await route.fulfill({ body: JSON.stringify(cards), headers, status: 200 });
@@ -144,6 +148,7 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   await page.getByRole("button", { name: "Fehlkarten ansehen" }).click();
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   await expect(missingCards.getByText("Ivysaur", { exact: true })).toBeVisible();
+  await missingCards.getByRole("button", { name: "Cardmarket" }).click();
   await expect(missingCards.getByRole("heading", { name: "Cardmarket Prüfliste" })).toBeVisible();
   await expect(missingCards.getByText(/Keine Exakt-Garantie/)).toBeVisible();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Prüflistenvorschau" })).toHaveValue(
@@ -294,6 +299,30 @@ test("searches German and English catalogs and labels the result language", asyn
   await variantDialog.getByLabel("Druckvariante").selectOption("shadowless");
   await variantDialog.getByRole("button", { name: "Version speichern" }).click();
   await expect(card).toContainText("Holo · First Edition · Shadowless");
+});
+
+test("filters equal card names by language and balances the combined results", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/");
+  await page.getByLabel("Bindername").fill("Sprachfilter");
+  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+
+  await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
+  await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Pikachu");
+  const results = page.getByRole("listitem").filter({ hasText: "Pikachu" });
+  await expect(results).toHaveCount(2);
+  await expect(results.nth(0)).toContainText("DE · Nr. 58/102");
+  await expect(results.nth(1)).toContainText("EN · Nr. 58/102");
+
+  await page.getByRole("button", { name: "English" }).click();
+  await expect(results).toHaveCount(1);
+  await expect(results).toContainText("EN · Nr. 58/102");
+  await expect(results).not.toContainText("DE · Nr. 58/102");
+
+  await page.getByRole("button", { name: "Deutsch" }).click();
+  await expect(results).toHaveCount(1);
+  await expect(results).toContainText("DE · Nr. 58/102");
+  await expect(results).not.toContainText("EN · Nr. 58/102");
 });
 
 test("finds and displays an exact full collector number", async ({ page }) => {

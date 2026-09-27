@@ -44,6 +44,7 @@ import styles from "./foundation-workspace.module.css";
 const MAX_IMPORT_BYTES = 5 * 1024 * 1024;
 
 type CopyState = "idle" | "copied" | "error";
+type SearchLanguage = "all" | "de" | "en";
 type ImportReport = { binderCount: number; cardCount: number; plannedCount: number; names: string[] };
 type BinderSyncMessage = { type: "binder-changed"; binderId: string; revision: number; deleted?: boolean };
 type LayoutChangeRequest = { binderId: string; layout: SupportedBinderLayout; preview: BinderLayoutPreview };
@@ -53,6 +54,21 @@ type VariantEditRequest = {
   variant: VariantSelection;
   availableVariants?: CardSnapshot["availableVariants"];
 };
+
+function interleaveSearchResults(
+  germanItems: readonly CatalogSearchItem[],
+  englishItems: readonly CatalogSearchItem[],
+) {
+  const results: CatalogSearchItem[] = [];
+  const maxLength = Math.max(germanItems.length, englishItems.length);
+
+  for (let index = 0; index < maxLength; index += 1) {
+    if (germanItems[index]) results.push(germanItems[index]);
+    if (englishItems[index]) results.push(englishItems[index]);
+  }
+
+  return results;
+}
 
 export function FoundationWorkspace() {
   const repository = useMemo(() => new IndexedDBBinderRepository(), []);
@@ -64,6 +80,7 @@ export function FoundationWorkspace() {
   const [activePageIndex, setActivePageIndex] = useState(0);
   const [name, setName] = useState("");
   const [searchText, setSearchText] = useState("");
+  const [searchLanguage, setSearchLanguage] = useState<SearchLanguage>("all");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<SlotLocation>();
@@ -155,7 +172,7 @@ export function FoundationWorkspace() {
     queryKey: catalogQueryKey(germanCatalogQuery),
     queryFn: ({ signal }) =>
       catalog.search(germanCatalogQuery, signal),
-    enabled: searchEnabled,
+    enabled: searchEnabled && searchLanguage !== "en",
     staleTime: 10 * 60 * 1_000,
   });
 
@@ -163,17 +180,32 @@ export function FoundationWorkspace() {
     queryKey: catalogQueryKey(englishCatalogQuery),
     queryFn: ({ signal }) =>
       catalog.search(englishCatalogQuery, signal),
-    enabled: searchEnabled,
+    enabled: searchEnabled && searchLanguage !== "de",
     staleTime: 10 * 60 * 1_000,
   });
 
-  const searchResults = [
-    ...(germanSearchQuery.data?.items ?? []),
-    ...(englishSearchQuery.data?.items ?? []),
-  ];
-  const searchIsRunning = germanSearchQuery.isFetching || englishSearchQuery.isFetching;
-  const searchHasCompleted = Boolean(germanSearchQuery.data || englishSearchQuery.data) && !searchIsRunning;
-  const searchError = germanSearchQuery.error ?? englishSearchQuery.error;
+  const germanSearchResults = germanSearchQuery.data?.items ?? [];
+  const englishSearchResults = englishSearchQuery.data?.items ?? [];
+  const searchResults = searchLanguage === "de"
+    ? germanSearchResults
+    : searchLanguage === "en"
+      ? englishSearchResults
+      : interleaveSearchResults(germanSearchResults, englishSearchResults);
+  const searchIsRunning = searchLanguage === "de"
+    ? germanSearchQuery.isFetching
+    : searchLanguage === "en"
+      ? englishSearchQuery.isFetching
+      : germanSearchQuery.isFetching || englishSearchQuery.isFetching;
+  const searchHasCompleted = searchLanguage === "de"
+    ? Boolean(germanSearchQuery.data) && !searchIsRunning
+    : searchLanguage === "en"
+      ? Boolean(englishSearchQuery.data) && !searchIsRunning
+      : Boolean(germanSearchQuery.data || englishSearchQuery.data) && !searchIsRunning;
+  const searchError = searchLanguage === "de"
+    ? germanSearchQuery.error
+    : searchLanguage === "en"
+      ? englishSearchQuery.error
+      : germanSearchQuery.error ?? englishSearchQuery.error;
 
   function publishBinderChange(binder: Binder, deleted = false) {
     syncChannelRef.current?.postMessage({
@@ -874,6 +906,25 @@ export function FoundationWorkspace() {
                 <button type="button" className={styles.drawerClose} onClick={() => setSearchOpen(false)} aria-label="Suche schließen"><X size={18} /></button>
               </div>
               {selectedLocation ? <p className={styles.selectedSlotHint}>Ziel: Seite {visiblePageIndex + 1}, Slot {selectedLocation.slotIndex + 1}</p> : <p className={styles.selectedSlotHint}>Wähle einen Treffer, um ihn in den nächsten freien Slot einzusetzen.</p>}
+              <fieldset className={styles.languageFilter}>
+                <legend>Kartensprache</legend>
+                <div>
+                  {([
+                    ["all", "Alle"],
+                    ["de", "Deutsch"],
+                    ["en", "English"],
+                  ] as const).map(([value, label]) => (
+                    <button
+                      type="button"
+                      key={value}
+                      aria-pressed={searchLanguage === value}
+                      onClick={() => setSearchLanguage(value)}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
               <label className={styles.searchLabel} htmlFor="card-search">
                 <Search aria-hidden="true" size={18} />
                 <input id="card-search" value={searchText} onChange={(event) => setSearchText(event.target.value)} placeholder="Name oder Nummer, z. B. Glurak 4/102" autoFocus />
