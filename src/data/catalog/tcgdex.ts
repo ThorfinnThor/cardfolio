@@ -7,6 +7,7 @@ import type {
   CatalogSearchItem,
 } from "@/domain/types";
 import { makeCardKey } from "@/domain/binder-actions";
+import { sameCollectorPart } from "@/domain/catalog-search";
 
 import { tcgdexCardSchema, tcgdexSearchResponseSchema, tcgdexSetSchema } from "./schemas";
 
@@ -109,13 +110,39 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
     url.searchParams.set("pagination:itemsPerPage", String(query.pageSize));
 
     const raw = tcgdexSearchResponseSchema.parse(await fetchJson(url, signal));
-    return {
-      items: raw.map((item) => ({
-        ref: { provider: "tcgdex", id: item.id, language: query.language },
+    const collectorNumber = query.collectorNumber;
+    const collectorTotal = query.collectorTotal;
+    const exactNumberItems = collectorNumber
+      ? raw.filter((item) => sameCollectorPart(item.localId, collectorNumber))
+      : raw;
+    let items: CatalogSearchItem[];
+    if (collectorTotal) {
+      const hydratedItems = await Promise.all(exactNumberItems.map(async (item) => {
+        const cardUrl = new URL(`${BASE_URL}/${query.language}/cards/${encodeURIComponent(item.id)}`);
+        const card = tcgdexCardSchema.parse(await fetchJson(cardUrl, signal));
+        const officialTotal = card.set.cardCount?.official;
+        if (officialTotal === undefined || !sameCollectorPart(String(officialTotal), collectorTotal)) {
+          return undefined;
+        }
+        return {
+          ref: { provider: "tcgdex" as const, id: item.id, language: query.language },
+          name: item.name,
+          collectorNumber: item.localId,
+          collectorTotal: String(officialTotal),
+          imageBaseUrl: item.image,
+        };
+      }));
+      items = hydratedItems.filter((item): item is NonNullable<typeof item> => item !== undefined);
+    } else {
+      items = exactNumberItems.map((item) => ({
+        ref: { provider: "tcgdex" as const, id: item.id, language: query.language },
         name: item.name,
         collectorNumber: item.localId,
         imageBaseUrl: item.image,
-      })),
+      }));
+    }
+    return {
+      items,
       hasMore: raw.length === query.pageSize,
     };
   }
@@ -132,6 +159,7 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
       setId: card.set.id,
       setName: card.set.name,
       collectorNumber: card.localId,
+      collectorTotal: card.set.cardCount?.official === undefined ? undefined : String(card.set.cardCount.official),
       imageBaseUrl: card.image,
       category: category(card.category),
       physicalStatus: set.serie?.id === "tcgp" ? "digital" : set.serie ? "physical" : "unknown",
@@ -147,6 +175,7 @@ export function catalogQueryKey(query: CatalogQuery): readonly unknown[] {
     query.name?.trim() ?? "",
     query.setId?.trim() ?? "",
     query.collectorNumber?.trim() ?? "",
+    query.collectorTotal?.trim() ?? "",
     query.page,
     query.pageSize,
   ] as const;

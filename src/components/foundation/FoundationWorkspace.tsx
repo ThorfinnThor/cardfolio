@@ -21,6 +21,7 @@ import {
   type SupportedBinderLayout,
 } from "@/domain/binder-actions";
 import { deriveBinderStats } from "@/domain/binder-stats";
+import { formatCollectorNumber, parseCatalogSearch } from "@/domain/catalog-search";
 import { createMissingItemsCsvExport, createMissingItemsTextExport } from "@/domain/missing-items-export";
 import { deriveMissingItems } from "@/domain/missing-items";
 import type { CardmarketHandoffPart } from "@/domain/cardmarket-handoff";
@@ -136,19 +137,24 @@ export function FoundationWorkspace() {
     };
   }, [activeBinder?.revision, activeId]);
 
+  const parsedSearch = useMemo(() => parseCatalogSearch(debouncedSearch), [debouncedSearch]);
+  const searchEnabled = Boolean((parsedSearch.name?.length ?? 0) >= 2 || parsedSearch.collectorNumber);
+  const germanCatalogQuery = { language: "de" as const, ...parsedSearch, page: 1, pageSize: 40 };
+  const englishCatalogQuery = { language: "en" as const, ...parsedSearch, page: 1, pageSize: 40 };
+
   const germanSearchQuery = useQuery({
-    queryKey: catalogQueryKey({ language: "de", name: debouncedSearch, page: 1, pageSize: 40 }),
+    queryKey: catalogQueryKey(germanCatalogQuery),
     queryFn: ({ signal }) =>
-      catalog.search({ language: "de", name: debouncedSearch, page: 1, pageSize: 40 }, signal),
-    enabled: debouncedSearch.length >= 2,
+      catalog.search(germanCatalogQuery, signal),
+    enabled: searchEnabled,
     staleTime: 10 * 60 * 1_000,
   });
 
   const englishSearchQuery = useQuery({
-    queryKey: catalogQueryKey({ language: "en", name: debouncedSearch, page: 1, pageSize: 40 }),
+    queryKey: catalogQueryKey(englishCatalogQuery),
     queryFn: ({ signal }) =>
-      catalog.search({ language: "en", name: debouncedSearch, page: 1, pageSize: 40 }, signal),
-    enabled: debouncedSearch.length >= 2,
+      catalog.search(englishCatalogQuery, signal),
+    enabled: searchEnabled,
     staleTime: 10 * 60 * 1_000,
   });
 
@@ -749,15 +755,15 @@ export function FoundationWorkspace() {
               {selectedLocation ? <p className={styles.selectedSlotHint}>Ziel: Seite {visiblePageIndex + 1}, Slot {selectedLocation.slotIndex + 1}</p> : <p className={styles.selectedSlotHint}>Wähle einen Treffer, um ihn in den nächsten freien Slot einzusetzen.</p>}
               <label className={styles.searchLabel} htmlFor="card-search">
                 <Search aria-hidden="true" size={18} />
-                <input id="card-search" value={searchText} onChange={(event) => setSearchText(event.target.value)} placeholder="Mindestens zwei Buchstaben" autoFocus />
+                <input id="card-search" value={searchText} onChange={(event) => setSearchText(event.target.value)} placeholder="Name oder Nummer, z. B. Glurak 4/102" autoFocus />
               </label>
-              {searchIsRunning && debouncedSearch.length >= 2 ? <p>Suche läuft…</p> : null}
+              {searchIsRunning && searchEnabled ? <p>Suche läuft…</p> : null}
               {searchError ? <p className={styles.error}>Ein Sprachkatalog konnte nicht geladen werden: {searchError.message}</p> : null}
               {searchHasCompleted && !searchResults.length ? <p className={styles.noResults}>Keine Karten für „{debouncedSearch}“ gefunden. Prüfe Name oder Schreibweise.</p> : null}
               <ul className={styles.results}>
                 {searchResults.slice(0, 12).map((item) => (
                   <li key={`${item.ref.language}-${item.ref.id}`}>
-                    <span><strong>{item.name}</strong><small>{item.ref.language.toUpperCase()} · Nr. {item.collectorNumber}</small></span>
+                    <span><strong>{item.name}</strong><small>{item.ref.language.toUpperCase()} · Nr. {formatCollectorNumber(item.collectorNumber, item.collectorTotal)}</small></span>
                     <button type="button" onClick={() => addCard(item)}>In Slot einsetzen</button>
                   </li>
                 ))}

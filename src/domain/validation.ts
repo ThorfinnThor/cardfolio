@@ -26,6 +26,7 @@ export const cardSnapshotSchema = z.object({
   setId: z.string().min(1).max(200),
   setName: z.string().min(1).max(300),
   collectorNumber: z.string().min(1).max(50),
+  collectorTotal: z.string().min(1).max(50).optional(),
   imageBaseUrl: imageUrlSchema.optional(),
   category: z.enum(["pokemon", "trainer", "energy", "other"]).optional(),
   physicalStatus: z.enum(["physical", "digital", "unknown"]),

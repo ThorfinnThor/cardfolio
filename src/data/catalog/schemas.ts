@@ -21,6 +21,11 @@ export const tcgdexCardSchema = z.object({
   image: imageBaseUrl.optional(),
   category: z.string().optional(),
   set: z.object({
+    cardCount: z
+      .object({
+        official: z.number().int().nonnegative(),
+      })
+      .optional(),
     id: z.string().min(1),
     name: z.string().min(1),
   }),

@@ -40,6 +40,45 @@ describe("TCGdexCatalogAdapter", () => {
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
+  it("matches a full printed number exactly despite fuzzy provider results", async () => {
+    const fetchMock = vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response(JSON.stringify([
+        { id: "base1-4", localId: "4", name: "Charizard" },
+        { id: "ex14-4", localId: "4", name: "Charizard δ" },
+        { id: "sm9-14", localId: "14", name: "Charizard" },
+      ])))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        id: "base1-4",
+        localId: "4",
+        name: "Charizard",
+        set: { cardCount: { official: 102 }, id: "base1", name: "Base Set" },
+      })))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        id: "ex14-4",
+        localId: "4",
+        name: "Charizard δ",
+        set: { cardCount: { official: 100 }, id: "ex14", name: "Crystal Guardians" },
+      })));
+
+    const adapter = new TCGdexCatalogAdapter();
+    const search = await adapter.search({
+      name: "Charizard",
+      collectorNumber: "4",
+      collectorTotal: "102",
+      language: "en",
+      page: 1,
+      pageSize: 40,
+    });
+
+    expect(search.items).toEqual([expect.objectContaining({
+      name: "Charizard",
+      collectorNumber: "4",
+      collectorTotal: "102",
+    })]);
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(fetchMock.mock.calls[0][0].toString()).toContain("localId=4");
+  });
+
   it("marks cards from the Pocket series as digital", async () => {
     vi.spyOn(globalThis, "fetch")
       .mockResolvedValueOnce(new Response(JSON.stringify({

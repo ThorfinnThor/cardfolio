@@ -16,6 +16,7 @@ export interface CardSnapshot {
   setId: string;
   setName: string;
   collectorNumber: string;
+  collectorTotal?: string;
   imageBaseUrl?: string;
   category?: "pokemon" | "trainer" | "energy" | "other";
   physicalStatus: "physical" | "digital" | "unknown";
@@ -100,6 +101,7 @@ export interface CatalogQuery {
   name?: string;
   setId?: string;
   collectorNumber?: string;
+  collectorTotal?: string;
   language: CardLanguage;
   page: number;
   pageSize: number;
@@ -109,6 +111,7 @@ export interface CatalogSearchItem {
   ref: CardRef;
   name: string;
   collectorNumber: string;
+  collectorTotal?: string;
   imageBaseUrl?: string;
   setId?: string;
   setName?: string;

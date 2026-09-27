@@ -20,6 +20,7 @@ import { useState, type CSSProperties, type ReactNode } from "react";
 
 import { cardImageUrl } from "@/data/catalog/images";
 import type { SlotLocation } from "@/domain/binder-actions";
+import { formatCollectorNumber } from "@/domain/catalog-search";
 import type { BinderPage, CardSnapshot, PlannedCard } from "@/domain/types";
 
 import styles from "./foundation-workspace.module.css";
@@ -107,7 +108,7 @@ function OccupiedSlot({
             </div>
           )}
           <strong>{card.name}</strong>
-          <small>{card.setName} · {card.collectorNumber}</small>
+          <small>{card.setName} · {formatCollectorNumber(card.collectorNumber, card.collectorTotal)}</small>
           <div className={styles.slotActions}>
             <button type="button" className={styles.ownershipAction} onClick={() => onToggleOwned(entry.id, !entry.owned)}>
               {entry.owned ? "Als fehlend markieren" : "Als vorhanden markieren"}

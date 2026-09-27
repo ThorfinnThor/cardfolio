@@ -18,9 +18,15 @@ async function mockCatalog(page: Page) {
         ? query?.includes("glurak")
           ? [{ id: "base1-4", localId: "4", name: "Glurak" }]
           : []
-        : query?.includes("ivysaur")
-          ? [{ id: "base1-2", localId: "2", name: "Ivysaur" }]
-          : [{ id: "base1-1", localId: "1", name: "Bulbasaur" }];
+        : query?.includes("charizard")
+          ? [
+              { id: "base1-4", localId: "4", name: "Charizard" },
+              { id: "ex14-4", localId: "4", name: "Charizard δ" },
+              { id: "sm9-14", localId: "14", name: "Charizard" },
+            ]
+          : query?.includes("ivysaur")
+            ? [{ id: "base1-2", localId: "2", name: "Ivysaur" }]
+            : [{ id: "base1-1", localId: "1", name: "Bulbasaur" }];
 
       await route.fulfill({ body: JSON.stringify(cards), headers, status: 200 });
       return;
@@ -55,12 +61,27 @@ async function mockCatalog(page: Page) {
     }
 
     if (url.pathname.endsWith("/cards/base1-4")) {
+      const language = url.pathname.split("/")[2];
       await route.fulfill({
         body: JSON.stringify({
           id: "base1-4",
           localId: "4",
-          name: "Glurak",
+          name: language === "de" ? "Glurak" : "Charizard",
           set: { cardCount: { official: 102 }, id: "base1", name: "Grundset" },
+        }),
+        headers,
+        status: 200,
+      });
+      return;
+    }
+
+    if (url.pathname.endsWith("/cards/ex14-4")) {
+      await route.fulfill({
+        body: JSON.stringify({
+          id: "ex14-4",
+          localId: "4",
+          name: "Charizard δ",
+          set: { cardCount: { official: 100 }, id: "ex14", name: "Crystal Guardians" },
         }),
         headers,
         status: 200,
@@ -88,7 +109,7 @@ async function mockCatalog(page: Page) {
 
 async function addCard(page: Page, slot: number, query: string, cardName: string) {
   await page.getByRole("button", { name: `Freier Platz ${slot}, Karte einsetzen` }).click();
-  await page.getByPlaceholder("Mindestens zwei Buchstaben").fill(query);
+  await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill(query);
   await page
     .getByRole("listitem")
     .filter({ hasText: cardName })
@@ -243,7 +264,7 @@ test("keeps the 3 x 3 grid usable on mobile and supports drawer focus and Escape
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(375);
 
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
-  const search = page.getByPlaceholder("Mindestens zwei Buchstaben");
+  const search = page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102");
   await expect(search).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog", { name: "Karte suchen" })).toBeHidden();
@@ -256,10 +277,27 @@ test("searches German and English catalogs and labels the result language", asyn
   await page.getByRole("button", { name: "Erstellen", exact: true }).click();
 
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
-  await page.getByPlaceholder("Mindestens zwei Buchstaben").fill("Glurak");
+  await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Glurak");
   const germanResult = page.getByRole("listitem").filter({ hasText: "Glurak" });
   await expect(germanResult).toContainText("DE · Nr. 4");
   await germanResult.getByRole("button", { name: "In Slot einsetzen" }).click();
 
   await expect(page.getByRole("article", { name: "Glurak, Slot 1" })).toBeVisible();
+});
+
+test("finds and displays an exact full collector number", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/");
+  await page.getByLabel("Bindername").fill("Nummernsuche");
+  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+
+  await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
+  await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Charizard 04/102");
+  const result = page.getByRole("listitem").filter({ hasText: "Charizard" });
+  await expect(result).toHaveCount(1);
+  await expect(result).toContainText("EN · Nr. 4/102");
+  await result.getByRole("button", { name: "In Slot einsetzen" }).click();
+
+  const card = page.getByRole("article", { name: "Charizard, Slot 1" });
+  await expect(card).toContainText("Grundset · 4/102");
 });
