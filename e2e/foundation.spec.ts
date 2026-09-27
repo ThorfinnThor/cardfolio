@@ -13,9 +13,14 @@ async function mockCatalog(page: Page) {
 
     if (url.pathname.endsWith("/cards")) {
       const query = url.searchParams.get("name")?.toLowerCase();
-      const cards = query?.includes("ivysaur")
-        ? [{ id: "base1-2", localId: "2", name: "Ivysaur" }]
-        : [{ id: "base1-1", localId: "1", name: "Bulbasaur" }];
+      const language = url.pathname.split("/")[2];
+      const cards = language === "de"
+        ? query?.includes("glurak")
+          ? [{ id: "base1-4", localId: "4", name: "Glurak" }]
+          : []
+        : query?.includes("ivysaur")
+          ? [{ id: "base1-2", localId: "2", name: "Ivysaur" }]
+          : [{ id: "base1-1", localId: "1", name: "Bulbasaur" }];
 
       await route.fulfill({ body: JSON.stringify(cards), headers, status: 200 });
       return;
@@ -42,6 +47,20 @@ async function mockCatalog(page: Page) {
           localId: "2",
           name: "Ivysaur",
           set: { cardCount: { official: 102 }, id: "base1", name: "Base Set" },
+        }),
+        headers,
+        status: 200,
+      });
+      return;
+    }
+
+    if (url.pathname.endsWith("/cards/base1-4")) {
+      await route.fulfill({
+        body: JSON.stringify({
+          id: "base1-4",
+          localId: "4",
+          name: "Glurak",
+          set: { cardCount: { official: 102 }, id: "base1", name: "Grundset" },
         }),
         headers,
         status: 200,
@@ -228,4 +247,19 @@ test("keeps the 3 x 3 grid usable on mobile and supports drawer focus and Escape
   await expect(search).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog", { name: "Karte suchen" })).toBeHidden();
+});
+
+test("searches German and English catalogs and labels the result language", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/");
+  await page.getByLabel("Bindername").fill("Sprachsuche");
+  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+
+  await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
+  await page.getByPlaceholder("Mindestens zwei Buchstaben").fill("Glurak");
+  const germanResult = page.getByRole("listitem").filter({ hasText: "Glurak" });
+  await expect(germanResult).toContainText("DE · Nr. 4");
+  await germanResult.getByRole("button", { name: "In Slot einsetzen" }).click();
+
+  await expect(page.getByRole("article", { name: "Glurak, Slot 1" })).toBeVisible();
 });
