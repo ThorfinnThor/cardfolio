@@ -85,7 +85,7 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   await page.goto("/");
 
   await page.getByLabel("Bindername").fill("E2E Binder");
-  await page.getByRole("button", { name: "Erstellen" }).click();
+  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
 
   await addCard(page, 1, "Bulbasaur", "Bulbasaur");
   await addCard(page, 2, "Ivysaur", "Ivysaur");
@@ -142,7 +142,7 @@ test("detects a binder update from another tab and reloads the current revision"
 }) => {
   await page.goto("/");
   await page.getByLabel("Bindername").fill("Multi-Tab Binder");
-  await page.getByRole("button", { name: "Erstellen" }).click();
+  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
 
   const secondTab = await context.newPage();
   await secondTab.goto("/");
@@ -158,7 +158,7 @@ test("confirms a lossless layout change and keeps mouse drag optional", async ({
   await mockCatalog(page);
   await page.goto("/");
   await page.getByLabel("Bindername").fill("Layout Binder");
-  await page.getByRole("button", { name: "Erstellen" }).click();
+  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
   await addCard(page, 1, "Bulbasaur", "Bulbasaur");
   await addCard(page, 2, "Ivysaur", "Ivysaur");
 
@@ -208,7 +208,7 @@ test("keeps the 3 x 3 grid usable on mobile and supports drawer focus and Escape
   await page.setViewportSize({ height: 812, width: 375 });
   await page.goto("/");
   await page.getByLabel("Bindername").fill("Mobile Binder");
-  await page.getByRole("button", { name: "Erstellen" }).click();
+  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
 
   await expect(page.getByRole("button", { name: /Freier Platz \d+, Karte einsetzen/ })).toHaveCount(9);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(375);
