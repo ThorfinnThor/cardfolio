@@ -14,14 +14,28 @@ async function mockCatalog(page: Page) {
     if (url.pathname.endsWith("/cards")) {
       const query = url.searchParams.get("name")?.toLowerCase();
       const language = url.pathname.split("/")[2];
+      const pageNumber = Number(url.searchParams.get("pagination:page") ?? "1");
+      if (language === "en" && query?.includes("bulk")) {
+        const cards = pageNumber === 1
+          ? Array.from({ length: 40 }, (_, index) => ({ id: `base1-${index + 1}`, localId: String(index + 1), name: `Set card ${index + 1}` }))
+          : pageNumber === 2
+            ? [{ id: "base1-41", localId: "41", name: "Set card 41" }]
+            : [];
+        await route.fulfill({ body: JSON.stringify(cards), headers, status: 200 });
+        return;
+      }
       const cards = language === "de"
         ? query?.includes("glurak")
           ? [{ id: "base1-4", localId: "4", name: "Glurak" }]
+          : query?.includes("tornupto")
+            ? [{ id: "neo1-17", localId: "17", name: "Tornupto" }]
           : query?.includes("pikachu")
             ? [{ id: "base1-58", localId: "58", name: "Pikachu" }]
             : []
-        : query?.includes("charizard")
-          ? [
+        : query?.includes("blaine")
+          ? [{ id: "gym2-2", localId: "2", name: "Blaine's Charizard" }]
+          : query?.includes("charizard")
+            ? [
               { id: "base1-4", localId: "4", name: "Charizard" },
               { id: "ex14-4", localId: "4", name: "Charizard δ" },
               { id: "sm9-14", localId: "14", name: "Charizard" },
@@ -95,6 +109,36 @@ async function mockCatalog(page: Page) {
       return;
     }
 
+    if (url.pathname.endsWith("/cards/neo1-17")) {
+      await route.fulfill({
+        body: JSON.stringify({
+          id: "neo1-17",
+          localId: "17",
+          name: "Tornupto",
+          set: { cardCount: { official: 111 }, id: "neo1", name: "Neo Genesis" },
+          variants: { firstEdition: true, holo: true, normal: false, reverse: false },
+        }),
+        headers,
+        status: 200,
+      });
+      return;
+    }
+
+    if (url.pathname.endsWith("/cards/gym2-2")) {
+      await route.fulfill({
+        body: JSON.stringify({
+          id: "gym2-2",
+          localId: "2",
+          name: "Blaine's Charizard",
+          set: { cardCount: { official: 132 }, id: "gym2", name: "Gym Challenge" },
+          variants: { firstEdition: true, holo: true, normal: false, reverse: false },
+        }),
+        headers,
+        status: 200,
+      });
+      return;
+    }
+
     if (url.pathname.endsWith("/sets/base1")) {
       await route.fulfill({
         body: JSON.stringify({
@@ -103,6 +147,24 @@ async function mockCatalog(page: Page) {
           name: "Base Set",
           serie: { id: "base", name: "Base" },
         }),
+        headers,
+        status: 200,
+      });
+      return;
+    }
+
+    if (url.pathname.endsWith("/sets/neo1")) {
+      await route.fulfill({
+        body: JSON.stringify({ id: "neo1", name: "Neo Genesis", serie: { id: "neo", name: "Neo" } }),
+        headers,
+        status: 200,
+      });
+      return;
+    }
+
+    if (url.pathname.endsWith("/sets/gym2")) {
+      await route.fulfill({
+        body: JSON.stringify({ id: "gym2", name: "Gym Challenge", serie: { id: "gym", name: "Gym" } }),
         headers,
         status: 200,
       });
@@ -343,6 +405,30 @@ test("filters equal card names by language and balances the combined results", a
   await expect(results).not.toContainText("EN · Nr. 58/102");
 });
 
+test("browses a selected set and loads catalog results page by page", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/");
+  await page.getByLabel("Bindername").fill("Setfilter");
+  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+
+  await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
+  await page.getByRole("button", { name: "English" }).click();
+  await page.getByLabel("Serie").selectOption("base");
+  await page.getByLabel("Set").selectOption("base1");
+
+  const searchDialog = page.getByRole("dialog", { name: "Karte suchen" });
+  await expect(searchDialog.getByRole("listitem")).toHaveCount(1);
+  await expect(searchDialog.getByRole("listitem")).toContainText("Base Set · Nr. 1/102");
+
+  await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Bulk");
+  await expect(searchDialog.getByRole("listitem")).toHaveCount(40);
+  await expect(searchDialog.getByRole("button", { name: "Mehr laden" })).toBeVisible();
+  await searchDialog.getByRole("button", { name: "Mehr laden" }).click();
+  await expect(searchDialog.getByRole("listitem")).toHaveCount(41);
+  await expect(searchDialog.getByText("Set card 41", { exact: true })).toBeVisible();
+  await expect(searchDialog.getByRole("button", { name: "Mehr laden" })).toBeHidden();
+});
+
 test("finds and displays an exact full collector number", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/");
@@ -361,4 +447,25 @@ test("finds and displays an exact full collector number", async ({ page }) => {
 
   const card = page.getByRole("article", { name: "Charizard, Slot 1" });
   await expect(card).toContainText("Grundset · 4/102");
+});
+
+test("exports the verified Tornupto and Blaine's Charizard identities to TCGplayer", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/");
+  await page.getByLabel("Bindername").fill("TCGplayer Mapping");
+  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+
+  await addCard(page, 1, "Tornupto", "Tornupto");
+  await addCard(page, 2, "Blaine's Charizard", "Blaine's Charizard");
+
+  await page.getByRole("button", { name: /Fehlende Karten \(2\)/ }).click();
+  const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
+  await missingCards.getByRole("button", { name: "TCGplayer" }).click();
+
+  await expect(missingCards.getByText("2 geprüft · 0 manuell prüfen")).toBeVisible();
+  await expect(missingCards.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue(
+    "1 Typhlosion (17) [N1] 017/111\n1 Blaine's Charizard [G2] 002/132",
+  );
+  await expect(missingCards.getByText("Neo Genesis · Nr. 17/111")).toBeVisible();
+  await expect(missingCards.getByText("Gym Challenge · Nr. 2/132")).toBeVisible();
 });

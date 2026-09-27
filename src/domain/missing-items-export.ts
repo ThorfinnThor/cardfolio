@@ -1,4 +1,5 @@
 import type { ExportResult, MissingItem } from "./types";
+import { formatCollectorNumber } from "./catalog-search";
 import { printingLabels, selectedPrinting } from "./variant-selection";
 
 const HEADERS = ["Menge", "Name", "Set", "Nummer", "Sprache", "Finish", "Edition", "Druckvariante", "Zustand", "Prüfhinweis"] as const;
@@ -40,7 +41,7 @@ function row(item: MissingItem): string[] {
     String(item.quantity),
     item.card.name,
     item.card.setName,
-    item.card.collectorNumber,
+    formatCollectorNumber(item.card.collectorNumber, item.card.collectorTotal),
     item.card.ref.language.toUpperCase(),
     item.variant.label?.trim() || finishLabels[item.variant.finish],
     editionLabels[item.variant.edition],

@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import { TCGPLAYER_SET_MAPPINGS } from "@/data/marketplace/tcgplayer-set-mappings";
 import { TCGPLAYER_PRINTING_MAPPINGS } from "@/data/marketplace/tcgplayer-printing-mappings";
 import { createCardmarketHandoff, type CardmarketHandoffPart } from "@/domain/cardmarket-handoff";
+import { formatCollectorNumber } from "@/domain/catalog-search";
 import { missingItemReviewNote } from "@/domain/missing-items-export";
 import { createTcgplayerMassEntryExport, type TcgplayerMassEntryExport } from "@/domain/tcgplayer-export";
 import type { MissingItem } from "@/domain/types";
@@ -137,7 +138,7 @@ export function MissingCardsPanel({
           </div>
 
           <label className={styles.massEntryPreview}>
-            <span>Mass-Entry-Text · nur geprüfte englische Printings</span>
+            <span>Mass-Entry-Text · nur exakt geprüfte TCGplayer-Printings</span>
             <textarea
               aria-label="TCGplayer Mass-Entry-Vorschau"
               readOnly
@@ -234,7 +235,7 @@ export function MissingCardsPanel({
               <span className={styles.quantity} aria-label={`${item.quantity} Exemplare`}>{item.quantity}×</span>
               <div className={styles.cardInfo}>
                 <strong>{item.card.name}</strong>
-                <span>{item.card.setName} · Nr. {item.card.collectorNumber}</span>
+                <span>{item.card.setName} · Nr. {formatCollectorNumber(item.card.collectorNumber, item.card.collectorTotal)}</span>
               </div>
               <div className={styles.metadata}>
                 <span>{item.card.ref.language.toUpperCase()}</span>

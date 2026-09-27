@@ -7,95 +7,23 @@
       "name": "30 Jahre",
       "cardCount": {
         "official": 128,
-        "total": 158
+        "total": 161
+      },
+      "series": {
+        "id": "me",
+        "name": "Mega-Entwicklung"
       }
     },
     {
       "id": "30th-c",
       "name": "30 Jahre: Klassische Sammlung",
       "cardCount": {
-        "official": 0,
+        "official": 30,
         "total": 30
-      }
-    },
-    {
-      "id": "A1",
-      "name": "Unschlagbare Gene",
-      "cardCount": {
-        "official": 226,
-        "total": 286
-      }
-    },
-    {
-      "id": "A1a",
-      "name": "Mysteriöse Insel",
-      "cardCount": {
-        "official": 68,
-        "total": 86
-      }
-    },
-    {
-      "id": "A2",
-      "name": "Kollision von Raum und Zeit",
-      "cardCount": {
-        "official": 140,
-        "total": 207
-      }
-    },
-    {
-      "id": "A2a",
-      "name": "Licht des Triumphs",
-      "cardCount": {
-        "official": 75,
-        "total": 96
-      }
-    },
-    {
-      "id": "A2b",
-      "name": "Glänzendes Festival",
-      "cardCount": {
-        "official": 72,
-        "total": 111
-      }
-    },
-    {
-      "id": "A3",
-      "name": "Hüter des Firmaments",
-      "cardCount": {
-        "official": 155,
-        "total": 239
-      }
-    },
-    {
-      "id": "A4a",
-      "name": "Verborgene Quelle",
-      "cardCount": {
-        "official": 71,
-        "total": 71
-      }
-    },
-    {
-      "id": "B1a",
-      "name": "Feuerrote Flammen",
-      "cardCount": {
-        "official": 69,
-        "total": 69
-      }
-    },
-    {
-      "id": "B2",
-      "name": "Traumhafte Parade",
-      "cardCount": {
-        "official": 155,
-        "total": 155
-      }
-    },
-    {
-      "id": "B2a",
-      "name": "Paldean Wonders",
-      "cardCount": {
-        "official": 93,
-        "total": 129
+      },
+      "series": {
+        "id": "me",
+        "name": "Mega-Entwicklung"
       }
     },
     {
@@ -104,6 +32,10 @@
       "cardCount": {
         "official": 102,
         "total": 102
+      },
+      "series": {
+        "id": "base",
+        "name": "Grund"
       }
     },
     {
@@ -112,6 +44,10 @@
       "cardCount": {
         "official": 64,
         "total": 64
+      },
+      "series": {
+        "id": "base",
+        "name": "Grund"
       }
     },
     {
@@ -120,6 +56,10 @@
       "cardCount": {
         "official": 62,
         "total": 62
+      },
+      "series": {
+        "id": "base",
+        "name": "Grund"
       }
     },
     {
@@ -128,6 +68,10 @@
       "cardCount": {
         "official": 82,
         "total": 83
+      },
+      "series": {
+        "id": "base",
+        "name": "Grund"
       }
     },
     {
@@ -136,6 +80,10 @@
       "cardCount": {
         "official": 53,
         "total": 53
+      },
+      "series": {
+        "id": "base",
+        "name": "Grund"
       }
     },
     {
@@ -144,6 +92,10 @@
       "cardCount": {
         "official": 114,
         "total": 115
+      },
+      "series": {
+        "id": "bw",
+        "name": "Schwarz & Weiß"
       }
     },
     {
@@ -152,6 +104,10 @@
       "cardCount": {
         "official": 101,
         "total": 105
+      },
+      "series": {
+        "id": "bw",
+        "name": "Schwarz & Weiß"
       }
     },
     {
@@ -160,6 +116,10 @@
       "cardCount": {
         "official": 98,
         "total": 98
+      },
+      "series": {
+        "id": "bw",
+        "name": "Schwarz & Weiß"
       }
     },
     {
@@ -168,6 +128,10 @@
       "cardCount": {
         "official": 101,
         "total": 102
+      },
+      "series": {
+        "id": "bw",
+        "name": "Schwarz & Weiß"
       }
     },
     {
@@ -176,6 +140,10 @@
       "cardCount": {
         "official": 99,
         "total": 103
+      },
+      "series": {
+        "id": "bw",
+        "name": "Schwarz & Weiß"
       }
     },
     {
@@ -184,6 +152,10 @@
       "cardCount": {
         "official": 108,
         "total": 111
+      },
+      "series": {
+        "id": "bw",
+        "name": "Schwarz & Weiß"
       }
     },
     {
@@ -192,6 +164,10 @@
       "cardCount": {
         "official": 124,
         "total": 128
+      },
+      "series": {
+        "id": "bw",
+        "name": "Schwarz & Weiß"
       }
     },
     {
@@ -200,6 +176,10 @@
       "cardCount": {
         "official": 149,
         "total": 153
+      },
+      "series": {
+        "id": "bw",
+        "name": "Schwarz & Weiß"
       }
     },
     {
@@ -208,6 +188,10 @@
       "cardCount": {
         "official": 135,
         "total": 138
+      },
+      "series": {
+        "id": "bw",
+        "name": "Schwarz & Weiß"
       }
     },
     {
@@ -216,6 +200,10 @@
       "cardCount": {
         "official": 116,
         "total": 122
+      },
+      "series": {
+        "id": "bw",
+        "name": "Schwarz & Weiß"
       }
     },
     {
@@ -224,6 +212,10 @@
       "cardCount": {
         "official": 101,
         "total": 101
+      },
+      "series": {
+        "id": "bw",
+        "name": "Schwarz & Weiß"
       }
     },
     {
@@ -232,6 +224,10 @@
       "cardCount": {
         "official": 25,
         "total": 25
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -240,6 +236,10 @@
       "cardCount": {
         "official": 25,
         "total": 25
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -248,6 +248,10 @@
       "cardCount": {
         "official": 95,
         "total": 106
+      },
+      "series": {
+        "id": "col",
+        "name": "Ruf der Legenden"
       }
     },
     {
@@ -256,6 +260,10 @@
       "cardCount": {
         "official": 18,
         "total": 18
+      },
+      "series": {
+        "id": "sm",
+        "name": "Sonne & Mond"
       }
     },
     {
@@ -264,6 +272,10 @@
       "cardCount": {
         "official": 130,
         "total": 130
+      },
+      "series": {
+        "id": "dp",
+        "name": "Diamant & Perl"
       }
     },
     {
@@ -272,6 +284,10 @@
       "cardCount": {
         "official": 123,
         "total": 124
+      },
+      "series": {
+        "id": "dp",
+        "name": "Diamant & Perl"
       }
     },
     {
@@ -280,6 +296,10 @@
       "cardCount": {
         "official": 132,
         "total": 132
+      },
+      "series": {
+        "id": "dp",
+        "name": "Diamant & Perl"
       }
     },
     {
@@ -288,6 +308,10 @@
       "cardCount": {
         "official": 106,
         "total": 106
+      },
+      "series": {
+        "id": "dp",
+        "name": "Diamant & Perl"
       }
     },
     {
@@ -296,6 +320,10 @@
       "cardCount": {
         "official": 100,
         "total": 100
+      },
+      "series": {
+        "id": "dp",
+        "name": "Diamant & Perl"
       }
     },
     {
@@ -304,6 +332,10 @@
       "cardCount": {
         "official": 146,
         "total": 146
+      },
+      "series": {
+        "id": "dp",
+        "name": "Diamant & Perl"
       }
     },
     {
@@ -312,6 +344,10 @@
       "cardCount": {
         "official": 100,
         "total": 106
+      },
+      "series": {
+        "id": "dp",
+        "name": "Diamant & Perl"
       }
     },
     {
@@ -320,6 +356,10 @@
       "cardCount": {
         "official": 56,
         "total": 56
+      },
+      "series": {
+        "id": "dp",
+        "name": "Diamant & Perl"
       }
     },
     {
@@ -328,6 +368,10 @@
       "cardCount": {
         "official": 20,
         "total": 20
+      },
+      "series": {
+        "id": "bw",
+        "name": "Schwarz & Weiß"
       }
     },
     {
@@ -336,6 +380,10 @@
       "cardCount": {
         "official": 165,
         "total": 165
+      },
+      "series": {
+        "id": "ecard",
+        "name": "e-Card"
       }
     },
     {
@@ -344,6 +392,10 @@
       "cardCount": {
         "official": 147,
         "total": 186
+      },
+      "series": {
+        "id": "ecard",
+        "name": "e-Card"
       }
     },
     {
@@ -352,6 +404,10 @@
       "cardCount": {
         "official": 144,
         "total": 182
+      },
+      "series": {
+        "id": "ecard",
+        "name": "e-Card"
       }
     },
     {
@@ -360,6 +416,10 @@
       "cardCount": {
         "official": 109,
         "total": 109
+      },
+      "series": {
+        "id": "ex",
+        "name": "EX"
       }
     },
     {
@@ -368,6 +428,10 @@
       "cardCount": {
         "official": 115,
         "total": 117
+      },
+      "series": {
+        "id": "ex",
+        "name": "EX"
       }
     },
     {
@@ -376,6 +440,10 @@
       "cardCount": {
         "official": 113,
         "total": 114
+      },
+      "series": {
+        "id": "ex",
+        "name": "EX"
       }
     },
     {
@@ -384,6 +452,10 @@
       "cardCount": {
         "official": 92,
         "total": 93
+      },
+      "series": {
+        "id": "ex",
+        "name": "EX"
       }
     },
     {
@@ -392,6 +464,10 @@
       "cardCount": {
         "official": 110,
         "total": 111
+      },
+      "series": {
+        "id": "ex",
+        "name": "EX"
       }
     },
     {
@@ -400,6 +476,10 @@
       "cardCount": {
         "official": 100,
         "total": 100
+      },
+      "series": {
+        "id": "ex",
+        "name": "EX"
       }
     },
     {
@@ -408,6 +488,10 @@
       "cardCount": {
         "official": 101,
         "total": 101
+      },
+      "series": {
+        "id": "ex",
+        "name": "EX"
       }
     },
     {
@@ -416,6 +500,10 @@
       "cardCount": {
         "official": 108,
         "total": 108
+      },
+      "series": {
+        "id": "ex",
+        "name": "EX"
       }
     },
     {
@@ -424,6 +512,10 @@
       "cardCount": {
         "official": 100,
         "total": 100
+      },
+      "series": {
+        "id": "ex",
+        "name": "EX"
       }
     },
     {
@@ -432,6 +524,10 @@
       "cardCount": {
         "official": 97,
         "total": 100
+      },
+      "series": {
+        "id": "ex",
+        "name": "EX"
       }
     },
     {
@@ -440,6 +536,10 @@
       "cardCount": {
         "official": 95,
         "total": 97
+      },
+      "series": {
+        "id": "ex",
+        "name": "EX"
       }
     },
     {
@@ -448,6 +548,10 @@
       "cardCount": {
         "official": 112,
         "total": 116
+      },
+      "series": {
+        "id": "ex",
+        "name": "EX"
       }
     },
     {
@@ -456,6 +560,10 @@
       "cardCount": {
         "official": 107,
         "total": 108
+      },
+      "series": {
+        "id": "ex",
+        "name": "EX"
       }
     },
     {
@@ -464,6 +572,10 @@
       "cardCount": {
         "official": 106,
         "total": 107
+      },
+      "series": {
+        "id": "ex",
+        "name": "EX"
       }
     },
     {
@@ -472,6 +584,10 @@
       "cardCount": {
         "official": 28,
         "total": 28
+      },
+      "series": {
+        "id": "ex",
+        "name": "EX"
       }
     },
     {
@@ -480,6 +596,10 @@
       "cardCount": {
         "official": 83,
         "total": 117
+      },
+      "series": {
+        "id": "xy",
+        "name": "XY"
       }
     },
     {
@@ -488,6 +608,10 @@
       "cardCount": {
         "official": 123,
         "total": 124
+      },
+      "series": {
+        "id": "hgss",
+        "name": "HeartGold SoulSilver"
       }
     },
     {
@@ -496,6 +620,10 @@
       "cardCount": {
         "official": 95,
         "total": 96
+      },
+      "series": {
+        "id": "hgss",
+        "name": "HeartGold SoulSilver"
       }
     },
     {
@@ -504,6 +632,10 @@
       "cardCount": {
         "official": 90,
         "total": 91
+      },
+      "series": {
+        "id": "hgss",
+        "name": "HeartGold SoulSilver"
       }
     },
     {
@@ -512,6 +644,10 @@
       "cardCount": {
         "official": 102,
         "total": 103
+      },
+      "series": {
+        "id": "hgss",
+        "name": "HeartGold SoulSilver"
       }
     },
     {
@@ -520,6 +656,10 @@
       "cardCount": {
         "official": 25,
         "total": 25
+      },
+      "series": {
+        "id": "hgss",
+        "name": "HeartGold SoulSilver"
       }
     },
     {
@@ -528,6 +668,10 @@
       "cardCount": {
         "official": 132,
         "total": 188
+      },
+      "series": {
+        "id": "me",
+        "name": "Mega-Entwicklung"
       }
     },
     {
@@ -536,6 +680,10 @@
       "cardCount": {
         "official": 94,
         "total": 130
+      },
+      "series": {
+        "id": "me",
+        "name": "Mega-Entwicklung"
       }
     },
     {
@@ -544,6 +692,10 @@
       "cardCount": {
         "official": 217,
         "total": 295
+      },
+      "series": {
+        "id": "me",
+        "name": "Mega-Entwicklung"
       }
     },
     {
@@ -552,6 +704,10 @@
       "cardCount": {
         "official": 88,
         "total": 124
+      },
+      "series": {
+        "id": "me",
+        "name": "Mega-Entwicklung"
       }
     },
     {
@@ -560,6 +716,10 @@
       "cardCount": {
         "official": 86,
         "total": 122
+      },
+      "series": {
+        "id": "me",
+        "name": "Mega-Entwicklung"
       }
     },
     {
@@ -568,14 +728,22 @@
       "cardCount": {
         "official": 84,
         "total": 120
+      },
+      "series": {
+        "id": "me",
+        "name": "Mega-Entwicklung"
       }
     },
     {
       "id": "mee",
       "name": "Mega-Entwicklung Energie",
       "cardCount": {
-        "official": 8,
-        "total": 8
+        "official": 16,
+        "total": 16
+      },
+      "series": {
+        "id": "me",
+        "name": "Mega-Entwicklung"
       }
     },
     {
@@ -583,7 +751,11 @@
       "name": "MEP Black Star Promos",
       "cardCount": {
         "official": 0,
-        "total": 88
+        "total": 80
+      },
+      "series": {
+        "id": "me",
+        "name": "Mega-Entwicklung"
       }
     },
     {
@@ -592,6 +764,10 @@
       "cardCount": {
         "official": 111,
         "total": 111
+      },
+      "series": {
+        "id": "neo",
+        "name": "Neo"
       }
     },
     {
@@ -600,6 +776,10 @@
       "cardCount": {
         "official": 75,
         "total": 75
+      },
+      "series": {
+        "id": "neo",
+        "name": "Neo"
       }
     },
     {
@@ -608,6 +788,10 @@
       "cardCount": {
         "official": 64,
         "total": 66
+      },
+      "series": {
+        "id": "neo",
+        "name": "Neo"
       }
     },
     {
@@ -616,14 +800,10 @@
       "cardCount": {
         "official": 105,
         "total": 113
-      }
-    },
-    {
-      "id": "P-A",
-      "name": "PROMO-A",
-      "cardCount": {
-        "official": 0,
-        "total": 99
+      },
+      "series": {
+        "id": "neo",
+        "name": "Neo"
       }
     },
     {
@@ -632,6 +812,10 @@
       "cardCount": {
         "official": 127,
         "total": 133
+      },
+      "series": {
+        "id": "pl",
+        "name": "Platin"
       }
     },
     {
@@ -640,6 +824,10 @@
       "cardCount": {
         "official": 111,
         "total": 120
+      },
+      "series": {
+        "id": "pl",
+        "name": "Platin"
       }
     },
     {
@@ -648,6 +836,10 @@
       "cardCount": {
         "official": 147,
         "total": 153
+      },
+      "series": {
+        "id": "pl",
+        "name": "Platin"
       }
     },
     {
@@ -656,6 +848,10 @@
       "cardCount": {
         "official": 99,
         "total": 111
+      },
+      "series": {
+        "id": "pl",
+        "name": "Platin"
       }
     },
     {
@@ -664,6 +860,10 @@
       "cardCount": {
         "official": 149,
         "total": 172
+      },
+      "series": {
+        "id": "sm",
+        "name": "Sonne & Mond"
       }
     },
     {
@@ -672,6 +872,10 @@
       "cardCount": {
         "official": 214,
         "total": 234
+      },
+      "series": {
+        "id": "sm",
+        "name": "Sonne & Mond"
       }
     },
     {
@@ -680,6 +884,10 @@
       "cardCount": {
         "official": 236,
         "total": 258
+      },
+      "series": {
+        "id": "sm",
+        "name": "Sonne & Mond"
       }
     },
     {
@@ -688,6 +896,10 @@
       "cardCount": {
         "official": 68,
         "total": 69
+      },
+      "series": {
+        "id": "sm",
+        "name": "Sonne & Mond"
       }
     },
     {
@@ -696,6 +908,10 @@
       "cardCount": {
         "official": 236,
         "total": 271
+      },
+      "series": {
+        "id": "sm",
+        "name": "Sonne & Mond"
       }
     },
     {
@@ -704,6 +920,10 @@
       "cardCount": {
         "official": 145,
         "total": 169
+      },
+      "series": {
+        "id": "sm",
+        "name": "Sonne & Mond"
       }
     },
     {
@@ -712,6 +932,10 @@
       "cardCount": {
         "official": 147,
         "total": 169
+      },
+      "series": {
+        "id": "sm",
+        "name": "Sonne & Mond"
       }
     },
     {
@@ -720,6 +944,10 @@
       "cardCount": {
         "official": 73,
         "total": 78
+      },
+      "series": {
+        "id": "sm",
+        "name": "Sonne & Mond"
       }
     },
     {
@@ -728,6 +956,10 @@
       "cardCount": {
         "official": 111,
         "total": 125
+      },
+      "series": {
+        "id": "sm",
+        "name": "Sonne & Mond"
       }
     },
     {
@@ -736,6 +968,10 @@
       "cardCount": {
         "official": 156,
         "total": 173
+      },
+      "series": {
+        "id": "sm",
+        "name": "Sonne & Mond"
       }
     },
     {
@@ -744,6 +980,10 @@
       "cardCount": {
         "official": 131,
         "total": 146
+      },
+      "series": {
+        "id": "sm",
+        "name": "Sonne & Mond"
       }
     },
     {
@@ -752,6 +992,10 @@
       "cardCount": {
         "official": 168,
         "total": 183
+      },
+      "series": {
+        "id": "sm",
+        "name": "Sonne & Mond"
       }
     },
     {
@@ -760,6 +1004,10 @@
       "cardCount": {
         "official": 70,
         "total": 78
+      },
+      "series": {
+        "id": "sm",
+        "name": "Sonne & Mond"
       }
     },
     {
@@ -768,6 +1016,10 @@
       "cardCount": {
         "official": 214,
         "total": 236
+      },
+      "series": {
+        "id": "sm",
+        "name": "Sonne & Mond"
       }
     },
     {
@@ -776,6 +1028,10 @@
       "cardCount": {
         "official": 181,
         "total": 196
+      },
+      "series": {
+        "id": "sm",
+        "name": "Sonne & Mond"
       }
     },
     {
@@ -784,6 +1040,10 @@
       "cardCount": {
         "official": 94,
         "total": 94
+      },
+      "series": {
+        "id": "sm",
+        "name": "Sonne & Mond"
       }
     },
     {
@@ -792,6 +1052,10 @@
       "cardCount": {
         "official": 248,
         "total": 248
+      },
+      "series": {
+        "id": "sm",
+        "name": "Sonne & Mond"
       }
     },
     {
@@ -800,6 +1064,10 @@
       "cardCount": {
         "official": 198,
         "total": 258
+      },
+      "series": {
+        "id": "sv",
+        "name": "Karmesin & Purpur"
       }
     },
     {
@@ -808,6 +1076,10 @@
       "cardCount": {
         "official": 193,
         "total": 279
+      },
+      "series": {
+        "id": "sv",
+        "name": "Karmesin & Purpur"
       }
     },
     {
@@ -816,6 +1088,10 @@
       "cardCount": {
         "official": 197,
         "total": 230
+      },
+      "series": {
+        "id": "sv",
+        "name": "Karmesin & Purpur"
       }
     },
     {
@@ -824,6 +1100,10 @@
       "cardCount": {
         "official": 165,
         "total": 207
+      },
+      "series": {
+        "id": "sv",
+        "name": "Karmesin & Purpur"
       }
     },
     {
@@ -832,6 +1112,10 @@
       "cardCount": {
         "official": 182,
         "total": 266
+      },
+      "series": {
+        "id": "sv",
+        "name": "Karmesin & Purpur"
       }
     },
     {
@@ -840,6 +1124,10 @@
       "cardCount": {
         "official": 91,
         "total": 245
+      },
+      "series": {
+        "id": "sv",
+        "name": "Karmesin & Purpur"
       }
     },
     {
@@ -848,6 +1136,10 @@
       "cardCount": {
         "official": 162,
         "total": 218
+      },
+      "series": {
+        "id": "sv",
+        "name": "Karmesin & Purpur"
       }
     },
     {
@@ -856,6 +1148,10 @@
       "cardCount": {
         "official": 167,
         "total": 226
+      },
+      "series": {
+        "id": "sv",
+        "name": "Karmesin & Purpur"
       }
     },
     {
@@ -864,6 +1160,10 @@
       "cardCount": {
         "official": 64,
         "total": 99
+      },
+      "series": {
+        "id": "sv",
+        "name": "Karmesin & Purpur"
       }
     },
     {
@@ -872,6 +1172,10 @@
       "cardCount": {
         "official": 142,
         "total": 175
+      },
+      "series": {
+        "id": "sv",
+        "name": "Karmesin & Purpur"
       }
     },
     {
@@ -880,6 +1184,10 @@
       "cardCount": {
         "official": 191,
         "total": 252
+      },
+      "series": {
+        "id": "sv",
+        "name": "Karmesin & Purpur"
       }
     },
     {
@@ -888,6 +1196,10 @@
       "cardCount": {
         "official": 131,
         "total": 180
+      },
+      "series": {
+        "id": "sv",
+        "name": "Karmesin & Purpur"
       }
     },
     {
@@ -896,6 +1208,10 @@
       "cardCount": {
         "official": 159,
         "total": 190
+      },
+      "series": {
+        "id": "sv",
+        "name": "Karmesin & Purpur"
       }
     },
     {
@@ -904,6 +1220,10 @@
       "cardCount": {
         "official": 182,
         "total": 244
+      },
+      "series": {
+        "id": "sv",
+        "name": "Karmesin & Purpur"
       }
     },
     {
@@ -912,6 +1232,10 @@
       "cardCount": {
         "official": 86,
         "total": 172
+      },
+      "series": {
+        "id": "sv",
+        "name": "Karmesin & Purpur"
       }
     },
     {
@@ -920,6 +1244,10 @@
       "cardCount": {
         "official": 86,
         "total": 173
+      },
+      "series": {
+        "id": "sv",
+        "name": "Karmesin & Purpur"
       }
     },
     {
@@ -928,6 +1256,10 @@
       "cardCount": {
         "official": 24,
         "total": 24
+      },
+      "series": {
+        "id": "sv",
+        "name": "Karmesin & Purpur"
       }
     },
     {
@@ -936,6 +1268,10 @@
       "cardCount": {
         "official": 225,
         "total": 225
+      },
+      "series": {
+        "id": "sv",
+        "name": "Karmesin & Purpur"
       }
     },
     {
@@ -944,6 +1280,10 @@
       "cardCount": {
         "official": 202,
         "total": 216
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -952,6 +1292,10 @@
       "cardCount": {
         "official": 189,
         "total": 216
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -960,6 +1304,10 @@
       "cardCount": {
         "official": 78,
         "total": 88
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -968,6 +1316,10 @@
       "cardCount": {
         "official": 30,
         "total": 30
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -976,6 +1328,10 @@
       "cardCount": {
         "official": 196,
         "total": 217
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -984,6 +1340,10 @@
       "cardCount": {
         "official": 30,
         "total": 30
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -992,6 +1352,10 @@
       "cardCount": {
         "official": 195,
         "total": 215
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -1000,6 +1364,10 @@
       "cardCount": {
         "official": 159,
         "total": 160
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -1008,6 +1376,10 @@
       "cardCount": {
         "official": 70,
         "total": 70
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -1016,6 +1388,10 @@
       "cardCount": {
         "official": 30,
         "total": 30
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -1024,6 +1400,10 @@
       "cardCount": {
         "official": 192,
         "total": 209
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -1032,6 +1412,10 @@
       "cardCount": {
         "official": 189,
         "total": 201
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -1040,6 +1424,10 @@
       "cardCount": {
         "official": 73,
         "total": 80
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -1048,6 +1436,10 @@
       "cardCount": {
         "official": 185,
         "total": 203
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -1056,6 +1448,10 @@
       "cardCount": {
         "official": 72,
         "total": 73
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -1064,6 +1460,10 @@
       "cardCount": {
         "official": 122,
         "total": 122
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -1072,6 +1472,10 @@
       "cardCount": {
         "official": 163,
         "total": 183
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -1080,6 +1484,10 @@
       "cardCount": {
         "official": 198,
         "total": 233
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -1088,6 +1496,10 @@
       "cardCount": {
         "official": 203,
         "total": 237
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -1096,6 +1508,10 @@
       "cardCount": {
         "official": 264,
         "total": 284
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -1104,6 +1520,10 @@
       "cardCount": {
         "official": 172,
         "total": 186
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -1112,6 +1532,10 @@
       "cardCount": {
         "official": 30,
         "total": 30
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -1120,6 +1544,10 @@
       "cardCount": {
         "official": 307,
         "total": 307
+      },
+      "series": {
+        "id": "swsh",
+        "name": "Schwert & Schild"
       }
     },
     {
@@ -1128,6 +1556,10 @@
       "cardCount": {
         "official": 39,
         "total": 39
+      },
+      "series": {
+        "id": "xy",
+        "name": "XY"
       }
     },
     {
@@ -1136,6 +1568,10 @@
       "cardCount": {
         "official": 146,
         "total": 146
+      },
+      "series": {
+        "id": "xy",
+        "name": "XY"
       }
     },
     {
@@ -1144,6 +1580,10 @@
       "cardCount": {
         "official": 124,
         "total": 129
+      },
+      "series": {
+        "id": "xy",
+        "name": "XY"
       }
     },
     {
@@ -1152,6 +1592,10 @@
       "cardCount": {
         "official": 114,
         "total": 116
+      },
+      "series": {
+        "id": "xy",
+        "name": "XY"
       }
     },
     {
@@ -1160,6 +1604,10 @@
       "cardCount": {
         "official": 108,
         "total": 113
+      },
+      "series": {
+        "id": "xy",
+        "name": "XY"
       }
     },
     {
@@ -1168,6 +1616,10 @@
       "cardCount": {
         "official": 106,
         "total": 110
+      },
+      "series": {
+        "id": "xy",
+        "name": "XY"
       }
     },
     {
@@ -1176,6 +1628,10 @@
       "cardCount": {
         "official": 111,
         "total": 114
+      },
+      "series": {
+        "id": "xy",
+        "name": "XY"
       }
     },
     {
@@ -1184,6 +1640,10 @@
       "cardCount": {
         "official": 119,
         "total": 124
+      },
+      "series": {
+        "id": "xy",
+        "name": "XY"
       }
     },
     {
@@ -1192,6 +1652,10 @@
       "cardCount": {
         "official": 160,
         "total": 164
+      },
+      "series": {
+        "id": "xy",
+        "name": "XY"
       }
     },
     {
@@ -1200,6 +1664,10 @@
       "cardCount": {
         "official": 108,
         "total": 112
+      },
+      "series": {
+        "id": "xy",
+        "name": "XY"
       }
     },
     {
@@ -1208,6 +1676,10 @@
       "cardCount": {
         "official": 98,
         "total": 101
+      },
+      "series": {
+        "id": "xy",
+        "name": "XY"
       }
     },
     {
@@ -1216,6 +1688,10 @@
       "cardCount": {
         "official": 162,
         "total": 165
+      },
+      "series": {
+        "id": "xy",
+        "name": "XY"
       }
     },
     {
@@ -1224,6 +1700,10 @@
       "cardCount": {
         "official": 122,
         "total": 126
+      },
+      "series": {
+        "id": "xy",
+        "name": "XY"
       }
     },
     {
@@ -1232,6 +1712,10 @@
       "cardCount": {
         "official": 6,
         "total": 6
+      },
+      "series": {
+        "id": "xy",
+        "name": "XY"
       }
     },
     {
@@ -1240,6 +1724,10 @@
       "cardCount": {
         "official": 211,
         "total": 211
+      },
+      "series": {
+        "id": "xy",
+        "name": "XY"
       }
     }
   ]

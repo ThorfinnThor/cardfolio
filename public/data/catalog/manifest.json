@@ -1,9 +1,9 @@
 {
   "format": "cardfolio-public-catalog",
-  "version": 1,
+  "version": 2,
   "source": "tcgdex",
   "counts": {
-    "en": 220,
-    "de": 155
+    "en": 205,
+    "de": 144
   }
 }

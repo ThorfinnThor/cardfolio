@@ -10,7 +10,7 @@ import { makeCardKey } from "@/domain/binder-actions";
 import { sameCollectorPart } from "@/domain/catalog-search";
 
 import { tcgdexCardSchema, tcgdexSearchResponseSchema, tcgdexSetSchema } from "./schemas";
-import { collectorTotalForSearchItem } from "./set-counts";
+import { collectorTotalForSearchItem, setMetadataForSearchItem } from "./set-counts";
 
 const BASE_URL = "https://api.tcgdex.net/v2";
 const MAX_ATTEMPTS = 3;
@@ -137,23 +137,35 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
           collectorNumber: item.localId,
           collectorTotal: printedTotal,
           imageBaseUrl: item.image,
+          setId: card.set.id,
+          setName: card.set.name,
         };
       }));
       items = hydratedItems.filter((item): item is NonNullable<typeof item> => item !== undefined);
     } else {
-      const summarizedItems: CatalogSearchItem[] = exactNumberItems.map((item) => ({
-        ref: { provider: "tcgdex" as const, id: item.id, language: query.language },
-        name: item.name,
-        collectorNumber: item.localId,
-        collectorTotal: collectorTotalForSearchItem(query.language, item.id, item.localId),
-        imageBaseUrl: item.image,
-      }));
+      const summarizedItems: CatalogSearchItem[] = exactNumberItems.map((item) => {
+        const set = setMetadataForSearchItem(query.language, item.id, item.localId);
+        return {
+          ref: { provider: "tcgdex" as const, id: item.id, language: query.language },
+          name: item.name,
+          collectorNumber: item.localId,
+          collectorTotal: collectorTotalForSearchItem(query.language, item.id, item.localId),
+          imageBaseUrl: item.image,
+          setId: set?.id,
+          setName: set?.name,
+        };
+      });
       items = await Promise.all(summarizedItems.map(async (item) => {
         if (item.collectorTotal) return item;
         try {
           const cardUrl = new URL(`${BASE_URL}/${query.language}/cards/${encodeURIComponent(item.ref.id)}`);
           const card = tcgdexCardSchema.parse(await fetchJson(cardUrl, signal));
-          return { ...item, collectorTotal: printedCollectorTotal(card.set.cardCount) };
+          return {
+            ...item,
+            collectorTotal: printedCollectorTotal(card.set.cardCount),
+            setId: card.set.id,
+            setName: card.set.name,
+          };
         } catch (error) {
           if (signal?.aborted) throw error;
           return item;

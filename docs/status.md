@@ -393,3 +393,20 @@ Completed:
 - German cards using English artwork disclose `Bild auf Englisch` in the review step. Missing and failed images retain an honest fallback.
 - Escape returns from review to the preserved search results before a second Escape closes search. Loading, provider failure and double-submit states are handled without occupying the target slot.
 - Updated browser coverage proves that the slot remains empty during review, the selected variant persists on insertion and the two-step Escape behavior works at 375 × 812.
+
+## 2026-09-27 — CF-31 catalog browsing, pagination and exact TCGplayer identities
+
+Completed:
+
+- Added language-aware series and set filters backed by the scheduled TCGdex metadata snapshot. Selecting a set starts browsing without requiring a card name; Pokémon TCG Pocket sets are excluded from the physical-card catalog.
+- Search now displays verified set names and complete collector numbers in every result, loads 40 results per language page and exposes an explicit `Mehr laden` action instead of silently truncating the list after twelve rows.
+- The weekly GitHub Actions data sync now records series metadata for English and German sets and removes Pocket sets before publishing the static catalog files.
+- Existing locally stored card snapshots are completed in memory from the synchronized metadata. The binder, missing-card list, generic exports and Cardmarket review list therefore show complete numbers such as `17/111` and `2/132` whenever the set total is known.
+- Replaced the blanket German-card rejection in the TCGplayer handoff with exact card-level verification. German `Tornupto · Neo Genesis · 17/111` maps only to the verified `Typhlosion (17) [N1] 017/111` identity; English `Blaine's Charizard · Gym Challenge · 2/132` maps to `Blaine's Charizard [G2] 002/132`. No general name translation was introduced.
+- Split export warnings between a missing set code, a known set without a verified printing and an unresolved identity so the reason shown to the collector matches the actual gate.
+
+Verification completed:
+
+- Typecheck, ESLint, 60 unit/component tests, static Next.js build, release checks and `git diff --check` passed locally.
+- The ten Playwright scenarios are syntactically discoverable. Local Chromium launch is blocked before test execution by the host macOS Mach-port sandbox; the same suite remains part of Linux GitHub CI.
+- Visible browser verification against the local static build loaded Neo Genesis without a search term, displayed results `1/111` through `40/111`, loaded the next 40 results, found German `Tornupto 17/111`, inserted it with its variant review and produced the exact TCGplayer line `1 Typhlosion (17) [N1] 017/111`.

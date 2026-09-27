@@ -1,4 +1,5 @@
 import type { MissingItem } from "./types";
+import { formatCollectorNumber } from "./catalog-search";
 import { printingLabels, selectedPrinting } from "./variant-selection";
 
 export const CARDMARKET_POKEMON_SINGLES_URL = "https://www.cardmarket.com/en/Pokemon/Products/Singles";
@@ -53,7 +54,7 @@ function formatReferenceLine(item: MissingItem): string {
   return [
     `${item.quantity}x ${inline(item.card.name)}`,
     inline(item.card.setName),
-    `Nr. ${inline(item.card.collectorNumber)}`,
+    `Nr. ${inline(formatCollectorNumber(item.card.collectorNumber, item.card.collectorTotal))}`,
     item.card.ref.language.toUpperCase(),
     finish,
     editionLabels[item.variant.edition],

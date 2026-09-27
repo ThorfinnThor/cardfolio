@@ -187,6 +187,9 @@
 .languageFilter button:last-child { border-right: 0; }
 .languageFilter button:hover { background: #f1f5f6; color: #155363; }
 .languageFilter button[aria-pressed="true"] { background: #155363; color: #fff; }
+.catalogFilters { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.catalogFilters label { min-width: 0; display: grid; gap: 5px; color: #52616b; font-size: 10px; font-weight: 750; }
+.catalogFilters select { min-width: 0; min-height: 38px; border: 1px solid #d8e2e6; border-radius: 7px; background: #fff; color: #17212b; padding: 7px 28px 7px 8px; font-size: 10px; }
 .searchLabel { display: flex; align-items: center; gap: 8px; margin-top: 12px; border: 1px solid #dee5e8; border-radius: 8px; padding: 0 10px; }
 .searchLabel input { min-width: 0; min-height: 42px; flex: 1; border: 0; background: #fff; color: #17212b; padding: 9px 0; outline: 0; }
 .results { display: grid; gap: 0; margin: 14px 0 0; padding: 0; list-style: none; }
@@ -196,6 +199,10 @@
 .results small { color: #52616b; font-size: 9px; }
 .results button { min-height: 34px; flex: 0 0 auto; border: 1px solid #155363; border-radius: 6px; background: #155363; color: #fff; padding: 6px 8px; font-size: 10px; font-weight: 750; cursor: pointer; }
 .results button:hover { background: #103f4b; }
+.searchHint { margin: 12px 0 0; color: #52616b; font-size: 10px; line-height: 1.45; }
+.loadMoreButton { width: 100%; min-height: 38px; margin-top: 10px; border: 1px solid #9bbfc6; border-radius: 7px; background: #f5fafb; color: #155363; font-size: 11px; font-weight: 750; cursor: pointer; }
+.loadMoreButton:hover:not(:disabled) { background: #e7f1f3; }
+.loadMoreButton:disabled { cursor: wait; opacity: .6; }
 .error { border-left: 3px solid #b91c1c; border-radius: 6px; background: #fff2f1; color: #b91c1c !important; padding: 9px 11px; font-size: 11px; line-height: 1.4; }
 .noResults { margin: 14px 0 0; border: 1px dashed #b8cbd0; border-radius: 7px; background: #f5f7f8; color: #52616b !important; padding: 11px; font-size: 11px; line-height: 1.45; }
 
@@ -270,6 +277,7 @@
   .ownedBadge, .missingBadge { top: 5px; left: 5px; padding: 2px 3px; font-size: 7px; }
   .emptySlot { min-height: 130px; padding: 4px; font-size: 9px; }
   .contextPanel:has(.cardContext), .searchDrawer { position: fixed; z-index: 20; inset: auto 8px calc(68px + env(safe-area-inset-bottom)); max-height: calc(100vh - 90px); overflow: auto; box-shadow: 0 18px 50px rgb(23 33 43 / 24%); }
+  .catalogFilters { grid-template-columns: 1fr; }
   .notice { align-items: stretch; flex-direction: column; }
   .noticeActions { flex-direction: column; }
   .importReport, .footer { align-items: flex-start; flex-direction: column; }

@@ -46,17 +46,25 @@ describe("TCGplayer Mass Entry export", () => {
       ["base1", "BS"],
       ["base2", "JU"],
       ["base3", "FO"],
+      ["neo1", "N1"],
+      ["gym2", "G2"],
       ["swsh1", "SWSH01"],
       ["swsh4", "SWSH04"],
       ["sv01", "SVI"],
       ["sv02", "PAL"],
       ["sv03", "OBF"],
     ]);
-    expect(TCGPLAYER_SET_MAPPINGS.every((mapping) => mapping.language === "en")).toBe(true);
-    expect(TCGPLAYER_SET_MAPPINGS.every((mapping) => mapping.source === "https://www.tcgplayer.com/massentry")).toBe(true);
+    expect(TCGPLAYER_SET_MAPPINGS.every((mapping) => mapping.language === "en" || mapping.tcgdexSetId === "neo1")).toBe(true);
+    expect(TCGPLAYER_SET_MAPPINGS.every((mapping) => mapping.source.startsWith("https://www.tcgplayer.com/"))).toBe(true);
     expect(TCGPLAYER_SET_MAPPINGS.every((mapping) => mapping.verifiedAt === "2026-09-27")).toBe(true);
-    expect(TCGPLAYER_PRINTING_MAPPINGS.map((mapping) => mapping.tcgdexCardId)).toEqual(["base1-44", "sv02-12", "sv02-203"]);
-    expect(TCGPLAYER_PRINTING_MAPPINGS.every((mapping) => mapping.source === "https://www.tcgplayer.com/massentry")).toBe(true);
+    expect(TCGPLAYER_PRINTING_MAPPINGS.map((mapping) => mapping.tcgdexCardId)).toEqual([
+      "base1-44",
+      "neo1-17",
+      "gym2-2",
+      "sv02-12",
+      "sv02-203",
+    ]);
+    expect(TCGPLAYER_PRINTING_MAPPINGS.every((mapping) => mapping.source.startsWith("https://www.tcgplayer.com/"))).toBe(true);
     expect(TCGPLAYER_PRINTING_MAPPINGS.every((mapping) => mapping.verifiedAt === "2026-09-27")).toBe(true);
   });
 
@@ -92,7 +100,7 @@ describe("TCGplayer Mass Entry export", () => {
     });
   });
 
-  it("does not translate or export a German card name", () => {
+  it("does not infer a TCGplayer name for an unverified German card", () => {
     const item = missingItem({
       card: {
         ...missingItem().card,
@@ -106,8 +114,50 @@ describe("TCGplayer Mass Entry export", () => {
     expect(exported.text).toBe("");
     expect(exported.matches[0]).toMatchObject({
       status: "unresolved",
-      reason: "Nur verifizierte englische Kartennamen werden an TCGplayer übergeben.",
+      reason: "Für diese deutsche Karte ist kein geprüfter englischer TCGplayer-Name hinterlegt.",
     });
+  });
+
+  it("exports the exact verified German Tornupto identity and English Blaine's Charizard printing", () => {
+    const typhlosion = missingItem({
+      identityKey: "tornupto-neo-genesis",
+      card: {
+        ...missingItem().card,
+        key: "tcgdex:neo1-17:de",
+        ref: { provider: "tcgdex", id: "neo1-17", language: "de" },
+        name: "Tornupto",
+        setId: "neo1",
+        setName: "Neo Genesis",
+        collectorNumber: "17",
+        collectorTotal: "111",
+      },
+      quantity: 1,
+    });
+    const blainesCharizard = missingItem({
+      identityKey: "blaines-charizard-gym-challenge",
+      card: {
+        ...missingItem().card,
+        key: "tcgdex:gym2-2:en",
+        ref: { provider: "tcgdex", id: "gym2-2", language: "en" },
+        name: "Blaine's Charizard",
+        setId: "gym2",
+        setName: "Gym Challenge",
+        collectorNumber: "2",
+        collectorTotal: "132",
+      },
+      quantity: 1,
+    });
+
+    const exported = createTcgplayerMassEntryExport(
+      [typhlosion, blainesCharizard],
+      TCGPLAYER_SET_MAPPINGS,
+      TCGPLAYER_PRINTING_MAPPINGS,
+    );
+
+    expect(exported.text).toBe("1 Typhlosion (17) [N1] 017/111\n1 Blaine's Charizard [G2] 002/132");
+    expect(exported.verifiedCount).toBe(2);
+    expect(exported.reviewRequiredCount).toBe(0);
+    expect(exported.matches.map((match) => match.collectorNumber)).toEqual(["17/111", "2/132"]);
   });
 
   it("rejects unconfirmed physical cards and unsafe multiline fields", () => {

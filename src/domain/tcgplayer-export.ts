@@ -1,3 +1,4 @@
+import { formatCollectorNumber } from "./catalog-search";
 import type { CardLanguage, ExportResult, MissingItem, UUID } from "./types";
 
 export const TCGPLAYER_MASS_ENTRY_URL = "https://www.tcgplayer.com/massentry";
@@ -18,6 +19,7 @@ export interface TcgplayerPrintingMapping {
   tcgplayerProductName: string;
   tcgplayerCollectorNumber: string;
   source: string;
+  identitySource?: string;
   verifiedAt: string;
 }
 
@@ -57,7 +59,7 @@ function matchItem(
     quantity: item.quantity,
     cardName: item.card.name,
     setName: item.card.setName,
-    collectorNumber: item.card.collectorNumber,
+    collectorNumber: formatCollectorNumber(item.card.collectorNumber, item.card.collectorTotal),
   };
 
   if (item.card.physicalStatus !== "physical") {
@@ -68,15 +70,7 @@ function matchItem(
     };
   }
 
-  if (item.card.ref.language !== "en") {
-    return {
-      ...base,
-      status: "unresolved",
-      reason: "Nur verifizierte englische Kartennamen werden an TCGplayer übergeben.",
-    };
-  }
-
-  if (unsafeLineField(item.card.name) || unsafeLineField(item.card.collectorNumber)) {
+  if (unsafeLineField(item.card.name) || unsafeLineField(base.collectorNumber)) {
     return {
       ...base,
       status: "unresolved",
@@ -87,6 +81,19 @@ function matchItem(
   const setMapping = setMappings.find(
     (candidate) => candidate.tcgdexSetId === item.card.setId && candidate.language === item.card.ref.language,
   );
+
+  const printingMapping = printingMappings.find(
+    (candidate) => candidate.tcgdexCardId === item.card.ref.id && candidate.language === item.card.ref.language,
+  );
+
+  if (item.card.ref.language !== "en" && !printingMapping) {
+    return {
+      ...base,
+      status: "unresolved",
+      reason: "Für diese deutsche Karte ist kein geprüfter englischer TCGplayer-Name hinterlegt.",
+    };
+  }
+
   if (!setMapping) {
     return {
       ...base,
@@ -95,9 +102,6 @@ function matchItem(
     };
   }
 
-  const printingMapping = printingMappings.find(
-    (candidate) => candidate.tcgdexCardId === item.card.ref.id && candidate.language === item.card.ref.language,
-  );
   if (!printingMapping) {
     return {
       ...base,
@@ -107,10 +111,20 @@ function matchItem(
     };
   }
 
+  if (unsafeLineField(printingMapping.tcgplayerProductName) || unsafeLineField(printingMapping.tcgplayerCollectorNumber)) {
+    return {
+      ...base,
+      status: "unresolved",
+      reason: "Der geprüfte TCGplayer-Name oder die Kartennummer ist nicht sicher als einzelne Mass-Entry-Zeile darstellbar.",
+      setMapping,
+      printingMapping,
+    };
+  }
+
   return {
     ...base,
     status: "verified-printing",
-    reason: "Englischer Name, Set-Code und Kartennummer sind für Mass Entry vorbereitet.",
+    reason: "TCGplayer-Name, Set-Code und Kartennummer sind für Mass Entry geprüft.",
     line: `${item.quantity} ${printingMapping.tcgplayerProductName} [${setMapping.tcgplayerSetCode}] ${printingMapping.tcgplayerCollectorNumber}`,
     setMapping,
     printingMapping,
@@ -131,8 +145,13 @@ export function createTcgplayerMassEntryExport(
   if (verified.length > 0) {
     warnings.push("Druckart, Sprache, Zustand und Finish in TCGplayer Mass Entry vor dem Warenkorb prüfen.");
   }
-  if (candidates.length > 0) {
-    warnings.push(`${candidates.length} Position(en) haben keinen geprüften TCGplayer-Set-Code und wurden ausgeschlossen.`);
+  const candidatesWithoutSet = candidates.filter((match) => !match.setMapping);
+  const candidatesWithoutPrinting = candidates.filter((match) => match.setMapping);
+  if (candidatesWithoutSet.length > 0) {
+    warnings.push(`${candidatesWithoutSet.length} Position(en) haben keinen geprüften TCGplayer-Set-Code und wurden ausgeschlossen.`);
+  }
+  if (candidatesWithoutPrinting.length > 0) {
+    warnings.push(`${candidatesWithoutPrinting.length} Position(en) haben einen geprüften Set-Code, aber noch kein geprüftes Printing und wurden ausgeschlossen.`);
   }
   if (unresolved.length > 0) {
     warnings.push(`${unresolved.length} Position(en) sind nicht sicher zuordenbar und wurden ausgeschlossen.`);

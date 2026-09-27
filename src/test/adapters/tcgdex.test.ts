@@ -5,7 +5,7 @@ import { TCGdexCatalogAdapter } from "@/data/catalog/tcgdex";
 describe("TCGdexCatalogAdapter", () => {
   afterEach(() => vi.restoreAllMocks());
 
-  it("normalizes search and detail responses without inventing search metadata", async () => {
+  it("normalizes search and detail responses with synchronized set metadata", async () => {
     vi.spyOn(globalThis, "fetch")
       .mockResolvedValueOnce(new Response(JSON.stringify([{ id: "base1-1", localId: "001", name: "Bulbasaur" }])))
       .mockResolvedValueOnce(new Response(JSON.stringify({
@@ -24,10 +24,22 @@ describe("TCGdexCatalogAdapter", () => {
     const adapter = new TCGdexCatalogAdapter();
     const search = await adapter.search({ name: "bulb", language: "en", page: 1, pageSize: 40 });
     expect(search.items[0]).toMatchObject({ name: "Bulbasaur", collectorNumber: "001", collectorTotal: "102" });
-    expect(search.items[0].setName).toBeUndefined();
+    expect(search.items[0]).toMatchObject({ setId: "base1", setName: "Base Set" });
 
     const card = await adapter.getCard(search.items[0].ref);
     expect(card).toMatchObject({ setId: "base1", physicalStatus: "physical", category: "pokemon" });
+  });
+
+  it("passes set browsing and pagination to TCGdex", async () => {
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(JSON.stringify([])));
+    const adapter = new TCGdexCatalogAdapter();
+
+    await adapter.search({ language: "en", setId: "base1", page: 2, pageSize: 40 });
+
+    const url = new URL(fetchMock.mock.calls[0][0].toString());
+    expect(url.searchParams.get("set.id")).toBe("base1");
+    expect(url.searchParams.get("pagination:page")).toBe("2");
+    expect(url.searchParams.get("pagination:itemsPerPage")).toBe("40");
   });
 
   it("rejects a 404 without retrying", async () => {

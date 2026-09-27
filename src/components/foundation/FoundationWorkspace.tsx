@@ -2,7 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element -- TCGdex images remain external references and are never proxied. */
 
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { Archive, BookOpen, CircleHelp, DatabaseBackup, ListFilter, Menu, Search, Settings2, X } from "lucide-react";
 import Link from "next/link";
 import { type ChangeEvent, type FormEvent, useEffect, useMemo, useRef, useState } from "react";
@@ -35,6 +35,7 @@ import { PRODUCT_DESIGN } from "@/config/product";
 import { validateBackup } from "@/domain/validation";
 import { createInitialVariantSelection, editionLabels, finishLabels, formatAvailableVariants, formatVariantSelection, printingLabels, selectedPrinting } from "@/domain/variant-selection";
 import { catalogQueryKey, detailQueryKey, TCGdexCatalogAdapter } from "@/data/catalog/tcgdex";
+import { catalogSeries, catalogSets, completeCardSnapshotMetadata } from "@/data/catalog/set-counts";
 import { cardImageUrl } from "@/data/catalog/images";
 import { RevisionConflictError } from "@/data/persistence/binder-repository";
 import { IndexedDBBinderRepository } from "@/data/persistence/indexeddb-binder-repository";
@@ -48,6 +49,7 @@ const MAX_IMPORT_BYTES = 5 * 1024 * 1024;
 
 type CopyState = "idle" | "copied" | "error";
 type SearchLanguage = "all" | "de" | "en";
+type SearchFilterOption = { id: string; label: string };
 type ImportReport = { binderCount: number; cardCount: number; plannedCount: number; names: string[] };
 type BinderSyncMessage = { type: "binder-changed"; binderId: string; revision: number; deleted?: boolean };
 type LayoutChangeRequest = { binderId: string; layout: SupportedBinderLayout; preview: BinderLayoutPreview };
@@ -80,6 +82,21 @@ function interleaveSearchResults(
   return results;
 }
 
+function mergeLocalizedOptions(
+  german: readonly { id: string; name: string }[],
+  english: readonly { id: string; name: string }[],
+): SearchFilterOption[] {
+  const options = new Map<string, { de?: string; en?: string }>();
+  for (const item of german) options.set(item.id, { ...options.get(item.id), de: item.name });
+  for (const item of english) options.set(item.id, { ...options.get(item.id), en: item.name });
+  return [...options.entries()]
+    .map(([id, names]) => ({
+      id,
+      label: names.de && names.en && names.de !== names.en ? `${names.de} / ${names.en}` : names.de ?? names.en ?? id,
+    }))
+    .sort((left, right) => left.label.localeCompare(right.label, "de"));
+}
+
 export function FoundationWorkspace() {
   const repository = useMemo(() => new IndexedDBBinderRepository(), []);
   const catalog = useMemo(() => new TCGdexCatalogAdapter(), []);
@@ -91,6 +108,8 @@ export function FoundationWorkspace() {
   const [name, setName] = useState("");
   const [searchText, setSearchText] = useState("");
   const [searchLanguage, setSearchLanguage] = useState<SearchLanguage>("all");
+  const [searchSeriesId, setSearchSeriesId] = useState("");
+  const [searchSetId, setSearchSetId] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchPreview, setSearchPreview] = useState<SearchPreview>();
@@ -156,7 +175,10 @@ export function FoundationWorkspace() {
   useEffect(() => {
     if (!activeId) return;
     repository.exportBackup([activeId]).then((backup) => {
-      setCards(new Map(backup.cards.map((card) => [card.key, card])));
+      setCards(new Map(backup.cards.map((card) => {
+        const completed = completeCardSnapshotMetadata(card);
+        return [completed.key, completed];
+      })));
       setCardsBinderId(activeId);
     }).catch((error: unknown) => {
       setStorageStatus("error");
@@ -185,28 +207,51 @@ export function FoundationWorkspace() {
   }, [activeBinder?.revision, activeId]);
 
   const parsedSearch = useMemo(() => parseCatalogSearch(debouncedSearch), [debouncedSearch]);
-  const searchEnabled = Boolean((parsedSearch.name?.length ?? 0) >= 2 || parsedSearch.collectorNumber);
-  const germanCatalogQuery = { language: "de" as const, ...parsedSearch, page: 1, pageSize: 40 };
-  const englishCatalogQuery = { language: "en" as const, ...parsedSearch, page: 1, pageSize: 40 };
+  const seriesOptions = useMemo(() => searchLanguage === "all"
+    ? mergeLocalizedOptions(catalogSeries("de"), catalogSeries("en"))
+    : catalogSeries(searchLanguage).map((series) => ({ id: series.id, label: series.name })), [searchLanguage]);
+  const setOptions = useMemo(() => searchLanguage === "all"
+    ? mergeLocalizedOptions(catalogSets("de", searchSeriesId || undefined), catalogSets("en", searchSeriesId || undefined))
+    : catalogSets(searchLanguage, searchSeriesId || undefined).map((set) => ({ id: set.id, label: set.name })), [searchLanguage, searchSeriesId]);
 
-  const germanSearchQuery = useQuery({
-    queryKey: catalogQueryKey(germanCatalogQuery),
-    queryFn: ({ signal }) =>
-      catalog.search(germanCatalogQuery, signal),
+  useEffect(() => {
+    if (searchSeriesId && !seriesOptions.some((option) => option.id === searchSeriesId)) {
+      setSearchSeriesId("");
+      setSearchSetId("");
+    }
+  }, [searchSeriesId, seriesOptions]);
+
+  useEffect(() => {
+    if (searchSetId && !setOptions.some((option) => option.id === searchSetId)) setSearchSetId("");
+  }, [searchSetId, setOptions]);
+
+  const searchEnabled = Boolean(searchSetId || (parsedSearch.name?.length ?? 0) >= 2 || parsedSearch.collectorNumber);
+  const searchPageSize = searchLanguage === "all" ? 20 : 40;
+  const germanCatalogQuery = { language: "de" as const, ...parsedSearch, setId: searchSetId || undefined, page: 0, pageSize: searchPageSize };
+  const englishCatalogQuery = { language: "en" as const, ...parsedSearch, setId: searchSetId || undefined, page: 0, pageSize: searchPageSize };
+
+  const germanSearchQuery = useInfiniteQuery({
+    queryKey: ["infinite-search", ...catalogQueryKey(germanCatalogQuery)],
+    queryFn: ({ signal, pageParam }) =>
+      catalog.search({ ...germanCatalogQuery, page: pageParam }, signal),
     enabled: searchEnabled && searchLanguage !== "en",
     staleTime: 10 * 60 * 1_000,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, pages) => lastPage.hasMore ? pages.length + 1 : undefined,
   });
 
-  const englishSearchQuery = useQuery({
-    queryKey: catalogQueryKey(englishCatalogQuery),
-    queryFn: ({ signal }) =>
-      catalog.search(englishCatalogQuery, signal),
+  const englishSearchQuery = useInfiniteQuery({
+    queryKey: ["infinite-search", ...catalogQueryKey(englishCatalogQuery)],
+    queryFn: ({ signal, pageParam }) =>
+      catalog.search({ ...englishCatalogQuery, page: pageParam }, signal),
     enabled: searchEnabled && searchLanguage !== "de",
     staleTime: 10 * 60 * 1_000,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, pages) => lastPage.hasMore ? pages.length + 1 : undefined,
   });
 
-  const germanSearchResults = germanSearchQuery.data?.items ?? [];
-  const englishSearchResults = englishSearchQuery.data?.items ?? [];
+  const germanSearchResults = germanSearchQuery.data?.pages.flatMap((page) => page.items) ?? [];
+  const englishSearchResults = englishSearchQuery.data?.pages.flatMap((page) => page.items) ?? [];
   const searchResults = searchLanguage === "de"
     ? germanSearchResults
     : searchLanguage === "en"
@@ -227,6 +272,19 @@ export function FoundationWorkspace() {
     : searchLanguage === "en"
       ? englishSearchQuery.error
       : germanSearchQuery.error ?? englishSearchQuery.error;
+  const searchHasMore = searchLanguage === "de"
+    ? germanSearchQuery.hasNextPage
+    : searchLanguage === "en"
+      ? englishSearchQuery.hasNextPage
+      : germanSearchQuery.hasNextPage || englishSearchQuery.hasNextPage;
+  const searchIsLoadingMore = germanSearchQuery.isFetchingNextPage || englishSearchQuery.isFetchingNextPage;
+
+  async function loadMoreSearchResults() {
+    const requests: Promise<unknown>[] = [];
+    if (searchLanguage !== "en" && germanSearchQuery.hasNextPage) requests.push(germanSearchQuery.fetchNextPage());
+    if (searchLanguage !== "de" && englishSearchQuery.hasNextPage) requests.push(englishSearchQuery.fetchNextPage());
+    await Promise.all(requests);
+  }
 
   function publishBinderChange(binder: Binder, deleted = false) {
     syncChannelRef.current?.postMessage({
@@ -1159,21 +1217,50 @@ export function FoundationWorkspace() {
                       ))}
                     </div>
                   </fieldset>
+                  <div className={styles.catalogFilters}>
+                    <label htmlFor="card-series-filter">
+                      Serie
+                      <select
+                        id="card-series-filter"
+                        value={searchSeriesId}
+                        onChange={(event) => {
+                          setSearchSeriesId(event.target.value);
+                          setSearchSetId("");
+                        }}
+                      >
+                        <option value="">Alle Serien</option>
+                        {seriesOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
+                      </select>
+                    </label>
+                    <label htmlFor="card-set-filter">
+                      Set
+                      <select id="card-set-filter" value={searchSetId} onChange={(event) => setSearchSetId(event.target.value)}>
+                        <option value="">Alle Sets</option>
+                        {setOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
+                      </select>
+                    </label>
+                  </div>
                   <label className={styles.searchLabel} htmlFor="card-search">
                     <Search aria-hidden="true" size={18} />
                     <input id="card-search" value={searchText} onChange={(event) => setSearchText(event.target.value)} placeholder="Name oder Nummer, z. B. Glurak 4/102" autoFocus />
                   </label>
                   {searchIsRunning && searchEnabled ? <p>Suche läuft…</p> : null}
                   {searchError ? <p className={styles.error}>Ein Sprachkatalog konnte nicht geladen werden: {searchError.message}</p> : null}
-                  {searchHasCompleted && !searchResults.length ? <p className={styles.noResults}>Keine Karten für „{debouncedSearch}“ gefunden. Prüfe Name oder Schreibweise.</p> : null}
+                  {!searchEnabled ? <p className={styles.searchHint}>Gib mindestens zwei Buchstaben oder eine Kartennummer ein – oder wähle ein Set.</p> : null}
+                  {searchHasCompleted && !searchResults.length ? <p className={styles.noResults}>Keine Karten mit diesen Filtern gefunden. Prüfe Name, Sprache, Serie oder Set.</p> : null}
                   <ul className={styles.results}>
-                    {searchResults.slice(0, 12).map((item) => (
+                    {searchResults.map((item) => (
                       <li key={`${item.ref.language}-${item.ref.id}`}>
-                        <span><strong>{item.name}</strong><small>{item.ref.language.toUpperCase()} · Nr. {formatCollectorNumber(item.collectorNumber, item.collectorTotal)}</small></span>
+                        <span><strong>{item.name}</strong><small>{item.ref.language.toUpperCase()} · {item.setName ? `${item.setName} · ` : ""}Nr. {formatCollectorNumber(item.collectorNumber, item.collectorTotal)}</small></span>
                         <button type="button" onClick={() => void previewSearchResult(item)}>Prüfen</button>
                       </li>
                     ))}
                   </ul>
+                  {searchHasMore ? (
+                    <button type="button" className={styles.loadMoreButton} disabled={searchIsLoadingMore} onClick={() => void loadMoreSearchResults()}>
+                      {searchIsLoadingMore ? "Weitere Treffer werden geladen…" : "Mehr laden"}
+                    </button>
+                  ) : null}
                 </>
               )}
             </aside> : (
