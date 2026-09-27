@@ -105,7 +105,7 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   await expect(missingCards.getByRole("heading", { name: "Cardmarket Prüfliste" })).toBeVisible();
   await expect(missingCards.getByText(/Keine Exakt-Garantie/)).toBeVisible();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Prüflistenvorschau" })).toHaveValue(
-    /1x Ivysaur \| Base Set \| Nr\. 002 \| EN/,
+    /1x Ivysaur \| Base Set \| Nr\. 2 \| EN/,
   );
   const cardmarketDownloadPromise = page.waitForEvent("download");
   await missingCards.getByRole("button", { name: "Prüfliste TXT" }).click();
