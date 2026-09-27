@@ -292,9 +292,9 @@ Completed:
 - The live test exposed a missing productive image-error state. `BinderGrid` now replaces failed remote images with an accessible “Bild nicht verfügbar” fallback; its component test raises the suite to 45 tests, and the correction was redeployed successfully.
 - Deployment inventory contains 37 static files, including the app, help route, icon, Next.js assets and public catalog metadata; no card-image bytes, user backups or binder data are deployed.
 - Pinned `.nvmrc` and Cloudflare `NODE_VERSION` to 24.19.0 to meet the current test dependency engine floor.
+- Retained and validated the live Blob backup download: backup format 1 with one controlled test binder and one card snapshot.
 
 Remaining external/human gates:
 
 - GitHub-hosted CI cannot start until the account billing/spending-limit issue is resolved.
-- A browser download of one real JSON backup should be manually retained; the automated browser controller could invoke the Blob export but could not expose its downloaded artifact.
 - Operator/privacy, project-license and data/image/trademark approvals remain intentionally open and continue to block public production approval.

@@ -35,7 +35,7 @@ This record describes a technical preview, not an approved public production rel
 - [x] TCGdex English and German search/detail data were exercised.
 - [x] A valid direct TCGdex image loads and a missing image shows the accessible local fallback.
 - [x] Create, save, reload, controlled JSON import and multi-tab conflict handling pass on the preview origin.
-- [ ] Retain one real downloaded JSON backup artifact. The Blob action was invoked, but the automated browser controller could not expose its download.
+- [x] A real Blob-exported JSON backup was retained and validated as format 1 with one controlled test binder and one card snapshot.
 - [x] The 375 px layout has no horizontal overflow and keyboard focus remains visible.
 - [x] Preview-origin data is treated as separate local data.
 - [x] The 37-file deployment inventory contains no card-image bytes, user backups or binder data.
@@ -56,4 +56,4 @@ This record describes a technical preview, not an approved public production rel
 |---|---|
 | Product/operator | Pending operator details |
 | Rights/privacy reviewer | Pending |
-| Technical preview verification | Conditional pass; GitHub CI and retained backup download still pending |
+| Technical preview verification | Conditional pass; only the account-blocked GitHub CI result remains pending |

@@ -203,4 +203,4 @@ Environment: Cloudflare Pages project `cardfolio`, production alias `https://car
 - A second live tab received the revision conflict warning after the first added a page and loaded the authoritative 2-page state only after `Aktuellen Stand laden`.
 - At 375×812, both routes reported `scrollWidth=375`; keyboard Tab focus landed on `Backup exportieren` with a visible 3 px outline.
 - Cloudflare listed 37 deployed static files. The inventory contains app/help HTML, Next.js assets, the original icon and public catalog metadata, with no card-image bytes, browser backups or binder records.
-- JSON import passed. The Blob export action was invoked without a storage error, but the browser controller did not expose a downloadable artifact for retention; keep this one item as a manual pre-public-launch check.
+- JSON import passed. The live Blob export produced a retained 1,655-byte backup; its parsed metadata reported backup format 1, one controlled test binder and one card snapshot.
