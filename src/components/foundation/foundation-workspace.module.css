@@ -211,7 +211,7 @@
 .footer a { color: #155363; font-weight: 750; text-underline-offset: 3px; }
 
 .dialogBackdrop { position: fixed; z-index: 30; inset: 0; display: grid; place-items: center; padding: 20px; background: rgb(23 33 43 / 38%); }
-.confirmDialog { width: min(100%, 440px); border: 1px solid #dee5e8; border-radius: 12px; background: #fff; padding: 24px; box-shadow: 0 20px 60px rgb(23 33 43 / 18%); }
+.confirmDialog { width: min(100%, 440px); max-height: calc(100dvh - 40px); overflow-y: auto; border: 1px solid #dee5e8; border-radius: 12px; background: #fff; padding: 24px; box-shadow: 0 20px 60px rgb(23 33 43 / 18%); }
 .confirmDialog h2 { margin: 8px 0 10px; color: #17212b; font-size: 20px; letter-spacing: -.025em; }
 .confirmDialog > p:not(.eyebrow) { margin: 0; color: #52616b; font-size: 13px; line-height: 1.5; }
 .variantForm { display: grid; gap: 12px; margin-top: 18px; }
