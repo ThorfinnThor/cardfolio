@@ -16,6 +16,7 @@ import {
   placeCard,
   previewBinderLayoutChange,
   removeCard,
+  setCardPreferences,
   setCardVariant,
   setOwned,
   SUPPORTED_BINDER_LAYOUTS,
@@ -29,9 +30,10 @@ import { createMissingItemsCsvExport, createMissingItemsTextExport } from "@/dom
 import { deriveMissingItems } from "@/domain/missing-items";
 import type { CardmarketHandoffPart } from "@/domain/cardmarket-handoff";
 import type { TcgplayerMassEntryExport } from "@/domain/tcgplayer-export";
-import type { Binder, CardSnapshot, CatalogSearchItem, MissingItem, PlannedCard, VariantSelection } from "@/domain/types";
+import type { Binder, CardSnapshot, CatalogSearchItem, MissingItem, PlannedCard, PurchasePreferences, VariantSelection } from "@/domain/types";
 import { FEATURES } from "@/config/feature-flags";
 import { PRODUCT_DESIGN } from "@/config/product";
+import { minimumConditionLabels } from "@/domain/purchase-preferences";
 import { validateBackup } from "@/domain/validation";
 import { createInitialVariantSelection, editionLabels, finishLabels, formatAvailableVariants, formatVariantSelection, printingLabels, selectedPrinting } from "@/domain/variant-selection";
 import { catalogQueryKey, detailQueryKey, TCGdexCatalogAdapter } from "@/data/catalog/tcgdex";
@@ -57,6 +59,7 @@ type VariantEditRequest = {
   entryId: string;
   label: string;
   variant: VariantSelection;
+  preferences: PurchasePreferences;
   availableVariants?: CardSnapshot["availableVariants"];
 };
 type SearchPreview = {
@@ -64,6 +67,7 @@ type SearchPreview = {
   status: "loading" | "ready" | "error";
   snapshot?: CardSnapshot;
   variant: VariantSelection;
+  preferences: PurchasePreferences;
   error?: string;
 };
 
@@ -462,6 +466,7 @@ export function FoundationWorkspace() {
       item,
       status: "loading",
       variant: createInitialVariantSelection(),
+      preferences: { minimumCondition: "any" },
     });
     try {
       const snapshot = await queryClient.fetchQuery({
@@ -515,7 +520,11 @@ export function FoundationWorkspace() {
     setPreviewSubmitting(true);
     try {
       const snapshot = searchPreview.snapshot;
-      const next = placeCard(activeBinder, location, createPlannedCard(snapshot.key, searchPreview.variant));
+      const next = placeCard(
+        activeBinder,
+        location,
+        createPlannedCard(snapshot.key, searchPreview.variant, searchPreview.preferences),
+      );
       setStorageStatus("saving");
       const saved = await repository.save(next, [snapshot], activeBinder.revision);
       publishBinderChange(saved);
@@ -629,6 +638,7 @@ export function FoundationWorkspace() {
       entryId: entry.id,
       label: card?.name ?? "Karte",
       variant: { ...entry.variant, printing: selectedPrinting(entry.variant) },
+      preferences: { ...entry.preferences },
       availableVariants: card?.availableVariants,
     });
   }
@@ -636,16 +646,20 @@ export function FoundationWorkspace() {
   async function saveVariantEdit() {
     if (!activeBinder || !variantEdit) return;
     try {
-      const next = setCardVariant(activeBinder, variantEdit.entryId, variantEdit.variant);
+      const next = setCardPreferences(
+        setCardVariant(activeBinder, variantEdit.entryId, variantEdit.variant),
+        variantEdit.entryId,
+        variantEdit.preferences,
+      );
       setStorageStatus("saving");
       const saved = await repository.save(next, [], activeBinder.revision);
       publishBinderChange(saved);
       setBinders((current) => current.map((binder) => (binder.id === saved.id ? saved : binder)));
       setVariantEdit(undefined);
       setStorageStatus("saved");
-      setMessage(`Version für „${variantEdit.label}“ wurde gespeichert.`);
+      setMessage(`Version und Mindestzustand für „${variantEdit.label}“ wurden gespeichert.`);
     } catch (error) {
-      handleStorageError(error, "Kartenversion konnte nicht gespeichert werden.");
+      handleStorageError(error, "Kartenversion und Mindestzustand konnten nicht gespeichert werden.");
     }
   }
 
@@ -927,9 +941,9 @@ export function FoundationWorkspace() {
       {variantEdit ? (
         <div className={styles.dialogBackdrop} role="presentation">
           <section className={styles.confirmDialog} role="dialog" aria-modal="true" aria-labelledby="variant-heading">
-            <p className={styles.eyebrow}>Kartenversion</p>
-            <h2 id="variant-heading">Version für „{variantEdit.label}“ festlegen</h2>
-            <p>Finish, Edition und Druckvariante werden getrennt gespeichert und in Fehlkartenlisten berücksichtigt.</p>
+            <p className={styles.eyebrow}>Kartendetails</p>
+            <h2 id="variant-heading">Version und Mindestzustand für „{variantEdit.label}“ festlegen</h2>
+            <p>Version und gewünschter Mindestzustand werden getrennt gespeichert und in Fehlkartenlisten sowie Exporten berücksichtigt.</p>
             <div className={styles.variantForm}>
               <label>
                 Finish
@@ -979,11 +993,26 @@ export function FoundationWorkspace() {
                   } : current)}
                 />
               </label>
+              <label>
+                Mindestzustand
+                <select
+                  value={variantEdit.preferences.minimumCondition}
+                  onChange={(event) => setVariantEdit((current) => current ? {
+                    ...current,
+                    preferences: {
+                      ...current.preferences,
+                      minimumCondition: event.target.value as PurchasePreferences["minimumCondition"],
+                    },
+                  } : current)}
+                >
+                  {Object.entries(minimumConditionLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
+                </select>
+              </label>
             </div>
             <p className={styles.variantHint}>{formatAvailableVariants(variantEdit.availableVariants)} Shadowless wird von TCGdex nicht separat geliefert und ist deshalb eine manuelle Auswahl.</p>
             <div className={styles.dialogActions}>
               <button type="button" className={styles.secondaryButton} onClick={() => setVariantEdit(undefined)}>Abbrechen</button>
-              <button type="button" className={styles.confirmButton} onClick={saveVariantEdit}>Version speichern</button>
+              <button type="button" className={styles.confirmButton} onClick={saveVariantEdit}>Angaben speichern</button>
             </div>
           </section>
         </div>
@@ -1188,10 +1217,25 @@ export function FoundationWorkspace() {
                             } : current)}
                           />
                         </label>
+                        <label>
+                          Mindestzustand
+                          <select
+                            value={searchPreview.preferences.minimumCondition}
+                            onChange={(event) => setSearchPreview((current) => current ? {
+                              ...current,
+                              preferences: {
+                                ...current.preferences,
+                                minimumCondition: event.target.value as PurchasePreferences["minimumCondition"],
+                              },
+                            } : current)}
+                          >
+                            {Object.entries(minimumConditionLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
+                          </select>
+                        </label>
                       </div>
                       <p className={styles.variantHint}>{formatAvailableVariants(searchPreview.snapshot.availableVariants)} Shadowless wird von TCGdex nicht separat geliefert und ist deshalb eine manuelle Auswahl.</p>
                       <button type="button" className={styles.primaryButton} disabled={previewSubmitting} onClick={() => void insertPreviewedCard()}>
-                        {previewSubmitting ? "Wird eingesetzt…" : "Mit dieser Version einsetzen"}
+                        {previewSubmitting ? "Wird eingesetzt…" : "Mit diesen Angaben einsetzen"}
                       </button>
                     </>
                   ) : null}
@@ -1288,11 +1332,12 @@ export function FoundationWorkspace() {
                     <dl className={styles.contextDetails}>
                       <div><dt>Sprache</dt><dd>{contextCard?.ref.language.toUpperCase() ?? "–"}</dd></div>
                       <div><dt>Version</dt><dd>{formatVariantSelection(contextEntry.variant)}</dd></div>
+                      <div><dt>Zustand</dt><dd>{minimumConditionLabels[contextEntry.preferences.minimumCondition]}</dd></div>
                       <div><dt>Status</dt><dd>{contextEntry.owned ? "Vorhanden" : "Fehlt"}</dd></div>
                     </dl>
                     <div className={styles.contextActions}>
                       <button type="button" className={styles.primaryButton} onClick={() => void toggleOwned(contextEntry.id, !contextEntry.owned)}>{contextEntry.owned ? "Als fehlend markieren" : "Als vorhanden markieren"}</button>
-                      <button type="button" className={styles.secondaryButton} onClick={() => requestVariantEdit(contextEntry, contextCard)}>Version festlegen</button>
+                      <button type="button" className={styles.secondaryButton} onClick={() => requestVariantEdit(contextEntry, contextCard)}>Version &amp; Zustand festlegen</button>
                       <button type="button" className={styles.secondaryButton} onClick={() => contextLocation && selectMoveSource(contextLocation)}>Verschieben</button>
                       <button type="button" className={styles.dangerOutlineButton} onClick={() => contextLocation && requestRemove(contextLocation, contextCard?.name ?? "Karte ohne Metadaten")}>Entfernen</button>
                     </div>

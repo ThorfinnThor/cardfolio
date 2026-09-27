@@ -9,6 +9,7 @@ import {
   placeCard,
   previewBinderLayoutChange,
   removeCard,
+  setCardPreferences,
   setCardVariant,
   setOwned,
 } from "@/domain/binder-actions";
@@ -103,6 +104,16 @@ describe("binder domain", () => {
       edition: "first-edition",
       printing: "shadowless",
     });
+  });
+
+  it("updates the minimum condition without mutating the prior binder", () => {
+    const binder = createBinder("Conditions");
+    const entry = createPlannedCard(card.key);
+    const placed = placeCard(binder, { pageId: binder.pages[0].id, slotIndex: 0 }, entry);
+    const updated = setCardPreferences(placed, entry.id, { minimumCondition: "near-mint" });
+
+    expect(placed.pages[0].slots[0]?.preferences).toEqual({ minimumCondition: "any" });
+    expect(updated.pages[0].slots[0]?.preferences).toEqual({ minimumCondition: "near-mint" });
   });
 
   it("reflows into 2x2 pages without losing card identity, ownership, variants or notes", () => {

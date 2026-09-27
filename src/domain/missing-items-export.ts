@@ -1,5 +1,6 @@
 import type { ExportResult, MissingItem } from "./types";
 import { formatCollectorNumber } from "./catalog-search";
+import { minimumConditionLabels } from "./purchase-preferences";
 import { printingLabels, selectedPrinting } from "./variant-selection";
 
 const HEADERS = ["Menge", "Name", "Set", "Nummer", "Sprache", "Finish", "Edition", "Druckvariante", "Zustand", "Prüfhinweis"] as const;
@@ -16,13 +17,6 @@ const editionLabels = {
   unlimited: "Unlimited",
   "first-edition": "First Edition",
   unspecified: "Nicht angegeben",
-} as const;
-
-const conditionLabels = {
-  "near-mint": "Near Mint",
-  "lightly-played": "Lightly Played",
-  played: "Played",
-  any: "Beliebig",
 } as const;
 
 export function missingItemReviewNote(item: MissingItem): string {
@@ -46,7 +40,7 @@ function row(item: MissingItem): string[] {
     item.variant.label?.trim() || finishLabels[item.variant.finish],
     editionLabels[item.variant.edition],
     printingLabels[selectedPrinting(item.variant)],
-    conditionLabels[item.preferences.minimumCondition],
+    minimumConditionLabels[item.preferences.minimumCondition],
     missingItemReviewNote(item),
   ];
 }

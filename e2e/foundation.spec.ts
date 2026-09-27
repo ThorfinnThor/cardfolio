@@ -185,7 +185,7 @@ async function addCard(page: Page, slot: number, query: string, cardName: string
     .click();
   const preview = page.getByRole("dialog", { name: "Karte prüfen" });
   await expect(preview).toContainText(cardName);
-  await preview.getByRole("button", { name: "Mit dieser Version einsetzen" }).click();
+  await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
   await expect(page.getByRole("article", { name: `${cardName}, Slot ${slot}` })).toBeVisible();
 }
 
@@ -374,11 +374,43 @@ test("searches German and English catalogs and labels the result language", asyn
   await preview.getByLabel("Finish").selectOption("holo");
   await preview.getByLabel("Edition").selectOption("first-edition");
   await preview.getByLabel("Druckvariante").selectOption("shadowless");
-  await preview.getByRole("button", { name: "Mit dieser Version einsetzen" }).click();
+  await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
 
   const card = page.getByRole("article", { name: "Glurak, Slot 1" });
   await expect(card).toBeVisible();
   await expect(card).toContainText("Holo · First Edition · Shadowless");
+});
+
+test("sets, edits and persists the minimum condition for marketplace handoff", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/");
+  await page.getByLabel("Bindername").fill("Zustandswunsch");
+  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+
+  await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
+  await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Ivysaur");
+  await page.getByRole("listitem").filter({ hasText: "Ivysaur" }).getByRole("button", { name: "Prüfen" }).click();
+  const preview = page.getByRole("dialog", { name: "Karte prüfen" });
+  await preview.getByLabel("Mindestzustand").selectOption("near-mint");
+  await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
+
+  await page.getByRole("article", { name: "Ivysaur, Slot 1" }).click();
+  await expect(page.getByRole("definition").filter({ hasText: "Near Mint" })).toBeVisible();
+  await page.getByRole("button", { name: "Version & Zustand festlegen" }).click();
+  const details = page.getByRole("dialog", { name: /Version und Mindestzustand/ });
+  await details.getByLabel("Mindestzustand").selectOption("lightly-played");
+  await details.getByRole("button", { name: "Angaben speichern" }).click();
+  await expect(page.getByRole("definition").filter({ hasText: "Lightly Played" })).toBeVisible();
+
+  await page.reload();
+  await page.getByRole("article", { name: "Ivysaur, Slot 1" }).click();
+  await expect(page.getByRole("definition").filter({ hasText: "Lightly Played" })).toBeVisible();
+  await page.getByRole("button", { name: /Fehlende Karten \(1\)/ }).click();
+  const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
+  await missingCards.getByRole("button", { name: "Cardmarket" }).click();
+  await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Prüflistenvorschau" })).toHaveValue(
+    /1x Ivysaur \| Base Set \| Nr\. 2\/102 \| EN .* \| Lightly Played$/,
+  );
 });
 
 test("filters equal card names by language and balances the combined results", async ({ page }) => {
@@ -443,7 +475,7 @@ test("finds and displays an exact full collector number", async ({ page }) => {
   await result.getByRole("button", { name: "Prüfen" }).click();
   const preview = page.getByRole("dialog", { name: "Karte prüfen" });
   await expect(preview).toContainText("4/102");
-  await preview.getByRole("button", { name: "Mit dieser Version einsetzen" }).click();
+  await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
 
   const card = page.getByRole("article", { name: "Charizard, Slot 1" });
   await expect(card).toContainText("Grundset · 4/102");

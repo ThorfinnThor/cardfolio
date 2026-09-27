@@ -8,6 +8,7 @@ import { TCGPLAYER_PRINTING_MAPPINGS } from "@/data/marketplace/tcgplayer-printi
 import { createCardmarketHandoff, type CardmarketHandoffPart } from "@/domain/cardmarket-handoff";
 import { formatCollectorNumber } from "@/domain/catalog-search";
 import { missingItemReviewNote } from "@/domain/missing-items-export";
+import { minimumConditionLabels } from "@/domain/purchase-preferences";
 import { createTcgplayerMassEntryExport, type TcgplayerMassEntryExport } from "@/domain/tcgplayer-export";
 import type { MissingItem } from "@/domain/types";
 import { printingLabels, selectedPrinting } from "@/domain/variant-selection";
@@ -16,7 +17,6 @@ import styles from "./missing-cards-panel.module.css";
 
 const finishLabels = { normal: "Normal", holo: "Holo", reverse: "Reverse Holo", other: "Andere", unspecified: "Nicht angegeben" } as const;
 const editionLabels = { unlimited: "Unlimited", "first-edition": "First Edition", unspecified: "Nicht angegeben" } as const;
-const conditionLabels = { "near-mint": "Near Mint", "lightly-played": "Lightly Played", played: "Played", any: "Beliebig" } as const;
 type MarketplaceChoice = "tcgplayer" | "cardmarket";
 
 interface MissingCardsPanelProps {
@@ -242,7 +242,7 @@ export function MissingCardsPanel({
                 <span>{item.variant.label || finishLabels[item.variant.finish]}</span>
                 <span>{editionLabels[item.variant.edition]}</span>
                 <span>{printingLabels[selectedPrinting(item.variant)]}</span>
-                <span>{conditionLabels[item.preferences.minimumCondition]}</span>
+                <span>{minimumConditionLabels[item.preferences.minimumCondition]}</span>
                 <span>{missingItemReviewNote(item).startsWith("Manuell") ? "Manuell prüfen" : "Prüfen"}</span>
               </div>
             </li>

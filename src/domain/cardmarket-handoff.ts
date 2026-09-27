@@ -1,5 +1,6 @@
 import type { MissingItem } from "./types";
 import { formatCollectorNumber } from "./catalog-search";
+import { minimumConditionLabels } from "./purchase-preferences";
 import { printingLabels, selectedPrinting } from "./variant-selection";
 
 export const CARDMARKET_POKEMON_SINGLES_URL = "https://www.cardmarket.com/en/Pokemon/Products/Singles";
@@ -18,13 +19,6 @@ const editionLabels = {
   unlimited: "Unlimited",
   "first-edition": "First Edition",
   unspecified: "Nicht angegeben",
-} as const;
-
-const conditionLabels = {
-  "near-mint": "Near Mint",
-  "lightly-played": "Lightly Played",
-  played: "Played",
-  any: "Beliebig",
 } as const;
 
 export interface CardmarketHandoffPart {
@@ -59,7 +53,7 @@ function formatReferenceLine(item: MissingItem): string {
     finish,
     editionLabels[item.variant.edition],
     printingLabels[selectedPrinting(item.variant)],
-    conditionLabels[item.preferences.minimumCondition],
+    minimumConditionLabels[item.preferences.minimumCondition],
   ].join(" | ");
 }
 
