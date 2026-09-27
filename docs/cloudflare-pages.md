@@ -2,6 +2,15 @@
 
 Cardfolio uses a static Next.js export and Cloudflare Pages Git integration. Do not create a Direct Upload project for this repository.
 
+## Current integration state — 2026-09-27
+
+- Private source repository: `https://github.com/ThorfinnThor/cardfolio`
+- Production branch: `main`
+- The existing Cloudflare GitHub connection can see and select the private repository.
+- The Pages setup form is prepared with **Next.js (Static HTML Export)**, build command `npm run build`, output directory `out` and `NODE_VERSION=24`.
+- **Save and Deploy has not been submitted.** There is no verified `pages.dev` result yet.
+- GitHub Actions cannot currently allocate a runner because the GitHub account reports a billing/spending-limit problem. Resolve that account setting and rerun CI independently of Cloudflare deployment.
+
 ## Connect after the GitHub repository exists
 
 1. Push the local `main` branch to the intended GitHub repository.

@@ -115,7 +115,7 @@ Environment: production `out/` served by `python3 -m http.server`, Codex in-app 
 - A controlled backup imported into an empty origin as `CF16 Restore Fixture (Import)`. The visible import report restored 1 binder, 2 planned cards and 2 card snapshots; the result showed 1 owned and 1 missing card.
 - The repository conflict test uses independent repository clients and confirms that the stale revision throws `RevisionConflictError`.
 - The Playwright suite contains four scenarios: full binder/backup roundtrip with controlled TCGdex fixtures, multi-tab reload, unavailable IndexedDB, and mobile focus/Escape behavior.
-- Local Playwright test execution reaches the static server, but macOS blocks the separate headless Chromium process at the Mach rendezvous port before the first test instruction. GitHub Actions installs Chromium on Ubuntu and runs `npm run test:e2e`; the project currently has no configured Git remote, so that CI run remains external follow-up work.
+- Local Playwright test execution reaches the static server, but macOS blocks the separate headless Chromium process at the Mach rendezvous port before the first test instruction. GitHub Actions installs Chromium on Ubuntu and runs `npm run test:e2e`; the later CF-22 record documents the connected remote, test fixes and current account-level runner blocker.
 
 ## CF-17 TCGplayer text export — 2026-09-27
 
@@ -178,3 +178,14 @@ Environment: clean static Next.js export served locally, Codex in-app Chromium, 
 - Typecheck, ESLint, Vitest (11 files, 44 tests), static Next.js build and `git diff --check` passed.
 - Both production and complete-tree `npm audit` queries reported zero known vulnerabilities at review time. The local environment required a read-only TLS-verification workaround described in `docs/public-release-readiness.md`; CI repeats the normal audit without that workaround.
 - Response-header enforcement is not marked as passed: Python serves the files but does not interpret Cloudflare `_headers`. The real Pages origin remains required.
+
+## CF-22 private GitHub integration — 2026-09-27
+
+Environment: private GitHub repository plus the existing local verification environment.
+
+- Created and pushed `main` to `https://github.com/ThorfinnThor/cardfolio`; repository visibility was verified as private.
+- GitHub run `36323935646` completed install, audit, typecheck, lint, unit tests, build and release checks, then exposed one ambiguous Playwright selector.
+- After the exact-selector fix, run `36324101921` passed three of five E2E scenarios and exposed two deterministic persistence/drag-wait issues rather than product-build failures.
+- Commit `d329377` adds persisted-card waits, exact move-target selection and explicit drag activation/drop-state waits. The corresponding local typecheck, lint, 44 tests, build, release check and diff check pass.
+- The post-fix GitHub run `36324400200` did not allocate a runner. GitHub reports a failed account payment or insufficient spending limit, so no post-fix remote test result exists yet.
+- Cloudflare Pages can see the private repository through the already connected GitHub app. Its setup form is prepared with `main`, **Next.js (Static HTML Export)**, `npm run build`, `out` and `NODE_VERSION=24`; the deployment has not been submitted.

@@ -1,6 +1,6 @@
 # CF-21 public-release readiness
 
-Assessment date: 2026-09-27. Scope: repository and local static export only. No deployment or external account change was authorized.
+Assessment date: 2026-09-27. Scope: private GitHub repository, local static export and prepared Cloudflare Pages Git-integration form. No Cloudflare deployment has been submitted.
 
 ## Decision
 
@@ -15,7 +15,8 @@ Assessment date: 2026-09-27. Scope: repository and local static export only. No 
 | Data/image use | **Blocked — human review** | API/data/image flows and the separation between database licensing and artwork rights are documented. Images remain external references. | Review TCGdex provider terms and the concrete public/non-commercial/commercial image and trademark use. Obtain advice/permission or replace public card imagery with neutral placeholders. Confirm the product name. |
 | Privacy/provider details | **Blocked — explicitly deferred operator input** | `docs/privacy-and-data-flow.md` and `/help/` describe actual storage and network flows without claiming there are no third-party connections. The owner stated that operator details will follow later. | Supply operator identity/contact/country/production domain, review Cloudflare logging/retention, and approve the required privacy/provider/imprint texts. |
 | Local data security | Passed for repository scope | Backup roundtrip, invalid import, save error, revision conflict, origin warning and external image-host validation are implemented/tested. | Keep a real old-schema backup fixture before any schema migration. |
-| Hosting | **Blocked — no target host** | Static export, `_headers`, immutable assets and local browser flows are verified; Cloudflare setup is documented. No Git remote or Cloudflare Pages project exists in this checkout. | Connect GitHub and Cloudflare, then verify `/`, `/help/`, reloads, TCGdex calls/images, CSP/security headers, browser console and mobile behavior on the actual production origin. |
+| Hosting | **Blocked — deployment not submitted** | Private repository `ThorfinnThor/cardfolio` exists and `main` is pushed. The Cloudflare Pages Git form is prepared for `main`, `npm run build`, `out` and Node 24, but **Save and Deploy** has not been clicked. | Submit the first technical-preview deployment after explicit confirmation, then verify `/`, `/help/`, reloads, TCGdex calls/images, CSP/security headers, browser console and mobile behavior on its actual origin. |
+| GitHub verification | **Blocked — account billing** | CI exposed and helped correct E2E timing/selector defects. The post-fix run `36324400200` was refused before runner allocation because GitHub reports failed account payments or an insufficient spending limit. Local typecheck, lint, 44 unit/component tests, build and release checks pass. | Resolve the GitHub account billing/spending-limit state and rerun CI before treating the exact remote commit as verified. |
 | Purchase presentation | Passed | Prices and automatic prefill remain disabled. TCGplayer includes only tested printing mappings; Cardmarket is labeled as a manual review handoff. | Repeat checks when mappings or marketplace behavior change. |
 
 ## Technical security evidence
@@ -36,9 +37,9 @@ The CSP intentionally retains `'unsafe-inline'` for `script-src` because the cur
 
 ## Exact close-out sequence
 
-1. Human closes the data/image/trademark and operator/privacy gates.
-2. Owner decides the repository license and supplies GitHub repository coordinates.
-3. Push `main`, require CI, connect that repository through Cloudflare Pages Git integration and keep GitHub Actions free of deployment steps.
-4. Run the target-host checklist in `docs/cloudflare-pages.md` on a preview deployment, then on the selected production origin.
+1. Resolve the GitHub billing/spending-limit blocker and rerun CI for the exact `main` commit.
+2. Submit the prepared Cloudflare Pages Git integration and run the target-host checklist in `docs/cloudflare-pages.md` on the resulting technical-preview origin.
+3. Human closes the data/image/trademark and operator/privacy gates.
+4. Owner chooses the repository license and final production origin.
 5. Complete a release record from `docs/release-record-template.md` with the exact production commit and results.
-6. Only then change this decision from blocked to approved.
+6. Only then change this decision from blocked to approved public production.

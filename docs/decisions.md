@@ -67,7 +67,7 @@
 - Cloudflare Pages Git integration remains the sole deployment path. GitHub Actions verifies and updates validated public set metadata but never deploys or accesses binder data.
 - Public card imagery, Pokémon marks, the Cardfolio name and the concrete provider operating model require human review. API availability and a database software license are not treated as blanket artwork permission.
 - Operator identity, required provider/privacy text, Cloudflare log settings and the final production origin are unknown. No claim of legal compliance is made.
-- There is no configured Git remote or target host in this checkout, so hosting headers and hydration are not marked as production-verified.
+- At the CF-21 review point there was no configured Git remote or target host. CF-22 subsequently added the private GitHub remote and prepared Cloudflare Pages, but hosting headers and hydration remain unverified until the first deployment exists.
 - A public release is prohibited until the blocked gates in `docs/public-release-readiness.md` are closed and an exact `docs/release-record-template.md` is completed.
 
 ## 2026-09-27 — Private GitHub repository; operator and project license deferred

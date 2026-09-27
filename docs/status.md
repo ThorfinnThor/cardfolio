@@ -262,6 +262,22 @@ Gate decision:
 
 - Public release remains blocked. A human must decide the repository license and approve the concrete data/image/trademark/name use plus operator/privacy texts.
 - Hosting remains blocked until the GitHub remote and Cloudflare Pages project exist and the production-origin checklist passes.
-- No repository was pushed and no Cloudflare project or deployment was created.
+- At the CF-21 review point, no repository had been pushed and no Cloudflare project or deployment existed. See CF-22 below for the later private-repository and prepared-integration state.
 
 Next planned package: CF-22, human release-input collection plus GitHub/Cloudflare connection and target-host verification after explicit authorization.
+
+## 2026-09-27 — CF-22 private GitHub and Cloudflare preparation
+
+Completed:
+
+- Created the private repository `ThorfinnThor/cardfolio`, configured `origin` and pushed `main`.
+- First GitHub CI execution reached all verification stages and exposed ambiguous E2E selectors; the affected selectors and asynchronous placement/drag waits were corrected in commits `670453b` and `d329377`.
+- Repeated local verification passed: typecheck, ESLint, 44 Vitest tests, static build, release checker and `git diff --check`.
+- Selected the private repository in Cloudflare Pages and prepared the build form with production branch `main`, the **Next.js (Static HTML Export)** preset, `npm run build`, output directory `out` and `NODE_VERSION=24`.
+- Recorded that operator details and the project license remain intentionally undecided. The repository stays private.
+
+External blockers and pending action:
+
+- GitHub run `36324400200` was rejected before a runner started because the account reports a failed payment or exhausted spending limit. This is an account-level billing setting, not an application or workflow failure.
+- Cloudflare **Save and Deploy** has not been clicked. The first `pages.dev` deployment and target-origin verification require the final deployment confirmation.
+- Public production release remains blocked by the separate data/image/trademark and operator/privacy gates.
