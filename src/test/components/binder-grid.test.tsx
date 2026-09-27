@@ -83,4 +83,27 @@ describe("BinderGrid", () => {
       { pageId: page.id, slotIndex: 1 },
     );
   });
+
+  it("replaces a failed remote card image with an accessible fallback", () => {
+    const cardWithImage = {
+      ...card,
+      imageBaseUrl: "https://assets.tcgdex.net/en/base/base1/44",
+    };
+    render(
+      <BinderGrid
+        page={page}
+        columns={2}
+        cards={new Map([[card.key, cardWithImage]])}
+        onOpenSearch={vi.fn()}
+        onSelectMoveSource={vi.fn()}
+        onMove={vi.fn()}
+        onToggleOwned={vi.fn()}
+        onRequestRemove={vi.fn()}
+      />,
+    );
+
+    fireEvent.error(screen.getByRole("img", { name: "Bulbasaur, Base Set 044" }));
+
+    expect(screen.getByRole("img", { name: "Bild für Bulbasaur nicht verfügbar" })).toHaveTextContent("Bild nicht verfügbar");
+  });
 });

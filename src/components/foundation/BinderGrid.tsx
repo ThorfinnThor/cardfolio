@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element -- External card images intentionally bypass app-side proxying. */
+
 import {
   closestCenter,
   DndContext,
@@ -68,6 +70,8 @@ function OccupiedSlot({
   onToggleOwned,
   onRequestRemove,
 }: OccupiedSlotProps) {
+  const imageSource = card?.imageBaseUrl ? cardImageUrl(card.imageBaseUrl) : undefined;
+  const [failedImageSource, setFailedImageSource] = useState<string>();
   const { isDragging, listeners, setNodeRef, transform } = useDraggable({
     id: `card:${entry.id}`,
     data: { location, label: card?.name ?? "Karte" },
@@ -91,9 +95,17 @@ function OccupiedSlot({
       </span>
       {card ? (
         <>
-          {/* Native img is intentional: card images must bypass app-side proxying. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          {card.imageBaseUrl ? <img src={cardImageUrl(card.imageBaseUrl)} alt={`${card.name}, ${card.setName} ${card.collectorNumber}`} /> : <div className={styles.imageFallback}>Kein Bild</div>}
+          {imageSource && failedImageSource !== imageSource ? (
+            <img
+              src={imageSource}
+              alt={`${card.name}, ${card.setName} ${card.collectorNumber}`}
+              onError={() => setFailedImageSource(imageSource)}
+            />
+          ) : (
+            <div className={styles.imageFallback} role="img" aria-label={`Bild für ${card.name} nicht verfügbar`}>
+              Bild nicht verfügbar
+            </div>
+          )}
           <strong>{card.name}</strong>
           <small>{card.setName} · {card.collectorNumber}</small>
           <div className={styles.slotActions}>
