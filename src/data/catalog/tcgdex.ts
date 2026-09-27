@@ -98,6 +98,12 @@ function category(value?: string): CardSnapshot["category"] {
   }
 }
 
+function printedCollectorTotal(cardCount?: { official: number; total?: number }): string | undefined {
+  if (!cardCount) return undefined;
+  const total = cardCount.official > 0 ? cardCount.official : cardCount.total;
+  return total && total > 0 ? String(total) : undefined;
+}
+
 export class TCGdexCatalogAdapter implements CatalogAdapter {
   async search(
     query: CatalogQuery,
@@ -121,26 +127,37 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
       const hydratedItems = await Promise.all(exactNumberItems.map(async (item) => {
         const cardUrl = new URL(`${BASE_URL}/${query.language}/cards/${encodeURIComponent(item.id)}`);
         const card = tcgdexCardSchema.parse(await fetchJson(cardUrl, signal));
-        const officialTotal = card.set.cardCount?.official;
-        if (officialTotal === undefined || !sameCollectorPart(String(officialTotal), collectorTotal)) {
-          return undefined;
-        }
+          const printedTotal = printedCollectorTotal(card.set.cardCount);
+          if (!printedTotal || !sameCollectorPart(printedTotal, collectorTotal)) {
+            return undefined;
+          }
         return {
           ref: { provider: "tcgdex" as const, id: item.id, language: query.language },
           name: item.name,
           collectorNumber: item.localId,
-          collectorTotal: String(officialTotal),
+          collectorTotal: printedTotal,
           imageBaseUrl: item.image,
         };
       }));
       items = hydratedItems.filter((item): item is NonNullable<typeof item> => item !== undefined);
     } else {
-      items = exactNumberItems.map((item) => ({
+      const summarizedItems: CatalogSearchItem[] = exactNumberItems.map((item) => ({
         ref: { provider: "tcgdex" as const, id: item.id, language: query.language },
         name: item.name,
         collectorNumber: item.localId,
         collectorTotal: collectorTotalForSearchItem(query.language, item.id, item.localId),
         imageBaseUrl: item.image,
+      }));
+      items = await Promise.all(summarizedItems.map(async (item) => {
+        if (item.collectorTotal) return item;
+        try {
+          const cardUrl = new URL(`${BASE_URL}/${query.language}/cards/${encodeURIComponent(item.ref.id)}`);
+          const card = tcgdexCardSchema.parse(await fetchJson(cardUrl, signal));
+          return { ...item, collectorTotal: printedCollectorTotal(card.set.cardCount) };
+        } catch (error) {
+          if (signal?.aborted) throw error;
+          return item;
+        }
       }));
     }
     return {
@@ -170,7 +187,7 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
       setId: card.set.id,
       setName: card.set.name,
       collectorNumber: card.localId,
-      collectorTotal: card.set.cardCount?.official === undefined ? undefined : String(card.set.cardCount.official),
+      collectorTotal: printedCollectorTotal(card.set.cardCount),
       availableVariants: card.variants ? {
         normal: card.variants.normal,
         holo: card.variants.holo,

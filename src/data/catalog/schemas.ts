@@ -33,6 +33,7 @@ export const tcgdexCardSchema = z.object({
     cardCount: z
       .object({
         official: z.number().int().nonnegative(),
+        total: z.number().int().nonnegative().optional(),
       })
       .optional(),
     id: z.string().min(1),

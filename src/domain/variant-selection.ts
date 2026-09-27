@@ -25,12 +25,20 @@ export function selectedPrinting(variant: VariantSelection): NonNullable<Variant
 }
 
 export function formatVariantSelection(variant: VariantSelection): string {
+  const missing = [
+    variant.finish === "unspecified" ? "Finish" : undefined,
+    variant.edition === "unspecified" ? "Edition" : undefined,
+    selectedPrinting(variant) === "unspecified" ? "Druckvariante" : undefined,
+  ].filter((value): value is string => Boolean(value));
   const values = [
     variant.label?.trim() || (variant.finish === "unspecified" ? undefined : finishLabels[variant.finish]),
     variant.edition === "unspecified" ? undefined : editionLabels[variant.edition],
     selectedPrinting(variant) === "unspecified" ? undefined : printingLabels[selectedPrinting(variant)],
   ].filter((value): value is string => Boolean(value));
-  return values.length ? values.join(" · ") : "Version nicht festgelegt";
+  if (!values.length) return "Version nicht festgelegt";
+  return [...values, missing.length ? `Offen: ${missing.join(", ")}` : undefined]
+    .filter((value): value is string => Boolean(value))
+    .join(" · ");
 }
 
 export function formatAvailableVariants(availability?: CardVariantAvailability): string {

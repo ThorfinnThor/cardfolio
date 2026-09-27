@@ -126,4 +126,23 @@ describe("TCGdexCatalogAdapter", () => {
     expect(card.collectorTotal).toBe("102");
     expect(card.availableVariants).toEqual({ normal: false, holo: true, reverse: false, firstEdition: true });
   });
+
+  it("loads a card detail only when synchronized set metadata cannot complete a search number", async () => {
+    const fetchMock = vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response(JSON.stringify([
+        { id: "2024sv-1", localId: "1", name: "Glurak" },
+      ])))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        id: "2024sv-1",
+        localId: "1",
+        name: "Glurak",
+        set: { cardCount: { official: 15, total: 15 }, id: "2024sv", name: "McDonald's Kollektion 2024" },
+      })));
+
+    const adapter = new TCGdexCatalogAdapter();
+    const search = await adapter.search({ name: "Glurak", language: "de", page: 1, pageSize: 40 });
+
+    expect(search.items[0]).toMatchObject({ collectorNumber: "1", collectorTotal: "15" });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
 });
