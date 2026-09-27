@@ -76,3 +76,11 @@
 - The repository's own license is intentionally left undecided. Absence of a license must not be described as open-source permission.
 - Legal operator/provider details will be supplied later. Placeholder identity or contact data must not be invented.
 - These deferred decisions do not block private CI, scheduled public catalog updates or a technical Cloudflare preview, but they continue to block a public production launch.
+
+## 2026-09-27 — Repository made public without a project license
+
+- The owner subsequently changed `https://github.com/ThorfinnThor/cardfolio` from private to public.
+- This supersedes only the earlier visibility decision. The project-license decision and operator details remain intentionally deferred.
+- Public source visibility is not described as open-source permission; without an explicit project license, no reuse grant is implied.
+- Public visibility restored GitHub-hosted runner allocation. CI run `36327453467` passed the complete pipeline, including all five Playwright scenarios.
+- The public-data workflow remains the only GitHub Action with `contents: write`; it validated and committed the first live refresh as `336b95f5c3e4f7425cf39c05e1b7481507871f76`.

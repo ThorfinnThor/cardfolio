@@ -298,3 +298,18 @@ Remaining external/human gates:
 
 - GitHub-hosted CI cannot start until the account billing/spending-limit issue is resolved.
 - Operator/privacy, project-license and data/image/trademark approvals remain intentionally open and continue to block public production approval.
+
+## 2026-09-27 — CF-24 public GitHub verification and scheduled-data proof
+
+Completed:
+
+- Repository visibility changed from private to public. No project license was added; the repository remains visible-source rather than declared open source.
+- CI run `36327453467` passed `npm ci`, trusted `npm audit`, typecheck, lint, 45 unit/component tests, static build, release checks, Chromium installation and all five Playwright scenarios for commit `0ce703c7c07e3f756669b1c04aa6f42ceca5a5a8`.
+- The E2E corrections wait for the completed ownership write, use an exact missing-card label, preserve the provider's collector number and drag from source grip to target grip so dnd-kit collision geometry is deterministic.
+- Manually dispatched workflow run `36327563806` passed data synchronization, audit, typecheck, lint, tests, build and release checks, then committed refreshed English/German TCGdex set metadata as `336b95f5c3e4f7425cf39c05e1b7481507871f76`.
+
+Remaining human gates:
+
+- Operator/privacy details will be supplied later.
+- The project license remains undecided.
+- Data/image/trademark/name review remains required before public production approval.

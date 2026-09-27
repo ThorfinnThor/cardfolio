@@ -4,7 +4,7 @@ Local-first Pokémon wish-binder prototype. Binder data and referenced card meta
 
 Marketplace price indications are disabled because the current provider data does not yet prove language-, edition- and variant-safe matching. See `docs/pricing-gate.md`.
 
-The public-release gate is currently closed pending human data/image-rights review, operator/privacy details, the project-license decision and a passing GitHub CI run. The source repository is private. The Cloudflare technical-preview origin has been verified. See `docs/public-release-readiness.md`.
+The public-release gate is currently closed pending human data/image-rights review, operator/privacy details and the project-license decision. The source repository is public, but no project license has been granted; public visibility must not be interpreted as open-source permission. GitHub CI and the Cloudflare technical-preview origin have been verified. See `docs/public-release-readiness.md`.
 
 ## Local development
 
@@ -40,7 +40,7 @@ npm run test:e2e
 
 ## Deployment
 
-Cloudflare Pages owns builds and deployments for the connected private GitHub repository:
+Cloudflare Pages owns builds and deployments for the connected public GitHub repository:
 
 - Production branch: `main`
 - Build command: `npm run build`

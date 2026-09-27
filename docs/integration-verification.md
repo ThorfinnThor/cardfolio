@@ -204,3 +204,13 @@ Environment: Cloudflare Pages project `cardfolio`, production alias `https://car
 - At 375×812, both routes reported `scrollWidth=375`; keyboard Tab focus landed on `Backup exportieren` with a visible 3 px outline.
 - Cloudflare listed 37 deployed static files. The inventory contains app/help HTML, Next.js assets, the original icon and public catalog metadata, with no card-image bytes, browser backups or binder records.
 - JSON import passed. The live Blob export produced a retained 1,655-byte backup; its parsed metadata reported backup format 1, one controlled test binder and one card snapshot.
+
+## CF-24 public GitHub CI and scheduled data — 2026-09-27
+
+Environment: public GitHub repository `ThorfinnThor/cardfolio`, GitHub-hosted Ubuntu runner and the existing Cloudflare Pages technical preview.
+
+- Repository visibility was verified as public.
+- CI run `36327453467` passed the complete chain for commit `0ce703c7c07e3f756669b1c04aa6f42ceca5a5a8`: install, audit, typecheck, lint, 45 unit/component tests, static build, release checks, Playwright Chromium installation and five browser scenarios.
+- The five remote browser scenarios cover the binder/backup roundtrip, multi-tab revision conflict, lossless layout change plus mouse drag, unavailable IndexedDB and the 375×812 focus/Escape flow.
+- Manually dispatched run `36327563806` proved the scheduled path: it fetched and validated current public English/German TCGdex set metadata, ran its complete validation chain and committed only `public/data/catalog/de-sets.json` and `public/data/catalog/en-sets.json` as `336b95f5c3e4f7425cf39c05e1b7481507871f76`.
+- The workflow neither reads nor can access browser-local binder data or backups.

@@ -12,7 +12,7 @@ This record describes a technical preview, not an approved public production rel
 | Database schema | IndexedDB `cardfolio`, version 1; binder schema 1; backup format 1 |
 | Browser tested | Codex in-app Chromium; exact browser version unavailable |
 | Mobile viewport tested | 375×812 CSS pixels |
-| GitHub CI | Blocked before runner allocation by account billing/spending-limit state |
+| GitHub CI | Passed: run `36327453467`, including all five Playwright scenarios |
 | Immutable deployment | `https://6cbb4716.cardfolio-780.pages.dev/` |
 | Rights/privacy approval | Pending; operator details, project license and data/image/trademark review intentionally remain open |
 
@@ -47,7 +47,7 @@ This record describes a technical preview, not an approved public production rel
 - Pricing remains disabled because language-, edition- and variant-safe matching is not proven.
 - TCGplayer output is limited to individually tested printing mappings; Cardmarket remains a manual review handoff.
 - There is no account, cloud synchronization or public sharing.
-- The GitHub CI result for the verified code is unavailable until the account billing/spending-limit blocker is resolved.
+- GitHub CI and the manually dispatched scheduled-data workflow both pass. The latter refreshed English/German TCGdex set metadata in commit `336b95f5c3e4f7425cf39c05e1b7481507871f76`.
 - Operator/privacy text, the project license and rights approval are pending; therefore this preview must not be treated as an approved public launch.
 
 ## Approval state
@@ -56,4 +56,4 @@ This record describes a technical preview, not an approved public production rel
 |---|---|
 | Product/operator | Pending operator details |
 | Rights/privacy reviewer | Pending |
-| Technical preview verification | Conditional pass; only the account-blocked GitHub CI result remains pending |
+| Technical preview verification | Pass; human rights/privacy/operator/license gates remain separate and open |

@@ -4,15 +4,16 @@ Cardfolio uses a static Next.js export and Cloudflare Pages Git integration. Do 
 
 ## Current integration state — 2026-09-27
 
-- Private source repository: `https://github.com/ThorfinnThor/cardfolio`
+- Public source repository: `https://github.com/ThorfinnThor/cardfolio`
 - Production branch: `main`
 - Project: `cardfolio`
 - Technical-preview origin: `https://cardfolio-780.pages.dev/`
-- Automatic deployments from the private repository are enabled.
+- Automatic deployments from the public repository are enabled.
 - Build settings use **Next.js (Static HTML Export)**, `npm run build`, output directory `out` and `NODE_VERSION=24.19.0`.
 - Verified application deployment: `https://6cbb4716.cardfolio-780.pages.dev/`, commit `a5ad85f4a997d8f806af27bf25b2b35abe8bd313`, Cloudflare status `success`.
 - The target-origin checks are recorded in `docs/releases/technical-preview-2026-09-27.md`.
-- GitHub Actions cannot currently allocate a runner because the GitHub account reports a billing/spending-limit problem. Resolve that account setting and rerun CI independently of Cloudflare deployment.
+- GitHub CI run `36327453467` passed the complete remote suite for commit `0ce703c7c07e3f756669b1c04aa6f42ceca5a5a8`, including all five Playwright scenarios.
+- Manually dispatched public-data run `36327563806` passed and committed refreshed English/German TCGdex set metadata as `336b95f5c3e4f7425cf39c05e1b7481507871f76`.
 
 ## Connect after the GitHub repository exists
 
