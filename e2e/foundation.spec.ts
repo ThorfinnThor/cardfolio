@@ -220,7 +220,7 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   await expect(missingCards.getByRole("heading", { name: "Cardmarket Prüfliste" })).toBeVisible();
   await expect(missingCards.getByText(/Keine Exakt-Garantie/)).toBeVisible();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Prüflistenvorschau" })).toHaveValue(
-    /1x Ivysaur \| Base Set \| Nr\. 2 \| EN/,
+    /1x Ivysaur \| Base Set \| Nr\. 2\/102 \| EN/,
   );
   const cardmarketDownloadPromise = page.waitForEvent("download");
   await missingCards.getByRole("button", { name: "Prüfliste TXT" }).click();
@@ -361,7 +361,7 @@ test("searches German and English catalogs and labels the result language", asyn
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
   await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Glurak");
   const germanResult = page.getByRole("listitem").filter({ hasText: "Glurak" });
-  await expect(germanResult).toContainText("DE · Nr. 4/102");
+  await expect(germanResult).toContainText("DE · Grundset · Nr. 4/102");
   await germanResult.getByRole("button", { name: "Prüfen" }).click();
 
   const preview = page.getByRole("dialog", { name: "Karte prüfen" });
@@ -391,18 +391,18 @@ test("filters equal card names by language and balances the combined results", a
   await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Pikachu");
   const results = page.getByRole("listitem").filter({ hasText: "Pikachu" });
   await expect(results).toHaveCount(2);
-  await expect(results.nth(0)).toContainText("DE · Nr. 58/102");
-  await expect(results.nth(1)).toContainText("EN · Nr. 58/102");
+  await expect(results.nth(0)).toContainText("DE · Grundset · Nr. 58/102");
+  await expect(results.nth(1)).toContainText("EN · Base Set · Nr. 58/102");
 
   await page.getByRole("button", { name: "English" }).click();
   await expect(results).toHaveCount(1);
-  await expect(results).toContainText("EN · Nr. 58/102");
-  await expect(results).not.toContainText("DE · Nr. 58/102");
+  await expect(results).toContainText("EN · Base Set · Nr. 58/102");
+  await expect(results).not.toContainText("DE · Grundset · Nr. 58/102");
 
   await page.getByRole("button", { name: "Deutsch" }).click();
   await expect(results).toHaveCount(1);
-  await expect(results).toContainText("DE · Nr. 58/102");
-  await expect(results).not.toContainText("EN · Nr. 58/102");
+  await expect(results).toContainText("DE · Grundset · Nr. 58/102");
+  await expect(results).not.toContainText("EN · Base Set · Nr. 58/102");
 });
 
 test("browses a selected set and loads catalog results page by page", async ({ page }) => {
@@ -413,8 +413,8 @@ test("browses a selected set and loads catalog results page by page", async ({ p
 
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
   await page.getByRole("button", { name: "English" }).click();
-  await page.getByLabel("Serie").selectOption("base");
-  await page.getByLabel("Set").selectOption("base1");
+  await page.locator("#card-series-filter").selectOption("base");
+  await page.locator("#card-set-filter").selectOption("base1");
 
   const searchDialog = page.getByRole("dialog", { name: "Karte suchen" });
   await expect(searchDialog.getByRole("listitem")).toHaveCount(1);
@@ -439,7 +439,7 @@ test("finds and displays an exact full collector number", async ({ page }) => {
   await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Charizard 04/102");
   const result = page.getByRole("listitem").filter({ hasText: "Charizard" });
   await expect(result).toHaveCount(1);
-  await expect(result).toContainText("EN · Nr. 4/102");
+  await expect(result).toContainText("EN · Grundset · Nr. 4/102");
   await result.getByRole("button", { name: "Prüfen" }).click();
   const preview = page.getByRole("dialog", { name: "Karte prüfen" });
   await expect(preview).toContainText("4/102");
