@@ -183,7 +183,7 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
 
   const importReport = cleanPage.getByRole("status", { name: "Importbericht" });
   await expect(importReport).toContainText("1 Binder, 2 geplante Karten");
-  await expect(cleanPage.getByText("E2E Binder (Import)", { exact: true })).toBeVisible();
+  await expect(cleanPage.getByRole("heading", { name: "E2E Binder (Import)", exact: true })).toBeVisible();
   await expect(cleanPage.getByText("Bulbasaur", { exact: true })).toBeVisible();
   await cleanContext.close();
 });
@@ -198,7 +198,7 @@ test("detects a binder update from another tab and reloads the current revision"
 
   const secondTab = await context.newPage();
   await secondTab.goto("/");
-  await expect(secondTab.getByText("Multi-Tab Binder", { exact: true })).toBeVisible();
+  await expect(secondTab.getByRole("heading", { name: "Multi-Tab Binder", exact: true })).toBeVisible();
 
   await page.getByRole("button", { name: "+ Seite" }).click();
   await expect(secondTab.getByText(/anderen Tab geändert/)).toBeVisible();
@@ -258,7 +258,7 @@ test("shows a visible storage error when IndexedDB is unavailable", async ({ pag
   await page.goto("/");
 
   await expect(page.getByText("IndexedDB is not available in this environment.")).toBeVisible();
-  await expect(page.getByText("error")).toBeVisible();
+  await expect(page.getByRole("banner").getByText("error", { exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "Erneut versuchen" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Backup exportieren" }).first()).toBeVisible();
 });
