@@ -12,7 +12,7 @@ This record describes a technical preview, not an approved public production rel
 | Database schema | IndexedDB `cardfolio`, version 1; binder schema 1; backup format 1 |
 | Browser tested | Codex in-app Chromium; exact browser version unavailable |
 | Mobile viewport tested | 375×812 CSS pixels |
-| GitHub CI | Passed: run `36327453467`, including all five Playwright scenarios |
+| GitHub CI | Passed: run `36335917139`, including all six Playwright scenarios |
 | Immutable deployment | `https://6cbb4716.cardfolio-780.pages.dev/` |
 | Rights/privacy approval | Pending; operator details, project license and data/image/trademark review intentionally remain open |
 

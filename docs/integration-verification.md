@@ -214,3 +214,12 @@ Environment: public GitHub repository `ThorfinnThor/cardfolio`, GitHub-hosted Ub
 - The five remote browser scenarios cover the binder/backup roundtrip, multi-tab revision conflict, lossless layout change plus mouse drag, unavailable IndexedDB and the 375×812 focus/Escape flow.
 - Manually dispatched run `36327563806` proved the scheduled path: it fetched and validated current public English/German TCGdex set metadata, ran its complete validation chain and committed only `public/data/catalog/de-sets.json` and `public/data/catalog/en-sets.json` as `336b95f5c3e4f7425cf39c05e1b7481507871f76`.
 - The workflow neither reads nor can access browser-local binder data or backups.
+
+## CF-25 bilingual search regression — 2026-09-27
+
+Environment: live TCGdex German/English endpoints, GitHub-hosted Chromium and Cloudflare Pages deployment `95ee4a6d`.
+
+- The reported query `Glurak` returned German TCGdex results and no English results, proving that the previous English-only UI request caused the empty state.
+- The UI now queries both supported languages, preserves the result language in `CardRef` and displays a `DE`/`EN` label beside each collector number.
+- GitHub CI run `36335917139` passed six Playwright scenarios, including the exact German-name regression.
+- On `https://cardfolio-780.pages.dev/`, `Glurak` rendered as `DE · Nr. 001`; the browser console contained no warnings or errors.

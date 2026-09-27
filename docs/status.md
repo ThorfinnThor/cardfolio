@@ -313,3 +313,14 @@ Remaining human gates:
 - Operator/privacy details will be supplied later.
 - The project license remains undecided.
 - Data/image/trademark/name review remains required before public production approval.
+
+## 2026-09-27 — CF-25 bilingual card-name search
+
+Completed:
+
+- Reproduced the screenshot report against the live provider: German TCGdex returned `Glurak`, while the hardcoded English request returned no matches.
+- Card search now queries German and English TCGdex catalogs in parallel, presents German matches first and labels every result with `DE` or `EN`.
+- Partial provider failure remains visible without discarding results from the other language.
+- Added a sixth Playwright scenario that searches for `Glurak`, verifies the `DE` result label and inserts the German card fixture.
+- CI run `36335917139` passed audit, typecheck, lint, 45 unit/component tests, build, release checks and all six browser scenarios for commit `432bbcd2bb5b4e79e744b89785f2047a72c25822`.
+- Cloudflare deployment `95ee4a6d` succeeded. The production alias returned the visible live result `Glurak · DE · Nr. 001` with no browser-console warnings or errors.
