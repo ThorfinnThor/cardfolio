@@ -1,0 +1,221 @@
+import { readFile } from "node:fs/promises";
+
+import { expect, type Page, test } from "@playwright/test";
+
+const headers = {
+  "access-control-allow-origin": "*",
+  "content-type": "application/json",
+};
+
+async function mockCatalog(page: Page) {
+  await page.route("https://api.tcgdex.net/**", async (route) => {
+    const url = new URL(route.request().url());
+
+    if (url.pathname.endsWith("/cards")) {
+      const query = url.searchParams.get("name")?.toLowerCase();
+      const cards = query?.includes("ivysaur")
+        ? [{ id: "base1-2", localId: "2", name: "Ivysaur" }]
+        : [{ id: "base1-1", localId: "1", name: "Bulbasaur" }];
+
+      await route.fulfill({ body: JSON.stringify(cards), headers, status: 200 });
+      return;
+    }
+
+    if (url.pathname.endsWith("/cards/base1-1")) {
+      await route.fulfill({
+        body: JSON.stringify({
+          id: "base1-1",
+          localId: "1",
+          name: "Bulbasaur",
+          set: { cardCount: { official: 102 }, id: "base1", name: "Base Set" },
+        }),
+        headers,
+        status: 200,
+      });
+      return;
+    }
+
+    if (url.pathname.endsWith("/cards/base1-2")) {
+      await route.fulfill({
+        body: JSON.stringify({
+          id: "base1-2",
+          localId: "2",
+          name: "Ivysaur",
+          set: { cardCount: { official: 102 }, id: "base1", name: "Base Set" },
+        }),
+        headers,
+        status: 200,
+      });
+      return;
+    }
+
+    if (url.pathname.endsWith("/sets/base1")) {
+      await route.fulfill({
+        body: JSON.stringify({
+          cardCount: { official: 102 },
+          id: "base1",
+          name: "Base Set",
+          serie: { id: "base", name: "Base" },
+        }),
+        headers,
+        status: 200,
+      });
+      return;
+    }
+
+    await route.abort();
+  });
+}
+
+async function addCard(page: Page, slot: number, query: string, cardName: string) {
+  await page.getByRole("button", { name: `Freier Platz ${slot}, Karte einsetzen` }).click();
+  await page.getByPlaceholder("Mindestens zwei Buchstaben").fill(query);
+  await page
+    .getByRole("listitem")
+    .filter({ hasText: cardName })
+    .getByRole("button", { name: "In Slot einsetzen" })
+    .click();
+}
+
+test("completes the local-first binder, ownership, missing-list, and backup flow", async ({
+  browser,
+  page,
+}) => {
+  await mockCatalog(page);
+  await page.goto("/");
+
+  await page.getByLabel("Bindername").fill("E2E Binder");
+  await page.getByRole("button", { name: "Erstellen" }).click();
+
+  await addCard(page, 1, "Bulbasaur", "Bulbasaur");
+  await addCard(page, 2, "Ivysaur", "Ivysaur");
+
+  await page.getByRole("article", { name: "Bulbasaur, Slot 1" }).getByRole("button", { name: "Verschieben" }).click();
+  await page.getByRole("article", { name: "Ivysaur, Slot 2" }).getByRole("button", { name: "Hierher verschieben" }).click();
+  await page.getByRole("article", { name: "Bulbasaur, Slot 2" }).getByRole("button", { name: "Als vorhanden markieren" }).click();
+
+  await page.reload();
+  await expect(page.getByRole("article", { name: "Bulbasaur, Slot 2" }).getByRole("button", { name: "Als fehlend markieren" })).toBeVisible();
+
+  await page.getByRole("button", { name: "Fehlkarten ansehen" }).click();
+  const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
+  await expect(missingCards.getByText("Ivysaur")).toBeVisible();
+  await expect(missingCards.getByRole("heading", { name: "Cardmarket Prüfliste" })).toBeVisible();
+  await expect(missingCards.getByText(/Keine Exakt-Garantie/)).toBeVisible();
+  await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Prüflistenvorschau" })).toHaveValue(
+    /1x Ivysaur \| Base Set \| Nr\. 002 \| EN/,
+  );
+  const cardmarketDownloadPromise = page.waitForEvent("download");
+  await missingCards.getByRole("button", { name: "Prüfliste TXT" }).click();
+  const cardmarketDownload = await cardmarketDownloadPromise;
+  expect(cardmarketDownload.suggestedFilename()).toMatch(/^cardfolio-cardmarket-pruefliste-teil-1-.*\.txt$/);
+
+  const downloadPromise = page.waitForEvent("download");
+  await page.getByRole("button", { name: "Backup exportieren" }).click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toMatch(/^cardfolio-backup-.*\.json$/);
+  const downloadPath = await download.path();
+  expect(downloadPath).toBeTruthy();
+  const backup = await readFile(downloadPath as string);
+
+  const cleanContext = await browser.newContext();
+  const cleanPage = await cleanContext.newPage();
+  await mockCatalog(cleanPage);
+  await cleanPage.goto("/");
+  await expect(cleanPage.getByRole("heading", { name: "Noch kein Binder" })).toBeVisible();
+  await cleanPage.locator("#backup-import").setInputFiles({
+    buffer: backup,
+    mimeType: "application/json",
+    name: "cardfolio-backup.json",
+  });
+
+  const importReport = cleanPage.getByRole("status", { name: "Importbericht" });
+  await expect(importReport).toContainText("1 Binder, 2 geplante Karten");
+  await expect(cleanPage.getByText("E2E Binder (Import)", { exact: true })).toBeVisible();
+  await expect(cleanPage.getByText("Bulbasaur", { exact: true })).toBeVisible();
+  await cleanContext.close();
+});
+
+test("detects a binder update from another tab and reloads the current revision", async ({
+  context,
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByLabel("Bindername").fill("Multi-Tab Binder");
+  await page.getByRole("button", { name: "Erstellen" }).click();
+
+  const secondTab = await context.newPage();
+  await secondTab.goto("/");
+  await expect(secondTab.getByText("Multi-Tab Binder", { exact: true })).toBeVisible();
+
+  await page.getByRole("button", { name: "+ Seite" }).click();
+  await expect(secondTab.getByText(/anderen Tab geändert/)).toBeVisible();
+  await secondTab.getByRole("button", { name: "Aktuellen Stand laden" }).click();
+  await expect(secondTab.getByText("1 / 2", { exact: true })).toBeVisible();
+});
+
+test("confirms a lossless layout change and keeps mouse drag optional", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/");
+  await page.getByLabel("Bindername").fill("Layout Binder");
+  await page.getByRole("button", { name: "Erstellen" }).click();
+  await addCard(page, 1, "Bulbasaur", "Bulbasaur");
+  await addCard(page, 2, "Ivysaur", "Ivysaur");
+
+  await page.getByLabel("Format").selectOption("2x2");
+  const dialog = page.getByRole("dialog", { name: "3 × 3 auf 2 × 2 umstellen?" });
+  await expect(dialog).toContainText("Keine Karte wird gelöscht");
+  await expect(dialog).toContainText("2 Karten übernommen");
+  await dialog.getByRole("button", { name: "Format anwenden" }).click();
+
+  await expect(page.getByText(/2 × 2 · Seite 1 von 1/)).toBeVisible();
+  await expect(page.getByRole("button", { name: /Freier Platz \d+, Karte einsetzen/ })).toHaveCount(2);
+  await expect(page.getByRole("article", { name: "Bulbasaur, Slot 1" })).toBeVisible();
+  await expect(page.getByRole("article", { name: "Ivysaur, Slot 2" })).toBeVisible();
+
+  const handle = page.getByRole("article", { name: "Bulbasaur, Slot 1" }).locator('[title="Mit der Maus ziehen"]');
+  const target = page.getByRole("article", { name: "Ivysaur, Slot 2" });
+  const sourceBox = await handle.boundingBox();
+  const targetBox = await target.boundingBox();
+  expect(sourceBox).toBeTruthy();
+  expect(targetBox).toBeTruthy();
+  await page.mouse.move((sourceBox?.x ?? 0) + (sourceBox?.width ?? 0) / 2, (sourceBox?.y ?? 0) + (sourceBox?.height ?? 0) / 2);
+  await page.mouse.down();
+  await page.mouse.move((targetBox?.x ?? 0) + (targetBox?.width ?? 0) / 2, (targetBox?.y ?? 0) + (targetBox?.height ?? 0) / 2, { steps: 8 });
+  await page.mouse.up();
+
+  await expect(page.getByText("Karten wurden getauscht.")).toBeVisible();
+  await expect(page.getByRole("article", { name: "Ivysaur, Slot 1" })).toBeVisible();
+  await expect(page.getByRole("article", { name: "Bulbasaur, Slot 2" })).toBeVisible();
+  await expect(page.getByRole("article", { name: "Ivysaur, Slot 1" }).getByRole("button", { name: "Verschieben" })).toBeVisible();
+});
+
+test("shows a visible storage error when IndexedDB is unavailable", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(window, "indexedDB", { configurable: true, value: undefined });
+  });
+  await page.goto("/");
+
+  await expect(page.getByText("IndexedDB is not available in this environment.")).toBeVisible();
+  await expect(page.getByText("Speicher: error")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Erneut versuchen" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Backup exportieren" }).first()).toBeVisible();
+});
+
+test("keeps the 3 x 3 grid usable on mobile and supports drawer focus and Escape", async ({
+  page,
+}) => {
+  await page.setViewportSize({ height: 812, width: 375 });
+  await page.goto("/");
+  await page.getByLabel("Bindername").fill("Mobile Binder");
+  await page.getByRole("button", { name: "Erstellen" }).click();
+
+  await expect(page.getByRole("button", { name: /Freier Platz \d+, Karte einsetzen/ })).toHaveCount(9);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(375);
+
+  await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
+  const search = page.getByPlaceholder("Mindestens zwei Buchstaben");
+  await expect(search).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog", { name: "Karte suchen" })).toBeHidden();
+});

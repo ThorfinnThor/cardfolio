@@ -1,0 +1,136 @@
+import { fireEvent, render, screen, cleanup } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { MissingCardsPanel } from "@/components/foundation/MissingCardsPanel";
+import type { MissingItem } from "@/domain/types";
+
+afterEach(() => cleanup());
+
+const items: MissingItem[] = [
+  {
+    identityKey: "pikachu",
+    card: {
+      key: "tcgdex:basep-1:en",
+      ref: { provider: "tcgdex", id: "basep-1", language: "en" },
+      name: "Pikachu",
+      setId: "basep",
+      setName: "Wizards Black Star Promos",
+      collectorNumber: "001",
+      physicalStatus: "physical",
+      fetchedAt: "2026-09-27T00:00:00.000Z",
+    },
+    variant: { finish: "normal", edition: "unlimited" },
+    preferences: { minimumCondition: "near-mint" },
+    quantity: 2,
+    entryIds: ["00000000-0000-4000-8000-000000000001"],
+  },
+  {
+    identityKey: "bulbasaur",
+    card: {
+      key: "tcgdex:base1-44:en",
+      ref: { provider: "tcgdex", id: "base1-44", language: "en" },
+      name: "Bulbasaur",
+      setId: "base1",
+      setName: "Base Set",
+      collectorNumber: "044",
+      physicalStatus: "physical",
+      fetchedAt: "2026-09-27T00:00:00.000Z",
+    },
+    variant: { finish: "normal", edition: "unlimited" },
+    preferences: { minimumCondition: "any" },
+    quantity: 1,
+    entryIds: ["00000000-0000-4000-8000-000000000002"],
+  },
+];
+
+function props() {
+  return {
+    items,
+    warnings: [],
+    copyState: "idle" as const,
+    onCopy: vi.fn(),
+    onTextExport: vi.fn(),
+    onCsvExport: vi.fn(),
+    onClose: vi.fn(),
+  };
+}
+
+describe("MissingCardsPanel", () => {
+  it("shows missing positions and sends the filtered list to copy", () => {
+    const panelProps = props();
+    render(<MissingCardsPanel {...panelProps} />);
+
+    expect(screen.getByRole("heading", { name: "Fehlende Karten" })).toBeInTheDocument();
+    expect(screen.getByText("Pikachu")).toBeInTheDocument();
+    expect(screen.getByText("Bulbasaur")).toBeInTheDocument();
+
+    fireEvent.change(screen.getByRole("textbox", { name: "Fehlkarten filtern" }), { target: { value: "pikachu" } });
+    expect(screen.getByText("Pikachu")).toBeInTheDocument();
+    expect(screen.queryByText("Bulbasaur")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Liste kopieren" }));
+
+    expect(panelProps.onCopy).toHaveBeenCalledWith([items[0]]);
+  });
+
+  it("explains when clipboard permission is missing and keeps file exports available", () => {
+    const panelProps = { ...props(), copyState: "error" as const };
+    render(<MissingCardsPanel {...panelProps} />);
+
+    expect(screen.getByRole("status")).toHaveTextContent("Kopieren wurde vom Browser nicht erlaubt");
+    expect(screen.getByRole("button", { name: "TXT" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "CSV" })).toBeEnabled();
+  });
+
+  it("previews only verified TCGplayer lines and keeps excluded candidates visible", () => {
+    const onTcgplayerCopy = vi.fn();
+    const onTcgplayerTextExport = vi.fn();
+    render(
+      <MissingCardsPanel
+        {...props()}
+        tcgplayerEnabled
+        onTcgplayerCopy={onTcgplayerCopy}
+        onTcgplayerTextExport={onTcgplayerTextExport}
+      />,
+    );
+
+    expect(screen.getByRole("heading", { name: "TCGplayer Mass Entry" })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue("1 Bulbasaur [BS] 044/102");
+    expect(screen.getByText(/2× Pikachu · Wizards Black Star Promos · 001/)).toBeInTheDocument();
+    expect(screen.getByText(/Kandidat: Für dieses TCGdex-Set/)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /TCGplayer öffnen/ })).toHaveAttribute("rel", "noopener noreferrer");
+
+    fireEvent.click(screen.getByRole("button", { name: "TCGplayer kopieren" }));
+    fireEvent.click(screen.getByRole("button", { name: "TCGplayer TXT" }));
+
+    expect(onTcgplayerCopy).toHaveBeenCalledWith(expect.objectContaining({ text: "1 Bulbasaur [BS] 044/102", verifiedCount: 1 }));
+    expect(onTcgplayerTextExport).toHaveBeenCalledWith(expect.objectContaining({ text: "1 Bulbasaur [BS] 044/102", reviewRequiredCount: 1 }));
+  });
+
+  it("shows Cardmarket as a review-only handoff and keeps the printing details visible", () => {
+    const onCardmarketCopy = vi.fn();
+    const onCardmarketTextExport = vi.fn();
+    render(
+      <MissingCardsPanel
+        {...props()}
+        cardmarketEnabled
+        onCardmarketCopy={onCardmarketCopy}
+        onCardmarketTextExport={onCardmarketTextExport}
+      />,
+    );
+
+    expect(screen.getByRole("heading", { name: "Cardmarket Prüfliste" })).toBeInTheDocument();
+    expect(screen.getByText(/Keine Exakt-Garantie/)).toBeInTheDocument();
+    expect(screen.getByText(/kein automatisch zuordenbarer Pokémon-Decklistenimport/)).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Cardmarket-Prüflistenvorschau" })).toHaveValue(
+      "2x Pikachu | Wizards Black Star Promos | Nr. 001 | EN | Normal | Unlimited | Near Mint\n1x Bulbasaur | Base Set | Nr. 044 | EN | Normal | Unlimited | Beliebig",
+    );
+    expect(screen.getByRole("link", { name: /Auf Cardmarket suchen/ })).toHaveAttribute("rel", "noopener noreferrer");
+    expect(screen.getByRole("link", { name: "Offizielles Importformat" })).toHaveAttribute("rel", "noopener noreferrer");
+
+    fireEvent.click(screen.getByRole("button", { name: "Prüfliste kopieren" }));
+    fireEvent.click(screen.getByRole("button", { name: "Prüfliste TXT" }));
+
+    expect(onCardmarketCopy).toHaveBeenCalledWith(expect.objectContaining({ index: 1, positionCount: 2 }));
+    expect(onCardmarketTextExport).toHaveBeenCalledWith(expect.objectContaining({ index: 1, positionCount: 2 }));
+  });
+});

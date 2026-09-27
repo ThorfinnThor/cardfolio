@@ -1,0 +1,1246 @@
+{
+  "source": "tcgdex",
+  "language": "de",
+  "items": [
+    {
+      "id": "30th",
+      "name": "30 Jahre",
+      "cardCount": {
+        "official": 128,
+        "total": 161
+      }
+    },
+    {
+      "id": "30th-c",
+      "name": "30 Jahre: Klassische Sammlung",
+      "cardCount": {
+        "official": 30,
+        "total": 30
+      }
+    },
+    {
+      "id": "A1",
+      "name": "Unschlagbare Gene",
+      "cardCount": {
+        "official": 226,
+        "total": 286
+      }
+    },
+    {
+      "id": "A1a",
+      "name": "Mysteriöse Insel",
+      "cardCount": {
+        "official": 68,
+        "total": 86
+      }
+    },
+    {
+      "id": "A2",
+      "name": "Kollision von Raum und Zeit",
+      "cardCount": {
+        "official": 140,
+        "total": 207
+      }
+    },
+    {
+      "id": "A2a",
+      "name": "Licht des Triumphs",
+      "cardCount": {
+        "official": 75,
+        "total": 96
+      }
+    },
+    {
+      "id": "A2b",
+      "name": "Glänzendes Festival",
+      "cardCount": {
+        "official": 72,
+        "total": 111
+      }
+    },
+    {
+      "id": "A3",
+      "name": "Hüter des Firmaments",
+      "cardCount": {
+        "official": 155,
+        "total": 239
+      }
+    },
+    {
+      "id": "A4a",
+      "name": "Verborgene Quelle",
+      "cardCount": {
+        "official": 71,
+        "total": 71
+      }
+    },
+    {
+      "id": "B1a",
+      "name": "Feuerrote Flammen",
+      "cardCount": {
+        "official": 69,
+        "total": 69
+      }
+    },
+    {
+      "id": "B2",
+      "name": "Traumhafte Parade",
+      "cardCount": {
+        "official": 155,
+        "total": 155
+      }
+    },
+    {
+      "id": "B2a",
+      "name": "Paldean Wonders",
+      "cardCount": {
+        "official": 93,
+        "total": 129
+      }
+    },
+    {
+      "id": "base1",
+      "name": "Grundset",
+      "cardCount": {
+        "official": 102,
+        "total": 102
+      }
+    },
+    {
+      "id": "base2",
+      "name": "Dschungel",
+      "cardCount": {
+        "official": 64,
+        "total": 64
+      }
+    },
+    {
+      "id": "base3",
+      "name": "Fossil",
+      "cardCount": {
+        "official": 62,
+        "total": 62
+      }
+    },
+    {
+      "id": "base5",
+      "name": "Team Rocket",
+      "cardCount": {
+        "official": 82,
+        "total": 83
+      }
+    },
+    {
+      "id": "basep",
+      "name": "Wizards Black Star Promos",
+      "cardCount": {
+        "official": 53,
+        "total": 53
+      }
+    },
+    {
+      "id": "bw1",
+      "name": "Schwarz & Weiß",
+      "cardCount": {
+        "official": 114,
+        "total": 115
+      }
+    },
+    {
+      "id": "bw10",
+      "name": "Plasma-Blaster",
+      "cardCount": {
+        "official": 101,
+        "total": 105
+      }
+    },
+    {
+      "id": "bw2",
+      "name": "Aufstreben der Mächtigen",
+      "cardCount": {
+        "official": 98,
+        "total": 98
+      }
+    },
+    {
+      "id": "bw3",
+      "name": "Königliche Siege",
+      "cardCount": {
+        "official": 101,
+        "total": 102
+      }
+    },
+    {
+      "id": "bw4",
+      "name": "Kommende Schicksale",
+      "cardCount": {
+        "official": 99,
+        "total": 103
+      }
+    },
+    {
+      "id": "bw5",
+      "name": "Erforscher der Finsternis",
+      "cardCount": {
+        "official": 108,
+        "total": 111
+      }
+    },
+    {
+      "id": "bw6",
+      "name": "Hoheit der Drachen",
+      "cardCount": {
+        "official": 124,
+        "total": 128
+      }
+    },
+    {
+      "id": "bw7",
+      "name": "Überschrittene Schwellen",
+      "cardCount": {
+        "official": 149,
+        "total": 153
+      }
+    },
+    {
+      "id": "bw8",
+      "name": "Plasma-Sturm",
+      "cardCount": {
+        "official": 135,
+        "total": 138
+      }
+    },
+    {
+      "id": "bw9",
+      "name": "Plasma-Frost",
+      "cardCount": {
+        "official": 116,
+        "total": 122
+      }
+    },
+    {
+      "id": "bwp",
+      "name": "SW Promokarten",
+      "cardCount": {
+        "official": 101,
+        "total": 101
+      }
+    },
+    {
+      "id": "cel25",
+      "name": "Celebrations",
+      "cardCount": {
+        "official": 25,
+        "total": 25
+      }
+    },
+    {
+      "id": "cel25cc",
+      "name": "Celebrations Klassische Kollektion",
+      "cardCount": {
+        "official": 25,
+        "total": 25
+      }
+    },
+    {
+      "id": "col1",
+      "name": "Ruf der Legenden",
+      "cardCount": {
+        "official": 95,
+        "total": 106
+      }
+    },
+    {
+      "id": "det1",
+      "name": "Meisterdetektiv Pikachu",
+      "cardCount": {
+        "official": 18,
+        "total": 18
+      }
+    },
+    {
+      "id": "dp1",
+      "name": "Diamant & Perl",
+      "cardCount": {
+        "official": 130,
+        "total": 130
+      }
+    },
+    {
+      "id": "dp2",
+      "name": "Geheimnisvolle Schätze",
+      "cardCount": {
+        "official": 123,
+        "total": 124
+      }
+    },
+    {
+      "id": "dp3",
+      "name": "Rätselhafte Wunder",
+      "cardCount": {
+        "official": 132,
+        "total": 132
+      }
+    },
+    {
+      "id": "dp4",
+      "name": "Epische Begegnungen",
+      "cardCount": {
+        "official": 106,
+        "total": 106
+      }
+    },
+    {
+      "id": "dp5",
+      "name": "Majestätischer Morgen",
+      "cardCount": {
+        "official": 100,
+        "total": 100
+      }
+    },
+    {
+      "id": "dp6",
+      "name": "Erwachte Legenden",
+      "cardCount": {
+        "official": 146,
+        "total": 146
+      }
+    },
+    {
+      "id": "dp7",
+      "name": "Sturmtief",
+      "cardCount": {
+        "official": 100,
+        "total": 106
+      }
+    },
+    {
+      "id": "dpp",
+      "name": "Promo DP",
+      "cardCount": {
+        "official": 56,
+        "total": 56
+      }
+    },
+    {
+      "id": "dv1",
+      "name": "Drachengruft",
+      "cardCount": {
+        "official": 20,
+        "total": 20
+      }
+    },
+    {
+      "id": "ecard1",
+      "name": "Expedition",
+      "cardCount": {
+        "official": 165,
+        "total": 165
+      }
+    },
+    {
+      "id": "ecard2",
+      "name": "Aquapolis",
+      "cardCount": {
+        "official": 147,
+        "total": 186
+      }
+    },
+    {
+      "id": "ecard3",
+      "name": "Skyridge",
+      "cardCount": {
+        "official": 144,
+        "total": 182
+      }
+    },
+    {
+      "id": "ex1",
+      "name": "EX Rubin & Saphir",
+      "cardCount": {
+        "official": 109,
+        "total": 109
+      }
+    },
+    {
+      "id": "ex10",
+      "name": "EX Verborgene Mächte",
+      "cardCount": {
+        "official": 115,
+        "total": 117
+      }
+    },
+    {
+      "id": "ex11",
+      "name": "EX Delta Species",
+      "cardCount": {
+        "official": 113,
+        "total": 114
+      }
+    },
+    {
+      "id": "ex12",
+      "name": "EX Legend Maker",
+      "cardCount": {
+        "official": 92,
+        "total": 93
+      }
+    },
+    {
+      "id": "ex13",
+      "name": "EX Holon Phantoms",
+      "cardCount": {
+        "official": 110,
+        "total": 111
+      }
+    },
+    {
+      "id": "ex14",
+      "name": "EX Crystal Guardians",
+      "cardCount": {
+        "official": 100,
+        "total": 100
+      }
+    },
+    {
+      "id": "ex15",
+      "name": "EX Dragon Frontiers",
+      "cardCount": {
+        "official": 101,
+        "total": 101
+      }
+    },
+    {
+      "id": "ex16",
+      "name": "EX Power Keepers",
+      "cardCount": {
+        "official": 108,
+        "total": 108
+      }
+    },
+    {
+      "id": "ex2",
+      "name": "EX Sandsturm",
+      "cardCount": {
+        "official": 100,
+        "total": 100
+      }
+    },
+    {
+      "id": "ex3",
+      "name": "EX Drache",
+      "cardCount": {
+        "official": 97,
+        "total": 100
+      }
+    },
+    {
+      "id": "ex4",
+      "name": "EX Team Magma vs Team Aqua",
+      "cardCount": {
+        "official": 95,
+        "total": 97
+      }
+    },
+    {
+      "id": "ex6",
+      "name": "EX Feuerrot & Blattgrün",
+      "cardCount": {
+        "official": 112,
+        "total": 116
+      }
+    },
+    {
+      "id": "ex8",
+      "name": "EX Deoxys",
+      "cardCount": {
+        "official": 107,
+        "total": 108
+      }
+    },
+    {
+      "id": "ex9",
+      "name": "EX Smaragd",
+      "cardCount": {
+        "official": 106,
+        "total": 107
+      }
+    },
+    {
+      "id": "exu",
+      "name": "EX Verborgene Mächte Icognito",
+      "cardCount": {
+        "official": 28,
+        "total": 28
+      }
+    },
+    {
+      "id": "g1",
+      "name": "Generationen",
+      "cardCount": {
+        "official": 83,
+        "total": 117
+      }
+    },
+    {
+      "id": "hgss1",
+      "name": "HeartGold SoulSilver",
+      "cardCount": {
+        "official": 123,
+        "total": 124
+      }
+    },
+    {
+      "id": "hgss2",
+      "name": "Entfesselt",
+      "cardCount": {
+        "official": 95,
+        "total": 96
+      }
+    },
+    {
+      "id": "hgss3",
+      "name": "Unerschrocken",
+      "cardCount": {
+        "official": 90,
+        "total": 91
+      }
+    },
+    {
+      "id": "hgss4",
+      "name": "Triumph",
+      "cardCount": {
+        "official": 102,
+        "total": 103
+      }
+    },
+    {
+      "id": "hgssp",
+      "name": "Promo HGSS",
+      "cardCount": {
+        "official": 25,
+        "total": 25
+      }
+    },
+    {
+      "id": "me01",
+      "name": "Mega-Entwicklung",
+      "cardCount": {
+        "official": 132,
+        "total": 188
+      }
+    },
+    {
+      "id": "me02",
+      "name": "Fatale Flammen",
+      "cardCount": {
+        "official": 94,
+        "total": 130
+      }
+    },
+    {
+      "id": "me02.5",
+      "name": "Erhabene Helden",
+      "cardCount": {
+        "official": 217,
+        "total": 295
+      }
+    },
+    {
+      "id": "me03",
+      "name": "Optimale Ordnung",
+      "cardCount": {
+        "official": 88,
+        "total": 124
+      }
+    },
+    {
+      "id": "me04",
+      "name": "Wachsendes Chaos",
+      "cardCount": {
+        "official": 86,
+        "total": 122
+      }
+    },
+    {
+      "id": "me05",
+      "name": "Dunkelnacht",
+      "cardCount": {
+        "official": 84,
+        "total": 120
+      }
+    },
+    {
+      "id": "mee",
+      "name": "Mega-Entwicklung Energie",
+      "cardCount": {
+        "official": 16,
+        "total": 16
+      }
+    },
+    {
+      "id": "mep",
+      "name": "MEP Black Star Promos",
+      "cardCount": {
+        "official": 0,
+        "total": 80
+      }
+    },
+    {
+      "id": "neo1",
+      "name": "Neo Genesis",
+      "cardCount": {
+        "official": 111,
+        "total": 111
+      }
+    },
+    {
+      "id": "neo2",
+      "name": "Neo Entdeckung",
+      "cardCount": {
+        "official": 75,
+        "total": 75
+      }
+    },
+    {
+      "id": "neo3",
+      "name": "Neo Revelation",
+      "cardCount": {
+        "official": 64,
+        "total": 66
+      }
+    },
+    {
+      "id": "neo4",
+      "name": "Neo Destiny",
+      "cardCount": {
+        "official": 105,
+        "total": 113
+      }
+    },
+    {
+      "id": "P-A",
+      "name": "PROMO-A",
+      "cardCount": {
+        "official": 0,
+        "total": 99
+      }
+    },
+    {
+      "id": "pl1",
+      "name": "Platin",
+      "cardCount": {
+        "official": 127,
+        "total": 133
+      }
+    },
+    {
+      "id": "pl2",
+      "name": "Aufstieg der Rivalen",
+      "cardCount": {
+        "official": 111,
+        "total": 120
+      }
+    },
+    {
+      "id": "pl3",
+      "name": "Ultimative Sieger",
+      "cardCount": {
+        "official": 147,
+        "total": 153
+      }
+    },
+    {
+      "id": "pl4",
+      "name": "Arceus",
+      "cardCount": {
+        "official": 99,
+        "total": 111
+      }
+    },
+    {
+      "id": "sm1",
+      "name": "Sonne & Mond",
+      "cardCount": {
+        "official": 149,
+        "total": 172
+      }
+    },
+    {
+      "id": "sm10",
+      "name": "Kräfte im Einklang",
+      "cardCount": {
+        "official": 214,
+        "total": 234
+      }
+    },
+    {
+      "id": "sm11",
+      "name": "Bund der Gleichgesinnten",
+      "cardCount": {
+        "official": 236,
+        "total": 258
+      }
+    },
+    {
+      "id": "sm115",
+      "name": "Verborgenes Schicksal",
+      "cardCount": {
+        "official": 68,
+        "total": 69
+      }
+    },
+    {
+      "id": "sm12",
+      "name": "Welten im Wandel",
+      "cardCount": {
+        "official": 236,
+        "total": 271
+      }
+    },
+    {
+      "id": "sm2",
+      "name": "Stunde der Wächter",
+      "cardCount": {
+        "official": 145,
+        "total": 169
+      }
+    },
+    {
+      "id": "sm3",
+      "name": "Nacht in Flammen",
+      "cardCount": {
+        "official": 147,
+        "total": 169
+      }
+    },
+    {
+      "id": "sm3.5",
+      "name": "Schimmernde Legenden",
+      "cardCount": {
+        "official": 73,
+        "total": 78
+      }
+    },
+    {
+      "id": "sm4",
+      "name": "Aufziehen der Sturmröte",
+      "cardCount": {
+        "official": 111,
+        "total": 125
+      }
+    },
+    {
+      "id": "sm5",
+      "name": "Ultra-Prisma",
+      "cardCount": {
+        "official": 156,
+        "total": 173
+      }
+    },
+    {
+      "id": "sm6",
+      "name": "Grauen Der Lichtfinsternis",
+      "cardCount": {
+        "official": 131,
+        "total": 146
+      }
+    },
+    {
+      "id": "sm7",
+      "name": "Sturm Am Firmament",
+      "cardCount": {
+        "official": 168,
+        "total": 183
+      }
+    },
+    {
+      "id": "sm7.5",
+      "name": "Majestät Der Drachen",
+      "cardCount": {
+        "official": 70,
+        "total": 78
+      }
+    },
+    {
+      "id": "sm8",
+      "name": "Echo des Donners",
+      "cardCount": {
+        "official": 214,
+        "total": 236
+      }
+    },
+    {
+      "id": "sm9",
+      "name": "Teams Sind Trumpf",
+      "cardCount": {
+        "official": 181,
+        "total": 196
+      }
+    },
+    {
+      "id": "sma",
+      "name": "Verborgenes Schicksal Glitzer-Tresor",
+      "cardCount": {
+        "official": 94,
+        "total": 94
+      }
+    },
+    {
+      "id": "smp",
+      "name": "SM Promokarten",
+      "cardCount": {
+        "official": 248,
+        "total": 248
+      }
+    },
+    {
+      "id": "sv01",
+      "name": "Karmesin & Purpur",
+      "cardCount": {
+        "official": 198,
+        "total": 258
+      }
+    },
+    {
+      "id": "sv02",
+      "name": "Entwicklungen in Paldea",
+      "cardCount": {
+        "official": 193,
+        "total": 279
+      }
+    },
+    {
+      "id": "sv03",
+      "name": "Obsidian Flammen",
+      "cardCount": {
+        "official": 197,
+        "total": 230
+      }
+    },
+    {
+      "id": "sv03.5",
+      "name": "151",
+      "cardCount": {
+        "official": 165,
+        "total": 207
+      }
+    },
+    {
+      "id": "sv04",
+      "name": "Paradoxrift",
+      "cardCount": {
+        "official": 182,
+        "total": 266
+      }
+    },
+    {
+      "id": "sv04.5",
+      "name": "Paldeas Schicksale",
+      "cardCount": {
+        "official": 91,
+        "total": 245
+      }
+    },
+    {
+      "id": "sv05",
+      "name": "Gewalten der Zeit",
+      "cardCount": {
+        "official": 162,
+        "total": 218
+      }
+    },
+    {
+      "id": "sv06",
+      "name": "Maskerade im Zwielicht",
+      "cardCount": {
+        "official": 167,
+        "total": 226
+      }
+    },
+    {
+      "id": "sv06.5",
+      "name": "Nebel der Sagen",
+      "cardCount": {
+        "official": 64,
+        "total": 99
+      }
+    },
+    {
+      "id": "sv07",
+      "name": "Stellarkrone",
+      "cardCount": {
+        "official": 142,
+        "total": 175
+      }
+    },
+    {
+      "id": "sv08",
+      "name": "Stürmische Funken",
+      "cardCount": {
+        "official": 191,
+        "total": 252
+      }
+    },
+    {
+      "id": "sv08.5",
+      "name": "Prismatische Entwicklungen",
+      "cardCount": {
+        "official": 131,
+        "total": 180
+      }
+    },
+    {
+      "id": "sv09",
+      "name": "Reisegefährten",
+      "cardCount": {
+        "official": 159,
+        "total": 190
+      }
+    },
+    {
+      "id": "sv10",
+      "name": "Ewige Rivalen",
+      "cardCount": {
+        "official": 182,
+        "total": 244
+      }
+    },
+    {
+      "id": "sv10.5b",
+      "name": "Schwarze Blitze",
+      "cardCount": {
+        "official": 86,
+        "total": 172
+      }
+    },
+    {
+      "id": "sv10.5w",
+      "name": "Weiße Flammen",
+      "cardCount": {
+        "official": 86,
+        "total": 173
+      }
+    },
+    {
+      "id": "sve",
+      "name": "Karmesin & Purpur Energie",
+      "cardCount": {
+        "official": 24,
+        "total": 24
+      }
+    },
+    {
+      "id": "svp",
+      "name": "SVP Black Star Promos",
+      "cardCount": {
+        "official": 225,
+        "total": 225
+      }
+    },
+    {
+      "id": "swsh1",
+      "name": "Schwert & Schild",
+      "cardCount": {
+        "official": 202,
+        "total": 216
+      }
+    },
+    {
+      "id": "swsh10",
+      "name": "Astralglanz",
+      "cardCount": {
+        "official": 189,
+        "total": 216
+      }
+    },
+    {
+      "id": "swsh10.5",
+      "name": "Pokémon GO",
+      "cardCount": {
+        "official": 78,
+        "total": 88
+      }
+    },
+    {
+      "id": "swsh10tg",
+      "name": "Astralglanz Trainer-Galerie",
+      "cardCount": {
+        "official": 30,
+        "total": 30
+      }
+    },
+    {
+      "id": "swsh11",
+      "name": "Verlorener Ursprung",
+      "cardCount": {
+        "official": 196,
+        "total": 217
+      }
+    },
+    {
+      "id": "swsh11tg",
+      "name": "Verlorener Ursprung Trainer-Galerie",
+      "cardCount": {
+        "official": 30,
+        "total": 30
+      }
+    },
+    {
+      "id": "swsh12",
+      "name": "Silberne Sturmwinde",
+      "cardCount": {
+        "official": 195,
+        "total": 215
+      }
+    },
+    {
+      "id": "swsh12.5",
+      "name": "Zenit der Könige",
+      "cardCount": {
+        "official": 159,
+        "total": 160
+      }
+    },
+    {
+      "id": "swsh12.5gg",
+      "name": "Zenit der Könige Galar-Galerie",
+      "cardCount": {
+        "official": 70,
+        "total": 70
+      }
+    },
+    {
+      "id": "swsh12tg",
+      "name": "Silberne Sturmwinde Trainer-Galerie",
+      "cardCount": {
+        "official": 30,
+        "total": 30
+      }
+    },
+    {
+      "id": "swsh2",
+      "name": "Clash der Rebellen",
+      "cardCount": {
+        "official": 192,
+        "total": 209
+      }
+    },
+    {
+      "id": "swsh3",
+      "name": "Flammende Finsternis",
+      "cardCount": {
+        "official": 189,
+        "total": 201
+      }
+    },
+    {
+      "id": "swsh3.5",
+      "name": "Weg des Champs",
+      "cardCount": {
+        "official": 73,
+        "total": 80
+      }
+    },
+    {
+      "id": "swsh4",
+      "name": "Farbenschock",
+      "cardCount": {
+        "official": 185,
+        "total": 203
+      }
+    },
+    {
+      "id": "swsh4.5",
+      "name": "Glänzendes Schicksal",
+      "cardCount": {
+        "official": 72,
+        "total": 73
+      }
+    },
+    {
+      "id": "swsh4.5sv",
+      "name": "Glänzendes Schicksal Glitzer-Tresor",
+      "cardCount": {
+        "official": 122,
+        "total": 122
+      }
+    },
+    {
+      "id": "swsh5",
+      "name": "Kampfstile",
+      "cardCount": {
+        "official": 163,
+        "total": 183
+      }
+    },
+    {
+      "id": "swsh6",
+      "name": "Schaurige Herrschaft",
+      "cardCount": {
+        "official": 198,
+        "total": 233
+      }
+    },
+    {
+      "id": "swsh7",
+      "name": "Drachenwandel",
+      "cardCount": {
+        "official": 203,
+        "total": 237
+      }
+    },
+    {
+      "id": "swsh8",
+      "name": "Fusionsangriff",
+      "cardCount": {
+        "official": 264,
+        "total": 284
+      }
+    },
+    {
+      "id": "swsh9",
+      "name": "Strahlende Sterne",
+      "cardCount": {
+        "official": 172,
+        "total": 186
+      }
+    },
+    {
+      "id": "swsh9tg",
+      "name": "Strahlende Sterne Trainer-Galerie",
+      "cardCount": {
+        "official": 30,
+        "total": 30
+      }
+    },
+    {
+      "id": "swshp",
+      "name": "SCSC Promokarten",
+      "cardCount": {
+        "official": 307,
+        "total": 307
+      }
+    },
+    {
+      "id": "xy0",
+      "name": "Willkommen in Kalos",
+      "cardCount": {
+        "official": 39,
+        "total": 39
+      }
+    },
+    {
+      "id": "xy1",
+      "name": "XY",
+      "cardCount": {
+        "official": 146,
+        "total": 146
+      }
+    },
+    {
+      "id": "xy10",
+      "name": "Schicksalsschmiede",
+      "cardCount": {
+        "official": 124,
+        "total": 129
+      }
+    },
+    {
+      "id": "xy11",
+      "name": "Dampfkessel",
+      "cardCount": {
+        "official": 114,
+        "total": 116
+      }
+    },
+    {
+      "id": "xy12",
+      "name": "Evolution",
+      "cardCount": {
+        "official": 108,
+        "total": 113
+      }
+    },
+    {
+      "id": "xy2",
+      "name": "Flammenmeer",
+      "cardCount": {
+        "official": 106,
+        "total": 110
+      }
+    },
+    {
+      "id": "xy3",
+      "name": "Fliegende Fäuste",
+      "cardCount": {
+        "official": 111,
+        "total": 114
+      }
+    },
+    {
+      "id": "xy4",
+      "name": "Phantomkräfte",
+      "cardCount": {
+        "official": 119,
+        "total": 124
+      }
+    },
+    {
+      "id": "xy5",
+      "name": "Protoshock",
+      "cardCount": {
+        "official": 160,
+        "total": 164
+      }
+    },
+    {
+      "id": "xy6",
+      "name": "Drachenleuchten",
+      "cardCount": {
+        "official": 108,
+        "total": 112
+      }
+    },
+    {
+      "id": "xy7",
+      "name": "Ewiger Anfang",
+      "cardCount": {
+        "official": 98,
+        "total": 101
+      }
+    },
+    {
+      "id": "xy8",
+      "name": "TURBOstart",
+      "cardCount": {
+        "official": 162,
+        "total": 165
+      }
+    },
+    {
+      "id": "xy9",
+      "name": "TURBOfieber",
+      "cardCount": {
+        "official": 122,
+        "total": 126
+      }
+    },
+    {
+      "id": "xya",
+      "name": "Gelbes-A-Alternativkarten",
+      "cardCount": {
+        "official": 6,
+        "total": 6
+      }
+    },
+    {
+      "id": "xyp",
+      "name": "XY Promokarten",
+      "cardCount": {
+        "official": 211,
+        "total": 211
+      }
+    }
+  ]
+}

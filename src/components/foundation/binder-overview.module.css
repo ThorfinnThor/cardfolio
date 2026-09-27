@@ -1,0 +1,71 @@
+.overview { display: grid; gap: 22px; }
+.overviewHeader { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.eyebrow, .sectionKicker { display: block; color: #155363; font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.overviewHeader h1 { margin: 7px 0 0; color: #17212b; font-size: clamp(2rem, 4vw, 2.7rem); letter-spacing: -.045em; line-height: 1.05; }
+.overviewHeader p { margin: 8px 0 0; color: #52616b; font-size: 14px; }
+.headerActions { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.storageStatus { display: inline-flex; align-items: center; gap: 6px; margin-right: 4px; color: #52616b; font-size: 11px; white-space: nowrap; }
+.statusDot { width: 7px; height: 7px; border-radius: 50%; background: #3d9a62; box-shadow: 0 0 0 3px #e7f1eb; }
+.storageStatus[data-status="saving"] .statusDot { background: #b45309; box-shadow: 0 0 0 3px #fff7ed; }
+.storageStatus[data-status="error"] { color: #b42318; }
+.storageStatus[data-status="error"] .statusDot { background: #b42318; box-shadow: 0 0 0 3px #fff0ef; }
+.primaryButton, .secondaryButton { min-height: 40px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 0 13px; border: 1px solid transparent; border-radius: 6px; font-size: 12px; font-weight: 750; text-decoration: none; cursor: pointer; }
+.primaryButton { background: #155363; color: #fff; }
+.primaryButton:hover { background: #124654; }
+.primaryButton:disabled { opacity: .45; cursor: not-allowed; }
+.secondaryButton { border-color: #dee5e8; background: #fff; color: #17212b; }
+.secondaryButton:hover { border-color: #a5bdc3; }
+.secondaryButton:disabled { opacity: .45; cursor: not-allowed; }
+.metricStrip { display: grid; grid-template-columns: 1.2fr repeat(3, 1fr); min-height: 78px; border: 1px solid #dee5e8; border-radius: 8px; background: #fff; box-shadow: 0 1px 2px rgb(21 42 51 / 4%), 0 8px 24px rgb(21 42 51 / 4%); overflow: hidden; }
+.metricStrip > div { display: flex; align-items: baseline; flex-wrap: wrap; gap: 7px; padding: 15px 17px; border-right: 1px solid #dee5e8; }
+.metricStrip > div:last-child { border-right: 0; }
+.metricStrip > div:first-child { background: #e7f1f3; }
+.metricStrip strong { color: #17212b; font-size: 22px; letter-spacing: -.03em; }
+.metricStrip span { color: #52616b; font-size: 11px; }
+.metricIntro strong { color: #155363; font-size: 28px; }
+.createPanel { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 18px; border: 1px solid #dee5e8; border-radius: 8px; background: #f5f7f8; }
+.createPanel p { margin: 5px 0 0; color: #52616b; font-size: 12px; }
+.createForm { display: flex; gap: 8px; min-width: min(100%, 390px); }
+.createForm input { min-width: 0; flex: 1; height: 40px; padding: 0 11px; border: 1px solid #cdd9dd; border-radius: 6px; background: #fff; color: #17212b; font-size: 12px; }
+.createForm input:focus { border-color: #155363; outline: 3px solid rgb(21 83 99 / 16%); }
+.binderGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.binderCard { position: relative; min-width: 0; border: 1px solid #dee5e8; border-radius: 8px; background: #fff; box-shadow: 0 1px 2px rgb(21 42 51 / 4%); }
+.binderCard:hover, .binderCardActive { border-color: #9bbfc6; box-shadow: 0 7px 20px rgb(21 83 99 / 10%); }
+.binderCardActive { outline: 2px solid rgb(21 83 99 / 15%); }
+.binderCardMain { display: grid; width: 100%; gap: 8px; padding: 16px 16px 15px; border: 0; background: transparent; color: #17212b; text-align: left; cursor: pointer; }
+.binderCardTopline { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px; }
+.binderMark { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 7px; background: #e7f1f3; color: #155363; }
+.binderCardMenu { color: #8a9aa1; }
+.binderCardMain > strong { overflow: hidden; font-size: 16px; text-overflow: ellipsis; white-space: nowrap; }
+.binderCardMeta { overflow: hidden; color: #52616b; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.cardProgress { height: 5px; overflow: hidden; border-radius: 99px; background: #e7f1f3; }
+.cardProgress span { display: block; height: 100%; border-radius: inherit; background: #155363; }
+.binderCardStats { display: flex; justify-content: space-between; color: #52616b; font-size: 10px; }
+.deleteButton { position: absolute; right: 11px; bottom: 10px; display: inline-grid; width: 29px; height: 29px; place-items: center; border: 1px solid transparent; border-radius: 5px; background: transparent; color: #8a9aa1; cursor: pointer; }
+.deleteButton:hover { border-color: #f0c1bd; background: #fff5f4; color: #b42318; }
+.emptyState { display: grid; justify-items: center; gap: 10px; padding: 52px 22px; border: 1px dashed #b8cbd0; border-radius: 8px; background: #f5f7f8; text-align: center; }
+.emptyIcon { display: grid; width: 56px; height: 56px; place-items: center; border-radius: 50%; background: #e7f1f3; color: #155363; }
+.emptyState h2 { margin: 1px 0 0; font-size: 18px; }
+.emptyState p { max-width: 390px; margin: 0 0 7px; color: #52616b; font-size: 12px; line-height: 1.5; }
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+
+@media (max-width: 900px) {
+  .overviewHeader { align-items: flex-start; flex-direction: column; }
+  .headerActions { justify-content: flex-start; }
+  .binderGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .overview { gap: 16px; }
+  .headerActions { width: 100%; }
+  .storageStatus { flex-basis: 100%; margin-bottom: 2px; }
+  .headerActions > .secondaryButton, .headerActions > .primaryButton { flex: 1; }
+  .metricStrip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .metricStrip > div { min-height: 64px; padding: 11px 12px; }
+  .metricStrip > div:nth-child(2) { border-right: 0; border-bottom: 1px solid #dee5e8; }
+  .metricStrip > div:nth-child(1) { border-bottom: 1px solid #dee5e8; }
+  .createPanel { align-items: stretch; flex-direction: column; gap: 11px; padding: 14px; }
+  .createForm { min-width: 0; }
+  .binderGrid { grid-template-columns: 1fr; }
+}
+

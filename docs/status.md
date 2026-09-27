@@ -1,0 +1,267 @@
+# Implementation status
+
+## 2026-09-27 — Foundation package
+
+Implemented:
+
+- CF-01 local runtime and direct TCGdex shell smoke test.
+- CF-02 bounded reuse decision: fresh implementation, no copied source/assets.
+- CF-03 Next.js static-export scaffold, feature flags, Vitest and Playwright configuration.
+- CF-04 domain types, immutable binder actions, statistics, missing-item grouping and validation.
+- CF-05 IndexedDB stores, revision checks and atomic transactions.
+- CF-06 validated JSON backup export/import-as-new path.
+- CF-10 TCGdex search/detail adapter with pagination, cancellation, timeout, bounded retries and Pocket classification from set series.
+- GitHub CI, scheduled public set-data update and Cloudflare Pages setup documentation.
+- Neutral integration UI for binder creation, search, placement, ownership and backup. It is not a final design.
+
+## 2026-09-27 — CF-08 productive Binder overview
+
+Implemented:
+
+- Design 3 Binder overview with local-storage status, collection metrics and responsive binder cards.
+- Create flow with validated binder names and a clear local-only storage explanation.
+- Confirmed delete dialog wired to the revision-checked IndexedDB repository.
+- Empty state and backup import/export actions kept in the same local-first shell.
+
+## 2026-09-27 — CF-09 productive 3×3 binder page
+
+Implemented:
+
+- Persistent 3×3 page grid backed by the selected IndexedDB binder page.
+- Previous/next page controls and a revision-checked “+ Seite” action.
+- Accessible, keyboard-focusable empty slots with clear placement affordance.
+- External card image references rendered with `object-fit: contain`; no image bytes are stored.
+- Design 3 styling for page controls, occupied slots, empty slots and mobile layout.
+
+## 2026-09-27 — CF-11 productive card search and placement
+
+Implemented:
+
+- Search drawer with explicit target-slot context and close action.
+- TCGdex search results with a concrete “In Slot einsetzen” action.
+- Detail fetch and physical-card guard before placement; Pocket/digital cards are rejected.
+- Successful placement stores the normalized card snapshot and closes the drawer.
+- Search is also available without a preselected slot and falls back to the next free slot.
+
+## 2026-09-27 — CF-07 design preview package
+
+Implemented:
+
+- Shared frozen preview fixture with 2 pages, 18 slots, 16 planned cards, 12 owned cards, 4 missing cards and 2 empty slots.
+- `/design-preview/?variant=2` Clean Binder shell with separate KPI cards and overview panel.
+- `/design-preview/?variant=3` Collector Workspace shell with continuous KPI strip and persistent context panel.
+- Shared binder grid, page navigation, selected-card context, search/no-result, missing-card and image-error states.
+- Responsive layouts for desktop, tablet icon rail and mobile drawer-style composition without duplicated editor logic.
+- Component tests covering the fixture counts and both design compositions.
+
+Verification completed:
+
+- Typecheck: passed.
+- ESLint: passed.
+- Vitest: 5 files and 13 tests passed.
+- Static Next.js build: passed; `out/_headers` present.
+- Browser static-preview flow: passed for create, reload, live search, card placement, external image and ownership persistence.
+- Mobile 375 px: passed after correcting the hidden import-field overflow.
+
+Open follow-ups:
+
+- Test German provider data, 404, timeout and missing-image UI in a real browser.
+- Configure GitHub remote and Cloudflare Pages externally.
+- Run the configured Playwright suite on GitHub Actions after the repository remote is connected; local headless Chromium launch is blocked by the macOS shell sandbox.
+
+Design decision: Design 3 — Collector Workspace was explicitly selected and recorded in `docs/decisions.md` and `src/config/product.ts`.
+
+## 2026-09-27 — CF-12 productive card interactions
+
+Implemented:
+
+- Touch-safe and keyboard-reachable ownership, move and remove actions on occupied slots.
+- Explicit move mode with free-slot placement and occupied-slot swapping.
+- Confirmed card removal dialog; local persistence remains revision-checked through IndexedDB.
+- Move/search mode is mutually exclusive so a selected source cannot be lost silently.
+
+Verification completed:
+
+- Typecheck, ESLint, Vitest (5 files, 13 tests) and static Next.js build passed.
+
+Next planned package: CF-13, Sol missing-item derivation and export workflow.
+
+## 2026-09-27 — CF-13 generic missing-card exports
+
+Implemented:
+
+- Neutral text and CSV exporters driven exclusively by `deriveMissingItems` output.
+- Stable columns for quantity, card, set, collector number, language, finish, edition, condition and review guidance.
+- UTF-8 CSV with optional BOM, RFC-style quote escaping and spreadsheet-formula neutralization.
+- Leading-zero collector numbers are protected from spreadsheet coercion.
+- Incomplete variant or physical-printing metadata stays explicit and produces warnings instead of inferred values.
+- Export result metadata reports warnings, exclusions and review-required positions for later marketplace adapters.
+
+Verification completed:
+
+- Typecheck, ESLint, Vitest (6 files, 17 tests) and static Next.js build passed.
+- Tests cover grouped quantities, owned-card exclusion, variant separation, special characters, formula injection, leading zeros, BOM behavior and unknown metadata.
+
+Next planned package: CF-14, Luna missing-card view and backup/export controls.
+
+## 2026-09-27 — CF-14 missing-card view and backup report
+
+Implemented:
+
+- Design 3 Fehlkartenansicht for the active local binder with quantity summary and search filter across name, set and collector number.
+- Copy-to-clipboard action with a clear permission fallback; TXT and UTF-8 CSV downloads remain available when clipboard access is blocked.
+- Per-position language, finish, edition, condition and manual-review status remain visible in the list.
+- Successful JSON backup imports now show a local import report with binder, planned-card and card-snapshot counts plus imported names.
+
+Verification completed:
+
+- Typecheck, ESLint, Vitest (7 files, 19 tests) and static Next.js build passed.
+- Static browser smoke test opened the Fehlkartenansicht, filtered by `pikachu`, copied the list successfully and reported no console errors or warnings.
+
+Next planned package: CF-15, final Design-3 consistency pass across search, dialogs, errors and mobile.
+
+## 2026-09-27 — CF-15 Design-3 consistency pass
+
+Implemented:
+
+- Productive root tokens now use the selected Design 3 Petrol palette; Design 2 remains isolated to the comparison preview.
+- Search drawer, no-result state, error state, notices, confirmation dialogs and import reports share the same Design 3 surface/border/action language.
+- The productive route declares `data-design="design-3"` so automated checks can verify the fixed product choice.
+- Responsive rules keep the 3×3 binder, stack export/actions on narrow screens and use the mobile search-drawer/dialog treatment.
+
+Verification completed:
+
+- Typecheck, ESLint, Vitest (7 files, 19 tests), static Next.js build and `git diff --check` passed.
+- Static browser smoke test verified the Design 3 token values, search drawer, no-result message, remove dialog cancellation, `scrollWidth=1280` without overflow and no console warnings/errors.
+
+Next planned package: CF-16, Sol end-to-end, multi-tab conflict, storage-error and static-preview verification.
+
+## 2026-09-27 — CF-16 end-to-end and conflict hardening
+
+Implemented:
+
+- Four controlled Playwright scenarios cover the complete binder flow with swap, ownership, reload, missing list, JSON export/import, multi-tab conflict, unavailable IndexedDB and 375-pixel drawer behavior.
+- GitHub CI installs Playwright Chromium and runs the E2E suite after typecheck, lint, unit tests and the static build.
+- The static-preview server no longer downloads a runtime package; it serves `out/` with the runner's Python HTTP server.
+- `BroadcastChannel` announces local binder revisions while repository revision checks remain authoritative.
+- Conflicts never overwrite the other tab: the stale tab shows a persistent warning and reloads only after an explicit action.
+- Generic storage errors expose “Erneut versuchen” and “Backup exportieren”; backup export errors are handled visibly.
+- Escape closes the search drawer, whose search field receives focus when opened.
+- The persistence test now models two repository clients writing the same binder revision.
+
+Verification completed:
+
+- Typecheck, ESLint, Vitest (7 files, 19 tests), static Next.js build and `git diff --check` passed.
+- Playwright discovered all 4 E2E cases. Its local Chromium process cannot start inside the macOS command sandbox because the OS denies the Mach rendezvous port before test execution; GitHub Actions is configured to execute the same suite on Ubuntu.
+- Static browser verification passed for multi-tab conflict notification, explicit current-revision reload, drawer focus, Escape handling and `innerWidth=scrollWidth=375`.
+- A controlled two-card JSON backup was imported in a clean local origin; the report showed 1 binder, 2 planned cards and 2 snapshots, with ownership and missing counts restored correctly.
+
+Next planned package: CF-17, Sol TCGplayer text export and matching test set.
+
+## 2026-09-27 — CF-17 TCGplayer text export and matching test set
+
+Implemented:
+
+- TCGplayer Mass Entry exporter with explicit `verified-printing`, `candidate` and `unresolved` states.
+- Small documented set-code whitelist for eight English TCGdex sets; TCGdex IDs are never treated as TCGplayer codes automatically.
+- Separate card-level whitelist for three printings actually exercised in the official parser: Base Set Bulbasaur, Paldea Evolved Sprigatito and Paldea Evolved Magikarp illustration rare.
+- Exact TCGplayer product names and full collector-number forms are stored only for those tested printings.
+- Unmapped sets, untested printings, non-English names, non-physical cards and unsafe multiline fields stay visible but are excluded from the specific Mass Entry block.
+- Design 3 marketplace panel with filtered preview, copy action, TXT download, explicit external Mass Entry link and a visible review list for every exclusion.
+- `tcgplayerTextExport` enabled; URL prefill remains disabled.
+
+Verification completed:
+
+- Typecheck, ESLint, Vitest (8 files, 27 tests), static Next.js build and `git diff --check` passed.
+- Official TCGplayer Mass Entry showed the documented general line structure and the live Pokémon set-code list used by the whitelist.
+- Real parser test: `Bulbasaur [BS] 44` was recognized only with the full displayed collector number; modern Paldea cards required TCGplayer's exact product title including the collector-number suffix.
+- `Sprigatito - 012/193 [PAL] 012/193` and `Magikarp - 203/193 [PAL] 203/193` both resolved and reached the anonymous cart. No checkout or account action was performed.
+- Static browser UI showed one verified line and one excluded candidate, copied only the verified line, disabled the specific export for a candidate-only filter and reported no console issues or framework overlay.
+- Mobile verification reported `innerWidth=375` and `scrollWidth=375`.
+
+Next planned package: CF-18, Sol Cardmarket handoff and edition warning.
+
+## 2026-09-27 — CF-18 Cardmarket handoff and edition warning
+
+Implemented:
+
+- Cardmarket handoff as an explicitly non-exact review list; no card is presented as an automatically verified product match.
+- Every line preserves quantity, original name, set, collector number, language, finish, edition and minimum condition for manual comparison.
+- Lists are split after 150 positions, not after 150 copies, matching Cardmarket's documented Wants-list entry limit.
+- Permanent warnings explain that Cardmarket may resolve another printing or illustration and that every edition must be checked before purchase.
+- Because Cardfolio does not reliably store Pokémon attacks and abilities, the output is labeled as a review list rather than a compatible decklist import.
+- Design 3 panel with part selection, copy, TXT download, official help link and user-initiated Pokémon Singles search.
+
+Verification completed:
+
+- Typecheck, ESLint, Vitest (9 files, 32 tests), static Next.js build and `git diff --check` passed.
+- Tests cover the 150/1 split, position-versus-quantity counting, German names, preserved variant preferences and safe single-line normalization.
+- The production static page rendered the Cardmarket panel with the three warnings, complete original printing metadata and no framework error overlay.
+- The E2E scenario now covers the review warning, preview content and TXT filename. Local execution still cannot start Playwright Chromium because macOS denies its Mach rendezvous port before test code runs; GitHub Actions remains the execution environment for this suite.
+
+Next planned package: CF-19, Sol price-estimate data gate and optional Luna presentation pass.
+
+## 2026-09-27 — CF-19 price-estimate data gate
+
+Implemented:
+
+- Internal `PriceEstimate` contract with integer minor units, explicit provider, currency, metric, source timestamp, variant key and match quality.
+- Strict TCGdex pricing normalizer for the live-confirmed Cardmarket and TCGplayer response shapes.
+- Explicit rejection paths for invalid timestamps/currencies, missing variants, zero/negative/non-finite/fractional-cent amounts and unsupported edition/finish combinations.
+- Candidate-only Cardmarket estimates, no Cardmarket Reverse inference, and no TCGplayer pricing for non-English card identity.
+- A written evidence record in `docs/pricing-gate.md`.
+
+Gate decision:
+
+- `pricing` remains disabled. Live data did not prove language-, edition- and variant-safe coverage, so no price UI, KPI or total was added.
+- The Luna timestamp/coverage presentation pass is intentionally deferred until the data gate can be reopened.
+
+Verification completed:
+
+- Four current live TCGdex card responses were inspected across English/German, vintage/modern and normal/reverse/holo cases.
+- Typecheck, ESLint and Vitest (10 files, 39 tests) passed.
+
+Next planned package: CF-20, Sol + Luna desktop drag-and-drop and additional binder layouts, while retaining tap/keyboard controls.
+
+## 2026-09-27 — CF-20 layouts and optional desktop drag-and-drop
+
+Implemented:
+
+- Supported binder formats are now 2×2, 3×3 and 3×4.
+- Format changes show a confirmation preview with planned-card count, moved positions and resulting page count before any write.
+- Reflow preserves every planned entry ID, ownership state, variant, purchase preference and existing page note; the source binder remains immutable.
+- Existing pages are never removed merely because a larger layout could fit the cards on fewer pages.
+- Mouse drag-and-drop uses the stable `@dnd-kit/core`/`@dnd-kit/utilities` family and the same revision-checked move/swap action as the existing controls.
+- Touch and keyboard users retain the explicit “Verschieben” and “Hierher verschieben” buttons; the drag handle is hidden on narrow screens.
+- The controlled E2E suite now contains a fifth scenario for confirmation, lossless reflow, mouse swap and the retained button alternative.
+
+Verification completed:
+
+- Typecheck, ESLint, Vitest (11 files, 44 tests), static Next.js build and `git diff --check` passed.
+- Domain tests cover 2×2 overflow pages, 3×4 expansion, identity/ownership/variant/note preservation, moved-position previews and unsupported layouts.
+- Component tests verify that mouse drag does not replace the occupied- and empty-target buttons.
+- Static browser verification changed a real local binder from 3×3 to 3×4, retained its card, persisted the format across reload and moved the card using the non-drag button path.
+- The local browser controller does not expose a reliable pointer-drag gesture. The Playwright mouse scenario is committed for GitHub Actions; local Playwright Chromium remains blocked by the documented macOS Mach-port restriction.
+
+Next planned package: CF-21, Sol + human rights, privacy, security and public-release gate review.
+
+## 2026-09-27 — CF-21 rights, privacy, security and release gates
+
+Implemented:
+
+- Public help/data-flow route covering local IndexedDB storage, origin binding, independent JSON backups, external TCGdex requests/images, marketplace handoffs and product limitations.
+- Repository data-flow record and release-gate matrix with explicit passed, conditional and blocked states; no legal-compliance claim is made.
+- Dependency and scaffold provenance record. All direct runtime packages declare reviewed permissive licenses; the complete installed tree was summarized separately from data/image rights.
+- Production design preview disabled; unused Create Next App public SVG assets removed and the default favicon replaced by an original Cardfolio icon.
+- Cloudflare Pages CSP and security headers expanded to the actual static app hosts and capabilities.
+- GitHub Actions pinned to full verified commit SHAs, bounded by timeouts and extended with audit, typecheck, lint, build and automated release checks.
+- Repeatable `release:check` for static output, help route, header policy, disabled risky features, GitHub/Cloudflare separation and runtime licenses.
+- Target-host checklist and exact release-record template for version, commit, build date, origin, schema, browsers, flags, limitations and approvals.
+
+Gate decision:
+
+- Public release remains blocked. A human must decide the repository license and approve the concrete data/image/trademark/name use plus operator/privacy texts.
+- Hosting remains blocked until the GitHub remote and Cloudflare Pages project exist and the production-origin checklist passes.
+- No repository was pushed and no Cloudflare project or deployment was created.
+
+Next planned package: CF-22, human release-input collection plus GitHub/Cloudflare connection and target-host verification after explicit authorization.

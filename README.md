@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cardfolio
 
-## Getting Started
+Local-first Pokémon wish-binder prototype. Binder data and referenced card metadata are stored in the current browser with IndexedDB. The application has no account system and no server-side user database.
 
-First, run the development server:
+Marketplace price indications are disabled because the current provider data does not yet prove language-, edition- and variant-safe matching. See `docs/pricing-gate.md`.
+
+The public-release gate is currently closed pending human data/image-rights review, operator/privacy details, a GitHub remote and verification on the real Cloudflare Pages origin. See `docs/public-release-readiness.md`.
+
+## Local development
+
+Requirements: Node.js 24 and npm 11 or a compatible npm release.
 
 ```bash
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Verification
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run typecheck
+npm run lint
+npm test
+npm run build
+npm run release:check
+```
 
-## Learn More
+The production build is a static export in `out/`. Browser E2E requires Playwright Chromium:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npx playwright install chromium
+npm run test:e2e
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Public data updates
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`npm run data:sync` fetches and validates only public English and German TCGdex set metadata. It never reads browser data or downloads card images. The scheduled GitHub workflow commits a change only when the validated data differs.
 
-## Deploy on Vercel
+## Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Cloudflare Pages is connected to the GitHub repository and owns builds and deployments:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Production branch: `main`
+- Build command: `npm run build`
+- Output directory: `out`
+- Node version: `24`
+
+See `docs/cloudflare-pages.md` before connecting the remote project. A public deployment is intentionally not created by this repository setup.
+
+## Release and third-party records
+
+- `THIRD_PARTY_NOTICES.md`: dependency, scaffold and external-data review record.
+- `docs/privacy-and-data-flow.md`: actual local/browser/network data flows and operator follow-ups.
+- `docs/release-record-template.md`: evidence required for an exact public build.
