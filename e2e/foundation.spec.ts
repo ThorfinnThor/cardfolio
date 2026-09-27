@@ -75,6 +75,7 @@ async function addCard(page: Page, slot: number, query: string, cardName: string
     .filter({ hasText: cardName })
     .getByRole("button", { name: "In Slot einsetzen" })
     .click();
+  await expect(page.getByRole("article", { name: `${cardName}, Slot ${slot}` })).toBeVisible();
 }
 
 test("completes the local-first binder, ownership, missing-list, and backup flow", async ({
@@ -91,7 +92,7 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   await addCard(page, 2, "Ivysaur", "Ivysaur");
 
   await page.getByRole("article", { name: "Bulbasaur, Slot 1" }).getByRole("button", { name: "Verschieben" }).click();
-  await page.getByRole("article", { name: "Ivysaur, Slot 2" }).getByRole("button", { name: "Hierher verschieben" }).click();
+  await page.getByRole("button", { name: "Hierher verschieben", exact: true }).click();
   await page.getByRole("article", { name: "Bulbasaur, Slot 2" }).getByRole("button", { name: "Als vorhanden markieren" }).click();
 
   await page.reload();
@@ -179,9 +180,16 @@ test("confirms a lossless layout change and keeps mouse drag optional", async ({
   const targetBox = await target.boundingBox();
   expect(sourceBox).toBeTruthy();
   expect(targetBox).toBeTruthy();
-  await page.mouse.move((sourceBox?.x ?? 0) + (sourceBox?.width ?? 0) / 2, (sourceBox?.y ?? 0) + (sourceBox?.height ?? 0) / 2);
+  const sourceX = (sourceBox?.x ?? 0) + (sourceBox?.width ?? 0) / 2;
+  const sourceY = (sourceBox?.y ?? 0) + (sourceBox?.height ?? 0) / 2;
+  const targetX = (targetBox?.x ?? 0) + (targetBox?.width ?? 0) / 2;
+  const targetY = (targetBox?.y ?? 0) + (targetBox?.height ?? 0) / 2;
+  await page.mouse.move(sourceX, sourceY);
   await page.mouse.down();
-  await page.mouse.move((targetBox?.x ?? 0) + (targetBox?.width ?? 0) / 2, (targetBox?.y ?? 0) + (targetBox?.height ?? 0) / 2, { steps: 8 });
+  await page.mouse.move(sourceX + 10, sourceY, { steps: 3 });
+  await expect(page.locator('[class*="dragOverlay"]')).toContainText("Bulbasaur");
+  await page.mouse.move(targetX, targetY, { steps: 20 });
+  await expect(page.locator('[data-drag-over="true"]')).toContainText("Ivysaur");
   await page.mouse.up();
 
   await expect(page.getByText("Karten wurden getauscht.")).toBeVisible();
