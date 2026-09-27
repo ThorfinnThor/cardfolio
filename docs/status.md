@@ -335,3 +335,15 @@ Completed:
 - Added focused parser/adapter tests and a seventh Playwright scenario covering exact result filtering, insertion and persisted full-number display.
 - GitHub CI run `36336618305` passed audit, typecheck, lint, 49 unit/component tests, build, release checks and all seven browser scenarios for commit `30561f1bef5575cbce6ee214f8b6ab1eab99243e`.
 - Cloudflare deployment `5ba85d1a-cd4b-4b66-b624-3f725f50af0b` succeeded. The production alias returned exactly one visible result for `Charizard 04/102`: `Charizard · EN · Nr. 4/102`.
+
+## 2026-09-27 — CF-27 images, complete numbers and printing variants
+
+Completed:
+
+- German cards without localized artwork now request the English TCGdex card image for the same card ID. If neither language has artwork, the honest placeholder remains; stored cards expose `Kartendaten aktualisieren` so they need not be removed and re-added.
+- Every search result now combines the synchronized German/English set counts with a targeted card-detail fallback when a new set is not yet present in the weekly snapshot. The live `Glurak` list displayed full numbers including `001/30`, `1/15`, `3/70`, `4/100`, `4/82` and `4/102`.
+- Card snapshots retain TCGdex availability flags for Normal, Holo, Reverse Holo and First Edition.
+- Binder entries now store Finish, Edition and a separate printing choice: Shadowless, With Shadow/Standard or unspecified. Shadowless is explicitly manual because TCGdex does not expose it as a structured variant.
+- Selected variants are visible on binder cards, included in missing-card grouping, generic exports and Cardmarket review lists. Partial legacy selections visibly identify the open field.
+- CI run `36338067792` passed audit, typecheck, lint, 53 unit/component tests, build, release checks and all seven Playwright scenarios for commit `33b801f17783c16d6ef19cbd463a7303a7eba041`.
+- Cloudflare deployment `fd3f7b29-10a5-44f9-b286-abc47493c4d9` succeeded; the production alias passed the full-number and variant-dialog live checks without changing binder content.

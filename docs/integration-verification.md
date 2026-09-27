@@ -233,3 +233,13 @@ Environment: live TCGdex endpoints, GitHub-hosted Chromium and Cloudflare Pages 
 - The adapter applies exact normalized local-number filtering, loads only the remaining candidate details and rejects cards whose official set total differs.
 - CI run `36336618305` passed all seven Playwright scenarios, including exact matching against competing `4/100` and `14` fixtures and the full-number binder display.
 - On `https://cardfolio-780.pages.dev/`, the refreshed production alias returned one result: `Charizard · EN · Nr. 4/102`. The verification did not insert or alter a card.
+
+## CF-27 image and printing-variant regression — 2026-09-27
+
+Environment: live TCGdex German/English card endpoints, synchronized set metadata, GitHub-hosted Chromium and Cloudflare Pages deployment `fd3f7b29-10a5-44f9-b286-abc47493c4d9`.
+
+- TCGdex German Base Set Charizard has no image while the English card with the same `base1-4` ID exposes a valid image. The adapter test confirms that the German snapshot keeps its German identity and receives only the English artwork URL.
+- TCGdex detail metadata exposes Normal, Holo, Reverse and First Edition booleans. It has no Shadowless field; the UI therefore labels Shadowless as manual rather than inferred.
+- The binder version editor persists Finish, Edition, printing and an optional custom label. The E2E flow selects and displays `Holo · First Edition · Shadowless` for the German fixture.
+- Live `glurak` search returned a denominator for every visible result. Set `2024sv`, which was absent from the synchronized snapshot, was completed through one targeted card-detail request as `1/15`.
+- A legacy entry rendered `Normal · Unlimited · Offen: Druckvariante`; its image placeholder exposed `Kartendaten aktualisieren`. The version dialog was opened and cancelled without changing stored data.
