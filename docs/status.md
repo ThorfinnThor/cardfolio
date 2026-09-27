@@ -367,3 +367,18 @@ Design audit:
 - The productive UI uses the Design 3 palette, KPI strip and some responsive behavior, but it is not yet a faithful implementation of the selected reference.
 - In particular, the reference's application shell, dense binder presentation and persistent right context panel with mutually exclusive details/search/purchase modes are still missing from the productive route.
 - Earlier status wording that called the productive overview and page “Design 3” described partial styling, not complete visual acceptance. Full Design 3 alignment remains open and must receive its own implementation and viewport review.
+
+## 2026-09-27 — CF-29 faithful Design 3 workspace
+
+Completed:
+
+- Rebuilt the productive route around the selected Design 3 application shell: fixed desktop navigation, compact breadcrumb/search header, continuous KPI strip, dark binder surface and a persistent right context panel.
+- Card search, page summary and selected-card details now occupy the same mutually exclusive context area. Repeated ownership, variant, move and remove controls were removed from every binder tile and consolidated in the selected-card panel.
+- Binder cards expose the name, complete collector number, current variant and ownership state at a glance. German catalog entries that use an English fallback image are marked `Bild auf Englisch` in both the binder and detail panel.
+- Added responsive Design 3 behavior: the desktop sidebar collapses, primary binder actions remain reachable in a sticky mobile action bar, and search/card details become focused bottom sheets.
+- Updated component and browser scenarios for the new interaction model, including card selection before ownership, variant and move actions.
+
+Verification completed:
+
+- Typecheck, ESLint, 54 unit/component tests, static Next.js build, release checks and `git diff --check` passed locally.
+- Interactive browser verification covered binder creation, bilingual Pikachu search, the German-only filter, insertion with a complete collector number, English-image disclosure, selected-card actions and a 375 × 812 mobile viewport. No browser-console warnings or errors were emitted.

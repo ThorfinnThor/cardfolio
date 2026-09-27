@@ -33,21 +33,18 @@ const page: BinderPage = {
 };
 
 describe("BinderGrid", () => {
-  it("keeps button-based move and placement controls alongside mouse drag", () => {
+  it("opens card details and keeps empty-slot placement controls", () => {
     const onOpenSearch = vi.fn();
-    const onSelectMoveSource = vi.fn();
+    const onSelectCard = vi.fn();
     render(
       <BinderGrid
         page={page}
         columns={2}
         cards={new Map([[card.key, card]])}
         onOpenSearch={onOpenSearch}
-        onSelectMoveSource={onSelectMoveSource}
+        onSelectCard={onSelectCard}
         onMove={vi.fn()}
-        onToggleOwned={vi.fn()}
-        onRequestVariant={vi.fn()}
         onRefreshCard={vi.fn()}
-        onRequestRemove={vi.fn()}
       />,
     );
 
@@ -55,10 +52,10 @@ describe("BinderGrid", () => {
     expect(screen.getByText("Holo · First Edition · Shadowless")).toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: /Freier Platz \d+, Karte einsetzen/ })).toHaveLength(3);
 
-    fireEvent.click(screen.getByRole("button", { name: "Verschieben" }));
+    fireEvent.click(screen.getByRole("article", { name: "Bulbasaur, Slot 1" }));
     fireEvent.click(screen.getByRole("button", { name: "Freier Platz 2, Karte einsetzen" }));
 
-    expect(onSelectMoveSource).toHaveBeenCalledWith({ pageId: page.id, slotIndex: 0 });
+    expect(onSelectCard).toHaveBeenCalledWith({ pageId: page.id, slotIndex: 0 });
     expect(onOpenSearch).toHaveBeenCalledWith({ pageId: page.id, slotIndex: 1 });
   });
 
@@ -72,12 +69,9 @@ describe("BinderGrid", () => {
         cards={new Map([[card.key, card]])}
         movingLocation={{ pageId: page.id, slotIndex: 0 }}
         onOpenSearch={vi.fn()}
-        onSelectMoveSource={vi.fn()}
+        onSelectCard={vi.fn()}
         onMove={onMove}
-        onToggleOwned={vi.fn()}
-        onRequestVariant={vi.fn()}
         onRefreshCard={vi.fn()}
-        onRequestRemove={vi.fn()}
       />,
     );
 
@@ -92,6 +86,7 @@ describe("BinderGrid", () => {
   it("replaces a failed remote card image with an accessible fallback", () => {
     const cardWithImage = {
       ...card,
+      ref: { ...card.ref, language: "de" as const },
       imageBaseUrl: "https://assets.tcgdex.net/en/base/base1/44",
     };
     const onRefreshCard = vi.fn();
@@ -101,15 +96,13 @@ describe("BinderGrid", () => {
         columns={2}
         cards={new Map([[card.key, cardWithImage]])}
         onOpenSearch={vi.fn()}
-        onSelectMoveSource={vi.fn()}
+        onSelectCard={vi.fn()}
         onMove={vi.fn()}
-        onToggleOwned={vi.fn()}
-        onRequestVariant={vi.fn()}
         onRefreshCard={onRefreshCard}
-        onRequestRemove={vi.fn()}
       />,
     );
 
+    expect(screen.getByText("Bild auf Englisch")).toBeInTheDocument();
     fireEvent.error(screen.getByRole("img", { name: "Bulbasaur, Base Set 044" }));
 
     expect(screen.getByRole("img", { name: "Bild für Bulbasaur nicht verfügbar" })).toHaveTextContent("Bild nicht verfügbar");

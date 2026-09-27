@@ -137,15 +137,18 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   await addCard(page, 1, "Bulbasaur", "Bulbasaur");
   await addCard(page, 2, "Ivysaur", "Ivysaur");
 
-  await page.getByRole("article", { name: "Bulbasaur, Slot 1" }).getByRole("button", { name: "Verschieben" }).click();
+  await page.getByRole("article", { name: "Bulbasaur, Slot 1" }).click();
+  await page.getByRole("button", { name: "Verschieben" }).click();
   await page.getByRole("button", { name: "Hierher verschieben", exact: true }).click();
-  await page.getByRole("article", { name: "Bulbasaur, Slot 2" }).getByRole("button", { name: "Als vorhanden markieren" }).click();
-  await expect(page.getByRole("article", { name: "Bulbasaur, Slot 2" }).getByRole("button", { name: "Als fehlend markieren" })).toBeVisible();
+  await page.getByRole("article", { name: "Bulbasaur, Slot 2" }).click();
+  await page.getByRole("button", { name: "Als vorhanden markieren" }).click();
+  await expect(page.getByRole("button", { name: "Als fehlend markieren" })).toBeVisible();
 
   await page.reload();
-  await expect(page.getByRole("article", { name: "Bulbasaur, Slot 2" }).getByRole("button", { name: "Als fehlend markieren" })).toBeVisible();
+  await page.getByRole("article", { name: "Bulbasaur, Slot 2" }).click();
+  await expect(page.getByRole("button", { name: "Als fehlend markieren" })).toBeVisible();
 
-  await page.getByRole("button", { name: "Fehlkarten ansehen" }).click();
+  await page.getByRole("button", { name: /Fehlende Karten \(\d+\)/ }).click();
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   await expect(missingCards.getByText("Ivysaur", { exact: true })).toBeVisible();
   await missingCards.getByRole("button", { name: "Cardmarket" }).click();
@@ -244,7 +247,8 @@ test("confirms a lossless layout change and keeps mouse drag optional", async ({
   await expect(page.getByText("Karten wurden getauscht.")).toBeVisible();
   await expect(page.getByRole("article", { name: "Ivysaur, Slot 1" })).toBeVisible();
   await expect(page.getByRole("article", { name: "Bulbasaur, Slot 2" })).toBeVisible();
-  await expect(page.getByRole("article", { name: "Ivysaur, Slot 1" }).getByRole("button", { name: "Verschieben" })).toBeVisible();
+  await page.getByRole("article", { name: "Ivysaur, Slot 1" }).click();
+  await expect(page.getByRole("button", { name: "Verschieben" })).toBeVisible();
 });
 
 test("shows a visible storage error when IndexedDB is unavailable", async ({ page }) => {
@@ -254,7 +258,7 @@ test("shows a visible storage error when IndexedDB is unavailable", async ({ pag
   await page.goto("/");
 
   await expect(page.getByText("IndexedDB is not available in this environment.")).toBeVisible();
-  await expect(page.getByText("Speicher: error")).toBeVisible();
+  await expect(page.getByText("error")).toBeVisible();
   await expect(page.getByRole("button", { name: "Erneut versuchen" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Backup exportieren" }).first()).toBeVisible();
 });
@@ -291,7 +295,8 @@ test("searches German and English catalogs and labels the result language", asyn
 
   const card = page.getByRole("article", { name: "Glurak, Slot 1" });
   await expect(card).toBeVisible();
-  await card.getByRole("button", { name: "Version festlegen" }).click();
+  await card.click();
+  await page.getByRole("button", { name: "Version festlegen" }).click();
   const variantDialog = page.getByRole("dialog", { name: "Version für „Glurak“ festlegen" });
   await expect(variantDialog).toContainText("TCGdex meldet verfügbar: Holo, First Edition");
   await variantDialog.getByLabel("Finish").selectOption("holo");

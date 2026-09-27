@@ -33,12 +33,9 @@ interface BinderGridProps {
   selectedLocation?: SlotLocation;
   movingLocation?: SlotLocation;
   onOpenSearch: (location: SlotLocation) => void;
-  onSelectMoveSource: (location: SlotLocation) => void;
+  onSelectCard: (location: SlotLocation) => void;
   onMove: (from: SlotLocation, to: SlotLocation) => void;
-  onToggleOwned: (entryId: string, owned: boolean) => void;
-  onRequestVariant: (entry: PlannedCard, card?: CardSnapshot) => void;
   onRefreshCard: (card: CardSnapshot) => void;
-  onRequestRemove: (location: SlotLocation, label: string) => void;
 }
 
 interface OccupiedSlotProps {
@@ -47,11 +44,8 @@ interface OccupiedSlotProps {
   location: SlotLocation;
   selected: boolean;
   moving: boolean;
-  onSelectMoveSource: (location: SlotLocation) => void;
-  onToggleOwned: (entryId: string, owned: boolean) => void;
-  onRequestVariant: (entry: PlannedCard, card?: CardSnapshot) => void;
+  onSelectCard: (location: SlotLocation) => void;
   onRefreshCard: (card: CardSnapshot) => void;
-  onRequestRemove: (location: SlotLocation, label: string) => void;
 }
 
 function sameLocation(first: SlotLocation | undefined, second: SlotLocation): boolean {
@@ -72,11 +66,8 @@ function OccupiedSlot({
   location,
   selected,
   moving,
-  onSelectMoveSource,
-  onToggleOwned,
-  onRequestVariant,
+  onSelectCard,
   onRefreshCard,
-  onRequestRemove,
 }: OccupiedSlotProps) {
   const imageSource = card?.imageBaseUrl ? cardImageUrl(card.imageBaseUrl) : undefined;
   const [failedImageSource, setFailedImageSource] = useState<string>();
@@ -97,6 +88,12 @@ function OccupiedSlot({
       data-owned={entry.owned}
       tabIndex={0}
       aria-label={card ? `${card.name}, Slot ${location.slotIndex + 1}` : `Kartendaten fehlen, Slot ${location.slotIndex + 1}`}
+      onClick={() => onSelectCard(location)}
+      onKeyDown={(event) => {
+        if (event.currentTarget !== event.target || (event.key !== "Enter" && event.key !== " ")) return;
+        event.preventDefault();
+        onSelectCard(location);
+      }}
     >
       <span className={styles.dragHandle} title="Mit der Maus ziehen" aria-hidden="true" {...listeners}>
         <GripVertical size={16} />
@@ -104,42 +101,29 @@ function OccupiedSlot({
       {card ? (
         <>
           {imageSource && failedImageSource !== imageSource ? (
-            <img
-              src={imageSource}
-              alt={`${card.name}, ${card.setName} ${card.collectorNumber}`}
-              onError={() => setFailedImageSource(imageSource)}
-            />
+            <span className={styles.slotImage}>
+              <img
+                src={imageSource}
+                alt={`${card.name}, ${card.setName} ${card.collectorNumber}`}
+                onError={() => setFailedImageSource(imageSource)}
+              />
+              {card.ref.language === "de" && card.imageBaseUrl?.includes("/en/") ? <small>Bild auf Englisch</small> : null}
+            </span>
           ) : (
             <div className={styles.imageFallback}>
               <span role="img" aria-label={`Bild für ${card.name} nicht verfügbar`}>Bild nicht verfügbar</span>
               <button type="button" onClick={() => onRefreshCard(card)}>Kartendaten aktualisieren</button>
             </div>
           )}
+          <span className={entry.owned ? styles.ownedBadge : styles.missingBadge}>{entry.owned ? "Vorhanden" : "Fehlt"}</span>
           <strong>{card.name}</strong>
           <small>{card.setName} · {formatCollectorNumber(card.collectorNumber, card.collectorTotal)}</small>
           <span className={styles.variantSummary}>{formatVariantSelection(entry.variant)}</span>
-          <div className={styles.slotActions}>
-            <button type="button" className={styles.variantAction} onClick={() => onRequestVariant(entry, card)}>
-              Version festlegen
-            </button>
-            <button type="button" className={styles.ownershipAction} onClick={() => onToggleOwned(entry.id, !entry.owned)}>
-              {entry.owned ? "Als fehlend markieren" : "Als vorhanden markieren"}
-            </button>
-            <button type="button" className={styles.moveAction} onClick={() => onSelectMoveSource(location)} aria-pressed={moving}>
-              {moving ? "Quelle gewählt" : "Verschieben"}
-            </button>
-            <button type="button" className={styles.removeAction} onClick={() => onRequestRemove(location, card.name)}>Entfernen</button>
-          </div>
         </>
       ) : (
         <>
           <div className={styles.imageFallback}>Kartendaten fehlen</div>
-          <div className={styles.slotActions}>
-            <button type="button" className={styles.moveAction} onClick={() => onSelectMoveSource(location)} aria-pressed={moving}>
-              {moving ? "Quelle gewählt" : "Verschieben"}
-            </button>
-            <button type="button" className={styles.removeAction} onClick={() => onRequestRemove(location, "Karte ohne Metadaten")}>Entfernen</button>
-          </div>
+          <strong>Kartendaten fehlen</strong>
         </>
       )}
     </article>
@@ -153,12 +137,9 @@ export function BinderGrid({
   selectedLocation,
   movingLocation,
   onOpenSearch,
-  onSelectMoveSource,
+  onSelectCard,
   onMove,
-  onToggleOwned,
-  onRequestVariant,
   onRefreshCard,
-  onRequestRemove,
 }: BinderGridProps) {
   const sensors = useSensors(useSensor(MouseSensor, { activationConstraint: { distance: 7 } }));
   const [dragLabel, setDragLabel] = useState<string>();
@@ -190,11 +171,8 @@ export function BinderGrid({
                   location={location}
                   selected={sameLocation(selectedLocation, location)}
                   moving={sameLocation(movingLocation, location)}
-                  onSelectMoveSource={onSelectMoveSource}
-                  onToggleOwned={onToggleOwned}
-                  onRequestVariant={onRequestVariant}
+                  onSelectCard={onSelectCard}
                   onRefreshCard={onRefreshCard}
-                  onRequestRemove={onRequestRemove}
                 />
               ) : (
                 <button

@@ -1,7 +1,9 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element -- TCGdex images remain external references and are never proxied. */
+
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Search, X } from "lucide-react";
+import { Archive, BookOpen, CircleHelp, DatabaseBackup, ListFilter, Menu, Search, Settings2, X } from "lucide-react";
 import Link from "next/link";
 import { type ChangeEvent, type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
@@ -31,8 +33,9 @@ import type { Binder, CardSnapshot, CatalogSearchItem, MissingItem, PlannedCard,
 import { FEATURES } from "@/config/feature-flags";
 import { PRODUCT_DESIGN } from "@/config/product";
 import { validateBackup } from "@/domain/validation";
-import { editionLabels, finishLabels, formatAvailableVariants, printingLabels, selectedPrinting } from "@/domain/variant-selection";
+import { editionLabels, finishLabels, formatAvailableVariants, formatVariantSelection, printingLabels, selectedPrinting } from "@/domain/variant-selection";
 import { catalogQueryKey, detailQueryKey, TCGdexCatalogAdapter } from "@/data/catalog/tcgdex";
+import { cardImageUrl } from "@/data/catalog/images";
 import { RevisionConflictError } from "@/data/persistence/binder-repository";
 import { IndexedDBBinderRepository } from "@/data/persistence/indexeddb-binder-repository";
 
@@ -84,6 +87,7 @@ export function FoundationWorkspace() {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<SlotLocation>();
+  const [contextLocation, setContextLocation] = useState<SlotLocation>();
   const [movingLocation, setMovingLocation] = useState<SlotLocation>();
   const [cards, setCards] = useState<Map<string, CardSnapshot>>(new Map());
   const [cardsBinderId, setCardsBinderId] = useState<string>();
@@ -99,6 +103,7 @@ export function FoundationWorkspace() {
   const [cardmarketCopyState, setCardmarketCopyState] = useState<CopyState>("idle");
   const [importReport, setImportReport] = useState<ImportReport>();
   const [storageConflict, setStorageConflict] = useState(false);
+  const [binderManagerOpen, setBinderManagerOpen] = useState(false);
 
   const activeBinder = binders.find((binder) => binder.id === activeId);
   const activePage = activeBinder?.pages[Math.min(activePageIndex, Math.max(activeBinder.pages.length - 1, 0))];
@@ -278,6 +283,7 @@ export function FoundationWorkspace() {
       setActiveId(binder.id);
       setActivePageIndex(0);
       setName("");
+      setBinderManagerOpen(false);
       setStorageConflict(false);
       setStorageStatus("saved");
       setMessage("Binder wurde lokal gespeichert.");
@@ -296,6 +302,10 @@ export function FoundationWorkspace() {
       setBinders(remaining);
       setActiveId(remaining[0]?.id);
       setActivePageIndex(0);
+      setContextLocation(undefined);
+      setSelectedLocation(undefined);
+      setMovingLocation(undefined);
+      setSearchOpen(false);
       setBinderToDelete(undefined);
       setStorageStatus("saved");
       setMessage(`„${binderToDelete.name}“ wurde lokal gelöscht.`);
@@ -313,6 +323,7 @@ export function FoundationWorkspace() {
       publishBinderChange(saved);
       setBinders((current) => current.map((binder) => (binder.id === saved.id ? saved : binder)));
       setActivePageIndex(saved.pages.length - 1);
+      setContextLocation(undefined);
       setStorageStatus("saved");
       setMessage(`Seite ${saved.pages.length} wurde angelegt.`);
     } catch (error) {
@@ -356,6 +367,7 @@ export function FoundationWorkspace() {
     setActiveId(id);
     setActivePageIndex(0);
     setSelectedLocation(undefined);
+    setContextLocation(undefined);
     setMovingLocation(undefined);
     setSearchOpen(false);
     setMissingOpen(false);
@@ -365,6 +377,7 @@ export function FoundationWorkspace() {
     setLayoutChange(undefined);
     setVariantEdit(undefined);
     setStorageConflict(false);
+    setBinderManagerOpen(false);
   }
 
   async function addCard(item: CatalogSearchItem) {
@@ -421,6 +434,7 @@ export function FoundationWorkspace() {
 
   function selectMoveSource(location: SlotLocation) {
     setSelectedLocation(undefined);
+    setContextLocation(location);
     setSearchOpen(false);
     setMovingLocation(location);
     setMessage("Karte ausgewählt. Wähle jetzt einen freien oder belegten Zielslot.");
@@ -464,6 +478,7 @@ export function FoundationWorkspace() {
       setBinders((current) => current.map((binder) => (binder.id === saved.id ? saved : binder)));
       setCardToRemove(undefined);
       setMovingLocation(undefined);
+      setContextLocation(undefined);
       setStorageStatus("saved");
       setMessage(`„${cardToRemove.label}“ wurde aus dem Binder entfernt.`);
     } catch (error) {
@@ -656,17 +671,68 @@ export function FoundationWorkspace() {
     }
   })();
   const missingWarnings = createMissingItemsTextExport(missingResult.items).warnings;
+  const contextEntry = contextLocation
+    ? activeBinder?.pages.find((page) => page.id === contextLocation.pageId)?.slots[contextLocation.slotIndex] ?? undefined
+    : undefined;
+  const contextCard = contextEntry ? cards.get(contextEntry.cardKey) : undefined;
+  const activePageEntries = activePage?.slots.filter((entry): entry is PlannedCard => entry !== null) ?? [];
+  const activePageOwned = activePageEntries.filter((entry) => entry.owned).length;
+  const activePageMissing = activePageEntries
+    .filter((entry) => !entry.owned)
+    .map((entry) => ({ entry, card: cards.get(entry.cardKey) }));
 
   return (
-    <main className={styles.page} data-design={PRODUCT_DESIGN}>
-      <header className={styles.header}>
-        <div>
-          <p className={styles.eyebrow}>Design 3 · Collector Workspace</p>
-          <h1>Cardfolio</h1>
-          <p>Plane deinen Pokémon-Wunschbinder. Deine Binder bleiben lokal in diesem Browser.</p>
+    <div className={styles.appShell} data-design={PRODUCT_DESIGN}>
+      <aside className={styles.sidebar} aria-label="Cardfolio Navigation">
+        <button type="button" className={styles.brand} onClick={() => setBinderManagerOpen(true)}>
+          <span className={styles.brandMark}><Archive size={18} /></span>
+          <span>Cardfolio</span>
+        </button>
+        <nav className={styles.primaryNav} aria-label="Hauptnavigation">
+          <button type="button" className={binderManagerOpen ? styles.navItemActive : styles.navItem} onClick={() => setBinderManagerOpen(true)}>
+            <BookOpen size={18} /> <span>Meine Binder</span>
+          </button>
+          <button type="button" className={!binderManagerOpen && !missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setBinderManagerOpen(false); setMissingOpen(false); }} disabled={!activeBinder}>
+            <Archive size={18} /> <span>Binder</span>
+          </button>
+          <button type="button" className={missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setBinderManagerOpen(false); setMissingOpen(true); setSearchOpen(false); }} disabled={!activeBinder}>
+            <ListFilter size={18} /> <span>Fehlende Karten</span>{stats ? <span className={styles.navBadge}>{stats.missing}</span> : null}
+          </button>
+        </nav>
+        {binders.length ? (
+          <div className={styles.sidebarBinders}>
+            <span>Binder</span>
+            {binders.map((binder) => (
+              <button type="button" key={binder.id} aria-pressed={binder.id === activeId} onClick={() => selectBinder(binder.id)}>
+                <span className={styles.binderDot} /> <span>{binder.name}</span>
+              </button>
+            ))}
+          </div>
+        ) : null}
+        <div className={styles.sidebarBottom}>
+          <button type="button" className={styles.navItem} onClick={() => void exportBackup()} disabled={!binders.length}><DatabaseBackup size={18} /> <span>Backup exportieren</span></button>
+          <Link className={styles.navItem} href="/help/"><CircleHelp size={18} /> <span>Hilfe</span></Link>
+          <span className={styles.navItemMuted}><Settings2 size={18} /> <span>Einstellungen</span></span>
         </div>
-        <span className={styles.status} data-status={storageStatus}>Speicher: {storageStatus}</span>
-      </header>
+      </aside>
+
+      <div className={styles.mainColumn}>
+        <header className={styles.topbar}>
+          <button type="button" className={styles.mobileMenu} onClick={() => setBinderManagerOpen(true)} aria-label="Binderverwaltung öffnen"><Menu size={19} /></button>
+          <div className={styles.breadcrumb}>
+            <button type="button" onClick={() => setBinderManagerOpen(true)}>Meine Binder</button>
+            <span>/</span>
+            <strong>{activeBinder?.name ?? "Übersicht"}</strong>
+          </div>
+          <div className={styles.topbarActions}>
+            <button type="button" className={styles.topbarSearch} onClick={() => { setBinderManagerOpen(false); setMissingOpen(false); openSearchForSlot(); }} disabled={!activeBinder}>
+              <Search size={17} /> <span>Karte suchen</span>
+            </button>
+            <span className={styles.status} data-status={storageStatus}><span />{storageStatus === "ready" || storageStatus === "saved" ? "Lokal gespeichert" : storageStatus}</span>
+          </div>
+        </header>
+
+        <main className={styles.page}>
 
       {message ? (
         <div className={styles.notice} role="status" data-conflict={storageConflict}>
@@ -682,18 +748,20 @@ export function FoundationWorkspace() {
         </div>
       ) : null}
 
-      <BinderOverview
-        binders={binders}
-        activeId={activeId}
-        name={name}
-        storageStatus={storageStatus}
-        onNameChange={(event) => setName(event.target.value)}
-        onCreate={createNewBinder}
-        onSelect={selectBinder}
-        onRequestDelete={setBinderToDelete}
-        onExport={exportBackup}
-        onImport={importBackup}
-      />
+      {!activeBinder || binderManagerOpen ? (
+        <BinderOverview
+          binders={binders}
+          activeId={activeId}
+          name={name}
+          storageStatus={storageStatus}
+          onNameChange={(event) => setName(event.target.value)}
+          onCreate={createNewBinder}
+          onSelect={selectBinder}
+          onRequestDelete={setBinderToDelete}
+          onExport={exportBackup}
+          onImport={importBackup}
+        />
+      ) : null}
 
       {importReport ? (
         <section className={styles.importReport} aria-label="Importbericht" role="status">
@@ -820,21 +888,28 @@ export function FoundationWorkspace() {
         </div>
       ) : null}
 
-      {activeBinder && stats ? (
+      {activeBinder && stats && !binderManagerOpen ? (
         <>
-          <section className={styles.stats} aria-label="Binderfortschritt">
-            <div><strong>{stats.planned}</strong><span>Geplant</span></div>
-            <div><strong>{stats.owned}</strong><span>Vorhanden</span></div>
-            <div><strong>{stats.missing}</strong><span>Fehlend</span></div>
-            <div><strong>{stats.completionPercent}%</strong><span>Vollständig</span></div>
+          <section className={styles.binderHeader}>
+            <div>
+              <p className={styles.binderBreadcrumb}>Meine Binder / {activeBinder.name}</p>
+              <h1>{activeBinder.name}</h1>
+              <p>{activeBinder.pages.length} {activeBinder.pages.length === 1 ? "Seite" : "Seiten"} · {activeBinder.layout.rows} × {activeBinder.layout.columns} · lokal gespeichert</p>
+            </div>
+            <div className={styles.binderHeaderActions}>
+              <button type="button" className={styles.secondaryButton} onClick={() => openSearchForSlot()}><Search size={17} /> Karte hinzufügen</button>
+              <button type="button" className={styles.primaryButton} onClick={() => { setMissingOpen((open) => !open); setSearchOpen(false); setCopyState("idle"); setTcgplayerCopyState("idle"); setCardmarketCopyState("idle"); }} disabled={Boolean(missingResult.error) || cardsBinderId !== activeId}>
+                <ListFilter size={17} /> {missingOpen ? "Zurück zum Binder" : `Fehlende Karten (${stats.missing})`}
+              </button>
+            </div>
           </section>
 
-          <div className={styles.statsActions}>
-            <span>{missingResult.error ? "Fehlkarten werden noch geprüft." : `${missingResult.items.length} Fehlkartenpositionen aus diesem Binder`}</span>
-            <button type="button" className={styles.secondaryButton} onClick={() => { setMissingOpen((open) => !open); setCopyState("idle"); setTcgplayerCopyState("idle"); setCardmarketCopyState("idle"); }} disabled={Boolean(missingResult.error) || cardsBinderId !== activeId}>
-              {missingOpen ? "Fehlkarten schließen" : "Fehlkarten ansehen"}
-            </button>
-          </div>
+          <section className={styles.stats} aria-label="Binderfortschritt">
+            <div><strong>{stats.owned}</strong><span>Vorhanden</span><small>{stats.completionPercent}% vollständig</small></div>
+            <div><strong>{stats.missing}</strong><span>Fehlend</span><small>geplante Karten</small></div>
+            <div><strong>{Math.max(stats.capacity - stats.planned, 0)}</strong><span>Freie Plätze</span><small>auf {activeBinder.pages.length} {activeBinder.pages.length === 1 ? "Seite" : "Seiten"}</small></div>
+            <div><strong>{stats.planned}</strong><span>Geplant</span><small>von {stats.capacity} Slots</small></div>
+          </section>
 
           {missingOpen ? (
             <MissingCardsPanel
@@ -854,10 +929,9 @@ export function FoundationWorkspace() {
               onCardmarketCopy={copyCardmarketHandoff}
               onCardmarketTextExport={downloadCardmarketHandoff}
             />
-          ) : null}
-
-          <div className={`${styles.workspace} ${searchOpen ? "" : styles.workspaceSingle}`}>
-            <section className={styles.panel} aria-labelledby="page-heading">
+          ) : (
+          <div className={styles.workspace}>
+            <section className={`${styles.panel} ${styles.binderPanel}`} aria-labelledby="page-heading">
               <div className={styles.panelHeader}>
                 <div><p className={styles.eyebrow}>{activeBinder.layout.rows} × {activeBinder.layout.columns} · Seite {visiblePageIndex + 1} von {activeBinder.pages.length}</p><h2 id="page-heading">Seite {visiblePageIndex + 1}</h2></div>
                 <div className={styles.pageToolbar}>
@@ -872,32 +946,32 @@ export function FoundationWorkspace() {
                     </select>
                   </label>
                   <div className={styles.pageControls} aria-label="Binderseiten">
-                    <button type="button" className={styles.pageButton} aria-label="Vorherige Seite" disabled={visiblePageIndex === 0} onClick={() => setActivePageIndex((page) => Math.max(page - 1, 0))}>←</button>
+                    <button type="button" className={styles.pageButton} aria-label="Vorherige Seite" disabled={visiblePageIndex === 0} onClick={() => { setActivePageIndex((page) => Math.max(page - 1, 0)); setContextLocation(undefined); }}>←</button>
                     <span>{visiblePageIndex + 1} / {activeBinder.pages.length}</span>
-                    <button type="button" className={styles.pageButton} aria-label="Nächste Seite" disabled={visiblePageIndex === activeBinder.pages.length - 1} onClick={() => setActivePageIndex((page) => Math.min(page + 1, activeBinder.pages.length - 1))}>→</button>
+                    <button type="button" className={styles.pageButton} aria-label="Nächste Seite" disabled={visiblePageIndex === activeBinder.pages.length - 1} onClick={() => { setActivePageIndex((page) => Math.min(page + 1, activeBinder.pages.length - 1)); setContextLocation(undefined); }}>→</button>
                     <button type="button" className={styles.addPageButton} onClick={createNewPage}>+ Seite</button>
                   </div>
                 </div>
               </div>
               {activePage ? (
-                <BinderGrid
-                  page={activePage}
-                  columns={activeBinder.layout.columns}
-                  cards={cards}
-                  selectedLocation={selectedLocation}
-                  movingLocation={movingLocation}
-                  onOpenSearch={openSearchForSlot}
-                  onSelectMoveSource={selectMoveSource}
-                  onMove={(from, to) => void moveCard(from, to)}
-                  onToggleOwned={(entryId, owned) => void toggleOwned(entryId, owned)}
-                  onRequestVariant={requestVariantEdit}
-                  onRefreshCard={(card) => void refreshCardSnapshot(card)}
-                  onRequestRemove={requestRemove}
-                />
+                <div className={styles.binderSurface}>
+                  <span className={styles.binderRings} aria-hidden="true"><i /><i /><i /></span>
+                  <BinderGrid
+                    page={activePage}
+                    columns={activeBinder.layout.columns}
+                    cards={cards}
+                    selectedLocation={contextLocation ?? selectedLocation}
+                    movingLocation={movingLocation}
+                    onOpenSearch={openSearchForSlot}
+                    onSelectCard={(location) => { setContextLocation(location); setSelectedLocation(undefined); setSearchOpen(false); }}
+                    onMove={(from, to) => void moveCard(from, to)}
+                    onRefreshCard={(card) => void refreshCardSnapshot(card)}
+                  />
+                </div>
               ) : null}
             </section>
 
-            {searchOpen ? <aside className={styles.searchDrawer} aria-labelledby="search-heading" role="dialog" aria-modal="true">
+            {searchOpen ? <aside className={styles.searchDrawer} aria-labelledby="search-heading" role="dialog" aria-modal="false">
               <div className={styles.drawerHeader}>
                 <div>
                   <p className={styles.eyebrow}>Karte einsetzen</p>
@@ -940,8 +1014,66 @@ export function FoundationWorkspace() {
                   </li>
                 ))}
               </ul>
-            </aside> : <button type="button" className={styles.openSearchButton} onClick={() => openSearchForSlot()}><Search size={17} /> Karte suchen</button>}
+            </aside> : (
+              <aside className={styles.contextPanel} aria-labelledby="context-heading">
+                <div className={styles.contextHeader}>
+                  <div>
+                    <p className={styles.eyebrow}>{contextEntry ? "Kartendetails" : "Seitenübersicht"}</p>
+                    <h2 id="context-heading">{contextCard?.name ?? `Seite ${visiblePageIndex + 1}`}</h2>
+                  </div>
+                  {contextEntry ? <button type="button" className={styles.drawerClose} onClick={() => setContextLocation(undefined)} aria-label="Kartendetails schließen"><X size={18} /></button> : null}
+                </div>
+
+                {contextEntry ? (
+                  <div className={styles.cardContext}>
+                    {contextCard?.imageBaseUrl ? (
+                      <div className={styles.contextImage}>
+                        <img src={cardImageUrl(contextCard.imageBaseUrl)} alt={`${contextCard.name}, ${contextCard.setName}`} />
+                        {contextCard.ref.language === "de" && contextCard.imageBaseUrl.includes("/en/") ? <span>Bild auf Englisch</span> : null}
+                      </div>
+                    ) : <div className={styles.contextImageFallback}>Bild nicht verfügbar</div>}
+                    <div className={styles.contextIdentity}>
+                      <strong>{contextCard?.name ?? "Kartendaten fehlen"}</strong>
+                      {contextCard ? <span>{contextCard.setName} · Nr. {formatCollectorNumber(contextCard.collectorNumber, contextCard.collectorTotal)}</span> : null}
+                    </div>
+                    <dl className={styles.contextDetails}>
+                      <div><dt>Sprache</dt><dd>{contextCard?.ref.language.toUpperCase() ?? "–"}</dd></div>
+                      <div><dt>Version</dt><dd>{formatVariantSelection(contextEntry.variant)}</dd></div>
+                      <div><dt>Status</dt><dd>{contextEntry.owned ? "Vorhanden" : "Fehlt"}</dd></div>
+                    </dl>
+                    <div className={styles.contextActions}>
+                      <button type="button" className={styles.primaryButton} onClick={() => void toggleOwned(contextEntry.id, !contextEntry.owned)}>{contextEntry.owned ? "Als fehlend markieren" : "Als vorhanden markieren"}</button>
+                      <button type="button" className={styles.secondaryButton} onClick={() => requestVariantEdit(contextEntry, contextCard)}>Version festlegen</button>
+                      <button type="button" className={styles.secondaryButton} onClick={() => contextLocation && selectMoveSource(contextLocation)}>Verschieben</button>
+                      <button type="button" className={styles.dangerOutlineButton} onClick={() => contextLocation && requestRemove(contextLocation, contextCard?.name ?? "Karte ohne Metadaten")}>Entfernen</button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className={styles.contextSummary}>
+                    <div className={styles.summaryProgress}>
+                      <strong>{activePageEntries.length ? Math.round((activePageOwned / activePageEntries.length) * 100) : 0}%</strong>
+                      <span>{activePageOwned} von {activePageEntries.length} geplanten Karten vorhanden</span>
+                      <i><span style={{ width: `${activePageEntries.length ? Math.round((activePageOwned / activePageEntries.length) * 100) : 0}%` }} /></i>
+                    </div>
+                    <div className={styles.summaryStats}>
+                      <div><strong>{activePageOwned}</strong><span>Vorhanden</span></div>
+                      <div><strong>{activePageMissing.length}</strong><span>Fehlend</span></div>
+                      <div><strong>{Math.max((activePage?.slots.length ?? 0) - activePageEntries.length, 0)}</strong><span>Frei</span></div>
+                    </div>
+                    <section className={styles.pageMissing} aria-labelledby="page-missing-heading">
+                      <div><h3 id="page-missing-heading">Auf dieser Seite fehlt</h3><span>{activePageMissing.length}</span></div>
+                      {activePageMissing.length ? (
+                        <ul>{activePageMissing.slice(0, 5).map(({ entry, card }) => <li key={entry.id}><strong>{card?.name ?? "Kartendaten fehlen"}</strong><span>{card ? `Nr. ${formatCollectorNumber(card.collectorNumber, card.collectorTotal)}` : "Manuell prüfen"}</span></li>)}</ul>
+                      ) : <p>Keine geplante Karte dieser Seite ist noch offen.</p>}
+                    </section>
+                    <button type="button" className={styles.primaryButton} onClick={() => openSearchForSlot()}><Search size={16} /> Karte hinzufügen</button>
+                    <button type="button" className={styles.secondaryButton} onClick={() => setMissingOpen(true)}><ListFilter size={16} /> Gesamte Fehlkartenliste</button>
+                  </div>
+                )}
+              </aside>
+            )}
           </div>
+          )}
         </>
       ) : null}
 
@@ -949,6 +1081,8 @@ export function FoundationWorkspace() {
         <p>Keine Cloud-Synchronisierung. Sichere wichtige Binder regelmäßig als JSON-Datei.</p>
         <Link href="/help/">Hilfe, Datenflüsse und Hinweise</Link>
       </footer>
-    </main>
+        </main>
+      </div>
+    </div>
   );
 }
