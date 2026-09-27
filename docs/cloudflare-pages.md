@@ -6,9 +6,12 @@ Cardfolio uses a static Next.js export and Cloudflare Pages Git integration. Do 
 
 - Private source repository: `https://github.com/ThorfinnThor/cardfolio`
 - Production branch: `main`
-- The existing Cloudflare GitHub connection can see and select the private repository.
-- The Pages setup form is prepared with **Next.js (Static HTML Export)**, build command `npm run build`, output directory `out` and `NODE_VERSION=24`.
-- **Save and Deploy has not been submitted.** There is no verified `pages.dev` result yet.
+- Project: `cardfolio`
+- Technical-preview origin: `https://cardfolio-780.pages.dev/`
+- Automatic deployments from the private repository are enabled.
+- Build settings use **Next.js (Static HTML Export)**, `npm run build`, output directory `out` and `NODE_VERSION=24.19.0`.
+- Verified application deployment: `https://6cbb4716.cardfolio-780.pages.dev/`, commit `a5ad85f4a997d8f806af27bf25b2b35abe8bd313`, Cloudflare status `success`.
+- The target-origin checks are recorded in `docs/releases/technical-preview-2026-09-27.md`.
 - GitHub Actions cannot currently allocate a runner because the GitHub account reports a billing/spending-limit problem. Resolve that account setting and rerun CI independently of Cloudflare deployment.
 
 ## Connect after the GitHub repository exists
@@ -17,7 +20,7 @@ Cardfolio uses a static Next.js export and Cloudflare Pages Git integration. Do 
 2. In Cloudflare, create a Pages application and select **Import an existing Git repository**.
 3. Select the Cardfolio repository and use the **Next.js (Static HTML Export)** preset.
 4. Configure production branch `main`, build command `npm run build`, and output directory `out`.
-5. Set the build environment Node version to `24` if Cloudflare does not derive it from `.nvmrc`.
+5. Set the build environment Node version to `24.19.0` if Cloudflare does not derive it from `.nvmrc`.
 6. Keep preview deployments enabled for pull requests.
 7. Verify that `public/_headers` is present in the deployed output.
 

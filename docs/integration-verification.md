@@ -189,3 +189,18 @@ Environment: private GitHub repository plus the existing local verification envi
 - Commit `d329377` adds persisted-card waits, exact move-target selection and explicit drag activation/drop-state waits. The corresponding local typecheck, lint, 44 tests, build, release check and diff check pass.
 - The post-fix GitHub run `36324400200` did not allocate a runner. GitHub reports a failed account payment or insufficient spending limit, so no post-fix remote test result exists yet.
 - Cloudflare Pages can see the private repository through the already connected GitHub app. Its setup form is prepared with `main`, **Next.js (Static HTML Export)**, `npm run build`, `out` and `NODE_VERSION=24`; the deployment has not been submitted.
+
+## CF-23 Cloudflare target-host verification — 2026-09-27
+
+Environment: Cloudflare Pages project `cardfolio`, production alias `https://cardfolio-780.pages.dev/`, immutable application deployment `https://6cbb4716.cardfolio-780.pages.dev/`, commit `a5ad85f4a997d8f806af27bf25b2b35abe8bd313`.
+
+- Cloudflare reported a successful 59-second build/deployment from private GitHub `main` with automatic deployments enabled.
+- `/` and `/help/` returned HTTP 200, supported direct navigation/reload and hydrated without console errors or warnings.
+- Both HTML routes returned the repository CSP plus `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy` and `Cross-Origin-Opener-Policy: same-origin`.
+- The productive route exposed Design 3 and reached `Lokal gespeichert`. A binder and English Pikachu detail persisted across reload; the external image loaded from `assets.tcgdex.net` at 600×825 pixels.
+- Current German TCGdex detail/set requests returned Bisasam and Grundset. Importing a controlled German backup produced the visible 1-binder/1-planned-card/1-snapshot report.
+- That fixture intentionally referenced a missing German image. The first deployment exposed a broken image, leading to the productive accessible fallback fix and a new component test. The redeployed page now announces `Bild für Bisasam nicht verfügbar`.
+- A second live tab received the revision conflict warning after the first added a page and loaded the authoritative 2-page state only after `Aktuellen Stand laden`.
+- At 375×812, both routes reported `scrollWidth=375`; keyboard Tab focus landed on `Backup exportieren` with a visible 3 px outline.
+- Cloudflare listed 37 deployed static files. The inventory contains app/help HTML, Next.js assets, the original icon and public catalog metadata, with no card-image bytes, browser backups or binder records.
+- JSON import passed. The Blob export action was invoked without a storage error, but the browser controller did not expose a downloadable artifact for retention; keep this one item as a manual pre-public-launch check.

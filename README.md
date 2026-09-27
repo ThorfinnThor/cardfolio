@@ -4,11 +4,11 @@ Local-first Pokémon wish-binder prototype. Binder data and referenced card meta
 
 Marketplace price indications are disabled because the current provider data does not yet prove language-, edition- and variant-safe matching. See `docs/pricing-gate.md`.
 
-The public-release gate is currently closed pending human data/image-rights review, operator/privacy details, the project-license decision and verification on the real Cloudflare Pages origin. The source repository is private. See `docs/public-release-readiness.md`.
+The public-release gate is currently closed pending human data/image-rights review, operator/privacy details, the project-license decision and a passing GitHub CI run. The source repository is private. The Cloudflare technical-preview origin has been verified. See `docs/public-release-readiness.md`.
 
 ## Local development
 
-Requirements: Node.js 24 and npm 11 or a compatible npm release.
+Requirements: Node.js 24.15 or newer within the Node 24 line and npm 11 or a compatible npm release. `.nvmrc` pins the verified Node 24.19.0 toolchain.
 
 ```bash
 npm ci
@@ -40,14 +40,16 @@ npm run test:e2e
 
 ## Deployment
 
-Cloudflare Pages is the intended deployment owner. The private GitHub repository is connected in the setup form, but the first deployment has not yet been submitted:
+Cloudflare Pages owns builds and deployments for the connected private GitHub repository:
 
 - Production branch: `main`
 - Build command: `npm run build`
 - Output directory: `out`
-- Node version: `24`
+- Node version: `24.19.0`
 
-See `docs/cloudflare-pages.md` for the exact integration and target-origin verification state.
+Technical preview: `https://cardfolio-780.pages.dev/`
+
+See `docs/cloudflare-pages.md` for the exact integration and target-origin verification state. This preview is not an approved public production launch.
 
 ## Release and third-party records
 
