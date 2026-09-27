@@ -94,13 +94,14 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   await page.getByRole("article", { name: "Bulbasaur, Slot 1" }).getByRole("button", { name: "Verschieben" }).click();
   await page.getByRole("button", { name: "Hierher verschieben", exact: true }).click();
   await page.getByRole("article", { name: "Bulbasaur, Slot 2" }).getByRole("button", { name: "Als vorhanden markieren" }).click();
+  await expect(page.getByRole("article", { name: "Bulbasaur, Slot 2" }).getByRole("button", { name: "Als fehlend markieren" })).toBeVisible();
 
   await page.reload();
   await expect(page.getByRole("article", { name: "Bulbasaur, Slot 2" }).getByRole("button", { name: "Als fehlend markieren" })).toBeVisible();
 
   await page.getByRole("button", { name: "Fehlkarten ansehen" }).click();
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
-  await expect(missingCards.getByText("Ivysaur")).toBeVisible();
+  await expect(missingCards.getByText("Ivysaur", { exact: true })).toBeVisible();
   await expect(missingCards.getByRole("heading", { name: "Cardmarket Prüfliste" })).toBeVisible();
   await expect(missingCards.getByText(/Keine Exakt-Garantie/)).toBeVisible();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Prüflistenvorschau" })).toHaveValue(
@@ -176,8 +177,9 @@ test("confirms a lossless layout change and keeps mouse drag optional", async ({
 
   const handle = page.getByRole("article", { name: "Bulbasaur, Slot 1" }).locator('[title="Mit der Maus ziehen"]');
   const target = page.getByRole("article", { name: "Ivysaur, Slot 2" });
+  const targetHandle = target.locator('[title="Mit der Maus ziehen"]');
   const sourceBox = await handle.boundingBox();
-  const targetBox = await target.boundingBox();
+  const targetBox = await targetHandle.boundingBox();
   expect(sourceBox).toBeTruthy();
   expect(targetBox).toBeTruthy();
   const sourceX = (sourceBox?.x ?? 0) + (sourceBox?.width ?? 0) / 2;
