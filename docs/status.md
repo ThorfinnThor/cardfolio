@@ -382,3 +382,14 @@ Verification completed:
 
 - Typecheck, ESLint, 54 unit/component tests, static Next.js build, release checks and `git diff --check` passed locally.
 - Interactive browser verification covered binder creation, bilingual Pikachu search, the German-only filter, insertion with a complete collector number, English-image disclosure, selected-card actions and a 375 × 812 mobile viewport. No browser-console warnings or errors were emitted.
+
+## 2026-09-27 — CF-30 pre-insertion card and variant review
+
+Completed:
+
+- Selecting a search result no longer writes it directly into the binder. The Design 3 context panel first opens a review step with artwork, localized name, set, language and complete collector number.
+- Finish, edition, printing and an optional custom variant label can be chosen before insertion. The chosen variant is stored atomically with the new binder entry instead of requiring an immediate follow-up edit.
+- When TCGdex reports exactly one finish, that finish is preselected. Edition and printing remain explicitly unspecified unless the collector chooses them; Shadowless stays clearly marked as a manual classification.
+- German cards using English artwork disclose `Bild auf Englisch` in the review step. Missing and failed images retain an honest fallback.
+- Escape returns from review to the preserved search results before a second Escape closes search. Loading, provider failure and double-submit states are handled without occupying the target slot.
+- Updated browser coverage proves that the slot remains empty during review, the selected variant persists on insertion and the two-step Escape behavior works at 375 × 812.

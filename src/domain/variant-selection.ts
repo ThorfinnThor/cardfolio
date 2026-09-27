@@ -20,6 +20,22 @@ export const printingLabels = {
   unspecified: "Nicht festgelegt",
 } as const;
 
+export function createInitialVariantSelection(availability?: CardVariantAvailability): VariantSelection {
+  const reportedFinishes = availability
+    ? [
+        availability.normal ? "normal" as const : undefined,
+        availability.holo ? "holo" as const : undefined,
+        availability.reverse ? "reverse" as const : undefined,
+      ].filter((value): value is "normal" | "holo" | "reverse" => Boolean(value))
+    : [];
+
+  return {
+    finish: reportedFinishes.length === 1 ? reportedFinishes[0] : "unspecified",
+    edition: "unspecified",
+    printing: "unspecified",
+  };
+}
+
 export function selectedPrinting(variant: VariantSelection): NonNullable<VariantSelection["printing"]> {
   return variant.printing ?? "unspecified";
 }

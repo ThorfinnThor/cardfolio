@@ -159,6 +159,27 @@
 .contextActions > * { width: 100%; }
 
 .selectedSlotHint { margin: 14px 0 0; border-radius: 6px; background: #e7f1f3; color: #155363; padding: 9px 10px; font-size: 11px; line-height: 1.4; }
+.searchPreview { display: grid; gap: 14px; padding-top: 14px; }
+.previewBack { justify-self: start; border: 0; background: transparent; color: #155363; padding: 0; font-size: 10px; font-weight: 750; cursor: pointer; }
+.previewBack:hover { text-decoration: underline; text-underline-offset: 3px; }
+.previewLoading { min-height: 180px; display: grid; margin: 0; place-items: center; border-radius: 7px; background: #f5f7f8; color: #52616b; font-size: 11px; }
+.previewError { display: grid; gap: 10px; }
+.previewError .secondaryButton { width: 100%; }
+.previewImage { position: relative; display: grid; min-height: 210px; place-items: center; overflow: hidden; border-radius: 7px; background: #eef2f4; }
+.previewImage img { display: block; width: 100%; max-height: 280px; object-fit: contain; }
+.previewImage span { position: absolute; right: 7px; bottom: 7px; border-radius: 4px; background: rgb(23 33 43 / 82%); color: #fff; padding: 4px 6px; font-size: 9px; font-weight: 750; }
+.previewImageFallback { display: grid; min-height: 190px; place-items: center; border-radius: 7px; background: #e8edf0; color: #52616b; font-size: 11px; }
+.previewIdentity { display: grid; gap: 3px; }
+.previewIdentity strong { color: #17212b; font-size: 18px; }
+.previewIdentity span { color: #52616b; font-size: 11px; }
+.previewMeta { display: grid; margin: 0; border-block: 1px solid #edf1f2; }
+.previewMeta div { display: flex; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1px solid #edf1f2; padding: 8px 0; }
+.previewMeta div:last-child { border-bottom: 0; }
+.previewMeta dt { color: #7b8a91; font-size: 10px; }
+.previewMeta dd { margin: 0; color: #17212b; font-size: 10px; font-weight: 750; }
+.searchPreview .variantForm { margin-top: 0; }
+.searchPreview .variantHint { margin: 0 !important; font-size: 10px; line-height: 1.45; }
+.searchPreview > .primaryButton { width: 100%; }
 .languageFilter { min-width: 0; margin: 15px 0 0; border: 0; padding: 0; }
 .languageFilter legend { margin-bottom: 7px; color: #52616b; font-size: 11px; font-weight: 750; }
 .languageFilter div { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid #d8e2e6; border-radius: 7px; overflow: hidden; }

@@ -119,8 +119,11 @@ async function addCard(page: Page, slot: number, query: string, cardName: string
   await page
     .getByRole("listitem")
     .filter({ hasText: cardName })
-    .getByRole("button", { name: "In Slot einsetzen" })
+    .getByRole("button", { name: "Prüfen" })
     .click();
+  const preview = page.getByRole("dialog", { name: "Karte prüfen" });
+  await expect(preview).toContainText(cardName);
+  await preview.getByRole("button", { name: "Mit dieser Version einsetzen" }).click();
   await expect(page.getByRole("article", { name: `${cardName}, Slot ${slot}` })).toBeVisible();
 }
 
@@ -266,6 +269,7 @@ test("shows a visible storage error when IndexedDB is unavailable", async ({ pag
 test("keeps the 3 x 3 grid usable on mobile and supports drawer focus and Escape", async ({
   page,
 }) => {
+  await mockCatalog(page);
   await page.setViewportSize({ height: 812, width: 375 });
   await page.goto("/");
   await page.getByLabel("Bindername").fill("Mobile Binder");
@@ -277,6 +281,11 @@ test("keeps the 3 x 3 grid usable on mobile and supports drawer focus and Escape
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
   const search = page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102");
   await expect(search).toBeFocused();
+  await search.fill("Bulbasaur");
+  await page.getByRole("button", { name: "Prüfen" }).click();
+  await expect(page.getByRole("dialog", { name: "Karte prüfen" })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog", { name: "Karte suchen" })).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog", { name: "Karte suchen" })).toBeHidden();
 });
@@ -291,18 +300,22 @@ test("searches German and English catalogs and labels the result language", asyn
   await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Glurak");
   const germanResult = page.getByRole("listitem").filter({ hasText: "Glurak" });
   await expect(germanResult).toContainText("DE · Nr. 4/102");
-  await germanResult.getByRole("button", { name: "In Slot einsetzen" }).click();
+  await germanResult.getByRole("button", { name: "Prüfen" }).click();
+
+  const preview = page.getByRole("dialog", { name: "Karte prüfen" });
+  await expect(page.getByRole("article", { name: "Glurak, Slot 1" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" })).toBeVisible();
+  await expect(preview).toContainText("Grundset");
+  await expect(preview).toContainText("4/102");
+  await expect(preview).toContainText("Bild auf Englisch");
+  await expect(preview).toContainText("TCGdex meldet verfügbar: Holo, First Edition");
+  await preview.getByLabel("Finish").selectOption("holo");
+  await preview.getByLabel("Edition").selectOption("first-edition");
+  await preview.getByLabel("Druckvariante").selectOption("shadowless");
+  await preview.getByRole("button", { name: "Mit dieser Version einsetzen" }).click();
 
   const card = page.getByRole("article", { name: "Glurak, Slot 1" });
   await expect(card).toBeVisible();
-  await card.click();
-  await page.getByRole("button", { name: "Version festlegen" }).click();
-  const variantDialog = page.getByRole("dialog", { name: "Version für „Glurak“ festlegen" });
-  await expect(variantDialog).toContainText("TCGdex meldet verfügbar: Holo, First Edition");
-  await variantDialog.getByLabel("Finish").selectOption("holo");
-  await variantDialog.getByLabel("Edition").selectOption("first-edition");
-  await variantDialog.getByLabel("Druckvariante").selectOption("shadowless");
-  await variantDialog.getByRole("button", { name: "Version speichern" }).click();
   await expect(card).toContainText("Holo · First Edition · Shadowless");
 });
 
@@ -341,7 +354,10 @@ test("finds and displays an exact full collector number", async ({ page }) => {
   const result = page.getByRole("listitem").filter({ hasText: "Charizard" });
   await expect(result).toHaveCount(1);
   await expect(result).toContainText("EN · Nr. 4/102");
-  await result.getByRole("button", { name: "In Slot einsetzen" }).click();
+  await result.getByRole("button", { name: "Prüfen" }).click();
+  const preview = page.getByRole("dialog", { name: "Karte prüfen" });
+  await expect(preview).toContainText("4/102");
+  await preview.getByRole("button", { name: "Mit dieser Version einsetzen" }).click();
 
   const card = page.getByRole("article", { name: "Charizard, Slot 1" });
   await expect(card).toContainText("Grundset · 4/102");

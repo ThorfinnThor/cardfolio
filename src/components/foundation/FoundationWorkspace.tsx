@@ -33,7 +33,7 @@ import type { Binder, CardSnapshot, CatalogSearchItem, MissingItem, PlannedCard,
 import { FEATURES } from "@/config/feature-flags";
 import { PRODUCT_DESIGN } from "@/config/product";
 import { validateBackup } from "@/domain/validation";
-import { editionLabels, finishLabels, formatAvailableVariants, formatVariantSelection, printingLabels, selectedPrinting } from "@/domain/variant-selection";
+import { createInitialVariantSelection, editionLabels, finishLabels, formatAvailableVariants, formatVariantSelection, printingLabels, selectedPrinting } from "@/domain/variant-selection";
 import { catalogQueryKey, detailQueryKey, TCGdexCatalogAdapter } from "@/data/catalog/tcgdex";
 import { cardImageUrl } from "@/data/catalog/images";
 import { RevisionConflictError } from "@/data/persistence/binder-repository";
@@ -56,6 +56,13 @@ type VariantEditRequest = {
   label: string;
   variant: VariantSelection;
   availableVariants?: CardSnapshot["availableVariants"];
+};
+type SearchPreview = {
+  item: CatalogSearchItem;
+  status: "loading" | "ready" | "error";
+  snapshot?: CardSnapshot;
+  variant: VariantSelection;
+  error?: string;
 };
 
 function interleaveSearchResults(
@@ -86,6 +93,9 @@ export function FoundationWorkspace() {
   const [searchLanguage, setSearchLanguage] = useState<SearchLanguage>("all");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchPreview, setSearchPreview] = useState<SearchPreview>();
+  const [previewImageFailed, setPreviewImageFailed] = useState<string>();
+  const [previewSubmitting, setPreviewSubmitting] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<SlotLocation>();
   const [contextLocation, setContextLocation] = useState<SlotLocation>();
   const [movingLocation, setMovingLocation] = useState<SlotLocation>();
@@ -131,11 +141,17 @@ export function FoundationWorkspace() {
   useEffect(() => {
     if (!searchOpen) return;
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setSearchOpen(false);
+      if (event.key !== "Escape") return;
+      if (searchPreview) {
+        setSearchPreview(undefined);
+        setPreviewImageFailed(undefined);
+      } else {
+        setSearchOpen(false);
+      }
     };
     window.addEventListener("keydown", closeOnEscape);
     return () => window.removeEventListener("keydown", closeOnEscape);
-  }, [searchOpen]);
+  }, [searchOpen, searchPreview]);
 
   useEffect(() => {
     if (!activeId) return;
@@ -370,6 +386,8 @@ export function FoundationWorkspace() {
     setContextLocation(undefined);
     setMovingLocation(undefined);
     setSearchOpen(false);
+    setSearchPreview(undefined);
+    setPreviewImageFailed(undefined);
     setMissingOpen(false);
     setCopyState("idle");
     setTcgplayerCopyState("idle");
@@ -380,8 +398,46 @@ export function FoundationWorkspace() {
     setBinderManagerOpen(false);
   }
 
-  async function addCard(item: CatalogSearchItem) {
-    if (!activeBinder) return;
+  async function previewSearchResult(item: CatalogSearchItem) {
+    setPreviewImageFailed(undefined);
+    setSearchPreview({
+      item,
+      status: "loading",
+      variant: createInitialVariantSelection(),
+    });
+    try {
+      const snapshot = await queryClient.fetchQuery({
+        queryKey: detailQueryKey(item.ref.language, item.ref.id),
+        queryFn: ({ signal }) => catalog.getCard(item.ref, signal),
+        staleTime: 24 * 60 * 60 * 1_000,
+      });
+      if (snapshot.physicalStatus === "digital") {
+        setSearchPreview((current) => current?.item.ref.id === item.ref.id && current.item.ref.language === item.ref.language
+          ? { ...current, status: "error", error: "Pocket-Karten können nicht in einen physischen Binder eingesetzt werden." }
+          : current);
+        return;
+      }
+      setSearchPreview((current) => current?.item.ref.id === item.ref.id && current.item.ref.language === item.ref.language
+        ? {
+            ...current,
+            status: "ready",
+            snapshot,
+            variant: createInitialVariantSelection(snapshot.availableVariants),
+          }
+        : current);
+    } catch (error) {
+      setSearchPreview((current) => current?.item.ref.id === item.ref.id && current.item.ref.language === item.ref.language
+        ? {
+            ...current,
+            status: "error",
+            error: error instanceof Error ? error.message : "Kartendetails konnten nicht geladen werden.",
+          }
+        : current);
+    }
+  }
+
+  async function insertPreviewedCard() {
+    if (!activeBinder || !searchPreview?.snapshot || searchPreview.status !== "ready") return;
     const location = selectedLocation
       ? {
           ...selectedLocation,
@@ -398,17 +454,10 @@ export function FoundationWorkspace() {
       setMessage("Der ausgewählte Slot ist bereits belegt.");
       return;
     }
+    setPreviewSubmitting(true);
     try {
-      const snapshot = await queryClient.fetchQuery({
-        queryKey: detailQueryKey(item.ref.language, item.ref.id),
-        queryFn: ({ signal }) => catalog.getCard(item.ref, signal),
-        staleTime: 24 * 60 * 60 * 1_000,
-      });
-      if (snapshot.physicalStatus === "digital") {
-        setMessage("Pocket-Karten können nicht in einen physischen Binder eingesetzt werden.");
-        return;
-      }
-      const next = placeCard(activeBinder, location, createPlannedCard(snapshot.key));
+      const snapshot = searchPreview.snapshot;
+      const next = placeCard(activeBinder, location, createPlannedCard(snapshot.key, searchPreview.variant));
       setStorageStatus("saving");
       const saved = await repository.save(next, [snapshot], activeBinder.revision);
       publishBinderChange(saved);
@@ -417,19 +466,35 @@ export function FoundationWorkspace() {
       setSelectedLocation(undefined);
       setMovingLocation(undefined);
       setSearchOpen(false);
+      setSearchPreview(undefined);
+      setPreviewImageFailed(undefined);
       setSearchText("");
+      const targetPageIndex = saved.pages.findIndex((page) => page.id === location.pageId);
+      if (targetPageIndex >= 0) setActivePageIndex(targetPageIndex);
+      setContextLocation(location);
       setStorageStatus("saved");
       setMessage(`${snapshot.name} wurde eingesetzt.`);
     } catch (error) {
       handleStorageError(error, "Karte konnte nicht eingesetzt werden.");
+    } finally {
+      setPreviewSubmitting(false);
     }
   }
 
   function openSearchForSlot(location?: SlotLocation) {
     setMovingLocation(undefined);
     setSelectedLocation(location);
+    setSearchPreview(undefined);
+    setPreviewImageFailed(undefined);
     setSearchOpen(true);
     setMessage(location ? `Slot ${location.slotIndex + 1} ausgewählt. Suche eine Karte zum Einsetzen.` : undefined);
+  }
+
+  function closeSearch() {
+    setSearchOpen(false);
+    setSearchPreview(undefined);
+    setPreviewImageFailed(undefined);
+    setPreviewSubmitting(false);
   }
 
   function selectMoveSource(location: SlotLocation) {
@@ -974,46 +1039,143 @@ export function FoundationWorkspace() {
             {searchOpen ? <aside className={styles.searchDrawer} aria-labelledby="search-heading" role="dialog" aria-modal="false">
               <div className={styles.drawerHeader}>
                 <div>
-                  <p className={styles.eyebrow}>Karte einsetzen</p>
-                  <h2 id="search-heading">Karte suchen</h2>
+                  <p className={styles.eyebrow}>{searchPreview ? "Ausgabe prüfen" : "Karte einsetzen"}</p>
+                  <h2 id="search-heading">{searchPreview ? "Karte prüfen" : "Karte suchen"}</h2>
                 </div>
-                <button type="button" className={styles.drawerClose} onClick={() => setSearchOpen(false)} aria-label="Suche schließen"><X size={18} /></button>
+                <button type="button" className={styles.drawerClose} onClick={closeSearch} aria-label="Suche schließen"><X size={18} /></button>
               </div>
               {selectedLocation ? <p className={styles.selectedSlotHint}>Ziel: Seite {visiblePageIndex + 1}, Slot {selectedLocation.slotIndex + 1}</p> : <p className={styles.selectedSlotHint}>Wähle einen Treffer, um ihn in den nächsten freien Slot einzusetzen.</p>}
-              <fieldset className={styles.languageFilter}>
-                <legend>Kartensprache</legend>
-                <div>
-                  {([
-                    ["all", "Alle"],
-                    ["de", "Deutsch"],
-                    ["en", "English"],
-                  ] as const).map(([value, label]) => (
-                    <button
-                      type="button"
-                      key={value}
-                      aria-pressed={searchLanguage === value}
-                      onClick={() => setSearchLanguage(value)}
-                    >
-                      {label}
-                    </button>
-                  ))}
+              {searchPreview ? (
+                <div className={styles.searchPreview}>
+                  <button
+                    type="button"
+                    className={styles.previewBack}
+                    onClick={() => { setSearchPreview(undefined); setPreviewImageFailed(undefined); }}
+                  >
+                    ← Zurück zu den Suchergebnissen
+                  </button>
+                  {searchPreview.status === "loading" ? <p className={styles.previewLoading} role="status">Kartendetails werden geladen…</p> : null}
+                  {searchPreview.status === "error" ? (
+                    <div className={styles.previewError}>
+                      <p className={styles.error}>{searchPreview.error}</p>
+                      <button type="button" className={styles.secondaryButton} onClick={() => void previewSearchResult(searchPreview.item)}>Erneut laden</button>
+                    </div>
+                  ) : null}
+                  {searchPreview.status === "ready" && searchPreview.snapshot ? (
+                    <>
+                      {searchPreview.snapshot.imageBaseUrl && previewImageFailed !== searchPreview.snapshot.imageBaseUrl ? (
+                        <div className={styles.previewImage}>
+                          <img
+                            src={cardImageUrl(searchPreview.snapshot.imageBaseUrl)}
+                            alt={`${searchPreview.snapshot.name}, ${searchPreview.snapshot.setName}`}
+                            onError={() => setPreviewImageFailed(searchPreview.snapshot?.imageBaseUrl)}
+                          />
+                          {searchPreview.snapshot.ref.language === "de" && searchPreview.snapshot.imageBaseUrl.includes("/en/") ? <span>Bild auf Englisch</span> : null}
+                        </div>
+                      ) : <div className={styles.previewImageFallback}>Bild nicht verfügbar</div>}
+                      <div className={styles.previewIdentity}>
+                        <strong>{searchPreview.snapshot.name}</strong>
+                        <span>{searchPreview.snapshot.setName}</span>
+                      </div>
+                      <dl className={styles.previewMeta}>
+                        <div><dt>Sprache</dt><dd>{searchPreview.snapshot.ref.language.toUpperCase()}</dd></div>
+                        <div><dt>Kartennummer</dt><dd>{formatCollectorNumber(searchPreview.snapshot.collectorNumber, searchPreview.snapshot.collectorTotal)}</dd></div>
+                      </dl>
+                      <div className={styles.variantForm}>
+                        <label>
+                          Finish
+                          <select
+                            value={searchPreview.variant.finish}
+                            onChange={(event) => setSearchPreview((current) => current ? {
+                              ...current,
+                              variant: { ...current.variant, finish: event.target.value as VariantSelection["finish"] },
+                            } : current)}
+                          >
+                            {Object.entries(finishLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
+                          </select>
+                        </label>
+                        <label>
+                          Edition
+                          <select
+                            value={searchPreview.variant.edition}
+                            onChange={(event) => setSearchPreview((current) => current ? {
+                              ...current,
+                              variant: { ...current.variant, edition: event.target.value as VariantSelection["edition"] },
+                            } : current)}
+                          >
+                            {Object.entries(editionLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
+                          </select>
+                        </label>
+                        <label>
+                          Druckvariante
+                          <select
+                            value={selectedPrinting(searchPreview.variant)}
+                            onChange={(event) => setSearchPreview((current) => current ? {
+                              ...current,
+                              variant: { ...current.variant, printing: event.target.value as NonNullable<VariantSelection["printing"]> },
+                            } : current)}
+                          >
+                            {Object.entries(printingLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
+                          </select>
+                        </label>
+                        <label>
+                          Eigene Variantenbezeichnung (optional)
+                          <input
+                            value={searchPreview.variant.label ?? ""}
+                            maxLength={100}
+                            placeholder="z. B. Cosmos Holo"
+                            onChange={(event) => setSearchPreview((current) => current ? {
+                              ...current,
+                              variant: { ...current.variant, label: event.target.value || undefined },
+                            } : current)}
+                          />
+                        </label>
+                      </div>
+                      <p className={styles.variantHint}>{formatAvailableVariants(searchPreview.snapshot.availableVariants)} Shadowless wird von TCGdex nicht separat geliefert und ist deshalb eine manuelle Auswahl.</p>
+                      <button type="button" className={styles.primaryButton} disabled={previewSubmitting} onClick={() => void insertPreviewedCard()}>
+                        {previewSubmitting ? "Wird eingesetzt…" : "Mit dieser Version einsetzen"}
+                      </button>
+                    </>
+                  ) : null}
                 </div>
-              </fieldset>
-              <label className={styles.searchLabel} htmlFor="card-search">
-                <Search aria-hidden="true" size={18} />
-                <input id="card-search" value={searchText} onChange={(event) => setSearchText(event.target.value)} placeholder="Name oder Nummer, z. B. Glurak 4/102" autoFocus />
-              </label>
-              {searchIsRunning && searchEnabled ? <p>Suche läuft…</p> : null}
-              {searchError ? <p className={styles.error}>Ein Sprachkatalog konnte nicht geladen werden: {searchError.message}</p> : null}
-              {searchHasCompleted && !searchResults.length ? <p className={styles.noResults}>Keine Karten für „{debouncedSearch}“ gefunden. Prüfe Name oder Schreibweise.</p> : null}
-              <ul className={styles.results}>
-                {searchResults.slice(0, 12).map((item) => (
-                  <li key={`${item.ref.language}-${item.ref.id}`}>
-                    <span><strong>{item.name}</strong><small>{item.ref.language.toUpperCase()} · Nr. {formatCollectorNumber(item.collectorNumber, item.collectorTotal)}</small></span>
-                    <button type="button" onClick={() => addCard(item)}>In Slot einsetzen</button>
-                  </li>
-                ))}
-              </ul>
+              ) : (
+                <>
+                  <fieldset className={styles.languageFilter}>
+                    <legend>Kartensprache</legend>
+                    <div>
+                      {([
+                        ["all", "Alle"],
+                        ["de", "Deutsch"],
+                        ["en", "English"],
+                      ] as const).map(([value, label]) => (
+                        <button
+                          type="button"
+                          key={value}
+                          aria-pressed={searchLanguage === value}
+                          onClick={() => setSearchLanguage(value)}
+                        >
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                  </fieldset>
+                  <label className={styles.searchLabel} htmlFor="card-search">
+                    <Search aria-hidden="true" size={18} />
+                    <input id="card-search" value={searchText} onChange={(event) => setSearchText(event.target.value)} placeholder="Name oder Nummer, z. B. Glurak 4/102" autoFocus />
+                  </label>
+                  {searchIsRunning && searchEnabled ? <p>Suche läuft…</p> : null}
+                  {searchError ? <p className={styles.error}>Ein Sprachkatalog konnte nicht geladen werden: {searchError.message}</p> : null}
+                  {searchHasCompleted && !searchResults.length ? <p className={styles.noResults}>Keine Karten für „{debouncedSearch}“ gefunden. Prüfe Name oder Schreibweise.</p> : null}
+                  <ul className={styles.results}>
+                    {searchResults.slice(0, 12).map((item) => (
+                      <li key={`${item.ref.language}-${item.ref.id}`}>
+                        <span><strong>{item.name}</strong><small>{item.ref.language.toUpperCase()} · Nr. {formatCollectorNumber(item.collectorNumber, item.collectorTotal)}</small></span>
+                        <button type="button" onClick={() => void previewSearchResult(item)}>Prüfen</button>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </aside> : (
               <aside className={styles.contextPanel} aria-labelledby="context-heading">
                 <div className={styles.contextHeader}>
