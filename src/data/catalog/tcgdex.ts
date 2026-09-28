@@ -186,10 +186,12 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
     const cardUrl = new URL(`${BASE_URL}/${ref.language}/cards/${encodeURIComponent(ref.id)}`);
     const card = tcgdexCardSchema.parse(await fetchJson(cardUrl, signal));
     let imageBaseUrl = card.image ?? undefined;
-    if (!imageBaseUrl && ref.language === "de") {
+    let englishCard: typeof card | undefined;
+    if (ref.language === "de") {
       try {
         const englishCardUrl = new URL(`${BASE_URL}/en/cards/${encodeURIComponent(ref.id)}`);
-        imageBaseUrl = tcgdexCardSchema.parse(await fetchJson(englishCardUrl, signal)).image ?? undefined;
+        englishCard = tcgdexCardSchema.parse(await fetchJson(englishCardUrl, signal));
+        imageBaseUrl ||= englishCard.image ?? undefined;
       } catch (error) {
         if (signal?.aborted) throw error;
       }
@@ -214,6 +216,13 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
       category: category(card.category),
       abilities: card.abilities?.map((ability) => ability.name) ?? [],
       attacks: card.attacks?.map((attack) => attack.name) ?? [],
+      englishIdentity: englishCard ? {
+        name: englishCard.name,
+        setName: englishCard.set.name,
+        category: category(englishCard.category),
+        abilities: englishCard.abilities?.map((ability) => ability.name) ?? [],
+        attacks: englishCard.attacks?.map((attack) => attack.name) ?? [],
+      } : undefined,
       physicalStatus: set.serie?.id === "tcgp" ? "digital" : set.serie ? "physical" : "unknown",
       fetchedAt: new Date().toISOString(),
     };

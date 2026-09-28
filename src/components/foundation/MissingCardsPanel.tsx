@@ -1,21 +1,22 @@
 "use client";
 
 import { Clipboard, Download, ExternalLink, FileDown, Search, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import { TCGPLAYER_SET_MAPPINGS } from "@/data/marketplace/tcgplayer-set-mappings";
+import { loadTcgplayerCardMappings } from "@/data/marketplace/tcgplayer-card-mappings";
+import { TCGPLAYER_SET_MAPPINGS, TCGPLAYER_UNAVAILABLE_SETS } from "@/data/marketplace/tcgplayer-set-mappings";
 import { TCGPLAYER_PRINTING_MAPPINGS } from "@/data/marketplace/tcgplayer-printing-mappings";
 import { createCardmarketHandoff, type CardmarketHandoffPart } from "@/domain/cardmarket-handoff";
 import { formatCollectorNumber } from "@/domain/catalog-search";
 import { missingItemReviewNote } from "@/domain/missing-items-export";
 import { minimumConditionLabels } from "@/domain/purchase-preferences";
-import { createTcgplayerMassEntryExport, type TcgplayerMassEntryExport } from "@/domain/tcgplayer-export";
+import { createTcgplayerMassEntryExport, type TcgplayerCardMapping, type TcgplayerMassEntryExport } from "@/domain/tcgplayer-export";
 import type { MissingItem } from "@/domain/types";
 import { printingLabels, selectedPrinting } from "@/domain/variant-selection";
 
 import styles from "./missing-cards-panel.module.css";
 
-const finishLabels = { normal: "Normal", holo: "Holo", reverse: "Reverse Holo", other: "Andere", unspecified: "Nicht angegeben" } as const;
+const finishLabels = { normal: "Non-Holo / Normal", holo: "Holo", reverse: "Reverse Holo", other: "Andere", unspecified: "Nicht angegeben" } as const;
 const editionLabels = { unlimited: "Unlimited", "first-edition": "First Edition", unspecified: "Nicht angegeben" } as const;
 type MarketplaceChoice = "tcgplayer" | "cardmarket";
 
@@ -28,6 +29,7 @@ interface MissingCardsPanelProps {
   onCsvExport: (items: readonly MissingItem[]) => void;
   onClose: () => void;
   tcgplayerEnabled?: boolean;
+  tcgplayerCardMappings?: readonly TcgplayerCardMapping[];
   tcgplayerCopyState?: "idle" | "copied" | "error";
   onTcgplayerCopy?: (exported: TcgplayerMassEntryExport) => void;
   onTcgplayerTextExport?: (exported: TcgplayerMassEntryExport) => void;
@@ -48,6 +50,7 @@ export function MissingCardsPanel({
   onCsvExport,
   onClose,
   tcgplayerEnabled = false,
+  tcgplayerCardMappings,
   tcgplayerCopyState = "idle",
   onTcgplayerCopy,
   onTcgplayerTextExport,
@@ -61,6 +64,21 @@ export function MissingCardsPanel({
   const [query, setQuery] = useState("");
   const [cardmarketPartIndex, setCardmarketPartIndex] = useState(0);
   const [marketplaceChoice, setMarketplaceChoice] = useState<MarketplaceChoice>();
+  const [loadedTcgplayerMappings, setLoadedTcgplayerMappings] = useState<readonly TcgplayerCardMapping[]>();
+  const [tcgplayerMappingsError, setTcgplayerMappingsError] = useState<string>();
+  const tcgplayerMappings = tcgplayerCardMappings ?? loadedTcgplayerMappings;
+  useEffect(() => {
+    if (marketplaceChoice !== "tcgplayer" || tcgplayerCardMappings || loadedTcgplayerMappings) return;
+    const controller = new AbortController();
+    loadTcgplayerCardMappings(controller.signal)
+      .then(setLoadedTcgplayerMappings)
+      .catch((error: unknown) => {
+        if (!controller.signal.aborted) {
+          setTcgplayerMappingsError(error instanceof Error ? error.message : "TCGplayer-Zuordnungen konnten nicht geladen werden.");
+        }
+      });
+    return () => controller.abort();
+  }, [loadedTcgplayerMappings, marketplaceChoice, tcgplayerCardMappings]);
   const visibleItems = useMemo(() => {
     const normalizedQuery = query.trim().toLocaleLowerCase("de-DE");
     if (!normalizedQuery) return items;
@@ -68,10 +86,16 @@ export function MissingCardsPanel({
   }, [items, query]);
   const visibleQuantity = visibleItems.reduce((total, item) => total + item.quantity, 0);
   const tcgplayerExport = useMemo(
-    () => tcgplayerEnabled
-      ? createTcgplayerMassEntryExport(visibleItems, TCGPLAYER_SET_MAPPINGS, TCGPLAYER_PRINTING_MAPPINGS)
+    () => tcgplayerEnabled && tcgplayerMappings
+      ? createTcgplayerMassEntryExport(
+          visibleItems,
+          TCGPLAYER_SET_MAPPINGS,
+          TCGPLAYER_PRINTING_MAPPINGS,
+          tcgplayerMappings,
+          TCGPLAYER_UNAVAILABLE_SETS,
+        )
       : undefined,
-    [tcgplayerEnabled, visibleItems],
+    [tcgplayerEnabled, tcgplayerMappings, visibleItems],
   );
   const cardmarketHandoff = useMemo(
     () => cardmarketEnabled ? createCardmarketHandoff(visibleItems) : undefined,
@@ -119,7 +143,14 @@ export function MissingCardsPanel({
           </div>
           <div className={styles.marketplaceChoiceActions} role="group" aria-label="Marketplace auswählen">
             {tcgplayerEnabled ? (
-              <button type="button" aria-pressed={marketplaceChoice === "tcgplayer"} onClick={() => setMarketplaceChoice("tcgplayer")}>TCGplayer</button>
+              <button
+                type="button"
+                aria-pressed={marketplaceChoice === "tcgplayer"}
+                onClick={() => {
+                  setTcgplayerMappingsError(undefined);
+                  setMarketplaceChoice("tcgplayer");
+                }}
+              >TCGplayer</button>
             ) : null}
             {cardmarketEnabled ? (
               <button
@@ -139,9 +170,9 @@ export function MissingCardsPanel({
         <section className={styles.marketplacePanel} aria-labelledby="tcgplayer-export-heading">
           <div className={styles.marketplaceHeader}>
             <div>
-              <p className={styles.eyebrow}>Geprüfte Marketplace-Übergabe</p>
+              <p className={styles.eyebrow}>Kataloggeprüfte Marketplace-Übergabe</p>
               <h3 id="tcgplayer-export-heading">TCGplayer Mass Entry</h3>
-              <p>{tcgplayerExport.readyCount} übergabebereit · {tcgplayerExport.verifiedCount} druckgeprüft · {tcgplayerExport.reviewRequiredCount} prüfen</p>
+              <p>{tcgplayerExport.readyCount} übergabebereit · {tcgplayerExport.verifiedCount} Produktzuordnungen · {tcgplayerExport.reviewRequiredCount} prüfen</p>
             </div>
             {tcgplayerExport.text ? (
               <a href={tcgplayerExport.massEntryUrl} target="_blank" rel="noopener noreferrer">
@@ -160,7 +191,7 @@ export function MissingCardsPanel({
           ) : null}
 
           <label className={styles.massEntryPreview}>
-            <span>Mass-Entry-Text · nur einzeln geprüfte Printings mit vollständiger Kartennummer</span>
+            <span>Mass-Entry-Text · offizielle Produktnamen, Setcodes und vollständige Kartennummern</span>
             <textarea
               aria-label="TCGplayer Mass-Entry-Vorschau"
               readOnly
@@ -199,7 +230,7 @@ export function MissingCardsPanel({
           {tcgplayerExport.matches.some((match) => !match.line) ? (
             <div className={styles.reviewList}>
               <strong>Nicht in die TCGplayer-Liste übernommen</strong>
-              <p className={styles.reviewExplanation}>Diese Karten bleiben unverändert in deiner Fehlkartenliste. Cardfolio überträgt sie nur nicht automatisch, solange die konkrete TCGplayer-Zuordnung noch nicht sicher geprüft ist.</p>
+              <p className={styles.reviewExplanation}>Diese Karten bleiben unverändert in deiner Fehlkartenliste. Cardfolio überträgt sie nur nicht automatisch, solange keine eindeutige TCGplayer-Produktzuordnung vorliegt.</p>
               <ul>
                 {tcgplayerExport.matches.filter((match) => !match.line).map((match) => (
                   <li key={match.identityKey}>
@@ -210,6 +241,16 @@ export function MissingCardsPanel({
               </ul>
             </div>
           ) : null}
+        </section>
+      ) : null}
+
+      {marketplaceChoice === "tcgplayer" && !tcgplayerExport ? (
+        <section className={styles.marketplacePanel} aria-live="polite">
+          {tcgplayerMappingsError ? (
+            <p className={styles.error} role="alert">{tcgplayerMappingsError} Öffne die Ansicht erneut oder lade die Seite neu.</p>
+          ) : (
+            <p className={styles.handoffSteps} role="status">Die geprüften TCGplayer-Produktzuordnungen werden geladen …</p>
+          )}
         </section>
       ) : null}
 

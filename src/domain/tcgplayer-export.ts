@@ -7,11 +7,31 @@ export const TCGPLAYER_PREFILLED_URL_MAX_LENGTH = 7_000;
 export interface TcgplayerSetMapping {
   tcgdexSetId: string;
   tcgdexSetName: string;
-  language: CardLanguage;
   tcgplayerSetCode: string;
   tcgplayerSetName: string;
   source: string;
   verifiedAt: string;
+}
+
+export interface TcgplayerUnavailableSet {
+  tcgdexSetId: string;
+  tcgdexSetName: string;
+  reason: string;
+}
+
+export interface TcgplayerCardCandidate {
+  productName: string;
+  collectorNumber: string;
+  tcgplayerSetCode: string;
+  tcgplayerSetName: string;
+  foilOnly: boolean;
+  productId: number;
+}
+
+export interface TcgplayerCardMapping {
+  tcgdexCardId: string;
+  tcgdexName: string;
+  candidates: TcgplayerCardCandidate[];
 }
 
 export interface TcgplayerPrintingMapping {
@@ -24,7 +44,7 @@ export interface TcgplayerPrintingMapping {
   verifiedAt: string;
 }
 
-export type TcgplayerMatchStatus = "verified-printing" | "candidate" | "unresolved";
+export type TcgplayerMatchStatus = "verified-printing" | "catalog-verified" | "candidate" | "unresolved";
 
 export interface TcgplayerMatch {
   identityKey: string;
@@ -40,6 +60,7 @@ export interface TcgplayerMatch {
   line?: string;
   setMapping?: TcgplayerSetMapping;
   printingMapping?: TcgplayerPrintingMapping;
+  cardCandidate?: TcgplayerCardCandidate;
 }
 
 export interface TcgplayerMassEntryExport extends ExportResult {
@@ -96,10 +117,52 @@ function unsafeLineField(value: string): boolean {
   return !value.trim() || /[\r\n\u0000-\u001f\u007f\[\]]/.test(value);
 }
 
+function normalizedName(value: string): string {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLocaleLowerCase("en-US")
+    .replace(/\s*\(delta species\)\s*/g, " delta ")
+    .replace(/\s+delta$/g, " delta")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function chooseCardCandidate(item: MissingItem, mapping?: TcgplayerCardMapping): TcgplayerCardCandidate | undefined {
+  if (!mapping) return undefined;
+  let candidates = mapping.candidates;
+  if (item.variant.printing === "shadowless") {
+    candidates = candidates.filter((candidate) => /shadowless/i.test(candidate.tcgplayerSetName));
+  } else {
+    candidates = candidates.filter((candidate) => !/shadowless/i.test(candidate.tcgplayerSetName));
+  }
+  if (item.variant.finish === "normal") candidates = candidates.filter((candidate) => !candidate.foilOnly);
+  if (item.variant.finish === "holo") {
+    const foilCandidates = candidates.filter((candidate) => candidate.foilOnly || /holo/i.test(candidate.productName));
+    if (foilCandidates.length) candidates = foilCandidates;
+  }
+  if (item.variant.label?.trim()) {
+    const label = normalizedName(item.variant.label);
+    const labelled = candidates.filter((candidate) => normalizedName(candidate.productName).includes(label));
+    if (labelled.length) candidates = labelled;
+  }
+  const exactName = normalizedName(mapping.tcgdexName);
+  const exact = candidates.filter((candidate) => normalizedName(candidate.productName) === exactName);
+  if (exact.length === 1) return exact[0];
+  if (candidates.length === 1) return candidates[0];
+  const identities = new Map(candidates.map((candidate) => [
+    `${candidate.productName}\u0000${candidate.collectorNumber}\u0000${candidate.tcgplayerSetCode}`,
+    candidate,
+  ]));
+  return identities.size === 1 ? [...identities.values()][0] : undefined;
+}
+
 function matchItem(
   item: MissingItem,
   setMappings: readonly TcgplayerSetMapping[],
   printingMappings: readonly TcgplayerPrintingMapping[],
+  cardMappings: readonly TcgplayerCardMapping[],
+  unavailableSets: readonly TcgplayerUnavailableSet[],
 ): TcgplayerMatch {
   const base = {
     identityKey: item.identityKey,
@@ -128,20 +191,25 @@ function matchItem(
     };
   }
 
-  const setMapping = setMappings.find(
-    (candidate) => candidate.tcgdexSetId === item.card.setId && candidate.language === item.card.ref.language,
-  );
+  const setMapping = setMappings.find((candidate) => candidate.tcgdexSetId === item.card.setId);
 
   const printingMapping = printingMappings.find(
     (candidate) => candidate.tcgdexCardId === item.card.ref.id && candidate.language === item.card.ref.language,
   );
+  const cardMapping = cardMappings.find((candidate) => candidate.tcgdexCardId === item.card.ref.id);
+  const cardCandidate = chooseCardCandidate(item, cardMapping);
+  const unavailableSet = unavailableSets.find((candidate) => candidate.tcgdexSetId === item.card.setId);
 
-  if (item.card.ref.language !== "en" && !printingMapping) {
+  if (item.variant.finish === "unspecified" || item.variant.edition === "unspecified" || !item.variant.printing || item.variant.printing === "unspecified") {
     return {
       ...base,
       status: "unresolved",
-      reason: "Für diese deutsche Karte ist kein geprüfter englischer TCGplayer-Name hinterlegt.",
+      reason: "Finish, Edition und Druckvariante müssen vollständig festgelegt werden.",
     };
+  }
+
+  if (unavailableSet) {
+    return { ...base, status: "unresolved", reason: unavailableSet.reason };
   }
 
   if (!setMapping) {
@@ -152,43 +220,55 @@ function matchItem(
     };
   }
 
-  if (item.variant.printing === "shadowless") {
+  if (printingMapping && item.variant.printing !== "shadowless") {
+    const itemNumber = toTcgplayerItemNumber(printingMapping.tcgplayerCollectorNumber);
+    if (unsafeLineField(printingMapping.tcgplayerProductName) || unsafeLineField(itemNumber)) {
+      return {
+        ...base,
+        status: "unresolved",
+        reason: "Der geprüfte TCGplayer-Name oder die Kartennummer ist nicht sicher als einzelne Mass-Entry-Zeile darstellbar.",
+        setMapping,
+        printingMapping,
+      };
+    }
     return {
       ...base,
-      status: "candidate",
-      reason: "Shadowless verwendet bei TCGplayer eine eigene Set-Zuordnung und wird ohne separat geprüftes Printing nicht in die TCGplayer-Liste übernommen.",
+      status: "verified-printing",
+      reason: "TCGplayer-Name, Set-Code und Kartennummer sind für Mass Entry geprüft.",
+      line: `${item.quantity} ${printingMapping.tcgplayerProductName} [${setMapping.tcgplayerSetCode}] ${itemNumber}`,
       setMapping,
       printingMapping,
     };
   }
 
-  if (!printingMapping) {
+  if (!cardCandidate) {
     return {
       ...base,
       status: "candidate",
-      reason: "Der Set-Code ist geprüft, dieses konkrete Printing aber noch nicht im TCGplayer-Testset und wird deshalb nicht in die TCGplayer-Liste übernommen.",
+      reason: cardMapping
+        ? "Mehrere TCGplayer-Produkte passen zu dieser Karte. Finish, Edition oder eigene Variantenbezeichnung reichen noch nicht für eine eindeutige Auswahl."
+        : "Für diese Karte wurde im aktuellen TCGplayer-Katalog kein eindeutiges Produkt mit passender Kartennummer gefunden.",
       setMapping,
     };
   }
 
-  const itemNumber = toTcgplayerItemNumber(printingMapping.tcgplayerCollectorNumber);
-  if (unsafeLineField(printingMapping.tcgplayerProductName) || unsafeLineField(itemNumber)) {
+  if (unsafeLineField(cardCandidate.productName) || unsafeLineField(cardCandidate.collectorNumber)) {
     return {
       ...base,
       status: "unresolved",
-      reason: "Der geprüfte TCGplayer-Name oder die Kartennummer ist nicht sicher als einzelne Mass-Entry-Zeile darstellbar.",
+      reason: "Der TCGplayer-Produktname oder die Kartennummer ist nicht sicher als einzelne Mass-Entry-Zeile darstellbar.",
       setMapping,
-      printingMapping,
+      cardCandidate,
     };
   }
 
   return {
     ...base,
-    status: "verified-printing",
-    reason: "TCGplayer-Name, Set-Code und Kartennummer sind für Mass Entry geprüft.",
-    line: `${item.quantity} ${printingMapping.tcgplayerProductName} [${setMapping.tcgplayerSetCode}] ${itemNumber}`,
-    setMapping,
-    printingMapping,
+    status: "catalog-verified",
+    reason: "Produktname, Set-Code und Kartennummer stammen aus dem aktuellen TCGplayer-Katalog.",
+    line: `${item.quantity} ${cardCandidate.productName} [${cardCandidate.tcgplayerSetCode}] ${cardCandidate.collectorNumber}`,
+    setMapping: setMappings.find((mapping) => mapping.tcgdexSetId === item.card.setId && mapping.tcgplayerSetCode === cardCandidate.tcgplayerSetCode) ?? setMapping,
+    cardCandidate,
   };
 }
 
@@ -196,9 +276,11 @@ export function createTcgplayerMassEntryExport(
   items: readonly MissingItem[],
   setMappings: readonly TcgplayerSetMapping[],
   printingMappings: readonly TcgplayerPrintingMapping[],
+  cardMappings: readonly TcgplayerCardMapping[] = [],
+  unavailableSets: readonly TcgplayerUnavailableSet[] = [],
 ): TcgplayerMassEntryExport {
-  const matches = items.map((item) => matchItem(item, setMappings, printingMappings));
-  const verified = matches.filter((match) => match.status === "verified-printing" && match.line);
+  const matches = items.map((item) => matchItem(item, setMappings, printingMappings, cardMappings, unavailableSets));
+  const verified = matches.filter((match) => (match.status === "verified-printing" || match.status === "catalog-verified") && match.line);
   const candidates = matches.filter((match) => match.status === "candidate");
   const unresolved = matches.filter((match) => match.status === "unresolved");
   const ready = matches.filter((match) => match.line);
@@ -215,7 +297,7 @@ export function createTcgplayerMassEntryExport(
     warnings.push(`${formatPositionCount(candidatesWithoutSet.length)} ${candidatesWithoutSet.length === 1 ? "hat" : "haben"} keinen geprüften TCGplayer-Set-Code und ${candidatesWithoutSet.length === 1 ? "wird" : "werden"} nicht in die TCGplayer-Liste übernommen.`);
   }
   if (candidatesWithoutPrinting.length > 0) {
-    warnings.push(`${formatPositionCount(candidatesWithoutPrinting.length)} ${candidatesWithoutPrinting.length === 1 ? "hat" : "haben"} einen geprüften Set-Code, aber noch kein geprüftes Printing und ${candidatesWithoutPrinting.length === 1 ? "wird" : "werden"} nicht in die TCGplayer-Liste übernommen.`);
+    warnings.push(`${formatPositionCount(candidatesWithoutPrinting.length)} ${candidatesWithoutPrinting.length === 1 ? "hat" : "haben"} keine eindeutige TCGplayer-Produktzuordnung und ${candidatesWithoutPrinting.length === 1 ? "wird" : "werden"} nicht in die TCGplayer-Liste übernommen.`);
   }
   if (unresolved.length > 0) {
     warnings.push(`${formatPositionCount(unresolved.length)} ${unresolved.length === 1 ? "ist" : "sind"} nicht sicher zuordenbar und ${unresolved.length === 1 ? "wird" : "werden"} nicht in die TCGplayer-Liste übernommen.`);

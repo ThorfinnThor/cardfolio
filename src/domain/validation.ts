@@ -46,6 +46,13 @@ export const cardSnapshotSchema = z.object({
   category: z.enum(["pokemon", "trainer", "energy", "other"]).optional(),
   abilities: z.array(z.string().min(1).max(300)).max(10).optional(),
   attacks: z.array(z.string().min(1).max(300)).max(10).optional(),
+  englishIdentity: z.object({
+    name: z.string().min(1).max(300),
+    setName: z.string().min(1).max(300),
+    category: z.enum(["pokemon", "trainer", "energy", "other"]).optional(),
+    abilities: z.array(z.string().min(1).max(300)).max(10),
+    attacks: z.array(z.string().min(1).max(300)).max(10),
+  }).optional(),
   physicalStatus: z.enum(["physical", "digital", "unknown"]),
   fetchedAt: isoDateSchema,
 });

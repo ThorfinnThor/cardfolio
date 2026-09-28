@@ -73,6 +73,47 @@ describe("Cardmarket handoff", () => {
     expect(createCardmarketHandoff([item]).parts[0].text).toBe("2x Bisa sam Sonderdruck Duft Spore Ranken Hieb");
   });
 
+  it("uses the English catalog identity for German cards because Cardmarket parses that identity reliably", () => {
+    const item = missingItem(17, {
+      card: {
+        ...missingItem().card,
+        key: "tcgdex:neo1-17:de",
+        ref: { provider: "tcgdex", id: "neo1-17", language: "de" },
+        name: "Tornupto",
+        setName: "Neo Genesis",
+        collectorNumber: "17",
+        collectorTotal: "111",
+        abilities: [],
+        attacks: ["Feueraufladung", "Flammenexplosion"],
+        englishIdentity: {
+          name: "Typhlosion",
+          setName: "Neo Genesis",
+          category: "pokemon",
+          abilities: [],
+          attacks: ["Fire Recharge", "Flame Burst"],
+        },
+      },
+    });
+
+    expect(createCardmarketHandoff([item]).parts[0].text).toBe("2x Typhlosion Fire Recharge Flame Burst");
+    expect(new URL(createCardmarketSearchUrl(item)).searchParams.get("searchString")).toBe("Typhlosion Neo Genesis 17/111");
+  });
+
+  it("uses Cardmarket's explicit Delta Species and Gold Star product wording", () => {
+    const delta = missingItem(12, {
+      card: { ...missingItem().card, name: "Typhlosion δ", attacks: ["Shady Move", "Burning Ball"] },
+    });
+    const goldStar = missingItem(17, {
+      card: { ...missingItem().card, name: "Umbreon ☆", attacks: ["Feint Attack", "Dark Ray"] },
+    });
+
+    const exported = createCardmarketHandoff([delta, goldStar]);
+
+    expect(exported.parts[0].text).toBe(
+      "2x Typhlosion δ Delta Species Shady Move Burning Ball\n2x Umbreon Gold Star Feint Attack Dark Ray",
+    );
+  });
+
   it("exports trainers by full name and excludes Pokemon without catalog attack data", () => {
     const trainer = missingItem(1, {
       card: { ...missingItem().card, name: "Scoop Up Net", category: "trainer", abilities: [], attacks: [] },

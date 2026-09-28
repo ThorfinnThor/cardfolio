@@ -455,3 +455,23 @@ Verification completed:
 
 - Typecheck, ESLint, 73 unit/component tests, static Next.js build, release checks and `git diff --check` passed locally.
 - The local production UI returned only physical Typhlosion sets, displayed the clarified TCGplayer explanation and emitted no error overlay or browser-console errors.
+
+## 2026-09-28 — Complete TCGplayer set coverage and required variants
+
+Completed:
+
+- Replaced the small hand-maintained TCGplayer whitelist with generated metadata from TCGplayer's official Pokémon Mass Entry set-code endpoint and current product catalog.
+- All 205 physical English TCGdex sets are now accounted for: 203 map to official Mass Entry codes and two are explicitly unavailable because TCGplayer publishes no Mass Entry code for them.
+- Generated exact product identities for 21,240 of the 21,290 card records returned by TCGdex. The 50 remaining records comprise the 39 cards currently returned for the two unavailable sets plus 11 cards for which the current TCGplayer product catalog has no matching record.
+- Fixed the reported old-card cases using exact current identities: `Typhlosion [BKT] 20/162`, `Dark Typhlosion [N4] 010/105` and `Typhlosion (Delta Species) [DF] 12/101`.
+- Added subset handling for Generations/Legendary Treasures Radiant Collections, classic collections, exact suffix printings and Shadowless Base Set.
+- Finish, edition and printing are mandatory for insertion and later edits. `Non-Holo / Normal` is explicit, while `Mit Schatten / Standard` is the default and Shadowless remains a deliberate choice.
+- German snapshots retain their local identity but also store the English catalog identity used by both TCGplayer and the more reliable Cardmarket decklist handoff.
+- Cardmarket decklist names expand the provider's documented `δ Delta Species` and `Gold Star` wording so symbol-only TCGdex names do not reproduce the reported no-match error.
+- GitHub Actions now regenerates and commits the marketplace metadata with the public physical catalog. The static app downloads the product mapping only when TCGplayer is selected.
+
+Verification completed:
+
+- Typecheck, ESLint, 75 unit/component tests, static Next.js build, release checks and `git diff --check` passed locally.
+- The local static build exposed the 5.1 MB marketplace JSON with HTTP 200 and rendered the updated required variant controls. A live German Tornupto search displayed physical set names and complete numbers, and the insert action remained disabled until edition was selected.
+- Local Playwright Chromium could not launch because the host denied its macOS Mach-port registration before any scenario executed; the updated 15-scenario suite remains configured for Linux GitHub CI.

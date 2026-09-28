@@ -118,3 +118,12 @@
 - A newly released physical set may therefore wait for the next successful catalog sync before it appears. This is preferable to presenting a digital card as a valid physical-binder candidate.
 - The detail-level digital-card check remains as defense in depth for stale local data or a provider classification change.
 - TCGplayer cards that lack a verified mapping remain in the Cardfolio missing list. The UI now says they are not copied into the TCGplayer list instead of suggesting that the cards themselves were removed.
+
+## 2026-09-28 — TCGplayer identity coverage is synchronized, not hand-maintained
+
+- The weekly public-data workflow reads TCGplayer's current Pokémon Mass Entry set-code catalog and current product search catalog in addition to TCGdex's physical-set catalog.
+- Every physical TCGdex set must resolve to an official TCGplayer set code or an explicit documented unavailable-set record; an unaccounted set fails the synchronization job.
+- Card mappings retain TCGplayer's exact product name, complete displayed collector number and set code. Matching uses the collector number first and a conservative unique-name fallback for subsets whose provider numbers differ.
+- Product mappings are loaded only when the collector opens the TCGplayer handoff, keeping the initial local-first workspace independent from the marketplace payload.
+- Finish, edition and printing are required before a binder card can be inserted or updated. `Mit Schatten / Standard` is the default printing; Shadowless must be selected deliberately and uses TCGplayer's separate `[BSS]` set.
+- The remaining absence of a provider record is shown as a provider limitation, not silently converted into a speculative Mass Entry line.

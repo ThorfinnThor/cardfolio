@@ -110,7 +110,7 @@ describe("binder domain", () => {
       printing: "shadowless",
     });
 
-    expect(placed.pages[0].slots[0]?.variant).toEqual({ finish: "unspecified", edition: "unspecified" });
+    expect(placed.pages[0].slots[0]?.variant).toEqual({ finish: "unspecified", edition: "unspecified", printing: "shadowed" });
     expect(updated.pages[0].slots[0]?.variant).toEqual({
       finish: "holo",
       edition: "first-edition",

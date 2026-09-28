@@ -1,9 +1,17 @@
 {
   "format": "cardfolio-public-catalog",
-  "version": 2,
+  "version": 3,
   "source": "tcgdex",
   "counts": {
     "en": 205,
     "de": 144
+  },
+  "tcgplayer": {
+    "officialSetCodes": 216,
+    "mappedSets": 203,
+    "unavailableSets": 2,
+    "catalogCards": 21290,
+    "mappedCards": 21240,
+    "unmappedCards": 50
   }
 }

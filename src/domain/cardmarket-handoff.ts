@@ -45,28 +45,40 @@ function inline(value: string): string {
   return normalized || "Nicht angegeben";
 }
 
+function cardmarketCardName(value: string): string {
+  return inline(value)
+    .replace(/\s*δ$/u, " δ Delta Species")
+    .replace(/\s*☆$/u, " Gold Star");
+}
+
 function createDecklistLine(item: MissingItem): { line?: string; reason?: string } {
-  if (!item.card.category || item.card.abilities === undefined || item.card.attacks === undefined) {
+  const identity = item.card.ref.language === "de" ? item.card.englishIdentity : undefined;
+  const name = identity?.name ?? item.card.name;
+  const category = identity?.category ?? item.card.category;
+  const abilities = identity?.abilities ?? item.card.abilities;
+  const attacks = identity?.attacks ?? item.card.attacks;
+  if (!category || abilities === undefined || attacks === undefined) {
     return { reason: "Kartentyp, Fähigkeiten und Attacken müssen zuerst aus dem Katalog aktualisiert werden." };
   }
 
-  if (item.card.category !== "pokemon") {
-    return { line: `${item.quantity}x ${inline(item.card.name)}` };
+  if (category !== "pokemon") {
+    return { line: `${item.quantity}x ${cardmarketCardName(name)}` };
   }
 
-  const identifyingDetails = [...item.card.abilities, ...item.card.attacks].map(inline).filter(Boolean);
+  const identifyingDetails = [...abilities, ...attacks].map(inline).filter(Boolean);
   if (!identifyingDetails.length) {
     return { reason: "Cardmarket benötigt bei Pokémon mindestens eine Fähigkeit oder Attacke zur eindeutigen Suche." };
   }
 
-  return { line: `${item.quantity}x ${[inline(item.card.name), ...identifyingDetails].join(" ")}` };
+  return { line: `${item.quantity}x ${[cardmarketCardName(name), ...identifyingDetails].join(" ")}` };
 }
 
 export function createCardmarketSearchUrl(item: MissingItem): string {
+  const identity = item.card.ref.language === "de" ? item.card.englishIdentity : undefined;
   const url = new URL(CARDMARKET_POKEMON_SEARCH_URL);
   url.searchParams.set("searchString", [
-    inline(item.card.name),
-    inline(item.card.setName),
+    cardmarketCardName(identity?.name ?? item.card.name),
+    inline(identity?.setName ?? item.card.setName),
     inline(formatCollectorNumber(item.card.collectorNumber, item.card.collectorTotal)),
   ].join(" "));
   return url.toString();

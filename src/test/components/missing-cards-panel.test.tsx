@@ -2,6 +2,7 @@ import { fireEvent, render, screen, cleanup } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { MissingCardsPanel } from "@/components/foundation/MissingCardsPanel";
+import type { TcgplayerCardMapping } from "@/domain/tcgplayer-export";
 import type { MissingItem } from "@/domain/types";
 
 afterEach(() => cleanup());
@@ -46,6 +47,21 @@ const items: MissingItem[] = [
     preferences: { minimumCondition: "any" },
     quantity: 1,
     entryIds: ["00000000-0000-4000-8000-000000000002"],
+  },
+];
+
+const tcgplayerCardMappings: TcgplayerCardMapping[] = [
+  {
+    tcgdexCardId: "base1-44",
+    tcgdexName: "Bulbasaur",
+    candidates: [{
+      productName: "Bulbasaur",
+      collectorNumber: "044/102",
+      tcgplayerSetCode: "BS",
+      tcgplayerSetName: "Base Set",
+      foilOnly: false,
+      productId: 1,
+    }],
   },
 ];
 
@@ -94,6 +110,7 @@ describe("MissingCardsPanel", () => {
       <MissingCardsPanel
         {...props()}
         tcgplayerEnabled
+        tcgplayerCardMappings={tcgplayerCardMappings}
         onTcgplayerCopy={onTcgplayerCopy}
         onTcgplayerTextExport={onTcgplayerTextExport}
       />,
@@ -103,7 +120,7 @@ describe("MissingCardsPanel", () => {
     expect(screen.getByRole("heading", { name: "TCGplayer Mass Entry" })).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue("1 Bulbasaur [BS] 044/102");
     expect(screen.getByText(/2× Pikachu · Wizards Black Star Promos · 001/)).toBeInTheDocument();
-    expect(screen.getByText(/Kandidat: Für dieses TCGdex-Set/)).toBeInTheDocument();
+    expect(screen.getByText(/Kandidat: Für diese Karte wurde im aktuellen TCGplayer-Katalog/)).toBeInTheDocument();
     expect(screen.getByText("Nicht in die TCGplayer-Liste übernommen")).toBeInTheDocument();
     expect(screen.getByText(/bleiben unverändert in deiner Fehlkartenliste/)).toBeInTheDocument();
     const handoffLink = screen.getByRole("link", { name: /Liste bei TCGplayer öffnen/ });
@@ -154,7 +171,7 @@ describe("MissingCardsPanel", () => {
   });
 
   it("shows only the marketplace selected by the user", () => {
-    render(<MissingCardsPanel {...props()} tcgplayerEnabled cardmarketEnabled />);
+    render(<MissingCardsPanel {...props()} tcgplayerEnabled tcgplayerCardMappings={tcgplayerCardMappings} cardmarketEnabled />);
 
     expect(screen.queryByRole("heading", { name: "TCGplayer Mass Entry" })).not.toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Cardmarket Deckliste" })).not.toBeInTheDocument();

@@ -1,7 +1,7 @@
 import type { CardVariantAvailability, VariantSelection } from "./types";
 
 export const finishLabels = {
-  normal: "Normal",
+  normal: "Non-Holo / Normal",
   holo: "Holo",
   reverse: "Reverse Holo",
   other: "Andere",
@@ -9,7 +9,7 @@ export const finishLabels = {
 } as const;
 
 export const editionLabels = {
-  unlimited: "Unlimited",
+  unlimited: "Unlimited / Standard",
   "first-edition": "First Edition",
   unspecified: "Nicht festgelegt",
 } as const;
@@ -32,12 +32,18 @@ export function createInitialVariantSelection(availability?: CardVariantAvailabi
   return {
     finish: reportedFinishes.length === 1 ? reportedFinishes[0] : "unspecified",
     edition: "unspecified",
-    printing: "unspecified",
+    printing: "shadowed",
   };
 }
 
 export function selectedPrinting(variant: VariantSelection): NonNullable<VariantSelection["printing"]> {
   return variant.printing ?? "unspecified";
+}
+
+export function isVariantSelectionComplete(variant: VariantSelection): boolean {
+  return variant.finish !== "unspecified"
+    && variant.edition !== "unspecified"
+    && selectedPrinting(variant) !== "unspecified";
 }
 
 export function formatVariantSelection(variant: VariantSelection): string {
@@ -60,7 +66,7 @@ export function formatVariantSelection(variant: VariantSelection): string {
 export function formatAvailableVariants(availability?: CardVariantAvailability): string {
   if (!availability) return "Keine Anbieterhinweise in den gespeicherten Kartendaten.";
   const values = [
-    availability.normal ? "Normal" : undefined,
+    availability.normal ? "Non-Holo / Normal" : undefined,
     availability.holo ? "Holo" : undefined,
     availability.reverse ? "Reverse Holo" : undefined,
     availability.firstEdition ? "First Edition" : undefined,

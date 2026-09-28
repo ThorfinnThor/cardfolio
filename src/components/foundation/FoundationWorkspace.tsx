@@ -49,7 +49,7 @@ import { FEATURES } from "@/config/feature-flags";
 import { PRODUCT_DESIGN } from "@/config/product";
 import { minimumConditionLabels } from "@/domain/purchase-preferences";
 import { validateBackup } from "@/domain/validation";
-import { createInitialVariantSelection, editionLabels, finishLabels, formatAvailableVariants, formatVariantSelection, printingLabels, selectedPrinting } from "@/domain/variant-selection";
+import { createInitialVariantSelection, editionLabels, finishLabels, formatAvailableVariants, formatVariantSelection, isVariantSelectionComplete, printingLabels, selectedPrinting } from "@/domain/variant-selection";
 import { catalogQueryKey, detailQueryKey, TCGdexCatalogAdapter } from "@/data/catalog/tcgdex";
 import { catalogSeries, catalogSets, completeCardSnapshotMetadata } from "@/data/catalog/set-counts";
 import { cardImageUrl } from "@/data/catalog/images";
@@ -873,6 +873,10 @@ export function FoundationWorkspace() {
 
   async function insertPreviewedCard() {
     if (!activeBinder || !searchPreview?.snapshot || searchPreview.status !== "ready") return;
+    if (!isVariantSelectionComplete(searchPreview.variant)) {
+      setMessage("Wähle vor dem Einsetzen Finish, Edition und Druckvariante aus.");
+      return;
+    }
     const location = selectedLocation
       ? {
           ...selectedLocation,
@@ -1006,6 +1010,10 @@ export function FoundationWorkspace() {
 
   async function saveVariantEdit() {
     if (!activeBinder || !variantEdit) return;
+    if (!isVariantSelectionComplete(variantEdit.variant)) {
+      setMessage("Finish, Edition und Druckvariante sind Pflichtangaben.");
+      return;
+    }
     try {
       setStorageStatus("saving");
       await persistBinderChange(activeBinder.id, (binder) => setCardPreferences(
@@ -1162,7 +1170,10 @@ export function FoundationWorkspace() {
     if (!activeBinder || cardmarketPreparing) return;
     const cardsToRefresh = [...new Map(
       items
-        .filter((item) => !item.card.category || item.card.abilities === undefined || item.card.attacks === undefined)
+        .filter((item) => !item.card.category
+          || item.card.abilities === undefined
+          || item.card.attacks === undefined
+          || (item.card.ref.language === "de" && !item.card.englishIdentity))
         .map((item) => [item.card.key, item.card]),
     ).values()];
     if (!cardsToRefresh.length) return;
@@ -1422,6 +1433,7 @@ export function FoundationWorkspace() {
               <label>
                 Finish
                 <select
+                  required
                   value={variantEdit.variant.finish}
                   onChange={(event) => setVariantEdit((current) => current ? {
                     ...current,
@@ -1434,6 +1446,7 @@ export function FoundationWorkspace() {
               <label>
                 Edition
                 <select
+                  required
                   value={variantEdit.variant.edition}
                   onChange={(event) => setVariantEdit((current) => current ? {
                     ...current,
@@ -1446,6 +1459,7 @@ export function FoundationWorkspace() {
               <label>
                 Druckvariante
                 <select
+                  required
                   value={selectedPrinting(variantEdit.variant)}
                   onChange={(event) => setVariantEdit((current) => current ? {
                     ...current,
@@ -1483,10 +1497,10 @@ export function FoundationWorkspace() {
                 </select>
               </label>
             </div>
-            <p className={styles.variantHint}>{formatAvailableVariants(variantEdit.availableVariants)} Shadowless wird von TCGdex nicht separat geliefert und ist deshalb eine manuelle Auswahl.</p>
+            <p className={styles.variantHint}>{formatAvailableVariants(variantEdit.availableVariants)} Finish, Edition und Druckvariante sind Pflichtangaben. „Mit Schatten / Standard“ ist vorausgewählt; Shadowless muss bewusst gewählt werden.</p>
             <div className={styles.dialogActions}>
               <button type="button" className={styles.secondaryButton} onClick={() => setVariantEdit(undefined)}>Abbrechen</button>
-              <button type="button" className={styles.confirmButton} onClick={saveVariantEdit}>Angaben speichern</button>
+              <button type="button" className={styles.confirmButton} disabled={!isVariantSelectionComplete(variantEdit.variant)} onClick={saveVariantEdit}>Angaben speichern</button>
             </div>
           </section>
         </div>
@@ -1729,6 +1743,7 @@ export function FoundationWorkspace() {
                         <label>
                           Finish
                           <select
+                            required
                             value={searchPreview.variant.finish}
                             onChange={(event) => setSearchPreview((current) => current ? {
                               ...current,
@@ -1741,6 +1756,7 @@ export function FoundationWorkspace() {
                         <label>
                           Edition
                           <select
+                            required
                             value={searchPreview.variant.edition}
                             onChange={(event) => setSearchPreview((current) => current ? {
                               ...current,
@@ -1753,6 +1769,7 @@ export function FoundationWorkspace() {
                         <label>
                           Druckvariante
                           <select
+                            required
                             value={selectedPrinting(searchPreview.variant)}
                             onChange={(event) => setSearchPreview((current) => current ? {
                               ...current,
@@ -1790,8 +1807,9 @@ export function FoundationWorkspace() {
                           </select>
                         </label>
                       </div>
-                      <p className={styles.variantHint}>{formatAvailableVariants(searchPreview.snapshot.availableVariants)} Shadowless wird von TCGdex nicht separat geliefert und ist deshalb eine manuelle Auswahl.</p>
-                      <button type="button" className={styles.primaryButton} disabled={previewSubmitting} onClick={() => void insertPreviewedCard()}>
+                      <p className={styles.variantHint}>{formatAvailableVariants(searchPreview.snapshot.availableVariants)} Finish, Edition und Druckvariante sind Pflichtangaben. „Mit Schatten / Standard“ ist vorausgewählt; Shadowless muss bewusst gewählt werden.</p>
+                      {!isVariantSelectionComplete(searchPreview.variant) ? <p className={styles.warning} role="status">Vervollständige die noch offenen Pflichtangaben.</p> : null}
+                      <button type="button" className={styles.primaryButton} disabled={previewSubmitting || !isVariantSelectionComplete(searchPreview.variant)} onClick={() => void insertPreviewedCard()}>
                         {previewSubmitting ? "Wird eingesetzt…" : "Mit diesen Angaben einsetzen"}
                       </button>
                     </>

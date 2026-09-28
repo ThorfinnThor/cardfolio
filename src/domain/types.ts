@@ -22,6 +22,13 @@ export interface CardSnapshot {
   category?: "pokemon" | "trainer" | "energy" | "other";
   abilities?: string[];
   attacks?: string[];
+  englishIdentity?: {
+    name: string;
+    setName: string;
+    category?: "pokemon" | "trainer" | "energy" | "other";
+    abilities: string[];
+    attacks: string[];
+  };
   physicalStatus: "physical" | "digital" | "unknown";
   fetchedAt: string;
 }

@@ -43,7 +43,7 @@ requireText("src/config/feature-flags.ts", [
 requireText(".github/workflows/sync-public-data.yml", [
   "permissions:",
   "contents: write",
-  "git add public/data/catalog",
+  "git add public/data/catalog public/data/marketplace",
   "npm run release:check",
 ]);
 

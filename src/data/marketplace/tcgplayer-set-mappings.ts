@@ -1,115 +1,19 @@
-import type { TcgplayerSetMapping } from "@/domain/tcgplayer-export";
+import mappingData from "../../../public/data/marketplace/tcgplayer-set-mappings.json";
 
-const OFFICIAL_MASS_ENTRY_SOURCE = "https://www.tcgplayer.com/massentry";
-const VERIFIED_AT = "2026-09-27";
+import type { TcgplayerSetMapping, TcgplayerUnavailableSet } from "@/domain/tcgplayer-export";
 
-export const TCGPLAYER_SET_MAPPINGS = [
-  {
-    tcgdexSetId: "base1",
-    tcgdexSetName: "Base Set",
-    language: "en",
-    tcgplayerSetCode: "BS",
-    tcgplayerSetName: "Base Set",
-    source: OFFICIAL_MASS_ENTRY_SOURCE,
-    verifiedAt: VERIFIED_AT,
-  },
-  {
-    tcgdexSetId: "base1",
-    tcgdexSetName: "Grundset",
-    language: "de",
-    tcgplayerSetCode: "BS",
-    tcgplayerSetName: "Base Set",
-    source: "https://www.tcgplayer.com/product/42382/pokemon-base-set-charizard",
-    verifiedAt: "2026-09-28",
-  },
-  {
-    tcgdexSetId: "base2",
-    tcgdexSetName: "Jungle",
-    language: "en",
-    tcgplayerSetCode: "JU",
-    tcgplayerSetName: "Jungle",
-    source: OFFICIAL_MASS_ENTRY_SOURCE,
-    verifiedAt: VERIFIED_AT,
-  },
-  {
-    tcgdexSetId: "base3",
-    tcgdexSetName: "Fossil",
-    language: "en",
-    tcgplayerSetCode: "FO",
-    tcgplayerSetName: "Fossil",
-    source: OFFICIAL_MASS_ENTRY_SOURCE,
-    verifiedAt: VERIFIED_AT,
-  },
-  {
-    tcgdexSetId: "neo1",
-    tcgdexSetName: "Neo Genesis",
-    language: "de",
-    tcgplayerSetCode: "N1",
-    tcgplayerSetName: "Neo Genesis",
-    source: "https://www.tcgplayer.com/product/90098/pokemon-neo-genesis-typhlosion-17",
-    verifiedAt: VERIFIED_AT,
-  },
-  {
-    tcgdexSetId: "gym2",
-    tcgdexSetName: "Gym Challenge",
-    language: "en",
-    tcgplayerSetCode: "G2",
-    tcgplayerSetName: "Gym Challenge",
-    source: "https://www.tcgplayer.com/product/83861/pokemon-gym-challenge-blaine-s-charizard",
-    verifiedAt: VERIFIED_AT,
-  },
-  {
-    tcgdexSetId: "ex14",
-    tcgdexSetName: "EX Crystal Guardians",
-    language: "en",
-    tcgplayerSetCode: "CG",
-    tcgplayerSetName: "EX Crystal Guardians",
-    source: "https://www.tcgplayer.com/search/pokemon/product?q=Charizard+%CE%B4+Crystal+Guardians&view=grid",
-    verifiedAt: "2026-09-28",
-  },
-  {
-    tcgdexSetId: "swsh1",
-    tcgdexSetName: "Sword & Shield",
-    language: "en",
-    tcgplayerSetCode: "SWSH01",
-    tcgplayerSetName: "SWSH01: Sword & Shield Base Set",
-    source: OFFICIAL_MASS_ENTRY_SOURCE,
-    verifiedAt: VERIFIED_AT,
-  },
-  {
-    tcgdexSetId: "swsh4",
-    tcgdexSetName: "Vivid Voltage",
-    language: "en",
-    tcgplayerSetCode: "SWSH04",
-    tcgplayerSetName: "SWSH04: Vivid Voltage",
-    source: OFFICIAL_MASS_ENTRY_SOURCE,
-    verifiedAt: VERIFIED_AT,
-  },
-  {
-    tcgdexSetId: "sv01",
-    tcgdexSetName: "Scarlet & Violet",
-    language: "en",
-    tcgplayerSetCode: "SVI",
-    tcgplayerSetName: "SV01: Scarlet & Violet Base Set",
-    source: OFFICIAL_MASS_ENTRY_SOURCE,
-    verifiedAt: VERIFIED_AT,
-  },
-  {
-    tcgdexSetId: "sv02",
-    tcgdexSetName: "Paldea Evolved",
-    language: "en",
-    tcgplayerSetCode: "PAL",
-    tcgplayerSetName: "SV02: Paldea Evolved",
-    source: OFFICIAL_MASS_ENTRY_SOURCE,
-    verifiedAt: VERIFIED_AT,
-  },
-  {
-    tcgdexSetId: "sv03",
-    tcgdexSetName: "Obsidian Flames",
-    language: "en",
-    tcgplayerSetCode: "OBF",
-    tcgplayerSetName: "SV03: Obsidian Flames",
-    source: OFFICIAL_MASS_ENTRY_SOURCE,
-    verifiedAt: VERIFIED_AT,
-  },
-] as const satisfies readonly TcgplayerSetMapping[];
+export const TCGPLAYER_SET_MAPPINGS = mappingData.mappings.map((mapping) => ({
+  ...mapping,
+  source: mappingData.source,
+  verifiedAt: mappingData.verifiedAt,
+})) satisfies readonly TcgplayerSetMapping[];
+
+export const TCGPLAYER_UNAVAILABLE_SETS = mappingData.unavailable satisfies readonly TcgplayerUnavailableSet[];
+
+export const TCGPLAYER_SET_COVERAGE = {
+  catalogSetCount: mappingData.catalogSetCount,
+  mappedSetCount: mappingData.mappedSetCount,
+  unavailableSetCount: mappingData.unavailable.length,
+  officialSetCodeCount: new Set(mappingData.mappings.map((mapping) => mapping.tcgplayerSetCode)).size,
+  verifiedAt: mappingData.verifiedAt,
+} as const;

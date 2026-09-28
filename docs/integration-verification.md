@@ -255,3 +255,14 @@ Environment: current official TCGplayer Mass Entry UI and anonymous cart.
 - With all Printing options enabled, `1 Typhlosion (17) [N1] 017/111` resolved and reached the cart as Neo Genesis, Moderately Played, Unlimited Holofoil.
 - `1 Blaine's Charizard [G2] 002/132` resolved but returned an insufficient-quantity message for the selected preferences. This is an inventory/filter result, not a parser identity failure.
 - The anonymous cart already contained the two earlier controlled Paldea test products; the verified Typhlosion became the third item. Checkout and payment were not opened.
+
+## TCGplayer full-catalog synchronization — 2026-09-28
+
+Environment: TCGdex physical English catalog, TCGplayer's official Pokémon Mass Entry set-code endpoint and current TCGplayer search catalog.
+
+- The sync accounted for all 205 physical English TCGdex sets: 203 mapped to an official Mass Entry code and `Pokémon Futsal 2020` plus `My First Battle` were recorded as unavailable because the official Mass Entry list supplies no code for them.
+- The generated product catalog mapped 21,240 of 21,290 card records returned by TCGdex. Of the 50 unmatched records, 39 belong to the two unavailable sets and 11 have no exact product record in the current TCGplayer catalog.
+- Controlled validator checks accepted `1 Typhlosion [BKT] 20/162`, `1 Dark Typhlosion [N4] 010/105` and `1 Typhlosion (Delta Species) [DF] 12/101`.
+- Cardmarket's current Typhlosion product/species pages identify the old Dragon Frontiers card as `Typhlosion δ Delta Species [Shady Move | Burning Ball]`; the handoff now expands symbol-only TCGdex names to that provider wording.
+- The first two shortened/incorrect forms tested during the regression were rejected, confirming that exact product names and TCGplayer's own collector-number formatting remain necessary even after a set code is known.
+- The generated files contain source URLs and verification timestamps. A future physical TCGdex set without a mapping or explicit unavailable record makes the scheduled sync fail instead of silently producing partial set coverage.

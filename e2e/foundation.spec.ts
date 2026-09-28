@@ -128,14 +128,15 @@ async function mockCatalog(page: Page) {
     }
 
     if (url.pathname.endsWith("/cards/neo1-17")) {
+      const language = url.pathname.split("/")[2];
       await route.fulfill({
         body: JSON.stringify({
           id: "neo1-17",
           localId: "17",
-          name: "Tornupto",
-          category: "Pokémon",
-          abilities: [{ name: "Feueraufladung" }],
-          attacks: [{ name: "Flammenexplosion" }],
+          name: language === "de" ? "Tornupto" : "Typhlosion",
+          category: language === "de" ? "Pokémon" : "Pokemon",
+          abilities: [{ name: language === "de" ? "Feueraufladung" : "Fire Recharge" }],
+          attacks: [{ name: language === "de" ? "Flammenexplosion" : "Flame Burst" }],
           set: { cardCount: { official: 111 }, id: "neo1", name: "Neo Genesis" },
           variants: { firstEdition: true, holo: true, normal: false, reverse: false },
         }),
@@ -208,6 +209,9 @@ async function addCard(page: Page, slot: number, query: string, cardName: string
     .click();
   const preview = page.getByRole("dialog", { name: "Karte prüfen" });
   await expect(preview).toContainText(cardName);
+  const finish = preview.getByLabel("Finish");
+  if (await finish.inputValue() === "unspecified") await finish.selectOption("normal");
+  await preview.getByLabel("Edition").selectOption("unlimited");
   await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
   await expect(page.getByRole("article", { name: `${cardName}, Slot ${slot}` })).toBeVisible();
 }
@@ -650,7 +654,7 @@ test("exports the verified Tornupto and Blaine's Charizard identities to TCGplay
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   await missingCards.getByRole("button", { name: "TCGplayer" }).click();
 
-  await expect(missingCards.getByText("2 übergabebereit · 2 druckgeprüft · 0 prüfen")).toBeVisible();
+  await expect(missingCards.getByText("2 übergabebereit · 2 Produktzuordnungen · 0 prüfen")).toBeVisible();
   await expect(missingCards.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue(
     "1 Typhlosion (17) [N1] 017/111\n1 Blaine's Charizard [G2] 002/132",
   );
@@ -659,6 +663,6 @@ test("exports the verified Tornupto and Blaine's Charizard identities to TCGplay
 
   await missingCards.getByRole("button", { name: "Cardmarket" }).click();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue(
-    "1x Tornupto Feueraufladung Flammenexplosion\n1x Blaine's Charizard Roaring Flames Flame Jet",
+    "1x Typhlosion Fire Recharge Flame Burst\n1x Blaine's Charizard Roaring Flames Flame Jet",
   );
 });

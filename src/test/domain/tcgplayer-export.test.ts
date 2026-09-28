@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 
 import { TCGPLAYER_PRINTING_MAPPINGS } from "@/data/marketplace/tcgplayer-printing-mappings";
-import { TCGPLAYER_SET_MAPPINGS } from "@/data/marketplace/tcgplayer-set-mappings";
+import { TCGPLAYER_SET_COVERAGE, TCGPLAYER_SET_MAPPINGS, TCGPLAYER_UNAVAILABLE_SETS } from "@/data/marketplace/tcgplayer-set-mappings";
 import { createTcgplayerMassEntryExport, createTcgplayerMassEntryUrl, TCGPLAYER_MASS_ENTRY_URL, toTcgplayerItemNumber } from "@/domain/tcgplayer-export";
+import type { TcgplayerCardMapping } from "@/domain/tcgplayer-export";
 import type { MissingItem } from "@/domain/types";
 
 function missingItem(overrides: Partial<MissingItem> = {}): MissingItem {
@@ -18,7 +19,7 @@ function missingItem(overrides: Partial<MissingItem> = {}): MissingItem {
       physicalStatus: "physical",
       fetchedAt: "2026-09-27T00:00:00.000Z",
     },
-    variant: { finish: "normal", edition: "unlimited" },
+    variant: { finish: "normal", edition: "unlimited", printing: "shadowed" },
     preferences: { minimumCondition: "near-mint" },
     quantity: 2,
     entryIds: ["00000000-0000-4000-8000-000000000001"],
@@ -49,24 +50,18 @@ describe("TCGplayer Mass Entry export", () => {
     });
   });
 
-  it("contains only set mappings checked against the official TCGplayer Mass Entry list", () => {
-    expect(TCGPLAYER_SET_MAPPINGS.map(({ tcgdexSetId, tcgplayerSetCode }) => [tcgdexSetId, tcgplayerSetCode])).toEqual([
-      ["base1", "BS"],
-      ["base1", "BS"],
-      ["base2", "JU"],
-      ["base3", "FO"],
-      ["neo1", "N1"],
-      ["gym2", "G2"],
-      ["ex14", "CG"],
-      ["swsh1", "SWSH01"],
-      ["swsh4", "SWSH04"],
-      ["sv01", "SVI"],
-      ["sv02", "PAL"],
-      ["sv03", "OBF"],
-    ]);
-    expect(TCGPLAYER_SET_MAPPINGS.every((mapping) => mapping.language === "en" || ["base1", "neo1"].includes(mapping.tcgdexSetId))).toBe(true);
+  it("accounts for every physical TCGdex set using the official Mass Entry list", () => {
+    expect(TCGPLAYER_SET_COVERAGE).toMatchObject({ catalogSetCount: 205, mappedSetCount: 203, unavailableSetCount: 2 });
+    expect(new Set(TCGPLAYER_SET_MAPPINGS.map((mapping) => mapping.tcgdexSetId)).size).toBe(203);
+    expect(TCGPLAYER_UNAVAILABLE_SETS.map((set) => set.tcgdexSetId).toSorted()).toEqual(["fut2020", "mfb"]);
+    expect(TCGPLAYER_SET_MAPPINGS).toEqual(expect.arrayContaining([
+      expect.objectContaining({ tcgdexSetId: "xy8", tcgplayerSetCode: "BKT" }),
+      expect.objectContaining({ tcgdexSetId: "neo4", tcgplayerSetCode: "N4" }),
+      expect.objectContaining({ tcgdexSetId: "ex15", tcgplayerSetCode: "DF" }),
+      expect.objectContaining({ tcgdexSetId: "base1", tcgplayerSetCode: "BSS" }),
+    ]));
     expect(TCGPLAYER_SET_MAPPINGS.every((mapping) => mapping.source.startsWith("https://www.tcgplayer.com/"))).toBe(true);
-    expect(TCGPLAYER_SET_MAPPINGS.every((mapping) => /^2026-09-(27|28)$/.test(mapping.verifiedAt))).toBe(true);
+    expect(TCGPLAYER_SET_MAPPINGS.every((mapping) => !Number.isNaN(Date.parse(mapping.verifiedAt)))).toBe(true);
     expect(TCGPLAYER_PRINTING_MAPPINGS.map((mapping) => mapping.tcgdexCardId)).toEqual([
       "base1-4",
       "base1-4",
@@ -83,9 +78,9 @@ describe("TCGplayer Mass Entry export", () => {
     expect(TCGPLAYER_PRINTING_MAPPINGS.every((mapping) => /^2026-09-(27|28)$/.test(mapping.verifiedAt))).toBe(true);
   });
 
-  it("keeps an English card from an unmapped set visible as a candidate but excludes it", () => {
+  it("keeps a card from an unknown set visible as a candidate but excludes it", () => {
     const item = missingItem({
-      card: { ...missingItem().card, setId: "basep", setName: "Wizards Black Star Promos" },
+      card: { ...missingItem().card, setId: "unknown-set", setName: "Unknown Set" },
     });
     const exported = createTcgplayerMassEntryExport([item], TCGPLAYER_SET_MAPPINGS, TCGPLAYER_PRINTING_MAPPINGS);
 
@@ -111,7 +106,7 @@ describe("TCGplayer Mass Entry export", () => {
     expect(exported.matches[0]).toMatchObject({
       status: "candidate",
       setMapping: { tcgplayerSetCode: "BS" },
-      reason: "Der Set-Code ist geprüft, dieses konkrete Printing aber noch nicht im TCGplayer-Testset und wird deshalb nicht in die TCGplayer-Liste übernommen.",
+      reason: "Für diese Karte wurde im aktuellen TCGplayer-Katalog kein eindeutiges Produkt mit passender Kartennummer gefunden.",
     });
     expect(exported.readyCount).toBe(0);
     expect(exported.verifiedCount).toBe(0);
@@ -119,37 +114,55 @@ describe("TCGplayer Mass Entry export", () => {
     expect(exported.excludedEntryIds).toEqual(item.entryIds);
   });
 
-  it("does not infer a TCGplayer name for an unverified German card", () => {
+  it("uses the verified TCGplayer catalog identity for a German card", () => {
     const item = missingItem({
       card: {
         ...missingItem().card,
-        key: "tcgdex:base1-44:de",
-        ref: { provider: "tcgdex", id: "base1-44", language: "de" },
-        name: "Bisasam",
+        key: "tcgdex:xy8-20:de",
+        ref: { provider: "tcgdex", id: "xy8-20", language: "de" },
+        name: "Tornupto",
+        setId: "xy8",
+        setName: "TURBOstart",
+        collectorNumber: "20",
+        collectorTotal: "162",
       },
+      variant: { finish: "holo", edition: "unlimited", printing: "shadowed" },
     });
-    const exported = createTcgplayerMassEntryExport([item], TCGPLAYER_SET_MAPPINGS, TCGPLAYER_PRINTING_MAPPINGS);
+    const mappings: TcgplayerCardMapping[] = [{
+      tcgdexCardId: "xy8-20",
+      tcgdexName: "Typhlosion",
+      candidates: [{ productName: "Typhlosion", collectorNumber: "20/162", tcgplayerSetCode: "BKT", tcgplayerSetName: "XY - BREAKthrough", foilOnly: true, productId: 107139 }],
+    }];
+    const exported = createTcgplayerMassEntryExport([item], TCGPLAYER_SET_MAPPINGS, TCGPLAYER_PRINTING_MAPPINGS, mappings);
 
-    expect(exported.text).toBe("");
+    expect(exported.text).toBe("2 Typhlosion [BKT] 20/162");
     expect(exported.matches[0]).toMatchObject({
-      status: "unresolved",
-      reason: "Für diese deutsche Karte ist kein geprüfter englischer TCGplayer-Name hinterlegt.",
+      status: "catalog-verified",
+      cardCandidate: { productId: 107139 },
     });
   });
 
-  it("does not send a Shadowless selection through the regular Base Set code", () => {
+  it("uses the dedicated Shadowless set code when Shadowless is selected", () => {
     const shadowless = missingItem({
       variant: { finish: "normal", edition: "unlimited", printing: "shadowless" },
     });
+    const mappings: TcgplayerCardMapping[] = [{
+      tcgdexCardId: "base1-44",
+      tcgdexName: "Bulbasaur",
+      candidates: [
+        { productName: "Bulbasaur", collectorNumber: "044/102", tcgplayerSetCode: "BS", tcgplayerSetName: "Base Set", foilOnly: false, productId: 42392 },
+        { productName: "Bulbasaur", collectorNumber: "044/102", tcgplayerSetCode: "BSS", tcgplayerSetName: "Base Set (Shadowless)", foilOnly: false, productId: 107040 },
+      ],
+    }];
 
-    const exported = createTcgplayerMassEntryExport([shadowless], TCGPLAYER_SET_MAPPINGS, TCGPLAYER_PRINTING_MAPPINGS);
+    const exported = createTcgplayerMassEntryExport([shadowless], TCGPLAYER_SET_MAPPINGS, TCGPLAYER_PRINTING_MAPPINGS, mappings);
 
-    expect(exported.text).toBe("");
+    expect(exported.text).toBe("2 Bulbasaur [BSS] 044/102");
     expect(exported.matches[0]).toMatchObject({
-      status: "candidate",
-      reason: "Shadowless verwendet bei TCGplayer eine eigene Set-Zuordnung und wird ohne separat geprüftes Printing nicht in die TCGplayer-Liste übernommen.",
+      status: "catalog-verified",
+      cardCandidate: { tcgplayerSetCode: "BSS" },
     });
-    expect(exported.excludedEntryIds).toEqual(shadowless.entryIds);
+    expect(exported.excludedEntryIds).toEqual([]);
   });
 
   it("exports the exact verified German Tornupto identity and English Blaine's Charizard printing", () => {

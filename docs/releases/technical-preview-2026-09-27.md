@@ -49,7 +49,7 @@ This record describes a technical preview, not an approved public production rel
 - Binder data is local to this exact browser origin and can be lost with browser storage; users need independent JSON backups.
 - TCGdex data, translations, variants and images can be incomplete or unavailable.
 - Pricing remains disabled because language-, edition- and variant-safe matching is not proven.
-- TCGplayer output is limited to individually tested printing mappings; Cardmarket remains a manual review handoff.
+- TCGplayer output uses the synchronized official Mass Entry set/product catalog and excludes only unresolved identities; Cardmarket remains a manual review handoff.
 - There is no account, cloud synchronization or public sharing.
 - GitHub CI and the manually dispatched scheduled-data workflow both pass. The latter refreshed English/German TCGdex set metadata in commit `336b95f5c3e4f7425cf39c05e1b7481507871f76`.
 - Operator/privacy text, the project license and rights approval are pending; therefore this preview must not be treated as an approved public launch.

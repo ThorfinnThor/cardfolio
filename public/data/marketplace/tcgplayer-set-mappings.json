@@ -1,0 +1,1259 @@
+{
+  "format": "cardfolio-tcgplayer-set-mappings",
+  "version": 1,
+  "source": "https://www.tcgplayer.com/massentry?productline=Pokemon",
+  "sourceApi": "https://mpapi.tcgplayer.com/v2/massentry/sets/3",
+  "verifiedAt": "2026-09-28T10:46:45.524Z",
+  "catalogSetCount": 205,
+  "mappedSetCount": 203,
+  "mappings": [
+    {
+      "tcgdexSetId": "2011bw",
+      "tcgdexSetName": "McDonald's Collection 2011",
+      "tcgplayerSetCode": "M11",
+      "tcgplayerSetName": "McDonald's Promos 2011"
+    },
+    {
+      "tcgdexSetId": "2012bw",
+      "tcgdexSetName": "McDonald's Collection 2012",
+      "tcgplayerSetCode": "M12",
+      "tcgplayerSetName": "McDonald's Promos 2012"
+    },
+    {
+      "tcgdexSetId": "2014xy",
+      "tcgdexSetName": "McDonald's Collection 2014",
+      "tcgplayerSetCode": "M14",
+      "tcgplayerSetName": "McDonald's Promos 2014"
+    },
+    {
+      "tcgdexSetId": "2015xy",
+      "tcgdexSetName": "McDonald's Collection 2015",
+      "tcgplayerSetCode": "M15",
+      "tcgplayerSetName": "McDonald's Promos 2015"
+    },
+    {
+      "tcgdexSetId": "2016xy",
+      "tcgdexSetName": "McDonald's Collection 2016",
+      "tcgplayerSetCode": "M16",
+      "tcgplayerSetName": "McDonald's Promos 2016"
+    },
+    {
+      "tcgdexSetId": "2017sm",
+      "tcgdexSetName": "McDonald's Collection 2017",
+      "tcgplayerSetCode": "M17",
+      "tcgplayerSetName": "McDonald's Promos 2017"
+    },
+    {
+      "tcgdexSetId": "2018sm",
+      "tcgdexSetName": "McDonald's Collection 2018",
+      "tcgplayerSetCode": "M18",
+      "tcgplayerSetName": "McDonald's Promos 2018"
+    },
+    {
+      "tcgdexSetId": "2019sm",
+      "tcgdexSetName": "McDonald's Collection 2019",
+      "tcgplayerSetCode": "M19",
+      "tcgplayerSetName": "McDonald's Promos 2019"
+    },
+    {
+      "tcgdexSetId": "2021swsh",
+      "tcgdexSetName": "McDonald's Collection 2021",
+      "tcgplayerSetCode": "M21",
+      "tcgplayerSetName": "McDonald's 25th Anniversary Promos"
+    },
+    {
+      "tcgdexSetId": "2022swsh",
+      "tcgdexSetName": "McDonald's Collection 2022",
+      "tcgplayerSetCode": "M22",
+      "tcgplayerSetName": "McDonald's Promos 2022"
+    },
+    {
+      "tcgdexSetId": "2023sv",
+      "tcgdexSetName": "McDonald's Collection 2023",
+      "tcgplayerSetCode": "M23",
+      "tcgplayerSetName": "McDonald's Promos 2023"
+    },
+    {
+      "tcgdexSetId": "2024sv",
+      "tcgdexSetName": "McDonald's Collection 2024",
+      "tcgplayerSetCode": "M24",
+      "tcgplayerSetName": "McDonald's Promos 2024"
+    },
+    {
+      "tcgdexSetId": "30th",
+      "tcgdexSetName": "30th Celebration",
+      "tcgplayerSetCode": "30C",
+      "tcgplayerSetName": "ME: 30th Celebration"
+    },
+    {
+      "tcgdexSetId": "30th-c",
+      "tcgdexSetName": "30th Classic Collection",
+      "tcgplayerSetCode": "30C",
+      "tcgplayerSetName": "ME: 30th Celebration Classic Collection"
+    },
+    {
+      "tcgdexSetId": "base1",
+      "tcgdexSetName": "Base Set",
+      "tcgplayerSetCode": "BS",
+      "tcgplayerSetName": "Base Set"
+    },
+    {
+      "tcgdexSetId": "base1",
+      "tcgdexSetName": "Base Set",
+      "tcgplayerSetCode": "BSS",
+      "tcgplayerSetName": "Base Set (Shadowless)"
+    },
+    {
+      "tcgdexSetId": "base2",
+      "tcgdexSetName": "Jungle",
+      "tcgplayerSetCode": "JU",
+      "tcgplayerSetName": "Jungle"
+    },
+    {
+      "tcgdexSetId": "base3",
+      "tcgdexSetName": "Fossil",
+      "tcgplayerSetCode": "FO",
+      "tcgplayerSetName": "Fossil"
+    },
+    {
+      "tcgdexSetId": "base4",
+      "tcgdexSetName": "Base Set 2",
+      "tcgplayerSetCode": "BS2",
+      "tcgplayerSetName": "Base Set 2"
+    },
+    {
+      "tcgdexSetId": "base5",
+      "tcgdexSetName": "Team Rocket",
+      "tcgplayerSetCode": "TR",
+      "tcgplayerSetName": "Team Rocket"
+    },
+    {
+      "tcgdexSetId": "basep",
+      "tcgdexSetName": "Wizards Black Star Promos",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "WoTC Promo"
+    },
+    {
+      "tcgdexSetId": "bog",
+      "tcgdexSetName": "Best of game",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "Best of Promos"
+    },
+    {
+      "tcgdexSetId": "bw1",
+      "tcgdexSetName": "Black & White",
+      "tcgplayerSetCode": "BLW",
+      "tcgplayerSetName": "Black and White"
+    },
+    {
+      "tcgdexSetId": "bw10",
+      "tcgdexSetName": "Plasma Blast",
+      "tcgplayerSetCode": "PLB",
+      "tcgplayerSetName": "Plasma Blast"
+    },
+    {
+      "tcgdexSetId": "bw11",
+      "tcgdexSetName": "Legendary Treasures",
+      "tcgplayerSetCode": "LTR",
+      "tcgplayerSetName": "Legendary Treasures"
+    },
+    {
+      "tcgdexSetId": "bw11",
+      "tcgdexSetName": "Legendary Treasures",
+      "tcgplayerSetCode": "LTR",
+      "tcgplayerSetName": "Legendary Treasures: Radiant Collection"
+    },
+    {
+      "tcgdexSetId": "bw2",
+      "tcgdexSetName": "Emerging Powers",
+      "tcgplayerSetCode": "EPO",
+      "tcgplayerSetName": "Emerging Powers"
+    },
+    {
+      "tcgdexSetId": "bw3",
+      "tcgdexSetName": "Noble Victories",
+      "tcgplayerSetCode": "NVI",
+      "tcgplayerSetName": "Noble Victories"
+    },
+    {
+      "tcgdexSetId": "bw4",
+      "tcgdexSetName": "Next Destinies",
+      "tcgplayerSetCode": "NXD",
+      "tcgplayerSetName": "Next Destinies"
+    },
+    {
+      "tcgdexSetId": "bw5",
+      "tcgdexSetName": "Dark Explorers",
+      "tcgplayerSetCode": "DEX",
+      "tcgplayerSetName": "Dark Explorers"
+    },
+    {
+      "tcgdexSetId": "bw6",
+      "tcgdexSetName": "Dragons Exalted",
+      "tcgplayerSetCode": "DRX",
+      "tcgplayerSetName": "Dragons Exalted"
+    },
+    {
+      "tcgdexSetId": "bw7",
+      "tcgdexSetName": "Boundaries Crossed",
+      "tcgplayerSetCode": "BCR",
+      "tcgplayerSetName": "Boundaries Crossed"
+    },
+    {
+      "tcgdexSetId": "bw8",
+      "tcgdexSetName": "Plasma Storm",
+      "tcgplayerSetCode": "PLS",
+      "tcgplayerSetName": "Plasma Storm"
+    },
+    {
+      "tcgdexSetId": "bw9",
+      "tcgdexSetName": "Plasma Freeze",
+      "tcgplayerSetCode": "PLF",
+      "tcgplayerSetName": "Plasma Freeze"
+    },
+    {
+      "tcgdexSetId": "bwp",
+      "tcgdexSetName": "BW Black Star Promos",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "Black and White Promos"
+    },
+    {
+      "tcgdexSetId": "cel25",
+      "tcgdexSetName": "Celebrations",
+      "tcgplayerSetCode": "CLB",
+      "tcgplayerSetName": "Celebrations"
+    },
+    {
+      "tcgdexSetId": "cel25cc",
+      "tcgdexSetName": "Celebrations Classic Collection",
+      "tcgplayerSetCode": "CCC",
+      "tcgplayerSetName": "Celebrations: Classic Collection"
+    },
+    {
+      "tcgdexSetId": "col1",
+      "tcgdexSetName": "Call of Legends",
+      "tcgplayerSetCode": "CL",
+      "tcgplayerSetName": "Call of Legends"
+    },
+    {
+      "tcgdexSetId": "dc1",
+      "tcgdexSetName": "Double Crisis",
+      "tcgplayerSetCode": "DCR",
+      "tcgplayerSetName": "Double Crisis"
+    },
+    {
+      "tcgdexSetId": "det1",
+      "tcgdexSetName": "Detective Pikachu",
+      "tcgplayerSetCode": "DEP",
+      "tcgplayerSetName": "Detective Pikachu"
+    },
+    {
+      "tcgdexSetId": "dp1",
+      "tcgdexSetName": "Diamond & Pearl",
+      "tcgplayerSetCode": "DP",
+      "tcgplayerSetName": "Diamond and Pearl"
+    },
+    {
+      "tcgdexSetId": "dp2",
+      "tcgdexSetName": "Mysterious Treasures",
+      "tcgplayerSetCode": "MT",
+      "tcgplayerSetName": "Mysterious Treasures"
+    },
+    {
+      "tcgdexSetId": "dp3",
+      "tcgdexSetName": "Secret Wonders",
+      "tcgplayerSetCode": "SW",
+      "tcgplayerSetName": "Secret Wonders"
+    },
+    {
+      "tcgdexSetId": "dp4",
+      "tcgdexSetName": "Great Encounters",
+      "tcgplayerSetCode": "GE",
+      "tcgplayerSetName": "Great Encounters"
+    },
+    {
+      "tcgdexSetId": "dp5",
+      "tcgdexSetName": "Majestic Dawn",
+      "tcgplayerSetCode": "MD",
+      "tcgplayerSetName": "Majestic Dawn"
+    },
+    {
+      "tcgdexSetId": "dp6",
+      "tcgdexSetName": "Legends Awakened",
+      "tcgplayerSetCode": "LA",
+      "tcgplayerSetName": "Legends Awakened"
+    },
+    {
+      "tcgdexSetId": "dp7",
+      "tcgdexSetName": "Stormfront",
+      "tcgplayerSetCode": "SF",
+      "tcgplayerSetName": "Stormfront"
+    },
+    {
+      "tcgdexSetId": "dpp",
+      "tcgdexSetName": "DP Black Star Promos",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "Diamond and Pearl Promos"
+    },
+    {
+      "tcgdexSetId": "dv1",
+      "tcgdexSetName": "Dragon Vault",
+      "tcgplayerSetCode": "DRV",
+      "tcgplayerSetName": "Dragon Vault"
+    },
+    {
+      "tcgdexSetId": "ecard1",
+      "tcgdexSetName": "Expedition Base Set",
+      "tcgplayerSetCode": "EX",
+      "tcgplayerSetName": "Expedition"
+    },
+    {
+      "tcgdexSetId": "ecard2",
+      "tcgdexSetName": "Aquapolis",
+      "tcgplayerSetCode": "AQ",
+      "tcgplayerSetName": "Aquapolis"
+    },
+    {
+      "tcgdexSetId": "ecard3",
+      "tcgdexSetName": "Skyridge",
+      "tcgplayerSetCode": "SK",
+      "tcgplayerSetName": "Skyridge"
+    },
+    {
+      "tcgdexSetId": "ex1",
+      "tcgdexSetName": "Ruby & Sapphire",
+      "tcgplayerSetCode": "RS",
+      "tcgplayerSetName": "EX Ruby and Sapphire"
+    },
+    {
+      "tcgdexSetId": "ex10",
+      "tcgdexSetName": "Unseen Forces",
+      "tcgplayerSetCode": "UF",
+      "tcgplayerSetName": "EX Unseen Forces"
+    },
+    {
+      "tcgdexSetId": "ex11",
+      "tcgdexSetName": "Delta Species",
+      "tcgplayerSetCode": "DS",
+      "tcgplayerSetName": "EX Delta Species"
+    },
+    {
+      "tcgdexSetId": "ex12",
+      "tcgdexSetName": "Legend Maker",
+      "tcgplayerSetCode": "LM",
+      "tcgplayerSetName": "EX Legend Maker"
+    },
+    {
+      "tcgdexSetId": "ex13",
+      "tcgdexSetName": "Holon Phantoms",
+      "tcgplayerSetCode": "HP",
+      "tcgplayerSetName": "EX Holon Phantoms"
+    },
+    {
+      "tcgdexSetId": "ex14",
+      "tcgdexSetName": "Crystal Guardians",
+      "tcgplayerSetCode": "CG",
+      "tcgplayerSetName": "EX Crystal Guardians"
+    },
+    {
+      "tcgdexSetId": "ex15",
+      "tcgdexSetName": "Dragon Frontiers",
+      "tcgplayerSetCode": "DF",
+      "tcgplayerSetName": "EX Dragon Frontiers"
+    },
+    {
+      "tcgdexSetId": "ex16",
+      "tcgdexSetName": "Power Keepers",
+      "tcgplayerSetCode": "PK",
+      "tcgplayerSetName": "EX Power Keepers"
+    },
+    {
+      "tcgdexSetId": "ex2",
+      "tcgdexSetName": "Sandstorm",
+      "tcgplayerSetCode": "SS",
+      "tcgplayerSetName": "EX Sandstorm"
+    },
+    {
+      "tcgdexSetId": "ex3",
+      "tcgdexSetName": "Dragon",
+      "tcgplayerSetCode": "DR",
+      "tcgplayerSetName": "EX Dragon"
+    },
+    {
+      "tcgdexSetId": "ex4",
+      "tcgdexSetName": "Team Magma vs Team Aqua",
+      "tcgplayerSetCode": "MA",
+      "tcgplayerSetName": "EX Team Magma vs Team Aqua"
+    },
+    {
+      "tcgdexSetId": "ex5",
+      "tcgdexSetName": "Hidden Legends",
+      "tcgplayerSetCode": "HL",
+      "tcgplayerSetName": "EX Hidden Legends"
+    },
+    {
+      "tcgdexSetId": "ex5.5",
+      "tcgdexSetName": "Poké Card Creator Pack",
+      "tcgplayerSetCode": "KWBP",
+      "tcgplayerSetName": "Kids WB Promos"
+    },
+    {
+      "tcgdexSetId": "ex6",
+      "tcgdexSetName": "FireRed & LeafGreen",
+      "tcgplayerSetCode": "RG",
+      "tcgplayerSetName": "EX FireRed & LeafGreen"
+    },
+    {
+      "tcgdexSetId": "ex7",
+      "tcgdexSetName": "Team Rocket Returns",
+      "tcgplayerSetCode": "RR",
+      "tcgplayerSetName": "EX Team Rocket Returns"
+    },
+    {
+      "tcgdexSetId": "ex8",
+      "tcgdexSetName": "Deoxys",
+      "tcgplayerSetCode": "DX",
+      "tcgplayerSetName": "EX Deoxys"
+    },
+    {
+      "tcgdexSetId": "ex9",
+      "tcgdexSetName": "Emerald",
+      "tcgplayerSetCode": "EM",
+      "tcgplayerSetName": "EX Emerald"
+    },
+    {
+      "tcgdexSetId": "exu",
+      "tcgdexSetName": "Unseen Forces Unown Collection",
+      "tcgplayerSetCode": "UF",
+      "tcgplayerSetName": "EX Unseen Forces"
+    },
+    {
+      "tcgdexSetId": "g1",
+      "tcgdexSetName": "Generations",
+      "tcgplayerSetCode": "GEN",
+      "tcgplayerSetName": "Generations"
+    },
+    {
+      "tcgdexSetId": "g1",
+      "tcgdexSetName": "Generations",
+      "tcgplayerSetCode": "GEN",
+      "tcgplayerSetName": "Generations: Radiant Collection"
+    },
+    {
+      "tcgdexSetId": "gym1",
+      "tcgdexSetName": "Gym Heroes",
+      "tcgplayerSetCode": "G1",
+      "tcgplayerSetName": "Gym Heroes"
+    },
+    {
+      "tcgdexSetId": "gym2",
+      "tcgdexSetName": "Gym Challenge",
+      "tcgplayerSetCode": "G2",
+      "tcgplayerSetName": "Gym Challenge"
+    },
+    {
+      "tcgdexSetId": "hgss1",
+      "tcgdexSetName": "HeartGold SoulSilver",
+      "tcgplayerSetCode": "HS",
+      "tcgplayerSetName": "HeartGold SoulSilver"
+    },
+    {
+      "tcgdexSetId": "hgss2",
+      "tcgdexSetName": "Unleashed",
+      "tcgplayerSetCode": "UL",
+      "tcgplayerSetName": "Unleashed"
+    },
+    {
+      "tcgdexSetId": "hgss3",
+      "tcgdexSetName": "Undaunted",
+      "tcgplayerSetCode": "UD",
+      "tcgplayerSetName": "Undaunted"
+    },
+    {
+      "tcgdexSetId": "hgss4",
+      "tcgdexSetName": "Triumphant",
+      "tcgplayerSetCode": "TM",
+      "tcgplayerSetName": "Triumphant"
+    },
+    {
+      "tcgdexSetId": "hgssp",
+      "tcgdexSetName": "HGSS Black Star Promos",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "HGSS Promos"
+    },
+    {
+      "tcgdexSetId": "jumbo",
+      "tcgdexSetName": "Jumbo cards",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "Jumbo Cards"
+    },
+    {
+      "tcgdexSetId": "lc",
+      "tcgdexSetName": "Legendary Collection",
+      "tcgplayerSetCode": "LC",
+      "tcgplayerSetName": "Legendary Collection"
+    },
+    {
+      "tcgdexSetId": "me01",
+      "tcgdexSetName": "Mega Evolution",
+      "tcgplayerSetCode": "MEG",
+      "tcgplayerSetName": "ME01: Mega Evolution"
+    },
+    {
+      "tcgdexSetId": "me02",
+      "tcgdexSetName": "Phantasmal Flames",
+      "tcgplayerSetCode": "PFL",
+      "tcgplayerSetName": "ME02: Phantasmal Flames"
+    },
+    {
+      "tcgdexSetId": "me02.5",
+      "tcgdexSetName": "Ascended Heroes",
+      "tcgplayerSetCode": "ASC",
+      "tcgplayerSetName": "ME: Ascended Heroes"
+    },
+    {
+      "tcgdexSetId": "me03",
+      "tcgdexSetName": "Perfect Order",
+      "tcgplayerSetCode": "POR",
+      "tcgplayerSetName": "ME03: Perfect Order"
+    },
+    {
+      "tcgdexSetId": "me04",
+      "tcgdexSetName": "Chaos Rising",
+      "tcgplayerSetCode": "CRI",
+      "tcgplayerSetName": "ME04: Chaos Rising"
+    },
+    {
+      "tcgdexSetId": "me05",
+      "tcgdexSetName": "Pitch Black",
+      "tcgplayerSetCode": "PBL",
+      "tcgplayerSetName": "ME05: Pitch Black"
+    },
+    {
+      "tcgdexSetId": "mee",
+      "tcgdexSetName": "Mega Evolution Energy",
+      "tcgplayerSetCode": "MEE",
+      "tcgplayerSetName": "MEE: Mega Evolution Energies"
+    },
+    {
+      "tcgdexSetId": "mep",
+      "tcgdexSetName": "MEP Black Star Promos",
+      "tcgplayerSetCode": "MEP",
+      "tcgplayerSetName": "ME: Mega Evolution Promo"
+    },
+    {
+      "tcgdexSetId": "miscp",
+      "tcgdexSetName": "Miscellaneous Promos",
+      "tcgplayerSetCode": "MCAP",
+      "tcgplayerSetName": "Miscellaneous Cards & Products"
+    },
+    {
+      "tcgdexSetId": "neo1",
+      "tcgdexSetName": "Neo Genesis",
+      "tcgplayerSetCode": "N1",
+      "tcgplayerSetName": "Neo Genesis"
+    },
+    {
+      "tcgdexSetId": "neo2",
+      "tcgdexSetName": "Neo Discovery",
+      "tcgplayerSetCode": "N2",
+      "tcgplayerSetName": "Neo Discovery"
+    },
+    {
+      "tcgdexSetId": "neo3",
+      "tcgdexSetName": "Neo Revelation",
+      "tcgplayerSetCode": "N3",
+      "tcgplayerSetName": "Neo Revelation"
+    },
+    {
+      "tcgdexSetId": "neo4",
+      "tcgdexSetName": "Neo Destiny",
+      "tcgplayerSetCode": "N4",
+      "tcgplayerSetName": "Neo Destiny"
+    },
+    {
+      "tcgdexSetId": "np",
+      "tcgdexSetName": "Nintendo Black Star Promos",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "Nintendo Promos"
+    },
+    {
+      "tcgdexSetId": "pl1",
+      "tcgdexSetName": "Platinum",
+      "tcgplayerSetCode": "PL",
+      "tcgplayerSetName": "Platinum"
+    },
+    {
+      "tcgdexSetId": "pl2",
+      "tcgdexSetName": "Rising Rivals",
+      "tcgplayerSetCode": "RR",
+      "tcgplayerSetName": "Rising Rivals"
+    },
+    {
+      "tcgdexSetId": "pl3",
+      "tcgdexSetName": "Supreme Victors",
+      "tcgplayerSetCode": "SV",
+      "tcgplayerSetName": "Supreme Victors"
+    },
+    {
+      "tcgdexSetId": "pl4",
+      "tcgdexSetName": "Arceus",
+      "tcgplayerSetCode": "AR",
+      "tcgplayerSetName": "Arceus"
+    },
+    {
+      "tcgdexSetId": "pop1",
+      "tcgdexSetName": "POP Series 1",
+      "tcgplayerSetCode": "POP",
+      "tcgplayerSetName": "POP Series 1"
+    },
+    {
+      "tcgdexSetId": "pop2",
+      "tcgdexSetName": "POP Series 2",
+      "tcgplayerSetCode": "POP",
+      "tcgplayerSetName": "POP Series 2"
+    },
+    {
+      "tcgdexSetId": "pop3",
+      "tcgdexSetName": "POP Series 3",
+      "tcgplayerSetCode": "POP",
+      "tcgplayerSetName": "POP Series 3"
+    },
+    {
+      "tcgdexSetId": "pop4",
+      "tcgdexSetName": "POP Series 4",
+      "tcgplayerSetCode": "POP",
+      "tcgplayerSetName": "POP Series 4"
+    },
+    {
+      "tcgdexSetId": "pop5",
+      "tcgdexSetName": "POP Series 5",
+      "tcgplayerSetCode": "POP",
+      "tcgplayerSetName": "POP Series 5"
+    },
+    {
+      "tcgdexSetId": "pop6",
+      "tcgdexSetName": "POP Series 6",
+      "tcgplayerSetCode": "POP",
+      "tcgplayerSetName": "POP Series 6"
+    },
+    {
+      "tcgdexSetId": "pop7",
+      "tcgdexSetName": "POP Series 7",
+      "tcgplayerSetCode": "POP",
+      "tcgplayerSetName": "POP Series 7"
+    },
+    {
+      "tcgdexSetId": "pop8",
+      "tcgdexSetName": "POP Series 8",
+      "tcgplayerSetCode": "POP",
+      "tcgplayerSetName": "POP Series 8"
+    },
+    {
+      "tcgdexSetId": "pop9",
+      "tcgdexSetName": "POP Series 9",
+      "tcgplayerSetCode": "POP",
+      "tcgplayerSetName": "POP Series 9"
+    },
+    {
+      "tcgdexSetId": "rc",
+      "tcgdexSetName": "Radiant Collection",
+      "tcgplayerSetCode": "LTR",
+      "tcgplayerSetName": "Legendary Treasures: Radiant Collection"
+    },
+    {
+      "tcgdexSetId": "ru1",
+      "tcgdexSetName": "Pokémon Rumble",
+      "tcgplayerSetCode": "RUM",
+      "tcgplayerSetName": "Rumble"
+    },
+    {
+      "tcgdexSetId": "si1",
+      "tcgdexSetName": "Southern Islands",
+      "tcgplayerSetCode": "SI",
+      "tcgplayerSetName": "Southern Islands"
+    },
+    {
+      "tcgdexSetId": "sm1",
+      "tcgdexSetName": "Sun & Moon",
+      "tcgplayerSetCode": "SM01",
+      "tcgplayerSetName": "SM Base Set"
+    },
+    {
+      "tcgdexSetId": "sm10",
+      "tcgdexSetName": "Unbroken Bonds",
+      "tcgplayerSetCode": "SM10",
+      "tcgplayerSetName": "SM - Unbroken Bonds"
+    },
+    {
+      "tcgdexSetId": "sm11",
+      "tcgdexSetName": "Unified Minds",
+      "tcgplayerSetCode": "SM11",
+      "tcgplayerSetName": "SM - Unified Minds"
+    },
+    {
+      "tcgdexSetId": "sm115",
+      "tcgdexSetName": "Hidden Fates",
+      "tcgplayerSetCode": "HIF",
+      "tcgplayerSetName": "Hidden Fates"
+    },
+    {
+      "tcgdexSetId": "sm12",
+      "tcgdexSetName": "Cosmic Eclipse",
+      "tcgplayerSetCode": "SM12",
+      "tcgplayerSetName": "SM - Cosmic Eclipse"
+    },
+    {
+      "tcgdexSetId": "sm2",
+      "tcgdexSetName": "Guardians Rising",
+      "tcgplayerSetCode": "SM02",
+      "tcgplayerSetName": "SM - Guardians Rising"
+    },
+    {
+      "tcgdexSetId": "sm3",
+      "tcgdexSetName": "Burning Shadows",
+      "tcgplayerSetCode": "SM03",
+      "tcgplayerSetName": "SM - Burning Shadows"
+    },
+    {
+      "tcgdexSetId": "sm3.5",
+      "tcgdexSetName": "Shining Legends",
+      "tcgplayerSetCode": "SHL",
+      "tcgplayerSetName": "Shining Legends"
+    },
+    {
+      "tcgdexSetId": "sm4",
+      "tcgdexSetName": "Crimson Invasion",
+      "tcgplayerSetCode": "SM04",
+      "tcgplayerSetName": "SM - Crimson Invasion"
+    },
+    {
+      "tcgdexSetId": "sm5",
+      "tcgdexSetName": "Ultra Prism",
+      "tcgplayerSetCode": "SM05",
+      "tcgplayerSetName": "SM - Ultra Prism"
+    },
+    {
+      "tcgdexSetId": "sm6",
+      "tcgdexSetName": "Forbidden Light",
+      "tcgplayerSetCode": "SM06",
+      "tcgplayerSetName": "SM - Forbidden Light"
+    },
+    {
+      "tcgdexSetId": "sm7",
+      "tcgdexSetName": "Celestial Storm",
+      "tcgplayerSetCode": "CES",
+      "tcgplayerSetName": "SM - Celestial Storm"
+    },
+    {
+      "tcgdexSetId": "sm7.5",
+      "tcgdexSetName": "Dragon Majesty",
+      "tcgplayerSetCode": "DRM",
+      "tcgplayerSetName": "Dragon Majesty"
+    },
+    {
+      "tcgdexSetId": "sm8",
+      "tcgdexSetName": "Lost Thunder",
+      "tcgplayerSetCode": "SM8",
+      "tcgplayerSetName": "SM - Lost Thunder"
+    },
+    {
+      "tcgdexSetId": "sm9",
+      "tcgdexSetName": "Team Up",
+      "tcgplayerSetCode": "SM9",
+      "tcgplayerSetName": "SM - Team Up"
+    },
+    {
+      "tcgdexSetId": "sma",
+      "tcgdexSetName": "Hidden Fates Shiny Vault",
+      "tcgplayerSetCode": "HIF:SV",
+      "tcgplayerSetName": "Hidden Fates: Shiny Vault"
+    },
+    {
+      "tcgdexSetId": "smp",
+      "tcgdexSetName": "SM Black Star Promos",
+      "tcgplayerSetCode": "SMP",
+      "tcgplayerSetName": "SM Promos"
+    },
+    {
+      "tcgdexSetId": "sp",
+      "tcgdexSetName": "Sample",
+      "tcgplayerSetCode": "SAMPLE",
+      "tcgplayerSetName": "e-Reader Sample Cards"
+    },
+    {
+      "tcgdexSetId": "sv01",
+      "tcgdexSetName": "Scarlet & Violet",
+      "tcgplayerSetCode": "SVI",
+      "tcgplayerSetName": "SV01: Scarlet & Violet Base Set"
+    },
+    {
+      "tcgdexSetId": "sv02",
+      "tcgdexSetName": "Paldea Evolved",
+      "tcgplayerSetCode": "PAL",
+      "tcgplayerSetName": "SV02: Paldea Evolved"
+    },
+    {
+      "tcgdexSetId": "sv03",
+      "tcgdexSetName": "Obsidian Flames",
+      "tcgplayerSetCode": "OBF",
+      "tcgplayerSetName": "SV03: Obsidian Flames"
+    },
+    {
+      "tcgdexSetId": "sv03.5",
+      "tcgdexSetName": "151",
+      "tcgplayerSetCode": "MEW",
+      "tcgplayerSetName": "SV: Scarlet & Violet 151"
+    },
+    {
+      "tcgdexSetId": "sv04",
+      "tcgdexSetName": "Paradox Rift",
+      "tcgplayerSetCode": "PAR",
+      "tcgplayerSetName": "SV04: Paradox Rift"
+    },
+    {
+      "tcgdexSetId": "sv04.5",
+      "tcgdexSetName": "Paldean Fates",
+      "tcgplayerSetCode": "PAF",
+      "tcgplayerSetName": "SV: Paldean Fates"
+    },
+    {
+      "tcgdexSetId": "sv05",
+      "tcgdexSetName": "Temporal Forces",
+      "tcgplayerSetCode": "TEF",
+      "tcgplayerSetName": "SV05: Temporal Forces"
+    },
+    {
+      "tcgdexSetId": "sv06",
+      "tcgdexSetName": "Twilight Masquerade",
+      "tcgplayerSetCode": "TWM",
+      "tcgplayerSetName": "SV06: Twilight Masquerade"
+    },
+    {
+      "tcgdexSetId": "sv06.5",
+      "tcgdexSetName": "Shrouded Fable",
+      "tcgplayerSetCode": "SFA",
+      "tcgplayerSetName": "SV: Shrouded Fable"
+    },
+    {
+      "tcgdexSetId": "sv07",
+      "tcgdexSetName": "Stellar Crown",
+      "tcgplayerSetCode": "SCR",
+      "tcgplayerSetName": "SV07: Stellar Crown"
+    },
+    {
+      "tcgdexSetId": "sv08",
+      "tcgdexSetName": "Surging Sparks",
+      "tcgplayerSetCode": "SSP",
+      "tcgplayerSetName": "SV08: Surging Sparks"
+    },
+    {
+      "tcgdexSetId": "sv08.5",
+      "tcgdexSetName": "Prismatic Evolutions",
+      "tcgplayerSetCode": "PRE",
+      "tcgplayerSetName": "SV: Prismatic Evolutions"
+    },
+    {
+      "tcgdexSetId": "sv09",
+      "tcgdexSetName": "Journey Together",
+      "tcgplayerSetCode": "JTG",
+      "tcgplayerSetName": "SV09: Journey Together"
+    },
+    {
+      "tcgdexSetId": "sv10",
+      "tcgdexSetName": "Destined Rivals",
+      "tcgplayerSetCode": "DRI",
+      "tcgplayerSetName": "SV10: Destined Rivals"
+    },
+    {
+      "tcgdexSetId": "sv10.5b",
+      "tcgdexSetName": "Black Bolt",
+      "tcgplayerSetCode": "BLK",
+      "tcgplayerSetName": "SV: Black Bolt"
+    },
+    {
+      "tcgdexSetId": "sv10.5w",
+      "tcgdexSetName": "White Flare",
+      "tcgplayerSetCode": "WHT",
+      "tcgplayerSetName": "SV: White Flare"
+    },
+    {
+      "tcgdexSetId": "sve",
+      "tcgdexSetName": "Scarlet & Violet Energy",
+      "tcgplayerSetCode": "SVE",
+      "tcgplayerSetName": "SVE: Scarlet & Violet Energies"
+    },
+    {
+      "tcgdexSetId": "svp",
+      "tcgdexSetName": "SVP Black Star Promos",
+      "tcgplayerSetCode": "SVP",
+      "tcgplayerSetName": "SV: Scarlet & Violet Promo Cards"
+    },
+    {
+      "tcgdexSetId": "swsh1",
+      "tcgdexSetName": "Sword & Shield",
+      "tcgplayerSetCode": "SWSH01",
+      "tcgplayerSetName": "SWSH01: Sword & Shield Base Set"
+    },
+    {
+      "tcgdexSetId": "swsh10",
+      "tcgdexSetName": "Astral Radiance",
+      "tcgplayerSetCode": "SWSH10",
+      "tcgplayerSetName": "SWSH10: Astral Radiance"
+    },
+    {
+      "tcgdexSetId": "swsh10.5",
+      "tcgdexSetName": "Pokémon GO",
+      "tcgplayerSetCode": "PGO",
+      "tcgplayerSetName": "Pokemon GO"
+    },
+    {
+      "tcgdexSetId": "swsh10tg",
+      "tcgdexSetName": "Astral Radiance Trainer Gallery",
+      "tcgplayerSetCode": "SWSH10:TG",
+      "tcgplayerSetName": "SWSH10: Astral Radiance Trainer Gallery"
+    },
+    {
+      "tcgdexSetId": "swsh11",
+      "tcgdexSetName": "Lost Origin",
+      "tcgplayerSetCode": "SWSH11",
+      "tcgplayerSetName": "SWSH11: Lost Origin"
+    },
+    {
+      "tcgdexSetId": "swsh11tg",
+      "tcgdexSetName": "Lost Origin Trainer Gallery",
+      "tcgplayerSetCode": "SWSH11: TG",
+      "tcgplayerSetName": "SWSH11: Lost Origin Trainer Gallery"
+    },
+    {
+      "tcgdexSetId": "swsh12",
+      "tcgdexSetName": "Silver Tempest",
+      "tcgplayerSetCode": "SWSH12",
+      "tcgplayerSetName": "SWSH12: Silver Tempest"
+    },
+    {
+      "tcgdexSetId": "swsh12.5",
+      "tcgdexSetName": "Crown Zenith",
+      "tcgplayerSetCode": "CRZ",
+      "tcgplayerSetName": "SWSH: Crown Zenith"
+    },
+    {
+      "tcgdexSetId": "swsh12.5gg",
+      "tcgdexSetName": "Crown Zenith Galarian Gallery",
+      "tcgplayerSetCode": "CRZ:GG",
+      "tcgplayerSetName": "SWSH: Crown Zenith: Galarian Gallery"
+    },
+    {
+      "tcgdexSetId": "swsh12tg",
+      "tcgdexSetName": "Silver Tempest Trainer Gallery",
+      "tcgplayerSetCode": "SWSH12: TG",
+      "tcgplayerSetName": "SWSH12: Silver Tempest Trainer Gallery"
+    },
+    {
+      "tcgdexSetId": "swsh2",
+      "tcgdexSetName": "Rebel Clash",
+      "tcgplayerSetCode": "SWSH02",
+      "tcgplayerSetName": "SWSH02: Rebel Clash"
+    },
+    {
+      "tcgdexSetId": "swsh3",
+      "tcgdexSetName": "Darkness Ablaze",
+      "tcgplayerSetCode": "SWSH03",
+      "tcgplayerSetName": "SWSH03: Darkness Ablaze"
+    },
+    {
+      "tcgdexSetId": "swsh3.5",
+      "tcgdexSetName": "Champion's Path",
+      "tcgplayerSetCode": "CHP",
+      "tcgplayerSetName": "Champion's Path"
+    },
+    {
+      "tcgdexSetId": "swsh4",
+      "tcgdexSetName": "Vivid Voltage",
+      "tcgplayerSetCode": "SWSH04",
+      "tcgplayerSetName": "SWSH04: Vivid Voltage"
+    },
+    {
+      "tcgdexSetId": "swsh4.5",
+      "tcgdexSetName": "Shining Fates",
+      "tcgplayerSetCode": "SHF",
+      "tcgplayerSetName": "Shining Fates"
+    },
+    {
+      "tcgdexSetId": "swsh4.5sv",
+      "tcgdexSetName": "Shining Fates Shiny Vault",
+      "tcgplayerSetCode": "SHFSV",
+      "tcgplayerSetName": "Shining Fates: Shiny Vault"
+    },
+    {
+      "tcgdexSetId": "swsh5",
+      "tcgdexSetName": "Battle Styles",
+      "tcgplayerSetCode": "SWSH05",
+      "tcgplayerSetName": "SWSH05: Battle Styles"
+    },
+    {
+      "tcgdexSetId": "swsh6",
+      "tcgdexSetName": "Chilling Reign",
+      "tcgplayerSetCode": "SWSH06",
+      "tcgplayerSetName": "SWSH06: Chilling Reign"
+    },
+    {
+      "tcgdexSetId": "swsh7",
+      "tcgdexSetName": "Evolving Skies",
+      "tcgplayerSetCode": "SWSH07",
+      "tcgplayerSetName": "SWSH07: Evolving Skies"
+    },
+    {
+      "tcgdexSetId": "swsh8",
+      "tcgdexSetName": "Fusion Strike",
+      "tcgplayerSetCode": "SWSH08",
+      "tcgplayerSetName": "SWSH08: Fusion Strike"
+    },
+    {
+      "tcgdexSetId": "swsh9",
+      "tcgdexSetName": "Brilliant Stars",
+      "tcgplayerSetCode": "SWSH09",
+      "tcgplayerSetName": "SWSH09: Brilliant Stars"
+    },
+    {
+      "tcgdexSetId": "swsh9tg",
+      "tcgdexSetName": "Brilliant Stars Trainer Gallery",
+      "tcgplayerSetCode": "SWSH09:TG",
+      "tcgplayerSetName": "SWSH09: Brilliant Stars Trainer Gallery"
+    },
+    {
+      "tcgdexSetId": "swshp",
+      "tcgdexSetName": "SWSH Black Star Promos",
+      "tcgplayerSetCode": "SWSD",
+      "tcgplayerSetName": "SWSH: Sword & Shield Promo Cards"
+    },
+    {
+      "tcgdexSetId": "tk-bw-e",
+      "tcgdexSetName": "BW trainer Kit (Excadrill)",
+      "tcgplayerSetCode": "BLW",
+      "tcgplayerSetName": "BW Trainer Kit: Excadrill & Zoroark"
+    },
+    {
+      "tcgdexSetId": "tk-bw-z",
+      "tcgdexSetName": "BW trainer Kit (Zoroark)",
+      "tcgplayerSetCode": "BLW",
+      "tcgplayerSetName": "BW Trainer Kit: Excadrill & Zoroark"
+    },
+    {
+      "tcgdexSetId": "tk-dp-l",
+      "tcgdexSetName": "DP trainer Kit (Lucario)",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "DP Trainer Kit: Manaphy & Lucario"
+    },
+    {
+      "tcgdexSetId": "tk-dp-m",
+      "tcgdexSetName": "DP trainer Kit (Manaphy)",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "DP Trainer Kit: Manaphy & Lucario"
+    },
+    {
+      "tcgdexSetId": "tk-ex-latia",
+      "tcgdexSetName": "EX trainer Kit (Latias)",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "EX Trainer Kit 1: Latias & Latios"
+    },
+    {
+      "tcgdexSetId": "tk-ex-latio",
+      "tcgdexSetName": "EX trainer Kit (Latios)",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "EX Trainer Kit 1: Latias & Latios"
+    },
+    {
+      "tcgdexSetId": "tk-ex-m",
+      "tcgdexSetName": "EX trainer Kit 2 (Minun)",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "EX Trainer Kit 2: Plusle & Minun"
+    },
+    {
+      "tcgdexSetId": "tk-ex-p",
+      "tcgdexSetName": "EX trainer Kit 2 (Plusle)",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "EX Trainer Kit 2: Plusle & Minun"
+    },
+    {
+      "tcgdexSetId": "tk-hs-g",
+      "tcgdexSetName": "HS trainer Kit (Gyarados)",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "HGSS Trainer Kit: Gyarados & Raichu"
+    },
+    {
+      "tcgdexSetId": "tk-hs-r",
+      "tcgdexSetName": "HS trainer Kit (Raichu)",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "HGSS Trainer Kit: Gyarados & Raichu"
+    },
+    {
+      "tcgdexSetId": "tk-sm-l",
+      "tcgdexSetName": "SM trainer Kit (Lycanroc)",
+      "tcgplayerSetCode": "SMK1",
+      "tcgplayerSetName": "SM Trainer Kit: Lycanroc & Alolan Raichu"
+    },
+    {
+      "tcgdexSetId": "tk-sm-r",
+      "tcgdexSetName": "SM trainer Kit (Alolan Raichu)",
+      "tcgplayerSetCode": "SMK1",
+      "tcgplayerSetName": "SM Trainer Kit: Lycanroc & Alolan Raichu"
+    },
+    {
+      "tcgdexSetId": "tk-xy-b",
+      "tcgdexSetName": "XY trainer Kit (Bisharp)",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "XY Trainer Kit: Bisharp & Wigglytuff"
+    },
+    {
+      "tcgdexSetId": "tk-xy-latia",
+      "tcgdexSetName": "XY trainer Kit (Latias)",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "XY Trainer Kit: Latias & Latios"
+    },
+    {
+      "tcgdexSetId": "tk-xy-latio",
+      "tcgdexSetName": "XY trainer Kit (Latios)",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "XY Trainer Kit: Latias & Latios"
+    },
+    {
+      "tcgdexSetId": "tk-xy-n",
+      "tcgdexSetName": "XY trainer Kit (Noivern)",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "XY Trainer Kit: Sylveon & Noivern"
+    },
+    {
+      "tcgdexSetId": "tk-xy-p",
+      "tcgdexSetName": "XY trainer Kit (Pikachu Libre)",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "XY Trainer Kit: Pikachu Libre & Suicune"
+    },
+    {
+      "tcgdexSetId": "tk-xy-su",
+      "tcgdexSetName": "XY trainer Kit (Suicune)",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "XY Trainer Kit: Pikachu Libre & Suicune"
+    },
+    {
+      "tcgdexSetId": "tk-xy-sy",
+      "tcgdexSetName": "XY trainer Kit (Sylveon)",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "XY Trainer Kit: Sylveon & Noivern"
+    },
+    {
+      "tcgdexSetId": "tk-xy-w",
+      "tcgdexSetName": "XY trainer Kit (Wigglytuff)",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "XY Trainer Kit: Bisharp & Wigglytuff"
+    },
+    {
+      "tcgdexSetId": "wp",
+      "tcgdexSetName": "W Promotional",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "WoTC Promo"
+    },
+    {
+      "tcgdexSetId": "xy0",
+      "tcgdexSetName": "Kalos Starter Set",
+      "tcgplayerSetCode": "KSS",
+      "tcgplayerSetName": "Kalos Starter Set"
+    },
+    {
+      "tcgdexSetId": "xy1",
+      "tcgdexSetName": "XY",
+      "tcgplayerSetCode": "XY",
+      "tcgplayerSetName": "XY Base Set"
+    },
+    {
+      "tcgdexSetId": "xy10",
+      "tcgdexSetName": "Fates Collide",
+      "tcgplayerSetCode": "FCO",
+      "tcgplayerSetName": "XY - Fates Collide"
+    },
+    {
+      "tcgdexSetId": "xy11",
+      "tcgdexSetName": "Steam Siege",
+      "tcgplayerSetCode": "STS",
+      "tcgplayerSetName": "XY - Steam Siege"
+    },
+    {
+      "tcgdexSetId": "xy12",
+      "tcgdexSetName": "Evolutions",
+      "tcgplayerSetCode": "EVO",
+      "tcgplayerSetName": "XY - Evolutions"
+    },
+    {
+      "tcgdexSetId": "xy2",
+      "tcgdexSetName": "Flashfire",
+      "tcgplayerSetCode": "FLF",
+      "tcgplayerSetName": "XY - Flashfire"
+    },
+    {
+      "tcgdexSetId": "xy3",
+      "tcgdexSetName": "Furious Fists",
+      "tcgplayerSetCode": "FFI",
+      "tcgplayerSetName": "XY - Furious Fists"
+    },
+    {
+      "tcgdexSetId": "xy4",
+      "tcgdexSetName": "Phantom Forces",
+      "tcgplayerSetCode": "PHF",
+      "tcgplayerSetName": "XY - Phantom Forces"
+    },
+    {
+      "tcgdexSetId": "xy5",
+      "tcgdexSetName": "Primal Clash",
+      "tcgplayerSetCode": "PRC",
+      "tcgplayerSetName": "XY - Primal Clash"
+    },
+    {
+      "tcgdexSetId": "xy6",
+      "tcgdexSetName": "Roaring Skies",
+      "tcgplayerSetCode": "ROS",
+      "tcgplayerSetName": "XY - Roaring Skies"
+    },
+    {
+      "tcgdexSetId": "xy7",
+      "tcgdexSetName": "Ancient Origins",
+      "tcgplayerSetCode": "AOR",
+      "tcgplayerSetName": "XY - Ancient Origins"
+    },
+    {
+      "tcgdexSetId": "xy8",
+      "tcgdexSetName": "BREAKthrough",
+      "tcgplayerSetCode": "BKT",
+      "tcgplayerSetName": "XY - BREAKthrough"
+    },
+    {
+      "tcgdexSetId": "xy9",
+      "tcgdexSetName": "BREAKpoint",
+      "tcgplayerSetCode": "BKP",
+      "tcgplayerSetName": "XY - BREAKpoint"
+    },
+    {
+      "tcgdexSetId": "xya",
+      "tcgdexSetName": "Yellow A Alternate",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "Alternate Art Promos"
+    },
+    {
+      "tcgdexSetId": "xyp",
+      "tcgdexSetName": "XY Black Star Promos",
+      "tcgplayerSetCode": "PR",
+      "tcgplayerSetName": "XY Promos"
+    }
+  ],
+  "unavailable": [
+    {
+      "tcgdexSetId": "fut2020",
+      "tcgdexSetName": "Pokémon Futsal 2020",
+      "reason": "TCGplayer führt Pokémon Futsal 2020 nicht in der offiziellen Pokémon-Mass-Entry-Setcodeliste."
+    },
+    {
+      "tcgdexSetId": "mfb",
+      "tcgdexSetName": "My First Battle",
+      "reason": "TCGplayer führt My First Battle als Marketplace-Set, aber ohne offiziellen Pokémon-Mass-Entry-Setcode."
+    }
+  ]
+}
