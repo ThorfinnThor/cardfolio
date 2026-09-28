@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { TCGPLAYER_PRINTING_MAPPINGS } from "@/data/marketplace/tcgplayer-printing-mappings";
 import { TCGPLAYER_SET_MAPPINGS } from "@/data/marketplace/tcgplayer-set-mappings";
-import { createTcgplayerMassEntryExport, createTcgplayerMassEntryUrl, TCGPLAYER_MASS_ENTRY_URL } from "@/domain/tcgplayer-export";
+import { createTcgplayerMassEntryExport, createTcgplayerMassEntryUrl, TCGPLAYER_MASS_ENTRY_URL, toTcgplayerItemNumber } from "@/domain/tcgplayer-export";
 import type { MissingItem } from "@/domain/types";
 
 function missingItem(overrides: Partial<MissingItem> = {}): MissingItem {
@@ -30,7 +30,7 @@ describe("TCGplayer Mass Entry export", () => {
   it("formats verified English printings with quantity, name, set code and card number", () => {
     const exported = createTcgplayerMassEntryExport([missingItem()], TCGPLAYER_SET_MAPPINGS, TCGPLAYER_PRINTING_MAPPINGS);
 
-    expect(exported.text).toBe("2 Bulbasaur [BS] 044/102");
+    expect(exported.text).toBe("2 Bulbasaur [BS] 44");
     expect(exported.verifiedCount).toBe(1);
     expect(exported.reviewRequiredCount).toBe(0);
     expect(exported.readyCount).toBe(1);
@@ -38,7 +38,7 @@ describe("TCGplayer Mass Entry export", () => {
     expect(exported.massEntryPrefilled).toBe(true);
     const handoffUrl = new URL(exported.massEntryUrl);
     expect(`${handoffUrl.origin}${handoffUrl.pathname}`).toBe(TCGPLAYER_MASS_ENTRY_URL);
-    expect(handoffUrl.searchParams.get("c")).toBe("2 Bulbasaur [BS] 044/102");
+    expect(handoffUrl.searchParams.get("c")).toBe("2 Bulbasaur [BS] 44");
     expect(handoffUrl.searchParams.get("productline")).toBe("Pokemon");
     expect(exported.matches[0]).toMatchObject({
       status: "verified-printing",
@@ -105,7 +105,7 @@ describe("TCGplayer Mass Entry export", () => {
     });
     const exported = createTcgplayerMassEntryExport([item], TCGPLAYER_SET_MAPPINGS, TCGPLAYER_PRINTING_MAPPINGS);
 
-    expect(exported.text).toBe("2 Alakazam [BS] 001");
+    expect(exported.text).toBe("2 Alakazam [BS] 1");
     expect(exported.matches[0]).toMatchObject({
       status: "candidate",
       setMapping: { tcgplayerSetCode: "BS" },
@@ -171,7 +171,7 @@ describe("TCGplayer Mass Entry export", () => {
       TCGPLAYER_PRINTING_MAPPINGS,
     );
 
-    expect(exported.text).toBe("1 Typhlosion (17) [N1] 017/111\n1 Blaine's Charizard [G2] 002/132");
+    expect(exported.text).toBe("1 Typhlosion (17) [N1] 17\n1 Blaine's Charizard [G2] 2");
     expect(exported.verifiedCount).toBe(2);
     expect(exported.reviewRequiredCount).toBe(0);
     expect(exported.matches.map((match) => match.collectorNumber)).toEqual(["17/111", "2/132"]);
@@ -191,7 +191,7 @@ describe("TCGplayer Mass Entry export", () => {
     expect(exported.excludedEntryIds).toEqual([...unknown.entryIds, ...multiline.entryIds]);
   });
 
-  it("exports multiple verified eras without changing collector numbers", () => {
+  it("exports the number within the set in TCGplayer's accepted format", () => {
     const modern = missingItem({
       identityKey: "magikarp-pal",
       card: {
@@ -208,8 +208,14 @@ describe("TCGplayer Mass Entry export", () => {
     });
     const exported = createTcgplayerMassEntryExport([missingItem(), modern], TCGPLAYER_SET_MAPPINGS, TCGPLAYER_PRINTING_MAPPINGS);
 
-    expect(exported.text).toBe("2 Bulbasaur [BS] 044/102\n1 Magikarp - 203/193 [PAL] 203/193");
+    expect(exported.text).toBe("2 Bulbasaur [BS] 44\n1 Magikarp - 203/193 [PAL] 203");
     expect(exported.verifiedCount).toBe(2);
+  });
+
+  it("removes the set total and numeric leading zeroes but preserves prefixed card numbers", () => {
+    expect(toTcgplayerItemNumber("002/132")).toBe("2");
+    expect(toTcgplayerItemNumber("017/111")).toBe("17");
+    expect(toTcgplayerItemNumber("TG01/TG30")).toBe("TG01");
   });
 
   it("falls back to the generic Mass Entry page when a prefilled URL would be too long", () => {

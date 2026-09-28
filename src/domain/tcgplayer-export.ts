@@ -58,6 +58,12 @@ export function createTcgplayerMassEntryUrl(text: string): string {
     : TCGPLAYER_MASS_ENTRY_URL;
 }
 
+export function toTcgplayerItemNumber(collectorNumber: string): string {
+  const numberWithinSet = collectorNumber.split("/", 1)[0]?.trim() ?? "";
+  if (/^\d+$/.test(numberWithinSet)) return String(Number(numberWithinSet));
+  return numberWithinSet;
+}
+
 function unsafeLineField(value: string): boolean {
   return !value.trim() || /[\r\n\u0000-\u001f\u007f\[\]]/.test(value);
 }
@@ -118,11 +124,20 @@ function matchItem(
 
   if (!printingMapping) {
     if (item.card.ref.language === "en") {
+      const itemNumber = toTcgplayerItemNumber(base.collectorNumber);
+      if (unsafeLineField(itemNumber)) {
+        return {
+          ...base,
+          status: "unresolved",
+          reason: "Die Kartennummer ist nicht sicher als TCGplayer-Artikelnummer darstellbar.",
+          setMapping,
+        };
+      }
       return {
         ...base,
         status: "candidate",
         reason: "Set-Code und Mass-Entry-Format sind geprüft; die konkrete Zuordnung muss in der TCGplayer-Vorschau bestätigt werden.",
-        line: `${item.quantity} ${item.card.name} [${setMapping.tcgplayerSetCode}] ${base.collectorNumber}`,
+        line: `${item.quantity} ${item.card.name} [${setMapping.tcgplayerSetCode}] ${itemNumber}`,
         setMapping,
       };
     }
@@ -134,7 +149,8 @@ function matchItem(
     };
   }
 
-  if (unsafeLineField(printingMapping.tcgplayerProductName) || unsafeLineField(printingMapping.tcgplayerCollectorNumber)) {
+  const itemNumber = toTcgplayerItemNumber(printingMapping.tcgplayerCollectorNumber);
+  if (unsafeLineField(printingMapping.tcgplayerProductName) || unsafeLineField(itemNumber)) {
     return {
       ...base,
       status: "unresolved",
@@ -148,7 +164,7 @@ function matchItem(
     ...base,
     status: "verified-printing",
     reason: "TCGplayer-Name, Set-Code und Kartennummer sind für Mass Entry geprüft.",
-    line: `${item.quantity} ${printingMapping.tcgplayerProductName} [${setMapping.tcgplayerSetCode}] ${printingMapping.tcgplayerCollectorNumber}`,
+    line: `${item.quantity} ${printingMapping.tcgplayerProductName} [${setMapping.tcgplayerSetCode}] ${itemNumber}`,
     setMapping,
     printingMapping,
   };

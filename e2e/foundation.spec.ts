@@ -484,11 +484,11 @@ test("finds and displays an exact full collector number", async ({ page }) => {
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   await missingCards.getByRole("button", { name: "TCGplayer" }).click();
   await expect(missingCards.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue(
-    "1 Charizard [BS] 004/102",
+    "1 Charizard [BS] 4",
   );
   const tcgplayerLink = missingCards.getByRole("link", { name: "Liste bei TCGplayer öffnen" });
   const tcgplayerUrl = new URL(await tcgplayerLink.getAttribute("href") ?? "");
-  expect(tcgplayerUrl.searchParams.get("c")).toBe("1 Charizard [BS] 004/102");
+  expect(tcgplayerUrl.searchParams.get("c")).toBe("1 Charizard [BS] 4");
   expect(tcgplayerUrl.searchParams.get("productline")).toBe("Pokemon");
 
   await missingCards.getByRole("button", { name: "Cardmarket" }).click();
@@ -513,7 +513,7 @@ test("exports the verified Tornupto and Blaine's Charizard identities to TCGplay
 
   await expect(missingCards.getByText("2 übergabebereit · 2 druckgeprüft · 0 prüfen")).toBeVisible();
   await expect(missingCards.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue(
-    "1 Typhlosion (17) [N1] 017/111\n1 Blaine's Charizard [G2] 002/132",
+    "1 Typhlosion (17) [N1] 17\n1 Blaine's Charizard [G2] 2",
   );
   await expect(missingCards.getByText("Neo Genesis · Nr. 17/111")).toBeVisible();
   await expect(missingCards.getByText("Gym Challenge · Nr. 2/132")).toBeVisible();
