@@ -151,8 +151,38 @@ describe("TCGdexCatalogAdapter", () => {
     const card = await adapter.getCard({ provider: "tcgdex", id: "base1-4", language: "de" });
 
     expect(card.imageBaseUrl).toBe("https://assets.tcgdex.net/en/base/base1/4");
+    expect(card.imageFallbackBaseUrl).toBe("https://assets.tcgdex.net/de/base/base1/4");
     expect(card.collectorTotal).toBe("102");
     expect(card.availableVariants).toEqual({ normal: false, holo: true, reverse: false, firstEdition: true, shadowless: false });
+  });
+
+  it("derives localized and English artwork paths when TCGdex omits existing image metadata", async () => {
+    vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        id: "mep-007",
+        localId: "007",
+        name: "Enton",
+        image: null,
+        set: { cardCount: { official: 80 }, id: "mep", name: "MEP Black Star Promos" },
+      })))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        id: "mep-007",
+        localId: "007",
+        name: "Psyduck",
+        image: null,
+        set: { cardCount: { official: 80 }, id: "mep", name: "MEP Black Star Promos" },
+      })))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        id: "mep",
+        name: "MEP Black Star Promos",
+        serie: { id: "me", name: "Mega Evolution" },
+      })));
+
+    const adapter = new TCGdexCatalogAdapter();
+    const card = await adapter.getCard({ provider: "tcgdex", id: "mep-007", language: "de" });
+
+    expect(card.imageBaseUrl).toBe("https://assets.tcgdex.net/de/me/mep/007");
+    expect(card.imageFallbackBaseUrl).toBe("https://assets.tcgdex.net/en/me/mep/007");
   });
 
   it("holds back an unknown set until the synchronized catalog classifies it", async () => {

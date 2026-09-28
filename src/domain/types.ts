@@ -19,6 +19,7 @@ export interface CardSnapshot {
   collectorTotal?: string;
   availableVariants?: CardVariantAvailability;
   imageBaseUrl?: string;
+  imageFallbackBaseUrl?: string;
   category?: "pokemon" | "trainer" | "energy" | "other";
   abilities?: string[];
   attacks?: string[];
@@ -49,7 +50,7 @@ export interface VariantSelection {
 }
 
 export interface PurchasePreferences {
-  minimumCondition: "near-mint" | "lightly-played" | "played" | "any";
+  minimumCondition: "near-mint" | "excellent" | "lightly-played" | "played" | "any";
 }
 
 export interface PlannedCard {

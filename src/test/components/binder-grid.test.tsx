@@ -87,7 +87,8 @@ describe("BinderGrid", () => {
     const cardWithImage = {
       ...card,
       ref: { ...card.ref, language: "de" as const },
-      imageBaseUrl: "https://assets.tcgdex.net/en/base/base1/44",
+      imageBaseUrl: "https://assets.tcgdex.net/de/base/base1/44",
+      imageFallbackBaseUrl: "https://assets.tcgdex.net/en/base/base1/44",
     };
     const onRefreshCard = vi.fn();
     render(
@@ -102,7 +103,10 @@ describe("BinderGrid", () => {
       />,
     );
 
+    fireEvent.error(screen.getByRole("img", { name: "Bulbasaur, Base Set 044" }));
+
     expect(screen.getByText("Bild auf Englisch")).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "Bulbasaur, Base Set 044" })).toHaveAttribute("src", expect.stringContaining("/en/"));
     fireEvent.error(screen.getByRole("img", { name: "Bulbasaur, Base Set 044" }));
 
     expect(screen.getByRole("img", { name: "Bild für Bulbasaur nicht verfügbar" })).toHaveTextContent("Bild nicht verfügbar");

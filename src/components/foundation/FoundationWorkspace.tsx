@@ -1,7 +1,5 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element -- TCGdex images remain external references and are never proxied. */
-
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { Archive, ArrowLeft, ArrowRight, BookOpen, CircleHelp, Copy, DatabaseBackup, ListFilter, Menu, Pencil, Search, Settings2, Trash2, X } from "lucide-react";
 import Link from "next/link";
@@ -52,12 +50,12 @@ import { validateBackup } from "@/domain/validation";
 import { createInitialVariantSelection, formatVariantSelection, isVariantSelectionValid, selectedPrinting, variantAvailabilityForCard, variantSelectionIssue } from "@/domain/variant-selection";
 import { catalogQueryKey, detailQueryKey, TCGdexCatalogAdapter } from "@/data/catalog/tcgdex";
 import { catalogSeries, catalogSets, completeCardSnapshotMetadata } from "@/data/catalog/set-counts";
-import { cardImageUrl } from "@/data/catalog/images";
 import { RevisionConflictError } from "@/data/persistence/binder-repository";
 import { IndexedDBBinderRepository } from "@/data/persistence/indexeddb-binder-repository";
 
 import { BinderOverview } from "./BinderOverview";
 import { BinderGrid } from "./BinderGrid";
+import { CardArtwork } from "./CardArtwork";
 import { MissingCardsPanel } from "./MissingCardsPanel";
 import { VariantFields } from "./VariantFields";
 import styles from "./foundation-workspace.module.css";
@@ -253,7 +251,6 @@ export function FoundationWorkspace() {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchPreview, setSearchPreview] = useState<SearchPreview>();
-  const [previewImageFailed, setPreviewImageFailed] = useState<string>();
   const [previewSubmitting, setPreviewSubmitting] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<SlotLocation>();
   const [contextLocation, setContextLocation] = useState<SlotLocation>();
@@ -309,7 +306,6 @@ export function FoundationWorkspace() {
       if (event.key !== "Escape") return;
       if (searchPreview) {
         setSearchPreview(undefined);
-        setPreviewImageFailed(undefined);
       } else {
         setSearchOpen(false);
       }
@@ -786,7 +782,6 @@ export function FoundationWorkspace() {
     setMovingLocation(undefined);
     setSearchOpen(false);
     setSearchPreview(undefined);
-    setPreviewImageFailed(undefined);
     setMissingOpen(false);
     setCopyState("idle");
     setTcgplayerCopyState("idle");
@@ -834,7 +829,6 @@ export function FoundationWorkspace() {
   }
 
   async function previewSearchResult(item: CatalogSearchItem) {
-    setPreviewImageFailed(undefined);
     setSearchPreview({
       item,
       status: "loading",
@@ -910,7 +904,6 @@ export function FoundationWorkspace() {
       setMovingLocation(undefined);
       setSearchOpen(false);
       setSearchPreview(undefined);
-      setPreviewImageFailed(undefined);
       setSearchText("");
       const targetPageIndex = saved.pages.findIndex((page) => page.id === location.pageId);
       if (targetPageIndex >= 0) setActivePageIndex(targetPageIndex);
@@ -928,7 +921,6 @@ export function FoundationWorkspace() {
     setMovingLocation(undefined);
     setSelectedLocation(location);
     setSearchPreview(undefined);
-    setPreviewImageFailed(undefined);
     setSearchOpen(true);
     setMessage(location ? `Slot ${location.slotIndex + 1} ausgewählt. Suche eine Karte zum Einsetzen.` : undefined);
   }
@@ -936,7 +928,6 @@ export function FoundationWorkspace() {
   function closeSearch() {
     setSearchOpen(false);
     setSearchPreview(undefined);
-    setPreviewImageFailed(undefined);
     setPreviewSubmitting(false);
   }
 
@@ -1649,7 +1640,7 @@ export function FoundationWorkspace() {
                   <button
                     type="button"
                     className={styles.previewBack}
-                    onClick={() => { setSearchPreview(undefined); setPreviewImageFailed(undefined); }}
+                    onClick={() => setSearchPreview(undefined)}
                   >
                     ← Zurück zu den Suchergebnissen
                   </button>
@@ -1662,16 +1653,11 @@ export function FoundationWorkspace() {
                   ) : null}
                   {searchPreview.status === "ready" && searchPreview.snapshot ? (
                     <>
-                      {searchPreview.snapshot.imageBaseUrl && previewImageFailed !== searchPreview.snapshot.imageBaseUrl ? (
-                        <div className={styles.previewImage}>
-                          <img
-                            src={cardImageUrl(searchPreview.snapshot.imageBaseUrl)}
-                            alt={`${searchPreview.snapshot.name}, ${searchPreview.snapshot.setName}`}
-                            onError={() => setPreviewImageFailed(searchPreview.snapshot?.imageBaseUrl)}
-                          />
-                          {searchPreview.snapshot.ref.language === "de" && searchPreview.snapshot.imageBaseUrl.includes("/en/") ? <span>Bild auf Englisch</span> : null}
-                        </div>
-                      ) : <div className={styles.previewImageFallback}>Bild nicht verfügbar</div>}
+                      <CardArtwork
+                        card={searchPreview.snapshot}
+                        className={styles.previewImage}
+                        fallback={<div className={styles.previewImageFallback}>Bild nicht verfügbar</div>}
+                      />
                       <div className={styles.previewIdentity}>
                         <strong>{searchPreview.snapshot.name}</strong>
                         <span>{searchPreview.snapshot.setName}</span>
@@ -1772,12 +1758,11 @@ export function FoundationWorkspace() {
 
                 {contextEntry ? (
                   <div className={styles.cardContext}>
-                    {contextCard?.imageBaseUrl ? (
-                      <div className={styles.contextImage}>
-                        <img src={cardImageUrl(contextCard.imageBaseUrl)} alt={`${contextCard.name}, ${contextCard.setName}`} />
-                        {contextCard.ref.language === "de" && contextCard.imageBaseUrl.includes("/en/") ? <span>Bild auf Englisch</span> : null}
-                      </div>
-                    ) : <div className={styles.contextImageFallback}>Bild nicht verfügbar</div>}
+                    {contextCard ? <CardArtwork
+                      card={contextCard}
+                      className={styles.contextImage}
+                      fallback={<div className={styles.contextImageFallback}>Bild nicht verfügbar</div>}
+                    /> : <div className={styles.contextImageFallback}>Bild nicht verfügbar</div>}
                     <div className={styles.contextIdentity}>
                       <strong>{contextCard?.name ?? "Kartendaten fehlen"}</strong>
                       {contextCard ? <span>{contextCard.setName} · Nr. {formatCollectorNumber(contextCard.collectorNumber, contextCard.collectorTotal)}</span> : null}

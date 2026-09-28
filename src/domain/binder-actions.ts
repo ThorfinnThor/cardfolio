@@ -88,7 +88,7 @@ export function createBinder(
 
 export function createPlannedCard(
   cardKey: string,
-  variant: VariantSelection = { finish: "unspecified", edition: "unspecified", printing: "shadowed" },
+  variant: VariantSelection = { finish: "unspecified", edition: "unlimited", printing: "shadowed" },
   preferences: PurchasePreferences = { minimumCondition: "any" },
 ): PlannedCard {
   if (!cardKey) throw new Error("Card key must not be empty.");

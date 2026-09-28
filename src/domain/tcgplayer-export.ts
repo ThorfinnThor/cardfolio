@@ -105,6 +105,8 @@ export function tcgplayerConditionHint(item: MissingItem): string {
   switch (item.preferences.minimumCondition) {
     case "near-mint":
       return "Near Mint";
+    case "excellent":
+      return "Near Mint und Lightly Played (TCGplayer kennt keinen Zustand Excellent)";
     case "lightly-played":
       return "Near Mint und Lightly Played";
     case "played":

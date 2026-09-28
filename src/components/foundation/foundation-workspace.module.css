@@ -124,7 +124,7 @@
 .slot img { width: 100%; aspect-ratio: 245 / 342; object-fit: contain; border-radius: 4px; background: #eef2f4; }
 .slotImage { position: relative; display: block; }
 .slotImage img { display: block; }
-.slotImage small { position: absolute; right: 4px; bottom: 4px; border-radius: 3px; background: rgb(23 33 43 / 82%); color: #fff; padding: 2px 4px; font-size: 7px; font-weight: 750; }
+.slotImage span { position: absolute; right: 4px; bottom: 4px; border-radius: 3px; background: rgb(23 33 43 / 82%); color: #fff; padding: 2px 4px; font-size: 7px; font-weight: 750; }
 .slot > strong { overflow: hidden; padding-inline: 3px; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
 .slot > small { overflow: hidden; color: #52616b; padding-inline: 3px; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
 .dragHandle { position: absolute; z-index: 3; top: 8px; right: 8px; width: 28px; min-height: 27px; display: inline-grid; place-items: center; border: 1px solid #d8e2e6; border-radius: 6px; background: rgb(255 255 255 / 90%); color: #52616b; cursor: grab; touch-action: none; }

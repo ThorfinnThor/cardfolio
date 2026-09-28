@@ -44,6 +44,7 @@ export const cardSnapshotSchema = z.object({
     })
     .optional(),
   imageBaseUrl: imageUrlSchema.optional(),
+  imageFallbackBaseUrl: imageUrlSchema.optional(),
   category: z.enum(["pokemon", "trainer", "energy", "other"]).optional(),
   abilities: z.array(z.string().min(1).max(300)).max(10).optional(),
   attacks: z.array(z.string().min(1).max(300)).max(10).optional(),
@@ -68,7 +69,7 @@ export const plannedCardSchema = z.object({
     label: z.string().max(100).optional(),
   }),
   preferences: z.object({
-    minimumCondition: z.enum(["near-mint", "lightly-played", "played", "any"]),
+    minimumCondition: z.enum(["near-mint", "excellent", "lightly-played", "played", "any"]),
   }),
   owned: z.boolean(),
   addedAt: isoDateSchema,

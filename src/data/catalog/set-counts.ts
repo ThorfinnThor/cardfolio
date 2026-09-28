@@ -2,6 +2,7 @@ import deCatalog from "../../../public/data/catalog/de-sets.json";
 import enCatalog from "../../../public/data/catalog/en-sets.json";
 
 import type { CardLanguage, CardSnapshot } from "@/domain/types";
+import { inferredCardImageBaseUrl } from "./images";
 
 export type CatalogSetRecord = {
   id: string;
@@ -67,7 +68,19 @@ export function setMetadataForSearchItem(
 }
 
 export function completeCardSnapshotMetadata(card: CardSnapshot): CardSnapshot {
-  if (card.collectorTotal) return card;
-  const collectorTotal = collectorTotalForSearchItem(card.ref.language, card.ref.id, card.collectorNumber);
-  return collectorTotal ? { ...card, collectorTotal } : card;
+  const set = catalogs[card.ref.language].get(card.setId);
+  const collectorTotal = card.collectorTotal ?? collectorTotalForSearchItem(card.ref.language, card.ref.id, card.collectorNumber);
+  const inferredImages = set?.series ? [
+    inferredCardImageBaseUrl(card.ref.language, set.series.id, card.setId, card.collectorNumber),
+    ...(card.ref.language === "de" ? [inferredCardImageBaseUrl("en", set.series.id, card.setId, card.collectorNumber)] : []),
+  ] : [];
+  const imageCandidates = [card.imageBaseUrl, card.imageFallbackBaseUrl, ...inferredImages]
+    .filter((value): value is string => Boolean(value))
+    .filter((value, index, values) => values.indexOf(value) === index);
+  return {
+    ...card,
+    collectorTotal,
+    imageBaseUrl: imageCandidates[0],
+    imageFallbackBaseUrl: imageCandidates[1],
+  };
 }

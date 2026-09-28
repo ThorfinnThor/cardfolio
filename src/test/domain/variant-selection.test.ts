@@ -15,7 +15,7 @@ describe("createInitialVariantSelection", () => {
   it("preselects the only finish reported by the provider", () => {
     expect(createInitialVariantSelection({ normal: false, holo: true, reverse: false, firstEdition: true })).toEqual({
       finish: "holo",
-      edition: "unspecified",
+      edition: "unlimited",
       printing: "shadowed",
     });
   });
@@ -24,10 +24,10 @@ describe("createInitialVariantSelection", () => {
     expect(createInitialVariantSelection({ normal: true, holo: true, reverse: false, firstEdition: false }).finish).toBe("unspecified");
   });
 
-  it("defaults to the standard shadowed printing but leaves finish and edition explicit", () => {
+  it("defaults to Unlimited and the standard shadowed printing while leaving the finish explicit", () => {
     expect(createInitialVariantSelection()).toEqual({
       finish: "unspecified",
-      edition: "unspecified",
+      edition: "unlimited",
       printing: "shadowed",
     });
   });

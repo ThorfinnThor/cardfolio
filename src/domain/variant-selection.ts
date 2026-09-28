@@ -68,7 +68,7 @@ export function createInitialVariantSelection(availability?: CardVariantAvailabi
 
   return {
     finish: reportedFinishes.length === 1 ? reportedFinishes[0] : "unspecified",
-    edition: "unspecified",
+    edition: "unlimited",
     printing: "shadowed",
   };
 }

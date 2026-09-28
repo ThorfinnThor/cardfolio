@@ -1,7 +1,5 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element -- External card images intentionally bypass app-side proxying. */
-
 import {
   closestCenter,
   DndContext,
@@ -18,12 +16,12 @@ import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
 import { useState, type CSSProperties, type ReactNode } from "react";
 
-import { cardImageUrl } from "@/data/catalog/images";
 import type { SlotLocation } from "@/domain/binder-actions";
 import { formatCollectorNumber } from "@/domain/catalog-search";
 import { formatVariantSelection } from "@/domain/variant-selection";
 import type { BinderPage, CardSnapshot, PlannedCard } from "@/domain/types";
 
+import { CardArtwork } from "./CardArtwork";
 import styles from "./foundation-workspace.module.css";
 
 interface BinderGridProps {
@@ -69,8 +67,6 @@ function OccupiedSlot({
   onSelectCard,
   onRefreshCard,
 }: OccupiedSlotProps) {
-  const imageSource = card?.imageBaseUrl ? cardImageUrl(card.imageBaseUrl) : undefined;
-  const [failedImageSource, setFailedImageSource] = useState<string>();
   const { isDragging, listeners, setNodeRef, transform } = useDraggable({
     id: `card:${entry.id}`,
     data: { location, label: card?.name ?? "Karte" },
@@ -100,21 +96,14 @@ function OccupiedSlot({
       </span>
       {card ? (
         <>
-          {imageSource && failedImageSource !== imageSource ? (
-            <span className={styles.slotImage}>
-              <img
-                src={imageSource}
-                alt={`${card.name}, ${card.setName} ${card.collectorNumber}`}
-                onError={() => setFailedImageSource(imageSource)}
-              />
-              {card.ref.language === "de" && card.imageBaseUrl?.includes("/en/") ? <small>Bild auf Englisch</small> : null}
-            </span>
-          ) : (
-            <div className={styles.imageFallback}>
+          <CardArtwork
+            card={card}
+            className={styles.slotImage}
+            fallback={<div className={styles.imageFallback}>
               <span role="img" aria-label={`Bild für ${card.name} nicht verfügbar`}>Bild nicht verfügbar</span>
               <button type="button" onClick={() => onRefreshCard(card)}>Kartendaten aktualisieren</button>
-            </div>
-          )}
+            </div>}
+          />
           <span className={entry.owned ? styles.ownedBadge : styles.missingBadge}>{entry.owned ? "Vorhanden" : "Fehlt"}</span>
           <strong>{card.name}</strong>
           <small>{card.setName} · {formatCollectorNumber(card.collectorNumber, card.collectorTotal)}</small>

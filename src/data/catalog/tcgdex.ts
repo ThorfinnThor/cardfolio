@@ -10,6 +10,7 @@ import { makeCardKey } from "@/domain/binder-actions";
 import { sameCollectorPart } from "@/domain/catalog-search";
 
 import { tcgdexCardSchema, tcgdexSearchResponseSchema, tcgdexSetSchema } from "./schemas";
+import { inferredCardImageBaseUrl } from "./images";
 import { collectorTotalForSearchItem, setMetadataForSearchItem } from "./set-counts";
 
 const BASE_URL = "https://api.tcgdex.net/v2";
@@ -185,19 +186,24 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
   async getCard(ref: CardRef, signal?: AbortSignal): Promise<CardSnapshot> {
     const cardUrl = new URL(`${BASE_URL}/${ref.language}/cards/${encodeURIComponent(ref.id)}`);
     const card = tcgdexCardSchema.parse(await fetchJson(cardUrl, signal));
-    let imageBaseUrl = card.image ?? undefined;
     let englishCard: typeof card | undefined;
     if (ref.language === "de") {
       try {
         const englishCardUrl = new URL(`${BASE_URL}/en/cards/${encodeURIComponent(ref.id)}`);
         englishCard = tcgdexCardSchema.parse(await fetchJson(englishCardUrl, signal));
-        imageBaseUrl ||= englishCard.image ?? undefined;
       } catch (error) {
         if (signal?.aborted) throw error;
       }
     }
     const setUrl = new URL(`${BASE_URL}/${ref.language}/sets/${encodeURIComponent(card.set.id)}`);
     const set = tcgdexSetSchema.parse(await fetchJson(setUrl, signal));
+    const inferredImages = set.serie ? [
+      inferredCardImageBaseUrl(ref.language, set.serie.id, card.set.id, card.localId),
+      ...(ref.language === "de" ? [inferredCardImageBaseUrl("en", set.serie.id, card.set.id, card.localId)] : []),
+    ] : [];
+    const imageCandidates = [card.image, englishCard?.image, ...inferredImages]
+      .filter((value): value is string => Boolean(value))
+      .filter((value, index, values) => values.indexOf(value) === index);
     return {
       key: makeCardKey(ref),
       ref: { ...ref },
@@ -213,7 +219,8 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
         firstEdition: card.variants.firstEdition,
         shadowless: ref.language === "en" && card.set.id === "base1",
       } : undefined,
-      imageBaseUrl,
+      imageBaseUrl: imageCandidates[0],
+      imageFallbackBaseUrl: imageCandidates[1],
       category: category(card.category),
       abilities: card.abilities?.map((ability) => ability.name) ?? [],
       attacks: card.attacks?.map((attack) => attack.name) ?? [],

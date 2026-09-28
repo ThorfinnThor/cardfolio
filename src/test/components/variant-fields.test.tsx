@@ -41,4 +41,19 @@ describe("VariantFields", () => {
     expect(within(screen.getByRole("combobox", { name: "Druckvariante" })).getByRole("option", { name: "Shadowless" })).toBeInTheDocument();
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
   });
+
+  it("identifies Excellent as Cardmarket-specific and gives the TCGplayer equivalent", () => {
+    render(
+      <VariantFields
+        variant={{ finish: "normal", edition: "unlimited", printing: "shadowed" }}
+        preferences={{ minimumCondition: "excellent" }}
+        onVariantChange={vi.fn()}
+        onPreferencesChange={vi.fn()}
+      />,
+    );
+
+    expect(within(screen.getByRole("combobox", { name: "Mindestzustand" })).getByRole("option", {
+      name: "Excellent (Cardmarket) / Lightly Played (TCGplayer)",
+    })).toBeInTheDocument();
+  });
 });
