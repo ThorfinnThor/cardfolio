@@ -5,10 +5,11 @@
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { Archive, BookOpen, CircleHelp, DatabaseBackup, ListFilter, Menu, Search, Settings2, X } from "lucide-react";
 import Link from "next/link";
-import { type ChangeEvent, type FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { type ChangeEvent, type FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
   addPage,
+  BINDER_DESCRIPTION_MAX_LENGTH,
   changeBinderLayout,
   createBinder,
   createPlannedCard,
@@ -16,9 +17,12 @@ import {
   placeCard,
   previewBinderLayoutChange,
   removeCard,
+  PAGE_NOTE_MAX_LENGTH,
+  setBinderDescription,
   setCardPreferences,
   setCardVariant,
   setOwned,
+  setPageNote,
   SUPPORTED_BINDER_LAYOUTS,
   type BinderLayoutPreview,
   type SlotLocation,
@@ -71,6 +75,114 @@ type SearchPreview = {
   error?: string;
 };
 
+type TextSaveState = "idle" | "changed" | "saving" | "saved" | "error";
+
+interface AutosaveTextareaProps {
+  id: string;
+  label: string;
+  value: string;
+  maxLength: number;
+  placeholder: string;
+  rows: number;
+  className?: string;
+  disabled?: boolean;
+  onChange: (value: string) => void;
+  onSave: (value: string) => Promise<void>;
+}
+
+function AutosaveTextarea({
+  id,
+  label,
+  value,
+  maxLength,
+  placeholder,
+  rows,
+  className,
+  disabled,
+  onChange,
+  onSave,
+}: AutosaveTextareaProps) {
+  const [dirty, setDirty] = useState(false);
+  const [saveState, setSaveState] = useState<TextSaveState>("idle");
+  const committedValueRef = useRef(value);
+  const editVersionRef = useRef(0);
+  const requestedVersionRef = useRef(0);
+  const saveRef = useRef(onSave);
+
+  useEffect(() => {
+    saveRef.current = onSave;
+  }, [onSave]);
+
+  const persist = useCallback(async (nextValue: string, version: number) => {
+    if (requestedVersionRef.current >= version || nextValue === committedValueRef.current) {
+      if (nextValue === committedValueRef.current) {
+        setDirty(false);
+        setSaveState("idle");
+      }
+      return;
+    }
+    requestedVersionRef.current = version;
+    setSaveState("saving");
+    try {
+      await saveRef.current(nextValue);
+      committedValueRef.current = nextValue;
+      if (editVersionRef.current === version) {
+        setDirty(false);
+        setSaveState("saved");
+      }
+    } catch {
+      requestedVersionRef.current = Math.max(0, version - 1);
+      setSaveState("error");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!dirty) committedValueRef.current = value;
+  }, [dirty, value]);
+
+  useEffect(() => {
+    if (!dirty) return;
+    const version = editVersionRef.current;
+    const timer = window.setTimeout(() => void persist(value, version), 300);
+    return () => window.clearTimeout(timer);
+  }, [dirty, persist, value]);
+
+  const stateLabel = saveState === "changed"
+    ? "Änderungen offen"
+    : saveState === "saving"
+      ? "Wird lokal gespeichert…"
+      : saveState === "saved"
+        ? "Lokal gespeichert"
+        : saveState === "error"
+          ? "Speichern fehlgeschlagen – erneut bearbeiten oder Fokus wechseln"
+          : "Automatische lokale Speicherung";
+
+  return (
+    <div className={`${styles.textEditor} ${className ?? ""}`} role="group" aria-labelledby={`${id}-label`}>
+      <div className={styles.textEditorHeader}>
+        <label id={`${id}-label`} htmlFor={id}>{label}</label>
+        <span>{value.length} / {maxLength}</span>
+      </div>
+      <textarea
+        id={id}
+        value={value}
+        maxLength={maxLength}
+        placeholder={placeholder}
+        rows={rows}
+        disabled={disabled}
+        onChange={(event) => {
+          editVersionRef.current += 1;
+          setDirty(event.target.value !== committedValueRef.current);
+          setSaveState(event.target.value === committedValueRef.current ? "idle" : "changed");
+          onChange(event.target.value);
+        }}
+        onBlur={() => dirty && void persist(value, editVersionRef.current)}
+      />
+      <span className={styles.textSaveStatus} data-status={saveState} aria-live="polite">{stateLabel}</span>
+    </div>
+  );
+}
+
 function interleaveSearchResults(
   germanItems: readonly CatalogSearchItem[],
   englishItems: readonly CatalogSearchItem[],
@@ -105,6 +217,8 @@ export function FoundationWorkspace() {
   const repository = useMemo(() => new IndexedDBBinderRepository(), []);
   const catalog = useMemo(() => new TCGdexCatalogAdapter(), []);
   const syncChannelRef = useRef<BroadcastChannel | undefined>(undefined);
+  const bindersRef = useRef<Binder[]>([]);
+  const binderWriteQueuesRef = useRef(new Map<string, Promise<void>>());
   const queryClient = useQueryClient();
   const [binders, setBinders] = useState<Binder[]>([]);
   const [activeId, setActiveId] = useState<string>();
@@ -147,6 +261,7 @@ export function FoundationWorkspace() {
     repository
       .list()
       .then((items) => {
+        bindersRef.current = items;
         setBinders(items);
         setActiveId(items[0]?.id);
         setStorageStatus("ready");
@@ -300,6 +415,40 @@ export function FoundationWorkspace() {
     } satisfies BinderSyncMessage);
   }
 
+  function replaceBinderInMemory(saved: Binder) {
+    const next = bindersRef.current.map((binder) => (binder.id === saved.id ? saved : binder));
+    bindersRef.current = next;
+    setBinders(next);
+  }
+
+  function updateBinderDraft(binderId: string, update: (binder: Binder) => Binder) {
+    const next = bindersRef.current.map((binder) => (binder.id === binderId ? update(binder) : binder));
+    bindersRef.current = next;
+    setBinders(next);
+  }
+
+  async function persistBinderChange(
+    binderId: string,
+    update: (binder: Binder) => Binder,
+    cardSnapshots: CardSnapshot[] = [],
+  ): Promise<Binder> {
+    const previous = binderWriteQueuesRef.current.get(binderId) ?? Promise.resolve();
+    const operation = previous.catch(() => undefined).then(async () => {
+      const current = bindersRef.current.find((binder) => binder.id === binderId);
+      if (!current) throw new Error("Der Binder ist nicht mehr verfügbar.");
+      const saved = await repository.save(update(current), cardSnapshots, current.revision);
+      replaceBinderInMemory(saved);
+      publishBinderChange(saved);
+      return saved;
+    });
+    const queueTail = operation.then(() => undefined, () => undefined);
+    binderWriteQueuesRef.current.set(binderId, queueTail);
+    void queueTail.finally(() => {
+      if (binderWriteQueuesRef.current.get(binderId) === queueTail) binderWriteQueuesRef.current.delete(binderId);
+    });
+    return operation;
+  }
+
   function handleStorageError(error: unknown, fallback: string) {
     setStorageStatus("error");
     if (error instanceof RevisionConflictError) {
@@ -316,6 +465,7 @@ export function FoundationWorkspace() {
       const current = await repository.get(activeId);
       if (!current) {
         const remaining = await repository.list();
+        bindersRef.current = remaining;
         setBinders(remaining);
         setActiveId(remaining[0]?.id);
         setActivePageIndex(0);
@@ -325,7 +475,7 @@ export function FoundationWorkspace() {
         return;
       }
       const backup = await repository.exportBackup([activeId]);
-      setBinders((items) => items.map((binder) => (binder.id === current.id ? current : binder)));
+      replaceBinderInMemory(current);
       setCards(new Map(backup.cards.map((card) => [card.key, card])));
       setCardsBinderId(activeId);
       setActivePageIndex((index) => Math.min(index, current.pages.length - 1));
@@ -341,6 +491,7 @@ export function FoundationWorkspace() {
     try {
       setStorageStatus("initializing");
       const items = await repository.list();
+      bindersRef.current = items;
       setBinders(items);
       setActiveId((current) => current && items.some((binder) => binder.id === current) ? current : items[0]?.id);
       setStorageConflict(false);
@@ -358,7 +509,9 @@ export function FoundationWorkspace() {
       setStorageStatus("saving");
       await repository.create(binder, []);
       publishBinderChange(binder);
-      setBinders((current) => [binder, ...current]);
+      const nextBinders = [binder, ...bindersRef.current];
+      bindersRef.current = nextBinders;
+      setBinders(nextBinders);
       setActiveId(binder.id);
       setActivePageIndex(0);
       setName("");
@@ -378,6 +531,7 @@ export function FoundationWorkspace() {
       await repository.remove(binderToDelete.id, binderToDelete.revision);
       publishBinderChange(binderToDelete, true);
       const remaining = await repository.list();
+      bindersRef.current = remaining;
       setBinders(remaining);
       setActiveId(remaining[0]?.id);
       setActivePageIndex(0);
@@ -396,11 +550,8 @@ export function FoundationWorkspace() {
   async function createNewPage() {
     if (!activeBinder) return;
     try {
-      const next = addPage(activeBinder);
       setStorageStatus("saving");
-      const saved = await repository.save(next, [], activeBinder.revision);
-      publishBinderChange(saved);
-      setBinders((current) => current.map((binder) => (binder.id === saved.id ? saved : binder)));
+      const saved = await persistBinderChange(activeBinder.id, addPage);
       setActivePageIndex(saved.pages.length - 1);
       setContextLocation(undefined);
       setStorageStatus("saved");
@@ -428,11 +579,8 @@ export function FoundationWorkspace() {
   async function confirmLayoutChange() {
     if (!activeBinder || !layoutChange || layoutChange.binderId !== activeBinder.id) return;
     try {
-      const next = changeBinderLayout(activeBinder, layoutChange.layout);
       setStorageStatus("saving");
-      const saved = await repository.save(next, [], activeBinder.revision);
-      publishBinderChange(saved);
-      setBinders((current) => current.map((binder) => (binder.id === saved.id ? saved : binder)));
+      const saved = await persistBinderChange(activeBinder.id, (binder) => changeBinderLayout(binder, layoutChange.layout));
       setActivePageIndex((index) => Math.min(index, saved.pages.length - 1));
       setLayoutChange(undefined);
       setStorageStatus("saved");
@@ -460,6 +608,38 @@ export function FoundationWorkspace() {
     setVariantEdit(undefined);
     setStorageConflict(false);
     setBinderManagerOpen(false);
+  }
+
+  function changeBinderDescriptionDraft(value: string) {
+    if (!activeBinder) return;
+    updateBinderDraft(activeBinder.id, (binder) => setBinderDescription(binder, value));
+  }
+
+  async function saveBinderDescription(binderId: string, value: string) {
+    try {
+      setStorageStatus("saving");
+      await persistBinderChange(binderId, (binder) => setBinderDescription(binder, value));
+      setStorageStatus("saved");
+    } catch (error) {
+      handleStorageError(error, "Binderbeschreibung konnte nicht gespeichert werden.");
+      throw error;
+    }
+  }
+
+  function changePageNoteDraft(pageId: string, value: string) {
+    if (!activeBinder) return;
+    updateBinderDraft(activeBinder.id, (binder) => setPageNote(binder, pageId, value));
+  }
+
+  async function savePageNote(binderId: string, pageId: string, value: string) {
+    try {
+      setStorageStatus("saving");
+      await persistBinderChange(binderId, (binder) => setPageNote(binder, pageId, value));
+      setStorageStatus("saved");
+    } catch (error) {
+      handleStorageError(error, "Seitennotiz konnte nicht gespeichert werden.");
+      throw error;
+    }
   }
 
   async function previewSearchResult(item: CatalogSearchItem) {
@@ -522,15 +702,13 @@ export function FoundationWorkspace() {
     setPreviewSubmitting(true);
     try {
       const snapshot = searchPreview.snapshot;
-      const next = placeCard(
-        activeBinder,
-        location,
-        createPlannedCard(snapshot.key, searchPreview.variant, searchPreview.preferences),
-      );
+      const plannedCard = createPlannedCard(snapshot.key, searchPreview.variant, searchPreview.preferences);
       setStorageStatus("saving");
-      const saved = await repository.save(next, [snapshot], activeBinder.revision);
-      publishBinderChange(saved);
-      setBinders((current) => current.map((binder) => (binder.id === saved.id ? saved : binder)));
+      const saved = await persistBinderChange(
+        activeBinder.id,
+        (binder) => placeCard(binder, location, plannedCard),
+        [snapshot],
+      );
       setCards((current) => new Map(current).set(snapshot.key, snapshot));
       setSelectedLocation(undefined);
       setMovingLocation(undefined);
@@ -584,11 +762,8 @@ export function FoundationWorkspace() {
     try {
       const sourceEntry = activeBinder.pages.find((page) => page.id === from.pageId)?.slots[from.slotIndex];
       const targetEntry = activeBinder.pages.find((page) => page.id === target.pageId)?.slots[target.slotIndex];
-      const next = moveOrSwapCard(activeBinder, from, target);
       setStorageStatus("saving");
-      const saved = await repository.save(next, [], activeBinder.revision);
-      publishBinderChange(saved);
-      setBinders((current) => current.map((binder) => (binder.id === saved.id ? saved : binder)));
+      await persistBinderChange(activeBinder.id, (binder) => moveOrSwapCard(binder, from, target));
       setMovingLocation(undefined);
       setStorageStatus("saved");
       setMessage(targetEntry ? "Karten wurden getauscht." : sourceEntry ? "Karte wurde verschoben." : "Karte wurde aktualisiert.");
@@ -605,11 +780,8 @@ export function FoundationWorkspace() {
   async function confirmRemoveCard() {
     if (!activeBinder || !cardToRemove) return;
     try {
-      const next = removeCard(activeBinder, cardToRemove.location);
       setStorageStatus("saving");
-      const saved = await repository.save(next, [], activeBinder.revision);
-      publishBinderChange(saved);
-      setBinders((current) => current.map((binder) => (binder.id === saved.id ? saved : binder)));
+      await persistBinderChange(activeBinder.id, (binder) => removeCard(binder, cardToRemove.location));
       setCardToRemove(undefined);
       setMovingLocation(undefined);
       setContextLocation(undefined);
@@ -623,11 +795,8 @@ export function FoundationWorkspace() {
   async function toggleOwned(entryId: string, owned: boolean) {
     if (!activeBinder) return;
     try {
-      const next = setOwned(activeBinder, entryId, owned);
       setStorageStatus("saving");
-      const saved = await repository.save(next, [], activeBinder.revision);
-      publishBinderChange(saved);
-      setBinders((current) => current.map((binder) => (binder.id === saved.id ? saved : binder)));
+      await persistBinderChange(activeBinder.id, (binder) => setOwned(binder, entryId, owned));
       setStorageStatus("saved");
     } catch (error) {
       handleStorageError(error, "Besitzstatus konnte nicht gespeichert werden.");
@@ -648,15 +817,12 @@ export function FoundationWorkspace() {
   async function saveVariantEdit() {
     if (!activeBinder || !variantEdit) return;
     try {
-      const next = setCardPreferences(
-        setCardVariant(activeBinder, variantEdit.entryId, variantEdit.variant),
+      setStorageStatus("saving");
+      await persistBinderChange(activeBinder.id, (binder) => setCardPreferences(
+        setCardVariant(binder, variantEdit.entryId, variantEdit.variant),
         variantEdit.entryId,
         variantEdit.preferences,
-      );
-      setStorageStatus("saving");
-      const saved = await repository.save(next, [], activeBinder.revision);
-      publishBinderChange(saved);
-      setBinders((current) => current.map((binder) => (binder.id === saved.id ? saved : binder)));
+      ));
       setVariantEdit(undefined);
       setStorageStatus("saved");
       setMessage(`Version und Mindestzustand für „${variantEdit.label}“ wurden gespeichert.`);
@@ -670,9 +836,7 @@ export function FoundationWorkspace() {
     try {
       setStorageStatus("saving");
       const snapshot = await catalog.getCard(card.ref);
-      const saved = await repository.save(activeBinder, [snapshot], activeBinder.revision);
-      publishBinderChange(saved);
-      setBinders((current) => current.map((binder) => (binder.id === saved.id ? saved : binder)));
+      await persistBinderChange(activeBinder.id, (binder) => binder, [snapshot]);
       setCards((current) => new Map(current).set(snapshot.key, snapshot));
       setStorageStatus("saved");
       setMessage(snapshot.imageBaseUrl
@@ -712,6 +876,7 @@ export function FoundationWorkspace() {
       setStorageStatus("saving");
       await repository.importBackup(backup, "import-as-new");
       const items = await repository.list();
+      bindersRef.current = items;
       setBinders(items);
       setActiveId(items[0]?.id);
       setStorageConflict(false);
@@ -822,9 +987,7 @@ export function FoundationWorkspace() {
           ? failed.reason
           : new Error("Cardmarket-Katalogdaten konnten nicht aktualisiert werden.");
       }
-      const saved = await repository.save(activeBinder, refreshed, activeBinder.revision);
-      publishBinderChange(saved);
-      setBinders((current) => current.map((binder) => (binder.id === saved.id ? saved : binder)));
+      await persistBinderChange(activeBinder.id, (binder) => binder, refreshed);
       setCards((current) => {
         const next = new Map(current);
         for (const card of refreshed) next.set(card.key, card);
@@ -1090,7 +1253,20 @@ export function FoundationWorkspace() {
             <div>
               <p className={styles.binderBreadcrumb}>Meine Binder / {activeBinder.name}</p>
               <h1>{activeBinder.name}</h1>
-              <p>{activeBinder.pages.length} {activeBinder.pages.length === 1 ? "Seite" : "Seiten"} · {activeBinder.layout.rows} × {activeBinder.layout.columns} · lokal gespeichert</p>
+              <p className={styles.binderMeta}>{activeBinder.pages.length} {activeBinder.pages.length === 1 ? "Seite" : "Seiten"} · {activeBinder.layout.rows} × {activeBinder.layout.columns}</p>
+              <AutosaveTextarea
+                key={`description-${activeBinder.id}`}
+                id={`binder-description-${activeBinder.id}`}
+                label="Binderbeschreibung"
+                value={activeBinder.description}
+                maxLength={BINDER_DESCRIPTION_MAX_LENGTH}
+                placeholder="Worum geht es in diesem Binder?"
+                rows={2}
+                className={styles.binderDescriptionEditor}
+                disabled={storageConflict}
+                onChange={changeBinderDescriptionDraft}
+                onSave={(value) => saveBinderDescription(activeBinder.id, value)}
+              />
             </div>
             <div className={styles.binderHeaderActions}>
               <button type="button" className={styles.secondaryButton} onClick={() => openSearchForSlot()}><Search size={17} /> Karte hinzufügen</button>
@@ -1166,6 +1342,21 @@ export function FoundationWorkspace() {
                     onRefreshCard={(card) => void refreshCardSnapshot(card)}
                   />
                 </div>
+              ) : null}
+              {activePage ? (
+                <AutosaveTextarea
+                  key={`page-note-${activePage.id}`}
+                  id={`page-note-${activePage.id}`}
+                  label={`Seitennotiz · Seite ${visiblePageIndex + 1}`}
+                  value={activePage.note}
+                  maxLength={PAGE_NOTE_MAX_LENGTH}
+                  placeholder="Notizen zu Zustand, Zielen oder Anordnung dieser Seite…"
+                  rows={4}
+                  className={styles.pageNoteEditor}
+                  disabled={storageConflict}
+                  onChange={(value) => changePageNoteDraft(activePage.id, value)}
+                  onSave={(value) => savePageNote(activeBinder.id, activePage.id, value)}
+                />
               ) : null}
             </section>
 

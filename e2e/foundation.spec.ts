@@ -263,6 +263,29 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   await cleanContext.close();
 });
 
+test("autosaves the binder description and each page note across reloads", async ({ page }) => {
+  await page.goto("/");
+  await page.getByLabel("Bindername").fill("Notizen Binder");
+  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+
+  const descriptionEditor = page.getByRole("group", { name: "Binderbeschreibung" });
+  const pageNoteEditor = page.getByRole("group", { name: "Seitennotiz · Seite 1" });
+  const description = descriptionEditor.getByRole("textbox", { name: "Binderbeschreibung" });
+  const pageNote = pageNoteEditor.getByRole("textbox", { name: "Seitennotiz · Seite 1" });
+
+  await expect(description).toHaveAttribute("maxlength", "500");
+  await expect(pageNote).toHaveAttribute("maxlength", "2000");
+  await description.fill("Erste Edition und Shadowless getrennt sammeln.");
+  await expect(descriptionEditor.getByText("Lokal gespeichert")).toBeVisible();
+  await pageNote.fill("Obere Reihe für Holo-Karten freihalten.");
+  await pageNote.blur();
+  await expect(pageNoteEditor.getByText("Lokal gespeichert")).toBeVisible();
+
+  await page.reload();
+  await expect(page.getByRole("textbox", { name: "Binderbeschreibung" })).toHaveValue("Erste Edition und Shadowless getrennt sammeln.");
+  await expect(page.getByRole("textbox", { name: "Seitennotiz · Seite 1" })).toHaveValue("Obere Reihe für Holo-Karten freihalten.");
+});
+
 test("detects a binder update from another tab and reloads the current revision", async ({
   context,
   page,

@@ -15,6 +15,9 @@ export interface SlotLocation {
 
 const DEFAULT_LAYOUT = { rows: 3, columns: 3 } as const;
 
+export const BINDER_DESCRIPTION_MAX_LENGTH = 500;
+export const PAGE_NOTE_MAX_LENGTH = 2_000;
+
 export const SUPPORTED_BINDER_LAYOUTS = [
   { key: "2x2", label: "2 × 2", rows: 2, columns: 2 },
   { key: "3x3", label: "3 × 3", rows: 3, columns: 3 },
@@ -107,6 +110,26 @@ function locate(binder: Binder, location: SlotLocation): { pageIndex: number; pa
 
 function withUpdatedPages(binder: Binder, pages: BinderPage[]): Binder {
   return { ...binder, pages, updatedAt: now() };
+}
+
+export function setBinderDescription(binder: Binder, description: string): Binder {
+  if (description.length > BINDER_DESCRIPTION_MAX_LENGTH) {
+    throw new Error(`Binder description must not exceed ${BINDER_DESCRIPTION_MAX_LENGTH} characters.`);
+  }
+  if (binder.description === description) return binder;
+  return { ...binder, description, updatedAt: now() };
+}
+
+export function setPageNote(binder: Binder, pageId: UUID, note: string): Binder {
+  if (note.length > PAGE_NOTE_MAX_LENGTH) {
+    throw new Error(`Page note must not exceed ${PAGE_NOTE_MAX_LENGTH} characters.`);
+  }
+  const pageIndex = binder.pages.findIndex((page) => page.id === pageId);
+  if (pageIndex < 0) throw new Error("Binder page does not exist.");
+  if (binder.pages[pageIndex].note === note) return binder;
+  const pages = [...binder.pages];
+  pages[pageIndex] = { ...pages[pageIndex], note };
+  return withUpdatedPages(binder, pages);
 }
 
 function isSupportedLayout(layout: SupportedBinderLayout): boolean {

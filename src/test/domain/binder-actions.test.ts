@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   addPage,
+  BINDER_DESCRIPTION_MAX_LENGTH,
   changeBinderLayout,
   createBinder,
   createPlannedCard,
@@ -9,9 +10,12 @@ import {
   placeCard,
   previewBinderLayoutChange,
   removeCard,
+  PAGE_NOTE_MAX_LENGTH,
+  setBinderDescription,
   setCardPreferences,
   setCardVariant,
   setOwned,
+  setPageNote,
 } from "@/domain/binder-actions";
 import { deriveBinderStats } from "@/domain/binder-stats";
 import { deriveMissingItems } from "@/domain/missing-items";
@@ -171,5 +175,19 @@ describe("binder domain", () => {
     const binder = createBinder("Stable");
     expect(changeBinderLayout(binder, { rows: 3, columns: 3 })).toBe(binder);
     expect(() => changeBinderLayout(binder, { rows: 2, columns: 4 })).toThrow("not supported");
+  });
+
+  it("updates binder descriptions and page notes immutably within their product limits", () => {
+    const binder = createBinder("Notes");
+    const described = setBinderDescription(binder, "Base Set master collection");
+    const noted = setPageNote(described, described.pages[0].id, "Top row should stay holographic.");
+
+    expect(binder.description).toBe("");
+    expect(binder.pages[0].note).toBe("");
+    expect(noted.description).toBe("Base Set master collection");
+    expect(noted.pages[0].note).toBe("Top row should stay holographic.");
+    expect(() => setBinderDescription(noted, "x".repeat(BINDER_DESCRIPTION_MAX_LENGTH + 1))).toThrow("500");
+    expect(() => setPageNote(noted, noted.pages[0].id, "x".repeat(PAGE_NOTE_MAX_LENGTH + 1))).toThrow("2000");
+    expect(() => setPageNote(noted, crypto.randomUUID(), "Lost page")).toThrow("does not exist");
   });
 });

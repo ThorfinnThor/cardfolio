@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { BINDER_DESCRIPTION_MAX_LENGTH, PAGE_NOTE_MAX_LENGTH } from "./binder-actions";
 import type { Binder, LocalBackupV1 } from "./types";
 
 const uuidSchema = z.string().uuid();
@@ -65,7 +66,7 @@ export const binderSchema = z
     schemaVersion: z.literal(1),
     revision: z.number().int().nonnegative(),
     name: z.string().min(1).max(100),
-    description: z.string().max(500),
+    description: z.string().max(BINDER_DESCRIPTION_MAX_LENGTH),
     layout: z.object({
       rows: z.number().int().min(1).max(20),
       columns: z.number().int().min(1).max(20),
@@ -75,7 +76,7 @@ export const binderSchema = z
         z.object({
           id: uuidSchema,
           slots: z.array(plannedCardSchema.nullable()).max(360),
-          note: z.string().max(2_000),
+          note: z.string().max(PAGE_NOTE_MAX_LENGTH),
         }),
       )
       .min(1)
