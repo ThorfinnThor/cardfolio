@@ -349,6 +349,9 @@ test("names and reorders pages, then duplicates and sorts binders", async ({ pag
   await page.getByRole("button", { name: "Sortierbasis duplizieren" }).click();
   await expect(page.getByRole("article").filter({ hasText: "Sortierbasis (Kopie)" })).toHaveCount(1);
   await page.getByRole("button", { name: "Sortierbasis (Kopie) nach hinten verschieben" }).click();
+  const reorderedCards = page.getByRole("article");
+  await expect(reorderedCards.nth(0)).toContainText("Sortierbasis");
+  await expect(reorderedCards.nth(1)).toContainText("Sortierbasis (Kopie)");
 
   await page.reload();
   await page.getByRole("button", { name: "Meine Binder", exact: true }).first().click();
