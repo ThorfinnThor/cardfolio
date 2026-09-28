@@ -38,6 +38,7 @@ export interface CardVariantAvailability {
   holo: boolean;
   reverse: boolean;
   firstEdition: boolean;
+  shadowless?: boolean;
 }
 
 export interface VariantSelection {

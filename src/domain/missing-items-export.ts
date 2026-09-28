@@ -1,7 +1,7 @@
 import type { ExportResult, MissingItem } from "./types";
 import { formatCollectorNumber } from "./catalog-search";
 import { minimumConditionLabels } from "./purchase-preferences";
-import { printingLabels, selectedPrinting } from "./variant-selection";
+import { printingLabels, selectedPrinting, variantAvailabilityForCard, variantSelectionIssue } from "./variant-selection";
 
 const HEADERS = ["Menge", "Name", "Set", "Nummer", "Sprache", "Finish", "Edition", "Druckvariante", "Zustand", "Prüfhinweis"] as const;
 
@@ -20,12 +20,15 @@ const editionLabels = {
 } as const;
 
 export function missingItemReviewNote(item: MissingItem): string {
+  const variantIssue = variantSelectionIssue(item.variant, variantAvailabilityForCard(item.card));
   const unknown: string[] = [];
   if (item.variant.finish === "unspecified") unknown.push("Finish");
   if (item.variant.edition === "unspecified") unknown.push("Edition");
   if (selectedPrinting(item.variant) === "unspecified") unknown.push("Druckvariante");
   if (item.card.physicalStatus !== "physical") unknown.push("physische Ausgabe");
-  return unknown.length > 0
+  return variantIssue && unknown.length === 0
+    ? `Manuell prüfen: ${variantIssue}`
+    : unknown.length > 0
     ? `Manuell prüfen: ${unknown.join(", ")}`
     : "Ausgabe, Sprache und Variante vor dem Kauf prüfen";
 }
@@ -47,12 +50,10 @@ function row(item: MissingItem): string[] {
 
 function warningsFor(items: readonly MissingItem[]): string[] {
   const warnings: string[] = [];
-  const incompleteVariantCount = items.filter(
-    (item) => item.variant.finish === "unspecified" || item.variant.edition === "unspecified" || selectedPrinting(item.variant) === "unspecified",
-  ).length;
+  const incompleteVariantCount = items.filter((item) => variantSelectionIssue(item.variant, variantAvailabilityForCard(item.card))).length;
   const unconfirmedPhysicalCount = items.filter((item) => item.card.physicalStatus !== "physical").length;
   if (incompleteVariantCount > 0) {
-    warnings.push(`${incompleteVariantCount} Position(en) enthalten keine vollständige Variantenangabe.`);
+    warnings.push(`${incompleteVariantCount} Position(en) enthalten keine vollständige oder katalogbestätigte Variantenangabe.`);
   }
   if (unconfirmedPhysicalCount > 0) {
     warnings.push(`${unconfirmedPhysicalCount} Position(en) sind nicht als physische Ausgabe bestätigt.`);

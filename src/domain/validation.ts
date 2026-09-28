@@ -40,6 +40,7 @@ export const cardSnapshotSchema = z.object({
       holo: z.boolean(),
       reverse: z.boolean(),
       firstEdition: z.boolean(),
+      shadowless: z.boolean().optional(),
     })
     .optional(),
   imageBaseUrl: imageUrlSchema.optional(),

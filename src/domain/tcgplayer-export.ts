@@ -1,5 +1,6 @@
 import { formatCollectorNumber } from "./catalog-search";
 import type { CardLanguage, ExportResult, MissingItem, UUID } from "./types";
+import { variantAvailabilityForCard, variantSelectionIssue } from "./variant-selection";
 
 export const TCGPLAYER_MASS_ENTRY_URL = "https://www.tcgplayer.com/massentry";
 export const TCGPLAYER_PREFILLED_URL_MAX_LENGTH = 7_000;
@@ -200,11 +201,12 @@ function matchItem(
   const cardCandidate = chooseCardCandidate(item, cardMapping);
   const unavailableSet = unavailableSets.find((candidate) => candidate.tcgdexSetId === item.card.setId);
 
-  if (item.variant.finish === "unspecified" || item.variant.edition === "unspecified" || !item.variant.printing || item.variant.printing === "unspecified") {
+  const variantIssue = variantSelectionIssue(item.variant, variantAvailabilityForCard(item.card));
+  if (variantIssue) {
     return {
       ...base,
       status: "unresolved",
-      reason: "Finish, Edition und Druckvariante müssen vollständig festgelegt werden.",
+      reason: variantIssue,
     };
   }
 

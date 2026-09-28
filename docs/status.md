@@ -476,3 +476,19 @@ Verification completed:
 - Typecheck, ESLint, 75 unit/component tests, static Next.js build, release checks and `git diff --check` passed locally.
 - The local static build exposed the 5.1 MB marketplace JSON with HTTP 200 and rendered the updated required variant controls. A live German Tornupto search displayed physical set names and complete numbers, and the insert action remained disabled until edition was selected.
 - Local Playwright Chromium could not launch because the host denied its macOS Mach-port registration before any scenario executed; the updated 15-scenario suite remains configured for Linux GitHub CI.
+
+## 2026-09-28 — Catalog-constrained card variants
+
+Completed:
+
+- The insert and edit forms now derive their selectable finishes from each card's TCGdex variant signals instead of showing every finish for every card.
+- First Edition is offered only when the card record confirms it. Unlimited / Standard remains an explicit required choice.
+- Shadowless is offered only for English Base Set cards; `Mit Schatten / Standard` remains the default.
+- `Andere` remains available for legitimate unlisted variants but now requires a custom label.
+- TCGplayer and Cardmarket handoffs reject incomplete or catalog-contradicting variants instead of silently exporting them. Neutral TXT/CSV exports retain those positions with an explicit review warning.
+- Existing locally stored cards remain backward compatible. When reopened, a previously selected but now unsupported value is shown as `nicht bestätigt` until corrected.
+
+Verification completed:
+
+- Typecheck, ESLint, 84 unit/component tests, static Next.js build, release checks and `git diff --check` passed locally.
+- The browser suite now distinguishes German Base Set, where Shadowless is unavailable, from English Base Set, where the option is present but not preselected.

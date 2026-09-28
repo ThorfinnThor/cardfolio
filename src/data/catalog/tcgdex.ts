@@ -211,6 +211,7 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
         holo: card.variants.holo,
         reverse: card.variants.reverse,
         firstEdition: card.variants.firstEdition,
+        shadowless: ref.language === "en" && card.set.id === "base1",
       } : undefined,
       imageBaseUrl,
       category: category(card.category),

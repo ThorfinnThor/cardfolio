@@ -497,15 +497,15 @@ test("searches German and English catalogs and labels the result language", asyn
   await expect(preview).toContainText("Grundset");
   await expect(preview).toContainText("4/102");
   await expect(preview).toContainText("Bild auf Englisch");
-  await expect(preview).toContainText("TCGdex meldet verfügbar: Holo, First Edition");
+  await expect(preview).toContainText("Katalog bestätigt: Holo, First Edition");
+  await expect(preview.getByLabel("Druckvariante").locator('option[value="shadowless"]')).toHaveCount(0);
   await preview.getByLabel("Finish").selectOption("holo");
   await preview.getByLabel("Edition").selectOption("first-edition");
-  await preview.getByLabel("Druckvariante").selectOption("shadowless");
   await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
 
   const card = page.getByRole("article", { name: "Glurak, Slot 1" });
   await expect(card).toBeVisible();
-  await expect(card).toContainText("Holo · First Edition · Shadowless");
+  await expect(card).toContainText("Holo · First Edition · Mit Schatten / Standard");
 });
 
 test("keeps Pocket cards out of the physical binder search", async ({ page }) => {
@@ -620,6 +620,7 @@ test("finds and displays an exact full collector number", async ({ page }) => {
   await result.getByRole("button", { name: "Prüfen" }).click();
   const preview = page.getByRole("dialog", { name: "Karte prüfen" });
   await expect(preview).toContainText("4/102");
+  await expect(preview.getByLabel("Druckvariante").locator('option[value="shadowless"]')).toHaveCount(1);
   await preview.getByLabel("Edition").selectOption("unlimited");
   await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
 

@@ -49,7 +49,7 @@ import { FEATURES } from "@/config/feature-flags";
 import { PRODUCT_DESIGN } from "@/config/product";
 import { minimumConditionLabels } from "@/domain/purchase-preferences";
 import { validateBackup } from "@/domain/validation";
-import { createInitialVariantSelection, editionLabels, finishLabels, formatAvailableVariants, formatVariantSelection, isVariantSelectionComplete, printingLabels, selectedPrinting } from "@/domain/variant-selection";
+import { createInitialVariantSelection, formatVariantSelection, isVariantSelectionValid, selectedPrinting, variantAvailabilityForCard, variantSelectionIssue } from "@/domain/variant-selection";
 import { catalogQueryKey, detailQueryKey, TCGdexCatalogAdapter } from "@/data/catalog/tcgdex";
 import { catalogSeries, catalogSets, completeCardSnapshotMetadata } from "@/data/catalog/set-counts";
 import { cardImageUrl } from "@/data/catalog/images";
@@ -59,6 +59,7 @@ import { IndexedDBBinderRepository } from "@/data/persistence/indexeddb-binder-r
 import { BinderOverview } from "./BinderOverview";
 import { BinderGrid } from "./BinderGrid";
 import { MissingCardsPanel } from "./MissingCardsPanel";
+import { VariantFields } from "./VariantFields";
 import styles from "./foundation-workspace.module.css";
 
 const MAX_IMPORT_BYTES = 5 * 1024 * 1024;
@@ -873,8 +874,9 @@ export function FoundationWorkspace() {
 
   async function insertPreviewedCard() {
     if (!activeBinder || !searchPreview?.snapshot || searchPreview.status !== "ready") return;
-    if (!isVariantSelectionComplete(searchPreview.variant)) {
-      setMessage("Wähle vor dem Einsetzen Finish, Edition und Druckvariante aus.");
+    const variantIssue = variantSelectionIssue(searchPreview.variant, variantAvailabilityForCard(searchPreview.snapshot));
+    if (variantIssue) {
+      setMessage(variantIssue);
       return;
     }
     const location = selectedLocation
@@ -1004,14 +1006,15 @@ export function FoundationWorkspace() {
       label: card?.name ?? "Karte",
       variant: { ...entry.variant, printing: selectedPrinting(entry.variant) },
       preferences: { ...entry.preferences },
-      availableVariants: card?.availableVariants,
+      availableVariants: card ? variantAvailabilityForCard(card) : undefined,
     });
   }
 
   async function saveVariantEdit() {
     if (!activeBinder || !variantEdit) return;
-    if (!isVariantSelectionComplete(variantEdit.variant)) {
-      setMessage("Finish, Edition und Druckvariante sind Pflichtangaben.");
+    const variantIssue = variantSelectionIssue(variantEdit.variant, variantEdit.availableVariants);
+    if (variantIssue) {
+      setMessage(variantIssue);
       return;
     }
     try {
@@ -1429,78 +1432,16 @@ export function FoundationWorkspace() {
             <p className={styles.eyebrow}>Kartendetails</p>
             <h2 id="variant-heading">Version und Mindestzustand für „{variantEdit.label}“ festlegen</h2>
             <p>Version und gewünschter Mindestzustand werden getrennt gespeichert und in Fehlkartenlisten sowie Exporten berücksichtigt.</p>
-            <div className={styles.variantForm}>
-              <label>
-                Finish
-                <select
-                  required
-                  value={variantEdit.variant.finish}
-                  onChange={(event) => setVariantEdit((current) => current ? {
-                    ...current,
-                    variant: { ...current.variant, finish: event.target.value as VariantSelection["finish"] },
-                  } : current)}
-                >
-                  {Object.entries(finishLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
-                </select>
-              </label>
-              <label>
-                Edition
-                <select
-                  required
-                  value={variantEdit.variant.edition}
-                  onChange={(event) => setVariantEdit((current) => current ? {
-                    ...current,
-                    variant: { ...current.variant, edition: event.target.value as VariantSelection["edition"] },
-                  } : current)}
-                >
-                  {Object.entries(editionLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
-                </select>
-              </label>
-              <label>
-                Druckvariante
-                <select
-                  required
-                  value={selectedPrinting(variantEdit.variant)}
-                  onChange={(event) => setVariantEdit((current) => current ? {
-                    ...current,
-                    variant: { ...current.variant, printing: event.target.value as NonNullable<VariantSelection["printing"]> },
-                  } : current)}
-                >
-                  {Object.entries(printingLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
-                </select>
-              </label>
-              <label>
-                Eigene Variantenbezeichnung (optional)
-                <input
-                  value={variantEdit.variant.label ?? ""}
-                  maxLength={100}
-                  placeholder="z. B. Cosmos Holo"
-                  onChange={(event) => setVariantEdit((current) => current ? {
-                    ...current,
-                    variant: { ...current.variant, label: event.target.value || undefined },
-                  } : current)}
-                />
-              </label>
-              <label>
-                Mindestzustand
-                <select
-                  value={variantEdit.preferences.minimumCondition}
-                  onChange={(event) => setVariantEdit((current) => current ? {
-                    ...current,
-                    preferences: {
-                      ...current.preferences,
-                      minimumCondition: event.target.value as PurchasePreferences["minimumCondition"],
-                    },
-                  } : current)}
-                >
-                  {Object.entries(minimumConditionLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
-                </select>
-              </label>
-            </div>
-            <p className={styles.variantHint}>{formatAvailableVariants(variantEdit.availableVariants)} Finish, Edition und Druckvariante sind Pflichtangaben. „Mit Schatten / Standard“ ist vorausgewählt; Shadowless muss bewusst gewählt werden.</p>
+            <VariantFields
+              variant={variantEdit.variant}
+              preferences={variantEdit.preferences}
+              availability={variantEdit.availableVariants}
+              onVariantChange={(variant) => setVariantEdit((current) => current ? { ...current, variant } : current)}
+              onPreferencesChange={(preferences) => setVariantEdit((current) => current ? { ...current, preferences } : current)}
+            />
             <div className={styles.dialogActions}>
               <button type="button" className={styles.secondaryButton} onClick={() => setVariantEdit(undefined)}>Abbrechen</button>
-              <button type="button" className={styles.confirmButton} disabled={!isVariantSelectionComplete(variantEdit.variant)} onClick={saveVariantEdit}>Angaben speichern</button>
+              <button type="button" className={styles.confirmButton} disabled={!isVariantSelectionValid(variantEdit.variant, variantEdit.availableVariants)} onClick={saveVariantEdit}>Angaben speichern</button>
             </div>
           </section>
         </div>
@@ -1739,77 +1680,14 @@ export function FoundationWorkspace() {
                         <div><dt>Sprache</dt><dd>{searchPreview.snapshot.ref.language.toUpperCase()}</dd></div>
                         <div><dt>Kartennummer</dt><dd>{formatCollectorNumber(searchPreview.snapshot.collectorNumber, searchPreview.snapshot.collectorTotal)}</dd></div>
                       </dl>
-                      <div className={styles.variantForm}>
-                        <label>
-                          Finish
-                          <select
-                            required
-                            value={searchPreview.variant.finish}
-                            onChange={(event) => setSearchPreview((current) => current ? {
-                              ...current,
-                              variant: { ...current.variant, finish: event.target.value as VariantSelection["finish"] },
-                            } : current)}
-                          >
-                            {Object.entries(finishLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
-                          </select>
-                        </label>
-                        <label>
-                          Edition
-                          <select
-                            required
-                            value={searchPreview.variant.edition}
-                            onChange={(event) => setSearchPreview((current) => current ? {
-                              ...current,
-                              variant: { ...current.variant, edition: event.target.value as VariantSelection["edition"] },
-                            } : current)}
-                          >
-                            {Object.entries(editionLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
-                          </select>
-                        </label>
-                        <label>
-                          Druckvariante
-                          <select
-                            required
-                            value={selectedPrinting(searchPreview.variant)}
-                            onChange={(event) => setSearchPreview((current) => current ? {
-                              ...current,
-                              variant: { ...current.variant, printing: event.target.value as NonNullable<VariantSelection["printing"]> },
-                            } : current)}
-                          >
-                            {Object.entries(printingLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
-                          </select>
-                        </label>
-                        <label>
-                          Eigene Variantenbezeichnung (optional)
-                          <input
-                            value={searchPreview.variant.label ?? ""}
-                            maxLength={100}
-                            placeholder="z. B. Cosmos Holo"
-                            onChange={(event) => setSearchPreview((current) => current ? {
-                              ...current,
-                              variant: { ...current.variant, label: event.target.value || undefined },
-                            } : current)}
-                          />
-                        </label>
-                        <label>
-                          Mindestzustand
-                          <select
-                            value={searchPreview.preferences.minimumCondition}
-                            onChange={(event) => setSearchPreview((current) => current ? {
-                              ...current,
-                              preferences: {
-                                ...current.preferences,
-                                minimumCondition: event.target.value as PurchasePreferences["minimumCondition"],
-                              },
-                            } : current)}
-                          >
-                            {Object.entries(minimumConditionLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
-                          </select>
-                        </label>
-                      </div>
-                      <p className={styles.variantHint}>{formatAvailableVariants(searchPreview.snapshot.availableVariants)} Finish, Edition und Druckvariante sind Pflichtangaben. „Mit Schatten / Standard“ ist vorausgewählt; Shadowless muss bewusst gewählt werden.</p>
-                      {!isVariantSelectionComplete(searchPreview.variant) ? <p className={styles.warning} role="status">Vervollständige die noch offenen Pflichtangaben.</p> : null}
-                      <button type="button" className={styles.primaryButton} disabled={previewSubmitting || !isVariantSelectionComplete(searchPreview.variant)} onClick={() => void insertPreviewedCard()}>
+                      <VariantFields
+                        variant={searchPreview.variant}
+                        preferences={searchPreview.preferences}
+                        availability={variantAvailabilityForCard(searchPreview.snapshot)}
+                        onVariantChange={(variant) => setSearchPreview((current) => current ? { ...current, variant } : current)}
+                        onPreferencesChange={(preferences) => setSearchPreview((current) => current ? { ...current, preferences } : current)}
+                      />
+                      <button type="button" className={styles.primaryButton} disabled={previewSubmitting || !isVariantSelectionValid(searchPreview.variant, variantAvailabilityForCard(searchPreview.snapshot))} onClick={() => void insertPreviewedCard()}>
                         {previewSubmitting ? "Wird eingesetzt…" : "Mit diesen Angaben einsetzen"}
                       </button>
                     </>

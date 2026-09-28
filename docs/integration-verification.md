@@ -267,3 +267,10 @@ Environment: TCGdex physical English catalog, TCGplayer's official Pokémon Mass
 - Cardmarket's current Typhlosion product/species pages identify the old Dragon Frontiers card as `Typhlosion δ Delta Species [Shady Move | Burning Ball]`; the handoff now expands symbol-only TCGdex names to that provider wording.
 - The first two shortened/incorrect forms tested during the regression were rejected, confirming that exact product names and TCGplayer's own collector-number formatting remain necessary even after a set code is known.
 - The generated files contain source URLs and verification timestamps. A future physical TCGdex set without a mapping or explicit unavailable record makes the scheduled sync fail instead of silently producing partial set coverage.
+
+## Catalog-constrained variant selection — 2026-09-28
+
+- Holo-only fixtures expose Holo plus the labelled manual fallback, but no Non-Holo or Reverse option.
+- First Edition is absent when TCGdex reports `firstEdition: false` and available when it reports `true`.
+- Shadowless is derived only for English `base1` records. German Base Set and all other sets expose `Mit Schatten / Standard` only.
+- Marketplace unit checks reject a selected finish that contradicts the card's catalog record. Manual `Andere` variants require a non-empty custom label.

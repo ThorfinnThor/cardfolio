@@ -129,6 +129,21 @@ describe("Cardmarket handoff", () => {
     expect(exported.excluded).toEqual([expect.objectContaining({ label: expect.stringContaining("Ivysaur") })]);
   });
 
+  it("excludes a card whose selected variant contradicts the catalog", () => {
+    const unsupported = missingItem(1, {
+      card: {
+        ...missingItem().card,
+        availableVariants: { normal: false, holo: true, reverse: false, firstEdition: false, shadowless: false },
+      },
+    });
+
+    const exported = createCardmarketHandoff([unsupported]);
+
+    expect(exported.parts[0].text).toBe("");
+    expect(exported.importablePositionCount).toBe(0);
+    expect(exported.excluded[0].reason).toMatch(/Non-Holo \/ Normal ist.*nicht bestätigt/);
+  });
+
   it("returns no parts or warnings for an empty handoff", () => {
     expect(createCardmarketHandoff([])).toMatchObject({ parts: [], warnings: [], positionCount: 0, importablePositionCount: 0, reviewRequiredCount: 0 });
   });

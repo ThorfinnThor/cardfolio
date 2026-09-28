@@ -152,7 +152,7 @@ describe("TCGdexCatalogAdapter", () => {
 
     expect(card.imageBaseUrl).toBe("https://assets.tcgdex.net/en/base/base1/4");
     expect(card.collectorTotal).toBe("102");
-    expect(card.availableVariants).toEqual({ normal: false, holo: true, reverse: false, firstEdition: true });
+    expect(card.availableVariants).toEqual({ normal: false, holo: true, reverse: false, firstEdition: true, shadowless: false });
   });
 
   it("holds back an unknown set until the synchronized catalog classifies it", async () => {

@@ -258,6 +258,27 @@ describe("TCGplayer Mass Entry export", () => {
     expect(exported.excludedEntryIds).toEqual([...unknown.entryIds, ...multiline.entryIds]);
   });
 
+  it("blocks a marketplace handoff when the selected finish contradicts the catalog", () => {
+    const unsupported = missingItem({
+      card: {
+        ...missingItem().card,
+        availableVariants: { normal: false, holo: true, reverse: false, firstEdition: false, shadowless: false },
+      },
+    });
+
+    const exported = createTcgplayerMassEntryExport(
+      [unsupported],
+      TCGPLAYER_SET_MAPPINGS,
+      TCGPLAYER_PRINTING_MAPPINGS,
+    );
+
+    expect(exported.text).toBe("");
+    expect(exported.matches[0]).toMatchObject({
+      status: "unresolved",
+      reason: "Non-Holo / Normal ist für diese Karte im Katalog nicht bestätigt.",
+    });
+  });
+
   it("exports TCGplayer's full displayed collector number", () => {
     const modern = missingItem({
       identityKey: "magikarp-pal",

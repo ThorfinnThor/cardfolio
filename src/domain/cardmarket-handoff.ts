@@ -1,5 +1,6 @@
 import type { MissingItem } from "./types";
 import { formatCollectorNumber } from "./catalog-search";
+import { variantAvailabilityForCard, variantSelectionIssue } from "./variant-selection";
 
 export const CARDMARKET_POKEMON_SINGLES_URL = "https://www.cardmarket.com/en/Pokemon/Products/Singles";
 export const CARDMARKET_POKEMON_SEARCH_URL = "https://www.cardmarket.com/en/Pokemon/Products/Search";
@@ -52,6 +53,8 @@ function cardmarketCardName(value: string): string {
 }
 
 function createDecklistLine(item: MissingItem): { line?: string; reason?: string } {
+  const variantIssue = variantSelectionIssue(item.variant, variantAvailabilityForCard(item.card));
+  if (variantIssue) return { reason: `Variantenangaben prüfen: ${variantIssue}` };
   const identity = item.card.ref.language === "de" ? item.card.englishIdentity : undefined;
   const name = identity?.name ?? item.card.name;
   const category = identity?.category ?? item.card.category;
