@@ -207,6 +207,36 @@ async function fetchTcgplayerProducts(setName) {
   return products;
 }
 
+async function searchTcgplayerProducts(query) {
+  const body = {
+    algorithm: "sales_exp_fields_experiment",
+    from: 0,
+    size: 50,
+    filters: { term: { productLineName: ["pokemon"], productTypeName: ["Cards"] }, range: {}, match: {} },
+    listingSearch: {
+      context: { cart: {} },
+      filters: {
+        term: { sellerStatus: "Live", channelId: 0 },
+        range: { quantity: { gte: 1 } },
+        exclude: { channelExclusion: 0 },
+      },
+    },
+    context: { cart: {}, shippingCountry: "", userProfile: {} },
+    settings: { useFuzzySearch: false },
+    sort: { field: "product-sorting-name", order: "asc" },
+  };
+  const response = await fetchRemoteJson(
+    `${TCGPLAYER_SEARCH_URL}?q=${encodeURIComponent(query)}&isList=false`,
+    { method: "POST", headers: { Accept: "application/json", "Content-Type": "application/json" }, body: JSON.stringify(body) },
+    `TCGplayer cross-set search for ${query}`,
+  );
+  const result = response?.results?.[0];
+  if (!result || !Array.isArray(result.results)) {
+    throw new Error(`TCGplayer cross-set search for ${query} returned an invalid response.`);
+  }
+  return result.results;
+}
+
 async function syncTcgplayerMetadata(englishSets) {
   const officialResponse = await fetchRemoteJson(
     TCGPLAYER_SET_CODES_URL,
@@ -266,11 +296,12 @@ async function syncTcgplayerMetadata(englishSets) {
     const setMappings = mappedSets.filter((mapping) => mapping.tcgdexSetId === set.id);
     const tcgdexSet = await fetchJson("en", `sets/${encodeURIComponent(set.id)}`);
     if (!Array.isArray(tcgdexSet?.cards)) throw new Error(`TCGdex set ${set.id} has no card list.`);
-    if (!setMappings.length) return { catalogCardCount: tcgdexSet.cards.length, mappings: [] };
+    if (!setMappings.length) return { catalogCardCount: tcgdexSet.cards.length, mappings: [], unmatchedCards: [] };
     const products = setMappings.flatMap((mapping) => (productsBySetName.get(mapping.tcgplayerSetName) ?? []).map((product) => ({
       product,
       mapping,
     })));
+    const unmatchedCards = [];
     const mappings = tcgdexSet.cards.flatMap((card) => {
       const collectorPart = normalizedCollectorPart(card.localId);
       let matchingProducts = products
@@ -294,11 +325,47 @@ async function syncTcgplayerMetadata(englishSets) {
           productId: product.productId,
         }))
         .filter((candidate, index, all) => all.findIndex((other) => other.productId === candidate.productId) === index);
-      return candidates.length ? [{ tcgdexCardId: card.id, tcgdexName: card.name, candidates }] : [];
+      if (candidates.length) return [{ tcgdexCardId: card.id, tcgdexName: card.name, candidates }];
+      unmatchedCards.push({ card });
+      return [];
     });
-    return { catalogCardCount: tcgdexSet.cards.length, mappings };
+    return { catalogCardCount: tcgdexSet.cards.length, mappings, unmatchedCards };
   });
-  const cardMappings = cardMappingResults.flatMap((result) => result.mappings);
+  const crossSetMappings = await mapWithConcurrency(
+    cardMappingResults.flatMap((result) => result.unmatchedCards),
+    4,
+    async ({ card }) => {
+      const products = await searchTcgplayerProducts(`${card.name} ${card.localId}`);
+      const collectorPart = normalizedCollectorPart(card.localId);
+      const cardName = normalizedCardName(card.name);
+      const candidates = products.flatMap((product) => {
+        if (normalizedCollectorPart(product.customAttributes?.number) !== collectorPart) return [];
+        const productName = normalizedCardName(product.productName);
+        if (productName !== cardName
+          && !productName.startsWith(`${cardName} `)
+          && !cardName.startsWith(`${productName} `)) return [];
+        const normalizedOfficialSets = officialByNormalizedName.get(normalizeSetName(product.setName)) ?? [];
+        const officialSet = officialByName.get(product.setName)
+          ?? (normalizedOfficialSets.length === 1 ? normalizedOfficialSets[0] : undefined);
+        if (!officialSet) return [];
+        return [{
+          productName: product.productName,
+          collectorNumber: product.customAttributes.number,
+          tcgplayerSetCode: officialSet.code,
+          tcgplayerSetName: product.setName,
+          foilOnly: Boolean(product.foilOnly),
+          productId: product.productId,
+        }];
+      }).filter((candidate, index, all) => all.findIndex((other) => other.productId === candidate.productId) === index);
+      return candidates.length
+        ? { tcgdexCardId: card.id, tcgdexName: card.name, candidates }
+        : undefined;
+    },
+  );
+  const cardMappings = [
+    ...cardMappingResults.flatMap((result) => result.mappings),
+    ...crossSetMappings.filter(Boolean),
+  ];
   const catalogCards = cardMappingResults.reduce((total, result) => total + result.catalogCardCount, 0);
   if (catalogCards < 20_000 || cardMappings.length / catalogCards < 0.99) {
     throw new Error(`TCGplayer card coverage fell to ${cardMappings.length}/${catalogCards}; refusing partial metadata.`);
@@ -307,6 +374,7 @@ async function syncTcgplayerMetadata(englishSets) {
     { cardId: "xy8-20", code: "BKT", name: "Typhlosion", number: "20/162" },
     { cardId: "neo4-10", code: "N4", name: "Dark Typhlosion", number: "010/105" },
     { cardId: "ex15-12", code: "DF", name: "Typhlosion (Delta Species)", number: "12/101" },
+    { cardId: "base1-8", code: "PR", name: "Machamp - 8/102 (Base Set Shadowless)", number: "008/102" },
   ];
   for (const required of requiredProducts) {
     const mapping = cardMappings.find((candidate) => candidate.tcgdexCardId === required.cardId);

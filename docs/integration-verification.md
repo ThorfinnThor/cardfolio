@@ -261,7 +261,8 @@ Environment: current official TCGplayer Mass Entry UI and anonymous cart.
 Environment: TCGdex physical English catalog, TCGplayer's official Pokémon Mass Entry set-code endpoint and current TCGplayer search catalog.
 
 - The sync accounted for all 205 physical English TCGdex sets: 203 mapped to an official Mass Entry code and `Pokémon Futsal 2020` plus `My First Battle` were recorded as unavailable because the official Mass Entry list supplies no code for them.
-- The generated product catalog mapped 21,240 of 21,290 card records returned by TCGdex. Of the 50 unmatched records, 39 belong to the two unavailable sets and 11 have no exact product record in the current TCGplayer catalog.
+- The generated product catalog mapped 21,241 of 21,290 card records returned by TCGdex. A guarded cross-set lookup also resolves products that TCGplayer classifies outside their TCGdex set, such as Base Set Machamp under `Deck Exclusives`; it requires an exact collector number, a compatible name and an official Mass Entry set code.
+- Of the 49 unmatched records, 39 belong to the two unavailable sets and 10 have no exact product record in the current TCGplayer catalog: `BW78`, `DP54`, `DP55`, `Pikachu at the Museum`, and six currently missing SVP promo records. They remain visible in Cardfolio and are excluded only from automatic TCGplayer handoff.
 - Controlled validator checks accepted `1 Typhlosion [BKT] 20/162`, `1 Dark Typhlosion [N4] 010/105` and `1 Typhlosion (Delta Species) [DF] 12/101`.
 - Cardmarket's current Typhlosion product/species pages identify the old Dragon Frontiers card as `Typhlosion δ Delta Species [Shady Move | Burning Ball]`; the handoff now expands symbol-only TCGdex names to that provider wording.
 - The first two shortened/incorrect forms tested during the regression were rejected, confirming that exact product names and TCGplayer's own collector-number formatting remain necessary even after a set code is known.

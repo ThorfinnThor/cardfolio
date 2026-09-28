@@ -151,7 +151,7 @@
       "name": "30th Celebration",
       "cardCount": {
         "official": 128,
-        "total": 158
+        "total": 161
       },
       "series": {
         "id": "me",
@@ -162,7 +162,7 @@
       "id": "30th-c",
       "name": "30th Classic Collection",
       "cardCount": {
-        "official": 0,
+        "official": 30,
         "total": 30
       },
       "series": {
@@ -1026,8 +1026,8 @@
       "id": "mee",
       "name": "Mega Evolution Energy",
       "cardCount": {
-        "official": 8,
-        "total": 8
+        "official": 16,
+        "total": 16
       },
       "series": {
         "id": "me",
@@ -1039,7 +1039,7 @@
       "name": "MEP Black Star Promos",
       "cardCount": {
         "official": 0,
-        "total": 89
+        "total": 112
       },
       "series": {
         "id": "me",

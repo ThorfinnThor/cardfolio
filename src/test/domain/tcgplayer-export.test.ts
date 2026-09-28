@@ -165,6 +165,43 @@ describe("TCGplayer Mass Entry export", () => {
     expect(exported.excludedEntryIds).toEqual([]);
   });
 
+  it("uses a cross-listed Deck Exclusives product for Base Set Machamp", () => {
+    const machamp = missingItem({
+      identityKey: "machamp-base-set",
+      card: {
+        ...missingItem().card,
+        key: "tcgdex:base1-8:en",
+        ref: { provider: "tcgdex", id: "base1-8", language: "en" },
+        name: "Machamp",
+        collectorNumber: "8",
+        collectorTotal: "102",
+      },
+      variant: { finish: "holo", edition: "first-edition", printing: "shadowless" },
+      quantity: 1,
+    });
+    const mappings: TcgplayerCardMapping[] = [{
+      tcgdexCardId: "base1-8",
+      tcgdexName: "Machamp",
+      candidates: [
+        { productName: "Machamp - 8/102", collectorNumber: "008/102", tcgplayerSetCode: "PR", tcgplayerSetName: "Deck Exclusives", foilOnly: true, productId: 42425 },
+        { productName: "Machamp - 8/102 (Base Set Shadowless)", collectorNumber: "008/102", tcgplayerSetCode: "PR", tcgplayerSetName: "Deck Exclusives", foilOnly: true, productId: 107004 },
+      ],
+    }];
+
+    const exported = createTcgplayerMassEntryExport(
+      [machamp],
+      TCGPLAYER_SET_MAPPINGS,
+      TCGPLAYER_PRINTING_MAPPINGS,
+      mappings,
+    );
+
+    expect(exported.text).toBe("1 Machamp - 8/102 (Base Set Shadowless) [PR] 008/102");
+    expect(exported.matches[0]).toMatchObject({
+      status: "catalog-verified",
+      cardCandidate: { productId: 107004, tcgplayerSetCode: "PR" },
+    });
+  });
+
   it("exports the exact verified German Tornupto identity and English Blaine's Charizard printing", () => {
     const typhlosion = missingItem({
       identityKey: "tornupto-neo-genesis",

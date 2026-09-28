@@ -132,9 +132,9 @@ function chooseCardCandidate(item: MissingItem, mapping?: TcgplayerCardMapping):
   if (!mapping) return undefined;
   let candidates = mapping.candidates;
   if (item.variant.printing === "shadowless") {
-    candidates = candidates.filter((candidate) => /shadowless/i.test(candidate.tcgplayerSetName));
+    candidates = candidates.filter((candidate) => /shadowless/i.test(`${candidate.tcgplayerSetName} ${candidate.productName}`));
   } else {
-    candidates = candidates.filter((candidate) => !/shadowless/i.test(candidate.tcgplayerSetName));
+    candidates = candidates.filter((candidate) => !/shadowless/i.test(`${candidate.tcgplayerSetName} ${candidate.productName}`));
   }
   if (item.variant.finish === "normal") candidates = candidates.filter((candidate) => !candidate.foilOnly);
   if (item.variant.finish === "holo") {

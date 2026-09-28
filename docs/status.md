@@ -462,7 +462,8 @@ Completed:
 
 - Replaced the small hand-maintained TCGplayer whitelist with generated metadata from TCGplayer's official Pokémon Mass Entry set-code endpoint and current product catalog.
 - All 205 physical English TCGdex sets are now accounted for: 203 map to official Mass Entry codes and two are explicitly unavailable because TCGplayer publishes no Mass Entry code for them.
-- Generated exact product identities for 21,240 of the 21,290 card records returned by TCGdex. The 50 remaining records comprise the 39 cards currently returned for the two unavailable sets plus 11 cards for which the current TCGplayer product catalog has no matching record.
+- Generated exact product identities for 21,241 of the 21,290 card records returned by TCGdex. A guarded cross-set lookup now resolves misclassified products such as Base Set Machamp under TCGplayer's `Deck Exclusives` category.
+- The 49 remaining records comprise the 39 cards currently returned for the two unavailable sets plus 10 cards for which the current TCGplayer product catalog has no exact matching record. These cards remain in the binder and missing-card list; only their automatic TCGplayer handoff is withheld.
 - Fixed the reported old-card cases using exact current identities: `Typhlosion [BKT] 20/162`, `Dark Typhlosion [N4] 010/105` and `Typhlosion (Delta Species) [DF] 12/101`.
 - Added subset handling for Generations/Legendary Treasures Radiant Collections, classic collections, exact suffix printings and Shadowless Base Set.
 - Finish, edition and printing are mandatory for insertion and later edits. `Non-Holo / Normal` is explicit, while `Mit Schatten / Standard` is the default and Shadowless remains a deliberate choice.
