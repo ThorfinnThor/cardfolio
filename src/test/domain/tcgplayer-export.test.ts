@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { TCGPLAYER_PRINTING_MAPPINGS } from "@/data/marketplace/tcgplayer-printing-mappings";
 import { TCGPLAYER_SET_MAPPINGS } from "@/data/marketplace/tcgplayer-set-mappings";
-import { createTcgplayerMassEntryExport } from "@/domain/tcgplayer-export";
+import { createTcgplayerMassEntryExport, createTcgplayerMassEntryUrl, TCGPLAYER_MASS_ENTRY_URL } from "@/domain/tcgplayer-export";
 import type { MissingItem } from "@/domain/types";
 
 function missingItem(overrides: Partial<MissingItem> = {}): MissingItem {
@@ -33,7 +33,13 @@ describe("TCGplayer Mass Entry export", () => {
     expect(exported.text).toBe("2 Bulbasaur [BS] 044/102");
     expect(exported.verifiedCount).toBe(1);
     expect(exported.reviewRequiredCount).toBe(0);
+    expect(exported.readyCount).toBe(1);
     expect(exported.excludedEntryIds).toEqual([]);
+    expect(exported.massEntryPrefilled).toBe(true);
+    const handoffUrl = new URL(exported.massEntryUrl);
+    expect(`${handoffUrl.origin}${handoffUrl.pathname}`).toBe(TCGPLAYER_MASS_ENTRY_URL);
+    expect(handoffUrl.searchParams.get("c")).toBe("2 Bulbasaur [BS] 044/102");
+    expect(handoffUrl.searchParams.get("productline")).toBe("Pokemon");
     expect(exported.matches[0]).toMatchObject({
       status: "verified-printing",
       setMapping: { tcgdexSetId: "base1", tcgplayerSetCode: "BS" },
@@ -44,28 +50,35 @@ describe("TCGplayer Mass Entry export", () => {
   it("contains only set mappings checked against the official TCGplayer Mass Entry list", () => {
     expect(TCGPLAYER_SET_MAPPINGS.map(({ tcgdexSetId, tcgplayerSetCode }) => [tcgdexSetId, tcgplayerSetCode])).toEqual([
       ["base1", "BS"],
+      ["base1", "BS"],
       ["base2", "JU"],
       ["base3", "FO"],
       ["neo1", "N1"],
       ["gym2", "G2"],
+      ["ex14", "CG"],
       ["swsh1", "SWSH01"],
       ["swsh4", "SWSH04"],
       ["sv01", "SVI"],
       ["sv02", "PAL"],
       ["sv03", "OBF"],
     ]);
-    expect(TCGPLAYER_SET_MAPPINGS.every((mapping) => mapping.language === "en" || mapping.tcgdexSetId === "neo1")).toBe(true);
+    expect(TCGPLAYER_SET_MAPPINGS.every((mapping) => mapping.language === "en" || ["base1", "neo1"].includes(mapping.tcgdexSetId))).toBe(true);
     expect(TCGPLAYER_SET_MAPPINGS.every((mapping) => mapping.source.startsWith("https://www.tcgplayer.com/"))).toBe(true);
-    expect(TCGPLAYER_SET_MAPPINGS.every((mapping) => mapping.verifiedAt === "2026-09-27")).toBe(true);
+    expect(TCGPLAYER_SET_MAPPINGS.every((mapping) => /^2026-09-(27|28)$/.test(mapping.verifiedAt))).toBe(true);
     expect(TCGPLAYER_PRINTING_MAPPINGS.map((mapping) => mapping.tcgdexCardId)).toEqual([
+      "base1-4",
+      "base1-4",
+      "base1-30",
       "base1-44",
+      "base1-58",
       "neo1-17",
       "gym2-2",
+      "ex14-4",
       "sv02-12",
       "sv02-203",
     ]);
     expect(TCGPLAYER_PRINTING_MAPPINGS.every((mapping) => mapping.source.startsWith("https://www.tcgplayer.com/"))).toBe(true);
-    expect(TCGPLAYER_PRINTING_MAPPINGS.every((mapping) => mapping.verifiedAt === "2026-09-27")).toBe(true);
+    expect(TCGPLAYER_PRINTING_MAPPINGS.every((mapping) => /^2026-09-(27|28)$/.test(mapping.verifiedAt))).toBe(true);
   });
 
   it("keeps an English card from an unmapped set visible as a candidate but excludes it", () => {
@@ -80,7 +93,7 @@ describe("TCGplayer Mass Entry export", () => {
     expect(exported.warnings).toContain("1 Position(en) haben keinen geprüften TCGplayer-Set-Code und wurden ausgeschlossen.");
   });
 
-  it("does not promote a mapped set to a verified printing without a card-level parser test", () => {
+  it("includes an English mapped-set candidate but keeps it review-required", () => {
     const item = missingItem({
       card: {
         ...missingItem().card,
@@ -92,12 +105,16 @@ describe("TCGplayer Mass Entry export", () => {
     });
     const exported = createTcgplayerMassEntryExport([item], TCGPLAYER_SET_MAPPINGS, TCGPLAYER_PRINTING_MAPPINGS);
 
-    expect(exported.text).toBe("");
+    expect(exported.text).toBe("2 Alakazam [BS] 001");
     expect(exported.matches[0]).toMatchObject({
       status: "candidate",
       setMapping: { tcgplayerSetCode: "BS" },
-      reason: "Der Set-Code ist geprüft, dieses konkrete Printing aber noch nicht im TCGplayer-Testset.",
+      reason: "Set-Code und Mass-Entry-Format sind geprüft; die konkrete Zuordnung muss in der TCGplayer-Vorschau bestätigt werden.",
     });
+    expect(exported.readyCount).toBe(1);
+    expect(exported.verifiedCount).toBe(0);
+    expect(exported.reviewRequiredCount).toBe(1);
+    expect(exported.excludedEntryIds).toEqual([]);
   });
 
   it("does not infer a TCGplayer name for an unverified German card", () => {
@@ -193,5 +210,10 @@ describe("TCGplayer Mass Entry export", () => {
 
     expect(exported.text).toBe("2 Bulbasaur [BS] 044/102\n1 Magikarp - 203/193 [PAL] 203/193");
     expect(exported.verifiedCount).toBe(2);
+  });
+
+  it("falls back to the generic Mass Entry page when a prefilled URL would be too long", () => {
+    const veryLongText = Array.from({ length: 300 }, (_, index) => `1 Test Card ${index} [BS] ${index}/999`).join("\n");
+    expect(createTcgplayerMassEntryUrl(veryLongText)).toBe(TCGPLAYER_MASS_ENTRY_URL);
   });
 });

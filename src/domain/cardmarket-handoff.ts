@@ -4,6 +4,7 @@ import { minimumConditionLabels } from "./purchase-preferences";
 import { printingLabels, selectedPrinting } from "./variant-selection";
 
 export const CARDMARKET_POKEMON_SINGLES_URL = "https://www.cardmarket.com/en/Pokemon/Products/Singles";
+export const CARDMARKET_POKEMON_SEARCH_URL = "https://www.cardmarket.com/en/Pokemon/Products/Search";
 export const CARDMARKET_POKEMON_WANTS_HELP_URL = "https://help.cardmarket.com/en/how-to-add-a-pkmn-decklist-to-wants";
 export const CARDMARKET_MAX_WANTS_POSITIONS = 150;
 
@@ -26,6 +27,14 @@ export interface CardmarketHandoffPart {
   positionCount: number;
   text: string;
   items: readonly MissingItem[];
+  searches: CardmarketSearchTarget[];
+}
+
+export interface CardmarketSearchTarget {
+  identityKey: string;
+  label: string;
+  details: string;
+  url: string;
 }
 
 export interface CardmarketHandoff {
@@ -57,6 +66,25 @@ function formatReferenceLine(item: MissingItem): string {
   ].join(" | ");
 }
 
+export function createCardmarketSearchUrl(item: MissingItem): string {
+  const url = new URL(CARDMARKET_POKEMON_SEARCH_URL);
+  url.searchParams.set("searchString", [
+    inline(item.card.name),
+    inline(item.card.setName),
+    inline(formatCollectorNumber(item.card.collectorNumber, item.card.collectorTotal)),
+  ].join(" "));
+  return url.toString();
+}
+
+function createSearchTarget(item: MissingItem): CardmarketSearchTarget {
+  return {
+    identityKey: item.identityKey,
+    label: `${item.quantity}× ${inline(item.card.name)}`,
+    details: `${inline(item.card.setName)} · Nr. ${inline(formatCollectorNumber(item.card.collectorNumber, item.card.collectorTotal))} · ${item.card.ref.language.toUpperCase()}`,
+    url: createCardmarketSearchUrl(item),
+  };
+}
+
 export function createCardmarketHandoff(items: readonly MissingItem[]): CardmarketHandoff {
   const parts: CardmarketHandoffPart[] = [];
 
@@ -67,6 +95,7 @@ export function createCardmarketHandoff(items: readonly MissingItem[]): Cardmark
       positionCount: partItems.length,
       text: partItems.map(formatReferenceLine).join("\n"),
       items: partItems,
+      searches: partItems.map(createSearchTarget),
     });
   }
 

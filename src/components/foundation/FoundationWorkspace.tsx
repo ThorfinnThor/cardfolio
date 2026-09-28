@@ -756,7 +756,7 @@ export function FoundationWorkspace() {
       if (!navigator.clipboard?.writeText) throw new Error("Clipboard API unavailable");
       await navigator.clipboard.writeText(exported.text);
       setTcgplayerCopyState("copied");
-      setMessage(`${exported.verifiedCount} geprüfte TCGplayer-Positionen wurden kopiert.`);
+      setMessage(`${exported.readyCount} TCGplayer-Positionen wurden kopiert; ${exported.reviewRequiredCount} Positionen benötigen eine Prüfung.`);
     } catch {
       setTcgplayerCopyState("error");
       setMessage("TCGplayer-Liste konnte nicht kopiert werden. Nutze die sichtbare Vorschau oder TXT-Datei.");
@@ -772,7 +772,7 @@ export function FoundationWorkspace() {
     link.download = `cardfolio-tcgplayer-${new Date().toISOString().slice(0, 10)}.txt`;
     link.click();
     URL.revokeObjectURL(url);
-    setMessage(`${exported.verifiedCount} geprüfte TCGplayer-Positionen wurden als TXT vorbereitet.`);
+    setMessage(`${exported.readyCount} TCGplayer-Positionen wurden als TXT vorbereitet; ${exported.reviewRequiredCount} Positionen benötigen eine Prüfung.`);
   }
 
   async function copyCardmarketHandoff(part: CardmarketHandoffPart) {

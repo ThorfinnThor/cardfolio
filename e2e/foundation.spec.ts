@@ -479,6 +479,23 @@ test("finds and displays an exact full collector number", async ({ page }) => {
 
   const card = page.getByRole("article", { name: "Charizard, Slot 1" });
   await expect(card).toContainText("Grundset · 4/102");
+
+  await page.getByRole("button", { name: /Fehlende Karten \(1\)/ }).click();
+  const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
+  await missingCards.getByRole("button", { name: "TCGplayer" }).click();
+  await expect(missingCards.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue(
+    "1 Charizard [BS] 004/102",
+  );
+  const tcgplayerLink = missingCards.getByRole("link", { name: "Liste bei TCGplayer öffnen" });
+  const tcgplayerUrl = new URL(await tcgplayerLink.getAttribute("href") ?? "");
+  expect(tcgplayerUrl.searchParams.get("c")).toBe("1 Charizard [BS] 004/102");
+  expect(tcgplayerUrl.searchParams.get("productline")).toBe("Pokemon");
+
+  await missingCards.getByRole("button", { name: "Cardmarket" }).click();
+  await missingCards.getByText("Einzelsuchen für Teil 1 anzeigen (1)").click();
+  const cardmarketLink = missingCards.getByRole("link", { name: "Karte suchen" });
+  const cardmarketUrl = new URL(await cardmarketLink.getAttribute("href") ?? "");
+  expect(cardmarketUrl.searchParams.get("searchString")).toBe("Charizard Grundset 4/102");
 });
 
 test("exports the verified Tornupto and Blaine's Charizard identities to TCGplayer", async ({ page }) => {
@@ -494,7 +511,7 @@ test("exports the verified Tornupto and Blaine's Charizard identities to TCGplay
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   await missingCards.getByRole("button", { name: "TCGplayer" }).click();
 
-  await expect(missingCards.getByText("2 geprüft · 0 manuell prüfen")).toBeVisible();
+  await expect(missingCards.getByText("2 übergabebereit · 2 druckgeprüft · 0 prüfen")).toBeVisible();
   await expect(missingCards.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue(
     "1 Typhlosion (17) [N1] 017/111\n1 Blaine's Charizard [G2] 002/132",
   );

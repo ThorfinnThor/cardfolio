@@ -14,6 +14,15 @@ export const TCGPLAYER_SET_MAPPINGS = [
     verifiedAt: VERIFIED_AT,
   },
   {
+    tcgdexSetId: "base1",
+    tcgdexSetName: "Grundset",
+    language: "de",
+    tcgplayerSetCode: "BS",
+    tcgplayerSetName: "Base Set",
+    source: "https://www.tcgplayer.com/product/42382/pokemon-base-set-charizard",
+    verifiedAt: "2026-09-28",
+  },
+  {
     tcgdexSetId: "base2",
     tcgdexSetName: "Jungle",
     language: "en",
@@ -48,6 +57,15 @@ export const TCGPLAYER_SET_MAPPINGS = [
     tcgplayerSetName: "Gym Challenge",
     source: "https://www.tcgplayer.com/product/83861/pokemon-gym-challenge-blaine-s-charizard",
     verifiedAt: VERIFIED_AT,
+  },
+  {
+    tcgdexSetId: "ex14",
+    tcgdexSetName: "EX Crystal Guardians",
+    language: "en",
+    tcgplayerSetCode: "CG",
+    tcgplayerSetName: "EX Crystal Guardians",
+    source: "https://www.tcgplayer.com/search/pokemon/product?q=Charizard+%CE%B4+Crystal+Guardians&view=grid",
+    verifiedAt: "2026-09-28",
   },
   {
     tcgdexSetId: "swsh1",

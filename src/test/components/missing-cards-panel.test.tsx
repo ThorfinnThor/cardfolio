@@ -81,7 +81,7 @@ describe("MissingCardsPanel", () => {
     expect(screen.getByRole("button", { name: "CSV" })).toBeEnabled();
   });
 
-  it("previews only verified TCGplayer lines and keeps excluded candidates visible", () => {
+  it("opens a prefilled TCGplayer handoff and keeps excluded candidates visible", () => {
     const onTcgplayerCopy = vi.fn();
     const onTcgplayerTextExport = vi.fn();
     render(
@@ -98,7 +98,9 @@ describe("MissingCardsPanel", () => {
     expect(screen.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue("1 Bulbasaur [BS] 044/102");
     expect(screen.getByText(/2× Pikachu · Wizards Black Star Promos · 001/)).toBeInTheDocument();
     expect(screen.getByText(/Kandidat: Für dieses TCGdex-Set/)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /TCGplayer öffnen/ })).toHaveAttribute("rel", "noopener noreferrer");
+    const handoffLink = screen.getByRole("link", { name: /Liste bei TCGplayer öffnen/ });
+    expect(handoffLink).toHaveAttribute("rel", "noopener noreferrer");
+    expect(new URL(handoffLink.getAttribute("href") ?? "").searchParams.get("c")).toBe("1 Bulbasaur [BS] 044/102");
 
     fireEvent.click(screen.getByRole("button", { name: "TCGplayer kopieren" }));
     fireEvent.click(screen.getByRole("button", { name: "TCGplayer TXT" }));
@@ -128,6 +130,10 @@ describe("MissingCardsPanel", () => {
     );
     expect(screen.getByRole("link", { name: /Auf Cardmarket suchen/ })).toHaveAttribute("rel", "noopener noreferrer");
     expect(screen.getByRole("link", { name: "Offizielles Importformat" })).toHaveAttribute("rel", "noopener noreferrer");
+    fireEvent.click(screen.getByText("Einzelsuchen für Teil 1 anzeigen (2)"));
+    const searchLinks = screen.getAllByRole("link", { name: /Karte suchen/ });
+    expect(searchLinks).toHaveLength(2);
+    expect(new URL(searchLinks[0].getAttribute("href") ?? "").searchParams.get("searchString")).toBe("Pikachu Wizards Black Star Promos 001");
 
     fireEvent.click(screen.getByRole("button", { name: "Prüfliste kopieren" }));
     fireEvent.click(screen.getByRole("button", { name: "Prüfliste TXT" }));

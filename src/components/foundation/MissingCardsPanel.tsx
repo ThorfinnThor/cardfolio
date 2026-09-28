@@ -130,19 +130,29 @@ export function MissingCardsPanel({
             <div>
               <p className={styles.eyebrow}>Geprüfte Marketplace-Übergabe</p>
               <h3 id="tcgplayer-export-heading">TCGplayer Mass Entry</h3>
-              <p>{tcgplayerExport.verifiedCount} geprüft · {tcgplayerExport.reviewRequiredCount} manuell prüfen</p>
+              <p>{tcgplayerExport.readyCount} übergabebereit · {tcgplayerExport.verifiedCount} druckgeprüft · {tcgplayerExport.reviewRequiredCount} prüfen</p>
             </div>
-            <a href={tcgplayerExport.massEntryUrl} target="_blank" rel="noopener noreferrer">
-              TCGplayer öffnen <ExternalLink aria-hidden="true" size={15} />
-            </a>
+            {tcgplayerExport.text ? (
+              <a href={tcgplayerExport.massEntryUrl} target="_blank" rel="noopener noreferrer">
+                {tcgplayerExport.massEntryPrefilled ? "Liste bei TCGplayer öffnen" : "TCGplayer öffnen"} <ExternalLink aria-hidden="true" size={15} />
+              </a>
+            ) : <span className={styles.marketplaceUnavailable}>Keine sichere Übergabe verfügbar</span>}
           </div>
 
+          {tcgplayerExport.text ? (
+            <ol className={styles.handoffSteps} aria-label="TCGplayer-Übergabeschritte">
+              <li>{tcgplayerExport.massEntryPrefilled ? "Die übergabebereiten Positionen werden in Mass Entry vorausgefüllt." : "Kopiere den Text und füge ihn in Mass Entry ein."}</li>
+              <li>Prüfe dort Kartenname, Set, Nummer, Sprache, Printing und Zustand.</li>
+              <li>Erst anschließend lässt du TCGplayer externe Angebote in den Warenkorb legen.</li>
+            </ol>
+          ) : null}
+
           <label className={styles.massEntryPreview}>
-            <span>Mass-Entry-Text · nur exakt geprüfte TCGplayer-Printings</span>
+            <span>Mass-Entry-Text · druckgeprüfte Positionen und Prüfkandidaten aus geprüften Sets</span>
             <textarea
               aria-label="TCGplayer Mass-Entry-Vorschau"
               readOnly
-              rows={Math.max(3, Math.min(tcgplayerExport.verifiedCount, 8))}
+              rows={Math.max(3, Math.min(tcgplayerExport.readyCount, 8))}
               value={tcgplayerExport.text}
               placeholder="Für den aktuellen Filter ist keine geprüfte TCGplayer-Zeile verfügbar."
             />
@@ -160,11 +170,25 @@ export function MissingCardsPanel({
           {tcgplayerCopyState === "error" ? <p className={styles.error} role="status">Kopieren wurde nicht erlaubt. Der Text bleibt oben markierbar oder kann als TXT geladen werden.</p> : null}
           {tcgplayerExport.warnings.map((warning) => <p className={styles.warning} role="note" key={warning}>{warning}</p>)}
 
-          {tcgplayerExport.reviewRequiredCount > 0 ? (
+          {tcgplayerExport.matches.some((match) => match.status === "candidate" && match.line) ? (
             <div className={styles.reviewList}>
-              <strong>Vom spezifischen Export ausgeschlossen</strong>
+              <strong>In der TCGplayer-Vorschau bestätigen</strong>
               <ul>
-                {tcgplayerExport.matches.filter((match) => match.status !== "verified-printing").map((match) => (
+                {tcgplayerExport.matches.filter((match) => match.status === "candidate" && match.line).map((match) => (
+                  <li key={match.identityKey}>
+                    <span>{match.quantity}× {match.cardName} · {match.setName} · {match.collectorNumber}</span>
+                    <small>Prüfkandidat: {match.reason}</small>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+
+          {tcgplayerExport.matches.some((match) => !match.line) ? (
+            <div className={styles.reviewList}>
+              <strong>Von der Übergabe ausgeschlossen</strong>
+              <ul>
+                {tcgplayerExport.matches.filter((match) => !match.line).map((match) => (
                   <li key={match.identityKey}>
                     <span>{match.quantity}× {match.cardName} · {match.setName} · {match.collectorNumber}</span>
                     <small>{match.status === "candidate" ? "Kandidat" : "Nicht zugeordnet"}: {match.reason}</small>
@@ -190,6 +214,18 @@ export function MissingCardsPanel({
           </div>
 
           {cardmarketHandoff.warnings.map((warning) => <p className={styles.warning} role="note" key={warning}>{warning}</p>)}
+
+          <details className={styles.marketplaceSearches}>
+            <summary>Einzelsuchen für Teil {activeCardmarketPart.index} anzeigen ({activeCardmarketPart.searches.length})</summary>
+            <ul>
+              {activeCardmarketPart.searches.map((search) => (
+                <li key={search.identityKey}>
+                  <span><strong>{search.label}</strong><small>{search.details}</small></span>
+                  <a href={search.url} target="_blank" rel="noopener noreferrer">Karte suchen <ExternalLink aria-hidden="true" size={14} /></a>
+                </li>
+              ))}
+            </ul>
+          </details>
 
           <div className={styles.partControls}>
             <label htmlFor="cardmarket-part">Listenteil</label>

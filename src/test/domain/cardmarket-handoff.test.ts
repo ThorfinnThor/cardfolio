@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { CARDMARKET_MAX_WANTS_POSITIONS, createCardmarketHandoff } from "@/domain/cardmarket-handoff";
+import { CARDMARKET_MAX_WANTS_POSITIONS, CARDMARKET_POKEMON_SEARCH_URL, createCardmarketHandoff, createCardmarketSearchUrl } from "@/domain/cardmarket-handoff";
 import type { MissingItem } from "@/domain/types";
 
 function missingItem(index = 1, overrides: Partial<MissingItem> = {}): MissingItem {
@@ -32,6 +32,11 @@ describe("Cardmarket handoff", () => {
     expect(exported.positionCount).toBe(1);
     expect(exported.totalQuantity).toBe(2);
     expect(exported.reviewRequiredCount).toBe(1);
+    expect(exported.parts[0].searches).toHaveLength(1);
+    expect(exported.parts[0].searches[0]).toMatchObject({
+      label: "2× Bulbasaur",
+      details: "Base Set · Nr. 001 · EN",
+    });
     expect(exported.warnings.join(" ")).toMatch(/andere Ausgabe oder Illustration/);
     expect(exported.warnings.join(" ")).toMatch(/kein automatisch zuordenbarer Pokémon-Decklistenimport/);
   });
@@ -66,5 +71,12 @@ describe("Cardmarket handoff", () => {
 
   it("returns no parts or warnings for an empty handoff", () => {
     expect(createCardmarketHandoff([])).toMatchObject({ parts: [], warnings: [], positionCount: 0, reviewRequiredCount: 0 });
+  });
+
+  it("creates a concrete Cardmarket search without losing set or collector number", () => {
+    const url = new URL(createCardmarketSearchUrl(missingItem()));
+
+    expect(`${url.origin}${url.pathname}`).toBe(CARDMARKET_POKEMON_SEARCH_URL);
+    expect(url.searchParams.get("searchString")).toBe("Bulbasaur Base Set 001");
   });
 });

@@ -5,12 +5,45 @@ const VERIFIED_AT = "2026-09-27";
 
 export const TCGPLAYER_PRINTING_MAPPINGS = [
   {
+    tcgdexCardId: "base1-4",
+    language: "en",
+    tcgplayerProductName: "Charizard",
+    tcgplayerCollectorNumber: "004/102",
+    source: "https://www.tcgplayer.com/product/42382/pokemon-base-set-charizard",
+    verifiedAt: "2026-09-28",
+  },
+  {
+    tcgdexCardId: "base1-4",
+    language: "de",
+    tcgplayerProductName: "Charizard",
+    tcgplayerCollectorNumber: "004/102",
+    source: "https://www.tcgplayer.com/product/42382/pokemon-base-set-charizard",
+    identitySource: "https://api.tcgdex.net/v2/en/cards/base1-4",
+    verifiedAt: "2026-09-28",
+  },
+  {
+    tcgdexCardId: "base1-30",
+    language: "en",
+    tcgplayerProductName: "Ivysaur",
+    tcgplayerCollectorNumber: "030/102",
+    source: "https://www.tcgplayer.com/search/pokemon/product?q=Ivysaur+Base+Set+30",
+    verifiedAt: "2026-09-28",
+  },
+  {
     tcgdexCardId: "base1-44",
     language: "en",
     tcgplayerProductName: "Bulbasaur",
     tcgplayerCollectorNumber: "044/102",
     source: OFFICIAL_MASS_ENTRY_SOURCE,
     verifiedAt: VERIFIED_AT,
+  },
+  {
+    tcgdexCardId: "base1-58",
+    language: "en",
+    tcgplayerProductName: "Pikachu",
+    tcgplayerCollectorNumber: "058/102",
+    source: "https://www.tcgplayer.com/product/42402",
+    verifiedAt: "2026-09-28",
   },
   {
     tcgdexCardId: "neo1-17",
@@ -29,6 +62,14 @@ export const TCGPLAYER_PRINTING_MAPPINGS = [
     source: "https://www.tcgplayer.com/product/83861/pokemon-gym-challenge-blaine-s-charizard",
     identitySource: "https://api.tcgdex.net/v2/en/cards/gym2-2",
     verifiedAt: VERIFIED_AT,
+  },
+  {
+    tcgdexCardId: "ex14-4",
+    language: "en",
+    tcgplayerProductName: "Charizard (Delta Species)",
+    tcgplayerCollectorNumber: "004/100",
+    source: "https://www.tcgplayer.com/search/pokemon/product?q=Charizard+%CE%B4+Crystal+Guardians&view=grid",
+    verifiedAt: "2026-09-28",
   },
   {
     tcgdexCardId: "sv02-12",
