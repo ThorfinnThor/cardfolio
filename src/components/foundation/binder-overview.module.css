@@ -28,6 +28,7 @@
 .createForm { display: flex; gap: 8px; min-width: min(100%, 390px); }
 .createForm input { min-width: 0; flex: 1; height: 40px; padding: 0 11px; border: 1px solid #cdd9dd; border-radius: 6px; background: #fff; color: #17212b; font-size: 12px; }
 .createForm input:focus { border-color: #155363; outline: 3px solid rgb(21 83 99 / 16%); }
+.orderHint { margin: 0 0 9px; color: #6f7e85; font-size: 10px; text-align: right; }
 .binderGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
 .binderCard { position: relative; min-width: 0; border: 1px solid #dee5e8; border-radius: 8px; background: #fff; box-shadow: 0 1px 2px rgb(21 42 51 / 4%); }
 .binderCard:hover, .binderCardActive { border-color: #9bbfc6; box-shadow: 0 7px 20px rgb(21 83 99 / 10%); }
@@ -35,14 +36,17 @@
 .binderCardMain { display: grid; width: 100%; gap: 8px; padding: 16px 16px 15px; border: 0; background: transparent; color: #17212b; text-align: left; cursor: pointer; }
 .binderCardTopline { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px; }
 .binderMark { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 7px; background: #e7f1f3; color: #155363; }
-.binderCardMenu { color: #8a9aa1; }
 .binderCardMain > strong { overflow: hidden; font-size: 16px; text-overflow: ellipsis; white-space: nowrap; }
 .binderCardMeta { overflow: hidden; color: #52616b; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
 .cardProgress { height: 5px; overflow: hidden; border-radius: 99px; background: #e7f1f3; }
 .cardProgress span { display: block; height: 100%; border-radius: inherit; background: #155363; }
 .binderCardStats { display: flex; justify-content: space-between; color: #52616b; font-size: 10px; }
-.deleteButton { position: absolute; right: 11px; bottom: 10px; display: inline-grid; width: 29px; height: 29px; place-items: center; border: 1px solid transparent; border-radius: 5px; background: transparent; color: #8a9aa1; cursor: pointer; }
-.deleteButton:hover { border-color: #f0c1bd; background: #fff5f4; color: #b42318; }
+.binderCardActions { display: flex; justify-content: flex-end; gap: 4px; padding: 8px 11px; border-top: 1px solid #edf1f2; }
+.binderCardActions button { display: inline-grid; width: 32px; height: 32px; place-items: center; border: 1px solid transparent; border-radius: 5px; background: transparent; color: #63747c; cursor: pointer; }
+.binderCardActions button:hover:not(:disabled) { border-color: #bad0d5; background: #eef5f6; color: #155363; }
+.binderCardActions button:disabled { cursor: not-allowed; opacity: .32; }
+.binderCardActions .deleteButton { color: #8a5b58; }
+.binderCardActions .deleteButton:hover:not(:disabled) { border-color: #f0c1bd; background: #fff5f4; color: #b42318; }
 .emptyState { display: grid; justify-items: center; gap: 10px; padding: 52px 22px; border: 1px dashed #b8cbd0; border-radius: 8px; background: #f5f7f8; text-align: center; }
 .emptyIcon { display: grid; width: 56px; height: 56px; place-items: center; border-radius: 50%; background: #e7f1f3; color: #155363; }
 .emptyState h2 { margin: 1px 0 0; font-size: 18px; }
@@ -67,5 +71,5 @@
   .createPanel { align-items: stretch; flex-direction: column; gap: 11px; padding: 14px; }
   .createForm { min-width: 0; }
   .binderGrid { grid-template-columns: 1fr; }
+  .binderCardActions button { width: 44px; height: 44px; }
 }
-

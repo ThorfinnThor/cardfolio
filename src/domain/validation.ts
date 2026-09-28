@@ -5,6 +5,7 @@ import {
   BINDER_NAME_MAX_LENGTH,
   MAX_BINDER_PAGES,
   PAGE_NOTE_MAX_LENGTH,
+  PAGE_TITLE_MAX_LENGTH,
 } from "./binder-actions";
 import type { Binder, LocalBackupV1 } from "./types";
 
@@ -82,6 +83,7 @@ export const binderSchema = z
           id: uuidSchema,
           slots: z.array(plannedCardSchema.nullable()).max(360),
           note: z.string().max(PAGE_NOTE_MAX_LENGTH),
+          title: z.string().max(PAGE_TITLE_MAX_LENGTH).optional(),
         }),
       )
       .min(1)

@@ -15,6 +15,8 @@ function props(overrides: Partial<ComponentProps<typeof BinderOverview>> = {}) {
     onNameChange: vi.fn(),
     onCreate: vi.fn((event) => event.preventDefault()),
     onSelect: vi.fn(),
+    onDuplicate: vi.fn(),
+    onMove: vi.fn(),
     onRequestDelete: vi.fn(),
     onExport: vi.fn(),
     onImport: vi.fn(),
@@ -29,6 +31,21 @@ describe("BinderOverview", () => {
     expect(screen.getByRole("heading", { name: "Noch kein Binder" })).toBeInTheDocument();
     expect(screen.getByText("Lege deinen ersten lokalen Binder an. Deine Daten werden nur in diesem Browser gespeichert.")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Ersten Binder erstellen" })).toBeInTheDocument();
+  });
+
+  it("offers persistent binder ordering and duplication controls", () => {
+    const first = createBinder("Base Set");
+    const second = createBinder("Neo Genesis");
+    const onDuplicate = vi.fn();
+    const onMove = vi.fn();
+    render(<BinderOverview {...props({ binders: [first, second], onDuplicate, onMove })} />);
+
+    expect(screen.getByRole("button", { name: "Base Set nach vorne verschieben" })).toBeDisabled();
+    fireEvent.click(screen.getByRole("button", { name: "Base Set nach hinten verschieben" }));
+    fireEvent.click(screen.getByRole("button", { name: "Neo Genesis duplizieren" }));
+
+    expect(onMove).toHaveBeenCalledWith(first.id, "backward");
+    expect(onDuplicate).toHaveBeenCalledWith(second);
   });
 
   it("shows binder progress and sends delete requests to the parent", () => {

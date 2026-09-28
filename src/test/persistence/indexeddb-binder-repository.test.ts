@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { createBinder, createPlannedCard, placeCard } from "@/domain/binder-actions";
+import { createBinder, createPlannedCard, placeCard, setPageTitle } from "@/domain/binder-actions";
 import type { CardSnapshot } from "@/domain/types";
 import { RevisionConflictError } from "@/data/persistence/binder-repository";
 import { IndexedDBBinderRepository } from "@/data/persistence/indexeddb-binder-repository";
@@ -21,10 +21,14 @@ describe("IndexedDBBinderRepository", () => {
   it("creates, revisions, exports and imports a complete binder atomically", async () => {
     const repository = new IndexedDBBinderRepository();
     const empty = createBinder("Roundtrip");
-    const binder = placeCard(
-      empty,
-      { pageId: empty.pages[0].id, slotIndex: 0 },
-      createPlannedCard(card.key),
+    const binder = setPageTitle(
+      placeCard(
+        empty,
+        { pageId: empty.pages[0].id, slotIndex: 0 },
+        createPlannedCard(card.key),
+      ),
+      empty.pages[0].id,
+      "Showcase",
     );
     await repository.create(binder, [card]);
     const secondTabRepository = new IndexedDBBinderRepository();
@@ -39,6 +43,7 @@ describe("IndexedDBBinderRepository", () => {
 
     const backup = await repository.exportBackup([binder.id]);
     expect(backup.binders[0].description).toBe("Saved");
+    expect(backup.binders[0].pages[0].title).toBe("Showcase");
     expect(backup.cards).toEqual([card]);
 
     await repository.importBackup(backup, "import-as-new");
@@ -49,6 +54,8 @@ describe("IndexedDBBinderRepository", () => {
 
     const imported = binders.find((item) => item.name === "Roundtrip (Import)");
     if (!imported) throw new Error("Imported binder fixture is missing.");
+    await repository.saveOrder([binder.id, imported.id]);
+    expect((await repository.list()).map((item) => item.name)).toEqual(["Roundtrip", "Roundtrip (Import)"]);
     await repository.remove(imported.id, imported.revision);
     expect((await repository.list()).map((item) => item.name)).toEqual(["Roundtrip"]);
   });

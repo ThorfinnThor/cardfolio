@@ -325,6 +325,43 @@ test("renames binders and safely duplicates and deletes pages", async ({ page })
   await expect(page.getByRole("article", { name: "Bulbasaur, Slot 1" })).toBeVisible();
 });
 
+test("names and reorders pages, then duplicates and sorts binders", async ({ page }) => {
+  await page.goto("/");
+  await page.getByLabel("Bindername").fill("Sortierbasis");
+  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+
+  await page.getByRole("button", { name: "+ Seite" }).click();
+  await page.getByRole("button", { name: "Seite 2 benennen" }).click();
+  const pageNameDialog = page.getByRole("dialog", { name: "Seite 2 benennen" });
+  const pageTitle = pageNameDialog.getByRole("textbox", { name: "Seitentitel" });
+  await expect(pageTitle).toHaveAttribute("maxlength", "80");
+  await pageTitle.fill("Showcase");
+  await pageNameDialog.getByRole("button", { name: "Titel speichern" }).click();
+  await expect(page.getByRole("heading", { name: "Showcase", exact: true }).first()).toBeVisible();
+
+  await page.getByRole("button", { name: "Seite 2 nach vorne verschieben" }).click();
+  await expect(page.getByText("1 / 2", { exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Showcase", exact: true }).first()).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole("heading", { name: "Showcase", exact: true }).first()).toBeVisible();
+
+  await page.getByRole("button", { name: "Meine Binder", exact: true }).first().click();
+  await page.getByRole("button", { name: "Sortierbasis duplizieren" }).click();
+  await expect(page.getByText("Sortierbasis (Kopie)", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Sortierbasis (Kopie) nach hinten verschieben" }).click();
+
+  await page.reload();
+  await page.getByRole("button", { name: "Meine Binder", exact: true }).first().click();
+  const binderCards = page.getByRole("article");
+  await expect(binderCards).toHaveCount(2);
+  await expect(binderCards.nth(0)).toContainText("Sortierbasis");
+  await expect(binderCards.nth(1)).toContainText("Sortierbasis (Kopie)");
+
+  await binderCards.nth(1).getByRole("button").first().click();
+  await expect(page.getByRole("heading", { name: "Showcase", exact: true }).first()).toBeVisible();
+  await expect(page.getByText("1 / 2", { exact: true })).toBeVisible();
+});
+
 test("detects a binder update from another tab and reloads the current revision", async ({
   context,
   page,

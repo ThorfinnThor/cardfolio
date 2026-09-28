@@ -3,7 +3,7 @@
 /* eslint-disable @next/next/no-img-element -- TCGdex images remain external references and are never proxied. */
 
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import { Archive, BookOpen, CircleHelp, Copy, DatabaseBackup, ListFilter, Menu, Pencil, Search, Settings2, Trash2, X } from "lucide-react";
+import { Archive, ArrowLeft, ArrowRight, BookOpen, CircleHelp, Copy, DatabaseBackup, ListFilter, Menu, Pencil, Search, Settings2, Trash2, X } from "lucide-react";
 import Link from "next/link";
 import { type ChangeEvent, type FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -15,9 +15,13 @@ import {
   createBinder,
   createPlannedCard,
   deletePage,
+  duplicateBinder,
   duplicatePage,
+  MAX_BINDERS,
   MAX_BINDER_PAGES,
+  movePage,
   moveOrSwapCard,
+  PAGE_TITLE_MAX_LENGTH,
   placeCard,
   previewBinderLayoutChange,
   removeCard,
@@ -28,6 +32,7 @@ import {
   setCardVariant,
   setOwned,
   setPageNote,
+  setPageTitle,
   SUPPORTED_BINDER_LAYOUTS,
   type BinderLayoutPreview,
   type SlotLocation,
@@ -62,9 +67,12 @@ type CopyState = "idle" | "copied" | "error";
 type SearchLanguage = "all" | "de" | "en";
 type SearchFilterOption = { id: string; label: string };
 type ImportReport = { binderCount: number; cardCount: number; plannedCount: number; names: string[] };
-type BinderSyncMessage = { type: "binder-changed"; binderId: string; revision: number; deleted?: boolean };
+type BinderSyncMessage =
+  | { type: "binder-changed"; binderId: string; revision: number; deleted?: boolean }
+  | { type: "binder-order-changed" };
 type LayoutChangeRequest = { binderId: string; layout: SupportedBinderLayout; preview: BinderLayoutPreview };
 type BinderRenameRequest = { binderId: string; name: string };
+type PageRenameRequest = { binderId: string; pageId: string; pageIndex: number; title: string };
 type PageDeleteRequest = {
   binderId: string;
   pageId: string;
@@ -255,6 +263,7 @@ export function FoundationWorkspace() {
   const [message, setMessage] = useState<string>();
   const [binderToDelete, setBinderToDelete] = useState<Binder>();
   const [binderRename, setBinderRename] = useState<BinderRenameRequest>();
+  const [pageRename, setPageRename] = useState<PageRenameRequest>();
   const [pageToDelete, setPageToDelete] = useState<PageDeleteRequest>();
   const [cardToRemove, setCardToRemove] = useState<{ location: SlotLocation; label: string }>();
   const [layoutChange, setLayoutChange] = useState<LayoutChangeRequest>();
@@ -271,6 +280,7 @@ export function FoundationWorkspace() {
   const activeBinder = binders.find((binder) => binder.id === activeId);
   const activePage = activeBinder?.pages[Math.min(activePageIndex, Math.max(activeBinder.pages.length - 1, 0))];
   const visiblePageIndex = activeBinder && activePage ? activeBinder.pages.indexOf(activePage) : 0;
+  const activePageTitle = activePage?.title || `Seite ${visiblePageIndex + 1}`;
 
   useEffect(() => {
     repository
@@ -327,6 +337,13 @@ export function FoundationWorkspace() {
     syncChannelRef.current = channel;
     channel.onmessage = (event: MessageEvent<BinderSyncMessage>) => {
       const update = event.data;
+      if (update.type === "binder-order-changed") {
+        void repository.list().then((items) => {
+          bindersRef.current = items;
+          setBinders(items);
+        }).catch(() => undefined);
+        return;
+      }
       if (update.type !== "binder-changed" || update.binderId !== activeId) return;
       if (!update.deleted && update.revision <= (activeBinder?.revision ?? -1)) return;
       setStorageConflict(true);
@@ -339,7 +356,7 @@ export function FoundationWorkspace() {
       channel.close();
       if (syncChannelRef.current === channel) syncChannelRef.current = undefined;
     };
-  }, [activeBinder?.revision, activeId]);
+  }, [activeBinder?.revision, activeId, repository]);
 
   const parsedSearch = useMemo(() => parseCatalogSearch(debouncedSearch), [debouncedSearch]);
   const seriesOptions = useMemo(() => searchLanguage === "all"
@@ -428,6 +445,10 @@ export function FoundationWorkspace() {
       revision: binder.revision,
       deleted,
     } satisfies BinderSyncMessage);
+  }
+
+  function publishBinderOrderChange() {
+    syncChannelRef.current?.postMessage({ type: "binder-order-changed" } satisfies BinderSyncMessage);
   }
 
   function replaceBinderInMemory(saved: Binder) {
@@ -524,6 +545,7 @@ export function FoundationWorkspace() {
       setStorageStatus("saving");
       await repository.create(binder, []);
       publishBinderChange(binder);
+      publishBinderOrderChange();
       const nextBinders = [binder, ...bindersRef.current];
       bindersRef.current = nextBinders;
       setBinders(nextBinders);
@@ -545,6 +567,7 @@ export function FoundationWorkspace() {
       setStorageStatus("saving");
       await repository.remove(binderToDelete.id, binderToDelete.revision);
       publishBinderChange(binderToDelete, true);
+      publishBinderOrderChange();
       const remaining = await repository.list();
       bindersRef.current = remaining;
       setBinders(remaining);
@@ -559,6 +582,51 @@ export function FoundationWorkspace() {
       setMessage(`„${binderToDelete.name}“ wurde lokal gelöscht.`);
     } catch (error) {
       handleStorageError(error, "Binder konnte nicht gelöscht werden.");
+    }
+  }
+
+  async function duplicateExistingBinder(source: Binder) {
+    if (bindersRef.current.length >= MAX_BINDERS) {
+      setMessage(`Es können höchstens ${MAX_BINDERS} Binder gespeichert werden.`);
+      return;
+    }
+    try {
+      setStorageStatus("saving");
+      const copy = duplicateBinder(source);
+      await repository.create(copy, []);
+      publishBinderChange(copy);
+      publishBinderOrderChange();
+      const items = await repository.list();
+      bindersRef.current = items;
+      setBinders(items);
+      setActiveId(copy.id);
+      setActivePageIndex(0);
+      setStorageStatus("saved");
+      setMessage(`„${source.name}“ wurde als „${copy.name}“ dupliziert.`);
+    } catch (error) {
+      handleStorageError(error, "Binder konnte nicht dupliziert werden.");
+    }
+  }
+
+  async function moveBinderInOverview(binderId: string, direction: "forward" | "backward") {
+    const currentIndex = bindersRef.current.findIndex((binder) => binder.id === binderId);
+    const targetIndex = direction === "forward" ? currentIndex - 1 : currentIndex + 1;
+    if (currentIndex < 0 || targetIndex < 0 || targetIndex >= bindersRef.current.length) return;
+    const next = [...bindersRef.current];
+    [next[currentIndex], next[targetIndex]] = [next[targetIndex], next[currentIndex]];
+    try {
+      setStorageStatus("saving");
+      await repository.saveOrder(next.map((binder) => binder.id));
+      bindersRef.current = next;
+      setBinders(next);
+      publishBinderOrderChange();
+      setStorageStatus("saved");
+      setMessage("Binderreihenfolge wurde lokal gespeichert.");
+    } catch (error) {
+      setStorageStatus("error");
+      setMessage(error instanceof RevisionConflictError
+        ? "Die Binderliste wurde in einem anderen Tab geändert. Lade die Übersicht neu und versuche es erneut."
+        : "Binderreihenfolge konnte nicht gespeichert werden.");
     }
   }
 
@@ -592,6 +660,22 @@ export function FoundationWorkspace() {
       setMessage(`Seite ${sourcePageIndex + 1} wurde als Seite ${sourcePageIndex + 2} dupliziert.`);
     } catch (error) {
       handleStorageError(error, "Seite konnte nicht dupliziert werden.");
+    }
+  }
+
+  async function moveActivePage(direction: "forward" | "backward") {
+    if (!activeBinder || !activePage) return;
+    const sourceIndex = visiblePageIndex;
+    const targetIndex = direction === "forward" ? sourceIndex - 1 : sourceIndex + 1;
+    if (targetIndex < 0 || targetIndex >= activeBinder.pages.length) return;
+    try {
+      setStorageStatus("saving");
+      await persistBinderChange(activeBinder.id, (binder) => movePage(binder, activePage.id, direction));
+      setActivePageIndex(targetIndex);
+      setStorageStatus("saved");
+      setMessage(`Seite ${sourceIndex + 1} wurde an Position ${targetIndex + 1} verschoben.`);
+    } catch (error) {
+      handleStorageError(error, "Seite konnte nicht verschoben werden.");
     }
   }
 
@@ -644,6 +728,26 @@ export function FoundationWorkspace() {
     }
   }
 
+  async function savePageRename(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!pageRename) return;
+    try {
+      setStorageStatus("saving");
+      const saved = await persistBinderChange(
+        pageRename.binderId,
+        (binder) => setPageTitle(binder, pageRename.pageId, pageRename.title),
+      );
+      const title = saved.pages.find((page) => page.id === pageRename.pageId)?.title;
+      setPageRename(undefined);
+      setStorageStatus("saved");
+      setMessage(title
+        ? `Seite ${pageRename.pageIndex + 1} heißt jetzt „${title}“.`
+        : `Der Seitentitel von Seite ${pageRename.pageIndex + 1} wurde entfernt.`);
+    } catch (error) {
+      handleStorageError(error, "Seitentitel konnte nicht gespeichert werden.");
+    }
+  }
+
   function requestLayoutChange(layoutKey: string) {
     if (!activeBinder) return;
     const layout = SUPPORTED_BINDER_LAYOUTS.find((candidate) => candidate.key === layoutKey);
@@ -690,6 +794,7 @@ export function FoundationWorkspace() {
     setLayoutChange(undefined);
     setVariantEdit(undefined);
     setBinderRename(undefined);
+    setPageRename(undefined);
     setPageToDelete(undefined);
     setStorageConflict(false);
     setBinderManagerOpen(false);
@@ -960,6 +1065,7 @@ export function FoundationWorkspace() {
       const backup = validateBackup(JSON.parse(await file.text()));
       setStorageStatus("saving");
       await repository.importBackup(backup, "import-as-new");
+      publishBinderOrderChange();
       const items = await repository.list();
       bindersRef.current = items;
       setBinders(items);
@@ -1186,6 +1292,8 @@ export function FoundationWorkspace() {
           onNameChange={(event) => setName(event.target.value)}
           onCreate={createNewBinder}
           onSelect={selectBinder}
+          onDuplicate={(binder) => void duplicateExistingBinder(binder)}
+          onMove={(binderId, direction) => void moveBinderInOverview(binderId, direction)}
           onRequestDelete={setBinderToDelete}
           onExport={exportBackup}
           onImport={importBackup}
@@ -1223,6 +1331,34 @@ export function FoundationWorkspace() {
               <div className={styles.dialogActions}>
                 <button type="button" className={styles.secondaryButton} onClick={() => setBinderRename(undefined)}>Abbrechen</button>
                 <button type="submit" className={styles.confirmButton} disabled={!binderRename.name.trim()}>Namen speichern</button>
+              </div>
+            </form>
+          </section>
+        </div>
+      ) : null}
+
+      {pageRename ? (
+        <div className={styles.dialogBackdrop} role="presentation">
+          <section className={styles.confirmDialog} role="dialog" aria-modal="true" aria-labelledby="rename-page-heading">
+            <p className={styles.eyebrow}>Binderseite bearbeiten</p>
+            <h2 id="rename-page-heading">Seite {pageRename.pageIndex + 1} benennen</h2>
+            <p>Ein leerer Titel verwendet weiterhin automatisch „Seite {pageRename.pageIndex + 1}“.</p>
+            <form onSubmit={savePageRename}>
+              <label className={styles.dialogField} htmlFor="rename-page-title">
+                <span>Seitentitel</span>
+                <input
+                  id="rename-page-title"
+                  value={pageRename.title}
+                  maxLength={PAGE_TITLE_MAX_LENGTH}
+                  autoFocus
+                  placeholder={`Seite ${pageRename.pageIndex + 1}`}
+                  onChange={(event) => setPageRename((current) => current ? { ...current, title: event.target.value } : current)}
+                />
+                <small>{pageRename.title.length} / {PAGE_TITLE_MAX_LENGTH}</small>
+              </label>
+              <div className={styles.dialogActions}>
+                <button type="button" className={styles.secondaryButton} onClick={() => setPageRename(undefined)}>Abbrechen</button>
+                <button type="submit" className={styles.confirmButton}>Titel speichern</button>
               </div>
             </form>
           </section>
@@ -1439,7 +1575,7 @@ export function FoundationWorkspace() {
           <div className={styles.workspace}>
             <section className={`${styles.panel} ${styles.binderPanel}`} aria-labelledby="page-heading">
               <div className={styles.panelHeader}>
-                <div><p className={styles.eyebrow}>{activeBinder.layout.rows} × {activeBinder.layout.columns} · Seite {visiblePageIndex + 1} von {activeBinder.pages.length}</p><h2 id="page-heading">Seite {visiblePageIndex + 1}</h2></div>
+                <div><p className={styles.eyebrow}>{activeBinder.layout.rows} × {activeBinder.layout.columns} · Seite {visiblePageIndex + 1} von {activeBinder.pages.length}</p><h2 id="page-heading">{activePageTitle}</h2></div>
                 <div className={styles.pageToolbar}>
                   <label className={styles.layoutSelect} htmlFor="binder-layout">
                     <span>Format</span>
@@ -1458,6 +1594,36 @@ export function FoundationWorkspace() {
                     <button type="button" className={styles.addPageButton} onClick={createNewPage}>+ Seite</button>
                   </div>
                   <div className={styles.pageEditControls} aria-label="Aktuelle Binderseite bearbeiten">
+                    <button
+                      type="button"
+                      className={styles.pageActionButton}
+                      aria-label={`Seite ${visiblePageIndex + 1} benennen`}
+                      title="Seitentitel bearbeiten"
+                      disabled={!activePage}
+                      onClick={() => activePage && setPageRename({ binderId: activeBinder.id, pageId: activePage.id, pageIndex: visiblePageIndex, title: activePage.title ?? "" })}
+                    >
+                      <Pencil size={15} />
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.pageActionButton}
+                      aria-label={`Seite ${visiblePageIndex + 1} nach vorne verschieben`}
+                      title="Seite nach vorne verschieben"
+                      disabled={!activePage || visiblePageIndex === 0}
+                      onClick={() => void moveActivePage("forward")}
+                    >
+                      <ArrowLeft size={15} />
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.pageActionButton}
+                      aria-label={`Seite ${visiblePageIndex + 1} nach hinten verschieben`}
+                      title="Seite nach hinten verschieben"
+                      disabled={!activePage || visiblePageIndex === activeBinder.pages.length - 1}
+                      onClick={() => void moveActivePage("backward")}
+                    >
+                      <ArrowRight size={15} />
+                    </button>
                     <button
                       type="button"
                       className={styles.pageActionButton}
@@ -1501,7 +1667,7 @@ export function FoundationWorkspace() {
                 <AutosaveTextarea
                   key={`page-note-${activePage.id}`}
                   id={`page-note-${activePage.id}`}
-                  label={`Seitennotiz · Seite ${visiblePageIndex + 1}`}
+                  label={`Seitennotiz · ${activePageTitle}`}
                   value={activePage.note}
                   maxLength={PAGE_NOTE_MAX_LENGTH}
                   placeholder="Notizen zu Zustand, Zielen oder Anordnung dieser Seite…"
@@ -1703,7 +1869,7 @@ export function FoundationWorkspace() {
                 <div className={styles.contextHeader}>
                   <div>
                     <p className={styles.eyebrow}>{contextEntry ? "Kartendetails" : "Seitenübersicht"}</p>
-                    <h2 id="context-heading">{contextCard?.name ?? `Seite ${visiblePageIndex + 1}`}</h2>
+                    <h2 id="context-heading">{contextCard?.name ?? activePageTitle}</h2>
                   </div>
                   {contextEntry ? <button type="button" className={styles.drawerClose} onClick={() => setContextLocation(undefined)} aria-label="Kartendetails schließen"><X size={18} /></button> : null}
                 </div>

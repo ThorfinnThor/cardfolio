@@ -17,7 +17,9 @@ const DEFAULT_LAYOUT = { rows: 3, columns: 3 } as const;
 
 export const BINDER_NAME_MAX_LENGTH = 100;
 export const BINDER_DESCRIPTION_MAX_LENGTH = 500;
+export const PAGE_TITLE_MAX_LENGTH = 80;
 export const PAGE_NOTE_MAX_LENGTH = 2_000;
+export const MAX_BINDERS = 50;
 export const MAX_BINDER_PAGES = 40;
 
 export const SUPPORTED_BINDER_LAYOUTS = [
@@ -123,6 +125,32 @@ export function renameBinder(binder: Binder, name: string): Binder {
   return { ...binder, name: cleanName, updatedAt: now() };
 }
 
+export function duplicateBinder(binder: Binder): Binder {
+  const timestamp = now();
+  const suffix = " (Kopie)";
+  const name = `${binder.name.slice(0, BINDER_NAME_MAX_LENGTH - suffix.length).trimEnd()}${suffix}`;
+  return {
+    ...binder,
+    id: newId(),
+    revision: 0,
+    name,
+    layout: { ...binder.layout },
+    pages: binder.pages.map((page) => ({
+      ...page,
+      id: newId(),
+      slots: page.slots.map((entry) => entry ? {
+        ...entry,
+        id: newId(),
+        variant: { ...entry.variant },
+        preferences: { ...entry.preferences },
+        addedAt: timestamp,
+      } : null),
+    })),
+    createdAt: timestamp,
+    updatedAt: timestamp,
+  };
+}
+
 export function setBinderDescription(binder: Binder, description: string): Binder {
   if (description.length > BINDER_DESCRIPTION_MAX_LENGTH) {
     throw new Error(`Binder description must not exceed ${BINDER_DESCRIPTION_MAX_LENGTH} characters.`);
@@ -140,6 +168,20 @@ export function setPageNote(binder: Binder, pageId: UUID, note: string): Binder 
   if (binder.pages[pageIndex].note === note) return binder;
   const pages = [...binder.pages];
   pages[pageIndex] = { ...pages[pageIndex], note };
+  return withUpdatedPages(binder, pages);
+}
+
+export function setPageTitle(binder: Binder, pageId: UUID, title: string): Binder {
+  const cleanTitle = title.trim();
+  if (cleanTitle.length > PAGE_TITLE_MAX_LENGTH) {
+    throw new Error(`Page title must not exceed ${PAGE_TITLE_MAX_LENGTH} characters.`);
+  }
+  const pageIndex = binder.pages.findIndex((page) => page.id === pageId);
+  if (pageIndex < 0) throw new Error("Binder page does not exist.");
+  const currentTitle = binder.pages[pageIndex].title ?? "";
+  if (currentTitle === cleanTitle) return binder;
+  const pages = [...binder.pages];
+  pages[pageIndex] = { ...pages[pageIndex], title: cleanTitle || undefined };
   return withUpdatedPages(binder, pages);
 }
 
@@ -166,6 +208,7 @@ function reflowBinderPages(binder: Binder, layout: SupportedBinderLayout): Binde
     return {
       id: previousPage?.id ?? newId(),
       note: previousPage?.note ?? "",
+      title: previousPage?.title,
       slots,
     };
   });
@@ -296,6 +339,7 @@ export function duplicatePage(binder: Binder, pageId: UUID): Binder {
   const duplicate: BinderPage = {
     id: newId(),
     note: source.note,
+    title: source.title,
     slots: source.slots.map((entry) => entry ? {
       ...entry,
       id: newId(),
@@ -306,6 +350,16 @@ export function duplicatePage(binder: Binder, pageId: UUID): Binder {
   };
   const pages = [...binder.pages];
   pages.splice(pageIndex + 1, 0, duplicate);
+  return withUpdatedPages(binder, pages);
+}
+
+export function movePage(binder: Binder, pageId: UUID, direction: "forward" | "backward"): Binder {
+  const pageIndex = binder.pages.findIndex((candidate) => candidate.id === pageId);
+  if (pageIndex < 0) throw new Error("Binder page does not exist.");
+  const targetIndex = direction === "forward" ? pageIndex - 1 : pageIndex + 1;
+  if (targetIndex < 0 || targetIndex >= binder.pages.length) return binder;
+  const pages = [...binder.pages];
+  [pages[pageIndex], pages[targetIndex]] = [pages[targetIndex], pages[pageIndex]];
   return withUpdatedPages(binder, pages);
 }
 

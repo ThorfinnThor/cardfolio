@@ -1,8 +1,29 @@
 import type { Binder, CardSnapshot, LocalBackupV1, UUID } from "@/domain/types";
+import { MAX_BINDERS } from "@/domain/binder-actions";
 import { validateBackup, validateBinder } from "@/domain/validation";
 
 import { type BinderRepository, type ImportMode, RevisionConflictError } from "./binder-repository";
 import { openCardfolioDB } from "./db";
+
+const BINDER_ORDER_SETTING = "binder-order";
+
+function storedBinderOrder(value: unknown): UUID[] {
+  if (!Array.isArray(value)) return [];
+  const ids = value.filter((item): item is string => typeof item === "string");
+  return ids.length === new Set(ids).size ? ids : [];
+}
+
+function sortBinders(binders: Binder[], order: UUID[]): Binder[] {
+  const orderIndex = new Map(order.map((id, index) => [id, index]));
+  return [...binders].sort((left, right) => {
+    const leftIndex = orderIndex.get(left.id);
+    const rightIndex = orderIndex.get(right.id);
+    if (leftIndex !== undefined && rightIndex !== undefined) return leftIndex - rightIndex;
+    if (leftIndex !== undefined) return -1;
+    if (rightIndex !== undefined) return 1;
+    return right.updatedAt.localeCompare(left.updatedAt);
+  });
+}
 
 function cloneAsNew(binder: Binder): Binder {
   const timestamp = new Date().toISOString();
@@ -24,7 +45,13 @@ function cloneAsNew(binder: Binder): Binder {
 export class IndexedDBBinderRepository implements BinderRepository {
   async list(): Promise<Binder[]> {
     const database = await openCardfolioDB();
-    return (await database.getAll("binders")).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+    const transaction = database.transaction(["binders", "settings"], "readonly");
+    const [binders, order] = await Promise.all([
+      transaction.objectStore("binders").getAll(),
+      transaction.objectStore("settings").get(BINDER_ORDER_SETTING),
+    ]);
+    await transaction.done;
+    return sortBinders(binders, storedBinderOrder(order));
   }
 
   async get(id: UUID): Promise<Binder | null> {
@@ -35,13 +62,26 @@ export class IndexedDBBinderRepository implements BinderRepository {
   async create(binder: Binder, cards: CardSnapshot[]): Promise<void> {
     const cleanBinder = validateBinder(binder);
     const database = await openCardfolioDB();
-    const transaction = database.transaction(["binders", "cards"], "readwrite");
-    if (await transaction.objectStore("binders").get(cleanBinder.id)) {
+    const transaction = database.transaction(["binders", "cards", "settings"], "readwrite");
+    const binderStore = transaction.objectStore("binders");
+    if (await binderStore.get(cleanBinder.id)) {
       transaction.abort();
       await transaction.done.catch(() => undefined);
       throw new RevisionConflictError("A binder with this ID already exists.");
     }
-    await transaction.objectStore("binders").add(cleanBinder, cleanBinder.id);
+    const existingBinders = await binderStore.getAll();
+    if (existingBinders.length >= MAX_BINDERS) {
+      transaction.abort();
+      await transaction.done.catch(() => undefined);
+      throw new Error(`Es können höchstens ${MAX_BINDERS} Binder gespeichert werden.`);
+    }
+    const settingsStore = transaction.objectStore("settings");
+    const currentOrder = sortBinders(
+      existingBinders,
+      storedBinderOrder(await settingsStore.get(BINDER_ORDER_SETTING)),
+    ).map((item) => item.id);
+    await binderStore.add(cleanBinder, cleanBinder.id);
+    await settingsStore.put([cleanBinder.id, ...currentOrder], BINDER_ORDER_SETTING);
     for (const card of cards) await transaction.objectStore("cards").put(card, card.key);
     await transaction.done;
   }
@@ -72,16 +112,35 @@ export class IndexedDBBinderRepository implements BinderRepository {
     return saved;
   }
 
+  async saveOrder(ids: UUID[]): Promise<void> {
+    if (ids.length !== new Set(ids).size) throw new Error("Binder order contains duplicate IDs.");
+    const database = await openCardfolioDB();
+    const transaction = database.transaction(["binders", "settings"], "readwrite");
+    const currentIds = (await transaction.objectStore("binders").getAllKeys()).map(String);
+    const currentSet = new Set(currentIds);
+    if (ids.length !== currentIds.length || ids.some((id) => !currentSet.has(id))) {
+      transaction.abort();
+      await transaction.done.catch(() => undefined);
+      throw new RevisionConflictError("The binder list changed in another tab.");
+    }
+    await transaction.objectStore("settings").put([...ids], BINDER_ORDER_SETTING);
+    await transaction.done;
+  }
+
   async remove(id: UUID, expectedRevision: number): Promise<void> {
     const database = await openCardfolioDB();
-    const transaction = database.transaction("binders", "readwrite");
-    const current = await transaction.store.get(id);
+    const transaction = database.transaction(["binders", "settings"], "readwrite");
+    const binderStore = transaction.objectStore("binders");
+    const current = await binderStore.get(id);
     if (!current || current.revision !== expectedRevision) {
       transaction.abort();
       await transaction.done.catch(() => undefined);
       throw new RevisionConflictError();
     }
-    await transaction.store.delete(id);
+    await binderStore.delete(id);
+    const settingsStore = transaction.objectStore("settings");
+    const order = storedBinderOrder(await settingsStore.get(BINDER_ORDER_SETTING)).filter((binderId) => binderId !== id);
+    await settingsStore.put(order, BINDER_ORDER_SETTING);
     await transaction.done;
   }
 
@@ -110,13 +169,28 @@ export class IndexedDBBinderRepository implements BinderRepository {
     const backup = validateBackup(input);
     const binders = mode === "import-as-new" ? backup.binders.map(cloneAsNew) : backup.binders;
     const database = await openCardfolioDB();
-    const transaction = database.transaction(["binders", "cards"], "readwrite");
+    const transaction = database.transaction(["binders", "cards", "settings"], "readwrite");
+    const binderStore = transaction.objectStore("binders");
+    const settingsStore = transaction.objectStore("settings");
+    const existingBinders = mode === "replace-all" ? [] : await binderStore.getAll();
+    if (existingBinders.length + binders.length > MAX_BINDERS) {
+      transaction.abort();
+      await transaction.done.catch(() => undefined);
+      throw new Error(`Es können höchstens ${MAX_BINDERS} Binder gespeichert werden.`);
+    }
     if (mode === "replace-all") {
-      await transaction.objectStore("binders").clear();
+      await binderStore.clear();
       await transaction.objectStore("cards").clear();
     }
-    for (const binder of binders) await transaction.objectStore("binders").put(binder, binder.id);
+    for (const binder of binders) await binderStore.put(binder, binder.id);
     for (const card of backup.cards) await transaction.objectStore("cards").put(card, card.key);
+    const existingOrder = mode === "replace-all"
+      ? []
+      : sortBinders(
+        existingBinders,
+        storedBinderOrder(await settingsStore.get(BINDER_ORDER_SETTING)),
+      ).map((binder) => binder.id);
+    await settingsStore.put([...binders.map((binder) => binder.id), ...existingOrder], BINDER_ORDER_SETTING);
     await transaction.done;
   }
 }

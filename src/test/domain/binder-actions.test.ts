@@ -8,18 +8,22 @@ import {
   createBinder,
   createPlannedCard,
   deletePage,
+  duplicateBinder,
   duplicatePage,
+  movePage,
   moveOrSwapCard,
   placeCard,
   previewBinderLayoutChange,
   removeCard,
   renameBinder,
+  PAGE_TITLE_MAX_LENGTH,
   PAGE_NOTE_MAX_LENGTH,
   setBinderDescription,
   setCardPreferences,
   setCardVariant,
   setOwned,
   setPageNote,
+  setPageTitle,
 } from "@/domain/binder-actions";
 import { deriveBinderStats } from "@/domain/binder-stats";
 import { deriveMissingItems } from "@/domain/missing-items";
@@ -228,5 +232,44 @@ describe("binder domain", () => {
     expect(deleted.pages).toHaveLength(1);
     expect(deleted.pages[0].slots[0]?.id).toBe(entry.id);
     expect(() => deletePage(deleted, deleted.pages[0].id, true)).toThrow("at least one page");
+  });
+
+  it("names and reorders pages without changing their contents", () => {
+    const first = createBinder("Ordered pages");
+    const withSecondPage = addPage(first);
+    const named = setPageTitle(withSecondPage, withSecondPage.pages[0].id, "  Lieblingskarten  ");
+    const moved = movePage(named, named.pages[1].id, "forward");
+
+    expect(named.pages[0].title).toBe("Lieblingskarten");
+    expect(moved.pages.map((page) => page.id)).toEqual([named.pages[1].id, named.pages[0].id]);
+    expect(moved.pages[1].title).toBe("Lieblingskarten");
+    expect(movePage(moved, moved.pages[0].id, "forward")).toBe(moved);
+    expect(setPageTitle(named, named.pages[0].id, "   ").pages[0].title).toBeUndefined();
+    expect(() => setPageTitle(named, named.pages[0].id, "x".repeat(PAGE_TITLE_MAX_LENGTH + 1))).toThrow("80");
+  });
+
+  it("duplicates a complete binder with fresh IDs", () => {
+    const binder = createBinder("A".repeat(BINDER_NAME_MAX_LENGTH));
+    const entry = createPlannedCard(card.key, { finish: "holo", edition: "first-edition" });
+    const filled = setPageTitle(
+      setPageNote(
+        placeCard(binder, { pageId: binder.pages[0].id, slotIndex: 0 }, entry),
+        binder.pages[0].id,
+        "Page note",
+      ),
+      binder.pages[0].id,
+      "Showcase",
+    );
+    const copy = duplicateBinder(filled);
+
+    expect(copy.id).not.toBe(filled.id);
+    expect(copy.revision).toBe(0);
+    expect(copy.name).toHaveLength(BINDER_NAME_MAX_LENGTH);
+    expect(copy.name).toMatch(/ \(Kopie\)$/);
+    expect(copy.pages[0].id).not.toBe(filled.pages[0].id);
+    expect(copy.pages[0].title).toBe("Showcase");
+    expect(copy.pages[0].note).toBe("Page note");
+    expect(copy.pages[0].slots[0]?.id).not.toBe(entry.id);
+    expect(copy.pages[0].slots[0]).toMatchObject({ cardKey: card.key, variant: entry.variant });
   });
 });

@@ -102,3 +102,11 @@
 - Card language is a search control independent of the German interface language. `Alle` is a balanced bilingual view; `Deutsch` and `English` query and display only the selected catalog.
 - Marketplace handoffs use progressive disclosure. TCGplayer and Cardmarket may both be enabled, but their detailed controls are never shown simultaneously.
 - Neither choice changes a stored card's language or variant, and neither marketplace view implies an exact product match beyond its documented verification status.
+
+## 2026-09-28 — Page labels and binder order remain backward compatible
+
+- Optional page titles extend backup version 1 without making existing binders or backups invalid. An absent or blank title continues to render as `Seite <n>`.
+- Page moves reorder complete page objects, so page IDs, notes, slot positions, ownership and variants stay together.
+- Binder duplication creates fresh binder, page and planned-entry IDs while retaining descriptions, page titles, notes, cards and preferences.
+- Manual binder order is stored as an ID list in the existing IndexedDB `settings` store. It does not change binder revisions or the user-facing `updatedAt` date.
+- Creation, deletion, duplication and manual ordering publish a lightweight order-change message so another open tab can refresh its binder list without treating the active binder as conflicted.

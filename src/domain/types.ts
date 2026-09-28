@@ -57,6 +57,7 @@ export interface BinderPage {
   id: UUID;
   slots: Array<PlannedCard | null>;
   note: string;
+  title?: string;
 }
 
 export interface Binder {
