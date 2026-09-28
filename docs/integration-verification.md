@@ -138,6 +138,8 @@ Environment: current official Cardmarket help pages, controlled domain/component
 - Cardmarket's Pokémon decklist help says a Pokémon name alone is insufficient and requires full name plus abilities and attacks. Cardfolio does not store the latter two reliably, so it does not claim that its reference text is an accepted decklist import.
 - The handoff always warns that another version or expansion may be selected and keeps the original set, number, language, finish, edition and condition visible for manual comparison.
 - The UI uses a generic Pokémon Singles link and the official Cardmarket decklist-help link; it does not construct undocumented query parameters, scrape products, automate a session or claim an exact purchase match.
+
+Superseded on 2026-09-28: Cardfolio now persists TCGdex ability and attack names and emits the documented Pokémon decklist grammar. Set, collector number and variants remain outside the import text and require the same manual product check.
 - Browser fixture result: the existing missing Pikachu rendered as `1x Pikachu | Wizards Black Star Promos | Nr. 1 | EN | Nicht angegeben | Nicht angegeben | Beliebig` beneath all three review warnings.
 - The static page rendered meaningful content without a framework error overlay. The local Playwright rerun was blocked before all four test bodies by the already documented macOS Mach-port restriction, not by an application assertion.
 

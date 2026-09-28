@@ -37,6 +37,8 @@ export const cardSnapshotSchema = z.object({
     .optional(),
   imageBaseUrl: imageUrlSchema.optional(),
   category: z.enum(["pokemon", "trainer", "energy", "other"]).optional(),
+  abilities: z.array(z.string().min(1).max(300)).max(10).optional(),
+  attacks: z.array(z.string().min(1).max(300)).max(10).optional(),
   physicalStatus: z.enum(["physical", "digital", "unknown"]),
   fetchedAt: isoDateSchema,
 });

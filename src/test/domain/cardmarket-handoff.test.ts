@@ -13,6 +13,9 @@ function missingItem(index = 1, overrides: Partial<MissingItem> = {}): MissingIt
       setId: "base1",
       setName: "Base Set",
       collectorNumber: String(index).padStart(3, "0"),
+      category: "pokemon",
+      abilities: [],
+      attacks: ["Leech Seed"],
       physicalStatus: "physical",
       fetchedAt: "2026-09-27T00:00:00.000Z",
     },
@@ -25,11 +28,12 @@ function missingItem(index = 1, overrides: Partial<MissingItem> = {}): MissingIt
 }
 
 describe("Cardmarket handoff", () => {
-  it("keeps the original printing preferences visible and requires review", () => {
+  it("uses Cardmarket's exact Pokemon decklist format and keeps separate review links", () => {
     const exported = createCardmarketHandoff([missingItem()]);
 
-    expect(exported.parts[0].text).toBe("2x Bulbasaur | Base Set | Nr. 001 | EN | Normal | Unlimited | Mit Schatten / Standard | Near Mint");
+    expect(exported.parts[0].text).toBe("2x Bulbasaur Leech Seed");
     expect(exported.positionCount).toBe(1);
+    expect(exported.importablePositionCount).toBe(1);
     expect(exported.totalQuantity).toBe(2);
     expect(exported.reviewRequiredCount).toBe(1);
     expect(exported.parts[0].searches).toHaveLength(1);
@@ -37,8 +41,8 @@ describe("Cardmarket handoff", () => {
       label: "2× Bulbasaur",
       details: "Base Set · Nr. 001 · EN",
     });
-    expect(exported.warnings.join(" ")).toMatch(/andere Ausgabe oder Illustration/);
-    expect(exported.warnings.join(" ")).toMatch(/kein automatisch zuordenbarer Pokémon-Decklistenimport/);
+    expect(exported.warnings.join(" ")).toMatch(/vollständiger Kartenname, Fähigkeiten und Attacken/);
+    expect(exported.warnings.join(" ")).toMatch(/Set, Kartennummer, Sprache und Druckvariante nicht fest/);
   });
 
   it("splits by positions rather than card quantity at the official 150-entry limit", () => {
@@ -59,18 +63,33 @@ describe("Cardmarket handoff", () => {
         name: "Bisa\nsam | Sonderdruck",
         setName: "Basis\rSet",
         collectorNumber: "044",
+        abilities: ["Duft | Spore"],
+        attacks: ["Ranken\nHieb"],
       },
       variant: { finish: "other", edition: "first-edition", printing: "shadowless", label: "Cosmos | Holo" },
       preferences: { minimumCondition: "lightly-played" },
     });
 
-    expect(createCardmarketHandoff([item]).parts[0].text).toBe(
-      "2x Bisa sam Sonderdruck | Basis Set | Nr. 044 | DE | Cosmos Holo | First Edition | Shadowless | Lightly Played",
-    );
+    expect(createCardmarketHandoff([item]).parts[0].text).toBe("2x Bisa sam Sonderdruck Duft Spore Ranken Hieb");
+  });
+
+  it("exports trainers by full name and excludes Pokemon without catalog attack data", () => {
+    const trainer = missingItem(1, {
+      card: { ...missingItem().card, name: "Scoop Up Net", category: "trainer", abilities: [], attacks: [] },
+    });
+    const incomplete = missingItem(2, {
+      card: { ...missingItem().card, name: "Ivysaur", abilities: undefined, attacks: undefined },
+    });
+
+    const exported = createCardmarketHandoff([trainer, incomplete]);
+
+    expect(exported.parts[0].text).toBe("2x Scoop Up Net");
+    expect(exported.importablePositionCount).toBe(1);
+    expect(exported.excluded).toEqual([expect.objectContaining({ label: expect.stringContaining("Ivysaur") })]);
   });
 
   it("returns no parts or warnings for an empty handoff", () => {
-    expect(createCardmarketHandoff([])).toMatchObject({ parts: [], warnings: [], positionCount: 0, reviewRequiredCount: 0 });
+    expect(createCardmarketHandoff([])).toMatchObject({ parts: [], warnings: [], positionCount: 0, importablePositionCount: 0, reviewRequiredCount: 0 });
   });
 
   it("creates a concrete Cardmarket search without losing set or collector number", () => {

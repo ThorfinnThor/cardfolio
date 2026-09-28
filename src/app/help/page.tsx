@@ -38,7 +38,7 @@ export default function HelpPage() {
       <section className={styles.section}>
         <h2>Grenzen der Daten</h2>
         <p>TCGdex ist eine externe, gemeinschaftlich gepflegte Datenquelle. Karten, Varianten, Übersetzungen und Bilder können fehlen oder fehlerhaft sein. Preisangaben sind deaktiviert.</p>
-        <p>TCGplayer-Ausgaben existieren nur für einzeln getestete Drucke. Die Cardmarket-Ausgabe ist eine Prüfliste, kein exakter Produktabgleich. Vor einem Kauf müssen Set, Nummer, Sprache, Finish und Edition auf der Zielseite kontrolliert werden.</p>
+        <p>TCGplayer-Ausgaben existieren nur für einzeln getestete Drucke. Die Cardmarket-Deckliste folgt dem offiziellen Pokémon-Format aus Menge, vollständigem Namen, Fähigkeiten und Attacken. Da dieses Format Set, Nummer, Sprache, Finish und Edition nicht festlegt, müssen diese Angaben vor einem Kauf auf Cardmarket kontrolliert werden.</p>
       </section>
 
       <section className={styles.section}>

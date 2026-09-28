@@ -43,6 +43,14 @@
 - Parts contain at most 150 grouped positions, matching the documented Wants-list limit. A quantity greater than one remains one position.
 - Links are user initiated and point only to the generic Pokémon Singles page and official help; no scraping, login, cart or checkout automation is performed.
 
+## 2026-09-28 — Cardmarket decklist text follows the documented Pokémon grammar
+
+- The earlier pipe-separated reference list is not an accepted Cardmarket Pokémon decklist and is no longer presented as import text.
+- Card snapshots now retain TCGdex ability and attack names. Legacy local snapshots are refreshed from TCGdex when the collector selects Cardmarket.
+- Import lines contain only `amountx full name abilities attacks`, one card per line. Trainer and Energy cards use their full name; Pokémon without the required catalog details are visibly excluded.
+- Set, collector number, language, finish, edition, printing and condition remain separate review metadata because Cardmarket's decklist grammar cannot encode them.
+- Copy and TXT actions contain only accepted decklist fields. Per-card searches remain a separate manual verification aid.
+
 ## 2026-09-27 — Pricing gate remains closed after CF-19
 
 - TCGdex price payloads can be normalized into the internal `PriceEstimate` contract only when source timestamp, currency, positive cent-exact value and explicit variant key are present.

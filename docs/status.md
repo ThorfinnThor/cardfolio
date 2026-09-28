@@ -410,3 +410,18 @@ Verification completed:
 - Typecheck, ESLint, 60 unit/component tests, static Next.js build, release checks and `git diff --check` passed locally.
 - The ten Playwright scenarios are syntactically discoverable. Local Chromium launch is blocked before test execution by the host macOS Mach-port sandbox; the same suite remains part of Linux GitHub CI.
 - Visible browser verification against the local static build loaded Neo Genesis without a search term, displayed results `1/111` through `40/111`, loaded the next 40 results, found German `Tornupto 17/111`, inserted it with its variant review and produced the exact TCGplayer line `1 Typhlosion (17) [N1] 017/111`.
+
+## 2026-09-28 — Cardmarket official Pokémon decklist format
+
+Completed:
+
+- Replaced the non-importable pipe-separated Cardmarket reference text with the documented `amountx full name abilities attacks` grammar.
+- TCGdex ability and attack names are stored in validated local card snapshots and backups. Existing snapshots are refreshed automatically when Cardmarket is selected.
+- Import text and variant review are now separate: Cardmarket receives only accepted decklist tokens, while set, number, language and printing preferences remain visible in Cardfolio.
+- Cards lacking the required catalog identity fields are excluded visibly instead of producing a line that Cardmarket will reject.
+- Corrected TCGplayer item numbers separately to use only the number within the set, such as `[G2] 2` and `[N1] 17`.
+
+Verification completed:
+
+- Typecheck, ESLint, 65 unit/component tests, static Next.js build, release checks and `git diff --check` passed locally; all eleven Playwright scenarios are syntactically discoverable for Linux CI.
+- A browser test against the local production build refreshed existing Tornupto and Pikachu snapshots from the live TCGdex API and produced exactly `1x Tornupto Feueraufladung Flammenexplosion` and `1x Pikachu Growl Thundershock` on separate lines.

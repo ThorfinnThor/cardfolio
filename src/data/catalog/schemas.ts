@@ -9,7 +9,7 @@ export const tcgdexSearchItemSchema = z.object({
   id: z.string().min(1),
   localId: z.string().min(1),
   name: z.string().min(1),
-  image: imageBaseUrl.optional(),
+  image: imageBaseUrl.nullish(),
 });
 
 export const tcgdexSearchResponseSchema = z.array(tcgdexSearchItemSchema);
@@ -18,8 +18,10 @@ export const tcgdexCardSchema = z.object({
   id: z.string().min(1),
   localId: z.string().min(1),
   name: z.string().min(1),
-  image: imageBaseUrl.optional(),
-  category: z.string().optional(),
+  image: imageBaseUrl.nullish(),
+  category: z.string().nullish(),
+  abilities: z.array(z.object({ name: z.string().min(1) })).nullish(),
+  attacks: z.array(z.object({ name: z.string().min(1) })).nullish(),
   variants: z
     .object({
       firstEdition: z.boolean(),
@@ -28,7 +30,7 @@ export const tcgdexCardSchema = z.object({
       reverse: z.boolean(),
       wPromo: z.boolean().optional(),
     })
-    .optional(),
+    .nullish(),
   set: z.object({
     cardCount: z
       .object({

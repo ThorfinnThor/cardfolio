@@ -56,6 +56,8 @@ async function mockCatalog(page: Page) {
           id: "base1-1",
           localId: "1",
           name: "Bulbasaur",
+          category: "Pokemon",
+          attacks: [{ name: "Leech Seed" }],
           set: { cardCount: { official: 102 }, id: "base1", name: "Base Set" },
         }),
         headers,
@@ -70,6 +72,8 @@ async function mockCatalog(page: Page) {
           id: "base1-2",
           localId: "2",
           name: "Ivysaur",
+          category: "Pokemon",
+          attacks: [{ name: "Vine Whip" }, { name: "Poisonpowder" }],
           set: { cardCount: { official: 102 }, id: "base1", name: "Base Set" },
         }),
         headers,
@@ -85,6 +89,9 @@ async function mockCatalog(page: Page) {
           id: "base1-4",
           localId: "4",
           name: language === "de" ? "Glurak" : "Charizard",
+          category: language === "de" ? "Pokémon" : "Pokemon",
+          abilities: [{ name: language === "de" ? "Energie verbrennen" : "Energy Burn" }],
+          attacks: [{ name: language === "de" ? "Feuerwirbel" : "Fire Spin" }],
           image: language === "en" ? "https://assets.tcgdex.net/en/base/base1/4" : undefined,
           set: { cardCount: { official: 102 }, id: "base1", name: "Grundset" },
           variants: { firstEdition: true, holo: true, normal: false, reverse: false },
@@ -115,6 +122,9 @@ async function mockCatalog(page: Page) {
           id: "neo1-17",
           localId: "17",
           name: "Tornupto",
+          category: "Pokémon",
+          abilities: [{ name: "Feueraufladung" }],
+          attacks: [{ name: "Flammenexplosion" }],
           set: { cardCount: { official: 111 }, id: "neo1", name: "Neo Genesis" },
           variants: { firstEdition: true, holo: true, normal: false, reverse: false },
         }),
@@ -130,6 +140,8 @@ async function mockCatalog(page: Page) {
           id: "gym2-2",
           localId: "2",
           name: "Blaine's Charizard",
+          category: "Pokemon",
+          attacks: [{ name: "Roaring Flames" }, { name: "Flame Jet" }],
           set: { cardCount: { official: 132 }, id: "gym2", name: "Gym Challenge" },
           variants: { firstEdition: true, holo: true, normal: false, reverse: false },
         }),
@@ -217,15 +229,13 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   await expect(missingCards.getByText("Ivysaur", { exact: true })).toBeVisible();
   await missingCards.getByRole("button", { name: "Cardmarket" }).click();
-  await expect(missingCards.getByRole("heading", { name: "Cardmarket Prüfliste" })).toBeVisible();
-  await expect(missingCards.getByText(/Keine Exakt-Garantie/)).toBeVisible();
-  await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Prüflistenvorschau" })).toHaveValue(
-    /1x Ivysaur \| Base Set \| Nr\. 2\/102 \| EN/,
-  );
+  await expect(missingCards.getByRole("heading", { name: "Cardmarket Deckliste" })).toBeVisible();
+  await expect(missingCards.getByText(/vollständiger Kartenname, Fähigkeiten und Attacken/)).toBeVisible();
+  await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue("1x Ivysaur Vine Whip Poisonpowder");
   const cardmarketDownloadPromise = page.waitForEvent("download");
-  await missingCards.getByRole("button", { name: "Prüfliste TXT" }).click();
+  await missingCards.getByRole("button", { name: "Deckliste TXT" }).click();
   const cardmarketDownload = await cardmarketDownloadPromise;
-  expect(cardmarketDownload.suggestedFilename()).toMatch(/^cardfolio-cardmarket-pruefliste-teil-1-.*\.txt$/);
+  expect(cardmarketDownload.suggestedFilename()).toMatch(/^cardfolio-cardmarket-deckliste-teil-1-.*\.txt$/);
 
   const downloadPromise = page.waitForEvent("download");
   await page.getByRole("button", { name: "Backup exportieren" }).click();
@@ -408,9 +418,8 @@ test("sets, edits and persists the minimum condition for marketplace handoff", a
   await page.getByRole("button", { name: /Fehlende Karten \(1\)/ }).click();
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   await missingCards.getByRole("button", { name: "Cardmarket" }).click();
-  await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Prüflistenvorschau" })).toHaveValue(
-    /1x Ivysaur \| Base Set \| Nr\. 2\/102 \| EN .* \| Lightly Played$/,
-  );
+  await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue("1x Ivysaur Vine Whip Poisonpowder");
+  await expect(missingCards.getByText("Lightly Played", { exact: true })).toBeVisible();
 });
 
 test("filters equal card names by language and balances the combined results", async ({ page }) => {
@@ -517,4 +526,9 @@ test("exports the verified Tornupto and Blaine's Charizard identities to TCGplay
   );
   await expect(missingCards.getByText("Neo Genesis · Nr. 17/111")).toBeVisible();
   await expect(missingCards.getByText("Gym Challenge · Nr. 2/132")).toBeVisible();
+
+  await missingCards.getByRole("button", { name: "Cardmarket" }).click();
+  await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue(
+    "1x Tornupto Feueraufladung Flammenexplosion\n1x Blaine's Charizard Roaring Flames Flame Jet",
+  );
 });

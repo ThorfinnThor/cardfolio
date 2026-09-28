@@ -32,7 +32,9 @@ interface MissingCardsPanelProps {
   onTcgplayerCopy?: (exported: TcgplayerMassEntryExport) => void;
   onTcgplayerTextExport?: (exported: TcgplayerMassEntryExport) => void;
   cardmarketEnabled?: boolean;
+  cardmarketPreparing?: boolean;
   cardmarketCopyState?: "idle" | "copied" | "error";
+  onCardmarketPrepare?: (items: readonly MissingItem[]) => void;
   onCardmarketCopy?: (part: CardmarketHandoffPart) => void;
   onCardmarketTextExport?: (part: CardmarketHandoffPart) => void;
 }
@@ -50,7 +52,9 @@ export function MissingCardsPanel({
   onTcgplayerCopy,
   onTcgplayerTextExport,
   cardmarketEnabled = false,
+  cardmarketPreparing = false,
   cardmarketCopyState = "idle",
+  onCardmarketPrepare,
   onCardmarketCopy,
   onCardmarketTextExport,
 }: MissingCardsPanelProps) {
@@ -118,7 +122,14 @@ export function MissingCardsPanel({
               <button type="button" aria-pressed={marketplaceChoice === "tcgplayer"} onClick={() => setMarketplaceChoice("tcgplayer")}>TCGplayer</button>
             ) : null}
             {cardmarketEnabled ? (
-              <button type="button" aria-pressed={marketplaceChoice === "cardmarket"} onClick={() => setMarketplaceChoice("cardmarket")}>Cardmarket</button>
+              <button
+                type="button"
+                aria-pressed={marketplaceChoice === "cardmarket"}
+                onClick={() => {
+                  setMarketplaceChoice("cardmarket");
+                  onCardmarketPrepare?.(visibleItems);
+                }}
+              >Cardmarket</button>
             ) : null}
           </div>
         </section>
@@ -205,14 +216,15 @@ export function MissingCardsPanel({
           <div className={styles.marketplaceHeader}>
             <div>
               <p className={styles.eyebrow}>Prüfpflichtige Marketplace-Übergabe</p>
-              <h3 id="cardmarket-handoff-heading">Cardmarket Prüfliste</h3>
-              <p>{cardmarketHandoff.positionCount} Positionen · {cardmarketHandoff.reviewRequiredCount} Ausgaben prüfen</p>
+              <h3 id="cardmarket-handoff-heading">Cardmarket Deckliste</h3>
+              <p>{cardmarketHandoff.importablePositionCount} importierbar · {cardmarketHandoff.reviewRequiredCount} Ausgaben prüfen</p>
             </div>
-            <a href={cardmarketHandoff.singlesUrl} target="_blank" rel="noopener noreferrer">
-              Auf Cardmarket suchen <ExternalLink aria-hidden="true" size={15} />
+            <a href={cardmarketHandoff.wantsHelpUrl} target="_blank" rel="noopener noreferrer">
+              Offizielles Format <ExternalLink aria-hidden="true" size={15} />
             </a>
           </div>
 
+          {cardmarketPreparing ? <p className={styles.handoffSteps} role="status">Fähigkeiten und Attacken werden aus dem Kartenkatalog aktualisiert …</p> : null}
           {cardmarketHandoff.warnings.map((warning) => <p className={styles.warning} role="note" key={warning}>{warning}</p>)}
 
           <details className={styles.marketplaceSearches}>
@@ -241,26 +253,37 @@ export function MissingCardsPanel({
           </div>
 
           <label className={styles.massEntryPreview}>
-            <span>Referenz für die manuelle Ausgabeprüfung · kein automatischer Decklistenimport</span>
+            <span>Cardmarket-Importtext · exakt eine Karte pro Zeile</span>
             <textarea
-              aria-label="Cardmarket-Prüflistenvorschau"
+              aria-label="Cardmarket-Decklistenvorschau"
               readOnly
-              rows={Math.max(3, Math.min(activeCardmarketPart.positionCount, 8))}
+              rows={Math.max(3, Math.min(activeCardmarketPart.importablePositionCount, 8))}
               value={activeCardmarketPart.text}
+              placeholder={cardmarketPreparing ? "Kartendaten werden aktualisiert …" : "Für diese Positionen fehlen noch die von Cardmarket benötigten Fähigkeiten oder Attacken."}
             />
           </label>
 
           <div className={styles.marketplaceActions}>
-            <button type="button" className={styles.primaryButton} onClick={() => onCardmarketCopy?.(activeCardmarketPart)}>
-              <Clipboard size={16} /> {cardmarketCopyState === "copied" ? `Teil ${activeCardmarketPart.index} kopiert` : "Prüfliste kopieren"}
+            <button type="button" className={styles.primaryButton} disabled={!activeCardmarketPart.text || cardmarketPreparing} onClick={() => onCardmarketCopy?.(activeCardmarketPart)}>
+              <Clipboard size={16} /> {cardmarketCopyState === "copied" ? `Teil ${activeCardmarketPart.index} kopiert` : "Deckliste kopieren"}
             </button>
-            <button type="button" className={styles.secondaryButton} onClick={() => onCardmarketTextExport?.(activeCardmarketPart)}>
-              <Download size={16} /> Prüfliste TXT
+            <button type="button" className={styles.secondaryButton} disabled={!activeCardmarketPart.text || cardmarketPreparing} onClick={() => onCardmarketTextExport?.(activeCardmarketPart)}>
+              <Download size={16} /> Deckliste TXT
             </button>
-            <a className={styles.helpLink} href={cardmarketHandoff.wantsHelpUrl} target="_blank" rel="noopener noreferrer">Offizielles Importformat</a>
+            <a className={styles.helpLink} href={cardmarketHandoff.singlesUrl} target="_blank" rel="noopener noreferrer">Ausgaben auf Cardmarket prüfen</a>
           </div>
 
           {cardmarketCopyState === "error" ? <p className={styles.error} role="status">Kopieren wurde nicht erlaubt. Der Text bleibt oben markierbar oder kann als TXT geladen werden.</p> : null}
+          {cardmarketHandoff.excluded.length ? (
+            <div className={styles.reviewList}>
+              <strong>Nicht im Importtext enthalten</strong>
+              <ul>
+                {cardmarketHandoff.excluded.map((item) => (
+                  <li key={item.identityKey}><span>{item.label}</span><small>{item.reason}</small></li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
         </section>
       ) : null}
 

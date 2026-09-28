@@ -134,6 +134,7 @@ export function FoundationWorkspace() {
   const [copyState, setCopyState] = useState<CopyState>("idle");
   const [tcgplayerCopyState, setTcgplayerCopyState] = useState<CopyState>("idle");
   const [cardmarketCopyState, setCardmarketCopyState] = useState<CopyState>("idle");
+  const [cardmarketPreparing, setCardmarketPreparing] = useState(false);
   const [importReport, setImportReport] = useState<ImportReport>();
   const [storageConflict, setStorageConflict] = useState(false);
   const [binderManagerOpen, setBinderManagerOpen] = useState(false);
@@ -454,6 +455,7 @@ export function FoundationWorkspace() {
     setCopyState("idle");
     setTcgplayerCopyState("idle");
     setCardmarketCopyState("idle");
+    setCardmarketPreparing(false);
     setLayoutChange(undefined);
     setVariantEdit(undefined);
     setStorageConflict(false);
@@ -777,25 +779,67 @@ export function FoundationWorkspace() {
 
   async function copyCardmarketHandoff(part: CardmarketHandoffPart) {
     try {
+      if (!part.text) throw new Error("No Cardmarket decklist lines available");
       if (!navigator.clipboard?.writeText) throw new Error("Clipboard API unavailable");
       await navigator.clipboard.writeText(part.text);
       setCardmarketCopyState("copied");
-      setMessage(`Cardmarket-Prüfliste Teil ${part.index} mit ${part.positionCount} Positionen wurde kopiert.`);
+      setMessage(`Cardmarket-Deckliste Teil ${part.index} mit ${part.importablePositionCount} Positionen wurde kopiert.`);
     } catch {
       setCardmarketCopyState("error");
-      setMessage("Cardmarket-Prüfliste konnte nicht kopiert werden. Nutze die sichtbare Vorschau oder TXT-Datei.");
+      setMessage("Cardmarket-Deckliste konnte nicht kopiert werden. Nutze die sichtbare Vorschau oder TXT-Datei.");
     }
   }
 
   function downloadCardmarketHandoff(part: CardmarketHandoffPart) {
+    if (!part.text) return;
     const blob = new Blob([part.text], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `cardfolio-cardmarket-pruefliste-teil-${part.index}-${new Date().toISOString().slice(0, 10)}.txt`;
+    link.download = `cardfolio-cardmarket-deckliste-teil-${part.index}-${new Date().toISOString().slice(0, 10)}.txt`;
     link.click();
     URL.revokeObjectURL(url);
-    setMessage(`Cardmarket-Prüfliste Teil ${part.index} mit ${part.positionCount} Positionen wurde als TXT vorbereitet.`);
+    setMessage(`Cardmarket-Deckliste Teil ${part.index} mit ${part.importablePositionCount} Positionen wurde als TXT vorbereitet.`);
+  }
+
+  async function prepareCardmarketHandoff(items: readonly MissingItem[]) {
+    if (!activeBinder || cardmarketPreparing) return;
+    const cardsToRefresh = [...new Map(
+      items
+        .filter((item) => !item.card.category || item.card.abilities === undefined || item.card.attacks === undefined)
+        .map((item) => [item.card.key, item.card]),
+    ).values()];
+    if (!cardsToRefresh.length) return;
+
+    setCardmarketPreparing(true);
+    setStorageStatus("saving");
+    try {
+      const results = await Promise.allSettled(cardsToRefresh.map((card) => catalog.getCard(card.ref)));
+      const refreshed = results.flatMap((result) => result.status === "fulfilled" ? [result.value] : []);
+      if (!refreshed.length) {
+        const failed = results.find((result): result is PromiseRejectedResult => result.status === "rejected");
+        throw failed?.reason instanceof Error
+          ? failed.reason
+          : new Error("Cardmarket-Katalogdaten konnten nicht aktualisiert werden.");
+      }
+      const saved = await repository.save(activeBinder, refreshed, activeBinder.revision);
+      publishBinderChange(saved);
+      setBinders((current) => current.map((binder) => (binder.id === saved.id ? saved : binder)));
+      setCards((current) => {
+        const next = new Map(current);
+        for (const card of refreshed) next.set(card.key, card);
+        return next;
+      });
+      setStorageStatus("saved");
+      const failedCount = results.length - refreshed.length;
+      setMessage(failedCount
+        ? `${refreshed.length} Kartendatensätze für Cardmarket aktualisiert; ${failedCount} konnten nicht geladen werden.`
+        : `${refreshed.length} Kartendatensätze für das offizielle Cardmarket-Format aktualisiert.`);
+    } catch (error) {
+      handleStorageError(error, "Cardmarket-Kartendaten konnten nicht aktualisiert werden.");
+    } finally {
+      setCardmarketPreparing(false);
+    }
   }
 
   const stats = activeBinder ? deriveBinderStats(activeBinder) : undefined;
@@ -1077,7 +1121,9 @@ export function FoundationWorkspace() {
               onTcgplayerCopy={copyTcgplayerExport}
               onTcgplayerTextExport={downloadTcgplayerExport}
               cardmarketEnabled={FEATURES.cardmarketImport}
+              cardmarketPreparing={cardmarketPreparing}
               cardmarketCopyState={cardmarketCopyState}
+              onCardmarketPrepare={(items) => void prepareCardmarketHandoff(items)}
               onCardmarketCopy={copyCardmarketHandoff}
               onCardmarketTextExport={downloadCardmarketHandoff}
             />

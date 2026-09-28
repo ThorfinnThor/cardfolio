@@ -20,6 +20,8 @@ export interface CardSnapshot {
   availableVariants?: CardVariantAvailability;
   imageBaseUrl?: string;
   category?: "pokemon" | "trainer" | "energy" | "other";
+  abilities?: string[];
+  attacks?: string[];
   physicalStatus: "physical" | "digital" | "unknown";
   fetchedAt: string;
 }

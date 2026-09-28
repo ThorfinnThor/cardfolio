@@ -85,8 +85,9 @@ async function fetchJson(url: URL, externalSignal?: AbortSignal): Promise<unknow
   }
 }
 
-function category(value?: string): CardSnapshot["category"] {
-  switch (value?.toLowerCase()) {
+function category(value?: string | null): CardSnapshot["category"] {
+  const normalized = value?.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  switch (normalized) {
     case "pokemon":
       return "pokemon";
     case "trainer":
@@ -136,7 +137,7 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
           name: item.name,
           collectorNumber: item.localId,
           collectorTotal: printedTotal,
-          imageBaseUrl: item.image,
+          imageBaseUrl: item.image ?? undefined,
           setId: card.set.id,
           setName: card.set.name,
         };
@@ -150,7 +151,7 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
           name: item.name,
           collectorNumber: item.localId,
           collectorTotal: collectorTotalForSearchItem(query.language, item.id, item.localId),
-          imageBaseUrl: item.image,
+          imageBaseUrl: item.image ?? undefined,
           setId: set?.id,
           setName: set?.name,
         };
@@ -181,11 +182,11 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
   async getCard(ref: CardRef, signal?: AbortSignal): Promise<CardSnapshot> {
     const cardUrl = new URL(`${BASE_URL}/${ref.language}/cards/${encodeURIComponent(ref.id)}`);
     const card = tcgdexCardSchema.parse(await fetchJson(cardUrl, signal));
-    let imageBaseUrl = card.image;
+    let imageBaseUrl = card.image ?? undefined;
     if (!imageBaseUrl && ref.language === "de") {
       try {
         const englishCardUrl = new URL(`${BASE_URL}/en/cards/${encodeURIComponent(ref.id)}`);
-        imageBaseUrl = tcgdexCardSchema.parse(await fetchJson(englishCardUrl, signal)).image;
+        imageBaseUrl = tcgdexCardSchema.parse(await fetchJson(englishCardUrl, signal)).image ?? undefined;
       } catch (error) {
         if (signal?.aborted) throw error;
       }
@@ -208,6 +209,8 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
       } : undefined,
       imageBaseUrl,
       category: category(card.category),
+      abilities: card.abilities?.map((ability) => ability.name) ?? [],
+      attacks: card.attacks?.map((attack) => attack.name) ?? [],
       physicalStatus: set.serie?.id === "tcgp" ? "digital" : set.serie ? "physical" : "unknown",
       fetchedAt: new Date().toISOString(),
     };
