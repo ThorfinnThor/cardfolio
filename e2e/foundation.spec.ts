@@ -535,6 +535,8 @@ test("sets, edits and persists the minimum condition for marketplace handoff", a
   await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Ivysaur");
   await page.getByRole("listitem").filter({ hasText: "Ivysaur" }).getByRole("button", { name: "Prüfen" }).click();
   const preview = page.getByRole("dialog", { name: "Karte prüfen" });
+  await preview.getByLabel("Finish").selectOption("normal");
+  await preview.getByLabel("Edition").selectOption("unlimited");
   await preview.getByLabel("Mindestzustand").selectOption("near-mint");
   await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
 
@@ -618,6 +620,7 @@ test("finds and displays an exact full collector number", async ({ page }) => {
   await result.getByRole("button", { name: "Prüfen" }).click();
   const preview = page.getByRole("dialog", { name: "Karte prüfen" });
   await expect(preview).toContainText("4/102");
+  await preview.getByLabel("Edition").selectOption("unlimited");
   await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
 
   const card = page.getByRole("article", { name: "Charizard, Slot 1" });
