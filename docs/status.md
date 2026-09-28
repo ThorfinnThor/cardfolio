@@ -419,9 +419,25 @@ Completed:
 - TCGdex ability and attack names are stored in validated local card snapshots and backups. Existing snapshots are refreshed automatically when Cardmarket is selected.
 - Import text and variant review are now separate: Cardmarket receives only accepted decklist tokens, while set, number, language and printing preferences remain visible in Cardfolio.
 - Cards lacking the required catalog identity fields are excluded visibly instead of producing a line that Cardmarket will reject.
-- Corrected TCGplayer item numbers separately to use only the number within the set, such as `[G2] 2` and `[N1] 17`.
+- Restored TCGplayer's full displayed collector numbers after live parser verification, such as `[G2] 002/132` and `[N1] 017/111`; local-only numbers are rejected by the Pokémon Mass Entry parser.
 
 Verification completed:
 
 - Typecheck, ESLint, 65 unit/component tests, static Next.js build, release checks and `git diff --check` passed locally; all eleven Playwright scenarios are syntactically discoverable for Linux CI.
 - A browser test against the local production build refreshed existing Tornupto and Pikachu snapshots from the live TCGdex API and produced exactly `1x Tornupto Feueraufladung Flammenexplosion` and `1x Pikachu Growl Thundershock` on separate lines.
+
+## 2026-09-28 — TCGplayer live-cart regression and filter guidance
+
+Completed:
+
+- Repeated the Mass Entry check against the current live TCGplayer UI and current Pokémon set-code list.
+- The shortened lines `[N1] 17` and `[G2] 2` were rejected as not found. The full lines `[N1] 017/111` and `[G2] 002/132` were both resolved by the parser.
+- A single `1 Typhlosion (17) [N1] 017/111` line reached the anonymous cart as Neo Genesis, Moderately Played, Unlimited Holofoil. No checkout or payment was initiated.
+- Blaine's Charizard resolved but reported insufficient quantity under the selected Printing/Condition filters, proving that inventory/filter failure is distinct from an invalid line.
+- Cardfolio now lists the exact TCGplayer Printing and condition filters implied by each stored variant and condition preference. Unverified mapped-set candidates are excluded so one unsafe line cannot block the verified batch.
+- Shadowless selections are excluded from the standard Base Set handoff because TCGplayer uses the separate `[BSS]` set code; this variant remains blocked until separately parser-tested.
+
+Verification completed:
+
+- Typecheck, ESLint, 66 unit/component tests, static Next.js build, release checks and `git diff --check` passed locally.
+- The local production UI showed the exact full-number Typhlosion line, the compatible Holofoil options, the Near Mint condition and no browser-console warnings or errors.

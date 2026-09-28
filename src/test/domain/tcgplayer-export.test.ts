@@ -30,7 +30,7 @@ describe("TCGplayer Mass Entry export", () => {
   it("formats verified English printings with quantity, name, set code and card number", () => {
     const exported = createTcgplayerMassEntryExport([missingItem()], TCGPLAYER_SET_MAPPINGS, TCGPLAYER_PRINTING_MAPPINGS);
 
-    expect(exported.text).toBe("2 Bulbasaur [BS] 44");
+    expect(exported.text).toBe("2 Bulbasaur [BS] 044/102");
     expect(exported.verifiedCount).toBe(1);
     expect(exported.reviewRequiredCount).toBe(0);
     expect(exported.readyCount).toBe(1);
@@ -38,10 +38,12 @@ describe("TCGplayer Mass Entry export", () => {
     expect(exported.massEntryPrefilled).toBe(true);
     const handoffUrl = new URL(exported.massEntryUrl);
     expect(`${handoffUrl.origin}${handoffUrl.pathname}`).toBe(TCGPLAYER_MASS_ENTRY_URL);
-    expect(handoffUrl.searchParams.get("c")).toBe("2 Bulbasaur [BS] 44");
+    expect(handoffUrl.searchParams.get("c")).toBe("2 Bulbasaur [BS] 044/102");
     expect(handoffUrl.searchParams.get("productline")).toBe("Pokemon");
     expect(exported.matches[0]).toMatchObject({
       status: "verified-printing",
+      printingHint: "Unlimited",
+      conditionHint: "Near Mint",
       setMapping: { tcgdexSetId: "base1", tcgplayerSetCode: "BS" },
       printingMapping: { tcgdexCardId: "base1-44", tcgplayerProductName: "Bulbasaur" },
     });
@@ -93,7 +95,7 @@ describe("TCGplayer Mass Entry export", () => {
     expect(exported.warnings).toContain("1 Position(en) haben keinen geprüften TCGplayer-Set-Code und wurden ausgeschlossen.");
   });
 
-  it("includes an English mapped-set candidate but keeps it review-required", () => {
+  it("excludes an English mapped-set candidate until the printing is parser-tested", () => {
     const item = missingItem({
       card: {
         ...missingItem().card,
@@ -105,16 +107,16 @@ describe("TCGplayer Mass Entry export", () => {
     });
     const exported = createTcgplayerMassEntryExport([item], TCGPLAYER_SET_MAPPINGS, TCGPLAYER_PRINTING_MAPPINGS);
 
-    expect(exported.text).toBe("2 Alakazam [BS] 1");
+    expect(exported.text).toBe("");
     expect(exported.matches[0]).toMatchObject({
       status: "candidate",
       setMapping: { tcgplayerSetCode: "BS" },
-      reason: "Set-Code und Mass-Entry-Format sind geprüft; die konkrete Zuordnung muss in der TCGplayer-Vorschau bestätigt werden.",
+      reason: "Der Set-Code ist geprüft, dieses konkrete Printing aber noch nicht im TCGplayer-Testset und wurde deshalb ausgeschlossen.",
     });
-    expect(exported.readyCount).toBe(1);
+    expect(exported.readyCount).toBe(0);
     expect(exported.verifiedCount).toBe(0);
     expect(exported.reviewRequiredCount).toBe(1);
-    expect(exported.excludedEntryIds).toEqual([]);
+    expect(exported.excludedEntryIds).toEqual(item.entryIds);
   });
 
   it("does not infer a TCGplayer name for an unverified German card", () => {
@@ -133,6 +135,21 @@ describe("TCGplayer Mass Entry export", () => {
       status: "unresolved",
       reason: "Für diese deutsche Karte ist kein geprüfter englischer TCGplayer-Name hinterlegt.",
     });
+  });
+
+  it("does not send a Shadowless selection through the regular Base Set code", () => {
+    const shadowless = missingItem({
+      variant: { finish: "normal", edition: "unlimited", printing: "shadowless" },
+    });
+
+    const exported = createTcgplayerMassEntryExport([shadowless], TCGPLAYER_SET_MAPPINGS, TCGPLAYER_PRINTING_MAPPINGS);
+
+    expect(exported.text).toBe("");
+    expect(exported.matches[0]).toMatchObject({
+      status: "candidate",
+      reason: "Shadowless verwendet bei TCGplayer eine eigene Set-Zuordnung und wurde ohne separat geprüftes Printing ausgeschlossen.",
+    });
+    expect(exported.excludedEntryIds).toEqual(shadowless.entryIds);
   });
 
   it("exports the exact verified German Tornupto identity and English Blaine's Charizard printing", () => {
@@ -171,7 +188,7 @@ describe("TCGplayer Mass Entry export", () => {
       TCGPLAYER_PRINTING_MAPPINGS,
     );
 
-    expect(exported.text).toBe("1 Typhlosion (17) [N1] 17\n1 Blaine's Charizard [G2] 2");
+    expect(exported.text).toBe("1 Typhlosion (17) [N1] 017/111\n1 Blaine's Charizard [G2] 002/132");
     expect(exported.verifiedCount).toBe(2);
     expect(exported.reviewRequiredCount).toBe(0);
     expect(exported.matches.map((match) => match.collectorNumber)).toEqual(["17/111", "2/132"]);
@@ -191,7 +208,7 @@ describe("TCGplayer Mass Entry export", () => {
     expect(exported.excludedEntryIds).toEqual([...unknown.entryIds, ...multiline.entryIds]);
   });
 
-  it("exports the number within the set in TCGplayer's accepted format", () => {
+  it("exports TCGplayer's full displayed collector number", () => {
     const modern = missingItem({
       identityKey: "magikarp-pal",
       card: {
@@ -208,14 +225,14 @@ describe("TCGplayer Mass Entry export", () => {
     });
     const exported = createTcgplayerMassEntryExport([missingItem(), modern], TCGPLAYER_SET_MAPPINGS, TCGPLAYER_PRINTING_MAPPINGS);
 
-    expect(exported.text).toBe("2 Bulbasaur [BS] 44\n1 Magikarp - 203/193 [PAL] 203");
+    expect(exported.text).toBe("2 Bulbasaur [BS] 044/102\n1 Magikarp - 203/193 [PAL] 203/193");
     expect(exported.verifiedCount).toBe(2);
   });
 
-  it("removes the set total and numeric leading zeroes but preserves prefixed card numbers", () => {
-    expect(toTcgplayerItemNumber("002/132")).toBe("2");
-    expect(toTcgplayerItemNumber("017/111")).toBe("17");
-    expect(toTcgplayerItemNumber("TG01/TG30")).toBe("TG01");
+  it("preserves the full collector number required by TCGplayer's Pokemon parser", () => {
+    expect(toTcgplayerItemNumber("002/132")).toBe("002/132");
+    expect(toTcgplayerItemNumber("017/111")).toBe("017/111");
+    expect(toTcgplayerItemNumber("TG01/TG30")).toBe("TG01/TG30");
   });
 
   it("falls back to the generic Mass Entry page when a prefilled URL would be too long", () => {

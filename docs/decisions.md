@@ -32,6 +32,10 @@
 - A verified TCGplayer set code is necessary but not sufficient for `verified-printing`.
 - The specific Mass Entry block requires an exact, manually tested card-level mapping because modern Pokémon product titles can include collector-number suffixes not present in the TCGdex card name.
 - All other cards remain in the neutral missing-card list and appear as `candidate` or `unresolved`; they are never silently translated or guessed.
+- Pokémon Mass Entry requires the full displayed collector number, including leading zeroes and set total. A local-only number such as `17` is not substituted for `017/111`.
+- Mapped-set candidates without a tested printing are excluded from Mass Entry. TCGplayer can reject the whole batch when one line cannot be fulfilled, so a speculative line must not block verified cards.
+- TCGplayer Printing options are separate filters: `Holofoil`, `1st Edition Holofoil` and `Unlimited Holofoil` are not interchangeable. Cardfolio shows the compatible filter labels but never claims that matching inventory exists.
+- TCGplayer lists Base Set (Shadowless) under its own `[BSS]` set code. A Shadowless selection is excluded from the regular `[BS]` handoff until that exact variant mapping is separately parser-tested.
 - The external TCGplayer link is user initiated. Cardfolio does not claim a purchase, price, seller match or successful cart state.
 
 ## 2026-09-27 — Cardmarket remains a review handoff

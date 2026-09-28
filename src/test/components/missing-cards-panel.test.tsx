@@ -101,18 +101,19 @@ describe("MissingCardsPanel", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "TCGplayer" }));
     expect(screen.getByRole("heading", { name: "TCGplayer Mass Entry" })).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue("1 Bulbasaur [BS] 44");
+    expect(screen.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue("1 Bulbasaur [BS] 044/102");
     expect(screen.getByText(/2× Pikachu · Wizards Black Star Promos · 001/)).toBeInTheDocument();
     expect(screen.getByText(/Kandidat: Für dieses TCGdex-Set/)).toBeInTheDocument();
     const handoffLink = screen.getByRole("link", { name: /Liste bei TCGplayer öffnen/ });
     expect(handoffLink).toHaveAttribute("rel", "noopener noreferrer");
-    expect(new URL(handoffLink.getAttribute("href") ?? "").searchParams.get("c")).toBe("1 Bulbasaur [BS] 44");
+    expect(new URL(handoffLink.getAttribute("href") ?? "").searchParams.get("c")).toBe("1 Bulbasaur [BS] 044/102");
+    expect(screen.getByText(/Printing: Unlimited · Zustand: alle Zustände einschließlich Damaged/)).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "TCGplayer kopieren" }));
     fireEvent.click(screen.getByRole("button", { name: "TCGplayer TXT" }));
 
-    expect(onTcgplayerCopy).toHaveBeenCalledWith(expect.objectContaining({ text: "1 Bulbasaur [BS] 44", verifiedCount: 1 }));
-    expect(onTcgplayerTextExport).toHaveBeenCalledWith(expect.objectContaining({ text: "1 Bulbasaur [BS] 44", reviewRequiredCount: 1 }));
+    expect(onTcgplayerCopy).toHaveBeenCalledWith(expect.objectContaining({ text: "1 Bulbasaur [BS] 044/102", verifiedCount: 1 }));
+    expect(onTcgplayerTextExport).toHaveBeenCalledWith(expect.objectContaining({ text: "1 Bulbasaur [BS] 044/102", reviewRequiredCount: 1 }));
   });
 
   it("shows the exact Cardmarket decklist format and keeps review links separate", () => {

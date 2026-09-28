@@ -35,6 +35,8 @@ export interface TcgplayerMatch {
   collectorNumber: string;
   status: TcgplayerMatchStatus;
   reason: string;
+  printingHint: string;
+  conditionHint: string;
   line?: string;
   setMapping?: TcgplayerSetMapping;
   printingMapping?: TcgplayerPrintingMapping;
@@ -59,9 +61,35 @@ export function createTcgplayerMassEntryUrl(text: string): string {
 }
 
 export function toTcgplayerItemNumber(collectorNumber: string): string {
-  const numberWithinSet = collectorNumber.split("/", 1)[0]?.trim() ?? "";
-  if (/^\d+$/.test(numberWithinSet)) return String(Number(numberWithinSet));
-  return numberWithinSet;
+  return collectorNumber.trim();
+}
+
+export function tcgplayerPrintingHint(item: MissingItem): string {
+  const { edition, finish, label } = item.variant;
+  if (label?.trim()) return `Manuell abgleichen: ${label.trim()}`;
+  if (finish === "reverse") return "Reverse Holofoil";
+  if (finish === "holo" && edition === "first-edition") return "1st Edition Holofoil";
+  if (finish === "holo" && edition === "unlimited") return "Unlimited Holofoil";
+  if (finish === "holo") return "Holofoil, 1st Edition Holofoil oder Unlimited Holofoil";
+  if (finish === "normal" && edition === "first-edition") return "1st Edition";
+  if (finish === "normal" && edition === "unlimited") return "Unlimited";
+  if (finish === "normal") return "Normal, 1st Edition oder Unlimited";
+  if (edition === "first-edition") return "1st Edition oder 1st Edition Holofoil";
+  if (edition === "unlimited") return "Unlimited oder Unlimited Holofoil";
+  return "Alle passenden Printing-Optionen";
+}
+
+export function tcgplayerConditionHint(item: MissingItem): string {
+  switch (item.preferences.minimumCondition) {
+    case "near-mint":
+      return "Near Mint";
+    case "lightly-played":
+      return "Near Mint und Lightly Played";
+    case "played":
+      return "Near Mint, Lightly Played, Moderately Played und Heavily Played";
+    case "any":
+      return "alle Zustände einschließlich Damaged";
+  }
 }
 
 function unsafeLineField(value: string): boolean {
@@ -80,6 +108,8 @@ function matchItem(
     cardName: item.card.name,
     setName: item.card.setName,
     collectorNumber: formatCollectorNumber(item.card.collectorNumber, item.card.collectorTotal),
+    printingHint: tcgplayerPrintingHint(item),
+    conditionHint: tcgplayerConditionHint(item),
   };
 
   if (item.card.physicalStatus !== "physical") {
@@ -122,29 +152,21 @@ function matchItem(
     };
   }
 
-  if (!printingMapping) {
-    if (item.card.ref.language === "en") {
-      const itemNumber = toTcgplayerItemNumber(base.collectorNumber);
-      if (unsafeLineField(itemNumber)) {
-        return {
-          ...base,
-          status: "unresolved",
-          reason: "Die Kartennummer ist nicht sicher als TCGplayer-Artikelnummer darstellbar.",
-          setMapping,
-        };
-      }
-      return {
-        ...base,
-        status: "candidate",
-        reason: "Set-Code und Mass-Entry-Format sind geprüft; die konkrete Zuordnung muss in der TCGplayer-Vorschau bestätigt werden.",
-        line: `${item.quantity} ${item.card.name} [${setMapping.tcgplayerSetCode}] ${itemNumber}`,
-        setMapping,
-      };
-    }
+  if (item.variant.printing === "shadowless") {
     return {
       ...base,
       status: "candidate",
-      reason: "Der Set-Code ist geprüft, dieses konkrete Printing aber noch nicht im TCGplayer-Testset.",
+      reason: "Shadowless verwendet bei TCGplayer eine eigene Set-Zuordnung und wurde ohne separat geprüftes Printing ausgeschlossen.",
+      setMapping,
+      printingMapping,
+    };
+  }
+
+  if (!printingMapping) {
+    return {
+      ...base,
+      status: "candidate",
+      reason: "Der Set-Code ist geprüft, dieses konkrete Printing aber noch nicht im TCGplayer-Testset und wurde deshalb ausgeschlossen.",
       setMapping,
     };
   }
@@ -178,8 +200,6 @@ export function createTcgplayerMassEntryExport(
   const matches = items.map((item) => matchItem(item, setMappings, printingMappings));
   const verified = matches.filter((match) => match.status === "verified-printing" && match.line);
   const candidates = matches.filter((match) => match.status === "candidate");
-  const readyCandidates = candidates.filter((match) => match.line);
-  const excludedCandidates = candidates.filter((match) => !match.line);
   const unresolved = matches.filter((match) => match.status === "unresolved");
   const ready = matches.filter((match) => match.line);
   const text = ready.map((match) => match.line).join("\n");
@@ -189,11 +209,8 @@ export function createTcgplayerMassEntryExport(
   if (verified.length > 0) {
     warnings.push("Druckart, Sprache, Zustand und Finish in TCGplayer Mass Entry vor dem Warenkorb prüfen.");
   }
-  if (readyCandidates.length > 0) {
-    warnings.push(`${readyCandidates.length} Position(en) wurden aus geprüftem Set-Code, englischem Katalognamen und Kartennummer erzeugt. Die TCGplayer-Vorschau muss die konkrete Ausgabe bestätigen.`);
-  }
-  const candidatesWithoutSet = excludedCandidates.filter((match) => !match.setMapping);
-  const candidatesWithoutPrinting = excludedCandidates.filter((match) => match.setMapping);
+  const candidatesWithoutSet = candidates.filter((match) => !match.setMapping);
+  const candidatesWithoutPrinting = candidates.filter((match) => match.setMapping);
   if (candidatesWithoutSet.length > 0) {
     warnings.push(`${candidatesWithoutSet.length} Position(en) haben keinen geprüften TCGplayer-Set-Code und wurden ausgeschlossen.`);
   }

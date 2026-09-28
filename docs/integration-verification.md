@@ -245,3 +245,13 @@ Environment: live TCGdex German/English card endpoints, synchronized set metadat
 - The binder version editor persists Finish, Edition, printing and an optional custom label. The E2E flow selects and displays `Holo · First Edition · Shadowless` for the German fixture.
 - Live `glurak` search returned a denominator for every visible result. Set `2024sv`, which was absent from the synchronized snapshot, was completed through one targeted card-detail request as `1/15`.
 - A legacy entry rendered `Normal · Unlimited · Offen: Druckvariante`; its image placeholder exposed `Kartendaten aktualisieren`. The version dialog was opened and cancelled without changing stored data.
+
+## TCGplayer full-number and option-filter regression — 2026-09-28
+
+Environment: current official TCGplayer Mass Entry UI and anonymous cart.
+
+- The current set-code dialog still identifies Neo Genesis as `[N1]` and Gym Challenge as `[G2]`.
+- `1 Typhlosion (17) [N1] 17` and `1 Blaine's Charizard [G2] 2` were rejected as not found.
+- With all Printing options enabled, `1 Typhlosion (17) [N1] 017/111` resolved and reached the cart as Neo Genesis, Moderately Played, Unlimited Holofoil.
+- `1 Blaine's Charizard [G2] 002/132` resolved but returned an insufficient-quantity message for the selected preferences. This is an inventory/filter result, not a parser identity failure.
+- The anonymous cart already contained the two earlier controlled Paldea test products; the verified Typhlosion became the third item. Checkout and payment were not opened.

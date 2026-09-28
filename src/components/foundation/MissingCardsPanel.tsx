@@ -153,13 +153,14 @@ export function MissingCardsPanel({
           {tcgplayerExport.text ? (
             <ol className={styles.handoffSteps} aria-label="TCGplayer-Übergabeschritte">
               <li>{tcgplayerExport.massEntryPrefilled ? "Die übergabebereiten Positionen werden in Mass Entry vorausgefüllt." : "Kopiere den Text und füge ihn in Mass Entry ein."}</li>
-              <li>Prüfe dort Kartenname, Set, Nummer, Sprache, Printing und Zustand.</li>
+              <li>Aktiviere dort die unten genannten Printing- und Zustandsfilter. Holofoil, 1st Edition Holofoil und Unlimited Holofoil sind getrennte Optionen.</li>
+              <li>Prüfe Kartenname, Set, vollständige Nummer, Sprache, Printing und Zustand.</li>
               <li>Erst anschließend lässt du TCGplayer externe Angebote in den Warenkorb legen.</li>
             </ol>
           ) : null}
 
           <label className={styles.massEntryPreview}>
-            <span>Mass-Entry-Text · druckgeprüfte Positionen und Prüfkandidaten aus geprüften Sets</span>
+            <span>Mass-Entry-Text · nur einzeln geprüfte Printings mit vollständiger Kartennummer</span>
             <textarea
               aria-label="TCGplayer Mass-Entry-Vorschau"
               readOnly
@@ -181,14 +182,14 @@ export function MissingCardsPanel({
           {tcgplayerCopyState === "error" ? <p className={styles.error} role="status">Kopieren wurde nicht erlaubt. Der Text bleibt oben markierbar oder kann als TXT geladen werden.</p> : null}
           {tcgplayerExport.warnings.map((warning) => <p className={styles.warning} role="note" key={warning}>{warning}</p>)}
 
-          {tcgplayerExport.matches.some((match) => match.status === "candidate" && match.line) ? (
+          {tcgplayerExport.matches.some((match) => match.line) ? (
             <div className={styles.reviewList}>
-              <strong>In der TCGplayer-Vorschau bestätigen</strong>
+              <strong>TCGplayer-Filter vor „Add to Cart“</strong>
               <ul>
-                {tcgplayerExport.matches.filter((match) => match.status === "candidate" && match.line).map((match) => (
+                {tcgplayerExport.matches.filter((match) => match.line).map((match) => (
                   <li key={match.identityKey}>
                     <span>{match.quantity}× {match.cardName} · {match.setName} · {match.collectorNumber}</span>
-                    <small>Prüfkandidat: {match.reason}</small>
+                    <small>Printing: {match.printingHint} · Zustand: {match.conditionHint}</small>
                   </li>
                 ))}
               </ul>
