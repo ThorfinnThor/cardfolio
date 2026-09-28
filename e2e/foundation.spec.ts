@@ -215,7 +215,7 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   await addCard(page, 2, "Ivysaur", "Ivysaur");
 
   await page.getByRole("article", { name: "Bulbasaur, Slot 1" }).click();
-  await page.getByRole("button", { name: "Verschieben" }).click();
+  await page.getByRole("button", { name: "Verschieben", exact: true }).click();
   await page.getByRole("button", { name: "Hierher verschieben", exact: true }).click();
   await page.getByRole("article", { name: "Bulbasaur, Slot 2" }).click();
   await page.getByRole("button", { name: "Als vorhanden markieren" }).click();
@@ -347,7 +347,7 @@ test("names and reorders pages, then duplicates and sorts binders", async ({ pag
 
   await page.getByRole("button", { name: "Meine Binder", exact: true }).first().click();
   await page.getByRole("button", { name: "Sortierbasis duplizieren" }).click();
-  await expect(page.getByText("Sortierbasis (Kopie)", { exact: true })).toBeVisible();
+  await expect(page.getByRole("article").filter({ hasText: "Sortierbasis (Kopie)" })).toHaveCount(1);
   await page.getByRole("button", { name: "Sortierbasis (Kopie) nach hinten verschieben" }).click();
 
   await page.reload();
@@ -422,7 +422,7 @@ test("confirms a lossless layout change and keeps mouse drag optional", async ({
   await expect(page.getByRole("article", { name: "Ivysaur, Slot 1" })).toBeVisible();
   await expect(page.getByRole("article", { name: "Bulbasaur, Slot 2" })).toBeVisible();
   await page.getByRole("article", { name: "Ivysaur, Slot 1" }).click();
-  await expect(page.getByRole("button", { name: "Verschieben" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Verschieben", exact: true })).toBeVisible();
 });
 
 test("shows a visible storage error when IndexedDB is unavailable", async ({ page }) => {
