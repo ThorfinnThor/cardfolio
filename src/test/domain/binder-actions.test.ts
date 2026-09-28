@@ -3,13 +3,17 @@ import { describe, expect, it } from "vitest";
 import {
   addPage,
   BINDER_DESCRIPTION_MAX_LENGTH,
+  BINDER_NAME_MAX_LENGTH,
   changeBinderLayout,
   createBinder,
   createPlannedCard,
+  deletePage,
+  duplicatePage,
   moveOrSwapCard,
   placeCard,
   previewBinderLayoutChange,
   removeCard,
+  renameBinder,
   PAGE_NOTE_MAX_LENGTH,
   setBinderDescription,
   setCardPreferences,
@@ -189,5 +193,40 @@ describe("binder domain", () => {
     expect(() => setBinderDescription(noted, "x".repeat(BINDER_DESCRIPTION_MAX_LENGTH + 1))).toThrow("500");
     expect(() => setPageNote(noted, noted.pages[0].id, "x".repeat(PAGE_NOTE_MAX_LENGTH + 1))).toThrow("2000");
     expect(() => setPageNote(noted, crypto.randomUUID(), "Lost page")).toThrow("does not exist");
+  });
+
+  it("renames binders with trimming and enforces the name limit", () => {
+    const binder = createBinder("Original");
+    const renamed = renameBinder(binder, "  Base Set Master  ");
+
+    expect(binder.name).toBe("Original");
+    expect(renamed.name).toBe("Base Set Master");
+    expect(renameBinder(renamed, "Base Set Master")).toBe(renamed);
+    expect(() => renameBinder(renamed, "   ")).toThrow("1 to 100");
+    expect(() => renameBinder(renamed, "x".repeat(BINDER_NAME_MAX_LENGTH + 1))).toThrow("100");
+  });
+
+  it("duplicates pages with fresh page and entry IDs, then requires confirmation before deleting cards", () => {
+    const binder = createBinder("Page management");
+    const entry = createPlannedCard(card.key, { finish: "holo", edition: "first-edition" });
+    const placed = setPageNote(
+      placeCard(binder, { pageId: binder.pages[0].id, slotIndex: 0 }, entry),
+      binder.pages[0].id,
+      "Keep this layout together.",
+    );
+    const duplicated = duplicatePage(placed, placed.pages[0].id);
+    const duplicateEntry = duplicated.pages[1].slots[0];
+
+    expect(duplicated.pages).toHaveLength(2);
+    expect(duplicated.pages[1].id).not.toBe(duplicated.pages[0].id);
+    expect(duplicated.pages[1].note).toBe("Keep this layout together.");
+    expect(duplicateEntry).toMatchObject({ cardKey: card.key, owned: false, variant: entry.variant });
+    expect(duplicateEntry?.id).not.toBe(entry.id);
+    expect(() => deletePage(duplicated, duplicated.pages[1].id)).toThrow("requires confirmation");
+
+    const deleted = deletePage(duplicated, duplicated.pages[1].id, true);
+    expect(deleted.pages).toHaveLength(1);
+    expect(deleted.pages[0].slots[0]?.id).toBe(entry.id);
+    expect(() => deletePage(deleted, deleted.pages[0].id, true)).toThrow("at least one page");
   });
 });

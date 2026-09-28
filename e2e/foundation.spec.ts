@@ -286,6 +286,45 @@ test("autosaves the binder description and each page note across reloads", async
   await expect(page.getByRole("textbox", { name: "Seitennotiz · Seite 1" })).toHaveValue("Obere Reihe für Holo-Karten freihalten.");
 });
 
+test("renames binders and safely duplicates and deletes pages", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/");
+  await page.getByLabel("Bindername").fill("Verwaltung Alt");
+  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+
+  await page.getByRole("button", { name: "Binder umbenennen" }).click();
+  const renameDialog = page.getByRole("dialog", { name: "Binder umbenennen" });
+  const nameInput = renameDialog.getByRole("textbox", { name: "Bindername" });
+  await expect(nameInput).toHaveAttribute("maxlength", "100");
+  await nameInput.fill("Verwaltung Neu");
+  await renameDialog.getByRole("button", { name: "Namen speichern" }).click();
+  await expect(page.getByRole("heading", { name: "Verwaltung Neu", exact: true })).toBeVisible();
+
+  await addCard(page, 1, "Bulbasaur", "Bulbasaur");
+  const note = page.getByRole("textbox", { name: "Seitennotiz · Seite 1" });
+  await note.fill("Diese Karten und Notiz gemeinsam duplizieren.");
+  await note.blur();
+  await expect(page.getByRole("group", { name: "Seitennotiz · Seite 1" }).getByText("Lokal gespeichert")).toBeVisible();
+
+  await page.getByRole("button", { name: "Seite 1 duplizieren" }).click();
+  await expect(page.getByText("2 / 2", { exact: true })).toBeVisible();
+  await expect(page.getByRole("article", { name: "Bulbasaur, Slot 1" })).toBeVisible();
+  await expect(page.getByRole("textbox", { name: "Seitennotiz · Seite 2" })).toHaveValue("Diese Karten und Notiz gemeinsam duplizieren.");
+
+  await page.getByRole("button", { name: "Seite 2 löschen" }).click();
+  const deleteDialog = page.getByRole("dialog", { name: "Seite 2 wirklich löschen?" });
+  await expect(deleteDialog).toContainText("1 geplante Karte wird dauerhaft");
+  await expect(deleteDialog).toContainText("Auch die Seitennotiz wird gelöscht");
+  await deleteDialog.getByRole("button", { name: "Seite löschen" }).click();
+  await expect(page.getByText("1 / 1", { exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Seite 1 löschen" })).toBeDisabled();
+
+  await page.reload();
+  await expect(page.getByRole("heading", { name: "Verwaltung Neu", exact: true })).toBeVisible();
+  await expect(page.getByText("1 / 1", { exact: true })).toBeVisible();
+  await expect(page.getByRole("article", { name: "Bulbasaur, Slot 1" })).toBeVisible();
+});
+
 test("detects a binder update from another tab and reloads the current revision", async ({
   context,
   page,

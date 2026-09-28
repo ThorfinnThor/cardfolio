@@ -15,8 +15,10 @@ export interface SlotLocation {
 
 const DEFAULT_LAYOUT = { rows: 3, columns: 3 } as const;
 
+export const BINDER_NAME_MAX_LENGTH = 100;
 export const BINDER_DESCRIPTION_MAX_LENGTH = 500;
 export const PAGE_NOTE_MAX_LENGTH = 2_000;
+export const MAX_BINDER_PAGES = 40;
 
 export const SUPPORTED_BINDER_LAYOUTS = [
   { key: "2x2", label: "2 × 2", rows: 2, columns: 2 },
@@ -61,8 +63,8 @@ export function createBinder(
   layout: { rows: number; columns: number } = DEFAULT_LAYOUT,
 ): Binder {
   const cleanName = name.trim();
-  if (!cleanName || cleanName.length > 100) {
-    throw new Error("Binder name must contain 1 to 100 characters.");
+  if (!cleanName || cleanName.length > BINDER_NAME_MAX_LENGTH) {
+    throw new Error(`Binder name must contain 1 to ${BINDER_NAME_MAX_LENGTH} characters.`);
   }
   if (layout.rows < 1 || layout.columns < 1 || layout.rows * layout.columns > 360) {
     throw new Error("Binder layout is outside the supported limits.");
@@ -110,6 +112,15 @@ function locate(binder: Binder, location: SlotLocation): { pageIndex: number; pa
 
 function withUpdatedPages(binder: Binder, pages: BinderPage[]): Binder {
   return { ...binder, pages, updatedAt: now() };
+}
+
+export function renameBinder(binder: Binder, name: string): Binder {
+  const cleanName = name.trim();
+  if (!cleanName || cleanName.length > BINDER_NAME_MAX_LENGTH) {
+    throw new Error(`Binder name must contain 1 to ${BINDER_NAME_MAX_LENGTH} characters.`);
+  }
+  if (binder.name === cleanName) return binder;
+  return { ...binder, name: cleanName, updatedAt: now() };
 }
 
 export function setBinderDescription(binder: Binder, description: string): Binder {
@@ -272,8 +283,30 @@ export function setCardPreferences(binder: Binder, entryId: UUID, preferences: P
 }
 
 export function addPage(binder: Binder): Binder {
-  if (binder.pages.length >= 40) throw new Error("A binder can contain at most 40 pages.");
+  if (binder.pages.length >= MAX_BINDER_PAGES) throw new Error(`A binder can contain at most ${MAX_BINDER_PAGES} pages.`);
   return withUpdatedPages(binder, [...binder.pages, emptyPage(slotCount(binder))]);
+}
+
+export function duplicatePage(binder: Binder, pageId: UUID): Binder {
+  if (binder.pages.length >= MAX_BINDER_PAGES) throw new Error(`A binder can contain at most ${MAX_BINDER_PAGES} pages.`);
+  const pageIndex = binder.pages.findIndex((candidate) => candidate.id === pageId);
+  if (pageIndex < 0) throw new Error("Binder page does not exist.");
+  const addedAt = now();
+  const source = binder.pages[pageIndex];
+  const duplicate: BinderPage = {
+    id: newId(),
+    note: source.note,
+    slots: source.slots.map((entry) => entry ? {
+      ...entry,
+      id: newId(),
+      variant: { ...entry.variant },
+      preferences: { ...entry.preferences },
+      addedAt,
+    } : null),
+  };
+  const pages = [...binder.pages];
+  pages.splice(pageIndex + 1, 0, duplicate);
+  return withUpdatedPages(binder, pages);
 }
 
 export function deletePage(binder: Binder, pageId: UUID, allowNonEmpty = false): Binder {

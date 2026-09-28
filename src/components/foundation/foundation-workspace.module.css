@@ -82,6 +82,12 @@
 .pageButton:disabled { cursor: not-allowed; opacity: .4; }
 .addPageButton { padding: 0 10px; color: #155363; }
 .addPageButton:hover, .pageButton:hover:not(:disabled) { border-color: #9bbfc6; background: #e7f1f3; }
+.pageEditControls { display: flex; gap: 6px; padding-left: 2px; }
+.pageActionButton { width: 34px; height: 34px; display: inline-grid; flex: 0 0 auto; place-items: center; border: 1px solid #dee5e8; border-radius: 6px; background: #fff; color: #155363; cursor: pointer; }
+.pageActionButton:hover:not(:disabled) { border-color: #9bbfc6; background: #e7f1f3; }
+.pageActionButton:disabled { cursor: not-allowed; opacity: .4; }
+.pageDeleteButton { color: #b42318; }
+.pageDeleteButton:hover:not(:disabled) { border-color: #efc3c0; background: #fff2f1; }
 
 .textEditor { display: grid; gap: 6px; }
 .textEditorHeader { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
@@ -232,6 +238,10 @@
 .confirmDialog { width: min(100%, 440px); max-height: calc(100dvh - 40px); overflow-y: auto; border: 1px solid #dee5e8; border-radius: 12px; background: #fff; padding: 24px; box-shadow: 0 20px 60px rgb(23 33 43 / 18%); }
 .confirmDialog h2 { margin: 8px 0 10px; color: #17212b; font-size: 20px; letter-spacing: -.025em; }
 .confirmDialog > p:not(.eyebrow) { margin: 0; color: #52616b; font-size: 13px; line-height: 1.5; }
+.dialogField { display: grid; gap: 6px; margin-top: 18px; color: #52616b; font-size: 12px; font-weight: 750; }
+.dialogField input { min-height: 42px; border: 1px solid #d8e2e6; border-radius: 7px; background: #fff; color: #17212b; padding: 8px 10px; font: inherit; outline: none; }
+.dialogField input:focus { border-color: #6e9faa; box-shadow: 0 0 0 3px rgb(21 83 99 / 10%); }
+.dialogField small { justify-self: end; color: #7b8a91; font-size: 9px; font-weight: 500; font-variant-numeric: tabular-nums; }
 .variantForm { display: grid; gap: 12px; margin-top: 18px; }
 .variantForm label { display: grid; gap: 5px; color: #52616b; font-size: 12px; font-weight: 750; }
 .variantForm select, .variantForm input { min-height: 42px; border: 1px solid #d8e2e6; border-radius: 7px; background: #fff; color: #17212b; padding: 8px 10px; }
@@ -245,6 +255,7 @@
 .dangerButton { border: 1px solid #b42318; background: #b42318; }
 .confirmButton:hover { background: #103f4b; }
 .dangerButton:hover { background: #941f16; }
+.confirmButton:disabled, .dangerButton:disabled { cursor: not-allowed; opacity: .45; }
 
 .srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 
@@ -311,6 +322,8 @@
   .binderHeaderActions button { padding-inline: 7px; font-size: 10px; }
   .pageControls { gap: 4px; }
   .pageButton, .addPageButton { min-width: 30px; height: 32px; }
+  .pageEditControls { gap: 4px; }
+  .pageActionButton { width: 32px; height: 32px; }
   .layoutSelect select { min-height: 32px; }
   .dialogActions { align-items: stretch; flex-direction: column-reverse; }
 }

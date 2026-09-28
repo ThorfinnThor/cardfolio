@@ -3,20 +3,25 @@
 /* eslint-disable @next/next/no-img-element -- TCGdex images remain external references and are never proxied. */
 
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import { Archive, BookOpen, CircleHelp, DatabaseBackup, ListFilter, Menu, Search, Settings2, X } from "lucide-react";
+import { Archive, BookOpen, CircleHelp, Copy, DatabaseBackup, ListFilter, Menu, Pencil, Search, Settings2, Trash2, X } from "lucide-react";
 import Link from "next/link";
 import { type ChangeEvent, type FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
   addPage,
   BINDER_DESCRIPTION_MAX_LENGTH,
+  BINDER_NAME_MAX_LENGTH,
   changeBinderLayout,
   createBinder,
   createPlannedCard,
+  deletePage,
+  duplicatePage,
+  MAX_BINDER_PAGES,
   moveOrSwapCard,
   placeCard,
   previewBinderLayoutChange,
   removeCard,
+  renameBinder,
   PAGE_NOTE_MAX_LENGTH,
   setBinderDescription,
   setCardPreferences,
@@ -59,6 +64,14 @@ type SearchFilterOption = { id: string; label: string };
 type ImportReport = { binderCount: number; cardCount: number; plannedCount: number; names: string[] };
 type BinderSyncMessage = { type: "binder-changed"; binderId: string; revision: number; deleted?: boolean };
 type LayoutChangeRequest = { binderId: string; layout: SupportedBinderLayout; preview: BinderLayoutPreview };
+type BinderRenameRequest = { binderId: string; name: string };
+type PageDeleteRequest = {
+  binderId: string;
+  pageId: string;
+  pageIndex: number;
+  plannedCount: number;
+  hasNote: boolean;
+};
 type VariantEditRequest = {
   entryId: string;
   label: string;
@@ -241,6 +254,8 @@ export function FoundationWorkspace() {
   const [storageStatus, setStorageStatus] = useState("initializing");
   const [message, setMessage] = useState<string>();
   const [binderToDelete, setBinderToDelete] = useState<Binder>();
+  const [binderRename, setBinderRename] = useState<BinderRenameRequest>();
+  const [pageToDelete, setPageToDelete] = useState<PageDeleteRequest>();
   const [cardToRemove, setCardToRemove] = useState<{ location: SlotLocation; label: string }>();
   const [layoutChange, setLayoutChange] = useState<LayoutChangeRequest>();
   const [variantEdit, setVariantEdit] = useState<VariantEditRequest>();
@@ -561,6 +576,74 @@ export function FoundationWorkspace() {
     }
   }
 
+  async function duplicateActivePage() {
+    if (!activeBinder || !activePage) return;
+    const sourcePageId = activePage.id;
+    const sourcePageIndex = visiblePageIndex;
+    try {
+      setStorageStatus("saving");
+      const saved = await persistBinderChange(activeBinder.id, (binder) => duplicatePage(binder, sourcePageId));
+      setActivePageIndex(Math.min(sourcePageIndex + 1, saved.pages.length - 1));
+      setContextLocation(undefined);
+      setSelectedLocation(undefined);
+      setMovingLocation(undefined);
+      setSearchOpen(false);
+      setStorageStatus("saved");
+      setMessage(`Seite ${sourcePageIndex + 1} wurde als Seite ${sourcePageIndex + 2} dupliziert.`);
+    } catch (error) {
+      handleStorageError(error, "Seite konnte nicht dupliziert werden.");
+    }
+  }
+
+  function requestPageDelete() {
+    if (!activeBinder || !activePage || activeBinder.pages.length === 1) return;
+    setPageToDelete({
+      binderId: activeBinder.id,
+      pageId: activePage.id,
+      pageIndex: visiblePageIndex,
+      plannedCount: activePage.slots.filter(Boolean).length,
+      hasNote: Boolean(activePage.note.trim()),
+    });
+  }
+
+  async function confirmPageDelete() {
+    if (!pageToDelete) return;
+    try {
+      setStorageStatus("saving");
+      const saved = await persistBinderChange(
+        pageToDelete.binderId,
+        (binder) => deletePage(binder, pageToDelete.pageId, true),
+      );
+      setActivePageIndex(Math.min(pageToDelete.pageIndex, saved.pages.length - 1));
+      setContextLocation(undefined);
+      setSelectedLocation(undefined);
+      setMovingLocation(undefined);
+      setSearchOpen(false);
+      setPageToDelete(undefined);
+      setStorageStatus("saved");
+      setMessage(`Seite ${pageToDelete.pageIndex + 1} wurde gelöscht.`);
+    } catch (error) {
+      handleStorageError(error, "Seite konnte nicht gelöscht werden.");
+    }
+  }
+
+  async function saveBinderRename(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!binderRename?.name.trim()) return;
+    try {
+      setStorageStatus("saving");
+      const saved = await persistBinderChange(
+        binderRename.binderId,
+        (binder) => renameBinder(binder, binderRename.name),
+      );
+      setBinderRename(undefined);
+      setStorageStatus("saved");
+      setMessage(`Binder wurde in „${saved.name}“ umbenannt.`);
+    } catch (error) {
+      handleStorageError(error, "Binder konnte nicht umbenannt werden.");
+    }
+  }
+
   function requestLayoutChange(layoutKey: string) {
     if (!activeBinder) return;
     const layout = SUPPORTED_BINDER_LAYOUTS.find((candidate) => candidate.key === layoutKey);
@@ -606,6 +689,8 @@ export function FoundationWorkspace() {
     setCardmarketPreparing(false);
     setLayoutChange(undefined);
     setVariantEdit(undefined);
+    setBinderRename(undefined);
+    setPageToDelete(undefined);
     setStorageConflict(false);
     setBinderManagerOpen(false);
   }
@@ -1117,6 +1202,33 @@ export function FoundationWorkspace() {
         </section>
       ) : null}
 
+      {binderRename ? (
+        <div className={styles.dialogBackdrop} role="presentation">
+          <section className={styles.confirmDialog} role="dialog" aria-modal="true" aria-labelledby="rename-binder-heading">
+            <p className={styles.eyebrow}>Binder bearbeiten</p>
+            <h2 id="rename-binder-heading">Binder umbenennen</h2>
+            <p>Der neue Name wird nur in diesem Browser gespeichert und bleibt beim JSON-Backup erhalten.</p>
+            <form onSubmit={saveBinderRename}>
+              <label className={styles.dialogField} htmlFor="rename-binder-name">
+                <span>Bindername</span>
+                <input
+                  id="rename-binder-name"
+                  value={binderRename.name}
+                  maxLength={BINDER_NAME_MAX_LENGTH}
+                  autoFocus
+                  onChange={(event) => setBinderRename((current) => current ? { ...current, name: event.target.value } : current)}
+                />
+                <small>{binderRename.name.length} / {BINDER_NAME_MAX_LENGTH}</small>
+              </label>
+              <div className={styles.dialogActions}>
+                <button type="button" className={styles.secondaryButton} onClick={() => setBinderRename(undefined)}>Abbrechen</button>
+                <button type="submit" className={styles.confirmButton} disabled={!binderRename.name.trim()}>Namen speichern</button>
+              </div>
+            </form>
+          </section>
+        </div>
+      ) : null}
+
       {binderToDelete ? (
         <div className={styles.dialogBackdrop} role="presentation">
           <section className={styles.confirmDialog} role="dialog" aria-modal="true" aria-labelledby="delete-binder-heading">
@@ -1126,6 +1238,25 @@ export function FoundationWorkspace() {
             <div className={styles.dialogActions}>
               <button type="button" className={styles.secondaryButton} onClick={() => setBinderToDelete(undefined)}>Abbrechen</button>
               <button type="button" className={styles.dangerButton} onClick={deleteBinder}>Binder löschen</button>
+            </div>
+          </section>
+        </div>
+      ) : null}
+
+      {pageToDelete ? (
+        <div className={styles.dialogBackdrop} role="presentation">
+          <section className={styles.confirmDialog} role="dialog" aria-modal="true" aria-labelledby="delete-page-heading">
+            <p className={styles.eyebrow}>Binderseite löschen</p>
+            <h2 id="delete-page-heading">Seite {pageToDelete.pageIndex + 1} wirklich löschen?</h2>
+            <p>
+              {pageToDelete.plannedCount
+                ? `${pageToDelete.plannedCount} ${pageToDelete.plannedCount === 1 ? "geplante Karte wird" : "geplante Karten werden"} dauerhaft aus diesem Binder entfernt.`
+                : "Diese Seite enthält keine geplanten Karten."}
+              {pageToDelete.hasNote ? " Auch die Seitennotiz wird gelöscht." : ""}
+            </p>
+            <div className={styles.dialogActions}>
+              <button type="button" className={styles.secondaryButton} onClick={() => setPageToDelete(undefined)}>Abbrechen</button>
+              <button type="button" className={styles.dangerButton} onClick={confirmPageDelete}>Seite löschen</button>
             </div>
           </section>
         </div>
@@ -1269,6 +1400,7 @@ export function FoundationWorkspace() {
               />
             </div>
             <div className={styles.binderHeaderActions}>
+              <button type="button" className={styles.secondaryButton} onClick={() => setBinderRename({ binderId: activeBinder.id, name: activeBinder.name })}><Pencil size={16} /> Binder umbenennen</button>
               <button type="button" className={styles.secondaryButton} onClick={() => openSearchForSlot()}><Search size={17} /> Karte hinzufügen</button>
               <button type="button" className={styles.primaryButton} onClick={() => { setMissingOpen((open) => !open); setSearchOpen(false); setCopyState("idle"); setTcgplayerCopyState("idle"); setCardmarketCopyState("idle"); }} disabled={Boolean(missingResult.error) || cardsBinderId !== activeId}>
                 <ListFilter size={17} /> {missingOpen ? "Zurück zum Binder" : `Fehlende Karten (${stats.missing})`}
@@ -1324,6 +1456,28 @@ export function FoundationWorkspace() {
                     <span>{visiblePageIndex + 1} / {activeBinder.pages.length}</span>
                     <button type="button" className={styles.pageButton} aria-label="Nächste Seite" disabled={visiblePageIndex === activeBinder.pages.length - 1} onClick={() => { setActivePageIndex((page) => Math.min(page + 1, activeBinder.pages.length - 1)); setContextLocation(undefined); }}>→</button>
                     <button type="button" className={styles.addPageButton} onClick={createNewPage}>+ Seite</button>
+                  </div>
+                  <div className={styles.pageEditControls} aria-label="Aktuelle Binderseite bearbeiten">
+                    <button
+                      type="button"
+                      className={styles.pageActionButton}
+                      aria-label={`Seite ${visiblePageIndex + 1} duplizieren`}
+                      title={activeBinder.pages.length >= MAX_BINDER_PAGES ? `Maximal ${MAX_BINDER_PAGES} Seiten` : "Seite duplizieren"}
+                      disabled={!activePage || activeBinder.pages.length >= MAX_BINDER_PAGES}
+                      onClick={() => void duplicateActivePage()}
+                    >
+                      <Copy size={15} />
+                    </button>
+                    <button
+                      type="button"
+                      className={`${styles.pageActionButton} ${styles.pageDeleteButton}`}
+                      aria-label={`Seite ${visiblePageIndex + 1} löschen`}
+                      title={activeBinder.pages.length === 1 ? "Mindestens eine Seite muss erhalten bleiben" : "Seite löschen"}
+                      disabled={!activePage || activeBinder.pages.length === 1}
+                      onClick={requestPageDelete}
+                    >
+                      <Trash2 size={15} />
+                    </button>
                   </div>
                 </div>
               </div>

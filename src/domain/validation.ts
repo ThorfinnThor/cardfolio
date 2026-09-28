@@ -1,6 +1,11 @@
 import { z } from "zod";
 
-import { BINDER_DESCRIPTION_MAX_LENGTH, PAGE_NOTE_MAX_LENGTH } from "./binder-actions";
+import {
+  BINDER_DESCRIPTION_MAX_LENGTH,
+  BINDER_NAME_MAX_LENGTH,
+  MAX_BINDER_PAGES,
+  PAGE_NOTE_MAX_LENGTH,
+} from "./binder-actions";
 import type { Binder, LocalBackupV1 } from "./types";
 
 const uuidSchema = z.string().uuid();
@@ -65,7 +70,7 @@ export const binderSchema = z
     id: uuidSchema,
     schemaVersion: z.literal(1),
     revision: z.number().int().nonnegative(),
-    name: z.string().min(1).max(100),
+    name: z.string().min(1).max(BINDER_NAME_MAX_LENGTH),
     description: z.string().max(BINDER_DESCRIPTION_MAX_LENGTH),
     layout: z.object({
       rows: z.number().int().min(1).max(20),
@@ -80,7 +85,7 @@ export const binderSchema = z
         }),
       )
       .min(1)
-      .max(40),
+      .max(MAX_BINDER_PAGES),
     createdAt: isoDateSchema,
     updatedAt: isoDateSchema,
   })
