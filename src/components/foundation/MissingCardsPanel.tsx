@@ -198,7 +198,8 @@ export function MissingCardsPanel({
 
           {tcgplayerExport.matches.some((match) => !match.line) ? (
             <div className={styles.reviewList}>
-              <strong>Von der Übergabe ausgeschlossen</strong>
+              <strong>Nicht in die TCGplayer-Liste übernommen</strong>
+              <p className={styles.reviewExplanation}>Diese Karten bleiben unverändert in deiner Fehlkartenliste. Cardfolio überträgt sie nur nicht automatisch, solange die konkrete TCGplayer-Zuordnung noch nicht sicher geprüft ist.</p>
               <ul>
                 {tcgplayerExport.matches.filter((match) => !match.line).map((match) => (
                   <li key={match.identityKey}>

@@ -441,3 +441,17 @@ Verification completed:
 
 - Typecheck, ESLint, 66 unit/component tests, static Next.js build, release checks and `git diff --check` passed locally.
 - The local production UI showed the exact full-number Typhlosion line, the compatible Holofoil options, the Near Mint condition and no browser-console warnings or errors.
+
+## 2026-09-28 — Physical-only search and clearer TCGplayer handoff
+
+Completed:
+
+- Card search now filters every provider result through the synchronized physical-set catalog before rendering it. Pokémon TCG Pocket cards can no longer be selected from the physical-binder search.
+- Unknown sets are held back until the weekly public-data workflow has classified them. The existing card-detail guard remains as a fallback.
+- The TCGplayer panel now explains that an unmapped card stays in Cardfolio's missing list and is only omitted from the generated TCGplayer list.
+- Replaced the ambiguous heading `Von der Übergabe ausgeschlossen` and exclusion wording with explicit TCGplayer-list language.
+
+Verification completed:
+
+- Typecheck, ESLint, 73 unit/component tests, static Next.js build, release checks and `git diff --check` passed locally.
+- The local production UI returned only physical Typhlosion sets, displayed the clarified TCGplayer explanation and emitted no error overlay or browser-console errors.

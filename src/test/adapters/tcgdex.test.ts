@@ -111,6 +111,20 @@ describe("TCGdexCatalogAdapter", () => {
     expect(card.physicalStatus).toBe("digital");
   });
 
+  it("removes Pocket cards from search results before they can be selected", async () => {
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(new Response(JSON.stringify([
+      { id: "base1-1", localId: "1", name: "Bulbasaur" },
+      { id: "A1-1", localId: "1", name: "Pocket card" },
+    ])));
+    const adapter = new TCGdexCatalogAdapter();
+
+    const search = await adapter.search({ name: "card", language: "en", page: 1, pageSize: 40 });
+
+    expect(search.items).toEqual([expect.objectContaining({ ref: expect.objectContaining({ id: "base1-1" }) })]);
+    expect(search.items.some((item) => item.ref.id === "A1-1")).toBe(false);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
   it("uses the English artwork when a German card has no localized image", async () => {
     vi.spyOn(globalThis, "fetch")
       .mockResolvedValueOnce(new Response(JSON.stringify({
@@ -141,22 +155,16 @@ describe("TCGdexCatalogAdapter", () => {
     expect(card.availableVariants).toEqual({ normal: false, holo: true, reverse: false, firstEdition: true });
   });
 
-  it("loads a card detail only when synchronized set metadata cannot complete a search number", async () => {
+  it("holds back an unknown set until the synchronized catalog classifies it", async () => {
     const fetchMock = vi.spyOn(globalThis, "fetch")
       .mockResolvedValueOnce(new Response(JSON.stringify([
         { id: "2024sv-1", localId: "1", name: "Glurak" },
-      ])))
-      .mockResolvedValueOnce(new Response(JSON.stringify({
-        id: "2024sv-1",
-        localId: "1",
-        name: "Glurak",
-        set: { cardCount: { official: 15, total: 15 }, id: "2024sv", name: "McDonald's Kollektion 2024" },
-      })));
+      ])));
 
     const adapter = new TCGdexCatalogAdapter();
     const search = await adapter.search({ name: "Glurak", language: "de", page: 1, pageSize: 40 });
 
-    expect(search.items[0]).toMatchObject({ collectorNumber: "1", collectorTotal: "15" });
-    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(search.items).toEqual([]);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 });

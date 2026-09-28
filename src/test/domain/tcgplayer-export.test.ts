@@ -92,7 +92,7 @@ describe("TCGplayer Mass Entry export", () => {
     expect(exported.text).toBe("");
     expect(exported.matches[0]).toMatchObject({ status: "candidate" });
     expect(exported.excludedEntryIds).toEqual(item.entryIds);
-    expect(exported.warnings).toContain("1 Position(en) haben keinen geprüften TCGplayer-Set-Code und wurden ausgeschlossen.");
+    expect(exported.warnings).toContain("1 Position hat keinen geprüften TCGplayer-Set-Code und wird nicht in die TCGplayer-Liste übernommen.");
   });
 
   it("excludes an English mapped-set candidate until the printing is parser-tested", () => {
@@ -111,7 +111,7 @@ describe("TCGplayer Mass Entry export", () => {
     expect(exported.matches[0]).toMatchObject({
       status: "candidate",
       setMapping: { tcgplayerSetCode: "BS" },
-      reason: "Der Set-Code ist geprüft, dieses konkrete Printing aber noch nicht im TCGplayer-Testset und wurde deshalb ausgeschlossen.",
+      reason: "Der Set-Code ist geprüft, dieses konkrete Printing aber noch nicht im TCGplayer-Testset und wird deshalb nicht in die TCGplayer-Liste übernommen.",
     });
     expect(exported.readyCount).toBe(0);
     expect(exported.verifiedCount).toBe(0);
@@ -147,7 +147,7 @@ describe("TCGplayer Mass Entry export", () => {
     expect(exported.text).toBe("");
     expect(exported.matches[0]).toMatchObject({
       status: "candidate",
-      reason: "Shadowless verwendet bei TCGplayer eine eigene Set-Zuordnung und wurde ohne separat geprüftes Printing ausgeschlossen.",
+      reason: "Shadowless verwendet bei TCGplayer eine eigene Set-Zuordnung und wird ohne separat geprüftes Printing nicht in die TCGplayer-Liste übernommen.",
     });
     expect(exported.excludedEntryIds).toEqual(shadowless.entryIds);
   });

@@ -104,6 +104,8 @@ describe("MissingCardsPanel", () => {
     expect(screen.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue("1 Bulbasaur [BS] 044/102");
     expect(screen.getByText(/2× Pikachu · Wizards Black Star Promos · 001/)).toBeInTheDocument();
     expect(screen.getByText(/Kandidat: Für dieses TCGdex-Set/)).toBeInTheDocument();
+    expect(screen.getByText("Nicht in die TCGplayer-Liste übernommen")).toBeInTheDocument();
+    expect(screen.getByText(/bleiben unverändert in deiner Fehlkartenliste/)).toBeInTheDocument();
     const handoffLink = screen.getByRole("link", { name: /Liste bei TCGplayer öffnen/ });
     expect(handoffLink).toHaveAttribute("rel", "noopener noreferrer");
     expect(new URL(handoffLink.getAttribute("href") ?? "").searchParams.get("c")).toBe("1 Bulbasaur [BS] 044/102");

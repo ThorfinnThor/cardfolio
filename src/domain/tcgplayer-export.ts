@@ -156,7 +156,7 @@ function matchItem(
     return {
       ...base,
       status: "candidate",
-      reason: "Shadowless verwendet bei TCGplayer eine eigene Set-Zuordnung und wurde ohne separat geprüftes Printing ausgeschlossen.",
+      reason: "Shadowless verwendet bei TCGplayer eine eigene Set-Zuordnung und wird ohne separat geprüftes Printing nicht in die TCGplayer-Liste übernommen.",
       setMapping,
       printingMapping,
     };
@@ -166,7 +166,7 @@ function matchItem(
     return {
       ...base,
       status: "candidate",
-      reason: "Der Set-Code ist geprüft, dieses konkrete Printing aber noch nicht im TCGplayer-Testset und wurde deshalb ausgeschlossen.",
+      reason: "Der Set-Code ist geprüft, dieses konkrete Printing aber noch nicht im TCGplayer-Testset und wird deshalb nicht in die TCGplayer-Liste übernommen.",
       setMapping,
     };
   }
@@ -212,13 +212,13 @@ export function createTcgplayerMassEntryExport(
   const candidatesWithoutSet = candidates.filter((match) => !match.setMapping);
   const candidatesWithoutPrinting = candidates.filter((match) => match.setMapping);
   if (candidatesWithoutSet.length > 0) {
-    warnings.push(`${candidatesWithoutSet.length} Position(en) haben keinen geprüften TCGplayer-Set-Code und wurden ausgeschlossen.`);
+    warnings.push(`${formatPositionCount(candidatesWithoutSet.length)} ${candidatesWithoutSet.length === 1 ? "hat" : "haben"} keinen geprüften TCGplayer-Set-Code und ${candidatesWithoutSet.length === 1 ? "wird" : "werden"} nicht in die TCGplayer-Liste übernommen.`);
   }
   if (candidatesWithoutPrinting.length > 0) {
-    warnings.push(`${candidatesWithoutPrinting.length} Position(en) haben einen geprüften Set-Code, aber noch kein geprüftes Printing und wurden ausgeschlossen.`);
+    warnings.push(`${formatPositionCount(candidatesWithoutPrinting.length)} ${candidatesWithoutPrinting.length === 1 ? "hat" : "haben"} einen geprüften Set-Code, aber noch kein geprüftes Printing und ${candidatesWithoutPrinting.length === 1 ? "wird" : "werden"} nicht in die TCGplayer-Liste übernommen.`);
   }
   if (unresolved.length > 0) {
-    warnings.push(`${unresolved.length} Position(en) sind nicht sicher zuordenbar und wurden ausgeschlossen.`);
+    warnings.push(`${formatPositionCount(unresolved.length)} ${unresolved.length === 1 ? "ist" : "sind"} nicht sicher zuordenbar und ${unresolved.length === 1 ? "wird" : "werden"} nicht in die TCGplayer-Liste übernommen.`);
   }
   if (text && massEntryUrl === TCGPLAYER_MASS_ENTRY_URL) {
     warnings.push("Die Liste ist für eine vorausgefüllte URL zu lang. Kopiere den Mass-Entry-Text und füge ihn bei TCGplayer ein.");
@@ -238,4 +238,8 @@ export function createTcgplayerMassEntryExport(
     massEntryUrl,
     massEntryPrefilled: Boolean(text) && massEntryUrl !== TCGPLAYER_MASS_ENTRY_URL,
   };
+}
+
+function formatPositionCount(count: number): string {
+  return `${count} ${count === 1 ? "Position" : "Positionen"}`;
 }

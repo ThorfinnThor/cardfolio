@@ -110,3 +110,11 @@
 - Binder duplication creates fresh binder, page and planned-entry IDs while retaining descriptions, page titles, notes, cards and preferences.
 - Manual binder order is stored as an ID list in the existing IndexedDB `settings` store. It does not change binder revisions or the user-facing `updatedAt` date.
 - Creation, deletion, duplication and manual ordering publish a lightweight order-change message so another open tab can refresh its binder list without treating the active binder as conflicted.
+
+## 2026-09-28 — Physical catalog search uses a synchronized allowlist
+
+- Direct TCGdex card search can return physical Pokémon cards and Pokémon TCG Pocket cards together.
+- Search results are now accepted only when their derived set ID exists in Cardfolio's weekly synchronized physical-set catalog. Pocket and otherwise unverified sets are removed before the user can select a result.
+- A newly released physical set may therefore wait for the next successful catalog sync before it appears. This is preferable to presenting a digital card as a valid physical-binder candidate.
+- The detail-level digital-card check remains as defense in depth for stale local data or a provider classification change.
+- TCGplayer cards that lack a verified mapping remain in the Cardfolio missing list. The UI now says they are not copied into the TCGplayer list instead of suggesting that the cards themselves were removed.

@@ -15,6 +15,17 @@ async function mockCatalog(page: Page) {
       const query = url.searchParams.get("name")?.toLowerCase();
       const language = url.pathname.split("/")[2];
       const pageNumber = Number(url.searchParams.get("pagination:page") ?? "1");
+      if (language === "en" && query?.includes("mixed")) {
+        await route.fulfill({
+          body: JSON.stringify([
+            { id: "base1-1", localId: "1", name: "Bulbasaur" },
+            { id: "A1-1", localId: "1", name: "Pocket card" },
+          ]),
+          headers,
+          status: 200,
+        });
+        return;
+      }
       if (language === "en" && query?.includes("bulk")) {
         const cards = pageNumber === 1
           ? Array.from({ length: 40 }, (_, index) => ({ id: `base1-${index + 1}`, localId: String(index + 1), name: `Set card ${index + 1}` }))
@@ -491,6 +502,23 @@ test("searches German and English catalogs and labels the result language", asyn
   const card = page.getByRole("article", { name: "Glurak, Slot 1" });
   await expect(card).toBeVisible();
   await expect(card).toContainText("Holo · First Edition · Shadowless");
+});
+
+test("keeps Pocket cards out of the physical binder search", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/");
+  await page.getByLabel("Bindername").fill("Physische Suche");
+  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+
+  await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
+  await page.getByRole("button", { name: "English" }).click();
+  await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Mixed");
+
+  const searchDialog = page.getByRole("dialog", { name: "Karte suchen" });
+  await expect(searchDialog.getByRole("listitem")).toHaveCount(1);
+  await expect(searchDialog.getByText("Bulbasaur", { exact: true })).toBeVisible();
+  await expect(searchDialog.getByText("Pocket card", { exact: true })).toHaveCount(0);
+  await expect(searchDialog.getByText(/Pocket-Karten können nicht/)).toHaveCount(0);
 });
 
 test("sets, edits and persists the minimum condition for marketplace handoff", async ({ page }) => {

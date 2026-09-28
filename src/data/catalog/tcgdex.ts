@@ -120,9 +120,12 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
     const raw = tcgdexSearchResponseSchema.parse(await fetchJson(url, signal));
     const collectorNumber = query.collectorNumber;
     const collectorTotal = query.collectorTotal;
+    const physicalCatalogItems = raw.filter((item) =>
+      setMetadataForSearchItem(query.language, item.id, item.localId) !== undefined,
+    );
     const exactNumberItems = collectorNumber
-      ? raw.filter((item) => sameCollectorPart(item.localId, collectorNumber))
-      : raw;
+      ? physicalCatalogItems.filter((item) => sameCollectorPart(item.localId, collectorNumber))
+      : physicalCatalogItems;
     let items: CatalogSearchItem[];
     if (collectorTotal) {
       const hydratedItems = await Promise.all(exactNumberItems.map(async (item) => {
