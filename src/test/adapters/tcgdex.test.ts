@@ -111,6 +111,25 @@ describe("TCGdexCatalogAdapter", () => {
     expect(card.physicalStatus).toBe("digital");
   });
 
+  it("does not store the TCGdex variant fallback as a catalog confirmation", async () => {
+    vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        id: "sm9-159",
+        localId: "159",
+        name: "Celebi & Venusaur GX",
+        set: { cardCount: { official: 181 }, id: "sm9", name: "Team Up" },
+        variants: { firstEdition: false, holo: false, normal: true, reverse: false, wPromo: false },
+      })))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        id: "sm9",
+        name: "Team Up",
+        serie: { id: "sm", name: "Sun & Moon" },
+      })));
+    const adapter = new TCGdexCatalogAdapter();
+    const card = await adapter.getCard({ provider: "tcgdex", id: "sm9-159", language: "en" });
+    expect(card.availableVariants).toBeUndefined();
+  });
+
   it("removes Pocket cards from search results before they can be selected", async () => {
     const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(new Response(JSON.stringify([
       { id: "base1-1", localId: "1", name: "Bulbasaur" },

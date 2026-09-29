@@ -8,6 +8,7 @@ import type {
 } from "@/domain/types";
 import { makeCardKey } from "@/domain/binder-actions";
 import { sameCollectorPart } from "@/domain/catalog-search";
+import { isProviderFallbackVariantSignal } from "@/domain/variant-selection";
 
 import { tcgdexCardSchema, tcgdexSearchResponseSchema, tcgdexSetSchema } from "./schemas";
 import { inferredCardImageBaseUrl } from "./images";
@@ -212,7 +213,7 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
       setName: card.set.name,
       collectorNumber: card.localId,
       collectorTotal: printedCollectorTotal(card.set.cardCount),
-      availableVariants: card.variants ? {
+      availableVariants: card.variants && !isProviderFallbackVariantSignal(card.variants) ? {
         normal: card.variants.normal,
         holo: card.variants.holo,
         reverse: card.variants.reverse,
