@@ -1,15 +1,173 @@
 @import "tailwindcss";
 
-:root {
+/*
+ * Synthese 2 design tokens.
+ * One token set, two modes: "tag" (light) and "nacht" (dark).
+ * Brass is the single brand accent. Green and coral are status colours only.
+ */
+:root,
+:root[data-theme="tag"] {
   color-scheme: light;
-  --background: #fbfcfd;
-  --surface: #ffffff;
-  --foreground: #17212b;
-  --muted: #52616b;
-  --border: #dee5e8;
-  --accent: #155363;
-  --accent-hover: #103f4b;
-  --danger: #b91c1c;
+  --cf-bg: #F4F2EC;
+  --cf-side: #FAF9F5;
+  --cf-surface: #FFFFFF;
+  --cf-surface2: #F6F4EE;
+  --cf-field: #FFFFFF;
+  --cf-line: #E5E1D6;
+  --cf-line2: #CFC8B8;
+  --cf-text: #1C1A16;
+  --cf-text2: #43403A;
+  --cf-muted: #6B665C;
+  --cf-accent: #A9832F;
+  --cf-accent-deep: #7D6021;
+  --cf-accent-text: #7A5D1C;
+  --cf-accent-soft: rgba(169, 131, 47, 0.12);
+  --cf-on-accent: #1C1A16;
+  --cf-ok: #1F8A5B;
+  --cf-on-ok: #FFFFFF;
+  --cf-ok-text: #17744B;
+  --cf-ok-soft: rgba(31, 138, 91, 0.1);
+  --cf-miss: #C23A3A;
+  --cf-miss-text: #B2302F;
+  --cf-miss-soft: rgba(194, 58, 58, 0.08);
+  --cf-danger: #B2302F;
+  --cf-gold: #B38A2A;
+  --cf-gold-text: #7A5D1C;
+  --cf-foil: linear-gradient(90deg, #E9C878, #FFF1C9, #C9A24A);
+  --cf-plaque: #15120B;
+  --cf-track: #E8E3D8;
+  --cf-dot: rgba(120, 95, 40, 0.12);
+  --cf-sh-soft: rgba(60, 50, 30, 0.16);
+  --cf-sh-deep: rgba(60, 50, 30, 0.22);
+  --cf-cover-sh: rgba(60, 50, 30, 0.38);
+  --cf-tab-paper: #FBFAF6;
+  --cf-tab-ink: #1F1D1A;
+  --cf-page: linear-gradient(180deg, #FFFFFF, #FAF8F3);
+  --cf-page-ring: #ECE8DE;
+  --cf-page-inset: inset 0 2px 10px rgba(60, 50, 30, 0.07);
+  --cf-paper-line: rgba(60, 50, 30, 0.022);
+  --cf-pocket: rgba(160, 140, 100, 0.04);
+  --cf-pocket-line: #E5E1D6;
+  --cf-miss-op: 0.45;
+  --cf-sel-glow: rgba(169, 131, 47, 0.35);
+  --cf-scrim: rgba(28, 26, 22, 0.35);
+  --cf-glass: rgba(244, 242, 236, 0.88);
+
+  /* Legacy aliases used by secondary pages. */
+  --background: var(--cf-bg);
+  --surface: var(--cf-surface);
+  --foreground: var(--cf-text);
+  --muted: var(--cf-muted);
+  --border: var(--cf-line);
+  --accent: var(--cf-accent-text);
+  --accent-hover: var(--cf-accent-deep);
+  --danger: var(--cf-danger);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="tag"]) {
+    color-scheme: dark;
+    --cf-bg: #0B0F1A;
+    --cf-side: #0E1321;
+    --cf-surface: #141A2A;
+    --cf-surface2: #1A2133;
+    --cf-field: #0F1422;
+    --cf-line: #232C42;
+    --cf-line2: #34405A;
+    --cf-text: #EEE9DD;
+    --cf-text2: #CFC9BA;
+    --cf-muted: #9E9A8C;
+    --cf-accent: #C9A45C;
+    --cf-accent-deep: #8E7236;
+    --cf-accent-text: #DDBE7E;
+    --cf-accent-soft: rgba(201, 164, 92, 0.13);
+    --cf-on-accent: #171309;
+    --cf-ok: #2FA878;
+    --cf-on-ok: #06231A;
+    --cf-ok-text: #7FE3B6;
+    --cf-ok-soft: rgba(47, 168, 120, 0.14);
+    --cf-miss: #FF8A8A;
+    --cf-miss-text: #FFA8A8;
+    --cf-miss-soft: rgba(255, 122, 122, 0.12);
+    --cf-danger: #C94242;
+    --cf-gold: #E6C877;
+    --cf-gold-text: #EBD08E;
+    --cf-foil: linear-gradient(90deg, #F1D48A, #FFF1C9, #D9B45E);
+    --cf-plaque: #15120B;
+    --cf-track: #252E45;
+    --cf-dot: rgba(230, 210, 160, 0.12);
+    --cf-sh-soft: rgba(0, 0, 0, 0.45);
+    --cf-sh-deep: rgba(0, 0, 0, 0.8);
+    --cf-cover-sh: rgba(0, 0, 0, 0.75);
+    --cf-tab-paper: #ECE6D8;
+    --cf-tab-ink: #1F1D1A;
+    --cf-page: radial-gradient(120% 70% at 50% 0%, #1B2031, #0F121C);
+    --cf-page-ring: #0F1422;
+    --cf-page-inset: inset 0 2px 14px rgba(0, 0, 0, 0.45);
+    --cf-paper-line: rgba(255, 255, 255, 0.018);
+    --cf-pocket: rgba(255, 255, 255, 0.03);
+    --cf-pocket-line: rgba(255, 255, 255, 0.08);
+    --cf-miss-op: 0.42;
+    --cf-sel-glow: rgba(201, 164, 92, 0.4);
+    --cf-scrim: rgba(5, 7, 12, 0.62);
+    --cf-glass: rgba(11, 15, 26, 0.86);
+  }
+}
+
+:root[data-theme="nacht"] {
+  color-scheme: dark;
+  --cf-bg: #0B0F1A;
+  --cf-side: #0E1321;
+  --cf-surface: #141A2A;
+  --cf-surface2: #1A2133;
+  --cf-field: #0F1422;
+  --cf-line: #232C42;
+  --cf-line2: #34405A;
+  --cf-text: #EEE9DD;
+  --cf-text2: #CFC9BA;
+  --cf-muted: #9E9A8C;
+  --cf-accent: #C9A45C;
+  --cf-accent-deep: #8E7236;
+  --cf-accent-text: #DDBE7E;
+  --cf-accent-soft: rgba(201, 164, 92, 0.13);
+  --cf-on-accent: #171309;
+  --cf-ok: #2FA878;
+  --cf-on-ok: #06231A;
+  --cf-ok-text: #7FE3B6;
+  --cf-ok-soft: rgba(47, 168, 120, 0.14);
+  --cf-miss: #FF8A8A;
+  --cf-miss-text: #FFA8A8;
+  --cf-miss-soft: rgba(255, 122, 122, 0.12);
+  --cf-danger: #C94242;
+  --cf-gold: #E6C877;
+  --cf-gold-text: #EBD08E;
+  --cf-foil: linear-gradient(90deg, #F1D48A, #FFF1C9, #D9B45E);
+  --cf-plaque: #15120B;
+  --cf-track: #252E45;
+  --cf-dot: rgba(230, 210, 160, 0.12);
+  --cf-sh-soft: rgba(0, 0, 0, 0.45);
+  --cf-sh-deep: rgba(0, 0, 0, 0.8);
+  --cf-cover-sh: rgba(0, 0, 0, 0.75);
+  --cf-tab-paper: #ECE6D8;
+  --cf-tab-ink: #1F1D1A;
+  --cf-page: radial-gradient(120% 70% at 50% 0%, #1B2031, #0F121C);
+  --cf-page-ring: #0F1422;
+  --cf-page-inset: inset 0 2px 14px rgba(0, 0, 0, 0.45);
+  --cf-paper-line: rgba(255, 255, 255, 0.018);
+  --cf-pocket: rgba(255, 255, 255, 0.03);
+  --cf-pocket-line: rgba(255, 255, 255, 0.08);
+  --cf-miss-op: 0.42;
+  --cf-sel-glow: rgba(201, 164, 92, 0.4);
+  --cf-scrim: rgba(5, 7, 12, 0.62);
+  --cf-glass: rgba(11, 15, 26, 0.86);
+}
+
+:root {
+  --cf-font-display: var(--font-display), "Arial Black", ui-sans-serif, system-ui, sans-serif;
+  --cf-font-ui: var(--font-ui), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --cf-font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --cf-radius: 10px;
+  --cf-radius-sm: 7px;
 }
 
 * { box-sizing: border-box; }
@@ -17,14 +175,24 @@
 body {
   min-height: 100vh;
   margin: 0;
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--cf-bg);
+  color: var(--cf-text);
+  font-family: var(--cf-font-ui);
+  font-feature-settings: "ss01";
 }
 
-button, input, select { font: inherit; }
+button, input, select, textarea { font: inherit; }
 button, label[for] { cursor: pointer; }
-button:focus-visible, input:focus-visible, select:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--accent) 35%, transparent);
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--cf-accent);
   outline-offset: 2px;
+}
+::selection { background: var(--cf-accent-soft); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

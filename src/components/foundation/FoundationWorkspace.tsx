@@ -53,14 +53,24 @@ import { catalogSeries, catalogSets, completeCardSnapshotMetadata } from "@/data
 import { RevisionConflictError } from "@/data/persistence/binder-repository";
 import { IndexedDBBinderRepository } from "@/data/persistence/indexeddb-binder-repository";
 
+import { catalogLabel, coverLeather } from "./binder-cover";
 import { BinderOverview } from "./BinderOverview";
 import { BinderGrid } from "./BinderGrid";
 import { CardArtwork } from "./CardArtwork";
 import { MissingCardsPanel } from "./MissingCardsPanel";
+import { ThemeToggle } from "./ThemeToggle";
 import { VariantFields } from "./VariantFields";
 import styles from "./foundation-workspace.module.css";
 
 const MAX_IMPORT_BYTES = 5 * 1024 * 1024;
+
+const conditionGrade: Record<PurchasePreferences["minimumCondition"], string> = {
+  "near-mint": "NM",
+  excellent: "EX",
+  "lightly-played": "LP",
+  played: "PL",
+  any: "ALLE",
+};
 
 type CopyState = "idle" | "copied" | "error";
 type SearchLanguage = "all" | "de" | "en";
@@ -274,6 +284,7 @@ export function FoundationWorkspace() {
   const [importReport, setImportReport] = useState<ImportReport>();
   const [storageConflict, setStorageConflict] = useState(false);
   const [binderManagerOpen, setBinderManagerOpen] = useState(false);
+  const [celebratedEntryId, setCelebratedEntryId] = useState<string>();
 
   const activeBinder = binders.find((binder) => binder.id === activeId);
   const activePage = activeBinder?.pages[Math.min(activePageIndex, Math.max(activeBinder.pages.length - 1, 0))];
@@ -985,6 +996,10 @@ export function FoundationWorkspace() {
       setStorageStatus("saving");
       await persistBinderChange(activeBinder.id, (binder) => setOwned(binder, entryId, owned));
       setStorageStatus("saved");
+      if (owned) {
+        setCelebratedEntryId(entryId);
+        window.setTimeout(() => setCelebratedEntryId((current) => current === entryId ? undefined : current), 2600);
+      }
     } catch (error) {
       handleStorageError(error, "Besitzstatus konnte nicht gespeichert werden.");
     }
@@ -1225,8 +1240,8 @@ export function FoundationWorkspace() {
     <div className={styles.appShell} data-design={PRODUCT_DESIGN}>
       <aside className={styles.sidebar} aria-label="Cardfolio Navigation">
         <button type="button" className={styles.brand} onClick={() => setBinderManagerOpen(true)}>
-          <span className={styles.brandMark}><Archive size={18} /></span>
-          <span>Cardfolio</span>
+          <span className={styles.brandMark} aria-hidden="true"><i /><i /></span>
+          <span className={styles.brandText}>Cardfolio<small>Wunschbinder · lokal</small></span>
         </button>
         <nav className={styles.primaryNav} aria-label="Hauptnavigation">
           <button type="button" className={binderManagerOpen ? styles.navItemActive : styles.navItem} onClick={() => setBinderManagerOpen(true)}>
@@ -1244,7 +1259,8 @@ export function FoundationWorkspace() {
             <span>Binder</span>
             {binders.map((binder) => (
               <button type="button" key={binder.id} aria-pressed={binder.id === activeId} onClick={() => selectBinder(binder.id)}>
-                <span className={styles.binderDot} /> <span>{binder.name}</span>
+                <span className={styles.binderDot} style={{ background: coverLeather(binder.id) }} /> <span>{binder.name}</span>
+                <small className={styles.sidebarPercent}>{deriveBinderStats(binder).completionPercent}%</small>
               </button>
             ))}
           </div>
@@ -1268,6 +1284,7 @@ export function FoundationWorkspace() {
             <button type="button" className={styles.topbarSearch} onClick={() => { setBinderManagerOpen(false); setMissingOpen(false); openSearchForSlot(); }} disabled={!activeBinder}>
               <Search size={17} /> <span>Karte suchen</span>
             </button>
+            <ThemeToggle className={styles.themeToggle} />
             <span className={styles.status} data-status={storageStatus}><span />{storageStatus === "ready" || storageStatus === "saved" ? "Lokal gespeichert" : storageStatus}</span>
           </div>
         </header>
@@ -1464,7 +1481,7 @@ export function FoundationWorkspace() {
         <>
           <section className={styles.binderHeader}>
             <div>
-              <p className={styles.binderBreadcrumb}>Meine Binder / {activeBinder.name}</p>
+              <p className={styles.binderBreadcrumb}><span className={styles.catalogTag}>{catalogLabel(Math.max(binders.findIndex((binder) => binder.id === activeBinder.id), 0))}</span> Meine Binder / {activeBinder.name}</p>
               <h1>{activeBinder.name}</h1>
               <p className={styles.binderMeta}>{activeBinder.pages.length} {activeBinder.pages.length === 1 ? "Seite" : "Seiten"} · {activeBinder.layout.rows} × {activeBinder.layout.columns}</p>
               <AutosaveTextarea
@@ -1491,8 +1508,14 @@ export function FoundationWorkspace() {
           </section>
 
           <section className={styles.stats} aria-label="Binderfortschritt">
-            <div><strong>{stats.owned}</strong><span>Vorhanden</span><small>{stats.completionPercent}% vollständig</small></div>
-            <div><strong>{stats.missing}</strong><span>Fehlend</span><small>geplante Karten</small></div>
+            <div className={styles.statsHero} data-complete={stats.planned > 0 && stats.owned === stats.planned}>
+              <small>Fortschritt</small>
+              <strong>{stats.completionPercent}%</strong>
+              <i aria-hidden="true"><span style={{ width: `${stats.completionPercent}%` }} /></i>
+              {stats.planned > 0 && stats.owned === stats.planned ? <span className={styles.plaque}>Komplett</span> : null}
+            </div>
+            <div data-tone="ok"><strong>{stats.owned}</strong><span>Vorhanden</span><small>{stats.completionPercent}% vollständig</small></div>
+            <div data-tone="miss"><strong>{stats.missing}</strong><span>Fehlend</span><small>geplante Karten</small></div>
             <div><strong>{Math.max(stats.capacity - stats.planned, 0)}</strong><span>Freie Plätze</span><small>auf {activeBinder.pages.length} {activeBinder.pages.length === 1 ? "Seite" : "Seiten"}</small></div>
             <div><strong>{stats.planned}</strong><span>Geplant</span><small>von {stats.capacity} Slots</small></div>
           </section>
@@ -1593,8 +1616,31 @@ export function FoundationWorkspace() {
                   </div>
                 </div>
               </div>
+              {activeBinder.pages.length > 1 ? (
+                <nav className={styles.pageTabs} aria-label="Seitenregister">
+                  {activeBinder.pages.map((page, index) => {
+                    const pageEntries = page.slots.filter((slot) => slot !== null);
+                    const pageComplete = pageEntries.length > 0 && pageEntries.every((slot) => slot.owned);
+                    const pageLabel = page.title?.trim() || `Seite ${index + 1}`;
+                    return (
+                      <button
+                        type="button"
+                        key={page.id}
+                        className={styles.pageTab}
+                        aria-current={index === visiblePageIndex ? "page" : undefined}
+                        aria-label={`${pageLabel} anzeigen`}
+                        title={pageLabel}
+                        data-complete={pageComplete}
+                        onClick={() => { setActivePageIndex(index); setContextLocation(undefined); }}
+                      >
+                        {String(index + 1).padStart(2, "0")}
+                      </button>
+                    );
+                  })}
+                </nav>
+              ) : null}
               {activePage ? (
-                <div className={styles.binderSurface}>
+                <div className={styles.binderSurface} data-page-label={`${catalogLabel(Math.max(binders.findIndex((binder) => binder.id === activeBinder.id), 0))} · S. ${String(visiblePageIndex + 1).padStart(2, "0")}`}>
                   <span className={styles.binderRings} aria-hidden="true"><i /><i /><i /></span>
                   <BinderGrid
                     page={activePage}
@@ -1606,6 +1652,7 @@ export function FoundationWorkspace() {
                     onSelectCard={(location) => { setContextLocation(location); setSelectedLocation(undefined); setSearchOpen(false); }}
                     onMove={(from, to) => void moveCard(from, to)}
                     onRefreshCard={(card) => void refreshCardSnapshot(card)}
+                    celebratedEntryId={celebratedEntryId}
                   />
                 </div>
               ) : null}
@@ -1758,20 +1805,27 @@ export function FoundationWorkspace() {
 
                 {contextEntry ? (
                   <div className={styles.cardContext}>
+                    <div className={styles.slabLabel} data-owned={contextEntry.owned}>
+                      <div className={styles.contextIdentity}>
+                        <strong>{contextCard?.name ?? "Kartendaten fehlen"}</strong>
+                        {contextCard ? <span>{contextCard.setName} · Nr. {formatCollectorNumber(contextCard.collectorNumber, contextCard.collectorTotal)}</span> : null}
+                        <em>{contextEntry.owned ? "✓ Vorhanden" : "✕ Fehlt"} · {contextCard?.ref.language.toUpperCase() ?? "–"}</em>
+                      </div>
+                      <div className={styles.slabGrade} title={`Mindestzustand: ${minimumConditionLabels[contextEntry.preferences.minimumCondition]}`}>
+                        <strong>{conditionGrade[contextEntry.preferences.minimumCondition]}</strong>
+                        <small>min.</small>
+                      </div>
+                    </div>
                     {contextCard ? <CardArtwork
                       card={contextCard}
                       className={styles.contextImage}
                       fallback={<div className={styles.contextImageFallback}>Bild nicht verfügbar</div>}
                     /> : <div className={styles.contextImageFallback}>Bild nicht verfügbar</div>}
-                    <div className={styles.contextIdentity}>
-                      <strong>{contextCard?.name ?? "Kartendaten fehlen"}</strong>
-                      {contextCard ? <span>{contextCard.setName} · Nr. {formatCollectorNumber(contextCard.collectorNumber, contextCard.collectorTotal)}</span> : null}
-                    </div>
                     <dl className={styles.contextDetails}>
                       <div><dt>Sprache</dt><dd>{contextCard?.ref.language.toUpperCase() ?? "–"}</dd></div>
                       <div><dt>Version</dt><dd>{formatVariantSelection(contextEntry.variant)}</dd></div>
                       <div><dt>Zustand</dt><dd>{minimumConditionLabels[contextEntry.preferences.minimumCondition]}</dd></div>
-                      <div><dt>Status</dt><dd>{contextEntry.owned ? "Vorhanden" : "Fehlt"}</dd></div>
+                      <div><dt>Status</dt><dd data-tone={contextEntry.owned ? "ok" : "miss"}>{contextEntry.owned ? "Vorhanden" : "Fehlt"}</dd></div>
                     </dl>
                     <div className={styles.contextActions}>
                       <button type="button" className={styles.primaryButton} onClick={() => void toggleOwned(contextEntry.id, !contextEntry.owned)}>{contextEntry.owned ? "Als fehlend markieren" : "Als vorhanden markieren"}</button>

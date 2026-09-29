@@ -127,3 +127,12 @@
 - Product mappings are loaded only when the collector opens the TCGplayer handoff, keeping the initial local-first workspace independent from the marketplace payload.
 - Finish, edition and printing are required before a binder card can be inserted or updated. `Mit Schatten / Standard` is the default printing; Shadowless must be selected deliberately and uses TCGplayer's separate `[BSS]` set.
 - The remaining absence of a provider record is shown as a provider limitation, not silently converted into a speculative Mass Entry line.
+
+## 2026-09-29 — Visual layer "Synthese 2" selected
+
+- The user selected **Synthese 2** as the productive visual direction: Holo structure calmed by roughly 20–30 %, Kabinett binder covers and materiality, Slab-compact status displays.
+- This is a UI-only change. Contracts, persistence, domain logic, dependencies and the lockfile are unchanged; the Design 3 information architecture (KPI strip, persistent context panel, search drawer) is kept.
+- Light ("Tag") and dark ("Nacht") mode share one token set in `src/app/globals.css`. The default follows the system setting; the manual choice is a UI preference stored in `localStorage` (`cardfolio-theme`) and is not part of binder data or backups.
+- Brass is the single brand accent. Green (vorhanden) and coral (fehlt) are status-only and always paired with text or a symbol. Glows are limited to holo cards on hover, completion, the three-fold gold pulse after marking a card as owned and the selected card; `prefers-reduced-motion` disables motion.
+- Binder cover colours are derived from the binder ID and CF numbers from the shelf position, so no new persisted fields are required.
+- Fonts (Unbounded, Figtree, JetBrains Mono; SIL OFL 1.1) are self-hosted via `next/font/local`, satisfying `font-src 'self'`. Textures are local SVG files under `public/textures/`.
