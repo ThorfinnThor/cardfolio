@@ -1,0 +1,32 @@
+{
+  "totalWallSec": 238.1,
+  "fetchDecode": {
+    "n": 1579,
+    "meanMs": 95.1,
+    "p50Ms": 94.7,
+    "p95Ms": 149.3
+  },
+  "failures": [],
+  "models": {
+    "Xenova/clip-vit-base-patch32": {
+      "visionDtype": "fp32",
+      "loadMs": 149,
+      "perImageFullCard": {
+        "n": 1579,
+        "meanMs": 19.1,
+        "p50Ms": 18.8,
+        "p95Ms": 21.1
+      }
+    },
+    "Xenova/clip-vit-base-patch16": {
+      "visionDtype": "fp32",
+      "loadMs": 134,
+      "perImageFullCard": {
+        "n": 1579,
+        "meanMs": 56.9,
+        "p50Ms": 56.8,
+        "p95Ms": 59.7
+      }
+    }
+  }
+}
