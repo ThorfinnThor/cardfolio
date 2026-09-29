@@ -34,6 +34,8 @@ interface BinderGridProps {
   onSelectCard: (location: SlotLocation) => void;
   onMove: (from: SlotLocation, to: SlotLocation) => void;
   onRefreshCard: (card: CardSnapshot) => void;
+  /** Entry that was just marked as owned; receives a short gold pulse. */
+  celebratedEntryId?: string;
 }
 
 interface OccupiedSlotProps {
@@ -42,6 +44,7 @@ interface OccupiedSlotProps {
   location: SlotLocation;
   selected: boolean;
   moving: boolean;
+  celebrate: boolean;
   onSelectCard: (location: SlotLocation) => void;
   onRefreshCard: (card: CardSnapshot) => void;
 }
@@ -64,6 +67,7 @@ function OccupiedSlot({
   location,
   selected,
   moving,
+  celebrate,
   onSelectCard,
   onRefreshCard,
 }: OccupiedSlotProps) {
@@ -82,6 +86,8 @@ function OccupiedSlot({
       style={dragStyle}
       className={`${styles.slot} ${selected ? styles.slotSelected : ""} ${moving ? styles.movingSlot : ""}`}
       data-owned={entry.owned}
+      data-celebrate={celebrate || undefined}
+      data-finish={entry.variant.finish}
       tabIndex={0}
       aria-label={card ? `${card.name}, Slot ${location.slotIndex + 1}` : `Kartendaten fehlen, Slot ${location.slotIndex + 1}`}
       onClick={() => onSelectCard(location)}
@@ -129,6 +135,7 @@ export function BinderGrid({
   onSelectCard,
   onMove,
   onRefreshCard,
+  celebratedEntryId,
 }: BinderGridProps) {
   const sensors = useSensors(useSensor(MouseSensor, { activationConstraint: { distance: 7 } }));
   const [dragLabel, setDragLabel] = useState<string>();
@@ -160,6 +167,7 @@ export function BinderGrid({
                   location={location}
                   selected={sameLocation(selectedLocation, location)}
                   moving={sameLocation(movingLocation, location)}
+                  celebrate={entry.id === celebratedEntryId}
                   onSelectCard={onSelectCard}
                   onRefreshCard={onRefreshCard}
                 />
@@ -170,7 +178,7 @@ export function BinderGrid({
                   onClick={() => movingLocation ? onMove(movingLocation, location) : onOpenSearch(location)}
                   aria-label={movingLocation ? `Freier Platz ${index + 1}, hierher verschieben` : `Freier Platz ${index + 1}, Karte einsetzen`}
                 >
-                  <span className={styles.emptySlotIcon}>+</span>
+                  <span className={styles.emptySlotIcon} aria-hidden="true">+</span>
                   <span>Freier Platz {index + 1}</span>
                   <small>{movingLocation ? "Hierher verschieben" : "Karte einsetzen"}</small>
                 </button>
