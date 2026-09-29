@@ -46,7 +46,7 @@
 .themeToggle:hover { border-color: var(--cf-accent); color: var(--cf-accent-text); }
 .mobileMenu { display: none; width: 36px; height: 36px; place-items: center; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-field); color: var(--cf-text2); }
 .status { display: inline-flex; align-items: center; gap: 7px; color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 10.5px; letter-spacing: .03em; white-space: nowrap; }
-.status > span { width: 7px; height: 7px; border-radius: 50%; background: var(--cf-ok); box-shadow: 0 0 0 3px var(--cf-ok-soft); }
+.status > span { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--cf-ok); box-shadow: 0 0 0 3px var(--cf-ok-soft); }
 .status[data-status="saving"] > span { background: var(--cf-accent); box-shadow: 0 0 0 3px var(--cf-accent-soft); }
 .status[data-status="error"] { color: var(--cf-miss-text); }
 .status[data-status="error"] > span { background: var(--cf-miss); box-shadow: 0 0 0 3px var(--cf-miss-soft); }
@@ -250,7 +250,7 @@
 
 /* Search drawer */
 .selectedSlotHint { margin: 14px 0 0; border: 1px dashed var(--cf-accent); border-radius: 7px; background: var(--cf-accent-soft); color: var(--cf-accent-text); padding: 9px 11px; font-family: var(--cf-font-mono); font-size: 11px; line-height: 1.45; }
-.searchPreview { display: grid; gap: 14px; padding-top: 14px; }
+.searchPreview { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; padding-top: 14px; }
 .previewBack { justify-self: start; border: 0; background: transparent; color: var(--cf-accent-text); padding: 0; font-size: 12px; font-weight: 650; cursor: pointer; }
 .previewBack:hover { text-decoration: underline; text-underline-offset: 3px; }
 .previewLoading { min-height: 180px; display: grid; margin: 0; place-items: center; border-radius: 8px; background: var(--cf-surface2); color: var(--cf-muted); font-size: 12px; }
@@ -312,9 +312,9 @@
 .dialogField input { min-height: 42px; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-field); color: var(--cf-text); padding: 8px 11px; font: inherit; outline: none; }
 .dialogField input:focus { border-color: var(--cf-accent); box-shadow: 0 0 0 3px var(--cf-accent-soft); }
 .dialogField small { justify-self: end; color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 9.5px; font-weight: 500; font-variant-numeric: tabular-nums; }
-.variantForm { display: grid; gap: 12px; margin-top: 18px; }
-.variantForm label { display: grid; gap: 5px; color: var(--cf-text2); font-size: 12.5px; font-weight: 650; }
-.variantForm select, .variantForm input { min-height: 42px; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-field); color: var(--cf-text); padding: 8px 10px; }
+.variantForm { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin-top: 18px; }
+.variantForm label { display: grid; min-width: 0; gap: 5px; color: var(--cf-text2); font-size: 12.5px; font-weight: 650; }
+.variantForm select, .variantForm input { width: 100%; min-width: 0; min-height: 42px; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-field); color: var(--cf-text); padding: 8px 10px; }
 .variantForm select:focus, .variantForm input:focus { border-color: var(--cf-accent); outline: none; box-shadow: 0 0 0 3px var(--cf-accent-soft); }
 .variantHint { margin-top: 14px !important; border-left: 3px solid var(--cf-accent); border-radius: 0 6px 6px 0; background: var(--cf-accent-soft); color: var(--cf-text2); padding: 9px 11px; }
 .dialogActions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 22px; }
@@ -340,7 +340,8 @@
   .statsHero { grid-column: 1 / -1; border-right: 0 !important; border-bottom: 1px solid var(--cf-line); }
 }
 
-@media (max-width: 1023px) {
+/* Icon rail below 1180px so the 3x3 page keeps readable slots next to the 290px inspector. */
+@media (max-width: 1180px) {
   .appShell { grid-template-columns: 68px minmax(0, 1fr); }
   .sidebar { align-items: center; padding-inline: 9px; }
   .brand { margin-inline: 0; }
@@ -349,6 +350,9 @@
   .navItem, .navItemActive, .navItemMuted { justify-content: center; padding-inline: 0; }
   .navItemActive::before { left: -9px; }
   .navBadge { position: absolute; top: 2px; right: 2px; min-width: 18px; height: 16px; margin: 0; padding: 0 4px; font-size: 9px; }
+}
+
+@media (max-width: 1023px) {
   .workspace { grid-template-columns: minmax(0, 1fr); }
   .contextPanel, .searchDrawer { position: relative; top: auto; max-height: none; }
   .topbarSearch { min-width: 170px; }
@@ -364,7 +368,7 @@
   .topbarSearch { min-width: 36px; width: 36px; justify-content: center; padding: 0; }
   .topbarSearch span { display: none; }
   .status { font-size: 9.5px; }
-  .page { padding: 18px 13px 92px; }
+  .page { padding: 18px 13px calc(128px + env(safe-area-inset-bottom)); }
   .binderHeader { align-items: flex-start; flex-direction: column; gap: 15px; }
   .binderHeader > div:first-child { width: 100%; }
   .binderHeaderActions { position: fixed; z-index: 12; right: 0; bottom: 0; left: 0; display: grid; grid-template-columns: 1fr 1fr; padding: 10px max(12px, env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left)); border-top: 1px solid var(--cf-line); background: var(--cf-glass); box-shadow: 0 -10px 26px -12px var(--cf-sh-soft); backdrop-filter: blur(12px); }
@@ -393,7 +397,7 @@
   .dragHandle { display: none; }
   .ownedBadge, .missingBadge { top: 7px; left: 7px; padding: 1px 4px; font-size: 7px; }
   .emptySlot { min-height: 130px; padding: 4px; font-size: 10px; }
-  .contextPanel:has(.cardContext), .searchDrawer { position: fixed; z-index: 20; inset: auto 8px calc(68px + env(safe-area-inset-bottom)); max-height: calc(100vh - 90px); overflow: auto; border-color: var(--cf-line2); box-shadow: 0 24px 60px -10px var(--cf-sh-deep); }
+  .contextPanel:has(.cardContext), .searchDrawer { position: fixed; z-index: 20; inset: auto 8px calc(118px + env(safe-area-inset-bottom)); max-height: calc(100dvh - 186px); overflow: auto; border-color: var(--cf-line2); box-shadow: 0 24px 60px -10px var(--cf-sh-deep); }
   .catalogFilters { grid-template-columns: 1fr; }
   .notice { align-items: stretch; flex-direction: column; }
   .noticeActions { flex-direction: column; }
@@ -402,7 +406,6 @@
 }
 
 @media (max-width: 430px) {
-  .status { max-width: 108px; overflow: hidden; text-overflow: ellipsis; }
   .panel { padding: 12px; }
   .layoutPreview { grid-template-columns: 1fr; }
   .layoutPreview span { border-right: 0; border-bottom: 1px solid var(--cf-line); }
