@@ -139,7 +139,7 @@
 
 ## 2026-09-29 — TCGdex variant fallback is not a catalog confirmation
 
-- TCGdex answers every card without curated variant data with `normal: true` and all other variants `false`. Complete sets (for example Team Up, Cosmic Eclipse, Hidden Fates, Evolutions, 151 commons) carry no variant data, so this shape is indistinguishable from "unknown".
+- TCGdex answers every card without curated variant data with `normal: true` and all other variants `false`. All sampled Team Up cards and sampled cards from Cosmic Eclipse, Unified Minds, Hidden Fates, Evolutions and 151 carry no variant data, so this shape is indistinguishable from "unknown".
 - Cardfolio previously displayed it as "Katalog bestätigt: Non-Holo / Normal", preselected Non-Holo and blocked Holo and Reverse Holo, e.g. for the holo-only Celebi & Bisaflor GX (Team Up 159/181).
 - The exact fallback shape is now treated as missing variant data in the adapter and when reading stored snapshots. All finishes stay selectable and the finish is not preselected. No schema or backup change is needed.
 - Trade-off: a card whose curated data genuinely says only Non-Holo (no Reverse, no First Edition) also shows as unconfirmed. That costs one manual choice but never blocks a real printing.
