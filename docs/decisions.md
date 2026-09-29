@@ -136,3 +136,10 @@
 - Brass is the single brand accent. Green (vorhanden) and coral (fehlt) are status-only and always paired with text or a symbol. Glows are limited to holo cards on hover, completion, the three-fold gold pulse after marking a card as owned and the selected card; `prefers-reduced-motion` disables motion.
 - Binder cover colours are derived from the binder ID and CF numbers from the shelf position, so no new persisted fields are required.
 - Fonts (Unbounded, Figtree, JetBrains Mono; SIL OFL 1.1) are self-hosted via `next/font/local`, satisfying `font-src 'self'`. Textures are local SVG files under `public/textures/`.
+
+## 2026-09-29 — TCGdex variant fallback is not a catalog confirmation
+
+- TCGdex answers every card without curated variant data with `normal: true` and all other variants `false`. Complete sets (for example Team Up, Cosmic Eclipse, Hidden Fates, Evolutions, 151 commons) carry no variant data, so this shape is indistinguishable from "unknown".
+- Cardfolio previously displayed it as "Katalog bestätigt: Non-Holo / Normal", preselected Non-Holo and blocked Holo and Reverse Holo, e.g. for the holo-only Celebi & Bisaflor GX (Team Up 159/181).
+- The exact fallback shape is now treated as missing variant data in the adapter and when reading stored snapshots. All finishes stay selectable and the finish is not preselected. No schema or backup change is needed.
+- Trade-off: a card whose curated data genuinely says only Non-Holo (no Reverse, no First Edition) also shows as unconfirmed. That costs one manual choice but never blocks a real printing.

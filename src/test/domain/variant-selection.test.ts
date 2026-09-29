@@ -6,6 +6,7 @@ import {
   availablePrintingValues,
   createInitialVariantSelection,
   isVariantSelectionComplete,
+  isProviderFallbackVariantSignal,
   isVariantSelectionValid,
   variantAvailabilityForCard,
   variantSelectionIssue,
@@ -70,5 +71,31 @@ describe("createInitialVariantSelection", () => {
   it("requires a label for a manually described variant", () => {
     expect(variantSelectionIssue({ finish: "other", edition: "unlimited", printing: "shadowed" })).toMatch(/Variantenbezeichnung/);
     expect(isVariantSelectionValid({ finish: "other", edition: "unlimited", printing: "shadowed", label: "Cosmos Holo" })).toBe(true);
+  });
+});
+
+describe("TCGdex fallback variant signal", () => {
+  // Team Up 159/181 (Celebi & Bisaflor GX) has no curated variant data; TCGdex
+  // still answers normal: true and everything else false although the card only
+  // exists as Holo.
+  const fallback = { normal: true, holo: false, reverse: false, firstEdition: false };
+  const celebi = {
+    setId: "sm9",
+    ref: { provider: "tcgdex" as const, id: "sm9-159", language: "de" as const },
+    availableVariants: fallback,
+  };
+
+  it("treats the provider fallback as unknown instead of a Non-Holo confirmation", () => {
+    expect(isProviderFallbackVariantSignal(fallback)).toBe(true);
+    expect(variantAvailabilityForCard(celebi)).toBeUndefined();
+    expect(createInitialVariantSelection(variantAvailabilityForCard(celebi)).finish).toBe("unspecified");
+    expect(availableFinishValues(variantAvailabilityForCard(celebi))).toContain("holo");
+    expect(variantSelectionIssue({ finish: "holo", edition: "unlimited", printing: "shadowed" }, variantAvailabilityForCard(celebi))).toBeUndefined();
+  });
+
+  it("keeps curated signals that differ from the fallback", () => {
+    expect(isProviderFallbackVariantSignal({ normal: true, holo: false, reverse: true, firstEdition: false })).toBe(false);
+    expect(isProviderFallbackVariantSignal({ normal: false, holo: true, reverse: false, firstEdition: false })).toBe(false);
+    expect(isProviderFallbackVariantSignal({ normal: true, holo: false, reverse: false, firstEdition: true })).toBe(false);
   });
 });

@@ -24,10 +24,24 @@ export const printingLabels = {
   unspecified: "Nicht festgelegt",
 } as const;
 
+/**
+ * TCGdex fills every card without curated variant data with the same fallback
+ * (`normal: true`, everything else `false`). Whole sets such as Team Up carry no
+ * variant data, so this shape cannot be told apart from "unknown" and must not be
+ * presented as a catalog confirmation: it would hide Holo for GX, full-art and
+ * secret-rare cards and Reverse Holo for commons.
+ */
+export function isProviderFallbackVariantSignal(availability: CardVariantAvailability): boolean {
+  return availability.normal
+    && !availability.holo
+    && !availability.reverse
+    && !availability.firstEdition;
+}
+
 export function variantAvailabilityForCard(
   card: Pick<CardSnapshot, "availableVariants" | "ref" | "setId">,
 ): CardVariantAvailability | undefined {
-  if (!card.availableVariants) return undefined;
+  if (!card.availableVariants || isProviderFallbackVariantSignal(card.availableVariants)) return undefined;
   return {
     ...card.availableVariants,
     shadowless: card.availableVariants.shadowless ?? (card.ref.language === "en" && card.setId === "base1"),
@@ -127,7 +141,7 @@ export function formatVariantSelection(variant: VariantSelection): string {
 }
 
 export function formatAvailableVariants(availability?: CardVariantAvailability): string {
-  if (!availability) return "Keine Variantensignale in den gespeicherten Kartendaten; Auswahl muss manuell geprüft werden.";
+  if (!availability) return "Der Katalog enthält für diese Karte keine belastbaren Variantenangaben; Finish bitte anhand der Karte prüfen.";
   const values = [
     availability.normal ? "Non-Holo / Normal" : undefined,
     availability.holo ? "Holo" : undefined,

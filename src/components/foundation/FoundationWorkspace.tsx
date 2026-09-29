@@ -863,7 +863,7 @@ export function FoundationWorkspace() {
             ...current,
             status: "ready",
             snapshot,
-            variant: createInitialVariantSelection(snapshot.availableVariants),
+            variant: createInitialVariantSelection(variantAvailabilityForCard(snapshot)),
           }
         : current);
     } catch (error) {
