@@ -1,33 +1,33 @@
 {
- "generatedAt": "2026-09-30T16:52:27.511Z",
- "completedSets": 68,
- "expectedCards": 6192,
- "resultRows": 6192,
+ "generatedAt": "2026-09-30T17:03:35.979Z",
+ "completedSets": 71,
+ "expectedCards": 6494,
+ "resultRows": 6494,
  "schemaErrors": [],
  "tagCounts": {
-  "beach": 57,
-  "water-surface": 535,
-  "underwater": 195,
-  "forest": 737,
-  "grassland-field": 584,
-  "mountain-rocks": 608,
-  "cave": 123,
-  "desert": 80,
-  "snow-ice": 134,
-  "city": 149,
-  "indoors": 225,
-  "ruins-building": 270,
-  "sky-clouds": 804,
-  "night": 265,
-  "sunset-sunrise": 178,
-  "fire-lava": 283,
-  "flowers": 308,
+  "beach": 58,
+  "water-surface": 576,
+  "underwater": 200,
+  "forest": 786,
+  "grassland-field": 619,
+  "mountain-rocks": 642,
+  "cave": 127,
+  "desert": 86,
+  "snow-ice": 140,
+  "city": 183,
+  "indoors": 264,
+  "ruins-building": 333,
+  "sky-clouds": 858,
+  "night": 273,
+  "sunset-sunrise": 181,
+  "fire-lava": 304,
+  "flowers": 325,
   "food-visible": 87,
-  "human-present": 233,
-  "multiple-pokemon": 419,
-  "sleeping": 41,
-  "flying": 675,
-  "swimming": 349
+  "human-present": 239,
+  "multiple-pokemon": 431,
+  "sleeping": 45,
+  "flying": 749,
+  "swimming": 368
  },
  "relationFlags": [
   {
@@ -2070,6 +2070,31 @@
    "id": "bw5-67",
    "tag": "flying",
    "caption": "Scraggy kicks amid flying rocks in a canyon."
+  },
+  {
+   "id": "bw6-19",
+   "tag": "ruins-building",
+   "caption": "Ninetales stands on green tiles inside a dim building."
+  },
+  {
+   "id": "bw6-60",
+   "tag": "ruins-building",
+   "caption": "Cubone runs across a reflective floor inside a bright building."
+  },
+  {
+   "id": "bw6-98",
+   "tag": "snow-ice",
+   "caption": "Hydreigon flies through a swirling icy-blue vortex."
+  },
+  {
+   "id": "bw7-131",
+   "tag": "flying",
+   "caption": "A Poké Ball flies through white light against black rings."
+  },
+  {
+   "id": "bw7-135",
+   "tag": "multiple-pokemon",
+   "caption": "Several Poké Balls sit inside glowing switching capsules."
   }
  ],
  "visualSamples": {
@@ -2456,6 +2481,10 @@
      "caption": "A hooded Pokémon stands in an icy cave with crystals."
     },
     {
+     "id": "bw7-38",
+     "caption": "Delibird runs across snow beneath a crescent moon."
+    },
+    {
      "id": "dp4-39",
      "caption": "Snubbull stomping through deep snow"
     },
@@ -2478,10 +2507,6 @@
     {
      "id": "ecard3-104",
      "caption": "Staryu in an ice cave over water with Zubat flying."
-    },
-    {
-     "id": "bwp-BW44",
-     "caption": "Kyurem crouches among large ice crystals."
     }
    ],
    "omissions": [
@@ -3108,6 +3133,10 @@
      "caption": "A sleeping cocoon Pokémon hangs from a branch against a dark night sky."
     },
     {
+     "id": "bw6-107",
+     "caption": "Bibarel sleeps curled up on grass in shaded woodland."
+    },
+    {
      "id": "neo1-36",
      "caption": "Gloom lying with eyes closed among colorful mushrooms and leaves"
     },
@@ -3122,10 +3151,6 @@
     {
      "id": "hgss4-60",
      "caption": "Cubone in a cave, sleeping."
-    },
-    {
-     "id": "ex14-33",
-     "caption": "Sleeping green Pokemon on a rocky cliff above the sea with trees."
     }
    ],
    "omissions": []
