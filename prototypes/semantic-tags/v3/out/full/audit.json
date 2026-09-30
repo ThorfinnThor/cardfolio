@@ -1,33 +1,33 @@
 {
- "generatedAt": "2026-09-30T20:25:51.867Z",
- "completedSets": 82,
- "expectedCards": 7909,
- "resultRows": 7909,
+ "generatedAt": "2026-09-30T20:52:16.818Z",
+ "completedSets": 85,
+ "expectedCards": 8286,
+ "resultRows": 8286,
  "schemaErrors": [],
  "tagCounts": {
-  "beach": 71,
-  "water-surface": 730,
-  "underwater": 244,
-  "forest": 1010,
-  "grassland-field": 788,
-  "mountain-rocks": 823,
-  "cave": 155,
-  "desert": 120,
-  "snow-ice": 268,
-  "city": 304,
-  "indoors": 335,
-  "ruins-building": 384,
-  "sky-clouds": 1119,
-  "night": 300,
-  "sunset-sunrise": 184,
-  "fire-lava": 361,
-  "flowers": 440,
-  "food-visible": 102,
-  "human-present": 322,
-  "multiple-pokemon": 510,
-  "sleeping": 60,
-  "flying": 988,
-  "swimming": 438
+  "beach": 82,
+  "water-surface": 773,
+  "underwater": 251,
+  "forest": 1060,
+  "grassland-field": 833,
+  "mountain-rocks": 855,
+  "cave": 162,
+  "desert": 129,
+  "snow-ice": 284,
+  "city": 370,
+  "indoors": 368,
+  "ruins-building": 406,
+  "sky-clouds": 1194,
+  "night": 318,
+  "sunset-sunrise": 188,
+  "fire-lava": 372,
+  "flowers": 462,
+  "food-visible": 114,
+  "human-present": 363,
+  "multiple-pokemon": 536,
+  "sleeping": 67,
+  "flying": 1055,
+  "swimming": 452
  },
  "relationFlags": [
   {
@@ -2161,6 +2161,14 @@
   "beach": {
    "positives": [
     {
+     "id": "xy6-52",
+     "caption": "Dragonite appears on a beach."
+    },
+    {
+     "id": "xy6-50",
+     "caption": "Dragonair swims on a beach."
+    },
+    {
      "id": "pl2-80",
      "caption": "A pink Shellos stands on a sandy beach next to the sea."
     },
@@ -2183,14 +2191,6 @@
     {
      "id": "dpp-DP48",
      "caption": "Shaymin, Bidoof and other Pokemon on a palm beach under clouds."
-    },
-    {
-     "id": "ex14-21",
-     "caption": "Igglybuff standing on a sandy shore with pink crystals, palms and volcanoes."
-    },
-    {
-     "id": "ecard3-46",
-     "caption": "Abra covers its eyes on sand with a lakeside town behind."
     }
    ],
    "omissions": []
@@ -2218,16 +2218,16 @@
      "caption": "A Sealeo swims through waves with bubbles."
     },
     {
+     "id": "xy6-18",
+     "caption": "Wingull flies beside open water and other Pokémon."
+    },
+    {
      "id": "bw3-48",
      "caption": "Trubbish sits beside blue water under stylized clouds."
     },
     {
      "id": "xyp-XY55",
      "caption": "Swampert rises amid splashing water."
-    },
-    {
-     "id": "pl2-21",
-     "caption": "A Gastrodon sits on a sandy beach beside the sea."
     }
    ],
    "omissions": []
@@ -2235,8 +2235,20 @@
   "underwater": {
    "positives": [
     {
+     "id": "xy7-26",
+     "caption": "Jolteon swims underwater."
+    },
+    {
+     "id": "xy7-23",
+     "caption": "Relicanth swims underwater."
+    },
+    {
      "id": "ecard2-20",
      "caption": "Blue Pokémon swims underwater with light rays and stone pillars."
+    },
+    {
+     "id": "xy7-22",
+     "caption": "Vaporeon swims underwater."
     },
     {
      "id": "dp6-75",
@@ -2253,18 +2265,6 @@
     {
      "id": "xy2-71",
      "caption": "Dragalge swims underwater."
-    },
-    {
-     "id": "base1-64",
-     "caption": "Starmie glows in deep blue water with slanting light rays."
-    },
-    {
-     "id": "ecard2-26",
-     "caption": "Octillery floats underwater near stone structures and bubbles."
-    },
-    {
-     "id": "dp7-4",
-     "caption": "A glowing fish Pokémon swims among bubbles in dark water."
     }
    ],
    "omissions": []
@@ -2479,6 +2479,10 @@
   "desert": {
    "positives": [
     {
+     "id": "xy7-40",
+     "caption": "Regirock appears in a desert."
+    },
+    {
      "id": "bw9-69",
      "caption": "Krokorok sits among icy desert rocks."
     },
@@ -2505,10 +2509,6 @@
     {
      "id": "ecard3-132",
      "caption": "A dry desert with a faint mirage and a Poké Ball drawn in the sand."
-    },
-    {
-     "id": "ex2-44",
-     "caption": "A striped Pokémon races across a sand dune in blowing sand."
     }
    ],
    "omissions": [
@@ -2595,36 +2595,36 @@
   "city": {
    "positives": [
     {
+     "id": "xy7-64",
+     "caption": "Porygon swims beside open water."
+    },
+    {
+     "id": "xy8-116",
+     "caption": "Doduo appears in a city and other Pokémon."
+    },
+    {
      "id": "bw9-87",
      "caption": "Rattata stands inside a frozen city plaza."
+    },
+    {
+     "id": "xy7-73",
+     "caption": "Faded Town appears among rocky mountains."
     },
     {
      "id": "bw10-54",
      "caption": "Archeops flies through a frozen city."
     },
     {
+     "id": "xy8-107",
+     "caption": "Xerneas appears among snow and ice."
+    },
+    {
      "id": "xyp-XY127",
      "caption": "Moltres flies above a city beneath a fiery sky."
     },
     {
-     "id": "bw10-55",
-     "caption": "Houndour barks beside a building and ice formations."
-    },
-    {
-     "id": "bw10-41",
-     "caption": "Sigilyph flies above a frozen city."
-    },
-    {
-     "id": "bw10-40",
-     "caption": "Musharna floats above a frozen industrial city."
-    },
-    {
-     "id": "bw10-24",
-     "caption": "Relicanth swims through icy water near a city shore."
-    },
-    {
-     "id": "dp5-61",
-     "caption": "Drifloon holding two heart balloons above a town plaza"
+     "id": "xy7-62",
+     "caption": "Persian appears in a city."
     }
    ],
    "omissions": [
@@ -2804,6 +2804,10 @@
      "caption": "Absol stands on a rocky hill beneath a red moon."
     },
     {
+     "id": "xy7-4",
+     "caption": "Bellossom appears at night."
+    },
+    {
      "id": "xy1-91",
      "caption": "Mr. Mime appears in a forest."
     },
@@ -2822,10 +2826,6 @@
     {
      "id": "dp1-27",
      "caption": "A purple ghost Pokémon grins before a starry night sky with a tree stump."
-    },
-    {
-     "id": "dp4-27",
-     "caption": "Primeape leaping through a dark purple forest at night"
     }
    ],
    "omissions": [
@@ -2866,6 +2866,10 @@
      "caption": "Electrode in an orange cloudy sky beside a utility pole with wires"
     },
     {
+     "id": "xy8-119",
+     "caption": "Hoothoot flies in a city."
+    },
+    {
      "id": "ex1-82",
      "caption": "Grovyle and Oddish near a glowing energy orb under a fiery sky."
     },
@@ -2880,10 +2884,6 @@
     {
      "id": "pop7-9",
      "caption": "Stantler running across a red rocky landscape at sunrise"
-    },
-    {
-     "id": "ecard3-42",
-     "caption": "Persian pounces through tall orange grass under a pink sky."
     }
    ],
    "omissions": [
@@ -2932,16 +2932,16 @@
      "caption": "Fiery creature standing amid flames and dark embers."
     },
     {
+     "id": "xy6-63",
+     "caption": "Reshiram flies beneath a cloudy sky."
+    },
+    {
      "id": "xy5-133",
      "caption": "Maxie's Hidden Ball Trick appears among rocky mountains with people."
     },
     {
      "id": "dpp-DP10",
      "caption": "Infernape attacking with blazing flames around its fists."
-    },
-    {
-     "id": "col1-SL4",
-     "caption": "Groudon in fire."
     }
    ],
    "omissions": [
@@ -3065,6 +3065,10 @@
   "human-present": {
    "positives": [
     {
+     "id": "xy8-102",
+     "caption": "Floette appears in a grassy field with people and other Pokémon."
+    },
+    {
      "id": "xy2-105",
      "caption": "Pokémon Center Lady appears with people."
     },
@@ -3091,10 +3095,6 @@
     {
      "id": "xy2-93",
      "caption": "Pokémon Center Lady appears indoors with people."
-    },
-    {
-     "id": "gym2-18",
-     "caption": "Giovanni in a dark suit against a green background"
     }
    ],
    "omissions": [
@@ -3123,6 +3123,10 @@
   "multiple-pokemon": {
    "positives": [
     {
+     "id": "xy7-41",
+     "caption": "Golurk appears beside open water and other Pokémon."
+    },
+    {
      "id": "xy5-32",
      "caption": "Staryu appears on a beach with other Pokémon."
     },
@@ -3149,10 +3153,6 @@
     {
      "id": "xy5-47",
      "caption": "Sealeo appears on a beach with other Pokémon."
-    },
-    {
-     "id": "bwp-BW09",
-     "caption": "Zoroark and a smaller Pokemon leap in a purple burst."
     }
    ],
    "omissions": [
@@ -3185,6 +3185,10 @@
      "caption": "A large Snorlax sleeps with its eyes closed in a sunny landscape."
     },
     {
+     "id": "xy7-55",
+     "caption": "Cottonee sleeps."
+    },
+    {
      "id": "bw11-11",
      "caption": "Two Swadloon rest together among large forest leaves."
     },
@@ -3207,10 +3211,6 @@
     {
      "id": "base4-30",
      "caption": "Large sleepy creature sitting with eyes closed on a pale backdrop."
-    },
-    {
-     "id": "ex12-51",
-     "caption": "Clamperl sleeps inside its shell among orange coral on the seabed."
     }
    ],
    "omissions": []
@@ -3218,12 +3218,20 @@
   "flying": {
    "positives": [
     {
+     "id": "xy8-129",
+     "caption": "Rufflet flies in a forest."
+    },
+    {
      "id": "bw10-30",
      "caption": "Kyurem flies through silver and rainbow energy."
     },
     {
      "id": "gym1-83",
      "caption": "Small bird flying low over a green slope under a cloudy blue sky."
+    },
+    {
+     "id": "xy6-65",
+     "caption": "Spearow flies in a city."
     },
     {
      "id": "pl3-44",
@@ -3234,20 +3242,12 @@
      "caption": "Charizard flies above a dark city while breathing fire."
     },
     {
+     "id": "xy8-128",
+     "caption": "Chatot flies in a forest."
+    },
+    {
      "id": "neo3-15",
      "caption": "Aerodactyl swooping through a blue cloudy sky above rocky mountains"
-    },
-    {
-     "id": "bw5-34",
-     "caption": "Vanillish spins through a green forest clearing."
-    },
-    {
-     "id": "pl3-45",
-     "caption": "Solrock floats between rocky cliffs under open sky."
-    },
-    {
-     "id": "bw5-98",
-     "caption": "A professor studies a device outside with Pokémon near a house."
     }
    ],
    "omissions": [
