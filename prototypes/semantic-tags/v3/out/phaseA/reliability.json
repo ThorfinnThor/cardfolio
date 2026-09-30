@@ -1,0 +1,475 @@
+{
+ "cards": 1579,
+ "passes": "two independent Sonnet passes (A, B), same rules, no shared state",
+ "gate": "precision >= 0.85 on a random sample (max 24) of cards both passes marked AND positive agreement >= 0.80",
+ "precisionReviewer": "orchestrating Claude session, fresh contact sheets, strict (borderline = wrong)",
+ "onePassOnlySheets": "also reviewed: many one-pass-only cards are real positives (esp. storm-weather, night, flying), i.e. disagreement is mostly missed positives (recall), not false positives",
+ "tags": {
+  "beach": {
+   "positivesBoth": 29,
+   "onlyA": 0,
+   "onlyB": 2,
+   "positiveAgreement": 0.967,
+   "kappa": 0.966,
+   "precisionSample": {
+    "correct": 23,
+    "checked": 24,
+    "misses": [
+     "base1-42 holo foil, no beach"
+    ]
+   },
+   "precision": 0.958,
+   "passesGate": true,
+   "failReason": []
+  },
+  "water-surface": {
+   "positivesBoth": 125,
+   "onlyA": 6,
+   "onlyB": 12,
+   "positiveAgreement": 0.933,
+   "kappa": 0.927,
+   "precisionSample": {
+    "correct": 20,
+    "checked": 24,
+    "misses": [
+     "base1-63 bubbles, no water body",
+     "sv03.5-098 sand only",
+     "ex1-14 holo sparkle",
+     "swsh1-136 rain puddles"
+    ]
+   },
+   "precision": 0.833,
+   "passesGate": false,
+   "failReason": [
+    "precision 0.833"
+   ]
+  },
+  "underwater": {
+   "positivesBoth": 66,
+   "onlyA": 2,
+   "onlyB": 0,
+   "positiveAgreement": 0.985,
+   "kappa": 0.984,
+   "precisionSample": {
+    "correct": 23,
+    "checked": 24,
+    "misses": [
+     "dp1-62 white bubbles, unclear"
+    ]
+   },
+   "precision": 0.958,
+   "passesGate": true,
+   "failReason": []
+  },
+  "forest": {
+   "positivesBoth": 206,
+   "onlyA": 38,
+   "onlyB": 24,
+   "positiveAgreement": 0.869,
+   "kappa": 0.846,
+   "precisionSample": {
+    "correct": 23,
+    "checked": 24,
+    "misses": [
+     "bw1-14 meadow with mountain"
+    ]
+   },
+   "precision": 0.958,
+   "passesGate": true,
+   "failReason": []
+  },
+  "grassland-field": {
+   "positivesBoth": 143,
+   "onlyA": 14,
+   "onlyB": 27,
+   "positiveAgreement": 0.875,
+   "kappa": 0.86,
+   "precisionSample": {
+    "correct": 22,
+    "checked": 24,
+    "misses": [
+     "bw1-33 plain background",
+     "swsh1-32 fire and clouds"
+    ]
+   },
+   "precision": 0.917,
+   "passesGate": true,
+   "failReason": []
+  },
+  "mountain-rocks": {
+   "positivesBoth": 140,
+   "onlyA": 16,
+   "onlyB": 35,
+   "positiveAgreement": 0.846,
+   "kappa": 0.828,
+   "precisionSample": {
+    "correct": 23,
+    "checked": 24,
+    "misses": [
+     "dp1-38 sky only"
+    ]
+   },
+   "precision": 0.958,
+   "passesGate": true,
+   "failReason": []
+  },
+  "cave": {
+   "positivesBoth": 18,
+   "onlyA": 0,
+   "onlyB": 4,
+   "positiveAgreement": 0.9,
+   "kappa": 0.899,
+   "precisionSample": {
+    "correct": 17,
+    "checked": 18,
+    "misses": [
+     "ex1-57 abstract background"
+    ]
+   },
+   "precision": 0.944,
+   "passesGate": true,
+   "failReason": []
+  },
+  "desert": {
+   "positivesBoth": 22,
+   "onlyA": 1,
+   "onlyB": 1,
+   "positiveAgreement": 0.957,
+   "kappa": 0.956,
+   "precisionSample": {
+    "correct": 20,
+    "checked": 22,
+    "misses": [
+     "bw1-5 savanna grass",
+     "dp1-29 unclear background"
+    ]
+   },
+   "precision": 0.909,
+   "passesGate": true,
+   "failReason": []
+  },
+  "snow-ice": {
+   "positivesBoth": 16,
+   "onlyA": 1,
+   "onlyB": 4,
+   "positiveAgreement": 0.865,
+   "kappa": 0.863,
+   "precisionSample": {
+    "correct": 16,
+    "checked": 16,
+    "misses": []
+   },
+   "precision": 1.0,
+   "passesGate": true,
+   "failReason": []
+  },
+  "city": {
+   "positivesBoth": 22,
+   "onlyA": 2,
+   "onlyB": 2,
+   "positiveAgreement": 0.917,
+   "kappa": 0.915,
+   "precisionSample": {
+    "correct": 21,
+    "checked": 22,
+    "misses": [
+     "sm1-77 grass, city not visible"
+    ]
+   },
+   "precision": 0.955,
+   "passesGate": true,
+   "failReason": []
+  },
+  "indoors": {
+   "positivesBoth": 37,
+   "onlyA": 3,
+   "onlyB": 5,
+   "positiveAgreement": 0.902,
+   "kappa": 0.9,
+   "precisionSample": {
+    "correct": 24,
+    "checked": 24,
+    "misses": []
+   },
+   "precision": 1.0,
+   "passesGate": true,
+   "failReason": []
+  },
+  "ruins-building": {
+   "positivesBoth": 19,
+   "onlyA": 1,
+   "onlyB": 9,
+   "positiveAgreement": 0.792,
+   "kappa": 0.789,
+   "precisionSample": {
+    "correct": 19,
+    "checked": 19,
+    "misses": []
+   },
+   "precision": 1.0,
+   "passesGate": false,
+   "failReason": [
+    "agreement 0.792"
+   ]
+  },
+  "sky-clouds": {
+   "positivesBoth": 181,
+   "onlyA": 13,
+   "onlyB": 53,
+   "positiveAgreement": 0.846,
+   "kappa": 0.822,
+   "precisionSample": {
+    "correct": 22,
+    "checked": 24,
+    "misses": [
+     "sv01-028 tiny sky",
+     "sv01-142 abstract"
+    ]
+   },
+   "precision": 0.917,
+   "passesGate": true,
+   "failReason": []
+  },
+  "space": {
+   "positivesBoth": 1,
+   "onlyA": 1,
+   "onlyB": 0,
+   "positiveAgreement": 0.667,
+   "kappa": 0.666,
+   "precisionSample": {
+    "correct": null,
+    "checked": 1,
+    "misses": [
+     "only 1 card both-positive"
+    ]
+   },
+   "precision": null,
+   "passesGate": false,
+   "failReason": [
+    "agreement 0.667",
+    "too few positives"
+   ]
+  },
+  "night": {
+   "positivesBoth": 33,
+   "onlyA": 4,
+   "onlyB": 13,
+   "positiveAgreement": 0.795,
+   "kappa": 0.79,
+   "precisionSample": {
+    "correct": 21,
+    "checked": 24,
+    "misses": [
+     "base1-57 holo sky with sun",
+     "ex1-68 unclear",
+     "base1-43 daytime"
+    ]
+   },
+   "precision": 0.875,
+   "passesGate": false,
+   "failReason": [
+    "agreement 0.795"
+   ]
+  },
+  "sunset-sunrise": {
+   "positivesBoth": 26,
+   "onlyA": 5,
+   "onlyB": 3,
+   "positiveAgreement": 0.867,
+   "kappa": 0.864,
+   "precisionSample": {
+    "correct": 21,
+    "checked": 24,
+    "misses": [
+     "dp1-91 pink clouds",
+     "swsh1-23 bright light",
+     "base1-61 holo"
+    ]
+   },
+   "precision": 0.875,
+   "passesGate": true,
+   "failReason": []
+  },
+  "storm-weather": {
+   "positivesBoth": 11,
+   "onlyA": 2,
+   "onlyB": 15,
+   "positiveAgreement": 0.564,
+   "kappa": 0.559,
+   "precisionSample": {
+    "correct": 11,
+    "checked": 11,
+    "misses": []
+   },
+   "precision": 1.0,
+   "passesGate": false,
+   "failReason": [
+    "agreement 0.564"
+   ]
+  },
+  "fire-lava": {
+   "positivesBoth": 52,
+   "onlyA": 9,
+   "onlyB": 13,
+   "positiveAgreement": 0.825,
+   "kappa": 0.818,
+   "precisionSample": {
+    "correct": 23,
+    "checked": 24,
+    "misses": [
+     "sv03.5-004 tail flame only (borderline)"
+    ]
+   },
+   "precision": 0.958,
+   "passesGate": true,
+   "failReason": []
+  },
+  "flowers": {
+   "positivesBoth": 101,
+   "onlyA": 5,
+   "onlyB": 9,
+   "positiveAgreement": 0.935,
+   "kappa": 0.93,
+   "precisionSample": {
+    "correct": 23,
+    "checked": 24,
+    "misses": [
+     "hgss1-56 no flowers visible"
+    ]
+   },
+   "precision": 0.958,
+   "passesGate": true,
+   "failReason": []
+  },
+  "food-visible": {
+   "positivesBoth": 26,
+   "onlyA": 1,
+   "onlyB": 4,
+   "positiveAgreement": 0.912,
+   "kappa": 0.911,
+   "precisionSample": {
+    "correct": 24,
+    "checked": 24,
+    "misses": []
+   },
+   "precision": 1.0,
+   "passesGate": true,
+   "failReason": []
+  },
+  "human-present": {
+   "positivesBoth": 83,
+   "onlyA": 1,
+   "onlyB": 0,
+   "positiveAgreement": 0.994,
+   "kappa": 0.994,
+   "precisionSample": {
+    "correct": 12,
+    "checked": 12,
+    "misses": []
+   },
+   "precision": 1.0,
+   "passesGate": true,
+   "failReason": []
+  },
+  "multiple-pokemon": {
+   "positivesBoth": 57,
+   "onlyA": 14,
+   "onlyB": 15,
+   "positiveAgreement": 0.797,
+   "kappa": 0.788,
+   "precisionSample": {
+    "correct": 19,
+    "checked": 24,
+    "misses": [
+     "base1-19 Dugtrio",
+     "sm1-87 Dugtrio",
+     "bw1-75 Klink",
+     "hgss1-63 Exeggcute",
+     "sv01-161 Maushold (single Pokémon with several bodies)"
+    ]
+   },
+   "precision": 0.792,
+   "passesGate": false,
+   "failReason": [
+    "precision 0.792",
+    "agreement 0.797"
+   ]
+  },
+  "sleeping": {
+   "positivesBoth": 6,
+   "onlyA": 0,
+   "onlyB": 3,
+   "positiveAgreement": 0.8,
+   "kappa": 0.799,
+   "precisionSample": {
+    "correct": 6,
+    "checked": 6,
+    "misses": []
+   },
+   "precision": 1.0,
+   "passesGate": true,
+   "failReason": []
+  },
+  "flying": {
+   "positivesBoth": 85,
+   "onlyA": 20,
+   "onlyB": 25,
+   "positiveAgreement": 0.791,
+   "kappa": 0.775,
+   "precisionSample": {
+    "correct": 12,
+    "checked": 12,
+    "misses": []
+   },
+   "precision": 1.0,
+   "passesGate": false,
+   "failReason": [
+    "agreement 0.791"
+   ]
+  },
+  "swimming": {
+   "positivesBoth": 58,
+   "onlyA": 6,
+   "onlyB": 17,
+   "positiveAgreement": 0.835,
+   "kappa": 0.827,
+   "precisionSample": {
+    "correct": 12,
+    "checked": 12,
+    "misses": []
+   },
+   "precision": 1.0,
+   "passesGate": true,
+   "failReason": []
+  }
+ },
+ "passing": [
+  "beach",
+  "underwater",
+  "forest",
+  "grassland-field",
+  "mountain-rocks",
+  "cave",
+  "desert",
+  "snow-ice",
+  "city",
+  "indoors",
+  "sky-clouds",
+  "sunset-sunrise",
+  "fire-lava",
+  "flowers",
+  "food-visible",
+  "human-present",
+  "sleeping",
+  "swimming"
+ ],
+ "failing": [
+  "water-surface",
+  "ruins-building",
+  "space",
+  "night",
+  "storm-weather",
+  "multiple-pokemon",
+  "flying"
+ ]
+}
