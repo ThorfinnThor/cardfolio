@@ -6,7 +6,7 @@ the root `package.json` or the lockfile.
 
 ## Status (updated on every stop)
 
-**2026-09-30 ~18:05 Berlin: Phase A complete, tag list frozen, Phase B at 65/164 sets.**
+**2026-09-30 ~21:20 Berlin: Phase A complete, tag list frozen, Phase B at 77/164 sets.**
 
 - **Final tags (23, `semantic-tags/v3/final-tags.mjs`):** beach, water-surface, underwater, forest, grassland-field,
   mountain-rocks, cave, desert, snow-ice, city, indoors, ruins-building, sky-clouds, night, sunset-sunrise, fire-lava,
@@ -23,8 +23,9 @@ the root `package.json` or the lockfile.
   | multiple-pokemon | 88 % | 92 % |
 
 - **Final rules:** `v3/tag-rules-final.md`. Phase B agent instructions: `v3/agent-instructions-full.md`.
-- **Phase B:** 164 sets with images, 1,911 sheets. **65 sets and 5,876 of 21,990 cards are complete (27%).** The latest completed block is `hgssp`, `hgss2`, `hgss3`, `hgss4`, `col1`; the next open block is `bw3`, `bw4`, `bw5`.
-- **Audit:** all 23 frozen tags were cross-checked before these blocks. A 240-card random sample found five cards requiring correction (2.1% before correction); targeted checks brought the total to 109 corrected cards. Details: `v3/AUDIT.md`, `v3/out/full/audit.json`, `v3/out/full/audit-fixes.json`. The latest validation passes with 5,876/5,876 valid rows and no new relationship conflicts.
+- **Phase B:** 164 sets with images, 1,911 sheets. **77 sets and 7,251 of 21,990 cards are complete (33%).** The latest completed block is `xyp`, `bw11`, `xy0`; the next open block is `xy1`, `xy2`, `xy3`.
+- **Audit:** all 23 frozen tags were cross-checked before these blocks. A 240-card random sample found five cards requiring correction (2.1% before correction); targeted checks brought the total to 109 corrected cards. Details: `v3/AUDIT.md`, `v3/out/full/audit.json`, `v3/out/full/audit-fixes.json`. The latest validation passes with 7,251/7,251 valid rows and no new relationship conflicts.
+- **Rejected acceleration attempt (2026-09-30):** local Florence-2 captions plus keyword rules, CLIP/DINO classifiers trained on the completed cards, TF-IDF over generated captions, and MiniLM caption embeddings were evaluated against held-out/manual data. None met the existing quality gate with useful recall (the strongest broad parser reached 66% micro precision / 23% recall; high-precision variants fell to 6–9% recall). No generated rows were ingested or committed. Continue with direct visual tagging from `xy1` onward.
 - **Progress:** `v3/out/full/progress.json` (per set: cards, valid, invalid, tokens, minutes). Results per set: `v3/out/full/<setId>.json`. Invalid results: `v3/out/full/failed.json`.
 - **Starting / resuming:** `node v3/plan-full.mjs 36` lists only the jobs still open. For each job, an agent gets `SETS`, a temp folder `A` (outside the repo) and a result folder `R`, and follows `v3/agent-instructions-full.md`. Afterwards run `node v3/ingest-full.mjs R/<setId>.json <tokens> <minutes>` for each set, then commit and push.
 - **Known issues:** Node on macOS needs `NODE_EXTRA_CA_CERTS=/etc/ssl/cert.pem`. `high.webp` returns a 404 for a few cards (e.g. sv03.5-163); the sheet builder then uses `high.png`. The usage limit can stop runs; everything is resumable per set.
@@ -181,8 +182,8 @@ node v3/ingest-full.mjs <result.json>  # validate and store one set
 ## How a new session continues
 
 1. `git fetch` and check out `claude/project-thread-jqmwl5`. Read this file, `semantic-tags/v3/tag-rules-final.md` and `semantic-tags/v3/AUDIT.md`.
-2. Run `node v3/plan-full.mjs 36`; the next open job is currently `bw3`, `bw4`, `bw5`.
-3. Run Phase B per set with the commands under "Running it locally". Push every few sets and update the status here.
+2. Run `node v3/plan-full.mjs 36`; the next open job is currently `xy1`, `xy2`, `xy3`.
+3. Run Phase B per set with the commands under "Running it locally". The next block is `xy1`, `xy2`, `xy3`. Push every few sets and update the status here.
 4. After Phase B, build Phase C (`v3/search.mjs`) and test it on the full catalogue.
 5. Only after that, prepare a separate integration PR (data file, domain search module with tests, UI, `docs/decisions.md` entries) with integration review.
 
