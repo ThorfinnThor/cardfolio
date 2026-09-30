@@ -207,12 +207,156 @@
    "at": "2026-09-30T12:14:45.444Z",
    "agentTokens": 0,
    "agentMinutes": 0
+  },
+  "ex8": {
+   "cards": 108,
+   "valid": 108,
+   "invalid": 0,
+   "at": "2026-09-30T12:15:07.318Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "ex9": {
+   "cards": 107,
+   "valid": 107,
+   "invalid": 0,
+   "at": "2026-09-30T12:15:07.359Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "pop2": {
+   "cards": 17,
+   "valid": 17,
+   "invalid": 0,
+   "at": "2026-09-30T12:15:07.398Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "ex10": {
+   "cards": 117,
+   "valid": 117,
+   "invalid": 0,
+   "at": "2026-09-30T12:15:07.437Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "ex11": {
+   "cards": 114,
+   "valid": 114,
+   "invalid": 0,
+   "at": "2026-09-30T12:19:24.887Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "ex12": {
+   "cards": 93,
+   "valid": 93,
+   "invalid": 0,
+   "at": "2026-09-30T12:19:24.928Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "pop3": {
+   "cards": 17,
+   "valid": 17,
+   "invalid": 0,
+   "at": "2026-09-30T12:19:24.965Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "ex13": {
+   "cards": 111,
+   "valid": 111,
+   "invalid": 0,
+   "at": "2026-09-30T12:19:25.005Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "pop4": {
+   "cards": 17,
+   "valid": 17,
+   "invalid": 0,
+   "at": "2026-09-30T12:19:25.042Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "ex14": {
+   "cards": 100,
+   "valid": 100,
+   "invalid": 0,
+   "at": "2026-09-30T12:20:32.232Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "ex15": {
+   "cards": 101,
+   "valid": 101,
+   "invalid": 0,
+   "at": "2026-09-30T12:20:32.273Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "ex16": {
+   "cards": 108,
+   "valid": 108,
+   "invalid": 0,
+   "at": "2026-09-30T12:20:32.311Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "pop5": {
+   "cards": 17,
+   "valid": 17,
+   "invalid": 0,
+   "at": "2026-09-30T12:20:32.350Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "dpp": {
+   "cards": 56,
+   "valid": 56,
+   "invalid": 0,
+   "at": "2026-09-30T12:20:32.388Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "dp1": {
+   "cards": 130,
+   "valid": 130,
+   "invalid": 0,
+   "at": "2026-09-30T12:21:03.825Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "dp2": {
+   "cards": 124,
+   "valid": 124,
+   "invalid": 0,
+   "at": "2026-09-30T12:21:03.864Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "pop6": {
+   "cards": 15,
+   "valid": 15,
+   "invalid": 0,
+   "at": "2026-09-30T12:21:03.902Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "dp3": {
+   "cards": 132,
+   "valid": 132,
+   "invalid": 0,
+   "at": "2026-09-30T12:21:03.941Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
   }
  },
  "totals": {
-  "sets": 26,
-  "cards": 2504,
-  "valid": 2504,
+  "sets": 44,
+  "cards": 3988,
+  "valid": 3988,
   "invalid": 0,
   "agentTokens": 0,
   "agentMinutes": 16.4

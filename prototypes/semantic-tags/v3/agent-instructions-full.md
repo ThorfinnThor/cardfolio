@@ -19,5 +19,5 @@ Only touch $A and $R (a converter script inside $A is fine; delete it). No git.
 
 ## Output per card
 `{"id": "<id>", "tags": ["tag", ...], "caption": "one short English sentence, max ~12 words"}`
-- `tags`: only the tags that are TRUE (can be empty). Judge each tag by its rule.
+- `tags`: only the tags that are TRUE (can be empty). Judge each tag by its rule. Only the illustration counts: small portraits, icons or symbols in the card frame are ignored.
 - `caption`: only the illustrated scene; ignore all printed text. Mention notable things not covered by tags (rain, lightning, space, bridge, rock, holding an object …).
