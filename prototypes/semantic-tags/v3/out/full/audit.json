@@ -1,33 +1,33 @@
 {
- "generatedAt": "2026-09-30T17:19:54.422Z",
- "completedSets": 74,
- "expectedCards": 6859,
- "resultRows": 6859,
+ "generatedAt": "2026-09-30T17:36:34.653Z",
+ "completedSets": 77,
+ "expectedCards": 7251,
+ "resultRows": 7251,
  "schemaErrors": [],
  "tagCounts": {
-  "beach": 61,
-  "water-surface": 618,
-  "underwater": 210,
-  "forest": 837,
-  "grassland-field": 651,
-  "mountain-rocks": 669,
-  "cave": 135,
-  "desert": 92,
-  "snow-ice": 240,
-  "city": 241,
-  "indoors": 284,
-  "ruins-building": 355,
-  "sky-clouds": 926,
-  "night": 281,
-  "sunset-sunrise": 181,
-  "fire-lava": 317,
-  "flowers": 339,
-  "food-visible": 91,
-  "human-present": 251,
-  "multiple-pokemon": 444,
-  "sleeping": 46,
-  "flying": 857,
-  "swimming": 385
+  "beach": 62,
+  "water-surface": 656,
+  "underwater": 217,
+  "forest": 898,
+  "grassland-field": 690,
+  "mountain-rocks": 718,
+  "cave": 140,
+  "desert": 95,
+  "snow-ice": 250,
+  "city": 263,
+  "indoors": 301,
+  "ruins-building": 365,
+  "sky-clouds": 976,
+  "night": 289,
+  "sunset-sunrise": 183,
+  "fire-lava": 337,
+  "flowers": 372,
+  "food-visible": 100,
+  "human-present": 277,
+  "multiple-pokemon": 488,
+  "sleeping": 55,
+  "flying": 937,
+  "swimming": 396
  },
  "relationFlags": [
   {
@@ -2110,6 +2110,41 @@
    "id": "bw10-80",
    "tag": "multiple-pokemon",
    "caption": "Two energy capsules swing through red light."
+  },
+  {
+   "id": "xyp-XY102",
+   "tag": "snow-ice",
+   "caption": "Aurorus fills the frame amid icy cosmic light."
+  },
+  {
+   "id": "xyp-XY45",
+   "tag": "flying",
+   "caption": "Gallade strikes through flying rocks and green light."
+  },
+  {
+   "id": "bw11-112",
+   "tag": "multiple-pokemon",
+   "caption": "Two mechanical devices transfer a glowing energy orb."
+  },
+  {
+   "id": "bw11-113",
+   "tag": "multiple-pokemon",
+   "caption": "Two white energy orbs float against a dark grid."
+  },
+  {
+   "id": "bw11-114",
+   "tag": "human-present",
+   "caption": "Reshiram appears as a golden embossed figure."
+  },
+  {
+   "id": "bw11-115",
+   "tag": "human-present",
+   "caption": "Zekrom appears as a golden embossed figure."
+  },
+  {
+   "id": "xy0-35",
+   "tag": "flying",
+   "caption": "A red and white ball flies through golden light."
   }
  ],
  "visualSamples": {
@@ -2161,6 +2196,10 @@
      "caption": "Ivysaur on sand near the sea with cliffs and crystals."
     },
     {
+     "id": "xyp-XY60",
+     "caption": "Gyarados rises from water near a human figure."
+    },
+    {
      "id": "ex14-27",
      "caption": "Swampert standing in the sea with small islands and a blue sky."
     },
@@ -2173,16 +2212,12 @@
      "caption": "Trubbish sits beside blue water under stylized clouds."
     },
     {
+     "id": "xyp-XY55",
+     "caption": "Swampert rises amid splashing water."
+    },
+    {
      "id": "pl2-21",
      "caption": "A Gastrodon sits on a sandy beach beside the sea."
-    },
-    {
-     "id": "ex14-33",
-     "caption": "Sleeping green Pokemon on a rocky cliff above the sea with trees."
-    },
-    {
-     "id": "ex14-23",
-     "caption": "Whiscash roaring beside the water with crystals on the shore."
     }
    ],
    "omissions": []
@@ -2531,6 +2566,11 @@
      "caption": "Two cherry Pokémon hang from a leaf with rays and icy peaks behind."
     },
     {
+     "id": "xyp-XY102",
+     "tag": "snow-ice",
+     "caption": "Aurorus fills the frame amid icy cosmic light."
+    },
+    {
      "id": "ecard2-73",
      "tag": "snow-ice",
      "caption": "Doduo stands on a small ice-blue patch against an orange pattern."
@@ -2539,11 +2579,6 @@
      "id": "dp5-98",
      "tag": "snow-ice",
      "caption": "Glaceon breathing icy mist against a red burst"
-    },
-    {
-     "id": "ex9-98",
-     "tag": "snow-ice",
-     "caption": "A crystalline ice golem Pokémon on a dark blue sparkling background"
     }
    ]
   },
@@ -2556,6 +2591,10 @@
     {
      "id": "bw10-54",
      "caption": "Archeops flies through a frozen city."
+    },
+    {
+     "id": "xyp-XY127",
+     "caption": "Moltres flies above a city beneath a fiery sky."
     },
     {
      "id": "bw10-55",
@@ -2576,10 +2615,6 @@
     {
      "id": "dp5-61",
      "caption": "Drifloon holding two heart balloons above a town plaza"
-    },
-    {
-     "id": "bw10-47",
-     "caption": "Machop runs through a sunny city courtyard."
     }
    ],
    "omissions": [
@@ -2705,6 +2740,10 @@
      "caption": "Rhydon and Marill in a stadium before a cheering crowd and cloudy sky."
     },
     {
+     "id": "xyp-XY27",
+     "caption": "Several Pokémon ride a vehicle through a city canal."
+    },
+    {
      "id": "bw1-29",
      "caption": "Dewott attacks amid crashing waves by rocky shore with trees."
     },
@@ -2719,10 +2758,6 @@
     {
      "id": "pl1-32",
      "caption": "An orange insect Pokémon flies in a bright cloudy sky."
-    },
-    {
-     "id": "pl1-28",
-     "caption": "A Giratina with long dark legs hovers in a cloudy sky."
     }
    ],
    "omissions": [
@@ -2755,6 +2790,10 @@
      "caption": "Eevee in a city, a building, a cloudy sky, night, flight."
     },
     {
+     "id": "xyp-XY178",
+     "caption": "Absol stands on a rocky hill beneath a red moon."
+    },
+    {
      "id": "col1-17",
      "caption": "Ninetales in a forest, rocky terrain, snow and ice, an indoor scene, a building, night, fire."
     },
@@ -2777,10 +2816,6 @@
     {
      "id": "gym2-86",
      "caption": "Voltorb glowing like a moon in a dark blue night sky above hills"
-    },
-    {
-     "id": "dp4-35",
-     "caption": "Combusken leaping with flames under a full moon"
     }
    ],
    "omissions": [
@@ -2875,6 +2910,10 @@
      "caption": "Combusken kicks with a fiery burst before mountains and meadow."
     },
     {
+     "id": "xyp-XY59",
+     "caption": "Salamence flies through orange flames."
+    },
+    {
      "id": "base4-35",
      "caption": "Red lizard creature slashing near a burning flame on rocks."
     },
@@ -2893,10 +2932,6 @@
     {
      "id": "neo1-46",
      "caption": "Typhlosion crouching with fire and lava around it"
-    },
-    {
-     "id": "ex9-1",
-     "caption": "A red fighting bird Pokémon leaps with blazing fists amid flames"
     }
    ],
    "omissions": [
@@ -3020,6 +3055,10 @@
   "human-present": {
    "positives": [
     {
+     "id": "bw11-RC20",
+     "caption": "A fashionable woman poses against a sparkling background."
+    },
+    {
      "id": "ex6-88",
      "caption": "A smiling young man with glasses stands before sky and plants."
     },
@@ -3046,10 +3085,6 @@
     {
      "id": "dp2-109",
      "caption": "A blond girl types on a laptop in a cluttered room while a cat Pokémon sits nearby."
-    },
-    {
-     "id": "ex14-72",
-     "caption": "Bearded castaway sitting on a rocky shore beside the sea with palms."
     }
    ],
    "omissions": [
@@ -3090,6 +3125,10 @@
      "caption": "Pink creature with a shell creature attached and a tiny dark figure on top."
     },
     {
+     "id": "xy0-27",
+     "caption": "Miltank sleeps with another in a flowered field."
+    },
+    {
      "id": "bwp-BW09",
      "caption": "Zoroark and a smaller Pokemon leap in a purple burst."
     },
@@ -3104,10 +3143,6 @@
     {
      "id": "hgss2-78",
      "caption": "Judge in an indoor scene, a person, multiple Pokémon."
-    },
-    {
-     "id": "dp1-107",
-     "caption": "A fire energy orb speeds over a neon grid between a bird and a monkey Pokémon."
     }
    ],
    "omissions": [
@@ -3140,6 +3175,10 @@
      "caption": "A large Snorlax sleeps with its eyes closed in a sunny landscape."
     },
     {
+     "id": "bw11-11",
+     "caption": "Two Swadloon rest together among large forest leaves."
+    },
+    {
      "id": "dp4-82",
      "caption": "Slowpoke asleep among purple flowers and leaves"
     },
@@ -3162,10 +3201,6 @@
     {
      "id": "ex12-51",
      "caption": "Clamperl sleeps inside its shell among orange coral on the seabed."
-    },
-    {
-     "id": "hgss4-60",
-     "caption": "Cubone in a cave, sleeping."
     }
    ],
    "omissions": []
