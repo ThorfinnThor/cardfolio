@@ -1,0 +1,132 @@
+{
+ "sets": {
+  "base1": {
+   "cards": 102,
+   "valid": 102,
+   "invalid": 0,
+   "at": "2026-09-30T12:07:21.229Z",
+   "agentTokens": 0,
+   "agentMinutes": 4.1
+  },
+  "base2": {
+   "cards": 64,
+   "valid": 64,
+   "invalid": 0,
+   "at": "2026-09-30T12:07:21.270Z",
+   "agentTokens": 0,
+   "agentMinutes": 4.1
+  },
+  "basep": {
+   "cards": 53,
+   "valid": 53,
+   "invalid": 0,
+   "at": "2026-09-30T12:07:21.311Z",
+   "agentTokens": 0,
+   "agentMinutes": 4.1
+  },
+  "base3": {
+   "cards": 62,
+   "valid": 62,
+   "invalid": 0,
+   "at": "2026-09-30T12:07:21.351Z",
+   "agentTokens": 0,
+   "agentMinutes": 4.1
+  },
+  "base4": {
+   "cards": 130,
+   "valid": 130,
+   "invalid": 0,
+   "at": "2026-09-30T12:07:56.853Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "base5": {
+   "cards": 83,
+   "valid": 83,
+   "invalid": 0,
+   "at": "2026-09-30T12:07:56.895Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "gym1": {
+   "cards": 132,
+   "valid": 132,
+   "invalid": 0,
+   "at": "2026-09-30T12:07:56.936Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "neo4": {
+   "cards": 113,
+   "valid": 113,
+   "invalid": 0,
+   "at": "2026-09-30T12:09:05.127Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "lc": {
+   "cards": 110,
+   "valid": 110,
+   "invalid": 0,
+   "at": "2026-09-30T12:09:05.167Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "ecard1": {
+   "cards": 165,
+   "valid": 165,
+   "invalid": 0,
+   "at": "2026-09-30T12:09:05.204Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "gym2": {
+   "cards": 132,
+   "valid": 132,
+   "invalid": 0,
+   "at": "2026-09-30T12:09:32.623Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "neo1": {
+   "cards": 111,
+   "valid": 111,
+   "invalid": 0,
+   "at": "2026-09-30T12:09:32.663Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "neo2": {
+   "cards": 75,
+   "valid": 75,
+   "invalid": 0,
+   "at": "2026-09-30T12:09:32.702Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "si1": {
+   "cards": 18,
+   "valid": 18,
+   "invalid": 0,
+   "at": "2026-09-30T12:09:32.740Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "neo3": {
+   "cards": 66,
+   "valid": 66,
+   "invalid": 0,
+   "at": "2026-09-30T12:09:32.778Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  }
+ },
+ "totals": {
+  "sets": 15,
+  "cards": 1416,
+  "valid": 1416,
+  "invalid": 0,
+  "agentTokens": 0,
+  "agentMinutes": 16.4
+ }
+}

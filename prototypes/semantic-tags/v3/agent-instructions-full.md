@@ -9,7 +9,7 @@ Your task message gives you: SETS (list of set ids), A (your temp sheet dir, out
 
 ## Procedure, per set
 1. `cd /Users/schayan/Projects/cardfolio-semsearch/prototypes/semantic-tags && node v3/build-full-sheets.mjs count <setId>` → number of sheets N.
-2. In batches of 4 sheets: `NODE_EXTRA_CA_CERTS=/etc/ssl/cert.pem node v3/build-full-sheets.mjs $A <setId> <first> <last>`
+2. Sheet numbers are 0-based (N sheets = sheets 0 to N-1). In batches of 4 sheets: `NODE_EXTRA_CA_CERTS=/etc/ssl/cert.pem node v3/build-full-sheets.mjs $A <setId> <first> <last>`
    This writes `$A/<setId>-sheet-NNN.jpg` (12 artwork crops, 4x3, each labelled with its card id; "(whole card)" = full card shown, describe only the illustration) and `$A/<setId>-sheet-NNN.json` (ids in grid order).
 3. Read each .json and .jpg and tag every card. Then delete the batch: `rm $A/<setId>-sheet-*`. Never copy images anywhere.
 4. After each batch, rewrite `$R/<setId>.json` as ONE valid JSON array with all results of that set so far.
