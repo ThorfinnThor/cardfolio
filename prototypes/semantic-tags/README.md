@@ -52,6 +52,47 @@ After merging, 9 tags that broke the schema were corrected by hand. Each one is 
   - Tags are machine-written judgements, not TCGdex data, and must be labelled that way in any UI.
   - Tie order within equal scores is alphabetical, not by relevance.
 
+## v2: extended schema and re-tag (`out/v2/`, v1 kept as baseline)
+
+**What changed**
+- New values:
+  - `place: kitchen`
+  - `weather: lightning`
+- New fields:
+  - `interaction`: none · playing-together · fighting-each-other · caring-cuddling · with-human · other
+  - `food_visible`
+- Stricter rules for `space` (no holo sparkle), `volcano` (a volcano or lava must be visible, fire alone doesn't count), `rain` (visible rain only), `eating` (a Pokémon eating) and `playing` (two or more Pokémon interacting).
+- `place`, `weather` and `activity` were re-tagged for all 1,579 cards. This was not a candidate subset, so no random control sample was needed.
+- `search-v2.mjs` maps the queries to the new fields. It also fixes "rain" matching "rainbow" in captions.
+
+**Outputs**
+- `tags.json`
+- `changes.json`: every changed field (old → new)
+- `tagging-meta.json`
+- `results.json`: same structure as v1, plus `extraQueries`
+- `self-check.json`
+- `self-check-extra.json`
+
+**Result (honest)**
+- **Overall:** 122 of 160, compared with 127 in v1. The stricter rules raised precision but made the new values very sparse:
+  - kitchen: 1 card
+  - space: 2 cards
+  - volcano: 4 cards
+  - lightning: 4 cards
+  - rain: 4 cards
+  - playing-together: 1 card
+- **Why the weak queries still miss:** they now return 1–6 results, and the empty top-8 slots count as misses.
+- **Where precision improved:**
+  - rain: 5 of 6 results correct
+  - volcano: 5 of 6
+  - kitchen: 1 of 1
+- **Where it dropped:** "two pokemon playing together" fell from 4 to 1, because the re-tag was much stricter than v1.
+- **Consistency between passes:** the two passes disagree on many fields. 966 of 1,579 cards changed in at least one field, but most changes are cosmetic:
+  - `weather` none-visible → clear: 318 cards
+  - `place` plain-background → abstract: 95 cards
+- **Generalisation check:** 6 queries that were not used for tuning scored 28 of 48 (see `self-check-extra.json`).
+- **Lesson:** strict rules on their own just move errors from precision to recall. Rare scenes (kitchen, space, playing) need either a looser rule, or an "only N matches" UI that doesn't pad the list.
+
 ## Run
 
 ```sh
