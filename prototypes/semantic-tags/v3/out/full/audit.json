@@ -1,33 +1,33 @@
 {
- "generatedAt": "2026-09-30T15:24:53.481Z",
- "completedSets": 60,
- "expectedCards": 5464,
- "resultRows": 5464,
+ "generatedAt": "2026-09-30T16:18:55.751Z",
+ "completedSets": 65,
+ "expectedCards": 5876,
+ "resultRows": 5876,
  "schemaErrors": [],
  "tagCounts": {
   "beach": 57,
-  "water-surface": 453,
-  "underwater": 170,
-  "forest": 585,
-  "grassland-field": 467,
-  "mountain-rocks": 487,
-  "cave": 88,
-  "desert": 69,
-  "snow-ice": 106,
-  "city": 65,
-  "indoors": 158,
-  "ruins-building": 168,
-  "sky-clouds": 605,
-  "night": 216,
-  "sunset-sunrise": 147,
-  "fire-lava": 241,
-  "flowers": 245,
-  "food-visible": 78,
-  "human-present": 201,
-  "multiple-pokemon": 345,
-  "sleeping": 34,
-  "flying": 552,
-  "swimming": 286
+  "water-surface": 510,
+  "underwater": 185,
+  "forest": 693,
+  "grassland-field": 546,
+  "mountain-rocks": 554,
+  "cave": 109,
+  "desert": 74,
+  "snow-ice": 120,
+  "city": 107,
+  "indoors": 207,
+  "ruins-building": 245,
+  "sky-clouds": 728,
+  "night": 247,
+  "sunset-sunrise": 177,
+  "fire-lava": 273,
+  "flowers": 277,
+  "food-visible": 81,
+  "human-present": 218,
+  "multiple-pokemon": 397,
+  "sleeping": 40,
+  "flying": 629,
+  "swimming": 332
  },
  "relationFlags": [
   {
@@ -2149,24 +2149,24 @@
      "caption": "Paras crawling on a leaf-covered forest floor among tall tree trunks"
     },
     {
+     "id": "hgss4-81",
+     "caption": "Venonat in a forest, flowers."
+    },
+    {
+     "id": "hgss4-39",
+     "caption": "Luvdisc in surface water, a forest, grassland, sunset, swimming."
+    },
+    {
      "id": "pl4-79",
      "caption": "Treecko rests on a vine beside a forest tree."
     },
     {
+     "id": "hgss4-70",
+     "caption": "Nidoran ♂ in a forest, grassland."
+    },
+    {
      "id": "ex8-41",
      "caption": "A yellow mouse Pokémon in a jungle with a small green one behind"
-    },
-    {
-     "id": "ex16-41",
-     "caption": "Vigoroth swinging from a branch through a jungle."
-    },
-    {
-     "id": "bw1-74",
-     "caption": "Two Klink gears float above a forested cliff under blue sky."
-    },
-    {
-     "id": "bw1-58",
-     "caption": "Gurdurr carries orange beams in front of a cliff and forest."
     }
    ],
    "omissions": [
@@ -2258,16 +2258,16 @@
      "caption": "A balloon Pokémon floats over purple mountains in an orange and purple sky."
     },
     {
+     "id": "hgss2-92",
+     "caption": "Raikou & Suicune LEGEND in rocky terrain, multiple Pokémon."
+    },
+    {
+     "id": "col1-5",
+     "caption": "Forretress in surface water, rocky terrain, a cloudy sky."
+    },
+    {
      "id": "neo3-34",
      "caption": "Octillery spraying water in front of a coastal cliff"
-    },
-    {
-     "id": "pl2-14",
-     "caption": "A white Aggron rests among large boulders under a blue sky."
-    },
-    {
-     "id": "dp7-66",
-     "caption": "A Magnemite floats between rocky cliffs under a blue sky."
     }
    ],
    "omissions": [
@@ -2298,6 +2298,10 @@
      "caption": "A red slug Pokémon stands in a fiery lava cave."
     },
     {
+     "id": "hgss3-35",
+     "caption": "Sableye in a cave, multiple Pokémon."
+    },
+    {
      "id": "pop1-9",
      "caption": "A spiky blue Pokémon in a dark rocky cave with glowing crystals."
     },
@@ -2310,12 +2314,8 @@
      "caption": "Metang hovers in a dark purple cave-like setting with glowing embers."
     },
     {
-     "id": "pl4-18",
-     "caption": "Glalie floats inside a jagged ice cave."
-    },
-    {
-     "id": "hgss1-77",
-     "caption": "Phanpy in cave."
+     "id": "col1-47",
+     "caption": "Mime Jr. in a forest, a cave."
     }
    ],
    "omissions": [
@@ -2468,6 +2468,14 @@
      "caption": "A cat Pokémon sits by white seaside buildings and pink blossoms."
     },
     {
+     "id": "hgss4-96",
+     "caption": "Magnezone in a city."
+    },
+    {
+     "id": "hgss4-95",
+     "caption": "Machamp in a city."
+    },
+    {
      "id": "ecard2-75",
      "caption": "Eevee crouches on a street with old buildings and a tower behind."
     },
@@ -2482,14 +2490,6 @@
     {
      "id": "hgss1-26",
      "caption": "Meganium in city, cloudy sky."
-    },
-    {
-     "id": "ecard3-36",
-     "caption": "Electrode cries in heavy rain in front of dark houses."
-    },
-    {
-     "id": "ecard2-18",
-     "caption": "Jynx dashes down a town street with ice shards flying."
     }
    ],
    "omissions": [
@@ -2520,6 +2520,10 @@
      "caption": "A red Rotom in a washer-like body in a kitchen with a dish on top."
     },
     {
+     "id": "hgss3-50",
+     "caption": "Grimer in an indoor scene."
+    },
+    {
      "id": "pl2-RT4",
      "caption": "A red Rotom in a mower body smashes through wooden boards in a room."
     },
@@ -2534,10 +2538,6 @@
     {
      "id": "neo3-31",
      "caption": "Jynx dancing by an open window with a crescent moon outside"
-    },
-    {
-     "id": "dp3-119",
-     "caption": "A blond girl types on a laptop in a cluttered room with a cat Pokémon."
     }
    ],
    "omissions": []
@@ -2561,20 +2561,20 @@
      "caption": "Skiploom in forest, building, flowers."
     },
     {
+     "id": "hgss3-56",
+     "caption": "Mawile in a city, a building."
+    },
+    {
      "id": "gym2-55",
      "caption": "Haunter floating above a rooftop in an orange sunset sky with crescent moon"
     },
     {
-     "id": "pl2-93",
-     "caption": "A domed hall stands in a plaza under blue sky with trees around."
+     "id": "hgss2-62",
+     "caption": "Spearow in a forest, a building, a cloudy sky, flight."
     },
     {
-     "id": "hgss1-27",
-     "caption": "Persian in rocky terrain, snow and ice, building, night."
-    },
-    {
-     "id": "pl2-31",
-     "caption": "A Raichu dashes in front of a tower with a blond man at the corner."
+     "id": "hgss3-53",
+     "caption": "Houndour in a forest, a building."
     }
    ],
    "omissions": [
@@ -2661,6 +2661,14 @@
   "night": {
    "positives": [
     {
+     "id": "col1-56",
+     "caption": "Eevee in a city, a building, a cloudy sky, night, flight."
+    },
+    {
+     "id": "col1-17",
+     "caption": "Ninetales in a forest, rocky terrain, snow and ice, an indoor scene, a building, night, fire."
+    },
+    {
      "id": "ex14-8",
      "caption": "Manectric roaring in front of a large full moon."
     },
@@ -2683,14 +2691,6 @@
     {
      "id": "dp4-35",
      "caption": "Combusken leaping with flames under a full moon"
-    },
-    {
-     "id": "gym2-83",
-     "caption": "Zubat flying with other bats in a dark cloudy night sky"
-    },
-    {
-     "id": "bwp-BW34",
-     "caption": "Luxray stands on a street before night city towers."
     }
    ],
    "omissions": [
@@ -2797,16 +2797,16 @@
      "caption": "Infernape attacking with blazing flames around its fists."
     },
     {
+     "id": "col1-SL4",
+     "caption": "Groudon in fire."
+    },
+    {
      "id": "neo1-46",
      "caption": "Typhlosion crouching with fire and lava around it"
     },
     {
      "id": "ex9-1",
      "caption": "A red fighting bird Pokémon leaps with blazing fists amid flames"
-    },
-    {
-     "id": "ex6-76",
-     "caption": "A fiery horse Pokémon stands in a sunlit forest with flames on its body."
     }
    ],
    "omissions": [
@@ -3008,16 +3008,16 @@
      "caption": "Pokemon relax on a tropical beach with surfboard, parasol and drinks."
     },
     {
+     "id": "hgss2-78",
+     "caption": "Judge in an indoor scene, a person, multiple Pokémon."
+    },
+    {
      "id": "dp1-107",
      "caption": "A fire energy orb speeds over a neon grid between a bird and a monkey Pokémon."
     },
     {
      "id": "ru1-1",
      "caption": "Venusaur in cloudy sky, night, multiple Pokémon."
-    },
-    {
-     "id": "dp1-119",
-     "caption": "A jackal Pokémon and a turtle Pokémon move over a neon grid with arrows."
     }
    ],
    "omissions": [
@@ -3070,12 +3070,12 @@
      "caption": "Clamperl sleeps inside its shell among orange coral on the seabed."
     },
     {
-     "id": "ex14-33",
-     "caption": "Sleeping green Pokemon on a rocky cliff above the sea with trees."
+     "id": "hgss4-60",
+     "caption": "Cubone in a cave, sleeping."
     },
     {
-     "id": "hgss1-80",
-     "caption": "Sentret in grassland, cloudy sky, flowers, sleeping."
+     "id": "ex14-33",
+     "caption": "Sleeping green Pokemon on a rocky cliff above the sea with trees."
     }
    ],
    "omissions": []
@@ -3149,6 +3149,10 @@
      "caption": "Goldeen swimming beside a waterfall."
     },
     {
+     "id": "col1-SL8",
+     "caption": "Palkia in surface water, swimming."
+    },
+    {
      "id": "ex3-51",
      "caption": "A whiskered fish Pokémon swims through dark water."
     },
@@ -3167,10 +3171,6 @@
     {
      "id": "ex3-58",
      "caption": "A blue seahorse Pokémon rises from choppy sea waves."
-    },
-    {
-     "id": "dp4-61",
-     "caption": "Buizel swimming on its back in turquoise water"
     }
    ],
    "omissions": [

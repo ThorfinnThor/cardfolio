@@ -23,7 +23,7 @@ The temporary contact sheets were generated outside the repository and removed a
 
 The applied corrections and their visual reasons are recorded in `out/full/audit-fixes.json`. The machine-readable audit report is `out/full/audit.json`.
 
-After the audit corrections, the next four sets (`pl3`, `pl4`, `ru1`, `hgss1`) were tagged by visually checking every artwork. The same structural and relationship audit was then rerun over the expanded data: 60 sets, 5,464/5,464 valid rows, zero schema errors and no new relationship conflicts. The six documented exceptions above remain unchanged.
+After the audit corrections, the next nine sets (`pl3`, `pl4`, `ru1`, `hgss1`, `hgssp`, `hgss2`, `hgss3`, `hgss4`, `col1`) were tagged by visually checking every artwork. The same structural and relationship audit was then rerun over the expanded data: 65 sets, 5,876/5,876 valid rows, zero schema errors and no new relationship conflicts. The six documented exceptions above remain unchanged.
 
 ## Limit
 

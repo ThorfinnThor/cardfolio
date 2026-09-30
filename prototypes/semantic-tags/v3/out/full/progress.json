@@ -479,12 +479,52 @@
    "at": "2026-09-30T15:21:25.437Z",
    "agentTokens": 0,
    "agentMinutes": 0
+  },
+  "hgssp": {
+   "cards": 16,
+   "valid": 16,
+   "invalid": 0,
+   "at": "2026-09-30T16:18:55.508Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "hgss2": {
+   "cards": 96,
+   "valid": 96,
+   "invalid": 0,
+   "at": "2026-09-30T16:18:55.548Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "hgss3": {
+   "cards": 91,
+   "valid": 91,
+   "invalid": 0,
+   "at": "2026-09-30T16:18:55.589Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "hgss4": {
+   "cards": 103,
+   "valid": 103,
+   "invalid": 0,
+   "at": "2026-09-30T16:18:55.629Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "col1": {
+   "cards": 106,
+   "valid": 106,
+   "invalid": 0,
+   "at": "2026-09-30T16:18:55.671Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
   }
  },
  "totals": {
-  "sets": 60,
-  "cards": 5464,
-  "valid": 5464,
+  "sets": 65,
+  "cards": 5876,
+  "valid": 5876,
   "invalid": 0,
   "agentTokens": 0,
   "agentMinutes": 16.4
