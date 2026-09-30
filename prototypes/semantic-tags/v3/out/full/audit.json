@@ -1,33 +1,33 @@
 {
- "generatedAt": "2026-09-30T21:16:16.484Z",
- "completedSets": 92,
- "expectedCards": 9240,
- "resultRows": 9240,
+ "generatedAt": "2026-09-30T21:24:57.314Z",
+ "completedSets": 94,
+ "expectedCards": 9577,
+ "resultRows": 9577,
  "schemaErrors": [],
  "tagCounts": {
-  "beach": 105,
-  "water-surface": 880,
-  "underwater": 280,
-  "forest": 1196,
-  "grassland-field": 926,
-  "mountain-rocks": 937,
-  "cave": 188,
-  "desert": 142,
-  "snow-ice": 307,
-  "city": 426,
-  "indoors": 421,
-  "ruins-building": 425,
-  "sky-clouds": 1318,
-  "night": 350,
-  "sunset-sunrise": 199,
-  "fire-lava": 419,
-  "flowers": 534,
-  "food-visible": 123,
-  "human-present": 424,
-  "multiple-pokemon": 632,
-  "sleeping": 85,
-  "flying": 1137,
-  "swimming": 505
+  "beach": 123,
+  "water-surface": 918,
+  "underwater": 299,
+  "forest": 1254,
+  "grassland-field": 939,
+  "mountain-rocks": 975,
+  "cave": 195,
+  "desert": 146,
+  "snow-ice": 321,
+  "city": 439,
+  "indoors": 430,
+  "ruins-building": 446,
+  "sky-clouds": 1366,
+  "night": 364,
+  "sunset-sunrise": 203,
+  "fire-lava": 429,
+  "flowers": 555,
+  "food-visible": 130,
+  "human-present": 444,
+  "multiple-pokemon": 648,
+  "sleeping": 92,
+  "flying": 1162,
+  "swimming": 525
  },
  "relationFlags": [
   {
@@ -2296,12 +2296,12 @@
      "caption": "Treecko rests on a vine beside a forest tree."
     },
     {
-     "id": "hgss4-70",
-     "caption": "Nidoran ♂ in a forest, grassland."
+     "id": "sm2-69",
+     "caption": "Nosepass appears in a forest."
     },
     {
-     "id": "ex8-41",
-     "caption": "A yellow mouse Pokémon in a jungle with a small green one behind"
+     "id": "hgss4-70",
+     "caption": "Nidoran ♂ in a forest, grassland."
     }
    ],
    "omissions": [
@@ -2483,6 +2483,10 @@
      "caption": "Regirock appears in a desert."
     },
     {
+     "id": "sm3-62",
+     "caption": "Palossand appears in a desert."
+    },
+    {
      "id": "bw9-69",
      "caption": "Krokorok sits among icy desert rocks."
     },
@@ -2499,16 +2503,12 @@
      "caption": "Yamask floats through a rocky desert canyon."
     },
     {
+     "id": "sm2-118",
+     "caption": "Altar of the Sunne appears in a desert."
+    },
+    {
      "id": "ex2-71",
      "caption": "A rock snake Pokémon slithers through sand dunes."
-    },
-    {
-     "id": "ex2-67",
-     "caption": "A Pokémon with a big leaf hat sits on cracked dry ground."
-    },
-    {
-     "id": "ecard3-132",
-     "caption": "A dry desert with a faint mirage and a Poké Ball drawn in the sand."
     }
    ],
    "omissions": [
@@ -2704,12 +2704,12 @@
      "caption": "Litwick appears among old structures."
     },
     {
-     "id": "bw5-96",
-     "caption": "A green-haired person tips a cap near a futuristic structure."
+     "id": "sm2-116",
+     "caption": "Aether Paradise Conservation Area appears in a forest."
     },
     {
-     "id": "ecard2-112",
-     "caption": "Tangela in front of a hillside with trees, a red house and a cloudy sky."
+     "id": "sm2-117",
+     "caption": "Altar of the Moone appears near a building."
     }
    ],
    "omissions": [
@@ -2824,8 +2824,8 @@
      "caption": "Gyarados swimming in dark choppy water under a starry sky"
     },
     {
-     "id": "dp1-27",
-     "caption": "A purple ghost Pokémon grins before a starry night sky with a tree stump."
+     "id": "sm3-68",
+     "caption": "Lunatone appears among rocky mountains."
     }
    ],
    "omissions": [
@@ -3205,12 +3205,12 @@
      "caption": "Sylveon EX sleeps indoors and other Pokémon."
     },
     {
-     "id": "bw6-107",
-     "caption": "Bibarel sleeps curled up on grass in shaded woodland."
+     "id": "sm2-72",
+     "caption": "Pancham sleeps in a grassy field."
     },
     {
-     "id": "neo1-36",
-     "caption": "Gloom lying with eyes closed among colorful mushrooms and leaves"
+     "id": "bw6-107",
+     "caption": "Bibarel sleeps curled up on grass in shaded woodland."
     }
    ],
    "omissions": []

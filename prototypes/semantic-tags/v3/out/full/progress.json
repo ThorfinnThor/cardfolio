@@ -735,12 +735,28 @@
    "at": "2026-09-30T21:16:16.365Z",
    "agentTokens": 0,
    "agentMinutes": 0
+  },
+  "sm2": {
+   "cards": 168,
+   "valid": 168,
+   "invalid": 0,
+   "at": "2026-09-30T21:24:57.159Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "sm3": {
+   "cards": 169,
+   "valid": 169,
+   "invalid": 0,
+   "at": "2026-09-30T21:24:57.201Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
   }
  },
  "totals": {
-  "sets": 92,
-  "cards": 9240,
-  "valid": 9240,
+  "sets": 94,
+  "cards": 9577,
+  "valid": 9577,
   "invalid": 0,
   "agentTokens": 0,
   "agentMinutes": 16.4
