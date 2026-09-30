@@ -1,33 +1,33 @@
 {
- "generatedAt": "2026-09-30T20:52:16.818Z",
- "completedSets": 85,
- "expectedCards": 8286,
- "resultRows": 8286,
+ "generatedAt": "2026-09-30T20:58:24.548Z",
+ "completedSets": 88,
+ "expectedCards": 8658,
+ "resultRows": 8658,
  "schemaErrors": [],
  "tagCounts": {
-  "beach": 82,
-  "water-surface": 773,
-  "underwater": 251,
-  "forest": 1060,
-  "grassland-field": 833,
-  "mountain-rocks": 855,
-  "cave": 162,
-  "desert": 129,
-  "snow-ice": 284,
-  "city": 370,
-  "indoors": 368,
-  "ruins-building": 406,
-  "sky-clouds": 1194,
-  "night": 318,
-  "sunset-sunrise": 188,
-  "fire-lava": 372,
-  "flowers": 462,
-  "food-visible": 114,
-  "human-present": 363,
-  "multiple-pokemon": 536,
-  "sleeping": 67,
-  "flying": 1055,
-  "swimming": 452
+  "beach": 85,
+  "water-surface": 805,
+  "underwater": 259,
+  "forest": 1114,
+  "grassland-field": 878,
+  "mountain-rocks": 889,
+  "cave": 173,
+  "desert": 133,
+  "snow-ice": 296,
+  "city": 404,
+  "indoors": 397,
+  "ruins-building": 415,
+  "sky-clouds": 1236,
+  "night": 331,
+  "sunset-sunrise": 192,
+  "fire-lava": 386,
+  "flowers": 494,
+  "food-visible": 119,
+  "human-present": 402,
+  "multiple-pokemon": 590,
+  "sleeping": 79,
+  "flying": 1083,
+  "swimming": 467
  },
  "relationFlags": [
   {
@@ -2651,6 +2651,10 @@
      "caption": "A red machine-bodied Rotom grins in a room with sparkles."
     },
     {
+     "id": "xy9-107",
+     "caption": "Professor Sycamore appears indoors with people."
+    },
+    {
      "id": "pl2-RT3",
      "caption": "A red Rotom in a washer-like body in a kitchen with a dish on top."
     },
@@ -2669,10 +2673,6 @@
     {
      "id": "bw8-118",
      "caption": "A blue-haired scientist stands inside a laboratory."
-    },
-    {
-     "id": "pl2-RT5",
-     "caption": "An orange Rotom in a camera-like body in a cluttered room."
     }
    ],
    "omissions": []
@@ -2998,8 +2998,8 @@
      "caption": "Nidoran stands among flowers and snow beneath an icy windmill."
     },
     {
-     "id": "xy1-6",
-     "caption": "Ledyba flies in a grassy field."
+     "id": "xy9-1",
+     "caption": "Chikorita appears in a forest."
     }
    ],
    "omissions": [
@@ -3131,6 +3131,10 @@
      "caption": "Staryu appears on a beach with other Pokémon."
     },
     {
+     "id": "xy9-98b",
+     "caption": "Delinquent appears with people and other Pokémon."
+    },
+    {
      "id": "xy5-45",
      "caption": "Spheal appears beside open water with people and with other Pokémon."
     },
@@ -3149,10 +3153,6 @@
     {
      "id": "xy0-27",
      "caption": "Miltank sleeps with another in a flowered field."
-    },
-    {
-     "id": "xy5-47",
-     "caption": "Sealeo appears on a beach with other Pokémon."
     }
    ],
    "omissions": [
@@ -3201,22 +3201,26 @@
      "caption": "A sleeping cocoon Pokémon hangs from a branch against a dark night sky."
     },
     {
+     "id": "g1-RC21",
+     "caption": "Sylveon EX sleeps indoors and other Pokémon."
+    },
+    {
      "id": "bw6-107",
      "caption": "Bibarel sleeps curled up on grass in shaded woodland."
     },
     {
      "id": "neo1-36",
      "caption": "Gloom lying with eyes closed among colorful mushrooms and leaves"
-    },
-    {
-     "id": "base4-30",
-     "caption": "Large sleepy creature sitting with eyes closed on a pale backdrop."
     }
    ],
    "omissions": []
   },
   "flying": {
    "positives": [
+    {
+     "id": "xy9-84",
+     "caption": "Spritzee flies in a grassy field."
+    },
     {
      "id": "xy8-129",
      "caption": "Rufflet flies in a forest."
@@ -3244,10 +3248,6 @@
     {
      "id": "xy8-128",
      "caption": "Chatot flies in a forest."
-    },
-    {
-     "id": "neo3-15",
-     "caption": "Aerodactyl swooping through a blue cloudy sky above rocky mountains"
     }
    ],
    "omissions": [
@@ -3300,12 +3300,12 @@
      "caption": "Qwilfish swimming amid bubbles in green water."
     },
     {
-     "id": "ex3-39",
-     "caption": "A blue seahorse Pokémon swims among coral underwater."
+     "id": "xy10-73",
+     "caption": "Kingdra EX swims beside open water."
     },
     {
-     "id": "ex3-40",
-     "caption": "A blue sea dragon Pokémon races through waves under a dark sky."
+     "id": "ex3-39",
+     "caption": "A blue seahorse Pokémon swims among coral underwater."
     }
    ],
    "omissions": [
