@@ -204,6 +204,31 @@ describe("TCGdexCatalogAdapter", () => {
     expect(card.imageFallbackBaseUrl).toBe("https://assets.tcgdex.net/en/me/mep/007");
   });
 
+  it("uses a verified image from another language when TCGdex lists an English card without one", async () => {
+    vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response(JSON.stringify([{ id: "sm3.5-1", localId: "1", name: "Bulbasaur" }])))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        id: "sm3.5-1",
+        localId: "1",
+        name: "Bulbasaur",
+        image: null,
+        set: { cardCount: { official: 73 }, id: "sm3.5", name: "Shining Legends" },
+      })))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        id: "sm3.5",
+        name: "Shining Legends",
+        serie: { id: "sm", name: "Sun & Moon" },
+      })));
+
+    const adapter = new TCGdexCatalogAdapter();
+    const search = await adapter.search({ name: "bulbasaur", language: "en", page: 1, pageSize: 40 });
+    expect(search.items[0].imageBaseUrl).toBe("https://assets.tcgdex.net/de/sm/sm3.5/1");
+
+    const card = await adapter.getCard(search.items[0].ref);
+    expect(card.imageBaseUrl).toBe("https://assets.tcgdex.net/de/sm/sm3.5/1");
+    expect(card.imageFallbackBaseUrl).toBe("https://assets.tcgdex.net/en/sm/sm3.5/1");
+  });
+
   it("holds back an unknown set until the synchronized catalog classifies it", async () => {
     const fetchMock = vi.spyOn(globalThis, "fetch")
       .mockResolvedValueOnce(new Response(JSON.stringify([

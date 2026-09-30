@@ -2,6 +2,7 @@ import deCatalog from "../../../public/data/catalog/de-sets.json";
 import enCatalog from "../../../public/data/catalog/en-sets.json";
 
 import type { CardLanguage, CardSnapshot } from "@/domain/types";
+import { verifiedImageFallback } from "./image-fallbacks";
 import { inferredCardImageBaseUrl } from "./images";
 
 export type CatalogSetRecord = {
@@ -74,7 +75,8 @@ export function completeCardSnapshotMetadata(card: CardSnapshot): CardSnapshot {
     inferredCardImageBaseUrl(card.ref.language, set.series.id, card.setId, card.collectorNumber),
     ...(card.ref.language === "de" ? [inferredCardImageBaseUrl("en", set.series.id, card.setId, card.collectorNumber)] : []),
   ] : [];
-  const imageCandidates = [card.imageBaseUrl, card.imageFallbackBaseUrl, ...inferredImages]
+  const verifiedFallback = verifiedImageFallback(card.ref.language, card.ref.id);
+  const imageCandidates = [verifiedFallback, card.imageBaseUrl, card.imageFallbackBaseUrl, ...inferredImages]
     .filter((value): value is string => Boolean(value))
     .filter((value, index, values) => values.indexOf(value) === index);
   return {

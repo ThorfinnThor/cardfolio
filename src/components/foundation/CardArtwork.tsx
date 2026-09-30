@@ -4,8 +4,18 @@
 
 import { useMemo, useState, type ReactNode } from "react";
 
+import { imageLanguage } from "@/data/catalog/image-fallbacks";
 import { cardImageUrl } from "@/data/catalog/images";
 import type { CardSnapshot } from "@/domain/types";
+
+const IMAGE_LANGUAGE_LABELS: Record<string, string> = {
+  de: "Bild auf Deutsch",
+  en: "Bild auf Englisch",
+  es: "Bild auf Spanisch",
+  fr: "Bild auf Französisch",
+  it: "Bild auf Italienisch",
+  pt: "Bild auf Portugiesisch",
+};
 
 interface CardArtworkProps {
   card: Pick<CardSnapshot, "name" | "setName" | "collectorNumber" | "ref" | "imageBaseUrl" | "imageFallbackBaseUrl">;
@@ -23,6 +33,8 @@ export function CardArtwork({ card, className, fallback }: CardArtworkProps) {
 
   const imageBaseUrl = candidates[candidateIndex];
   if (!imageBaseUrl) return fallback;
+  const shownLanguage = imageLanguage(imageBaseUrl);
+  const languageLabel = shownLanguage && shownLanguage !== card.ref.language ? IMAGE_LANGUAGE_LABELS[shownLanguage] : undefined;
 
   return (
     <span className={className}>
@@ -31,7 +43,7 @@ export function CardArtwork({ card, className, fallback }: CardArtworkProps) {
         alt={`${card.name}, ${card.setName} ${card.collectorNumber}`}
         onError={() => setAttempt({ signature, candidateIndex: candidateIndex + 1 })}
       />
-      {card.ref.language === "de" && imageBaseUrl.includes("/en/") ? <span>Bild auf Englisch</span> : null}
+      {languageLabel ? <span>{languageLabel}</span> : null}
     </span>
   );
 }
