@@ -129,3 +129,40 @@ node v3/ingest-full.mjs <result.json>  # validate and store one set
 - **Per full pass over 1,579 cards:** about 0.65–0.7 M tokens in 5–8 minutes with 4 agents.
 - **Total so far:** about 5 M tokens across all passes, including v1, v2, Phase A and part of the revision.
 - **Usage limit:** reached once on 2026-09-30 (09:10–13:40 Berlin); work continued at the point where it stopped.
+
+## Decisions by the owner (Palico), in order
+
+- 2026-09-29: English only. Semantic search should find cards by motif, not by card text.
+- 2026-09-29: CLIP is dropped after the first results (see table above). Claude looks at the artwork instead of a vector model.
+- 2026-09-29: Sonnet (not Opus) for the tagging agents, no API key: the agents run inside the Claude Code session on the owner's Mac and use the owner's Claude allowance.
+- 2026-09-29: Temporary contact sheets outside the repo are acceptable, deleted after every batch (the exception described under "Rules that apply").
+- 2026-09-30: Keep only reliable tags, extend to about 20, then tag the **full** English catalogue and add free-text search on top.
+- 2026-09-30: Document everything in this file on GitHub before the full-catalogue run starts.
+
+## Honest limits
+
+- Every precision and "x/160" figure in this file was judged by a Claude session (strict, borderline = miss), not by a human. Palico should spot-check a sample before anything ships.
+- Tags come from an LLM looking at small crops. Two independent passes agreed on `place` for only 77 % of cards in v2, which is why v3 uses presence tags with written rules and a gate.
+- Tags that are reliable but rare (`sleeping`: 9 cards in the test set) have small samples, so their measured precision is uncertain.
+- Whole-card thumbnails (secret rares, full arts) are small, so their tags have lower confidence.
+- `v3/ingest-full.mjs` imports `v3/final-tags.mjs`, which does not exist until the tag list is frozen. Create it first (export `FINAL_TAGS`, same order as `TAGS` in `v3/tags.mjs` minus the dropped ones).
+
+## Environment notes
+
+- The Claude cloud container used by the project thread cannot reach `api.tcgdex.net`, `assets.tcgdex.net` or `huggingface.co`. All fetching and tagging runs on the owner's Mac through a Remote Control session (worktree `~/Projects/cardfolio-semsearch`).
+- The Mac session can stop when the usage limit is hit or the Mac goes offline. It resumes from the files on the branch, so push often and keep this file's status current.
+- Preview: Cloudflare Pages builds the branch as `https://claude-project-thread-jqmwl5.cardfolio-780.pages.dev`. It shows the unchanged app, because the prototype adds no app code.
+
+## How a new session continues
+
+1. `git fetch` and check out `claude/project-thread-jqmwl5`. Read this file, `semantic-tags/v3/tag-rules.md`, `v3/tag-rules-rev1.md` and `v3/out/phaseA/reliability.json`.
+2. Finish the rule revision for the five borderline tags (re-tag twice, apply the same gate), then create `v3/final-tags.mjs`.
+3. Run Phase B per set with the commands under "Running it locally" and `plan-full.mjs`. Push every few sets and update the status here.
+4. Build Phase C (`v3/search.mjs`) and test it on the full catalogue.
+5. Only after that, prepare a separate integration PR (data file, domain search module with tests, UI, `docs/decisions.md` entries) with integration review.
+
+## Before merging PR #3
+
+This PR is a record of the experiments, not meant for `main` as it is: 59+ files and about 140,000 added lines.
+`semantic-search/out/*.bin` (about 17 MB of CLIP vectors) and the per-pass JSON files are experiment output.
+Suggested cleanup: keep scripts and the final tag data that are needed, drop the CLIP outputs, and move the final data into `public/data` in a separate reviewed PR.
