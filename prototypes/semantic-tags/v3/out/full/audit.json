@@ -1,33 +1,33 @@
 {
- "generatedAt": "2026-09-30T17:03:35.979Z",
- "completedSets": 71,
- "expectedCards": 6494,
- "resultRows": 6494,
+ "generatedAt": "2026-09-30T17:19:54.422Z",
+ "completedSets": 74,
+ "expectedCards": 6859,
+ "resultRows": 6859,
  "schemaErrors": [],
  "tagCounts": {
-  "beach": 58,
-  "water-surface": 576,
-  "underwater": 200,
-  "forest": 786,
-  "grassland-field": 619,
-  "mountain-rocks": 642,
-  "cave": 127,
-  "desert": 86,
-  "snow-ice": 140,
-  "city": 183,
-  "indoors": 264,
-  "ruins-building": 333,
-  "sky-clouds": 858,
-  "night": 273,
+  "beach": 61,
+  "water-surface": 618,
+  "underwater": 210,
+  "forest": 837,
+  "grassland-field": 651,
+  "mountain-rocks": 669,
+  "cave": 135,
+  "desert": 92,
+  "snow-ice": 240,
+  "city": 241,
+  "indoors": 284,
+  "ruins-building": 355,
+  "sky-clouds": 926,
+  "night": 281,
   "sunset-sunrise": 181,
-  "fire-lava": 304,
-  "flowers": 325,
-  "food-visible": 87,
-  "human-present": 239,
-  "multiple-pokemon": 431,
-  "sleeping": 45,
-  "flying": 749,
-  "swimming": 368
+  "fire-lava": 317,
+  "flowers": 339,
+  "food-visible": 91,
+  "human-present": 251,
+  "multiple-pokemon": 444,
+  "sleeping": 46,
+  "flying": 857,
+  "swimming": 385
  },
  "relationFlags": [
   {
@@ -2095,6 +2095,21 @@
    "id": "bw7-135",
    "tag": "multiple-pokemon",
    "caption": "Several Poké Balls sit inside glowing switching capsules."
+  },
+  {
+   "id": "bw8-125",
+   "tag": "multiple-pokemon",
+   "caption": "Two uniformed people stand outside an industrial building."
+  },
+  {
+   "id": "bw9-103",
+   "tag": "multiple-pokemon",
+   "caption": "Three mechanical energy capsules spin through bright light."
+  },
+  {
+   "id": "bw10-80",
+   "tag": "multiple-pokemon",
+   "caption": "Two energy capsules swing through red light."
   }
  ],
  "visualSamples": {
@@ -2325,6 +2340,10 @@
      "caption": "Sandile stands in a quarry before cliffs and machinery."
     },
     {
+     "id": "bw9-72",
+     "caption": "Pawniard leaps above rocky cliffs beneath blue sky."
+    },
+    {
      "id": "ex5-22",
      "caption": "A pale fox Pokémon before a volcano under an orange sky."
     },
@@ -2339,10 +2358,6 @@
     {
      "id": "hgss2-92",
      "caption": "Raikou & Suicune LEGEND in rocky terrain, multiple Pokémon."
-    },
-    {
-     "id": "col1-5",
-     "caption": "Forretress in surface water, rocky terrain, a cloudy sky."
     }
    ],
    "omissions": [
@@ -2419,8 +2434,20 @@
   "desert": {
    "positives": [
     {
+     "id": "bw9-69",
+     "caption": "Krokorok sits among icy desert rocks."
+    },
+    {
      "id": "ex2-60",
      "caption": "A shelled Pokémon burrows into rippling sand."
+    },
+    {
+     "id": "bw9-68",
+     "caption": "Sandile rests on frozen desert ground beneath blue sky."
+    },
+    {
+     "id": "bw9-55",
+     "caption": "Yamask floats through a rocky desert canyon."
     },
     {
      "id": "ex2-71",
@@ -2437,18 +2464,6 @@
     {
      "id": "ex2-44",
      "caption": "A striped Pokémon races across a sand dune in blowing sand."
-    },
-    {
-     "id": "ex2-43",
-     "caption": "A flower-headed fossil Pokémon floats in a hazy sandy landscape."
-    },
-    {
-     "id": "ex12-67",
-     "caption": "Trapinch crawls across desert sand under a fiery orange sky."
-    },
-    {
-     "id": "bw1-5",
-     "caption": "Serperior coils in front of palm leaves, desert dunes and a cloudy blue sky."
     }
    ],
    "omissions": [
@@ -2481,32 +2496,32 @@
      "caption": "A hooded Pokémon stands in an icy cave with crystals."
     },
     {
+     "id": "bw8-25",
+     "caption": "Articuno flies through sparkling shards of ice."
+    },
+    {
      "id": "bw7-38",
      "caption": "Delibird runs across snow beneath a crescent moon."
     },
     {
+     "id": "bw8-27",
+     "caption": "Piloswine walks through snowy plants and falling snow."
+    },
+    {
+     "id": "bw8-37",
+     "caption": "Vanilluxe floats through a snowy blue sky."
+    },
+    {
+     "id": "bw10-26",
+     "caption": "Abomasnow stands in a frozen forest."
+    },
+    {
+     "id": "bw8-28",
+     "caption": "Mamoswine charges across a snowy landscape."
+    },
+    {
      "id": "dp4-39",
      "caption": "Snubbull stomping through deep snow"
-    },
-    {
-     "id": "ecard2-18",
-     "caption": "Jynx dashes down a town street with ice shards flying."
-    },
-    {
-     "id": "ex10-60",
-     "caption": "A dark dog Pokémon scrambles down a snowy slope"
-    },
-    {
-     "id": "dp6-50",
-     "caption": "Castform in snow form among snowflakes and frosty trees"
-    },
-    {
-     "id": "bwp-BW37",
-     "caption": "Two large dragons clash amid golden sparks and ice."
-    },
-    {
-     "id": "ecard3-104",
-     "caption": "Staryu in an ice cave over water with Zubat flying."
     }
    ],
    "omissions": [
@@ -2535,36 +2550,36 @@
   "city": {
    "positives": [
     {
+     "id": "bw9-87",
+     "caption": "Rattata stands inside a frozen city plaza."
+    },
+    {
+     "id": "bw10-54",
+     "caption": "Archeops flies through a frozen city."
+    },
+    {
+     "id": "bw10-55",
+     "caption": "Houndour barks beside a building and ice formations."
+    },
+    {
+     "id": "bw10-41",
+     "caption": "Sigilyph flies above a frozen city."
+    },
+    {
+     "id": "bw10-40",
+     "caption": "Musharna floats above a frozen industrial city."
+    },
+    {
+     "id": "bw10-24",
+     "caption": "Relicanth swims through icy water near a city shore."
+    },
+    {
      "id": "dp5-61",
      "caption": "Drifloon holding two heart balloons above a town plaza"
     },
     {
-     "id": "ex6-44",
-     "caption": "A cat Pokémon sits by white seaside buildings and pink blossoms."
-    },
-    {
-     "id": "hgss4-96",
-     "caption": "Magnezone in a city."
-    },
-    {
-     "id": "bw5-39",
-     "caption": "Plusle cheers beside Minun on an airport runway under blue sky."
-    },
-    {
-     "id": "hgss4-95",
-     "caption": "Machamp in a city."
-    },
-    {
-     "id": "ecard2-75",
-     "caption": "Eevee crouches on a street with old buildings and a tower behind."
-    },
-    {
-     "id": "ex4-16",
-     "caption": "A walrus Pokémon stands on a lamp-lit street with a bridge at night."
-    },
-    {
-     "id": "hgss1-20",
-     "caption": "Feraligatr in city."
+     "id": "bw10-47",
+     "caption": "Machop runs through a sunny city courtyard."
     }
    ],
    "omissions": [
@@ -2607,12 +2622,12 @@
      "caption": "A red Rotom in a mower body smashes through wooden boards in a room."
     },
     {
-     "id": "pl2-RT5",
-     "caption": "An orange Rotom in a camera-like body in a cluttered room."
+     "id": "bw8-118",
+     "caption": "A blue-haired scientist stands inside a laboratory."
     },
     {
-     "id": "pl2-RT6",
-     "caption": "An old man in round glasses reads beside cabinets with a small Rotom."
+     "id": "pl2-RT5",
+     "caption": "An orange Rotom in a camera-like body in a cluttered room."
     }
    ],
    "omissions": []
@@ -2678,6 +2693,14 @@
   "sky-clouds": {
    "positives": [
     {
+     "id": "bw8-72",
+     "caption": "Donphan charges among rocky cliffs beneath blue sky."
+    },
+    {
+     "id": "bw8-64",
+     "caption": "Trubbish stands in grass beneath a cloudy sky."
+    },
+    {
      "id": "neo4-102",
      "caption": "Rhydon and Marill in a stadium before a cheering crowd and cloudy sky."
     },
@@ -2690,24 +2713,16 @@
      "caption": "Pokemon relax on a tropical beach with surfboard, parasol and drinks."
     },
     {
+     "id": "bw10-15",
+     "caption": "Wartortle stands on rocks amid splashing water."
+    },
+    {
      "id": "pl1-32",
      "caption": "An orange insect Pokémon flies in a bright cloudy sky."
     },
     {
      "id": "pl1-28",
      "caption": "A Giratina with long dark legs hovers in a cloudy sky."
-    },
-    {
-     "id": "bw2-61",
-     "caption": "Krokorok stands on a flowery grass slope below rocky hills."
-    },
-    {
-     "id": "ecard3-12",
-     "caption": "Houndoom howls upward against a pale cloudy sky."
-    },
-    {
-     "id": "pl1-33",
-     "caption": "A pink Pokémon floats in the sky among autumn leaves."
     }
    ],
    "omissions": [
@@ -2926,20 +2941,20 @@
      "caption": "A pink Pokémon floats among leaves, flowers and ocean waves."
     },
     {
+     "id": "bw10-21",
+     "caption": "Snorunt stands among flowers and ice beneath trees."
+    },
+    {
      "id": "bw1-87",
      "caption": "Audino stands on a path through a forest with small flowers."
     },
     {
-     "id": "bw5-9",
-     "caption": "Karrablast stands on a sunlit forest path among flowers."
+     "id": "bw9-40",
+     "caption": "Nidoran stands among flowers and snow beneath an icy windmill."
     },
     {
-     "id": "ex6-52",
-     "caption": "A pink Pokémon clings to a branch among white blossoms."
-    },
-    {
-     "id": "bw1-89",
-     "caption": "Cinccino sits amid leafy bushes and blue flowers."
+     "id": "bw9-28",
+     "caption": "Vanillish floats among flowers before icy mountains."
     }
    ],
    "omissions": [
@@ -3025,16 +3040,16 @@
      "caption": "An excavator digs out a fossil in a cave with several Pokémon watching."
     },
     {
+     "id": "bw8-118",
+     "caption": "A blue-haired scientist stands inside a laboratory."
+    },
+    {
      "id": "dp2-109",
      "caption": "A blond girl types on a laptop in a cluttered room while a cat Pokémon sits nearby."
     },
     {
      "id": "ex14-72",
      "caption": "Bearded castaway sitting on a rocky shore beside the sea with palms."
-    },
-    {
-     "id": "base1-76",
-     "caption": "A breeder with a straw hat carries a berry bucket across green hills."
     }
    ],
    "omissions": [
@@ -3158,6 +3173,10 @@
   "flying": {
    "positives": [
     {
+     "id": "bw10-30",
+     "caption": "Kyurem flies through silver and rainbow energy."
+    },
+    {
      "id": "gym1-83",
      "caption": "Small bird flying low over a green slope under a cloudy blue sky."
     },
@@ -3184,10 +3203,6 @@
     {
      "id": "bw5-98",
      "caption": "A professor studies a device outside with Pokémon near a house."
-    },
-    {
-     "id": "pl3-85",
-     "caption": "Staravia flies low above green grass."
     }
    ],
    "omissions": [
