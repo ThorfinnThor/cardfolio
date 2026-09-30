@@ -6,7 +6,11 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const MAX = +(process.argv[2] ?? 36);
 const { sets } = JSON.parse(await fs.readFile(path.join(ROOT, 'out', 'catalog.json'), 'utf8'));
-const done = new Set((await fs.readdir(path.join(ROOT, 'out', 'full')).catch(() => [])).filter((f) => f.endsWith('.json') && !['progress.json', 'failed.json'].includes(f)).map((f) => f.slice(0, -5)));
+const setIds = new Set(sets.map((set) => set.id));
+const done = new Set((await fs.readdir(path.join(ROOT, 'out', 'full')).catch(() => []))
+  .filter((file) => file.endsWith('.json'))
+  .map((file) => file.slice(0, -5))
+  .filter((id) => setIds.has(id)));
 const todo = sets.filter((s) => s.withImage > 0 && !done.has(s.id)).map((s) => ({ id: s.id, sheets: Math.ceil(s.withImage / 12) }));
 const jobs = [];
 let cur = { sets: [], sheets: 0 };
