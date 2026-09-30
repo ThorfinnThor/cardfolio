@@ -351,12 +351,108 @@
    "at": "2026-09-30T12:21:03.941Z",
    "agentTokens": 0,
    "agentMinutes": 0
+  },
+  "dp4": {
+   "cards": 106,
+   "valid": 106,
+   "invalid": 0,
+   "at": "2026-09-30T12:21:15.854Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "pop7": {
+   "cards": 17,
+   "valid": 17,
+   "invalid": 0,
+   "at": "2026-09-30T12:21:15.892Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "dp5": {
+   "cards": 100,
+   "valid": 100,
+   "invalid": 0,
+   "at": "2026-09-30T12:21:15.931Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "dp6": {
+   "cards": 146,
+   "valid": 146,
+   "invalid": 0,
+   "at": "2026-09-30T12:21:15.969Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "pop8": {
+   "cards": 17,
+   "valid": 17,
+   "invalid": 0,
+   "at": "2026-09-30T12:21:16.006Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "dp7": {
+   "cards": 106,
+   "valid": 106,
+   "invalid": 0,
+   "at": "2026-09-30T12:25:33.462Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "pl1": {
+   "cards": 133,
+   "valid": 133,
+   "invalid": 0,
+   "at": "2026-09-30T12:25:33.501Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "pop9": {
+   "cards": 17,
+   "valid": 17,
+   "invalid": 0,
+   "at": "2026-09-30T12:25:33.542Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "pl2": {
+   "cards": 119,
+   "valid": 119,
+   "invalid": 0,
+   "at": "2026-09-30T12:25:33.584Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "bw1": {
+   "cards": 115,
+   "valid": 115,
+   "invalid": 0,
+   "at": "2026-09-30T12:26:26.029Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "bwp": {
+   "cards": 98,
+   "valid": 98,
+   "invalid": 0,
+   "at": "2026-09-30T12:26:26.068Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "bw2": {
+   "cards": 98,
+   "valid": 98,
+   "invalid": 0,
+   "at": "2026-09-30T12:26:26.107Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
   }
  },
  "totals": {
-  "sets": 44,
-  "cards": 3988,
-  "valid": 3988,
+  "sets": 56,
+  "cards": 5060,
+  "valid": 5060,
   "invalid": 0,
   "agentTokens": 0,
   "agentMinutes": 16.4
