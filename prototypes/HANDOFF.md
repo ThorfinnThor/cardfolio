@@ -6,7 +6,7 @@ the root `package.json` or the lockfile.
 
 ## Status (updated on every stop)
 
-**2026-09-30 ~21:20 Berlin: Phase A complete, tag list frozen, Phase B at 77/164 sets.**
+**2026-09-30 ~22:25 Berlin: Phase A complete, tag list frozen, Phase B at 80/164 sets.**
 
 - **Final tags (23, `semantic-tags/v3/final-tags.mjs`):** beach, water-surface, underwater, forest, grassland-field,
   mountain-rocks, cave, desert, snow-ice, city, indoors, ruins-building, sky-clouds, night, sunset-sunrise, fire-lava,
@@ -23,8 +23,8 @@ the root `package.json` or the lockfile.
   | multiple-pokemon | 88 % | 92 % |
 
 - **Final rules:** `v3/tag-rules-final.md`. Phase B agent instructions: `v3/agent-instructions-full.md`.
-- **Phase B:** 164 sets with images, 1,911 sheets. **77 sets and 7,251 of 21,990 cards are complete (33%).** The latest completed block is `xyp`, `bw11`, `xy0`; the next open block is `xy1`, `xy2`, `xy3`.
-- **Audit:** all 23 frozen tags were cross-checked before these blocks. A 240-card random sample found five cards requiring correction (2.1% before correction); targeted checks brought the total to 109 corrected cards. Details: `v3/AUDIT.md`, `v3/out/full/audit.json`, `v3/out/full/audit-fixes.json`. The latest validation passes with 7,251/7,251 valid rows and no new relationship conflicts.
+- **Phase B:** 164 sets with images, 1,911 sheets. **80 sets and 7,621 of 21,990 cards are complete (35%).** The latest completed block is `xy1`, `xy2`, `xy3`; use `node v3/plan-full.mjs 36` for the next open block.
+- **Audit:** all 23 frozen tags were cross-checked before these blocks. A 240-card random sample found five cards requiring correction (2.1% before correction); targeted checks brought the total to 109 corrected cards. Details: `v3/AUDIT.md`, `v3/out/full/audit.json`, `v3/out/full/audit-fixes.json`. The latest validation passes with 7,621/7,621 valid rows, zero schema errors and no new relationship conflicts in `xy1`–`xy3`. The two new omission heuristics are false positives (`Professor's Letter`, abstract `Fire Energy`) and remain intentionally untagged.
 - **Rejected acceleration attempt (2026-09-30):** local Florence-2 captions plus keyword rules, CLIP/DINO classifiers trained on the completed cards, TF-IDF over generated captions, and MiniLM caption embeddings were evaluated against held-out/manual data. None met the existing quality gate with useful recall (the strongest broad parser reached 66% micro precision / 23% recall; high-precision variants fell to 6–9% recall). No generated rows were ingested or committed. Continue with direct visual tagging from `xy1` onward.
 - **Progress:** `v3/out/full/progress.json` (per set: cards, valid, invalid, tokens, minutes). Results per set: `v3/out/full/<setId>.json`. Invalid results: `v3/out/full/failed.json`.
 - **Starting / resuming:** `node v3/plan-full.mjs 36` lists only the jobs still open. For each job, an agent gets `SETS`, a temp folder `A` (outside the repo) and a result folder `R`, and follows `v3/agent-instructions-full.md`. Afterwards run `node v3/ingest-full.mjs R/<setId>.json <tokens> <minutes>` for each set, then commit and push.
@@ -43,7 +43,7 @@ stays unchanged. English only. No server, no running costs: static data plus sea
 | 1 | `semantic-search/` | CLIP image vectors (ViT-B/32 and B/16, transformers.js), text query → cosine similarity | **Not usable.** CLIP reads the printed card text: Drowzee HGSS 62 ranks first for "sleeping" because of the attack "Sleep Inducer", while the artwork shows it surfing. 38–46 % of top-8 hits contain the query word in the card text; random cards: 10 %. |
 | 2 | `semantic-tags/` (v1) | Artwork crops on contact sheets, scene tags written by Claude (Sonnet) agents, simple tag search | **127/160** correct top-8 hits across 20 queries (CLIP: "sleeping" 1–2/8, "eating" 0/8) |
 | 3 | `semantic-tags/out/v2` | Stricter schema (kitchen, lightning, interaction, food) and a re-tag | **122/160.** Stricter rules made rare values nearly empty. The two passes also disagreed a lot. 6 untuned queries: 28/48 |
-| 4 | `semantic-tags/v3` | **Multi-label presence tags** with written decision rules, measured with two independent passes plus a precision check | Phase A done; all 23 tags passed. Phase B is 65/164 sets complete and audited. Phase C open. |
+| 4 | `semantic-tags/v3` | **Multi-label presence tags** with written decision rules, measured with two independent passes plus a precision check | Phase A done; all 23 tags passed. Phase B is 80/164 sets complete and audited. Phase C open. |
 
 Main lesson: **tags that are reliable and understandable beat vectors and fine-grained categories.** Anything that
 isn't reliably taggable goes into the free-text caption.
@@ -182,8 +182,8 @@ node v3/ingest-full.mjs <result.json>  # validate and store one set
 ## How a new session continues
 
 1. `git fetch` and check out `claude/project-thread-jqmwl5`. Read this file, `semantic-tags/v3/tag-rules-final.md` and `semantic-tags/v3/AUDIT.md`.
-2. Run `node v3/plan-full.mjs 36`; the next open job is currently `xy1`, `xy2`, `xy3`.
-3. Run Phase B per set with the commands under "Running it locally". The next block is `xy1`, `xy2`, `xy3`. Push every few sets and update the status here.
+2. Run `node v3/plan-full.mjs 36` to list the next open jobs.
+3. Run Phase B per set with the commands under "Running it locally". Push every few sets and update the status here.
 4. After Phase B, build Phase C (`v3/search.mjs`) and test it on the full catalogue.
 5. Only after that, prepare a separate integration PR (data file, domain search module with tests, UI, `docs/decisions.md` entries) with integration review.
 

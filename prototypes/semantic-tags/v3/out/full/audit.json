@@ -1,33 +1,33 @@
 {
- "generatedAt": "2026-09-30T17:36:34.653Z",
- "completedSets": 77,
- "expectedCards": 7251,
- "resultRows": 7251,
+ "generatedAt": "2026-09-30T20:19:10.937Z",
+ "completedSets": 80,
+ "expectedCards": 7621,
+ "resultRows": 7621,
  "schemaErrors": [],
  "tagCounts": {
-  "beach": 62,
-  "water-surface": 656,
-  "underwater": 217,
-  "forest": 898,
-  "grassland-field": 690,
-  "mountain-rocks": 718,
-  "cave": 140,
-  "desert": 95,
-  "snow-ice": 250,
-  "city": 263,
-  "indoors": 301,
-  "ruins-building": 365,
-  "sky-clouds": 976,
-  "night": 289,
-  "sunset-sunrise": 183,
-  "fire-lava": 337,
-  "flowers": 372,
+  "beach": 65,
+  "water-surface": 688,
+  "underwater": 226,
+  "forest": 966,
+  "grassland-field": 742,
+  "mountain-rocks": 780,
+  "cave": 146,
+  "desert": 113,
+  "snow-ice": 264,
+  "city": 277,
+  "indoors": 324,
+  "ruins-building": 375,
+  "sky-clouds": 1071,
+  "night": 297,
+  "sunset-sunrise": 184,
+  "fire-lava": 348,
+  "flowers": 410,
   "food-visible": 100,
-  "human-present": 277,
-  "multiple-pokemon": 488,
-  "sleeping": 55,
-  "flying": 937,
-  "swimming": 396
+  "human-present": 303,
+  "multiple-pokemon": 498,
+  "sleeping": 57,
+  "flying": 963,
+  "swimming": 414
  },
  "relationFlags": [
   {
@@ -2145,6 +2145,16 @@
    "id": "xy0-35",
    "tag": "flying",
    "caption": "A red and white ball flies through golden light."
+  },
+  {
+   "id": "xy1-123",
+   "tag": "human-present",
+   "caption": "Professor's Letter appears."
+  },
+  {
+   "id": "xy1-133",
+   "tag": "fire-lava",
+   "caption": "Fire Energy appears."
   }
  ],
  "visualSamples": {
@@ -2241,6 +2251,10 @@
      "caption": "Starmie floating in clear blue sea water"
     },
     {
+     "id": "xy2-71",
+     "caption": "Dragalge swims underwater."
+    },
+    {
      "id": "base1-64",
      "caption": "Starmie glows in deep blue water with slanting light rays."
     },
@@ -2251,10 +2265,6 @@
     {
      "id": "dp7-4",
      "caption": "A glowing fish Pokémon swims among bubbles in dark water."
-    },
-    {
-     "id": "dp1-72",
-     "caption": "An orange sea weasel Pokémon swims through sunlit green-blue water."
     }
    ],
    "omissions": []
@@ -2535,6 +2545,10 @@
      "caption": "Articuno flies through sparkling shards of ice."
     },
     {
+     "id": "xy3-62",
+     "caption": "Tyrantrum appears among rocky mountains."
+    },
+    {
      "id": "bw7-38",
      "caption": "Delibird runs across snow beneath a crescent moon."
     },
@@ -2553,10 +2567,6 @@
     {
      "id": "bw8-28",
      "caption": "Mamoswine charges across a snowy landscape."
-    },
-    {
-     "id": "dp4-39",
-     "caption": "Snubbull stomping through deep snow"
     }
    ],
    "omissions": [
@@ -2794,6 +2804,10 @@
      "caption": "Absol stands on a rocky hill beneath a red moon."
     },
     {
+     "id": "xy1-91",
+     "caption": "Mr. Mime appears in a forest."
+    },
+    {
      "id": "col1-17",
      "caption": "Ninetales in a forest, rocky terrain, snow and ice, an indoor scene, a building, night, fire."
     },
@@ -2812,10 +2826,6 @@
     {
      "id": "dp4-27",
      "caption": "Primeape leaping through a dark purple forest at night"
-    },
-    {
-     "id": "gym2-86",
-     "caption": "Voltorb glowing like a moon in a dark blue night sky above hills"
     }
    ],
    "omissions": [
@@ -2988,8 +2998,8 @@
      "caption": "Nidoran stands among flowers and snow beneath an icy windmill."
     },
     {
-     "id": "bw9-28",
-     "caption": "Vanillish floats among flowers before icy mountains."
+     "id": "xy1-6",
+     "caption": "Ledyba flies in a grassy field."
     }
    ],
    "omissions": [
@@ -3055,6 +3065,14 @@
   "human-present": {
    "positives": [
     {
+     "id": "xy2-105",
+     "caption": "Pokémon Center Lady appears with people."
+    },
+    {
+     "id": "xy2-104",
+     "caption": "Lysandre appears with people."
+    },
+    {
      "id": "bw11-RC20",
      "caption": "A fashionable woman poses against a sparkling background."
     },
@@ -3067,24 +3085,16 @@
      "caption": "Koga pointing forward in a ninja outfit against a green background"
     },
     {
+     "id": "xy2-106",
+     "caption": "Pokémon Fan Club appears with people and with other Pokémon."
+    },
+    {
+     "id": "xy2-93",
+     "caption": "Pokémon Center Lady appears indoors with people."
+    },
+    {
      "id": "gym2-18",
      "caption": "Giovanni in a dark suit against a green background"
-    },
-    {
-     "id": "dp2-115",
-     "caption": "Two people in white Team Galactic uniforms stand side by side against a blue sky."
-    },
-    {
-     "id": "dp2-111",
-     "caption": "An excavator digs out a fossil in a cave with several Pokémon watching."
-    },
-    {
-     "id": "bw8-118",
-     "caption": "A blue-haired scientist stands inside a laboratory."
-    },
-    {
-     "id": "dp2-109",
-     "caption": "A blond girl types on a laptop in a cluttered room while a cat Pokémon sits nearby."
     }
    ],
    "omissions": [
