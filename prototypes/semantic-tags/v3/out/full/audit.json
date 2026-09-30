@@ -1,33 +1,33 @@
 {
- "generatedAt": "2026-09-30T20:19:10.937Z",
- "completedSets": 80,
- "expectedCards": 7621,
- "resultRows": 7621,
+ "generatedAt": "2026-09-30T20:25:51.867Z",
+ "completedSets": 82,
+ "expectedCards": 7909,
+ "resultRows": 7909,
  "schemaErrors": [],
  "tagCounts": {
-  "beach": 65,
-  "water-surface": 688,
-  "underwater": 226,
-  "forest": 966,
-  "grassland-field": 742,
-  "mountain-rocks": 780,
-  "cave": 146,
-  "desert": 113,
-  "snow-ice": 264,
-  "city": 277,
-  "indoors": 324,
-  "ruins-building": 375,
-  "sky-clouds": 1071,
-  "night": 297,
+  "beach": 71,
+  "water-surface": 730,
+  "underwater": 244,
+  "forest": 1010,
+  "grassland-field": 788,
+  "mountain-rocks": 823,
+  "cave": 155,
+  "desert": 120,
+  "snow-ice": 268,
+  "city": 304,
+  "indoors": 335,
+  "ruins-building": 384,
+  "sky-clouds": 1119,
+  "night": 300,
   "sunset-sunrise": 184,
-  "fire-lava": 348,
-  "flowers": 410,
-  "food-visible": 100,
-  "human-present": 303,
-  "multiple-pokemon": 498,
-  "sleeping": 57,
-  "flying": 963,
-  "swimming": 414
+  "fire-lava": 361,
+  "flowers": 440,
+  "food-visible": 102,
+  "human-present": 322,
+  "multiple-pokemon": 510,
+  "sleeping": 60,
+  "flying": 988,
+  "swimming": 438
  },
  "relationFlags": [
   {
@@ -2421,8 +2421,16 @@
   "cave": {
    "positives": [
     {
+     "id": "xy5-78",
+     "caption": "Nosepass appears inside a cave."
+    },
+    {
      "id": "ecard3-117",
      "caption": "Many Zubat flap about a rocky cave."
+    },
+    {
+     "id": "xy5-82",
+     "caption": "Trapinch appears inside a cave."
     },
     {
      "id": "ex8-89",
@@ -2443,14 +2451,6 @@
     {
      "id": "ex5-73",
      "caption": "A hooded Pokémon stands in an icy cave with crystals."
-    },
-    {
-     "id": "ex11-49",
-     "caption": "Metang hovers in a dark purple cave-like setting with glowing embers."
-    },
-    {
-     "id": "col1-47",
-     "caption": "Mime Jr. in a forest, a cave."
     }
    ],
    "omissions": [
@@ -2700,16 +2700,16 @@
      "caption": "Slowking stands beside a lighthouse under moonlit clouds."
     },
     {
+     "id": "xy4-41",
+     "caption": "Litwick appears among old structures."
+    },
+    {
      "id": "bw5-96",
      "caption": "A green-haired person tips a cap near a futuristic structure."
     },
     {
      "id": "ecard2-112",
      "caption": "Tangela in front of a hillside with trees, a red house and a cloudy sky."
-    },
-    {
-     "id": "hgss1-59",
-     "caption": "Chikorita in building, sunset."
     }
    ],
    "omissions": [
@@ -2932,16 +2932,16 @@
      "caption": "Fiery creature standing amid flames and dark embers."
     },
     {
+     "id": "xy5-133",
+     "caption": "Maxie's Hidden Ball Trick appears among rocky mountains with people."
+    },
+    {
      "id": "dpp-DP10",
      "caption": "Infernape attacking with blazing flames around its fists."
     },
     {
      "id": "col1-SL4",
      "caption": "Groudon in fire."
-    },
-    {
-     "id": "neo1-46",
-     "caption": "Typhlosion crouching with fire and lava around it"
     }
    ],
    "omissions": [
@@ -3123,6 +3123,14 @@
   "multiple-pokemon": {
    "positives": [
     {
+     "id": "xy5-32",
+     "caption": "Staryu appears on a beach with other Pokémon."
+    },
+    {
+     "id": "xy5-45",
+     "caption": "Spheal appears beside open water with people and with other Pokémon."
+    },
+    {
      "id": "pop3-16",
      "caption": "Three Pichu among colorful balloons against a sky-blue background."
     },
@@ -3139,20 +3147,12 @@
      "caption": "Miltank sleeps with another in a flowered field."
     },
     {
+     "id": "xy5-47",
+     "caption": "Sealeo appears on a beach with other Pokémon."
+    },
+    {
      "id": "bwp-BW09",
      "caption": "Zoroark and a smaller Pokemon leap in a purple burst."
-    },
-    {
-     "id": "bw5-40",
-     "caption": "Minun poses beside Plusle on an airport runway under blue sky."
-    },
-    {
-     "id": "bwp-BW28",
-     "caption": "Pokemon relax on a tropical beach with surfboard, parasol and drinks."
-    },
-    {
-     "id": "hgss2-78",
-     "caption": "Judge in an indoor scene, a person, multiple Pokémon."
     }
    ],
    "omissions": [
@@ -3280,6 +3280,10 @@
      "caption": "A red crawfish Pokémon wades in a shallow stream."
     },
     {
+     "id": "xy4-22",
+     "caption": "Alomomola swims underwater."
+    },
+    {
      "id": "ecard1-111",
      "caption": "Goldeen swimming beside a waterfall."
     },
@@ -3302,10 +3306,6 @@
     {
      "id": "ex3-40",
      "caption": "A blue sea dragon Pokémon races through waves under a dark sky."
-    },
-    {
-     "id": "ex3-58",
-     "caption": "A blue seahorse Pokémon rises from choppy sea waves."
     }
    ],
    "omissions": [
