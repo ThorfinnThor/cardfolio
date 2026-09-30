@@ -1,33 +1,33 @@
 {
- "generatedAt": "2026-09-30T16:18:55.751Z",
- "completedSets": 65,
- "expectedCards": 5876,
- "resultRows": 5876,
+ "generatedAt": "2026-09-30T16:52:27.511Z",
+ "completedSets": 68,
+ "expectedCards": 6192,
+ "resultRows": 6192,
  "schemaErrors": [],
  "tagCounts": {
   "beach": 57,
-  "water-surface": 510,
-  "underwater": 185,
-  "forest": 693,
-  "grassland-field": 546,
-  "mountain-rocks": 554,
-  "cave": 109,
-  "desert": 74,
-  "snow-ice": 120,
-  "city": 107,
-  "indoors": 207,
-  "ruins-building": 245,
-  "sky-clouds": 728,
-  "night": 247,
-  "sunset-sunrise": 177,
-  "fire-lava": 273,
-  "flowers": 277,
-  "food-visible": 81,
-  "human-present": 218,
-  "multiple-pokemon": 397,
-  "sleeping": 40,
-  "flying": 629,
-  "swimming": 332
+  "water-surface": 535,
+  "underwater": 195,
+  "forest": 737,
+  "grassland-field": 584,
+  "mountain-rocks": 608,
+  "cave": 123,
+  "desert": 80,
+  "snow-ice": 134,
+  "city": 149,
+  "indoors": 225,
+  "ruins-building": 270,
+  "sky-clouds": 804,
+  "night": 265,
+  "sunset-sunrise": 178,
+  "fire-lava": 283,
+  "flowers": 308,
+  "food-visible": 87,
+  "human-present": 233,
+  "multiple-pokemon": 419,
+  "sleeping": 41,
+  "flying": 675,
+  "swimming": 349
  },
  "relationFlags": [
   {
@@ -2020,6 +2020,56 @@
    "id": "hgss1-116",
    "tag": "fire-lava",
    "caption": "Fire Energy in building, sunset, flight."
+  },
+  {
+   "id": "bw3-27",
+   "tag": "sky-clouds",
+   "caption": "Vanillite floats amid snow and icy clouds."
+  },
+  {
+   "id": "bw4-31",
+   "tag": "snow-ice",
+   "caption": "Vanillite poses outside an ice cream shop beside a child."
+  },
+  {
+   "id": "bw4-84",
+   "tag": "flying",
+   "caption": "Minccino leaps through pink geometric shapes and flying debris."
+  },
+  {
+   "id": "bw4-92",
+   "tag": "multiple-pokemon",
+   "caption": "Two pale energy spheres glow against a dark tiled background."
+  },
+  {
+   "id": "bw5-12",
+   "tag": "ruins-building",
+   "caption": "Flareon stands on a wooden platform inside a warm building."
+  },
+  {
+   "id": "bw5-35",
+   "tag": "flying",
+   "caption": "Ducklett flaps along a wooden floor with feathers flying."
+  },
+  {
+   "id": "bw5-49",
+   "tag": "sky-clouds",
+   "caption": "Slowking stands beside a lighthouse under moonlit clouds."
+  },
+  {
+   "id": "bw5-51",
+   "tag": "ruins-building",
+   "caption": "Yamask floats beneath stars with a distant tower behind."
+  },
+  {
+   "id": "bw5-61",
+   "tag": "sky-clouds",
+   "caption": "Umbreon leaps beneath a crescent moon through storm clouds."
+  },
+  {
+   "id": "bw5-67",
+   "tag": "flying",
+   "caption": "Scraggy kicks amid flying rocks in a canyon."
   }
  ],
  "visualSamples": {
@@ -2079,6 +2129,10 @@
      "caption": "A Sealeo swims through waves with bubbles."
     },
     {
+     "id": "bw3-48",
+     "caption": "Trubbish sits beside blue water under stylized clouds."
+    },
+    {
      "id": "pl2-21",
      "caption": "A Gastrodon sits on a sandy beach beside the sea."
     },
@@ -2089,10 +2143,6 @@
     {
      "id": "ex14-23",
      "caption": "Whiscash roaring beside the water with crystals on the shore."
-    },
-    {
-     "id": "ex14-22",
-     "caption": "Kingler fighting beside a huge green wave with flames in the sky."
     }
    ],
    "omissions": []
@@ -2246,6 +2296,10 @@
      "caption": "A pink scorpion Pokémon attacks on a rocky shore under blue sky."
     },
     {
+     "id": "bw5-64",
+     "caption": "Sandile stands in a quarry before cliffs and machinery."
+    },
+    {
      "id": "ex5-22",
      "caption": "A pale fox Pokémon before a volcano under an orange sky."
     },
@@ -2264,10 +2318,6 @@
     {
      "id": "col1-5",
      "caption": "Forretress in surface water, rocky terrain, a cloudy sky."
-    },
-    {
-     "id": "neo3-34",
-     "caption": "Octillery spraying water in front of a coastal cliff"
     }
    ],
    "omissions": [
@@ -2472,6 +2522,10 @@
      "caption": "Magnezone in a city."
     },
     {
+     "id": "bw5-39",
+     "caption": "Plusle cheers beside Minun on an airport runway under blue sky."
+    },
+    {
      "id": "hgss4-95",
      "caption": "Machamp in a city."
     },
@@ -2486,10 +2540,6 @@
     {
      "id": "hgss1-20",
      "caption": "Feraligatr in city."
-    },
-    {
-     "id": "hgss1-26",
-     "caption": "Meganium in city, cloudy sky."
     }
    ],
    "omissions": [
@@ -2524,6 +2574,10 @@
      "caption": "Grimer in an indoor scene."
     },
     {
+     "id": "bw5-69",
+     "caption": "Zorua emerges from a box in a dim interior."
+    },
+    {
      "id": "pl2-RT4",
      "caption": "A red Rotom in a mower body smashes through wooden boards in a room."
     },
@@ -2534,10 +2588,6 @@
     {
      "id": "pl2-RT6",
      "caption": "An old man in round glasses reads beside cabinets with a small Rotom."
-    },
-    {
-     "id": "neo3-31",
-     "caption": "Jynx dancing by an open window with a crescent moon outside"
     }
    ],
    "omissions": []
@@ -2545,36 +2595,36 @@
   "ruins-building": {
    "positives": [
     {
+     "id": "bw5-82",
+     "caption": "Blissey stands on a station platform beside buildings under blue sky."
+    },
+    {
+     "id": "bw5-98",
+     "caption": "A professor studies a device outside with Pokémon near a house."
+    },
+    {
+     "id": "bw5-52",
+     "caption": "Cofagrigus rises from a cracked stone tomb amid black shadows."
+    },
+    {
+     "id": "bw5-80",
+     "caption": "Chansey stands beside a bright Pokémon Center entrance."
+    },
+    {
+     "id": "bw5-49",
+     "caption": "Slowking stands beside a lighthouse under moonlit clouds."
+    },
+    {
+     "id": "bw5-96",
+     "caption": "A green-haired person tips a cap near a futuristic structure."
+    },
+    {
      "id": "ecard2-112",
      "caption": "Tangela in front of a hillside with trees, a red house and a cloudy sky."
     },
     {
      "id": "hgss1-59",
      "caption": "Chikorita in building, sunset."
-    },
-    {
-     "id": "neo4-103",
-     "caption": "Two Team Rocket members beside a dark tower under a pink moon."
-    },
-    {
-     "id": "hgss1-51",
-     "caption": "Skiploom in forest, building, flowers."
-    },
-    {
-     "id": "hgss3-56",
-     "caption": "Mawile in a city, a building."
-    },
-    {
-     "id": "gym2-55",
-     "caption": "Haunter floating above a rooftop in an orange sunset sky with crescent moon"
-    },
-    {
-     "id": "hgss2-62",
-     "caption": "Spearow in a forest, a building, a cloudy sky, flight."
-    },
-    {
-     "id": "hgss3-53",
-     "caption": "Houndour in a forest, a building."
     }
    ],
    "omissions": [
@@ -2582,6 +2632,11 @@
      "id": "dp3-56",
      "tag": "ruins-building",
      "caption": "A purple sludge Pokémon oozes in front of a glass-windowed building."
+    },
+    {
+     "id": "bw5-12",
+     "tag": "ruins-building",
+     "caption": "Flareon stands on a wooden platform inside a warm building."
     },
     {
      "id": "ecard3-3",
@@ -2592,11 +2647,6 @@
      "id": "dp7-17",
      "tag": "ruins-building",
      "caption": "A curled-up ghost Pokémon against a purple building-like pattern."
-    },
-    {
-     "id": "ex16-81",
-     "tag": "ruins-building",
-     "caption": "Smiling man in sunglasses and Hawaiian shirt waving inside a building."
     }
    ]
   },
@@ -2839,6 +2889,10 @@
      "caption": "Butterfree fluttering over pink flowers under a blue sky."
     },
     {
+     "id": "bw3-31",
+     "caption": "Jellicent swims underwater with a smaller Frillish near aquatic flowers."
+    },
+    {
      "id": "dp4-72",
      "caption": "Jigglypuff in grass with white flowers"
     },
@@ -2851,20 +2905,16 @@
      "caption": "Audino stands on a path through a forest with small flowers."
     },
     {
+     "id": "bw5-9",
+     "caption": "Karrablast stands on a sunlit forest path among flowers."
+    },
+    {
      "id": "ex6-52",
      "caption": "A pink Pokémon clings to a branch among white blossoms."
     },
     {
      "id": "bw1-89",
      "caption": "Cinccino sits amid leafy bushes and blue flowers."
-    },
-    {
-     "id": "bw1-55",
-     "caption": "Solosis in a bubble on a tree stump in a flowery meadow."
-    },
-    {
-     "id": "ex6-44",
-     "caption": "A cat Pokémon sits by white seaside buildings and pink blossoms."
     }
    ],
    "omissions": [
@@ -3004,6 +3054,10 @@
      "caption": "Zoroark and a smaller Pokemon leap in a purple burst."
     },
     {
+     "id": "bw5-40",
+     "caption": "Minun poses beside Plusle on an airport runway under blue sky."
+    },
+    {
      "id": "bwp-BW28",
      "caption": "Pokemon relax on a tropical beach with surfboard, parasol and drinks."
     },
@@ -3014,10 +3068,6 @@
     {
      "id": "dp1-107",
      "caption": "A fire energy orb speeds over a neon grid between a bird and a monkey Pokémon."
-    },
-    {
-     "id": "ru1-1",
-     "caption": "Venusaur in cloudy sky, night, multiple Pokémon."
     }
    ],
    "omissions": [
@@ -3099,20 +3149,20 @@
      "caption": "Aerodactyl swooping through a blue cloudy sky above rocky mountains"
     },
     {
+     "id": "bw5-34",
+     "caption": "Vanillish spins through a green forest clearing."
+    },
+    {
      "id": "pl3-45",
      "caption": "Solrock floats between rocky cliffs under open sky."
     },
     {
+     "id": "bw5-98",
+     "caption": "A professor studies a device outside with Pokémon near a house."
+    },
+    {
      "id": "pl3-85",
      "caption": "Staravia flies low above green grass."
-    },
-    {
-     "id": "gym1-39",
-     "caption": "Bat creature flying against an orange sunset sky with a dark cliff."
-    },
-    {
-     "id": "dp5-1",
-     "caption": "Articuno soaring with wings spread across a sparkling sky"
     }
    ],
    "omissions": [

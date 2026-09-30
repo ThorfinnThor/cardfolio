@@ -519,12 +519,36 @@
    "at": "2026-09-30T16:18:55.671Z",
    "agentTokens": 0,
    "agentMinutes": 0
+  },
+  "bw3": {
+   "cards": 102,
+   "valid": 102,
+   "invalid": 0,
+   "at": "2026-09-30T16:52:27.341Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "bw4": {
+   "cards": 103,
+   "valid": 103,
+   "invalid": 0,
+   "at": "2026-09-30T16:52:27.382Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "bw5": {
+   "cards": 111,
+   "valid": 111,
+   "invalid": 0,
+   "at": "2026-09-30T16:52:27.424Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
   }
  },
  "totals": {
-  "sets": 65,
-  "cards": 5876,
-  "valid": 5876,
+  "sets": 68,
+  "cards": 6192,
+  "valid": 6192,
   "invalid": 0,
   "agentTokens": 0,
   "agentMinutes": 16.4
