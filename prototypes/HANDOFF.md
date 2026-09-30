@@ -4,6 +4,30 @@ Status as of 2026-09-30. Branch `claude/project-thread-jqmwl5` (PR #3, draft pro
 Everything here is a prototype under `prototypes/`, each part with its own `package.json`. Nothing touches the app code,
 the root `package.json` or the lockfile.
 
+## Status (updated on every stop)
+
+**2026-09-30 ~12:15 Berlin: Phase A complete, tag list frozen, Phase B starting.**
+
+- **Final tags (23, `semantic-tags/v3/final-tags.mjs`):** beach, water-surface, underwater, forest, grassland-field,
+  mountain-rocks, cave, desert, snow-ice, city, indoors, ruins-building, sky-clouds, night, sunset-sunrise, fire-lava,
+  flowers, food-visible, human-present, multiple-pokemon, sleeping, flying, swimming.
+- **Dropped (free text only):** storm-weather (agreement 56 %), space (1 card in the test set).
+- **Rule revision** passed for all 5 borderline tags (`v3/out/phaseA/reliability.json` → `revision1`):
+
+  | Tag | Precision | Agreement |
+  | --- | --- | --- |
+  | night | 96 % | 93 % |
+  | flying | 96 % | 89 % |
+  | ruins-building | 92 % | 89 % |
+  | water-surface | 100 % | 92 % |
+  | multiple-pokemon | 88 % | 92 % |
+
+- **Final rules:** `v3/tag-rules-final.md`. Phase B agent instructions: `v3/agent-instructions-full.md`.
+- **Phase B:** 164 sets with images, 1,911 sheets, 67 jobs of at most 36 sheets. Sets done: 0.
+- **Progress:** `v3/out/full/progress.json` (per set: cards, valid, invalid, tokens, minutes). Results per set: `v3/out/full/<setId>.json`. Invalid results: `v3/out/full/failed.json`.
+- **Starting / resuming:** `node v3/plan-full.mjs 36` lists only the jobs still open. For each job, an agent gets `SETS`, a temp folder `A` (outside the repo) and a result folder `R`, and follows `v3/agent-instructions-full.md`. Afterwards run `node v3/ingest-full.mjs R/<setId>.json <tokens> <minutes>` for each set, then commit and push.
+- **Known issues:** Node on macOS needs `NODE_EXTRA_CA_CERTS=/etc/ssl/cert.pem`. `high.webp` returns a 404 for a few cards (e.g. sv03.5-163); the sheet builder then uses `high.png`. The usage limit can stop runs; everything is resumable per set.
+
 ## Goal
 
 Users should be able to search cards by what the **artwork shows**, for example "pokemon at the beach", "sleeping" or

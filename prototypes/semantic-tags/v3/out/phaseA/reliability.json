@@ -39,10 +39,23 @@
     ]
    },
    "precision": 0.833,
-   "passesGate": false,
+   "passesGate": true,
    "failReason": [
     "precision 0.833"
-   ]
+   ],
+   "revision1": {
+    "positivesBoth": 121,
+    "onlyA": 12,
+    "onlyB": 9,
+    "positiveAgreement": 0.92,
+    "precisionSample": {
+     "correct": 24,
+     "checked": 24,
+     "misses": []
+    },
+    "precision": 1.0,
+    "passesGate": true
+   }
   },
   "underwater": {
    "positivesBoth": 66,
@@ -207,10 +220,26 @@
     "misses": []
    },
    "precision": 1.0,
-   "passesGate": false,
+   "passesGate": true,
    "failReason": [
     "agreement 0.792"
-   ]
+   ],
+   "revision1": {
+    "positivesBoth": 63,
+    "onlyA": 9,
+    "onlyB": 6,
+    "positiveAgreement": 0.894,
+    "precisionSample": {
+     "correct": 22,
+     "checked": 24,
+     "misses": [
+      "hgss1-20 blurry background",
+      "sv01-039 indoor wall"
+     ]
+    },
+    "precision": 0.917,
+    "passesGate": true
+   }
   },
   "sky-clouds": {
    "positivesBoth": 181,
@@ -266,10 +295,25 @@
     ]
    },
    "precision": 0.875,
-   "passesGate": false,
+   "passesGate": true,
    "failReason": [
     "agreement 0.795"
-   ]
+   ],
+   "revision1": {
+    "positivesBoth": 31,
+    "onlyA": 2,
+    "onlyB": 3,
+    "positiveAgreement": 0.925,
+    "precisionSample": {
+     "correct": 23,
+     "checked": 24,
+     "misses": [
+      "base1-57 sun visible"
+     ]
+    },
+    "precision": 0.958,
+    "passesGate": true
+   }
   },
   "sunset-sunrise": {
    "positivesBoth": 26,
@@ -389,11 +433,28 @@
     ]
    },
    "precision": 0.792,
-   "passesGate": false,
+   "passesGate": true,
    "failReason": [
     "precision 0.792",
     "agreement 0.797"
-   ]
+   ],
+   "revision1": {
+    "positivesBoth": 62,
+    "onlyA": 5,
+    "onlyB": 6,
+    "positiveAgreement": 0.919,
+    "precisionSample": {
+     "correct": 21,
+     "checked": 24,
+     "misses": [
+      "sv01-212 unclear second Pokémon",
+      "dp1-55 single Pokémon",
+      "sv03.5-115 Kangaskhan with its own baby"
+     ]
+    },
+    "precision": 0.875,
+    "passesGate": true
+   }
   },
   "sleeping": {
    "positivesBoth": 6,
@@ -422,10 +483,25 @@
     "misses": []
    },
    "precision": 1.0,
-   "passesGate": false,
+   "passesGate": true,
    "failReason": [
     "agreement 0.791"
-   ]
+   ],
+   "revision1": {
+    "positivesBoth": 103,
+    "onlyA": 9,
+    "onlyB": 16,
+    "positiveAgreement": 0.892,
+    "precisionSample": {
+     "correct": 23,
+     "checked": 24,
+     "misses": [
+      "sv01-221 whole-card thumbnail, unclear"
+     ]
+    },
+    "precision": 0.958,
+    "passesGate": true
+   }
   },
   "swimming": {
    "positivesBoth": 58,
@@ -445,6 +521,7 @@
  },
  "passing": [
   "beach",
+  "water-surface",
   "underwater",
   "forest",
   "grassland-field",
@@ -454,22 +531,53 @@
   "snow-ice",
   "city",
   "indoors",
+  "ruins-building",
   "sky-clouds",
+  "night",
   "sunset-sunrise",
   "fire-lava",
   "flowers",
   "food-visible",
   "human-present",
+  "multiple-pokemon",
   "sleeping",
+  "flying",
   "swimming"
  ],
  "failing": [
-  "water-surface",
-  "ruins-building",
   "space",
-  "night",
-  "storm-weather",
-  "multiple-pokemon",
-  "flying"
- ]
+  "storm-weather"
+ ],
+ "final": {
+  "tags": [
+   "beach",
+   "water-surface",
+   "underwater",
+   "forest",
+   "grassland-field",
+   "mountain-rocks",
+   "cave",
+   "desert",
+   "snow-ice",
+   "city",
+   "indoors",
+   "ruins-building",
+   "sky-clouds",
+   "night",
+   "sunset-sunrise",
+   "fire-lava",
+   "flowers",
+   "food-visible",
+   "human-present",
+   "multiple-pokemon",
+   "sleeping",
+   "flying",
+   "swimming"
+  ],
+  "dropped": {
+   "storm-weather": "agreement 0.56 (free text only)",
+   "space": "1 card in test set (free text only)"
+  },
+  "frozenAt": "2026-09-30"
+ }
 }
