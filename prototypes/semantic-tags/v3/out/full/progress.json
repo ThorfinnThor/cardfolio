@@ -703,12 +703,28 @@
    "at": "2026-09-30T20:58:24.445Z",
    "agentTokens": 0,
    "agentMinutes": 0
+  },
+  "xy11": {
+   "cards": 116,
+   "valid": 116,
+   "invalid": 0,
+   "at": "2026-09-30T21:08:23.925Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "xy12": {
+   "cards": 113,
+   "valid": 113,
+   "invalid": 0,
+   "at": "2026-09-30T21:08:23.965Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
   }
  },
  "totals": {
-  "sets": 88,
-  "cards": 8658,
-  "valid": 8658,
+  "sets": 90,
+  "cards": 8887,
+  "valid": 8887,
   "invalid": 0,
   "agentTokens": 0,
   "agentMinutes": 16.4

@@ -1,33 +1,33 @@
 {
- "generatedAt": "2026-09-30T20:58:24.548Z",
- "completedSets": 88,
- "expectedCards": 8658,
- "resultRows": 8658,
+ "generatedAt": "2026-09-30T21:08:24.073Z",
+ "completedSets": 90,
+ "expectedCards": 8887,
+ "resultRows": 8887,
  "schemaErrors": [],
  "tagCounts": {
-  "beach": 85,
-  "water-surface": 805,
-  "underwater": 259,
-  "forest": 1114,
-  "grassland-field": 878,
-  "mountain-rocks": 889,
-  "cave": 173,
-  "desert": 133,
-  "snow-ice": 296,
-  "city": 404,
-  "indoors": 397,
-  "ruins-building": 415,
-  "sky-clouds": 1236,
-  "night": 331,
-  "sunset-sunrise": 192,
-  "fire-lava": 386,
-  "flowers": 494,
-  "food-visible": 119,
-  "human-present": 402,
-  "multiple-pokemon": 590,
-  "sleeping": 79,
-  "flying": 1083,
-  "swimming": 467
+  "beach": 88,
+  "water-surface": 832,
+  "underwater": 264,
+  "forest": 1142,
+  "grassland-field": 903,
+  "mountain-rocks": 902,
+  "cave": 182,
+  "desert": 139,
+  "snow-ice": 300,
+  "city": 415,
+  "indoors": 412,
+  "ruins-building": 421,
+  "sky-clouds": 1263,
+  "night": 339,
+  "sunset-sunrise": 195,
+  "fire-lava": 405,
+  "flowers": 506,
+  "food-visible": 121,
+  "human-present": 413,
+  "multiple-pokemon": 612,
+  "sleeping": 82,
+  "flying": 1101,
+  "swimming": 484
  },
  "relationFlags": [
   {
@@ -2647,6 +2647,10 @@
      "caption": "A Rotom in a fan sits in a bright room by a window."
     },
     {
+     "id": "xy12-31",
+     "caption": "Starmie appears indoors."
+    },
+    {
      "id": "pl2-RT2",
      "caption": "A red machine-bodied Rotom grins in a room with sparkles."
     },
@@ -2655,24 +2659,20 @@
      "caption": "Professor Sycamore appears indoors with people."
     },
     {
+     "id": "xy11-2",
+     "caption": "Tangrowth appears indoors."
+    },
+    {
      "id": "pl2-RT3",
      "caption": "A red Rotom in a washer-like body in a kitchen with a dish on top."
     },
     {
+     "id": "xy12-47",
+     "caption": "Gastly appears indoors."
+    },
+    {
      "id": "hgss3-50",
      "caption": "Grimer in an indoor scene."
-    },
-    {
-     "id": "bw5-69",
-     "caption": "Zorua emerges from a box in a dim interior."
-    },
-    {
-     "id": "pl2-RT4",
-     "caption": "A red Rotom in a mower body smashes through wooden boards in a room."
-    },
-    {
-     "id": "bw8-118",
-     "caption": "A blue-haired scientist stands inside a laboratory."
     }
    ],
    "omissions": []
@@ -3069,6 +3069,10 @@
      "caption": "Floette appears in a grassy field with people and other Pokémon."
     },
     {
+     "id": "xy12-107",
+     "caption": "Brock's Grit appears with people."
+    },
+    {
      "id": "xy2-105",
      "caption": "Pokémon Center Lady appears with people."
     },
@@ -3091,10 +3095,6 @@
     {
      "id": "xy2-106",
      "caption": "Pokémon Fan Club appears with people and with other Pokémon."
-    },
-    {
-     "id": "xy2-93",
-     "caption": "Pokémon Center Lady appears indoors with people."
     }
    ],
    "omissions": [

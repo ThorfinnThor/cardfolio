@@ -6,7 +6,7 @@ the root `package.json` or the lockfile.
 
 ## Status (updated on every stop)
 
-**2026-09-30 ~23:10 Berlin: Phase A complete, tag list frozen, Phase B at 88/164 sets.**
+**2026-09-30 ~23:40 Berlin: Phase A complete, tag list frozen, Phase B at 90/164 sets.**
 
 - **Final tags (23, `semantic-tags/v3/final-tags.mjs`):** beach, water-surface, underwater, forest, grassland-field,
   mountain-rocks, cave, desert, snow-ice, city, indoors, ruins-building, sky-clouds, night, sunset-sunrise, fire-lava,
@@ -23,8 +23,8 @@ the root `package.json` or the lockfile.
   | multiple-pokemon | 88 % | 92 % |
 
 - **Final rules:** `v3/tag-rules-final.md`. Phase B agent instructions: `v3/agent-instructions-full.md`.
-- **Phase B:** 164 sets with images, 1,911 sheets. **88 sets and 8,658 of 21,990 cards are complete (39%).** The latest completed sets are `xy9`, `g1` and `xy10`; use `node v3/plan-full.mjs 36` for the next open block.
-- **Audit:** all 23 frozen tags were cross-checked before these blocks. A 240-card random sample found five cards requiring correction (2.1% before correction); targeted checks brought the total to 109 corrected cards. Details: `v3/AUDIT.md`, `v3/out/full/audit.json`, `v3/out/full/audit-fixes.json`. The latest validation passes with 8,658/8,658 valid rows, zero schema errors and no new relationship or omission conflicts in `xy9`, `g1` and `xy10`. The earlier omission heuristics for `Professor's Letter` and abstract `Fire Energy` remain intentional false positives in older sets.
+- **Phase B:** 164 sets with images, 1,911 sheets. **90 sets and 8,887 of 21,990 cards are complete (40%).** The latest completed sets are `xy11` and `xy12`; use `node v3/plan-full.mjs 36` for the next open block.
+- **Audit:** all 23 frozen tags were cross-checked before these blocks. A 240-card random sample found five cards requiring correction (2.1% before correction); targeted checks brought the total to 109 corrected cards. Details: `v3/AUDIT.md`, `v3/out/full/audit.json`, `v3/out/full/audit-fixes.json`. The latest validation passes with 8,887/8,887 valid rows, zero schema errors and no new relationship or omission conflicts in `xy11` and `xy12`. The earlier omission heuristics for `Professor's Letter` and abstract `Fire Energy` remain intentional false positives in older sets.
 - **Blocked source set:** `dc1` (Double Crisis, 34 cards) currently remains open. TCGdex lists image bases, but all tested variants (`high.webp`, `high.png`, `low.webp`, `low.png`) return HTTP 404 already for `dc1-1`. Do not invent tags without artwork; retry or resolve the source gap separately.
 - **Rejected acceleration attempt (2026-09-30):** local Florence-2 captions plus keyword rules, CLIP/DINO classifiers trained on the completed cards, TF-IDF over generated captions, and MiniLM caption embeddings were evaluated against held-out/manual data. None met the existing quality gate with useful recall (the strongest broad parser reached 66% micro precision / 23% recall; high-precision variants fell to 6–9% recall). No generated rows were ingested or committed. Continue with direct visual tagging from `xy1` onward.
 - **Progress:** `v3/out/full/progress.json` (per set: cards, valid, invalid, tokens, minutes). Results per set: `v3/out/full/<setId>.json`. Invalid results: `v3/out/full/failed.json`.
@@ -44,7 +44,7 @@ stays unchanged. English only. No server, no running costs: static data plus sea
 | 1 | `semantic-search/` | CLIP image vectors (ViT-B/32 and B/16, transformers.js), text query → cosine similarity | **Not usable.** CLIP reads the printed card text: Drowzee HGSS 62 ranks first for "sleeping" because of the attack "Sleep Inducer", while the artwork shows it surfing. 38–46 % of top-8 hits contain the query word in the card text; random cards: 10 %. |
 | 2 | `semantic-tags/` (v1) | Artwork crops on contact sheets, scene tags written by Claude (Sonnet) agents, simple tag search | **127/160** correct top-8 hits across 20 queries (CLIP: "sleeping" 1–2/8, "eating" 0/8) |
 | 3 | `semantic-tags/out/v2` | Stricter schema (kitchen, lightning, interaction, food) and a re-tag | **122/160.** Stricter rules made rare values nearly empty. The two passes also disagreed a lot. 6 untuned queries: 28/48 |
-| 4 | `semantic-tags/v3` | **Multi-label presence tags** with written decision rules, measured with two independent passes plus a precision check | Phase A done; all 23 tags passed. Phase B is 88/164 sets complete and audited. Phase C open. |
+| 4 | `semantic-tags/v3` | **Multi-label presence tags** with written decision rules, measured with two independent passes plus a precision check | Phase A done; all 23 tags passed. Phase B is 90/164 sets complete and audited. Phase C open. |
 
 Main lesson: **tags that are reliable and understandable beat vectors and fine-grained categories.** Anything that
 isn't reliably taggable goes into the free-text caption.
