@@ -1,0 +1,9 @@
+{
+  "name": "cardfolio-semantic-tags-prototype",
+  "private": true,
+  "type": "module",
+  "description": "Standalone prototype: hand-written scene tags for TCGdex EN card artwork + tag search evaluation. Not part of the app build.",
+  "dependencies": {
+    "sharp": "^0.34.0"
+  }
+}
