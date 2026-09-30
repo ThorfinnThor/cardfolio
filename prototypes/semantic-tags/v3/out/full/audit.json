@@ -1,33 +1,33 @@
 {
- "generatedAt": "2026-09-30T21:08:24.073Z",
- "completedSets": 90,
- "expectedCards": 8887,
- "resultRows": 8887,
+ "generatedAt": "2026-09-30T21:16:16.484Z",
+ "completedSets": 92,
+ "expectedCards": 9240,
+ "resultRows": 9240,
  "schemaErrors": [],
  "tagCounts": {
-  "beach": 88,
-  "water-surface": 832,
-  "underwater": 264,
-  "forest": 1142,
-  "grassland-field": 903,
-  "mountain-rocks": 902,
-  "cave": 182,
-  "desert": 139,
-  "snow-ice": 300,
-  "city": 415,
-  "indoors": 412,
-  "ruins-building": 421,
-  "sky-clouds": 1263,
-  "night": 339,
-  "sunset-sunrise": 195,
-  "fire-lava": 405,
-  "flowers": 506,
-  "food-visible": 121,
-  "human-present": 413,
-  "multiple-pokemon": 612,
-  "sleeping": 82,
-  "flying": 1101,
-  "swimming": 484
+  "beach": 105,
+  "water-surface": 880,
+  "underwater": 280,
+  "forest": 1196,
+  "grassland-field": 926,
+  "mountain-rocks": 937,
+  "cave": 188,
+  "desert": 142,
+  "snow-ice": 307,
+  "city": 426,
+  "indoors": 421,
+  "ruins-building": 425,
+  "sky-clouds": 1318,
+  "night": 350,
+  "sunset-sunrise": 199,
+  "fire-lava": 419,
+  "flowers": 534,
+  "food-visible": 123,
+  "human-present": 424,
+  "multiple-pokemon": 632,
+  "sleeping": 85,
+  "flying": 1137,
+  "swimming": 505
  },
  "relationFlags": [
   {
@@ -2173,6 +2173,10 @@
      "caption": "A pink Shellos stands on a sandy beach next to the sea."
     },
     {
+     "id": "smp-SM152",
+     "caption": "Tapu Lele appears on a beach."
+    },
+    {
      "id": "pl2-22",
      "caption": "A pink Gastrodon on a sandy shore before a waterfall cliff and trees."
     },
@@ -2187,10 +2191,6 @@
     {
      "id": "ex2-27",
      "caption": "A green crab-like Pokémon crawls on a sandy shore by the water."
-    },
-    {
-     "id": "dpp-DP48",
-     "caption": "Shaymin, Bidoof and other Pokemon on a palm beach under clouds."
     }
    ],
    "omissions": []
@@ -2239,6 +2239,10 @@
      "caption": "Jolteon swims underwater."
     },
     {
+     "id": "smp-SM03",
+     "caption": "Popplio swims underwater."
+    },
+    {
      "id": "xy7-23",
      "caption": "Relicanth swims underwater."
     },
@@ -2261,10 +2265,6 @@
     {
      "id": "dp6-71",
      "caption": "Starmie floating in clear blue sea water"
-    },
-    {
-     "id": "xy2-71",
-     "caption": "Dragalge swims underwater."
     }
    ],
    "omissions": []
@@ -2350,16 +2350,16 @@
      "caption": "A blurry armadillo Pokémon sits in grass among white puffs."
     },
     {
+     "id": "sm1-8",
+     "caption": "Masquerain appears in a grassy field."
+    },
+    {
      "id": "pl3-96",
      "caption": "Cherubi smiles among grass and colorful flowers."
     },
     {
      "id": "ex6-18",
      "caption": "A fluffy dog Pokémon stands on green grass under a blue sky."
-    },
-    {
-     "id": "base3-43",
-     "caption": "Slowbro hugs its Shellder on grass with an orange swirling sky."
     }
    ],
    "omissions": [
@@ -2433,6 +2433,10 @@
      "caption": "Trapinch appears inside a cave."
     },
     {
+     "id": "sm1-70",
+     "caption": "Boldore appears among rocky mountains."
+    },
+    {
      "id": "ex8-89",
      "caption": "A waterfall pours into a pool inside a cave"
     },
@@ -2447,10 +2451,6 @@
     {
      "id": "pop1-9",
      "caption": "A spiky blue Pokémon in a dark rocky cave with glowing crystals."
-    },
-    {
-     "id": "ex5-73",
-     "caption": "A hooded Pokémon stands in an icy cave with crystals."
     }
    ],
    "omissions": [
@@ -2746,6 +2746,14 @@
      "caption": "Trubbish stands in grass beneath a cloudy sky."
     },
     {
+     "id": "sm1-69",
+     "caption": "Roggenrola appears among rocky mountains."
+    },
+    {
+     "id": "sm1-91",
+     "caption": "Granbull appears among rocky mountains."
+    },
+    {
      "id": "neo4-102",
      "caption": "Rhydon and Marill in a stadium before a cheering crowd and cloudy sky."
     },
@@ -2760,14 +2768,6 @@
     {
      "id": "bwp-BW28",
      "caption": "Pokemon relax on a tropical beach with surfboard, parasol and drinks."
-    },
-    {
-     "id": "bw10-15",
-     "caption": "Wartortle stands on rocks amid splashing water."
-    },
-    {
-     "id": "pl1-32",
-     "caption": "An orange insect Pokémon flies in a bright cloudy sky."
     }
    ],
    "omissions": [
@@ -3151,8 +3151,8 @@
      "caption": "Pink creature with a shell creature attached and a tiny dark figure on top."
     },
     {
-     "id": "xy0-27",
-     "caption": "Miltank sleeps with another in a flowered field."
+     "id": "sm1-133",
+     "caption": "Team Skull Grunt appears in a city with people and with other Pokémon."
     }
    ],
    "omissions": [
