@@ -1047,12 +1047,68 @@
    "at": "2026-10-01T10:08:13.205Z",
    "agentTokens": 0,
    "agentMinutes": 0
+  },
+  "sv04.5": {
+   "cards": 245,
+   "valid": 245,
+   "invalid": 0,
+   "at": "2026-10-01T10:28:18.807Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "sv05": {
+   "cards": 218,
+   "valid": 218,
+   "invalid": 0,
+   "at": "2026-10-01T10:30:45.872Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "sv06": {
+   "cards": 226,
+   "valid": 226,
+   "invalid": 0,
+   "at": "2026-10-01T10:32:44.893Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "sv06.5": {
+   "cards": 99,
+   "valid": 99,
+   "invalid": 0,
+   "at": "2026-10-01T10:33:42.673Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "sv07": {
+   "cards": 175,
+   "valid": 175,
+   "invalid": 0,
+   "at": "2026-10-01T10:35:52.612Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "sv08": {
+   "cards": 252,
+   "valid": 252,
+   "invalid": 0,
+   "at": "2026-10-01T10:37:51.909Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "sv08.5": {
+   "cards": 180,
+   "valid": 180,
+   "invalid": 0,
+   "at": "2026-10-01T10:39:29.390Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
   }
  },
  "totals": {
-  "sets": 131,
-  "cards": 16321,
-  "valid": 16321,
+  "sets": 138,
+  "cards": 17716,
+  "valid": 17716,
   "invalid": 0,
   "agentTokens": 0,
   "agentMinutes": 16.4
