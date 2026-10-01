@@ -1,33 +1,33 @@
 {
- "generatedAt": "2026-10-01T10:52:18.386Z",
- "completedSets": 146,
- "expectedCards": 19232,
- "resultRows": 19232,
+ "generatedAt": "2026-10-01T11:25:47.733Z",
+ "completedSets": 149,
+ "expectedCards": 19635,
+ "resultRows": 19635,
  "schemaErrors": [],
  "tagCounts": {
-  "beach": 235,
-  "water-surface": 1605,
-  "underwater": 998,
-  "forest": 3418,
-  "grassland-field": 2936,
-  "mountain-rocks": 3346,
-  "cave": 645,
-  "desert": 434,
-  "snow-ice": 818,
-  "city": 1408,
-  "indoors": 1397,
-  "ruins-building": 1434,
-  "sky-clouds": 4222,
-  "night": 1187,
-  "sunset-sunrise": 500,
-  "fire-lava": 1020,
-  "flowers": 1800,
-  "food-visible": 405,
-  "human-present": 1644,
-  "multiple-pokemon": 2095,
-  "sleeping": 311,
-  "flying": 2996,
-  "swimming": 1565
+  "beach": 242,
+  "water-surface": 1635,
+  "underwater": 1011,
+  "forest": 3523,
+  "grassland-field": 3063,
+  "mountain-rocks": 3434,
+  "cave": 653,
+  "desert": 440,
+  "snow-ice": 826,
+  "city": 1495,
+  "indoors": 1440,
+  "ruins-building": 1526,
+  "sky-clouds": 4389,
+  "night": 1259,
+  "sunset-sunrise": 505,
+  "fire-lava": 1046,
+  "flowers": 1857,
+  "food-visible": 414,
+  "human-present": 1665,
+  "multiple-pokemon": 2112,
+  "sleeping": 320,
+  "flying": 3113,
+  "swimming": 1605
  },
  "relationFlags": [
   {
@@ -3123,6 +3123,10 @@
   "sky-clouds": {
    "positives": [
     {
+     "id": "30th-087",
+     "caption": "Artwork shows a forest, open grassland, open sky."
+    },
+    {
      "id": "sm8-13",
      "caption": "Skiploom flies beneath a cloudy sky with other Pokémon."
     },
@@ -3149,10 +3153,6 @@
     {
      "id": "sv08.5-114",
      "caption": "The illustrated subject appears in a forest with a person."
-    },
-    {
-     "id": "sm1-91",
-     "caption": "Granbull appears among rocky mountains."
     }
    ],
    "omissions": [
@@ -3205,12 +3205,12 @@
      "caption": "Bellossom appears at night."
     },
     {
-     "id": "swsh8-156",
-     "caption": "Gengar V appears indoors with a human."
+     "id": "me04-049",
+     "caption": "Artwork shows a city, an indoor setting, a building or ruins."
     },
     {
-     "id": "xy1-91",
-     "caption": "Mr. Mime appears in a forest."
+     "id": "swsh8-156",
+     "caption": "Gengar V appears indoors with a human."
     }
    ],
    "omissions": [
@@ -3313,6 +3313,10 @@
      "caption": "The illustrated subject appears inside a cave."
     },
     {
+     "id": "me05-105",
+     "caption": "Artwork shows fire or lava."
+    },
+    {
      "id": "ex1-28",
      "caption": "Combusken kicks with a fiery burst before mountains and meadow."
     },
@@ -3321,12 +3325,8 @@
      "caption": "The illustrated subject appears in a forest with other Pokémon and visible food."
     },
     {
-     "id": "xyp-XY59",
-     "caption": "Salamence flies through orange flames."
-    },
-    {
-     "id": "base4-35",
-     "caption": "Red lizard creature slashing near a burning flame on rocks."
+     "id": "me05-104",
+     "caption": "Artwork shows fire or lava."
     }
    ],
    "omissions": [
@@ -3531,6 +3531,10 @@
      "caption": "Delinquent appears with people and other Pokémon."
     },
     {
+     "id": "me05-041",
+     "caption": "Artwork shows a forest, open grassland, rocky terrain."
+    },
+    {
      "id": "sv06.5-071",
      "caption": "The illustrated subject swims in a forest with other Pokémon."
     },
@@ -3545,10 +3549,6 @@
     {
      "id": "sv03.5-014",
      "caption": "Kakuna hangs among blue flowers with another Kakuna behind"
-    },
-    {
-     "id": "cel25-13",
-     "caption": "Cosmog appears indoors with a human and other Pokémon."
     }
    ],
    "omissions": [
@@ -3636,6 +3636,10 @@
      "caption": "Small bird flying low over a green slope under a cloudy blue sky."
     },
     {
+     "id": "30th-109",
+     "caption": "Artwork shows open sky, a flying Pokémon."
+    },
+    {
      "id": "swsh3-15",
      "caption": "Steenee flies beneath a cloudy sky."
     },
@@ -3646,10 +3650,6 @@
     {
      "id": "sv03-217",
      "caption": "The illustrated subject swims underwater."
-    },
-    {
-     "id": "sv03-207",
-     "caption": "The illustrated subject flies in a grassy field with other Pokémon."
     }
    ],
    "omissions": [
