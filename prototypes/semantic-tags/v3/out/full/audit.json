@@ -1,33 +1,33 @@
 {
- "generatedAt": "2026-10-01T07:44:48.836Z",
- "completedSets": 96,
- "expectedCards": 9875,
- "resultRows": 9875,
+ "generatedAt": "2026-10-01T08:25:57.928Z",
+ "completedSets": 106,
+ "expectedCards": 11574,
+ "resultRows": 11574,
  "schemaErrors": [],
  "tagCounts": {
-  "beach": 128,
-  "water-surface": 948,
-  "underwater": 305,
-  "forest": 1306,
-  "grassland-field": 962,
-  "mountain-rocks": 1015,
-  "cave": 203,
-  "desert": 160,
-  "snow-ice": 333,
-  "city": 448,
-  "indoors": 450,
-  "ruins-building": 453,
-  "sky-clouds": 1403,
-  "night": 371,
-  "sunset-sunrise": 204,
-  "fire-lava": 440,
-  "flowers": 570,
-  "food-visible": 136,
-  "human-present": 471,
-  "multiple-pokemon": 672,
-  "sleeping": 98,
-  "flying": 1190,
-  "swimming": 534
+  "beach": 149,
+  "water-surface": 1092,
+  "underwater": 348,
+  "forest": 1569,
+  "grassland-field": 1095,
+  "mountain-rocks": 1182,
+  "cave": 250,
+  "desert": 186,
+  "snow-ice": 386,
+  "city": 539,
+  "indoors": 570,
+  "ruins-building": 498,
+  "sky-clouds": 1522,
+  "night": 432,
+  "sunset-sunrise": 222,
+  "fire-lava": 511,
+  "flowers": 686,
+  "food-visible": 168,
+  "human-present": 649,
+  "multiple-pokemon": 864,
+  "sleeping": 126,
+  "flying": 1317,
+  "swimming": 565
  },
  "relationFlags": [
   {
@@ -2173,8 +2173,16 @@
      "caption": "A pink Shellos stands on a sandy beach next to the sea."
     },
     {
+     "id": "sm12-198",
+     "caption": "Mallow & Lana appears on a beach with a human and other Pokémon."
+    },
+    {
      "id": "smp-SM152",
      "caption": "Tapu Lele appears on a beach."
+    },
+    {
+     "id": "sm12-121",
+     "caption": "Crabrawler appears on a beach."
     },
     {
      "id": "pl2-22",
@@ -2183,14 +2191,6 @@
     {
      "id": "ex14-35",
      "caption": "Ivysaur on sand near the sea with cliffs and crystals."
-    },
-    {
-     "id": "pl2-21",
-     "caption": "A Gastrodon sits on a sandy beach beside the sea."
-    },
-    {
-     "id": "ex2-27",
-     "caption": "A green crab-like Pokémon crawls on a sandy shore by the water."
     }
    ],
    "omissions": []
@@ -2243,8 +2243,20 @@
      "caption": "Popplio swims underwater."
     },
     {
+     "id": "sm7-22",
+     "caption": "Dhelmise appears underwater."
+    },
+    {
+     "id": "sm7-42",
+     "caption": "Huntail appears underwater."
+    },
+    {
      "id": "xy7-23",
      "caption": "Relicanth swims underwater."
+    },
+    {
+     "id": "sm7-43",
+     "caption": "Gorebyss swims underwater with other Pokémon."
     },
     {
      "id": "ecard2-20",
@@ -2253,18 +2265,6 @@
     {
      "id": "xy7-22",
      "caption": "Vaporeon swims underwater."
-    },
-    {
-     "id": "dp6-75",
-     "caption": "Tentacruel drifting in deep water among bubbles"
-    },
-    {
-     "id": "ex10-72",
-     "caption": "A pink Pokémon swims through clear blue water with bubbles"
-    },
-    {
-     "id": "dp6-71",
-     "caption": "Starmie floating in clear blue sea water"
     }
    ],
    "omissions": []
@@ -2274,6 +2274,10 @@
     {
      "id": "dp1-64",
      "caption": "A large dark bird flies over treetops while two small birds fly above."
+    },
+    {
+     "id": "sm8-11",
+     "caption": "Hoppip appears in a forest."
     },
     {
      "id": "sm4-2",
@@ -2296,12 +2300,8 @@
      "caption": "Luvdisc in surface water, a forest, grassland, sunset, swimming."
     },
     {
-     "id": "pl4-79",
-     "caption": "Treecko rests on a vine beside a forest tree."
-    },
-    {
-     "id": "sm2-69",
-     "caption": "Nosepass appears in a forest."
+     "id": "sm7-92",
+     "caption": "Beldum appears in a forest."
     }
    ],
    "omissions": [
@@ -2342,6 +2342,10 @@
      "caption": "Swablu on a grassy bank by a stream with fluffy clouds"
     },
     {
+     "id": "sm10-77",
+     "caption": "Misdreavus appears in a grassy field."
+    },
+    {
      "id": "ex2-46",
      "caption": "A green Pokémon wearing a lily-pad hat leaps through tall grass."
     },
@@ -2356,10 +2360,6 @@
     {
      "id": "pl3-96",
      "caption": "Cherubi smiles among grass and colorful flowers."
-    },
-    {
-     "id": "ex6-18",
-     "caption": "A fluffy dog Pokémon stands on green grass under a blue sky."
     }
    ],
    "omissions": [
@@ -2393,16 +2393,16 @@
      "caption": "A pale fox Pokémon before a volcano under an orange sky."
     },
     {
+     "id": "sm8-191",
+     "caption": "Thunder Mountain ◇ appears among rocky mountains."
+    },
+    {
      "id": "dp7-64",
      "caption": "A young Machop strikes a pose on a cliff above a lake."
     },
     {
      "id": "dp7-16",
      "caption": "A balloon Pokémon floats over purple mountains in an orange and purple sky."
-    },
-    {
-     "id": "hgss2-92",
-     "caption": "Raikou & Suicune LEGEND in rocky terrain, multiple Pokémon."
     }
    ],
    "omissions": [
@@ -2425,6 +2425,10 @@
      "caption": "Nosepass appears inside a cave."
     },
     {
+     "id": "sm11-65",
+     "caption": "Eelektrik appears in a cave."
+    },
+    {
      "id": "ecard3-117",
      "caption": "Many Zubat flap about a rocky cave."
     },
@@ -2437,20 +2441,16 @@
      "caption": "Boldore appears among rocky mountains."
     },
     {
+     "id": "sm11-61",
+     "caption": "Joltik appears in a cave."
+    },
+    {
      "id": "ex8-89",
      "caption": "A waterfall pours into a pool inside a cave"
     },
     {
      "id": "ex7-38",
      "caption": "A red slug Pokémon stands in a fiery lava cave."
-    },
-    {
-     "id": "hgss3-35",
-     "caption": "Sableye in a cave, multiple Pokémon."
-    },
-    {
-     "id": "pop1-9",
-     "caption": "A spiky blue Pokémon in a dark rocky cave with glowing crystals."
     }
    ],
    "omissions": [
@@ -2479,8 +2479,16 @@
   "desert": {
    "positives": [
     {
+     "id": "sm7-110",
+     "caption": "Dunsparce appears in a desert."
+    },
+    {
      "id": "xy7-40",
      "caption": "Regirock appears in a desert."
+    },
+    {
+     "id": "sm12-107",
+     "caption": "Trapinch appears in a desert."
     },
     {
      "id": "sm3-62",
@@ -2501,14 +2509,6 @@
     {
      "id": "bw9-55",
      "caption": "Yamask floats through a rocky desert canyon."
-    },
-    {
-     "id": "sm2-118",
-     "caption": "Altar of the Sunne appears in a desert."
-    },
-    {
-     "id": "ex2-71",
-     "caption": "A rock snake Pokémon slithers through sand dunes."
     }
    ],
    "omissions": [
@@ -2545,6 +2545,10 @@
      "caption": "Articuno flies through sparkling shards of ice."
     },
     {
+     "id": "sm9-111",
+     "caption": "Alolan Ninetales appears in snow and ice."
+    },
+    {
      "id": "xy3-62",
      "caption": "Tyrantrum appears among rocky mountains."
     },
@@ -2563,10 +2567,6 @@
     {
      "id": "bw10-26",
      "caption": "Abomasnow stands in a frozen forest."
-    },
-    {
-     "id": "bw8-28",
-     "caption": "Mamoswine charges across a snowy landscape."
     }
    ],
    "omissions": [
@@ -2599,6 +2599,10 @@
      "caption": "Porygon swims beside open water."
     },
     {
+     "id": "sm6-83",
+     "caption": "Flabébé appears in a city."
+    },
+    {
      "id": "xy8-116",
      "caption": "Doduo appears in a city and other Pokémon."
     },
@@ -2621,10 +2625,6 @@
     {
      "id": "xyp-XY127",
      "caption": "Moltres flies above a city beneath a fiery sky."
-    },
-    {
-     "id": "xy7-62",
-     "caption": "Persian appears in a city."
     }
    ],
    "omissions": [
@@ -2645,6 +2645,10 @@
     {
      "id": "pl2-RT1",
      "caption": "A Rotom in a fan sits in a bright room by a window."
+    },
+    {
+     "id": "sm10-94",
+     "caption": "Rhydon appears indoors with a human."
     },
     {
      "id": "xy12-31",
@@ -2669,10 +2673,6 @@
     {
      "id": "xy12-47",
      "caption": "Gastly appears indoors."
-    },
-    {
-     "id": "hgss3-50",
-     "caption": "Grimer in an indoor scene."
     }
    ],
    "omissions": []
@@ -2686,6 +2686,10 @@
     {
      "id": "bw5-98",
      "caption": "A professor studies a device outside with Pokémon near a house."
+    },
+    {
+     "id": "sm6-50",
+     "caption": "Inkay appears near a building."
     },
     {
      "id": "bw5-52",
@@ -2706,10 +2710,6 @@
     {
      "id": "sm2-116",
      "caption": "Aether Paradise Conservation Area appears in a forest."
-    },
-    {
-     "id": "sm2-117",
-     "caption": "Altar of the Moone appears near a building."
     }
    ],
    "omissions": [
@@ -2738,6 +2738,10 @@
   "sky-clouds": {
    "positives": [
     {
+     "id": "sm8-13",
+     "caption": "Skiploom flies beneath a cloudy sky with other Pokémon."
+    },
+    {
      "id": "bw8-72",
      "caption": "Donphan charges among rocky cliffs beneath blue sky."
     },
@@ -2764,10 +2768,6 @@
     {
      "id": "bw1-29",
      "caption": "Dewott attacks amid crashing waves by rocky shore with trees."
-    },
-    {
-     "id": "bwp-BW28",
-     "caption": "Pokemon relax on a tropical beach with surfboard, parasol and drinks."
     }
    ],
    "omissions": [
@@ -2994,12 +2994,12 @@
      "caption": "Audino stands on a path through a forest with small flowers."
     },
     {
-     "id": "bw9-40",
-     "caption": "Nidoran stands among flowers and snow beneath an icy windmill."
+     "id": "sm8-140",
+     "caption": "Kirlia appears in a grassy field."
     },
     {
-     "id": "xy9-1",
-     "caption": "Chikorita appears in a forest."
+     "id": "sm10-157",
+     "caption": "Porygon-Z appears in a forest with other Pokémon."
     }
    ],
    "omissions": [
@@ -3056,8 +3056,8 @@
      "caption": "A rabbit Pokémon leaps against a blue sky beside an orange tree."
     },
     {
-     "id": "hgss1-94",
-     "caption": "Moomoo Milk in visible food."
+     "id": "det1-2",
+     "caption": "Ludicolo appears indoors with visible food."
     }
    ],
    "omissions": []
@@ -3089,12 +3089,12 @@
      "caption": "A smiling young man with glasses stands before sky and plants."
     },
     {
-     "id": "gym2-19",
-     "caption": "Koga pointing forward in a ninja outfit against a green background"
+     "id": "sm11-200",
+     "caption": "Hapu appears near a building with a human."
     },
     {
-     "id": "xy2-106",
-     "caption": "Pokémon Fan Club appears with people and with other Pokémon."
+     "id": "gym2-19",
+     "caption": "Koga pointing forward in a ninja outfit against a green background"
     }
    ],
    "omissions": [
@@ -3181,6 +3181,10 @@
   "sleeping": {
    "positives": [
     {
+     "id": "det1-18",
+     "caption": "Slaking sleeps in a grassy field."
+    },
+    {
      "id": "dp1-37",
      "caption": "A large Snorlax sleeps with its eyes closed in a sunny landscape."
     },
@@ -3205,12 +3209,8 @@
      "caption": "Sylveon EX sleeps indoors and other Pokémon."
     },
     {
-     "id": "sm2-72",
-     "caption": "Pancham sleeps in a grassy field."
-    },
-    {
-     "id": "bw6-107",
-     "caption": "Bibarel sleeps curled up on grass in shaded woodland."
+     "id": "sm6-13",
+     "caption": "Heatran sleeps in a cave."
     }
    ],
    "omissions": []
@@ -3288,6 +3288,10 @@
      "caption": "Goldeen swimming beside a waterfall."
     },
     {
+     "id": "sm115-15",
+     "caption": "Magikarp swims by the water with other Pokémon."
+    },
+    {
      "id": "col1-SL8",
      "caption": "Palkia in surface water, swimming."
     },
@@ -3300,12 +3304,8 @@
      "caption": "Qwilfish swimming amid bubbles in green water."
     },
     {
-     "id": "xy10-73",
-     "caption": "Kingdra EX swims beside open water."
-    },
-    {
-     "id": "ex3-39",
-     "caption": "A blue seahorse Pokémon swims among coral underwater."
+     "id": "sm10-33",
+     "caption": "Squirtle swims by the water."
     }
    ],
    "omissions": [
