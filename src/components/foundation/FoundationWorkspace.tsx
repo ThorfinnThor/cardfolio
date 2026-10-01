@@ -58,6 +58,7 @@ import { BinderOverview } from "./BinderOverview";
 import { BinderGrid } from "./BinderGrid";
 import { CardArtwork } from "./CardArtwork";
 import { MissingCardsPanel } from "./MissingCardsPanel";
+import { SemanticCardSearch } from "./SemanticCardSearch";
 import { ThemeToggle } from "./ThemeToggle";
 import { VariantFields } from "./VariantFields";
 import styles from "./foundation-workspace.module.css";
@@ -74,6 +75,7 @@ const conditionGrade: Record<PurchasePreferences["minimumCondition"], string> = 
 
 type CopyState = "idle" | "copied" | "error";
 type SearchLanguage = "all" | "de" | "en";
+type SearchMode = "catalog" | "semantic";
 type SearchFilterOption = { id: string; label: string };
 type ImportReport = { binderCount: number; cardCount: number; plannedCount: number; names: string[] };
 type BinderSyncMessage =
@@ -255,6 +257,7 @@ export function FoundationWorkspace() {
   const [activePageIndex, setActivePageIndex] = useState(0);
   const [name, setName] = useState("");
   const [searchText, setSearchText] = useState("");
+  const [searchMode, setSearchMode] = useState<SearchMode>("catalog");
   const [searchLanguage, setSearchLanguage] = useState<SearchLanguage>("all");
   const [searchSeriesId, setSearchSeriesId] = useState("");
   const [searchSetId, setSearchSetId] = useState("");
@@ -394,7 +397,7 @@ export function FoundationWorkspace() {
     queryKey: ["infinite-search", ...catalogQueryKey(germanCatalogQuery)],
     queryFn: ({ signal, pageParam }) =>
       catalog.search({ ...germanCatalogQuery, page: pageParam }, signal),
-    enabled: searchEnabled && searchLanguage !== "en",
+    enabled: searchMode === "catalog" && searchEnabled && searchLanguage !== "en",
     staleTime: 10 * 60 * 1_000,
     initialPageParam: 1,
     getNextPageParam: (lastPage, pages) => lastPage.hasMore ? pages.length + 1 : undefined,
@@ -404,7 +407,7 @@ export function FoundationWorkspace() {
     queryKey: ["infinite-search", ...catalogQueryKey(englishCatalogQuery)],
     queryFn: ({ signal, pageParam }) =>
       catalog.search({ ...englishCatalogQuery, page: pageParam }, signal),
-    enabled: searchEnabled && searchLanguage !== "de",
+    enabled: searchMode === "catalog" && searchEnabled && searchLanguage !== "de",
     staleTime: 10 * 60 * 1_000,
     initialPageParam: 1,
     getNextPageParam: (lastPage, pages) => lastPage.hasMore ? pages.length + 1 : undefined,
@@ -1728,69 +1731,79 @@ export function FoundationWorkspace() {
                 </div>
               ) : (
                 <>
-                  <fieldset className={styles.languageFilter}>
-                    <legend>Kartensprache</legend>
-                    <div>
-                      {([
-                        ["all", "Alle"],
-                        ["de", "Deutsch"],
-                        ["en", "English"],
-                      ] as const).map(([value, label]) => (
-                        <button
-                          type="button"
-                          key={value}
-                          aria-pressed={searchLanguage === value}
-                          onClick={() => setSearchLanguage(value)}
-                        >
-                          {label}
-                        </button>
-                      ))}
-                    </div>
-                  </fieldset>
-                  <div className={styles.catalogFilters}>
-                    <label htmlFor="card-series-filter">
-                      Serie
-                      <select
-                        id="card-series-filter"
-                        value={searchSeriesId}
-                        onChange={(event) => {
-                          setSearchSeriesId(event.target.value);
-                          setSearchSetId("");
-                        }}
-                      >
-                        <option value="">Alle Serien</option>
-                        {seriesOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
-                      </select>
-                    </label>
-                    <label htmlFor="card-set-filter">
-                      Set
-                      <select id="card-set-filter" value={searchSetId} onChange={(event) => setSearchSetId(event.target.value)}>
-                        <option value="">Alle Sets</option>
-                        {setOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
-                      </select>
-                    </label>
+                  <div className={styles.searchModeSwitch} role="group" aria-label="Suchart">
+                    <button type="button" aria-pressed={searchMode === "catalog"} onClick={() => setSearchMode("catalog")}>Name / Nummer</button>
+                    <button type="button" aria-pressed={searchMode === "semantic"} onClick={() => setSearchMode("semantic")}>Motiv im Artwork</button>
                   </div>
-                  <label className={styles.searchLabel} htmlFor="card-search">
-                    <Search aria-hidden="true" size={18} />
-                    <input id="card-search" value={searchText} onChange={(event) => setSearchText(event.target.value)} placeholder="Name oder Nummer, z. B. Glurak 4/102" autoFocus />
-                  </label>
-                  {searchIsRunning && searchEnabled ? <p>Suche läuft…</p> : null}
-                  {searchError ? <p className={styles.error}>Ein Sprachkatalog konnte nicht geladen werden: {searchError.message}</p> : null}
-                  {!searchEnabled ? <p className={styles.searchHint}>Gib mindestens zwei Buchstaben oder eine Kartennummer ein – oder wähle ein Set.</p> : null}
-                  {searchHasCompleted && !searchResults.length ? <p className={styles.noResults}>Keine Karten mit diesen Filtern gefunden. Prüfe Name, Sprache, Serie oder Set.</p> : null}
-                  <ul className={styles.results}>
-                    {searchResults.map((item) => (
-                      <li key={`${item.ref.language}-${item.ref.id}`}>
-                        <span><strong>{item.name}</strong><small>{item.ref.language.toUpperCase()} · {item.setName ? `${item.setName} · ` : ""}Nr. {formatCollectorNumber(item.collectorNumber, item.collectorTotal)}</small></span>
-                        <button type="button" onClick={() => void previewSearchResult(item)}>Prüfen</button>
-                      </li>
-                    ))}
-                  </ul>
-                  {searchHasMore ? (
-                    <button type="button" className={styles.loadMoreButton} disabled={searchIsLoadingMore} onClick={() => void loadMoreSearchResults()}>
-                      {searchIsLoadingMore ? "Weitere Treffer werden geladen…" : "Mehr laden"}
-                    </button>
-                  ) : null}
+                  {searchMode === "semantic" ? (
+                    <SemanticCardSearch onPreview={(item) => void previewSearchResult(item)} />
+                  ) : (
+                    <>
+                      <fieldset className={styles.languageFilter}>
+                        <legend>Kartensprache</legend>
+                        <div>
+                          {([
+                            ["all", "Alle"],
+                            ["de", "Deutsch"],
+                            ["en", "English"],
+                          ] as const).map(([value, label]) => (
+                            <button
+                              type="button"
+                              key={value}
+                              aria-pressed={searchLanguage === value}
+                              onClick={() => setSearchLanguage(value)}
+                            >
+                              {label}
+                            </button>
+                          ))}
+                        </div>
+                      </fieldset>
+                      <div className={styles.catalogFilters}>
+                        <label htmlFor="card-series-filter">
+                          Serie
+                          <select
+                            id="card-series-filter"
+                            value={searchSeriesId}
+                            onChange={(event) => {
+                              setSearchSeriesId(event.target.value);
+                              setSearchSetId("");
+                            }}
+                          >
+                            <option value="">Alle Serien</option>
+                            {seriesOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
+                          </select>
+                        </label>
+                        <label htmlFor="card-set-filter">
+                          Set
+                          <select id="card-set-filter" value={searchSetId} onChange={(event) => setSearchSetId(event.target.value)}>
+                            <option value="">Alle Sets</option>
+                            {setOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
+                          </select>
+                        </label>
+                      </div>
+                      <label className={styles.searchLabel} htmlFor="card-search">
+                        <Search aria-hidden="true" size={18} />
+                        <input id="card-search" value={searchText} onChange={(event) => setSearchText(event.target.value)} placeholder="Name oder Nummer, z. B. Glurak 4/102" autoFocus />
+                      </label>
+                      {searchIsRunning && searchEnabled ? <p>Suche läuft…</p> : null}
+                      {searchError ? <p className={styles.error}>Ein Sprachkatalog konnte nicht geladen werden: {searchError.message}</p> : null}
+                      {!searchEnabled ? <p className={styles.searchHint}>Gib mindestens zwei Buchstaben oder eine Kartennummer ein – oder wähle ein Set.</p> : null}
+                      {searchHasCompleted && !searchResults.length ? <p className={styles.noResults}>Keine Karten mit diesen Filtern gefunden. Prüfe Name, Sprache, Serie oder Set.</p> : null}
+                      <ul className={styles.results}>
+                        {searchResults.map((item) => (
+                          <li key={`${item.ref.language}-${item.ref.id}`}>
+                            <span><strong>{item.name}</strong><small>{item.ref.language.toUpperCase()} · {item.setName ? `${item.setName} · ` : ""}Nr. {formatCollectorNumber(item.collectorNumber, item.collectorTotal)}</small></span>
+                            <button type="button" onClick={() => void previewSearchResult(item)}>Prüfen</button>
+                          </li>
+                        ))}
+                      </ul>
+                      {searchHasMore ? (
+                        <button type="button" className={styles.loadMoreButton} disabled={searchIsLoadingMore} onClick={() => void loadMoreSearchResults()}>
+                          {searchIsLoadingMore ? "Weitere Treffer werden geladen…" : "Mehr laden"}
+                        </button>
+                      ) : null}
+                    </>
+                  )}
                 </>
               )}
             </aside> : (

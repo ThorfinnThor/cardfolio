@@ -1,5 +1,15 @@
 # Architecture decisions
 
+## 2026-10-01 — Semantic artwork search is static, English-only and explicitly approximate
+
+- The existing name/number search remains unchanged. Artwork search is a separate mode with 23 selectable, frozen tags plus free text.
+- The shipped version-1 index contains 19,635 eligible physical English TCGdex card IDs. Pokémon TCG Pocket and the unresolved `dc1` source gap are excluded; three unavailable 30th-anniversary artworks retain no inferred visual tags.
+- Tags and captions are machine-made visual judgements. The interface and help page label them as automatically detected and warn that they can be wrong or incomplete.
+- Search runs entirely in the browser. The versioned JSON under `public/data/semantic/` is loaded only after the user opens the artwork-search mode; there is no browser model, runtime API, server process or new dependency.
+- The index stores TCGdex identity metadata and external image references, but no image bytes. Search results resolve to the existing TCGdex detail path before a card can be inserted, so edition, finish, printing and condition remain mandatory.
+- The final prototype achieved 227/240 strictly checked top-eight results across 30 evaluation queries. Sparse queries are left sparse rather than padded with invented matches.
+- New physical sets require a new visual tagging pass and a reviewed index version. The production app must not infer missing tags from card names or printed card text.
+
 ## 2026-09-27 — Local-first static application
 
 - Next.js App Router with `output: "export"` and `trailingSlash: true`.
