@@ -20,6 +20,7 @@ import styles from "./foundation-workspace.module.css";
 
 interface SemanticCardSearchProps {
   onPreview: (item: CatalogSearchItem) => void;
+  onFallbackToCatalog: (query: string) => void;
 }
 
 function SemanticResultArtwork({ result }: { result: SemanticSearchResult }) {
@@ -40,13 +41,14 @@ function SemanticResultArtwork({ result }: { result: SemanticSearchResult }) {
   );
 }
 
-export function SemanticCardSearch({ onPreview }: SemanticCardSearchProps) {
+export function SemanticCardSearch({ onPreview, onFallbackToCatalog }: SemanticCardSearchProps) {
   const [query, setQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<SemanticTag[]>([]);
   const deferredQuery = useDeferredValue(query);
   const indexQuery = useQuery({
     queryKey: ["semantic-card-search", 1],
     queryFn: ({ signal }) => loadSemanticSearchIndex(signal),
+    retry: false,
     staleTime: Number.POSITIVE_INFINITY,
     gcTime: Number.POSITIVE_INFINITY,
   });
@@ -97,15 +99,31 @@ export function SemanticCardSearch({ onPreview }: SemanticCardSearchProps) {
       ) : null}
 
       {indexQuery.isPending ? <p className={styles.searchHint} role="status">Motivindex wird geladen…</p> : null}
-      {indexQuery.error ? <p className={styles.error}>Motivindex konnte nicht geladen werden: {indexQuery.error.message}</p> : null}
-      {!hasInput && !indexQuery.isPending ? <p className={styles.searchHint}>Beschreibe das Artwork oder wähle mindestens ein Schlagwort.</p> : null}
+      {indexQuery.error ? (
+        <div className={styles.semanticError} role="alert">
+          <p className={styles.error}>
+            {indexQuery.error.name === "TimeoutError"
+              ? "Der Motivindex braucht zu lange. Deine normale Suche bleibt verfügbar."
+              : `Motivindex konnte nicht geladen werden: ${indexQuery.error.message}`}
+          </p>
+          <button type="button" className={styles.secondaryButton} onClick={() => onFallbackToCatalog(query.trim())}>
+            Mit Name/Nummer suchen
+          </button>
+        </div>
+      ) : null}
+      {!hasInput && !indexQuery.isPending && !indexQuery.error ? <p className={styles.searchHint}>Beschreibe das Artwork oder wähle mindestens ein Schlagwort.</p> : null}
       {hasInput && outcome ? (
         <p className={styles.semanticResultCount} aria-live="polite">
           {outcome.total ? `${outcome.total.toLocaleString("de-DE")} passende Karten${outcome.total > outcome.results.length ? ` · beste ${outcome.results.length} angezeigt` : ""}` : "Keine passenden Karten"}
         </p>
       ) : null}
       {hasInput && outcome && !outcome.results.length ? (
-        <p className={styles.noResults}>Keine Karte erfüllt alle gewählten Motive. Entferne ein Schlagwort oder formuliere die Beschreibung allgemeiner.</p>
+        <div className={styles.semanticNoResults} role="status">
+          <p className={styles.noResults}>Keine Karte erfüllt alle gewählten Motive. Entferne ein Schlagwort oder formuliere die Beschreibung allgemeiner.</p>
+          <button type="button" className={styles.secondaryButton} onClick={() => onFallbackToCatalog(query.trim())}>
+            Mit Name/Nummer suchen
+          </button>
+        </div>
       ) : null}
       <ul className={`${styles.results} ${styles.semanticResults}`}>
         {outcome?.results.map((result) => {

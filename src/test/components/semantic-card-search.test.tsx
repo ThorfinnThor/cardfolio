@@ -22,12 +22,13 @@ describe("SemanticCardSearch", () => {
       cards: [["base1-1", forestMask, "A Pokémon stands in a forest.", "Alakazam", "1", "base1", "Base Set", "base"]],
     }), { status: 200 })));
     const onPreview = vi.fn();
+    const onFallbackToCatalog = vi.fn();
     const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const user = userEvent.setup();
 
     render(
       <QueryClientProvider client={client}>
-        <SemanticCardSearch onPreview={onPreview} />
+        <SemanticCardSearch onPreview={onPreview} onFallbackToCatalog={onFallbackToCatalog} />
       </QueryClientProvider>,
     );
 
@@ -42,5 +43,22 @@ describe("SemanticCardSearch", () => {
       ref: { provider: "tcgdex", id: "base1-1", language: "en" },
       name: "Alakazam",
     }));
+  });
+
+  it("offers a direct catalog fallback for timeout and no-result states", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new DOMException("too slow", "TimeoutError")));
+    const onFallbackToCatalog = vi.fn();
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    const user = userEvent.setup();
+
+    render(
+      <QueryClientProvider client={client}>
+        <SemanticCardSearch onPreview={vi.fn()} onFallbackToCatalog={onFallbackToCatalog} />
+      </QueryClientProvider>,
+    );
+
+    await waitFor(() => expect(screen.getByText(/zu lange/)).toBeInTheDocument());
+    await user.click(screen.getByRole("button", { name: "Mit Name/Nummer suchen" }));
+    expect(onFallbackToCatalog).toHaveBeenCalledWith("");
   });
 });

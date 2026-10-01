@@ -199,6 +199,31 @@ async function mockCatalog(page: Page) {
   });
 }
 
+async function mockSemanticIndex(page: Page, status = 200) {
+  await page.route("**/data/semantic/card-artwork-search-v1.json", async (route) => {
+    if (status !== 200) {
+      await route.fulfill({ body: "index unavailable", headers: { "content-type": "text/plain" }, status });
+      return;
+    }
+    const forestMask = 2 ** 3;
+    await route.fulfill({
+      body: JSON.stringify({
+        version: 1,
+        source: "test",
+        generatedAt: "2026-10-01",
+        tags: [
+          "beach", "water-surface", "underwater", "forest", "grassland-field", "mountain-rocks", "cave", "desert",
+          "snow-ice", "city", "indoors", "ruins-building", "sky-clouds", "night", "sunset-sunrise", "fire-lava",
+          "flowers", "food-visible", "human-present", "multiple-pokemon", "sleeping", "flying", "swimming",
+        ],
+        cards: [["base1-4", forestMask, "A Pokémon stands in a forest.", "Charizard", "4", "base1", "Base Set", "base"]],
+      }),
+      headers,
+      status: 200,
+    });
+  });
+}
+
 async function addCard(page: Page, slot: number, query: string, cardName: string) {
   await page.getByRole("button", { name: `Freier Platz ${slot}, Karte einsetzen` }).click();
   await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill(query);
@@ -477,6 +502,43 @@ test("keeps the 3 x 3 grid usable on mobile and supports drawer focus and Escape
   await expect(page.getByRole("dialog", { name: "Karte suchen" })).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog", { name: "Karte suchen" })).toBeHidden();
+  await expect(page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" })).toBeFocused();
+});
+
+test("offers Smart Search recovery, language choice and no mobile overflow", async ({ page }) => {
+  await mockCatalog(page);
+  await mockSemanticIndex(page);
+  await page.setViewportSize({ height: 812, width: 375 });
+  await page.goto("/");
+  await page.getByLabel("Bindername").fill("Smart Search");
+  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
+  const dialog = page.getByRole("dialog", { name: "Karte suchen" });
+  await dialog.getByRole("button", { name: "Motiv im Artwork" }).click();
+  const semanticInput = dialog.getByPlaceholder("Motiv beschreiben, z. B. Pokémon am Strand");
+  await expect(semanticInput).toBeFocused();
+  await semanticInput.fill("forest");
+  await expect(dialog.getByText("Charizard", { exact: true })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(375);
+  await dialog.getByRole("button", { name: "Prüfen" }).click();
+  const preview = page.getByRole("dialog", { name: "Karte prüfen" });
+  await expect(preview.getByText("Kartensprache für den Binder")).toBeVisible();
+  await preview.getByRole("button", { name: "Deutsch" }).click();
+  await expect(preview.getByRole("button", { name: "Deutsch" })).toHaveAttribute("aria-pressed", "true");
+});
+
+test("offers a direct normal-search fallback when the Smart Search index fails", async ({ page }) => {
+  await mockCatalog(page);
+  await mockSemanticIndex(page, 503);
+  await page.goto("/");
+  await page.getByLabel("Bindername").fill("Smart Search Fehler");
+  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
+  const dialog = page.getByRole("dialog", { name: "Karte suchen" });
+  await dialog.getByRole("button", { name: "Motiv im Artwork" }).click();
+  await expect(dialog.getByRole("alert")).toContainText("Motivindex konnte nicht geladen werden");
+  await dialog.getByRole("button", { name: "Mit Name/Nummer suchen" }).click();
+  await expect(dialog.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102")).toBeVisible();
 });
 
 test("searches German and English catalogs and labels the result language", async ({ page }) => {

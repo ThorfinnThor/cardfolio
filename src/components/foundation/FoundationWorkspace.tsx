@@ -105,6 +105,7 @@ type SearchPreview = {
   variant: VariantSelection;
   preferences: PurchasePreferences;
   error?: string;
+  notice?: string;
 };
 
 type TextSaveState = "idle" | "changed" | "saving" | "saved" | "error";
@@ -249,6 +250,7 @@ export function FoundationWorkspace() {
   const repository = useMemo(() => new IndexedDBBinderRepository(), []);
   const catalog = useMemo(() => new TCGdexCatalogAdapter(), []);
   const syncChannelRef = useRef<BroadcastChannel | undefined>(undefined);
+  const searchReturnFocusRef = useRef<HTMLElement | null>(null);
   const bindersRef = useRef<Binder[]>([]);
   const binderWriteQueuesRef = useRef(new Map<string, Promise<void>>());
   const queryClient = useQueryClient();
@@ -321,7 +323,7 @@ export function FoundationWorkspace() {
       if (searchPreview) {
         setSearchPreview(undefined);
       } else {
-        setSearchOpen(false);
+        closeSearch();
       }
     };
     window.addEventListener("keydown", closeOnEscape);
@@ -870,6 +872,31 @@ export function FoundationWorkspace() {
           }
         : current);
     } catch (error) {
+      if (item.ref.language !== "en") {
+        try {
+          const fallbackItem = { ...item, ref: { ...item.ref, language: "en" as const } };
+          const fallbackSnapshot = await queryClient.fetchQuery({
+            queryKey: detailQueryKey(fallbackItem.ref.language, fallbackItem.ref.id),
+            queryFn: ({ signal }) => catalog.getCard(fallbackItem.ref, signal),
+            staleTime: 24 * 60 * 60 * 1_000,
+          });
+          if (fallbackSnapshot.physicalStatus !== "digital") {
+            setSearchPreview((current) => current?.item.ref.id === item.ref.id && current.item.ref.language === item.ref.language
+              ? {
+                  ...current,
+                  item: fallbackItem,
+                  status: "ready",
+                  snapshot: fallbackSnapshot,
+                  notice: "Die gewünschte deutsche Version ist nicht verfügbar. Die englische Version wird zur Prüfung angezeigt.",
+                  variant: createInitialVariantSelection(variantAvailabilityForCard(fallbackSnapshot)),
+                }
+              : current);
+            return;
+          }
+        } catch {
+          // The original localized error remains the useful message when no English fallback exists.
+        }
+      }
       setSearchPreview((current) => current?.item.ref.id === item.ref.id && current.item.ref.language === item.ref.language
         ? {
             ...current,
@@ -878,6 +905,20 @@ export function FoundationWorkspace() {
           }
         : current);
     }
+  }
+
+  function fallbackToCatalogSearch(query: string) {
+    setSearchMode("catalog");
+    setSearchLanguage("all");
+    setSearchText(query);
+  }
+
+  function changePreviewLanguage(language: "de" | "en") {
+    if (!searchPreview || searchPreview.item.ref.language === language) return;
+    void previewSearchResult({
+      ...searchPreview.item,
+      ref: { ...searchPreview.item.ref, language },
+    });
   }
 
   async function insertPreviewedCard() {
@@ -932,6 +973,8 @@ export function FoundationWorkspace() {
   }
 
   function openSearchForSlot(location?: SlotLocation) {
+    const focused = document.activeElement;
+    if (focused instanceof HTMLElement) searchReturnFocusRef.current = focused;
     setMovingLocation(undefined);
     setSelectedLocation(location);
     setSearchPreview(undefined);
@@ -943,6 +986,7 @@ export function FoundationWorkspace() {
     setSearchOpen(false);
     setSearchPreview(undefined);
     setPreviewSubmitting(false);
+    window.requestAnimationFrame(() => searchReturnFocusRef.current?.focus());
   }
 
   function selectMoveSource(location: SlotLocation) {
@@ -1708,10 +1752,26 @@ export function FoundationWorkspace() {
                         className={styles.previewImage}
                         fallback={<div className={styles.previewImageFallback}>Bild nicht verfügbar</div>}
                       />
+                      {searchPreview.notice ? <p className={styles.variantHint} role="status">{searchPreview.notice}</p> : null}
                       <div className={styles.previewIdentity}>
                         <strong>{searchPreview.snapshot.name}</strong>
                         <span>{searchPreview.snapshot.setName}</span>
                       </div>
+                      <fieldset className={styles.languageFilter}>
+                        <legend>Kartensprache für den Binder</legend>
+                        <div>
+                          {(["de", "en"] as const).map((language) => (
+                            <button
+                              key={language}
+                              type="button"
+                              aria-pressed={searchPreview.item.ref.language === language}
+                              onClick={() => changePreviewLanguage(language)}
+                            >
+                              {language === "de" ? "Deutsch" : "English"}
+                            </button>
+                          ))}
+                        </div>
+                      </fieldset>
                       <dl className={styles.previewMeta}>
                         <div><dt>Sprache</dt><dd>{searchPreview.snapshot.ref.language.toUpperCase()}</dd></div>
                         <div><dt>Kartennummer</dt><dd>{formatCollectorNumber(searchPreview.snapshot.collectorNumber, searchPreview.snapshot.collectorTotal)}</dd></div>
@@ -1736,7 +1796,10 @@ export function FoundationWorkspace() {
                     {FEATURES.smartSearch ? <button type="button" aria-pressed={searchMode === "semantic"} onClick={() => setSearchMode("semantic")}>Motiv im Artwork</button> : null}
                   </div>
                   {searchMode === "semantic" ? (
-                    <SemanticCardSearch onPreview={(item) => void previewSearchResult(item)} />
+                    <SemanticCardSearch
+                      onPreview={(item) => void previewSearchResult(item)}
+                      onFallbackToCatalog={fallbackToCatalogSearch}
+                    />
                   ) : (
                     <>
                       <fieldset className={styles.languageFilter}>

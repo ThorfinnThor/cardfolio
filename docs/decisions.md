@@ -20,6 +20,12 @@
 - The fixed automated benchmark contains 50 predeclared queries and compares artwork ranking with an identity-only lexical baseline. Current results are 394/400 versus 40/400 relevant top-eight positions.
 - `bhavnicksm/pokemon-card-explorer` was audited at commit `92cd922c889ed0c3cf32df0d64dfdb5436d677e6` and rejected as an implementation source: Cardfolio does not reuse its provider-dependent code, embeddings, scraped data or assets.
 
+## 2026-10-01 — Smart Search failure recovery and language are explicit UI choices
+
+- Smart Search never becomes a dead end: timeout, malformed-index, loading and no-result states offer a direct return to normal name/number search.
+- The artwork index remains English-only for quality and payload reasons, while insertion language is an explicit DE/EN choice in the existing card-review flow. A missing localized detail may show a visibly labelled English fallback; it never changes the stored language silently.
+- The drawer returns keyboard focus to the control that opened it after Escape/close. The browser test suite covers this behavior together with the Smart Search flow, while host-level Playwright limitations remain documented separately.
+
 ## 2026-09-27 — Local-first static application
 
 - Next.js App Router with `output: "export"` and `trailingSlash: true`.

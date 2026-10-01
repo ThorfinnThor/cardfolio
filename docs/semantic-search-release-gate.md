@@ -62,4 +62,6 @@ Exact browser load/search timings and Core Web Vitals must be recorded during St
 
 Technical gate: **pass for Step-2 product integration**.
 
-Public-release gate: **not yet passed**. Luna must still verify feature-off behavior in the rendered product, timeout/malformed/no-result recovery, the normal-search CTA, language selection, keyboard/focus/screenreader behavior and the four required viewports. Merge and deployment remain user-authorized actions.
+Product gate: **implemented and locally inspected**. Smart Search is feature-gated, explains automatic detection, exposes loading/error/no-result recovery, returns to normal search, offers a DE/EN insertion choice and falls back to English details when a requested localized detail is unavailable. Drawer focus returns to its opener after Escape.
+
+Viewport/browser evidence: the in-app browser was inspected against the static build. The local Playwright Chromium process cannot start on this macOS host because of the host-level `MachPortRendezvous … Permission denied` failure; the 17-test suite is syntactically listed and remains configured for GitHub/Linux CI at 375/768/1024/1440 coverage. Merge and deployment remain user-authorized actions.

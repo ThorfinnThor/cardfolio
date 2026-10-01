@@ -514,3 +514,22 @@ Technical gate:
 - 19,635 reviewed cards are indexed; the eligible backlog is zero. The 34 `dc1` cards remain explicitly blocked because the advertised image variants return HTTP 404.
 - The raw runtime index is 2,266,481 bytes and 419,340 bytes at gzip level 9.
 - Product-level error recovery, DE/EN insertion choice, accessibility and required viewport verification remain Step 2 work for Luna.
+
+## 2026-10-01 — Smart Search product completion (Step 2)
+
+Completed:
+
+- Smart Search now has explicit loading, malformed-index/error, timeout and no-result guidance. Every failure state offers `Mit Name/Nummer suchen` and preserves the free-text query where available.
+- The search drawer supports keyboard-visible focus states and returns focus to the opening slot button after Escape/close. The single-mode feature-off layout no longer leaves a half-width toggle.
+- Card review now offers an explicit `Deutsch` / `English` choice for the binder. If a requested localized detail is unavailable, Cardfolio tries the English TCGdex detail and labels the fallback.
+- Added browser scenarios for Smart Search success, DE/EN choice, mobile overflow and normal-search recovery. The suite contains 17 scenarios in total.
+
+Verification:
+
+- Typecheck, ESLint, 20 Vitest files / 113 tests, static build, release checks and `git diff --check` passed locally.
+- The static build was inspected in the in-app browser; the search disclosure, result metadata, language choice and mandatory variant controls were visible and usable.
+- Local Playwright Chromium remains blocked by the host's macOS Mach-port permission error. The test list is valid and must be confirmed by the GitHub/Linux CI run before merge.
+
+Handoff:
+
+- No merge or deployment was performed. The next work block is Step 3, Sol: implement the shared selection-to-binder-page domain engine.
