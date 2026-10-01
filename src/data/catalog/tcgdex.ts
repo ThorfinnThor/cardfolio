@@ -11,6 +11,7 @@ import { sameCollectorPart } from "@/domain/catalog-search";
 import { isProviderFallbackVariantSignal } from "@/domain/variant-selection";
 
 import { tcgdexCardSchema, tcgdexSearchResponseSchema, tcgdexSetSchema } from "./schemas";
+import { verifiedImageFallback } from "./image-fallbacks";
 import { inferredCardImageBaseUrl } from "./images";
 import { collectorTotalForSearchItem, setMetadataForSearchItem } from "./set-counts";
 
@@ -155,7 +156,7 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
           name: item.name,
           collectorNumber: item.localId,
           collectorTotal: printedTotal,
-          imageBaseUrl: item.image ?? undefined,
+          imageBaseUrl: item.image ?? verifiedImageFallback(query.language, item.id),
           setId: card.set.id,
           setName: card.set.name,
         };
@@ -169,7 +170,7 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
           name: item.name,
           collectorNumber: item.localId,
           collectorTotal: collectorTotalForSearchItem(query.language, item.id, item.localId),
-          imageBaseUrl: item.image ?? undefined,
+          imageBaseUrl: item.image ?? verifiedImageFallback(query.language, item.id),
           setId: set?.id,
           setName: set?.name,
         };
@@ -219,7 +220,7 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
       inferredCardImageBaseUrl(ref.language, set.serie.id, card.set.id, card.localId),
       ...(ref.language === "de" ? [inferredCardImageBaseUrl("en", set.serie.id, card.set.id, card.localId)] : []),
     ] : [];
-    const imageCandidates = [card.image, englishCard?.image, ...inferredImages]
+    const imageCandidates = [card.image, verifiedImageFallback(ref.language, ref.id), englishCard?.image, ...inferredImages]
       .filter((value): value is string => Boolean(value))
       .filter((value, index, values) => values.indexOf(value) === index);
     const snapshot: CardSnapshot = {

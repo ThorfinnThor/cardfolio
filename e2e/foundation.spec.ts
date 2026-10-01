@@ -622,7 +622,7 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await page.getByRole("button", { name: "Auswahl prüfen" }).click();
   await page.getByRole("button", { name: "Als Binder anlegen" }).click();
   await expect(page.getByRole("heading", { name: /Geschenk · Pikachu/ })).toBeVisible();
-  await expect(page.getByText(/Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten/i)).toBeVisible();
+  await expect(page.getByText(/Für Karten wird derzeit kein Preis berechnet und keine Budgetzusage abgegeben/i)).toBeVisible();
   await expect(page.getByText("Kein bestätigter Preis", { exact: true })).toBeVisible();
   await expect(page.getByText(/noch kein Anbieter.*vertraglich und technisch freigegeben/i)).toBeVisible();
   await expect(page.getByRole("button", { name: /Derzeit nicht verfügbar/i })).toBeDisabled();

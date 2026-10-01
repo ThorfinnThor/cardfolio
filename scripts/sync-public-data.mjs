@@ -8,6 +8,7 @@ const SEMANTIC_INDEX_PATH = join(process.cwd(), "public", "data", "semantic", "c
 const SEMANTIC_COVERAGE_PATH = join(process.cwd(), "data", "semantic", "catalog-coverage.json");
 const MINIMUM_ITEMS = 50;
 const MAXIMUM_SHRINK_RATIO = 0.15;
+const IMAGE_FALLBACK_LANGUAGES = ["en", "de", "es", "it", "pt", "fr"];
 const TCGPLAYER_MASS_ENTRY_SOURCE = "https://www.tcgplayer.com/massentry?productline=Pokemon";
 const TCGPLAYER_SET_CODES_URL = "https://mpapi.tcgplayer.com/v2/massentry/sets/3";
 const TCGPLAYER_SEARCH_URL = "https://mp-search-api.tcgplayer.com/v1/search/request";
@@ -472,6 +473,63 @@ async function writeSemanticCoverage(semanticCards) {
   return coverage;
 }
 
+async function imageExists(baseUrl) {
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    try {
+      const response = await fetch(`${baseUrl}/high.webp`, {
+        method: "HEAD",
+        headers: { "User-Agent": "Cardfolio public-data sync" },
+        signal: AbortSignal.timeout(20_000),
+      });
+      if (response.ok) return true;
+      if (response.status < 500 && response.status !== 429) return false;
+    } catch {
+      // Retry transient network failures below.
+    }
+    await new Promise((resolve) => setTimeout(resolve, 500 * 2 ** attempt));
+  }
+  throw new Error(`Could not verify card image ${baseUrl}.`);
+}
+
+// TCGdex leaves `image` empty for many English cards although the same print is
+// on assets.tcgdex.net (unlinked in English, or scanned in another language).
+// Record one verified external image reference per such card; no bytes are stored.
+async function syncImageFallbacks(englishSets) {
+  const setsWithCards = await mapWithConcurrency(englishSets, 6, async (set) => {
+    const tcgdexSet = await fetchJson("en", `sets/${encodeURIComponent(set.id)}`);
+    if (!Array.isArray(tcgdexSet?.cards)) throw new Error(`TCGdex set ${set.id} has no card list.`);
+    return { set, cards: tcgdexSet.cards };
+  });
+  const cardsWithoutImage = setsWithCards.flatMap(({ set, cards }) => set.series
+    ? cards.filter((card) => !card.image).map((card) => ({ set, card }))
+    : []);
+  const resolved = await mapWithConcurrency(cardsWithoutImage, 6, async ({ set, card }) => {
+    for (const language of IMAGE_FALLBACK_LANGUAGES) {
+      const baseUrl = [language, set.series.id, set.id, card.localId.trim()]
+        .map((segment) => encodeURIComponent(segment))
+        .join("/");
+      if (await imageExists(`https://assets.tcgdex.net/${baseUrl}`)) {
+        return [card.id, `https://assets.tcgdex.net/${baseUrl}`];
+      }
+    }
+    return undefined;
+  });
+  const items = Object.fromEntries(resolved.filter(Boolean).sort(([a], [b]) => a.localeCompare(b)));
+  await writeFile(
+    join(OUTPUT_DIRECTORY, "en-image-fallbacks.json"),
+    `${JSON.stringify({
+      format: "cardfolio-image-fallbacks",
+      version: 1,
+      source: "tcgdex",
+      language: "en",
+      fallbackLanguages: IMAGE_FALLBACK_LANGUAGES,
+      items,
+    }, null, 2)}\n`,
+    "utf8",
+  );
+  return { cardsWithoutImage: cardsWithoutImage.length, fallbacks: Object.keys(items).length };
+}
+
 async function fetchSeriesMetadata(language) {
   const summaries = await fetchJson(language, "series");
   if (!Array.isArray(summaries)) throw new Error(`TCGdex ${language} series response is not an array.`);
@@ -536,9 +594,10 @@ const englishCatalog = JSON.parse(await readFile(join(OUTPUT_DIRECTORY, "en-sets
 const tcgplayerResult = await syncTcgplayerMetadata(englishCatalog.items);
 const { semanticCards, ...tcgplayer } = tcgplayerResult;
 const semanticCoverage = await writeSemanticCoverage(semanticCards);
+const imageFallbacks = await syncImageFallbacks(englishCatalog.items);
 await writeFile(
   join(OUTPUT_DIRECTORY, "manifest.json"),
-  `${JSON.stringify({ format: "cardfolio-public-catalog", version: 3, source: "tcgdex", counts, tcgplayer }, null, 2)}\n`,
+  `${JSON.stringify({ format: "cardfolio-public-catalog", version: 3, source: "tcgdex", counts, tcgplayer, imageFallbacks }, null, 2)}\n`,
   "utf8",
 );
-console.log(`Validated public catalog and marketplace metadata: ${JSON.stringify({ counts, tcgplayer, semanticCoverage })}`);
+console.log(`Validated public catalog and marketplace metadata: ${JSON.stringify({ counts, tcgplayer, semanticCoverage, imageFallbacks })}`);

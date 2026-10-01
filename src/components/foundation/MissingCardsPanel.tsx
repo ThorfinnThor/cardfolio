@@ -215,7 +215,8 @@ export function MissingCardsPanel({
 
           {tcgplayerExport.matches.some((match) => match.line) ? (
             <div className={styles.reviewList}>
-              <strong>TCGplayer-Filter vor „Add to Cart“</strong>
+              <strong>Bei TCGplayer nach dem Einfügen auswählen</strong>
+              <p className={styles.reviewExplanation}>Mass Entry übernimmt Karte, Set und Nummer. Printing und Zustand wählst du anschließend bei TCGplayer mit diesen Filtern aus, bevor du auf „Add to Cart“ klickst.</p>
               <ul>
                 {tcgplayerExport.matches.filter((match) => match.line).map((match) => (
                   <li key={match.identityKey}>

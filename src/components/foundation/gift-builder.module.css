@@ -67,12 +67,17 @@
 .allResults { display: grid; gap: 8px; border-top: 1px solid var(--cf-line); padding-top: 13px; }
 .allResults p { margin: 0; color: var(--cf-muted); font-size: 11px; }
 .allResults ul { display: grid; max-height: 240px; overflow: auto; margin: 0; border: 1px solid var(--cf-line); border-radius: 8px; padding: 0; list-style: none; }
-.allResults li { display: flex; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--cf-line); padding: 8px 10px; }
+.allResults li { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; align-items: center; gap: 10px; border-bottom: 1px solid var(--cf-line); padding: 8px 10px; }
 .allResults li:last-child { border-bottom: 0; }
-.allResults li span { display: grid; gap: 2px; min-width: 0; }
+.resultIdentity { display: grid; gap: 2px; min-width: 0; }
 .allResults li strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
 .allResults li small { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 9px; }
 .allResults li button { min-height: 44px; border: 1px solid var(--cf-line2); border-radius: 6px; background: var(--cf-surface2); color: var(--cf-accent-text); padding: 6px 8px; font-size: 10px; cursor: pointer; }
+.allResults li button:disabled { cursor: not-allowed; opacity: .5; }
+.resultImage, .resultImageFallback { display: grid; width: 48px; height: 64px; place-items: center; overflow: hidden; border-radius: 4px; background: var(--cf-page); color: var(--cf-muted); font-size: 8px; text-align: center; }
+.resultImage img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.resultImage > span { display: none; }
+.resultHint { border-left: 3px solid var(--cf-accent); padding-left: 8px; color: var(--cf-accent-text) !important; }
 .reviewHero { display: flex; align-items: center; gap: 12px; border: 1px solid var(--cf-line); border-radius: 9px; background: var(--cf-accent-soft); padding: 15px; }
 .reviewIcon { display: grid; width: 40px; height: 40px; place-items: center; border-radius: 50%; background: var(--cf-accent); color: var(--cf-on-accent); }
 .reviewHero h2 { margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: 21px; font-weight: 600; }
@@ -147,6 +152,9 @@
   .offerRow button { width: 100%; white-space: normal; }
   .summaryActions { flex-direction: column; }
   .summaryActions > button { width: 100%; }
+  .allResults li { grid-template-columns: 44px minmax(0, 1fr); }
+  .allResults li button { grid-column: 2; width: 100%; }
+  .resultImage, .resultImageFallback { width: 40px; height: 54px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

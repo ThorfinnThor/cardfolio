@@ -4,6 +4,7 @@ import {
   catalogSeries,
   catalogSets,
   collectorTotalForSearchItem,
+  completeCardSnapshotMetadata,
   setIdFromCardId,
   setMetadataForSearchItem,
 } from "@/data/catalog/set-counts";
@@ -23,5 +24,21 @@ describe("catalog set counts", () => {
     expect(catalogSets("de", "base")).toContainEqual(expect.objectContaining({ id: "base1", name: "Grundset" }));
     expect(catalogSets("de", "base").some((set) => set.id === "A1")).toBe(false);
     expect(setMetadataForSearchItem("en", "base1-4", "4")).toMatchObject({ id: "base1", name: "Base Set" });
+  });
+
+  it("upgrades stored English cards without artwork to the verified fallback image", () => {
+    const completed = completeCardSnapshotMetadata({
+      key: "tcgdex:sm3.5-1:en",
+      ref: { provider: "tcgdex", id: "sm3.5-1", language: "en" },
+      name: "Bulbasaur",
+      setId: "sm3.5",
+      setName: "Shining Legends",
+      collectorNumber: "1",
+      imageBaseUrl: "https://assets.tcgdex.net/en/sm/sm3.5/1",
+      physicalStatus: "physical",
+      fetchedAt: "2026-09-30T00:00:00.000Z",
+    });
+    expect(completed.imageBaseUrl).toBe("https://assets.tcgdex.net/de/sm/sm3.5/1");
+    expect(completed.imageFallbackBaseUrl).toBe("https://assets.tcgdex.net/en/sm/sm3.5/1");
   });
 });

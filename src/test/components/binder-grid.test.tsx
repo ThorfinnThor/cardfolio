@@ -113,4 +113,24 @@ describe("BinderGrid", () => {
     fireEvent.click(screen.getByRole("button", { name: "Kartendaten aktualisieren" }));
     expect(onRefreshCard).toHaveBeenCalledWith(cardWithImage);
   });
+
+  it("labels an English card shown with artwork from another language", () => {
+    const cardWithGermanImage = {
+      ...card,
+      imageBaseUrl: "https://assets.tcgdex.net/de/sm/sm3.5/1",
+    };
+    render(
+      <BinderGrid
+        page={page}
+        columns={2}
+        cards={new Map([[card.key, cardWithGermanImage]])}
+        onOpenSearch={vi.fn()}
+        onSelectCard={vi.fn()}
+        onMove={vi.fn()}
+        onRefreshCard={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText("Bild auf Deutsch")).toBeInTheDocument();
+  });
 });
