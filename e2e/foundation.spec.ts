@@ -592,14 +592,21 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await page.route("https://api.tcgdex.net/v2/en/cards?*", async (route) => {
     const url = new URL(route.request().url());
     if (url.searchParams.get("name")?.toLowerCase() !== "pikachu") return route.fallback();
-    const cards = Array.from({ length: 9 }, (_, index) => ({ id: `base1-${index + 1}`, localId: String(index + 1), name: `Pikachu ${index + 1}` }));
+    const cards = Array.from({ length: 9 }, (_, index) => ({ id: `swsh1-${index + 1}`, localId: String(index + 1), name: `Pikachu ${index + 1}` }));
     await route.fulfill({ body: JSON.stringify(cards), headers, status: 200 });
   });
-  await page.route("https://api.tcgdex.net/v2/en/cards/base1-*", async (route) => {
-    const id = new URL(route.request().url()).pathname.split("/").pop() ?? "base1-1";
+  await page.route("https://api.tcgdex.net/v2/en/cards/swsh1-*", async (route) => {
+    const id = new URL(route.request().url()).pathname.split("/").pop() ?? "swsh1-1";
     const localId = id.split("-").pop() ?? "1";
     await route.fulfill({
-      body: JSON.stringify({ id, localId, name: `Pikachu ${localId}`, category: "Pokemon", set: { cardCount: { official: 102 }, id: "base1", name: "Base Set" } }),
+      body: JSON.stringify({ id, localId, name: `Pikachu ${localId}`, category: "Pokemon", set: { cardCount: { official: 202 }, id: "swsh1", name: "Sword & Shield" } }),
+      headers,
+      status: 200,
+    });
+  });
+  await page.route("https://api.tcgdex.net/v2/en/sets/swsh1", async (route) => {
+    await route.fulfill({
+      body: JSON.stringify({ id: "swsh1", name: "Sword & Shield", serie: { id: "swsh", name: "Sword & Shield" } }),
       headers,
       status: 200,
     });
@@ -617,7 +624,7 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await expect(page.getByRole("heading", { name: /Geschenk · Pikachu/ })).toBeVisible();
   await expect(page.getByText(/Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten/i)).toBeVisible();
   await expect(page.getByText("Kein bestätigter Preis", { exact: true })).toBeVisible();
-  await expect(page.getByText(/Anbieter, Produktkompatibilität/)).toBeVisible();
+  await expect(page.getByText(/noch kein Anbieter.*vertraglich und technisch freigegeben/i)).toBeVisible();
   await expect(page.getByRole("button", { name: /Derzeit nicht verfügbar/i })).toBeDisabled();
   await page.getByRole("button", { name: /Binder bearbeiten/i }).click();
   await expect(page.getByRole("article", { name: "Pikachu 1, Slot 1" })).toBeVisible();
