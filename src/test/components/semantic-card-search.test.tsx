@@ -61,4 +61,38 @@ describe("SemanticCardSearch", () => {
     await user.click(screen.getByRole("button", { name: "Mit Name/Nummer suchen" }));
     expect(onFallbackToCatalog).toHaveBeenCalledWith("");
   });
+
+  it("keeps multi-selection local until the user reviews the page", async () => {
+    const forestMask = 2 ** SEMANTIC_TAGS.indexOf("forest");
+    const secondMask = 2 ** SEMANTIC_TAGS.indexOf("city");
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify({
+      version: 1,
+      source: "test",
+      generatedAt: "2026-10-01",
+      tags: SEMANTIC_TAGS,
+      cards: [
+        ["base1-1", forestMask, "A Pokémon stands in a forest.", "Bulbasaur", "1", "base1", "Base Set", "base"],
+        ["base1-2", secondMask, "A Pokémon stands in a city.", "Ivysaur", "2", "base1", "Base Set", "base"],
+      ],
+    }), { status: 200 })));
+    const onReviewSelection = vi.fn();
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    const user = userEvent.setup();
+
+    render(
+      <QueryClientProvider client={client}>
+        <SemanticCardSearch onPreview={vi.fn()} onFallbackToCatalog={vi.fn()} onReviewSelection={onReviewSelection} />
+      </QueryClientProvider>,
+    );
+
+    await user.type(screen.getByPlaceholderText("Motiv beschreiben, z. B. Pokémon am Strand"), "forest");
+    await waitFor(() => expect(screen.getByText("Bulbasaur")).toBeInTheDocument());
+    await user.click(screen.getByRole("button", { name: "Auswählen" }));
+    expect(onReviewSelection).not.toHaveBeenCalled();
+    expect(screen.getByText("1 von 9 Karten ausgewählt")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Als Binderseite übernehmen" }));
+    expect(onReviewSelection).toHaveBeenCalledWith([expect.objectContaining({
+      ref: { provider: "tcgdex", id: "base1-1", language: "en" },
+    })]);
+  });
 });

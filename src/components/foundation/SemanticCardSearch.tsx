@@ -21,6 +21,8 @@ import styles from "./foundation-workspace.module.css";
 interface SemanticCardSearchProps {
   onPreview: (item: CatalogSearchItem) => void;
   onFallbackToCatalog: (query: string) => void;
+  onReviewSelection?: (items: CatalogSearchItem[]) => void;
+  selectionLimit?: number;
 }
 
 function SemanticResultArtwork({ result }: { result: SemanticSearchResult }) {
@@ -41,9 +43,10 @@ function SemanticResultArtwork({ result }: { result: SemanticSearchResult }) {
   );
 }
 
-export function SemanticCardSearch({ onPreview, onFallbackToCatalog }: SemanticCardSearchProps) {
+export function SemanticCardSearch({ onPreview, onFallbackToCatalog, onReviewSelection, selectionLimit = 9 }: SemanticCardSearchProps) {
   const [query, setQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<SemanticTag[]>([]);
+  const [selectedItems, setSelectedItems] = useState<Map<string, CatalogSearchItem>>(new Map());
   const deferredQuery = useDeferredValue(query);
   const indexQuery = useQuery({
     queryKey: ["semantic-card-search", 1],
@@ -60,6 +63,20 @@ export function SemanticCardSearch({ onPreview, onFallbackToCatalog }: SemanticC
 
   function toggleTag(tag: SemanticTag) {
     setSelectedTags((current) => current.includes(tag) ? current.filter((candidate) => candidate !== tag) : [...current, tag]);
+  }
+
+  function toggleItem(item: CatalogSearchItem) {
+    const key = `${item.ref.language}:${item.ref.id}`;
+    setSelectedItems((current) => {
+      const next = new Map(current);
+      if (next.has(key)) {
+        next.delete(key);
+        return next;
+      }
+      if (next.size >= selectionLimit) return current;
+      next.set(key, item);
+      return next;
+    });
   }
 
   return (
@@ -125,9 +142,26 @@ export function SemanticCardSearch({ onPreview, onFallbackToCatalog }: SemanticC
           </button>
         </div>
       ) : null}
+      {selectedItems.size ? (
+        <div className={styles.semanticSelectionSummary} aria-live="polite">
+          <div>
+            <strong>{selectedItems.size} von {selectionLimit} Karten ausgewählt</strong>
+            <span>Die Auswahl wird erst nach der Variantenprüfung gespeichert.</span>
+          </div>
+          <div className={styles.semanticSelectionActions}>
+            <button type="button" className={styles.clearSemanticTags} onClick={() => setSelectedItems(new Map())}>Auswahl leeren</button>
+            <button type="button" className={styles.primaryButton} onClick={() => onReviewSelection?.([...selectedItems.values()])} disabled={!onReviewSelection}>
+              Als Binderseite übernehmen
+            </button>
+          </div>
+        </div>
+      ) : null}
       <ul className={`${styles.results} ${styles.semanticResults}`}>
         {outcome?.results.map((result) => {
           const item = semanticResultToCatalogItem(result);
+          const itemKey = `${item.ref.language}:${item.ref.id}`;
+          const selected = selectedItems.has(itemKey);
+          const atLimit = selectedItems.size >= selectionLimit && !selected;
           return (
             <li key={item.ref.id}>
               <SemanticResultArtwork result={result} />
@@ -137,7 +171,18 @@ export function SemanticCardSearch({ onPreview, onFallbackToCatalog }: SemanticC
                 <span className={styles.semanticCaption}>{result.row[2]}</span>
                 <span className={styles.semanticResultTags}>Automatisch: {result.tags.map((tag) => SEMANTIC_TAG_LABELS[tag]).join(" · ")}</span>
               </span>
-              <button type="button" onClick={() => onPreview(item)}>Prüfen</button>
+              <div className={styles.semanticResultActions}>
+                <button type="button" onClick={() => onPreview(item)}>Prüfen</button>
+                <button
+                  type="button"
+                  aria-pressed={selected}
+                  disabled={atLimit}
+                  className={selected ? styles.semanticSelectedButton : undefined}
+                  onClick={() => toggleItem(item)}
+                >
+                  {selected ? "Ausgewählt" : "Auswählen"}
+                </button>
+              </div>
             </li>
           );
         })}

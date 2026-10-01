@@ -40,6 +40,7 @@ import { deriveBinderStats } from "@/domain/binder-stats";
 import { formatCollectorNumber, parseCatalogSearch } from "@/domain/catalog-search";
 import { createMissingItemsCsvExport, createMissingItemsTextExport } from "@/domain/missing-items-export";
 import { deriveMissingItems } from "@/domain/missing-items";
+import type { PageSelectionItem, PageSelectionTarget } from "@/domain/page-selection";
 import type { CardmarketHandoffPart } from "@/domain/cardmarket-handoff";
 import type { TcgplayerMassEntryExport } from "@/domain/tcgplayer-export";
 import type { Binder, CardSnapshot, CatalogSearchItem, MissingItem, PlannedCard, PurchasePreferences, VariantSelection } from "@/domain/types";
@@ -52,12 +53,14 @@ import { catalogQueryKey, detailQueryKey, TCGdexCatalogAdapter } from "@/data/ca
 import { catalogSeries, catalogSets, completeCardSnapshotMetadata } from "@/data/catalog/set-counts";
 import { RevisionConflictError } from "@/data/persistence/binder-repository";
 import { IndexedDBBinderRepository } from "@/data/persistence/indexeddb-binder-repository";
+import { persistPageSelection } from "@/data/persistence/page-selection-service";
 
 import { catalogLabel, coverLeather } from "./binder-cover";
 import { BinderOverview } from "./BinderOverview";
 import { BinderGrid } from "./BinderGrid";
 import { CardArtwork } from "./CardArtwork";
 import { MissingCardsPanel } from "./MissingCardsPanel";
+import { PageSelectionReview, type PageSelectionReviewTarget } from "./PageSelectionReview";
 import { SemanticCardSearch } from "./SemanticCardSearch";
 import { ThemeToggle } from "./ThemeToggle";
 import { VariantFields } from "./VariantFields";
@@ -106,6 +109,14 @@ type SearchPreview = {
   preferences: PurchasePreferences;
   error?: string;
   notice?: string;
+};
+type PageSelectionRequest = {
+  sourceItems: CatalogSearchItem[];
+  items: PageSelectionItem[];
+  language: "de" | "en";
+  status: "loading" | "ready" | "error";
+  notice?: string;
+  error?: string;
 };
 
 type TextSaveState = "idle" | "changed" | "saving" | "saved" | "error";
@@ -251,6 +262,7 @@ export function FoundationWorkspace() {
   const catalog = useMemo(() => new TCGdexCatalogAdapter(), []);
   const syncChannelRef = useRef<BroadcastChannel | undefined>(undefined);
   const searchReturnFocusRef = useRef<HTMLElement | null>(null);
+  const pageSelectionTokenRef = useRef(0);
   const bindersRef = useRef<Binder[]>([]);
   const binderWriteQueuesRef = useRef(new Map<string, Promise<void>>());
   const queryClient = useQueryClient();
@@ -266,6 +278,8 @@ export function FoundationWorkspace() {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchPreview, setSearchPreview] = useState<SearchPreview>();
+  const [pageSelectionRequest, setPageSelectionRequest] = useState<PageSelectionRequest>();
+  const [pageSelectionSubmitting, setPageSelectionSubmitting] = useState(false);
   const [previewSubmitting, setPreviewSubmitting] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<SlotLocation>();
   const [contextLocation, setContextLocation] = useState<SlotLocation>();
@@ -904,6 +918,145 @@ export function FoundationWorkspace() {
             error: error instanceof Error ? error.message : "Kartendetails konnten nicht geladen werden.",
           }
         : current);
+    }
+  }
+
+  async function hydratePageSelection(
+    sourceItems: CatalogSearchItem[],
+    language: "de" | "en",
+    token: number,
+  ) {
+    const fallbackNames: string[] = [];
+    const failedNames: string[] = [];
+    const hydrated = await Promise.all(sourceItems.map(async (item): Promise<PageSelectionItem | undefined> => {
+      const requestedRef = { ...item.ref, language };
+      try {
+        const snapshot = await queryClient.fetchQuery({
+          queryKey: detailQueryKey(language, item.ref.id),
+          queryFn: ({ signal }) => catalog.getCard(requestedRef, signal),
+          staleTime: 24 * 60 * 60 * 1_000,
+        });
+        if (snapshot.physicalStatus === "digital") {
+          failedNames.push(`${item.name} (Pocket/digital)`);
+        }
+        return {
+          card: snapshot,
+          variant: createInitialVariantSelection(variantAvailabilityForCard(snapshot)),
+          preferences: { minimumCondition: "any" },
+        };
+      } catch {
+        if (language !== "de") {
+          failedNames.push(item.name);
+          return undefined;
+        }
+        try {
+          const fallbackRef = { ...item.ref, language: "en" as const };
+          const snapshot = await queryClient.fetchQuery({
+            queryKey: detailQueryKey("en", item.ref.id),
+            queryFn: ({ signal }) => catalog.getCard(fallbackRef, signal),
+            staleTime: 24 * 60 * 60 * 1_000,
+          });
+          if (snapshot.physicalStatus === "digital") failedNames.push(`${item.name} (Pocket/digital)`);
+          fallbackNames.push(item.name);
+          return {
+            card: snapshot,
+            variant: createInitialVariantSelection(variantAvailabilityForCard(snapshot)),
+            preferences: { minimumCondition: "any" },
+          };
+        } catch {
+          failedNames.push(item.name);
+          return undefined;
+        }
+      }
+    }));
+    if (token !== pageSelectionTokenRef.current) return;
+    const items = hydrated.filter((item): item is PageSelectionItem => Boolean(item));
+    setPageSelectionRequest((current) => current && current.sourceItems === sourceItems
+      ? {
+          ...current,
+          items,
+          status: failedNames.length && !items.length ? "error" : "ready",
+          notice: fallbackNames.length
+            ? `${fallbackNames.length} gewünschte deutsche ${fallbackNames.length === 1 ? "Version wurde" : "Versionen wurden"} nicht gefunden. Die englische Ausgabe ist sichtbar als Fallback geladen.`
+            : undefined,
+          error: failedNames.length
+            ? `${failedNames.length} Karte(n) konnten nicht als physische Ausgabe geladen werden: ${failedNames.join(", ")}.`
+            : undefined,
+        }
+      : current);
+  }
+
+  function reviewSemanticSelection(items: CatalogSearchItem[]) {
+    if (!activeBinder || !items.length) return;
+    const token = pageSelectionTokenRef.current + 1;
+    pageSelectionTokenRef.current = token;
+    setSearchPreview(undefined);
+    setSearchOpen(false);
+    setPageSelectionRequest({ sourceItems: items, items: [], language: "en", status: "loading" });
+    void hydratePageSelection(items, "en", token);
+  }
+
+  function changePageSelectionLanguage(language: "de" | "en") {
+    const current = pageSelectionRequest;
+    if (!current || current.language === language) return;
+    const token = pageSelectionTokenRef.current + 1;
+    pageSelectionTokenRef.current = token;
+    setPageSelectionRequest({ ...current, language, items: [], status: "loading", notice: undefined, error: undefined });
+    void hydratePageSelection(current.sourceItems, language, token);
+  }
+
+  function updatePageSelectionItems(items: PageSelectionItem[]) {
+    setPageSelectionRequest((current) => current ? { ...current, items } : current);
+  }
+
+  function removePageSelectionItem(cardKey: string) {
+    setPageSelectionRequest((current) => {
+      if (!current) return current;
+      const items = current.items.filter((item) => item.card.key !== cardKey);
+      return items.length ? { ...current, items } : undefined;
+    });
+  }
+
+  async function confirmPageSelection(target: PageSelectionReviewTarget, binderName: string) {
+    if (!activeBinder || !activePage || !pageSelectionRequest || pageSelectionRequest.status !== "ready") return;
+    const request = pageSelectionRequest;
+    const destination: PageSelectionTarget = target === "new-binder"
+      ? { kind: "new-binder", name: binderName }
+      : target === "new-page"
+        ? { kind: "new-page", binder: activeBinder }
+        : { kind: "fill-current-page", binder: activeBinder, pageId: activePage.id };
+    setPageSelectionSubmitting(true);
+    try {
+      setStorageStatus("saving");
+      const result = await persistPageSelection(repository, { items: request.items }, destination);
+      if (result.createdBinder) {
+        publishBinderChange(result.binder);
+        publishBinderOrderChange();
+        const nextBinders = [result.binder, ...bindersRef.current];
+        bindersRef.current = nextBinders;
+        setBinders(nextBinders);
+        setActiveId(result.binder.id);
+        setActivePageIndex(0);
+      } else {
+        replaceBinderInMemory(result.binder);
+        publishBinderChange(result.binder);
+        const targetPageId = result.placements[0]?.pageId;
+        const targetPageIndex = targetPageId ? result.binder.pages.findIndex((page) => page.id === targetPageId) : -1;
+        if (targetPageIndex >= 0) setActivePageIndex(targetPageIndex);
+      }
+      setCards((current) => {
+        const next = new Map(current);
+        request.items.forEach((item) => next.set(item.card.key, item.card));
+        return next;
+      });
+      setCardsBinderId(result.binder.id);
+      setPageSelectionRequest(undefined);
+      setPageSelectionSubmitting(false);
+      setStorageStatus("saved");
+      setMessage(`${request.items.length} ${request.items.length === 1 ? "Karte wurde" : "Karten wurden"} als Binderseite übernommen.`);
+    } catch (error) {
+      setPageSelectionSubmitting(false);
+      handleStorageError(error, "Die Auswahl konnte nicht als Binderseite gespeichert werden.");
     }
   }
 
@@ -1799,6 +1952,8 @@ export function FoundationWorkspace() {
                     <SemanticCardSearch
                       onPreview={(item) => void previewSearchResult(item)}
                       onFallbackToCatalog={fallbackToCatalogSearch}
+                      onReviewSelection={reviewSemanticSelection}
+                      selectionLimit={9}
                     />
                   ) : (
                     <>
@@ -1937,6 +2092,24 @@ export function FoundationWorkspace() {
           </div>
           )}
         </>
+      ) : null}
+
+      {pageSelectionRequest && activeBinder && activePage ? (
+        <PageSelectionReview
+          items={pageSelectionRequest.items}
+          binder={activeBinder}
+          pageId={activePage.id}
+          language={pageSelectionRequest.language}
+          loading={pageSelectionRequest.status === "loading"}
+          submitting={pageSelectionSubmitting}
+          notice={pageSelectionRequest.notice}
+          error={pageSelectionRequest.error}
+          onLanguageChange={changePageSelectionLanguage}
+          onChange={updatePageSelectionItems}
+          onRemove={removePageSelectionItem}
+          onCancel={() => setPageSelectionRequest(undefined)}
+          onConfirm={(target, name) => void confirmPageSelection(target, name)}
+        />
       ) : null}
 
       <footer className={styles.footer}>
