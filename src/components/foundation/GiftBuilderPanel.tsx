@@ -240,6 +240,14 @@ export function GiftBuilderPanel({ loader, pricingEnabled, onCancel, onCreateBin
     && selection.selected.every((candidate) => isVariantSelectionValid(candidate.variant, variantAvailabilityForCard(candidate.card))));
   const estimatedRange = selection ? selectionRange(selection.selected) : undefined;
   const printSummary = selection && giftProject ? createGiftPrintSummary({ project: giftProject, selection, greeting }) : undefined;
+  const candidateByKey = useMemo(() => new Map(candidates.map((candidate) => [candidate.card.key, candidate])), [candidates]);
+
+  function addCandidateByKey(cardKey: string) {
+    if (!selection || selection.selected.length >= preferences.targetCardCount) return;
+    const candidate = candidateByKey.get(cardKey);
+    if (!candidate || selection.selected.some((entry) => entry.card.key === cardKey)) return;
+    setSelection(summarizeSelection([...selection.selected, candidate], preferences, selection.issues));
+  }
 
   function downloadPrintSummary() {
     if (!printSummary) return;
@@ -248,9 +256,9 @@ export function GiftBuilderPanel({ loader, pricingEnabled, onCancel, onCreateBin
       printSummary.recipientName ? `Für: ${printSummary.recipientName}` : undefined,
       printSummary.greeting,
       `${printSummary.subject} · ${printSummary.cardCount} Karten`,
-      `Geschätzter Kartenwert: ${formatMoney(printSummary.cardPurchase.estimatedValueMinor, printSummary.cardPurchase.currency)}`,
-      `Geschätzte Preisspanne: ${formatRange(printSummary.cardPurchase.estimatedRange, printSummary.cardPurchase.currency) ?? "nicht vollständig verfügbar"}`,
-      `Preis unbekannt: ${printSummary.cardPurchase.unknownPriceCount} · angenähert: ${printSummary.cardPurchase.approximatePriceCount}`,
+      pricingEnabled ? `Geschätzter Kartenwert: ${formatMoney(printSummary.cardPurchase.estimatedValueMinor, printSummary.cardPurchase.currency)}` : "Preisprüfung: deaktiviert",
+      pricingEnabled ? `Geschätzte Preisspanne: ${formatRange(printSummary.cardPurchase.estimatedRange, printSummary.cardPurchase.currency) ?? "nicht vollständig verfügbar"}` : undefined,
+      pricingEnabled ? `Preis unbekannt: ${printSummary.cardPurchase.unknownPriceCount} · angenähert: ${printSummary.cardPurchase.approximatePriceCount}` : "Budgetzusage: keine",
       "Versand und Steuern sind nicht enthalten.",
       "Karten und physischer Binder sind getrennte Käufe.",
       "",
@@ -331,14 +339,14 @@ export function GiftBuilderPanel({ loader, pricingEnabled, onCancel, onCreateBin
               <select value={preferences.budgetTolerancePercent ?? 0} onChange={(event) => updatePreferences("budgetTolerancePercent", Number(event.target.value) as GiftPreferences["budgetTolerancePercent"])}><option value="0">Keine</option><option value="5">Bis 5 %</option><option value="10">Bis 10 %</option><option value="15">Bis 15 %</option></select>
             </label>
           </div>
-          <p className={styles.localHint}>Name und Geschenkangaben werden nur in diesem Browser gespeichert. Kartenpreise sind Marktschätzungen; Versand und Steuern sind nicht enthalten.</p>
+          <p className={styles.localHint}>{pricingEnabled ? "Name und Geschenkangaben werden nur in diesem Browser gespeichert. Kartenpreise sind Marktschätzungen; Versand und Steuern sind nicht enthalten." : "Name und Geschenkangaben werden nur in diesem Browser gespeichert. Die Preisprüfung ist noch nicht freigegeben; Budget und Toleranz werden daher nicht zugesagt."}</p>
           <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={onCancel}>Abbrechen</button><button type="submit" className={styles.primaryButton} disabled={loading || !preferences.subjectQuery.trim()}>{loading ? <><LoaderCircle className={styles.spin} size={16} /> Karten werden gesucht…</> : <>Vorschlag erzeugen <ArrowRight size={16} /></>}</button></div>
         </form>
       ) : null}
 
       {step === "candidates" && selection ? (
         <div className={styles.resultsStep}>
-          <div className={styles.summaryBar} data-status={selection.budgetStatus}><div><strong>{selection.selected.length} / {preferences.targetCardCount}</strong><span>ausgewählte Karten</span></div><div><strong>{formatMoney(selection.estimatedTotalMinor, preferences.currency)}</strong><span>{selection.budgetStatus === "unknown" ? "Schätzung unvollständig" : "geschätzter Kartenwert"}</span></div><div><strong>{selection.unpricedCount}</strong><span>ohne Preis</span></div></div>
+          <div className={styles.summaryBar} data-status={selection.budgetStatus}><div><strong>{selection.selected.length} / {preferences.targetCardCount}</strong><span>ausgewählte Karten</span></div><div><strong>{pricingEnabled ? formatMoney(selection.estimatedTotalMinor, preferences.currency) : "Preisprüfung aus"}</strong><span>{pricingEnabled ? selection.budgetStatus === "unknown" ? "Schätzung unvollständig" : "geschätzter Kartenwert" : "noch nicht freigegeben"}</span></div><div><strong>{pricingEnabled ? selection.unpricedCount : "–"}</strong><span>{pricingEnabled ? "ohne Preis" : "keine Budgetzusage"}</span></div></div>
           {!pricingEnabled ? <p className={styles.gateNotice} role="status">Die Preisprüfung ist derzeit noch deaktiviert. Karten können trotzdem ausgewählt und als normaler Binder gespeichert werden; es gibt keine Budgetzusage.</p> : null}
           {selection.budgetStatus === "over" ? <p className={styles.warning} role="status">Die günstigste vollständige Auswahl liegt über deinem Budget. Karten können ersetzt oder entfernt werden.</p> : null}
           {selection.budgetStatus === "unknown" && pricingEnabled ? <p className={styles.warning} role="status">Unbekannte oder nur angenäherte Preise verhindern eine sichere „unter Budget“-Aussage.</p> : null}
@@ -347,7 +355,7 @@ export function GiftBuilderPanel({ loader, pricingEnabled, onCancel, onCreateBin
               const issue = variantSelectionIssue(candidate.variant, variantAvailabilityForCard(candidate.card));
               return <article className={styles.candidateCard} key={candidate.card.key}>
                 <CardArtwork card={candidate.card} className={styles.cardImage} fallback={<div className={styles.imageFallback}>Bild nicht verfügbar</div>} />
-                <div className={styles.cardIdentity}><strong>{candidate.card.name}</strong><span>{candidate.card.setName} · Nr. {candidate.card.collectorNumber}</span><b>{formatMoney(candidate.price.amountMinor, preferences.currency)}</b><small className={styles.priceMeta}>{priceSourceLabel(candidate.price.source)} · Stand {formatDate(candidate.price.sourceUpdatedAt ?? candidate.price.fetchedAt)}{formatRange(candidate.price.range, preferences.currency) ? ` · Spanne ${formatRange(candidate.price.range, preferences.currency)}` : ""}</small></div>
+                <div className={styles.cardIdentity}><strong>{candidate.card.name}</strong><span>{candidate.card.setName} · Nr. {candidate.card.collectorNumber}</span><b>{pricingEnabled ? formatMoney(candidate.price.amountMinor, preferences.currency) : "Preisprüfung deaktiviert"}</b><small className={styles.priceMeta}>{pricingEnabled ? `${priceSourceLabel(candidate.price.source)} · Stand ${formatDate(candidate.price.sourceUpdatedAt ?? candidate.price.fetchedAt)}${formatRange(candidate.price.range, preferences.currency) ? ` · Spanne ${formatRange(candidate.price.range, preferences.currency)}` : ""}` : "Noch keine für diesen Ablauf freigegebene Preisquelle"}</small></div>
                 <div className={styles.reasonTags}>{candidate.reasonTags.map((tag) => <span key={tag}>{tag === "set-diversity" ? "Set-Vielfalt" : tag === "vintage" ? "Vintage" : tag === "modern" ? "Modern" : tag}</span>)}</div>
                 <div className={styles.cardActions}><button type="button" className={styles.linkButton} onClick={() => setOpenVariantKey(openVariantKey === candidate.card.key ? undefined : candidate.card.key)}>{openVariantKey === candidate.card.key ? "Version schließen" : "Version prüfen"}</button><button type="button" className={styles.iconButton} onClick={() => replaceCandidate(candidate.card.key)} disabled={!candidates.some((item) => !selection.selected.some((selected) => selected.card.key === item.card.key) && !excludedKeys.has(item.card.key))} aria-label={`${candidate.card.name} ersetzen`}><RefreshCw size={15} /></button><button type="button" className={styles.iconButton} onClick={() => removeCandidate(candidate.card.key)} aria-label={`${candidate.card.name} entfernen`}><X size={15} /></button></div>
                 {openVariantKey === candidate.card.key ? <div className={styles.variantBox}><VariantFields variant={candidate.variant} preferences={candidate.preferences} availability={variantAvailabilityForCard(candidate.card)} onVariantChange={(variant) => updateVariant(candidate.card.key, variant)} onPreferencesChange={(next) => setSelection((current) => current ? summarizeSelection(current.selected.map((item) => item.card.key === candidate.card.key ? { ...item, preferences: next } : item), preferences, current.issues) : current)} />{issue ? <p className={styles.warning}>{issue}</p> : null}</div> : null}
@@ -356,7 +364,23 @@ export function GiftBuilderPanel({ loader, pricingEnabled, onCancel, onCreateBin
             })}
           </div>
           <div className={styles.selectionTools}><button type="button" className={styles.secondaryButton} onClick={addCandidate} disabled={selection.selected.length >= preferences.targetCardCount}>+ Karte hinzufügen</button><button type="button" className={styles.secondaryButton} onClick={() => setShowAll((current) => !current)}>{showAll ? "Trefferliste schließen" : `Alle passenden Karten ansehen (${briefs.length})`}</button></div>
-          {showAll ? <div className={styles.allResults}><p>Die Liste enthält Namens-Treffer. Karten, auf denen das Pokémon nur im Artwork vorkommt, sind nicht enthalten.</p><ul>{briefs.map((item) => <li key={`${item.ref.language}-${item.ref.id}`}><span><strong>{item.name}</strong><small>{item.ref.language.toUpperCase()} · Nr. {item.collectorNumber}</small></span><button type="button" onClick={() => { const candidate = candidates.find((entry) => entry.card.key === `tcgdex:${item.ref.id}:${item.ref.language}`); if (candidate && selection.selected.length < preferences.targetCardCount && !selection.selected.some((entry) => entry.card.key === candidate.card.key)) setSelection(summarizeSelection([...selection.selected, candidate], preferences, selection.issues)); }}>Hinzufügen</button></li>)}</ul></div> : null}
+          {showAll ? <div className={styles.allResults}>
+            <p>Die Liste enthält Namens-Treffer. Karten, auf denen das Pokémon nur im Artwork vorkommt, sind nicht enthalten.</p>
+            {selection.selected.length >= preferences.targetCardCount ? <p className={styles.resultHint} role="status">Die Zielanzahl ist erreicht. Entferne zuerst oben eine Karte, um hier eine andere hinzuzufügen.</p> : null}
+            <ul>{briefs.map((item) => {
+              const cardKey = `tcgdex:${item.ref.id}:${item.ref.language}`;
+              const candidate = candidateByKey.get(cardKey);
+              const alreadySelected = selection.selected.some((entry) => entry.card.key === cardKey);
+              const targetReached = selection.selected.length >= preferences.targetCardCount;
+              const disabled = !candidate || alreadySelected || targetReached;
+              const buttonLabel = !candidate ? "Nicht verfügbar" : alreadySelected ? "Ausgewählt" : targetReached ? "Zuerst Karte entfernen" : "Hinzufügen";
+              return <li key={`${item.ref.language}-${item.ref.id}`}>
+                {candidate ? <CardArtwork card={candidate.card} className={styles.resultImage} fallback={<span className={styles.resultImageFallback}>Kein Bild</span>} /> : <span className={styles.resultImageFallback}>Kein Bild</span>}
+                <span className={styles.resultIdentity}><strong>{item.name}</strong><small>{item.setName ? `${item.setName} · ` : ""}{item.ref.language.toUpperCase()} · Nr. {item.collectorNumber}</small></span>
+                <button type="button" disabled={disabled} onClick={() => addCandidateByKey(cardKey)}>{buttonLabel}</button>
+              </li>;
+            })}</ul>
+          </div> : null}
           <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={() => setStep("details")}><ArrowLeft size={16} /> Wünsche ändern</button><button type="button" className={styles.primaryButton} disabled={!reviewReady} onClick={() => setStep("review")}>Auswahl prüfen <ArrowRight size={16} /></button></div>
         </div>
       ) : null}
@@ -364,7 +388,7 @@ export function GiftBuilderPanel({ loader, pricingEnabled, onCancel, onCreateBin
       {step === "review" && selection ? (
         <div className={styles.reviewStep}>
           <div className={styles.reviewHero}><span className={styles.reviewIcon}><Check size={22} /></span><div><h2>Dein Vorschlag ist bereit</h2><p>{preferences.subjectQuery} · {preferences.targetCardCount} Karten · {preferences.currency}</p></div></div>
-          <dl className={styles.reviewMeta}><div><dt>Geschätzter Kartenwert</dt><dd>{formatMoney(selection.estimatedTotalMinor, preferences.currency)}</dd></div><div><dt>Preisspanne</dt><dd>{estimatedRange ? formatRange(estimatedRange, preferences.currency) : "Nicht vollständig verfügbar"}</dd></div><div><dt>Preissicherheit</dt><dd>{selection.unpricedCount ? `${selection.unpricedCount} unbekannt` : selection.approximateCount ? `${selection.approximateCount} angenähert` : "brauchbare Marktwerte"}</dd></div><div><dt>Binder</dt><dd>Normale Cardfolio-Seiten · editierbar</dd></div></dl>
+          <dl className={styles.reviewMeta}><div><dt>{pricingEnabled ? "Geschätzter Kartenwert" : "Preisprüfung"}</dt><dd>{pricingEnabled ? formatMoney(selection.estimatedTotalMinor, preferences.currency) : "Deaktiviert"}</dd></div><div><dt>Preisspanne</dt><dd>{pricingEnabled && estimatedRange ? formatRange(estimatedRange, preferences.currency) : pricingEnabled ? "Nicht vollständig verfügbar" : "Nicht berechnet"}</dd></div><div><dt>Preissicherheit</dt><dd>{pricingEnabled ? selection.unpricedCount ? `${selection.unpricedCount} unbekannt` : selection.approximateCount ? `${selection.approximateCount} angenähert` : "brauchbare Marktwerte" : "Keine Budgetzusage"}</dd></div><div><dt>Binder</dt><dd>Normale Cardfolio-Seiten · editierbar</dd></div></dl>
           <p className={styles.reviewNotice}>Der Binder wird lokal angelegt. Karten und physischer Binder sind getrennte Käufe; Versand und Steuern sind nicht enthalten. „Karten besorgen“ folgt danach über die bestehende Fehlkarten-Übergabe.</p>
           <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={() => setStep("candidates")}><ArrowLeft size={16} /> Auswahl bearbeiten</button><button type="button" className={styles.primaryButton} disabled={submitting} onClick={async () => { setSubmitting(true); setError(undefined); try { const project = await onCreateBinder(selection, preferences); setGiftProject(project); setStep("summary"); } catch (cause) { setError(cause instanceof Error ? cause.message : "Der Geschenk-Binder konnte nicht angelegt werden."); } finally { setSubmitting(false); } }}>{submitting ? "Binder wird angelegt…" : "Als Binder anlegen"}</button></div>
         </div>
@@ -380,12 +404,12 @@ export function GiftBuilderPanel({ loader, pricingEnabled, onCancel, onCreateBin
             </header>
             {printSummary.greeting ? <blockquote className={styles.greetingPreview}>{printSummary.greeting}</blockquote> : null}
             <dl className={styles.summaryMeta}>
-              <div><dt>Geschätzter Kartenwert</dt><dd>{formatMoney(printSummary.cardPurchase.estimatedValueMinor, printSummary.cardPurchase.currency)}</dd></div>
-              <div><dt>Geschätzte Preisspanne</dt><dd>{formatRange(printSummary.cardPurchase.estimatedRange, printSummary.cardPurchase.currency) ?? "Nicht vollständig verfügbar"}</dd></div>
-              <div><dt>Preise ohne Schätzung</dt><dd>{printSummary.cardPurchase.unknownPriceCount} unbekannt · {printSummary.cardPurchase.approximatePriceCount} angenähert</dd></div>
+              <div><dt>{pricingEnabled ? "Geschätzter Kartenwert" : "Preisprüfung"}</dt><dd>{pricingEnabled ? formatMoney(printSummary.cardPurchase.estimatedValueMinor, printSummary.cardPurchase.currency) : "Deaktiviert"}</dd></div>
+              <div><dt>Geschätzte Preisspanne</dt><dd>{pricingEnabled ? formatRange(printSummary.cardPurchase.estimatedRange, printSummary.cardPurchase.currency) ?? "Nicht vollständig verfügbar" : "Nicht berechnet"}</dd></div>
+              <div><dt>Preissicherheit</dt><dd>{pricingEnabled ? `${printSummary.cardPurchase.unknownPriceCount} unbekannt · ${printSummary.cardPurchase.approximatePriceCount} angenähert` : "Keine Budgetzusage"}</dd></div>
               <div><dt>Binderpreis</dt><dd>{printSummary.binderPurchase.price ? formatMoney(printSummary.binderPurchase.price.amountMinor, printSummary.binderPurchase.price.currency) : "Kein bestätigter Preis"}</dd></div>
             </dl>
-            <p className={styles.summaryDisclosure}>Karten und physischer Binder sind getrennte Käufe. Die Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten. Alle Geschenkangaben bleiben lokal in diesem Browser.</p>
+            <p className={styles.summaryDisclosure}>Karten und physischer Binder sind getrennte Käufe. {pricingEnabled ? "Die Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten." : "Für Karten wird derzeit kein Preis berechnet und keine Budgetzusage abgegeben."} Alle Geschenkangaben bleiben lokal in diesem Browser.</p>
             <section className={styles.summaryCards} aria-labelledby="summary-cards-heading">
               <h3 id="summary-cards-heading">Karten im Binder</h3>
               <ol>{printSummary.cards.map((card, index) => <li key={`${card.name}-${card.setName}-${card.collectorNumber}-${index}`}><span>{card.name}</span><small>{card.setName} · Nr. {card.collectorNumber} · {card.language.toUpperCase()} · {card.variant}</small></li>)}</ol>

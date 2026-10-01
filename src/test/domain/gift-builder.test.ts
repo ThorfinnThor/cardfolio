@@ -102,6 +102,20 @@ describe("deterministic Gift selection", () => {
     expect(result.issues).toEqual(expect.arrayContaining(["unknown-prices", "approximate-prices"]));
   });
 
+  it("prefers candidates with artwork when prices are equally unknown", () => {
+    const candidates = Array.from({ length: 10 }, (_, index) => candidate(index + 1, {
+      card: {
+        ...candidate(index + 1).card,
+        imageBaseUrl: index < 9 ? `https://assets.tcgdex.net/en/set/card-${index + 1}` : undefined,
+      },
+      price: { currency: "EUR", fetchedAt: "2026-10-01T00:00:00.000Z", confidence: "unknown", issues: ["missing-pricing"] },
+    }));
+    const result = engine.select({ candidates, preferences: preferences() });
+    expect(result.selected).toHaveLength(9);
+    expect(result.selected.every((item) => Boolean(item.card.imageBaseUrl || item.card.imageFallbackBaseUrl))).toBe(true);
+    expect(result.selected.map((item) => item.card.key)).not.toContain(candidates[9].card.key);
+  });
+
   it("removes duplicates and incomplete variants and reports a too-small pool", () => {
     const first = candidate(1);
     const incomplete = candidate(2, {

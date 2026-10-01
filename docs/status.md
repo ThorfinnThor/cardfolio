@@ -553,3 +553,26 @@ Verification:
 Handoff:
 
 - No merge or deployment was performed. The next work block is Step 8, Luna: Gift Summary, printable/downloadable local output, partner/no-offer states and final responsive/accessibility verification.
+
+## 2026-10-01 — Gift image fallbacks and explicit selection controls
+
+Completed:
+
+- Ported the reviewed `fix/card-image-language-fallback` work onto the current main line. The synchronized catalog now contains 547 unique, verified TCGdex fallback artwork references for English card records whose primary detail has no image; foreign-language scans are labelled in the UI.
+- Added artwork thumbnails to the Gift Builder's complete result list and made the deterministic Gift selection prefer image-bearing cards when price priority is equal. Real price ordering still takes precedence when the pricing gate is enabled.
+- Replaced the silent no-op on `Hinzufügen` at a full 9/18/36-card target with disabled, state-specific labels and guidance. After a selected card is removed, an available result can be added normally.
+- Replaced the misleading public `Preis unbekannt` presentation with an explicit disabled-price state while `FEATURES.giftBuilderPricing` remains false. No budget promise is made.
+- Reworded the TCGplayer filter section to explain that Mass Entry transfers card, set and number, while Printing and condition must be chosen on TCGplayer before `Add to Cart`.
+
+Known source limitation:
+
+- TCGdex currently returns no image reference for some records, including `2014xy-5`, `2022swsh-7` and `tk-hs-r-16`; the checked TCGdex language variants and asset locations did not provide a usable image. Cardfolio continues to show an honest fallback instead of introducing an unreviewed image source.
+
+Verification:
+
+- All 30 Vitest files / 166 tests, ESLint, the static Next.js production build, release checks and `git diff --check` pass locally.
+- The fallback manifest contains 547 unique IDs and 547 unique HTTPS `assets.tcgdex.net` URLs; all entries match the allowed host and language schema.
+
+Handoff:
+
+- No merge or deployment was performed. The next release-quality block is a final visual/accessibility check of the changed Gift result list at the required viewports, followed by GitHub CI review and an explicit merge/deploy decision. Gift pricing remains a separate NO-GO until its provider-rights and measured coverage gates pass.

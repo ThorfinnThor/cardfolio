@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { GiftBuilderPanel } from "@/components/foundation/GiftBuilderPanel";
@@ -44,6 +44,17 @@ function candidate(index: number): GiftCardCandidate {
   };
 }
 
+function candidateWithArtwork(index: number): GiftCardCandidate {
+  const value = candidate(index);
+  return {
+    ...value,
+    card: {
+      ...value.card,
+      imageBaseUrl: `https://assets.tcgdex.net/en/set/gift-ui-${index}`,
+    },
+  };
+}
+
 describe("GiftBuilderPanel", () => {
   it("walks through the reference flow with unknown-price disclosure and creates a normal binder", async () => {
     const briefs: CatalogSearchItem[] = Array.from({ length: 9 }, (_, index) => ({
@@ -73,7 +84,7 @@ describe("GiftBuilderPanel", () => {
       expect.objectContaining({ subjectQuery: "Pikachu", targetCardCount: 9 }),
     );
     await screen.findByRole("heading", { name: "Geschenk · Pikachu" });
-    expect(screen.getByText("9 unbekannt · 0 angenähert")).toBeInTheDocument();
+    expect(screen.getByText("Keine Budgetzusage")).toBeInTheDocument();
     expect(await screen.findByText(/Kein freigegebener Anbieter/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Derzeit nicht verfügbar/i })).toBeDisabled();
     fireEvent.change(screen.getByLabelText(/Grußtext für die lokale Druckansicht/i), { target: { value: "Viel Freude!" } });
@@ -82,5 +93,37 @@ describe("GiftBuilderPanel", () => {
     expect(print).toHaveBeenCalledOnce();
     fireEvent.click(screen.getByRole("button", { name: "Karten besorgen" }));
     expect(onCardsPurchase).toHaveBeenCalledOnce();
+  });
+
+  it("shows artwork in the complete result list and explains why adding is unavailable at the target count", async () => {
+    const briefs: CatalogSearchItem[] = Array.from({ length: 10 }, (_, index) => ({
+      ref: { provider: "tcgdex", id: `gift-ui-${index + 1}`, language: "en" },
+      name: `Pikachu ${index + 1}`,
+      collectorNumber: String(index + 1),
+      setName: `Set ${index + 1}`,
+    }));
+    const loader = {
+      loadCandidatePool: vi.fn(async () => briefs),
+      hydrateCandidates: vi.fn(async () => [
+        ...Array.from({ length: 9 }, (_, index) => candidateWithArtwork(index + 1)),
+        candidate(10),
+      ]),
+    };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Vorschlag erzeugen/i }));
+    await screen.findByText("9 / 9");
+    expect(screen.getAllByText("Preisprüfung aus").length).toBeGreaterThan(0);
+    fireEvent.click(screen.getByRole("button", { name: /Alle passenden Karten ansehen/i }));
+    expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("Entferne zuerst oben eine Karte"))).toBe(true);
+    expect(screen.getAllByRole("img", { name: /Pikachu 1, Set 1 1/i }).length).toBeGreaterThan(0);
+
+    const unavailableRow = screen.getByText("Pikachu 10").closest("li");
+    expect(unavailableRow).not.toBeNull();
+    expect(within(unavailableRow as HTMLLIElement).getByRole("button", { name: "Zuerst Karte entfernen" })).toBeDisabled();
+
+    fireEvent.click(screen.getByRole("button", { name: "Pikachu 1 entfernen" }));
+    fireEvent.click(within(unavailableRow as HTMLLIElement).getByRole("button", { name: "Hinzufügen" }));
+    expect(screen.getByText("9 / 9")).toBeInTheDocument();
   });
 });

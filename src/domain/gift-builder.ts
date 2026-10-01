@@ -122,10 +122,15 @@ function styleMatches(candidate: GiftCardCandidate, style: GiftStyle): boolean {
   return true;
 }
 
+function hasArtwork(candidate: GiftCardCandidate): boolean {
+  return Boolean(candidate.card.imageBaseUrl || candidate.card.imageFallbackBaseUrl);
+}
+
 function stableCandidateOrder(left: GiftCardCandidate, right: GiftCardCandidate): number {
   const leftPrice = left.price.amountMinor ?? Number.MAX_SAFE_INTEGER;
   const rightPrice = right.price.amountMinor ?? Number.MAX_SAFE_INTEGER;
   return leftPrice - rightPrice
+    || Number(!hasArtwork(left)) - Number(!hasArtwork(right))
     || (left.releaseYear ?? Number.MAX_SAFE_INTEGER) - (right.releaseYear ?? Number.MAX_SAFE_INTEGER)
     || left.card.setId.localeCompare(right.card.setId)
     || left.card.key.localeCompare(right.card.key);
