@@ -23,6 +23,7 @@ interface PageSelectionReviewProps {
   onLanguageChange: (language: "de" | "en") => void;
   onChange: (items: PageSelectionItem[]) => void;
   onRemove: (cardKey: string) => void;
+  onContinueSearch: () => void;
   onCancel: () => void;
   onConfirm: (target: PageSelectionReviewTarget, binderName: string) => void;
 }
@@ -47,6 +48,7 @@ export function PageSelectionReview({
   onLanguageChange,
   onChange,
   onRemove,
+  onContinueSearch,
   onCancel,
   onConfirm,
 }: PageSelectionReviewProps) {
@@ -132,6 +134,7 @@ export function PageSelectionReview({
           </label>
         ) : null}
         <div className={styles.dialogActions}>
+          <button type="button" className={styles.secondaryButton} disabled={submitting} onClick={onContinueSearch}>Weitere Karten auswählen</button>
           <button type="button" className={styles.secondaryButton} disabled={submitting} onClick={onCancel}>Abbrechen</button>
           <button type="button" className={styles.confirmButton} disabled={loading || submitting || !complete || !items.length || (target === "new-binder" && !binderName.trim())} onClick={() => onConfirm(target, binderName)}>
             {submitting ? "Wird gespeichert…" : "Auswahl übernehmen"}

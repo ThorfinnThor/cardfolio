@@ -279,6 +279,7 @@ export function FoundationWorkspace() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchPreview, setSearchPreview] = useState<SearchPreview>();
   const [pageSelectionRequest, setPageSelectionRequest] = useState<PageSelectionRequest>();
+  const [pageSelectionReviewOpen, setPageSelectionReviewOpen] = useState(false);
   const [pageSelectionSubmitting, setPageSelectionSubmitting] = useState(false);
   const [previewSubmitting, setPreviewSubmitting] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<SlotLocation>();
@@ -925,6 +926,7 @@ export function FoundationWorkspace() {
     sourceItems: CatalogSearchItem[],
     language: "de" | "en",
     token: number,
+    preserveItems: PageSelectionItem[] = [],
   ) {
     const fallbackNames: string[] = [];
     const failedNames: string[] = [];
@@ -939,7 +941,8 @@ export function FoundationWorkspace() {
         if (snapshot.physicalStatus === "digital") {
           failedNames.push(`${item.name} (Pocket/digital)`);
         }
-        return {
+        const previous = preserveItems.find((candidate) => candidate.card.key === snapshot.key);
+        return previous ? { ...previous, card: snapshot } : {
           card: snapshot,
           variant: createInitialVariantSelection(variantAvailabilityForCard(snapshot)),
           preferences: { minimumCondition: "any" },
@@ -958,7 +961,8 @@ export function FoundationWorkspace() {
           });
           if (snapshot.physicalStatus === "digital") failedNames.push(`${item.name} (Pocket/digital)`);
           fallbackNames.push(item.name);
-          return {
+          const previous = preserveItems.find((candidate) => candidate.card.key === snapshot.key);
+          return previous ? { ...previous, card: snapshot } : {
             card: snapshot,
             variant: createInitialVariantSelection(variantAvailabilityForCard(snapshot)),
             preferences: { minimumCondition: "any" },
@@ -992,8 +996,10 @@ export function FoundationWorkspace() {
     pageSelectionTokenRef.current = token;
     setSearchPreview(undefined);
     setSearchOpen(false);
-    setPageSelectionRequest({ sourceItems: items, items: [], language: "en", status: "loading" });
-    void hydratePageSelection(items, "en", token);
+    setPageSelectionReviewOpen(true);
+    const preserveItems = pageSelectionRequest?.items ?? [];
+    setPageSelectionRequest({ sourceItems: items, items: [], language: pageSelectionRequest?.language ?? "en", status: "loading" });
+    void hydratePageSelection(items, pageSelectionRequest?.language ?? "en", token, preserveItems);
   }
 
   function changePageSelectionLanguage(language: "de" | "en") {
@@ -1015,6 +1021,13 @@ export function FoundationWorkspace() {
       const items = current.items.filter((item) => item.card.key !== cardKey);
       return items.length ? { ...current, items } : undefined;
     });
+  }
+
+  function continuePageSelectionSearch() {
+    if (!pageSelectionRequest) return;
+    setPageSelectionReviewOpen(false);
+    setSearchMode("semantic");
+    setSearchOpen(true);
   }
 
   async function confirmPageSelection(target: PageSelectionReviewTarget, binderName: string) {
@@ -1051,6 +1064,7 @@ export function FoundationWorkspace() {
       });
       setCardsBinderId(result.binder.id);
       setPageSelectionRequest(undefined);
+      setPageSelectionReviewOpen(false);
       setPageSelectionSubmitting(false);
       setStorageStatus("saved");
       setMessage(`${request.items.length} ${request.items.length === 1 ? "Karte wurde" : "Karten wurden"} als Binderseite übernommen.`);
@@ -1954,6 +1968,7 @@ export function FoundationWorkspace() {
                       onFallbackToCatalog={fallbackToCatalogSearch}
                       onReviewSelection={reviewSemanticSelection}
                       selectionLimit={9}
+                      initialSelection={pageSelectionRequest?.sourceItems ?? []}
                     />
                   ) : (
                     <>
@@ -2094,7 +2109,7 @@ export function FoundationWorkspace() {
         </>
       ) : null}
 
-      {pageSelectionRequest && activeBinder && activePage ? (
+      {pageSelectionReviewOpen && pageSelectionRequest && activeBinder && activePage ? (
         <PageSelectionReview
           items={pageSelectionRequest.items}
           binder={activeBinder}
@@ -2107,6 +2122,7 @@ export function FoundationWorkspace() {
           onLanguageChange={changePageSelectionLanguage}
           onChange={updatePageSelectionItems}
           onRemove={removePageSelectionItem}
+          onContinueSearch={continuePageSelectionSearch}
           onCancel={() => setPageSelectionRequest(undefined)}
           onConfirm={(target, name) => void confirmPageSelection(target, name)}
         />

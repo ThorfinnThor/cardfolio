@@ -42,6 +42,7 @@ describe("PageSelectionReview", () => {
         onLanguageChange={onLanguageChange}
         onChange={vi.fn()}
         onRemove={vi.fn()}
+        onContinueSearch={vi.fn()}
         onCancel={vi.fn()}
         onConfirm={onConfirm}
       />,

@@ -23,6 +23,7 @@ interface SemanticCardSearchProps {
   onFallbackToCatalog: (query: string) => void;
   onReviewSelection?: (items: CatalogSearchItem[]) => void;
   selectionLimit?: number;
+  initialSelection?: CatalogSearchItem[];
 }
 
 function SemanticResultArtwork({ result }: { result: SemanticSearchResult }) {
@@ -43,10 +44,12 @@ function SemanticResultArtwork({ result }: { result: SemanticSearchResult }) {
   );
 }
 
-export function SemanticCardSearch({ onPreview, onFallbackToCatalog, onReviewSelection, selectionLimit = 9 }: SemanticCardSearchProps) {
+export function SemanticCardSearch({ onPreview, onFallbackToCatalog, onReviewSelection, selectionLimit = 9, initialSelection = [] }: SemanticCardSearchProps) {
   const [query, setQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<SemanticTag[]>([]);
-  const [selectedItems, setSelectedItems] = useState<Map<string, CatalogSearchItem>>(new Map());
+  const [selectedItems, setSelectedItems] = useState<Map<string, CatalogSearchItem>>(
+    () => new Map(initialSelection.map((item) => [`${item.ref.language}:${item.ref.id}`, item])),
+  );
   const deferredQuery = useDeferredValue(query);
   const indexQuery = useQuery({
     queryKey: ["semantic-card-search", 1],
