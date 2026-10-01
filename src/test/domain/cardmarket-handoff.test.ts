@@ -66,7 +66,7 @@ describe("Cardmarket handoff", () => {
         abilities: ["Duft | Spore"],
         attacks: ["Ranken\nHieb"],
       },
-      variant: { finish: "other", edition: "first-edition", printing: "shadowless", label: "Cosmos | Holo" },
+      variant: { finish: "other", edition: "first-edition", printing: "shadowed", label: "Cosmos | Holo" },
       preferences: { minimumCondition: "lightly-played" },
     });
 

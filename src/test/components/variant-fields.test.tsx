@@ -42,6 +42,30 @@ describe("VariantFields", () => {
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
   });
 
+  it("keeps unknown finishes manual while hiding impossible modern printings", () => {
+    render(
+      <VariantFields
+        variant={{ finish: "unspecified", edition: "unlimited", printing: "shadowed" }}
+        preferences={{ minimumCondition: "any" }}
+        availability={{
+          normal: true,
+          holo: true,
+          reverse: true,
+          firstEdition: false,
+          shadowless: false,
+          finishesVerified: false,
+        }}
+        onVariantChange={vi.fn()}
+        onPreferencesChange={vi.fn()}
+      />,
+    );
+
+    expect(within(screen.getByRole("combobox", { name: "Finish" })).getByRole("option", { name: "Holo" })).toBeInTheDocument();
+    expect(within(screen.getByRole("combobox", { name: "Edition" })).queryByRole("option", { name: "First Edition" })).not.toBeInTheDocument();
+    expect(within(screen.getByRole("combobox", { name: "Druckvariante" })).queryByRole("option", { name: "Shadowless" })).not.toBeInTheDocument();
+    expect(screen.getByText(/Finish bleibt manuell/)).toBeInTheDocument();
+  });
+
   it("identifies Excellent as Cardmarket-specific and gives the TCGplayer equivalent", () => {
     render(
       <VariantFields

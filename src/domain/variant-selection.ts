@@ -4,6 +4,23 @@ export type FinishValue = VariantSelection["finish"];
 export type EditionValue = VariantSelection["edition"];
 export type PrintingValue = NonNullable<VariantSelection["printing"]>;
 
+export interface CardVariantOptions extends CardVariantAvailability {
+  finishesVerified: boolean;
+}
+
+export const FIRST_EDITION_SET_IDS: ReadonlySet<string> = new Set([
+  "base1",
+  "base2",
+  "base3",
+  "base5",
+  "gym1",
+  "gym2",
+  "neo1",
+  "neo2",
+  "neo3",
+  "neo4",
+]);
+
 export const finishLabels = {
   normal: "Non-Holo / Normal",
   holo: "Holo",
@@ -40,16 +57,33 @@ export function isProviderFallbackVariantSignal(availability: CardVariantAvailab
 
 export function variantAvailabilityForCard(
   card: Pick<CardSnapshot, "availableVariants" | "ref" | "setId">,
-): CardVariantAvailability | undefined {
-  if (!card.availableVariants || isProviderFallbackVariantSignal(card.availableVariants)) return undefined;
+): CardVariantOptions {
+  const finishesVerified = Boolean(
+    card.availableVariants && !isProviderFallbackVariantSignal(card.availableVariants),
+  );
   return {
-    ...card.availableVariants,
-    shadowless: card.availableVariants.shadowless ?? (card.ref.language === "en" && card.setId === "base1"),
+    normal: finishesVerified ? Boolean(card.availableVariants?.normal) : true,
+    holo: finishesVerified ? Boolean(card.availableVariants?.holo) : true,
+    reverse: finishesVerified ? Boolean(card.availableVariants?.reverse) : true,
+    firstEdition: FIRST_EDITION_SET_IDS.has(card.setId),
+    shadowless: card.ref.language === "en" && card.setId === "base1",
+    finishesVerified,
   };
 }
 
+export function areFinishesVerified(
+  availability?: CardVariantAvailability | CardVariantOptions,
+): boolean {
+  return Boolean(
+    availability
+    && (!("finishesVerified" in availability) || availability.finishesVerified),
+  );
+}
+
 export function availableFinishValues(availability?: CardVariantAvailability): readonly FinishValue[] {
-  if (!availability) return ["unspecified", "normal", "holo", "reverse", "other"];
+  if (!availability || !areFinishesVerified(availability)) {
+    return ["unspecified", "normal", "holo", "reverse", "other"];
+  }
   return [
     "unspecified",
     availability.normal ? "normal" : undefined,
@@ -72,7 +106,7 @@ export function availablePrintingValues(availability?: CardVariantAvailability):
 }
 
 export function createInitialVariantSelection(availability?: CardVariantAvailability): VariantSelection {
-  const reportedFinishes = availability
+  const reportedFinishes = availability && areFinishesVerified(availability)
     ? [
         availability.normal ? "normal" as const : undefined,
         availability.holo ? "holo" as const : undefined,
@@ -108,9 +142,11 @@ export function variantSelectionIssue(
     return "Bei „Andere“ ist eine eigene Variantenbezeichnung erforderlich.";
   }
   if (!availability) return undefined;
-  if (variant.finish === "normal" && !availability.normal) return "Non-Holo / Normal ist für diese Karte im Katalog nicht bestätigt.";
-  if (variant.finish === "holo" && !availability.holo) return "Holo ist für diese Karte im Katalog nicht bestätigt.";
-  if (variant.finish === "reverse" && !availability.reverse) return "Reverse Holo ist für diese Karte im Katalog nicht bestätigt.";
+  if (areFinishesVerified(availability)) {
+    if (variant.finish === "normal" && !availability.normal) return "Non-Holo / Normal ist für diese Karte im Katalog nicht bestätigt.";
+    if (variant.finish === "holo" && !availability.holo) return "Holo ist für diese Karte im Katalog nicht bestätigt.";
+    if (variant.finish === "reverse" && !availability.reverse) return "Reverse Holo ist für diese Karte im Katalog nicht bestätigt.";
+  }
   if (variant.edition === "first-edition" && !availability.firstEdition) return "First Edition ist für diese Karte im Katalog nicht bestätigt.";
   if (selectedPrinting(variant) === "shadowless" && !availability.shadowless) return "Shadowless ist nur für bestätigte englische Base-Set-Ausgaben auswählbar.";
   return undefined;
@@ -142,6 +178,15 @@ export function formatVariantSelection(variant: VariantSelection): string {
 
 export function formatAvailableVariants(availability?: CardVariantAvailability): string {
   if (!availability) return "Der Katalog enthält für diese Karte keine belastbaren Variantenangaben; Finish bitte anhand der Karte prüfen.";
+  if (!areFinishesVerified(availability)) {
+    const historicalOptions = [
+      availability.firstEdition ? "First Edition" : undefined,
+      availability.shadowless ? "Shadowless" : undefined,
+    ].filter((value): value is string => Boolean(value));
+    return historicalOptions.length
+      ? `Das Finish ist nicht belastbar hinterlegt; anhand des Sets sind zusätzlich ${historicalOptions.join(" und ")} möglich.`
+      : "Das Finish ist nicht belastbar hinterlegt; Edition und Druckvariante sind anhand des Sets begrenzt.";
+  }
   const values = [
     availability.normal ? "Non-Holo / Normal" : undefined,
     availability.holo ? "Holo" : undefined,

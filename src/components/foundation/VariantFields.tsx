@@ -1,6 +1,7 @@
 import type { CardVariantAvailability, PurchasePreferences, VariantSelection } from "@/domain/types";
 import { minimumConditionLabels } from "@/domain/purchase-preferences";
 import {
+  areFinishesVerified,
   availableEditionValues,
   availableFinishValues,
   availablePrintingValues,
@@ -10,6 +11,7 @@ import {
   printingLabels,
   selectedPrinting,
   variantSelectionIssue,
+  type CardVariantOptions,
 } from "@/domain/variant-selection";
 
 import styles from "./foundation-workspace.module.css";
@@ -17,7 +19,7 @@ import styles from "./foundation-workspace.module.css";
 interface VariantFieldsProps {
   variant: VariantSelection;
   preferences: PurchasePreferences;
-  availability?: CardVariantAvailability;
+  availability?: CardVariantAvailability | CardVariantOptions;
   onVariantChange: (variant: VariantSelection) => void;
   onPreferencesChange: (preferences: PurchasePreferences) => void;
 }
@@ -95,9 +97,9 @@ export function VariantFields({
         </label>
       </div>
       <p className={styles.variantHint}>
-        {formatAvailableVariants(availability)} {availability
+        {formatAvailableVariants(availability)} {areFinishesVerified(availability)
           ? "Es werden nur bestätigte Standardoptionen angeboten."
-          : "Mangels Katalogsignalen bleiben die manuellen Optionen verfügbar."} „Mit Schatten / Standard“ ist vorausgewählt.
+          : "Das Finish bleibt manuell; historische Editionen und Druckvarianten werden trotzdem begrenzt."} „Mit Schatten / Standard“ ist vorausgewählt.
       </p>
       {issue ? <p className={styles.warning} role="status">{issue}</p> : null}
     </>

@@ -47,7 +47,7 @@ import { FEATURES } from "@/config/feature-flags";
 import { PRODUCT_DESIGN } from "@/config/product";
 import { minimumConditionLabels } from "@/domain/purchase-preferences";
 import { validateBackup } from "@/domain/validation";
-import { createInitialVariantSelection, formatVariantSelection, isVariantSelectionValid, selectedPrinting, variantAvailabilityForCard, variantSelectionIssue } from "@/domain/variant-selection";
+import { createInitialVariantSelection, formatVariantSelection, isVariantSelectionValid, selectedPrinting, variantAvailabilityForCard, variantSelectionIssue, type CardVariantOptions } from "@/domain/variant-selection";
 import { catalogQueryKey, detailQueryKey, TCGdexCatalogAdapter } from "@/data/catalog/tcgdex";
 import { catalogSeries, catalogSets, completeCardSnapshotMetadata } from "@/data/catalog/set-counts";
 import { RevisionConflictError } from "@/data/persistence/binder-repository";
@@ -96,7 +96,7 @@ type VariantEditRequest = {
   label: string;
   variant: VariantSelection;
   preferences: PurchasePreferences;
-  availableVariants?: CardSnapshot["availableVariants"];
+  availableVariants?: CardVariantOptions;
 };
 type SearchPreview = {
   item: CatalogSearchItem;

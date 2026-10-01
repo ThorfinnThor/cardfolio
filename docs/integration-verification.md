@@ -271,6 +271,6 @@ Environment: TCGdex physical English catalog, TCGplayer's official Pokémon Mass
 ## Catalog-constrained variant selection — 2026-09-28
 
 - Holo-only fixtures expose Holo plus the labelled manual fallback, but no Non-Holo or Reverse option.
-- First Edition is absent when TCGdex reports `firstEdition: false` and available when it reports `true`.
+- First Edition is derived from the audited historical set allowlist rather than accepted from incomplete TCGdex flags. It is available for eligible regular sets through Neo Destiny, excluding Base Set 2, and absent from modern sets even when a provider flag contradicts that policy.
 - Shadowless is derived only for English `base1` records. German Base Set and all other sets expose `Mit Schatten / Standard` only.
 - Marketplace unit checks reject a selected finish that contradicts the card's catalog record. Manual `Andere` variants require a non-empty custom label.

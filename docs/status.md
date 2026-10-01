@@ -482,7 +482,7 @@ Verification completed:
 Completed:
 
 - The insert and edit forms now derive their selectable finishes from each card's TCGdex variant signals instead of showing every finish for every card.
-- First Edition is offered only when the card record confirms it. Unlimited / Standard remains an explicit required choice.
+- First Edition is offered only for the historically eligible regular sets through Neo Destiny, excluding Base Set 2. Incomplete or contradictory provider flags cannot expose it on modern cards. Unlimited / Standard remains the default required choice.
 - Shadowless is offered only for English Base Set cards; `Mit Schatten / Standard` remains the default.
 - `Andere` remains available for legitimate unlisted variants but now requires a custom label.
 - TCGplayer and Cardmarket handoffs reject incomplete or catalog-contradicting variants instead of silently exporting them. Neutral TXT/CSV exports retain those positions with an explicit review warning.
@@ -492,3 +492,4 @@ Verification completed:
 
 - Typecheck, ESLint, 84 unit/component tests, static Next.js build, release checks and `git diff --check` passed locally.
 - The browser suite now distinguishes German Base Set, where Shadowless is unavailable, from English Base Set, where the option is present but not preselected.
+- A catalog-wide rule audit covers every synchronized English and German physical set. Unknown finish metadata still permits manual Holo/Reverse selection, while First Edition and Shadowless remain historically constrained.

@@ -147,6 +147,14 @@
 - Binder cover colours are derived from the binder ID and CF numbers from the shelf position, so no new persisted fields are required.
 - Fonts (Unbounded, Figtree, JetBrains Mono; SIL OFL 1.1) are self-hosted via `next/font/local`, satisfying `font-src 'self'`. Textures are local SVG files under `public/textures/`.
 
+## 2026-10-01 — Historical edition policy is independent from finish metadata
+
+- Missing or fallback TCGdex variant data leaves Normal, Holo and Reverse Holo available for manual verification; it no longer makes unrelated historical editions selectable.
+- Set-wide First Edition is allowed only for Base Set, Jungle, Fossil, Team Rocket, Gym Heroes, Gym Challenge, Neo Genesis, Neo Discovery, Neo Revelation and Neo Destiny. Base Set 2 and every later regular set are excluded.
+- Exceptional promotional printings are not enabled set-wide. They require a separately verified card-level mapping before Cardfolio may offer First Edition.
+- Shadowless is allowed only for English Base Set. German Base Set and every other set expose only `Mit Schatten / Standard`.
+- The full synchronized English and German set catalogs are covered by an allowlist audit, so newly synchronized modern sets cannot inherit First Edition or Shadowless from incomplete provider flags.
+
 ## 2026-09-29 — TCGdex variant fallback is not a catalog confirmation
 
 - TCGdex answers every card without curated variant data with `normal: true` and all other variants `false`. All sampled Team Up cards and sampled cards from Cosmic Eclipse, Unified Minds, Hidden Fates, Evolutions and 151 carry no variant data, so this shape is indistinguishable from "unknown".
