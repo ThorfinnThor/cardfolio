@@ -4,6 +4,28 @@ export type FinishValue = VariantSelection["finish"];
 export type EditionValue = VariantSelection["edition"];
 export type PrintingValue = NonNullable<VariantSelection["printing"]>;
 
+export interface CardVariantOptions extends CardVariantAvailability {
+  finishesVerified: boolean;
+  printingPolicy: "standard-only" | "english-base-set" | "english-base-set-machamp";
+}
+
+export const FIRST_EDITION_SET_IDS: ReadonlySet<string> = new Set([
+  "base1",
+  "base2",
+  "base3",
+  "base5",
+  "gym1",
+  "gym2",
+  "neo1",
+  "neo2",
+  "neo3",
+  "neo4",
+]);
+
+export const FIRST_EDITION_CARD_IDS: ReadonlySet<string> = new Set([
+  "basep-1",
+]);
+
 export const finishLabels = {
   normal: "Non-Holo / Normal",
   holo: "Holo",
@@ -40,16 +62,51 @@ export function isProviderFallbackVariantSignal(availability: CardVariantAvailab
 
 export function variantAvailabilityForCard(
   card: Pick<CardSnapshot, "availableVariants" | "ref" | "setId">,
-): CardVariantAvailability | undefined {
-  if (!card.availableVariants || isProviderFallbackVariantSignal(card.availableVariants)) return undefined;
+): CardVariantOptions {
+  const finishesVerified = Boolean(
+    card.availableVariants && !isProviderFallbackVariantSignal(card.availableVariants),
+  );
+  const isEnglishBaseSet = card.ref.language === "en" && card.setId === "base1";
+  const isEnglishBaseSetMachamp = isEnglishBaseSet && card.ref.id === "base1-8";
   return {
-    ...card.availableVariants,
-    shadowless: card.availableVariants.shadowless ?? (card.ref.language === "en" && card.setId === "base1"),
+    normal: isEnglishBaseSetMachamp || (finishesVerified ? Boolean(card.availableVariants?.normal) : true),
+    holo: finishesVerified ? Boolean(card.availableVariants?.holo) : true,
+    reverse: finishesVerified ? Boolean(card.availableVariants?.reverse) : true,
+    firstEdition: FIRST_EDITION_SET_IDS.has(card.setId)
+      || (card.ref.language === "en" && FIRST_EDITION_CARD_IDS.has(card.ref.id)),
+    shadowless: isEnglishBaseSet,
+    finishesVerified,
+    printingPolicy: isEnglishBaseSetMachamp
+      ? "english-base-set-machamp"
+      : isEnglishBaseSet
+        ? "english-base-set"
+        : "standard-only",
   };
 }
 
-export function availableFinishValues(availability?: CardVariantAvailability): readonly FinishValue[] {
-  if (!availability) return ["unspecified", "normal", "holo", "reverse", "other"];
+export function areFinishesVerified(
+  availability?: CardVariantAvailability | CardVariantOptions,
+): boolean {
+  return Boolean(
+    availability
+    && (!("finishesVerified" in availability) || availability.finishesVerified),
+  );
+}
+
+export function availableFinishValues(
+  availability?: CardVariantAvailability | CardVariantOptions,
+  edition: EditionValue = "unspecified",
+): readonly FinishValue[] {
+  const policy = printingPolicy(availability);
+  if (policy === "english-base-set-machamp" && edition === "first-edition") {
+    return ["unspecified", "holo", "other"];
+  }
+  if (policy === "english-base-set-machamp" && edition === "unlimited") {
+    return ["unspecified", "normal", "other"];
+  }
+  if (!availability || !areFinishesVerified(availability)) {
+    return ["unspecified", "normal", "holo", "reverse", "other"];
+  }
   return [
     "unspecified",
     availability.normal ? "normal" : undefined,
@@ -66,13 +123,26 @@ export function availableEditionValues(availability?: CardVariantAvailability): 
     : ["unspecified", "unlimited"];
 }
 
-export function availablePrintingValues(availability?: CardVariantAvailability): readonly PrintingValue[] {
+function printingPolicy(
+  availability?: CardVariantAvailability | CardVariantOptions,
+): CardVariantOptions["printingPolicy"] | undefined {
+  return availability && "printingPolicy" in availability ? availability.printingPolicy : undefined;
+}
+
+export function availablePrintingValues(
+  availability?: CardVariantAvailability | CardVariantOptions,
+  edition: EditionValue = "unspecified",
+): readonly PrintingValue[] {
   if (!availability) return ["shadowed", "shadowless"];
-  return availability.shadowless ? ["shadowed", "shadowless"] : ["shadowed"];
+  const policy = printingPolicy(availability);
+  if (!availability.shadowless || policy === "standard-only") return ["shadowed"];
+  if (policy === "english-base-set" && edition === "first-edition") return ["shadowless"];
+  if (policy === "english-base-set-machamp" && edition === "unlimited") return ["shadowed"];
+  return ["shadowed", "shadowless"];
 }
 
 export function createInitialVariantSelection(availability?: CardVariantAvailability): VariantSelection {
-  const reportedFinishes = availability
+  const reportedFinishes = availability && areFinishesVerified(availability)
     ? [
         availability.normal ? "normal" as const : undefined,
         availability.holo ? "holo" as const : undefined,
@@ -91,6 +161,14 @@ export function selectedPrinting(variant: VariantSelection): NonNullable<Variant
   return variant.printing ?? "unspecified";
 }
 
+export function requiresVariantLabel(
+  variant: VariantSelection,
+  availability?: CardVariantAvailability | CardVariantOptions,
+): boolean {
+  return variant.finish === "other"
+    || (printingPolicy(availability) === "english-base-set-machamp" && variant.edition === "unlimited");
+}
+
 export function isVariantSelectionComplete(variant: VariantSelection): boolean {
   return variant.finish !== "unspecified"
     && variant.edition !== "unspecified"
@@ -104,15 +182,35 @@ export function variantSelectionIssue(
   if (!isVariantSelectionComplete(variant)) {
     return "Finish, Edition und Druckvariante müssen vollständig festgelegt werden.";
   }
-  if (variant.finish === "other" && !variant.label?.trim()) {
+  if (requiresVariantLabel(variant, availability) && !variant.label?.trim()) {
+    if (printingPolicy(availability) === "english-base-set-machamp" && variant.edition === "unlimited") {
+      return "Die nicht gestempelte englische Base-Set-Machamp-Ausgabe benötigt eine eigene Bezeichnung, z. B. „Trainer Deck A“.";
+    }
     return "Bei „Andere“ ist eine eigene Variantenbezeichnung erforderlich.";
   }
   if (!availability) return undefined;
-  if (variant.finish === "normal" && !availability.normal) return "Non-Holo / Normal ist für diese Karte im Katalog nicht bestätigt.";
-  if (variant.finish === "holo" && !availability.holo) return "Holo ist für diese Karte im Katalog nicht bestätigt.";
-  if (variant.finish === "reverse" && !availability.reverse) return "Reverse Holo ist für diese Karte im Katalog nicht bestätigt.";
+  if (printingPolicy(availability) === "english-base-set-machamp"
+    && !availableFinishValues(availability, variant.edition).includes(variant.finish)) {
+    return variant.edition === "first-edition"
+      ? "Das englische Base-Set-Machamp ist in der First Edition nur als Holo bestätigt."
+      : "Die nicht gestempelte Trainer-Deck-A-Ausgabe von Machamp ist nur als Non-Holo bestätigt.";
+  }
+  if (areFinishesVerified(availability)) {
+    if (variant.finish === "normal" && !availability.normal) return "Non-Holo / Normal ist für diese Karte im Katalog nicht bestätigt.";
+    if (variant.finish === "holo" && !availability.holo) return "Holo ist für diese Karte im Katalog nicht bestätigt.";
+    if (variant.finish === "reverse" && !availability.reverse) return "Reverse Holo ist für diese Karte im Katalog nicht bestätigt.";
+  }
   if (variant.edition === "first-edition" && !availability.firstEdition) return "First Edition ist für diese Karte im Katalog nicht bestätigt.";
   if (selectedPrinting(variant) === "shadowless" && !availability.shadowless) return "Shadowless ist nur für bestätigte englische Base-Set-Ausgaben auswählbar.";
+  if (!availablePrintingValues(availability, variant.edition).includes(selectedPrinting(variant))) {
+    if (printingPolicy(availability) === "english-base-set" && variant.edition === "first-edition") {
+      return "Englische Base-Set-Karten der First Edition müssen als Shadowless erfasst werden.";
+    }
+    if (printingPolicy(availability) === "english-base-set-machamp" && variant.edition === "unlimited") {
+      return "Das englische Base-Set-Machamp ist als Shadowless-Ausgabe nur mit First-Edition-Stempel bestätigt.";
+    }
+    return "Diese Kombination aus Edition und Druckvariante ist für die Karte nicht bestätigt.";
+  }
   return undefined;
 }
 
@@ -142,6 +240,18 @@ export function formatVariantSelection(variant: VariantSelection): string {
 
 export function formatAvailableVariants(availability?: CardVariantAvailability): string {
   if (!availability) return "Der Katalog enthält für diese Karte keine belastbaren Variantenangaben; Finish bitte anhand der Karte prüfen.";
+  if (printingPolicy(availability) === "english-base-set-machamp") {
+    return "Machamp: First Edition existiert als Holo mit und ohne Schatten; die nicht gestempelte Non-Holo-Ausgabe ist die Trainer-Deck-A-Sonderausgabe.";
+  }
+  if (!areFinishesVerified(availability)) {
+    const historicalOptions = [
+      availability.firstEdition ? "First Edition" : undefined,
+      availability.shadowless ? "Shadowless" : undefined,
+    ].filter((value): value is string => Boolean(value));
+    return historicalOptions.length
+      ? `Das Finish ist nicht belastbar hinterlegt; anhand des Sets sind zusätzlich ${historicalOptions.join(" und ")} möglich.`
+      : "Das Finish ist nicht belastbar hinterlegt; Edition und Druckvariante sind anhand des Sets begrenzt.";
+  }
   const values = [
     availability.normal ? "Non-Holo / Normal" : undefined,
     availability.holo ? "Holo" : undefined,

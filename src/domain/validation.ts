@@ -7,7 +7,8 @@ import {
   PAGE_NOTE_MAX_LENGTH,
   PAGE_TITLE_MAX_LENGTH,
 } from "./binder-actions";
-import type { Binder, LocalBackupV1 } from "./types";
+import type { GiftProject } from "./gift-builder";
+import type { Binder, LocalBackupV2 } from "./types";
 
 const uuidSchema = z.string().uuid();
 const isoDateSchema = z.iso.datetime();
@@ -125,50 +126,106 @@ export const binderSchema = z
     }
   });
 
-export const backupSchema = z
-  .object({
-    format: z.literal("cardfolio-backup"),
-    version: z.literal(1),
-    exportedAt: isoDateSchema,
-    binders: z.array(binderSchema).max(50),
-    cards: z.array(cardSnapshotSchema).max(20_000),
-  })
-  .superRefine((backup, context) => {
-    const cardKeys = new Set(backup.cards.map((card) => card.key));
-    const binderIds = new Set<string>();
-    let entryCount = 0;
-    for (const [binderIndex, binder] of backup.binders.entries()) {
-      if (binderIds.has(binder.id)) {
-        context.addIssue({
-          code: "custom",
-          message: "Binder IDs must be unique.",
-          path: ["binders", binderIndex, "id"],
-        });
-      }
-      binderIds.add(binder.id);
-      for (const page of binder.pages) {
-        for (const entry of page.slots) {
-          if (!entry) continue;
-          entryCount += 1;
-          if (!cardKeys.has(entry.cardKey)) {
-            context.addIssue({
-              code: "custom",
-              message: `Referenced card snapshot ${entry.cardKey} is missing.`,
-              path: ["binders", binderIndex],
-            });
-          }
+export const giftProjectSchema = z.object({
+  id: uuidSchema,
+  schemaVersion: z.literal(1),
+  revision: z.number().int().nonnegative(),
+  name: z.string().min(1).max(100),
+  createdAt: isoDateSchema,
+  updatedAt: isoDateSchema,
+  preferences: z.object({
+    recipientKind: z.enum(["partner", "child", "friend", "other"]),
+    recipientName: z.string().min(1).max(100).optional(),
+    occasion: z.enum(["birthday", "christmas", "anniversary", "other"]).optional(),
+    subjectQuery: z.string().trim().min(1).max(200),
+    targetCardCount: z.union([z.literal(9), z.literal(18), z.literal(36)]),
+    budgetMinor: z.number().int().positive().max(100_000_000),
+    currency: z.enum(["EUR", "USD"]),
+    budgetTolerancePercent: z.union([z.literal(0), z.literal(5), z.literal(10), z.literal(15)]).optional(),
+    preferredLanguage: z.enum(["en", "de"]).optional(),
+    style: z.enum(["mixed", "vintage", "modern", "curated"]),
+  }),
+  binderId: uuidSchema.optional(),
+  selectedCardKeys: z.array(cardKeySchema).max(36),
+  binderOfferId: z.string().min(1).max(200).optional(),
+});
+
+const backupPayloadSchema = {
+  format: z.literal("cardfolio-backup"),
+  exportedAt: isoDateSchema,
+  binders: z.array(binderSchema).max(50),
+  cards: z.array(cardSnapshotSchema).max(20_000),
+};
+
+function validateBackupReferences(
+  backup: { binders: z.infer<typeof binderSchema>[]; cards: z.infer<typeof cardSnapshotSchema>[] },
+  context: z.RefinementCtx,
+): void {
+  const cardKeys = new Set(backup.cards.map((card) => card.key));
+  const binderIds = new Set<string>();
+  let entryCount = 0;
+  for (const [binderIndex, binder] of backup.binders.entries()) {
+    if (binderIds.has(binder.id)) {
+      context.addIssue({ code: "custom", message: "Binder IDs must be unique.", path: ["binders", binderIndex, "id"] });
+    }
+    binderIds.add(binder.id);
+    for (const page of binder.pages) {
+      for (const entry of page.slots) {
+        if (!entry) continue;
+        entryCount += 1;
+        if (!cardKeys.has(entry.cardKey)) {
+          context.addIssue({
+            code: "custom",
+            message: `Referenced card snapshot ${entry.cardKey} is missing.`,
+            path: ["binders", binderIndex],
+          });
         }
       }
     }
-    if (entryCount > 20_000) {
-      context.addIssue({ code: "custom", message: "Backup contains more than 20,000 entries." });
+  }
+  if (entryCount > 20_000) context.addIssue({ code: "custom", message: "Backup contains more than 20,000 entries." });
+}
+
+const backupV1Schema = z
+  .object({
+    ...backupPayloadSchema,
+    version: z.literal(1),
+  })
+  .superRefine(validateBackupReferences);
+
+export const backupSchema = z.object({
+  ...backupPayloadSchema,
+  version: z.literal(2),
+  giftProjects: z.array(giftProjectSchema).max(100),
+}).superRefine((backup, context) => {
+  validateBackupReferences(backup, context);
+  const ids = new Set<string>();
+  const binderIds = new Set(backup.binders.map((binder) => binder.id));
+  for (const [index, project] of backup.giftProjects.entries()) {
+    if (ids.has(project.id)) {
+      context.addIssue({ code: "custom", message: "Gift Project IDs must be unique.", path: ["giftProjects", index, "id"] });
     }
-  });
+    ids.add(project.id);
+    if (project.binderId && !binderIds.has(project.binderId)) {
+      context.addIssue({ code: "custom", message: "Gift Project references a missing binder.", path: ["giftProjects", index, "binderId"] });
+    }
+  }
+});
 
 export function validateBinder(value: unknown): Binder {
   return binderSchema.parse(value) as Binder;
 }
 
-export function validateBackup(value: unknown): LocalBackupV1 {
-  return backupSchema.parse(value) as LocalBackupV1;
+export function validateGiftProject(value: unknown): GiftProject {
+  return giftProjectSchema.parse(value) as GiftProject;
+}
+
+/** Migrates the previous binder-only backup format without losing data. */
+export function validateBackup(value: unknown): LocalBackupV2 {
+  const object = value && typeof value === "object" ? value as { version?: unknown } : undefined;
+  if (object?.version === 1) {
+    const legacy = backupV1Schema.parse(value);
+    return backupSchema.parse({ ...legacy, version: 2, giftProjects: [] }) as LocalBackupV2;
+  }
+  return backupSchema.parse(value) as LocalBackupV2;
 }

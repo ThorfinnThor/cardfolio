@@ -1,4 +1,4 @@
-import type { Binder, CardSnapshot, LocalBackupV1, UUID } from "@/domain/types";
+import type { Binder, CardSnapshot, LocalBackup, LocalBackupV2, UUID } from "@/domain/types";
 
 export type ImportMode = "import-as-new" | "replace-all";
 
@@ -9,8 +9,8 @@ export interface BinderRepository {
   save(binder: Binder, cards: CardSnapshot[], expectedRevision: number): Promise<Binder>;
   saveOrder(ids: UUID[]): Promise<void>;
   remove(id: UUID, expectedRevision: number): Promise<void>;
-  exportBackup(ids?: UUID[]): Promise<LocalBackupV1>;
-  importBackup(backup: LocalBackupV1, mode: ImportMode): Promise<void>;
+  exportBackup(ids?: UUID[]): Promise<LocalBackupV2>;
+  importBackup(backup: LocalBackup, mode: ImportMode): Promise<void>;
 }
 
 export class RevisionConflictError extends Error {

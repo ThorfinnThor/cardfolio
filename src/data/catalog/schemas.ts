@@ -22,6 +22,7 @@ export const tcgdexCardSchema = z.object({
   category: z.string().nullish(),
   abilities: z.array(z.object({ name: z.string().min(1) })).nullish(),
   attacks: z.array(z.object({ name: z.string().min(1) })).nullish(),
+  pricing: z.unknown().optional(),
   variants: z
     .object({
       firstEdition: z.boolean(),
@@ -46,6 +47,7 @@ export const tcgdexCardSchema = z.object({
 export const tcgdexSetSchema = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
+  releaseDate: z.string().nullish(),
   serie: z
     .object({
       id: z.string().min(1),

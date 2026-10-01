@@ -41,6 +41,16 @@
 .createForm input::placeholder { color: var(--cf-muted); }
 .createForm input:focus { border-color: var(--cf-accent); outline: 3px solid var(--cf-accent-soft); }
 
+.entryChoices { display: grid; gap: 12px; padding: 16px 18px; border: 1px solid var(--cf-line); border-radius: var(--cf-radius); background: var(--cf-surface); box-shadow: 0 10px 26px -22px var(--cf-sh-deep); }
+.entryChoices > div:first-child p { margin: 5px 0 0; color: var(--cf-muted); font-size: 12.5px; }
+.entryChoiceGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.entryChoice { display: flex; align-items: flex-start; gap: 11px; min-height: 76px; border: 1px solid var(--cf-line2); border-radius: 9px; background: var(--cf-surface2); color: var(--cf-text); padding: 14px; text-align: left; cursor: pointer; transition: border-color .15s, background .15s, transform .15s; }
+.entryChoice svg { flex: 0 0 auto; color: var(--cf-accent-text); }
+.entryChoice span { display: grid; gap: 4px; }
+.entryChoice strong { font-size: 13px; }
+.entryChoice small { color: var(--cf-muted); font-size: 11.5px; line-height: 1.4; }
+.entryChoice:hover { border-color: var(--cf-accent); background: var(--cf-accent-soft); transform: translateY(-1px); }
+
 .shelfHeader { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; border-bottom: 1px solid var(--cf-line); padding-bottom: 8px; }
 .orderHint { margin: 0; color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 10px; letter-spacing: .04em; text-align: right; }
 
@@ -120,6 +130,7 @@
   .metricStrip > div:nth-child(2), .metricStrip > div:nth-child(3) { border-bottom: 1px solid var(--cf-line); }
   .createPanel { align-items: stretch; flex-direction: column; gap: 11px; padding: 14px; }
   .createForm { min-width: 0; }
+  .entryChoiceGrid { grid-template-columns: 1fr; }
   .binderGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 18px; }
   .cover { height: 208px; padding: 22px 12px 14px 22px; }
   .coverTitle { font-size: 12.5px; }

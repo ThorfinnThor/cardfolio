@@ -1,6 +1,6 @@
 "use client";
 
-import { Archive, ArrowLeft, ArrowRight, Copy, Plus, Trash2 } from "lucide-react";
+import { Archive, ArrowLeft, ArrowRight, Copy, Gift, Plus, Trash2 } from "lucide-react";
 import type { ChangeEvent, CSSProperties, FormEvent } from "react";
 
 import { deriveBinderStats } from "@/domain/binder-stats";
@@ -23,6 +23,7 @@ interface BinderOverviewProps {
   onRequestDelete: (binder: Binder) => void;
   onExport: () => void;
   onImport: (event: ChangeEvent<HTMLInputElement>) => void;
+  onGiftStart?: () => void;
 }
 
 export function BinderOverview({
@@ -38,6 +39,7 @@ export function BinderOverview({
   onRequestDelete,
   onExport,
   onImport,
+  onGiftStart,
 }: BinderOverviewProps) {
   const totalPlanned = binders.reduce((total, binder) => total + deriveBinderStats(binder).planned, 0);
   const totalOwned = binders.reduce((total, binder) => total + deriveBinderStats(binder).owned, 0);
@@ -90,6 +92,23 @@ export function BinderOverview({
           <input id="new-binder-name" value={name} maxLength={100} onChange={onNameChange} placeholder="Zum Beispiel Base Set" />
           <button type="submit" className={styles.primaryButton} disabled={!name.trim() || binders.length >= MAX_BINDERS}><Plus size={16} /> Erstellen</button>
         </form>
+      </div>
+
+      <div className={styles.entryChoices} aria-label="Startpunkt auswählen">
+        <div>
+          <span className={styles.sectionKicker}>Wie möchtest du starten?</span>
+          <p>Beide Wege bleiben im selben lokalen Cardfolio-Binder.</p>
+        </div>
+        <div className={styles.entryChoiceGrid}>
+          <button type="button" className={styles.entryChoice} onClick={() => document.getElementById("new-binder-name")?.focus()}>
+            <Archive aria-hidden="true" size={18} />
+            <span><strong>Meine Sammlung planen</strong><small>Binder selbst anlegen und Karten gezielt ergänzen.</small></span>
+          </button>
+          <button type="button" className={styles.entryChoice} onClick={() => onGiftStart?.()}>
+            <Gift aria-hidden="true" size={18} />
+            <span><strong>Geschenk erstellen</strong><small>Lieblings-Pokémon, Budget und Umfang auswählen.</small></span>
+          </button>
+        </div>
       </div>
 
       {binders.length ? (

@@ -1,0 +1,19 @@
+{
+  "format": "cardfolio-semantic-catalog-coverage",
+  "version": 1,
+  "indexedCardCount": 19635,
+  "eligibleSourceCardCount": 19669,
+  "reviewedCoverageCount": 19635,
+  "backlogCount": 0,
+  "backlogIds": [],
+  "blockedSourceCardCount": 34,
+  "blockedSources": [
+    {
+      "setId": "dc1",
+      "cardCount": 34,
+      "reason": "TCGdex lists image references, but all checked source image variants return HTTP 404."
+    }
+  ],
+  "orphanedIndexCount": 0,
+  "orphanedIndexIds": []
+}

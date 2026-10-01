@@ -14,6 +14,11 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "data:sync": "node scripts/sync-public-data.mjs",
+    "semantic:index:build": "node scripts/semantic-index.mjs build",
+    "semantic:index:check": "node scripts/semantic-index.mjs check",
+    "semantic:index:bootstrap": "node scripts/semantic-index.mjs bootstrap-source",
+    "semantic:coverage:summary": "node scripts/semantic-index.mjs coverage-summary",
+    "semantic:evaluate": "vitest run src/test/domain/semantic-card-search.benchmark.test.ts --reporter=verbose",
     "release:check": "node scripts/check-release-gates.mjs"
   },
   "dependencies": {

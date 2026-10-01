@@ -107,6 +107,19 @@ function printedCollectorTotal(cardCount?: { official: number; total?: number })
   return total && total > 0 ? String(total) : undefined;
 }
 
+export interface TCGdexGiftCardDetail {
+  card: CardSnapshot;
+  rawPricing: unknown;
+  releaseYear?: number;
+}
+
+function releaseYear(value?: string | null): number | undefined {
+  if (!value) return undefined;
+  const match = /^(\d{4})/.exec(value);
+  const year = match ? Number(match[1]) : Number.NaN;
+  return Number.isInteger(year) && year >= 1996 && year <= new Date().getUTCFullYear() + 1 ? year : undefined;
+}
+
 export class TCGdexCatalogAdapter implements CatalogAdapter {
   async search(
     query: CatalogQuery,
@@ -185,6 +198,10 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
   }
 
   async getCard(ref: CardRef, signal?: AbortSignal): Promise<CardSnapshot> {
+    return (await this.getGiftCardDetail(ref, signal)).card;
+  }
+
+  async getGiftCardDetail(ref: CardRef, signal?: AbortSignal): Promise<TCGdexGiftCardDetail> {
     const cardUrl = new URL(`${BASE_URL}/${ref.language}/cards/${encodeURIComponent(ref.id)}`);
     const card = tcgdexCardSchema.parse(await fetchJson(cardUrl, signal));
     let englishCard: typeof card | undefined;
@@ -205,7 +222,7 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
     const imageCandidates = [card.image, englishCard?.image, ...inferredImages]
       .filter((value): value is string => Boolean(value))
       .filter((value, index, values) => values.indexOf(value) === index);
-    return {
+    const snapshot: CardSnapshot = {
       key: makeCardKey(ref),
       ref: { ...ref },
       name: card.name,
@@ -234,6 +251,11 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
       } : undefined,
       physicalStatus: set.serie?.id === "tcgp" ? "digital" : set.serie ? "physical" : "unknown",
       fetchedAt: new Date().toISOString(),
+    };
+    return {
+      card: snapshot,
+      rawPricing: card.pricing,
+      releaseYear: releaseYear(set.releaseDate),
     };
   }
 }

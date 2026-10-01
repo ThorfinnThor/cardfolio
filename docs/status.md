@@ -482,7 +482,7 @@ Verification completed:
 Completed:
 
 - The insert and edit forms now derive their selectable finishes from each card's TCGdex variant signals instead of showing every finish for every card.
-- First Edition is offered only when the card record confirms it. Unlimited / Standard remains an explicit required choice.
+- First Edition is offered only for the historically eligible regular sets through Neo Destiny, excluding Base Set 2. Incomplete or contradictory provider flags cannot expose it on modern cards. Unlimited / Standard remains the default required choice.
 - Shadowless is offered only for English Base Set cards; `Mit Schatten / Standard` remains the default.
 - `Andere` remains available for legitimate unlisted variants but now requires a custom label.
 - TCGplayer and Cardmarket handoffs reject incomplete or catalog-contradicting variants instead of silently exporting them. Neutral TXT/CSV exports retain those positions with an explicit review warning.
@@ -492,3 +492,64 @@ Verification completed:
 
 - Typecheck, ESLint, 84 unit/component tests, static Next.js build, release checks and `git diff --check` passed locally.
 - The browser suite now distinguishes German Base Set, where Shadowless is unavailable, from English Base Set, where the option is present but not preselected.
+- A catalog-wide rule audit covers every synchronized English and German physical set. Unknown finish metadata still permits manual Holo/Reverse selection, while First Edition and Shadowless remain historically constrained.
+- Dependent variant rules prevent impossible English Base Set combinations: First Edition selects Shadowless automatically, with the documented Machamp 8/102 exception for both frame treatments. Its Trainer Deck A prototype is constrained to labelled Non-Holo.
+- The First Edition Ivy Pikachu exception is available only on English Wizards Promo 1 and resolves to its dedicated TCGplayer product rather than enabling First Edition for the entire promo set.
+
+## 2026-10-01 — Smart Search technical completion (Step 1)
+
+Completed:
+
+- Added the `smartSearch` build flag and kept the normal catalog path independent when it is disabled.
+- Introduced provider-neutral Smart Search query/hit/adapter contracts and a single browser-local static-index adapter.
+- Converted the already reviewed V1 data into a committed JSONL source plus manifest and added byte-for-byte build/check commands for the compact public index.
+- Extended the weekly public-data sync with a deterministic coverage report. New physical image-bearing cards become an explicit untagged backlog; tags are never inferred during sync.
+- Added a 50-query automated regression fixture. The current local scorer returns 394/400 relevant top-eight positions versus 40/400 for the identity-only lexical baseline.
+- Added explicit index abort/timeout handling and unit coverage.
+- Completed the required `pokemon-card-explorer` reuse audit without copying its code, embeddings, scraped data or assets.
+- Recorded coverage, payload, benchmark, privacy, cost and release boundaries in `docs/semantic-search-release-gate.md`.
+
+Technical gate:
+
+- 19,635 reviewed cards are indexed; the eligible backlog is zero. The 34 `dc1` cards remain explicitly blocked because the advertised image variants return HTTP 404.
+- The raw runtime index is 2,266,481 bytes and 419,340 bytes at gzip level 9.
+- Product-level error recovery, DE/EN insertion choice, accessibility and required viewport verification remain Step 2 work for Luna.
+
+## 2026-10-01 — Smart Search product completion (Step 2)
+
+Completed:
+
+- Smart Search now has explicit loading, malformed-index/error, timeout and no-result guidance. Every failure state offers `Mit Name/Nummer suchen` and preserves the free-text query where available.
+- The search drawer supports keyboard-visible focus states and returns focus to the opening slot button after Escape/close. The single-mode feature-off layout no longer leaves a half-width toggle.
+- Card review now offers an explicit `Deutsch` / `English` choice for the binder. If a requested localized detail is unavailable, Cardfolio tries the English TCGdex detail and labels the fallback.
+- Added browser scenarios for Smart Search success, DE/EN choice, mobile overflow and normal-search recovery. The suite contains 17 scenarios in total.
+
+Verification:
+
+- Typecheck, ESLint, 20 Vitest files / 113 tests, static build, release checks and `git diff --check` passed locally.
+- The static build was inspected in the in-app browser; the search disclosure, result metadata, language choice and mandatory variant controls were visible and usable.
+- Local Playwright Chromium remains blocked by the host's macOS Mach-port permission error. The test list is valid and must be confirmed by the GitHub/Linux CI run before merge.
+
+Handoff:
+
+- No merge or deployment was performed. The next work block is Step 3, Sol: implement the shared selection-to-binder-page domain engine.
+
+## 2026-10-01 — Gift marketplace and binder-partner controls (Step 7)
+
+Completed:
+
+- Added a pure Gift marketplace wrapper around the existing TCGplayer and Cardmarket exporters. Every result declares `ownershipEffect: none`; external navigation never marks a card purchased or present.
+- Added the provider-neutral `BinderAffiliateAdapter` and a runtime JSON catalog with catalog/offer switches, verification expiry, evidence URLs, HTTPS validation, optional static affiliate parameters and mandatory affiliate disclosure.
+- Kept the production binder-partner catalog disabled because no provider agreement, compatible personalized product, current price or privacy review is recorded.
+- Added a local text-only Print Summary contract with separate card estimate and binder price fields. Card images, Pokémon logos and photo uploads are absent by construction.
+- Recorded the official provider, affiliate, rights, external-navigation, privacy, stale-offer and pricing gates in `docs/gift-commerce-release-gates.md` and strengthened the release script for enabled partner configurations.
+- Added integration coverage for disabled/stale/invalid offers, safe static URL construction, missing prices, marketplace-export reuse, ownership neutrality and text-only print data.
+
+Verification:
+
+- Typecheck, ESLint, 30 Vitest files / 161 tests, static Next.js build, release checks and `git diff --check` passed locally.
+- No browser-facing controls were added in this Sol step; the summary, disabled/no-offer presentation and two distinct purchase CTAs belong to Step 8.
+
+Handoff:
+
+- No merge or deployment was performed. The next work block is Step 8, Luna: Gift Summary, printable/downloadable local output, partner/no-offer states and final responsive/accessibility verification.

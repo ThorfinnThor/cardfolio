@@ -22,6 +22,13 @@ function requireText(relativePath, expected) {
 requireFile("out/index.html");
 requireFile("out/help/index.html");
 requireFile("src/app/icon.svg");
+requireFile("data/semantic/card-artwork-tags-v1.manifest.json");
+requireFile("data/semantic/card-artwork-tags-v1.jsonl");
+requireFile("data/semantic/catalog-coverage.json");
+requireFile("data/semantic/search-evaluation-v1.json");
+requireFile("public/data/semantic/card-artwork-search-v1.json");
+const binderPartnerCatalogPath = requireFile("public/data/partners/binder-partners.v1.json");
+requireFile("docs/gift-commerce-release-gates.md");
 requireText("out/_headers", [
   "X-Content-Type-Options: nosniff",
   "X-Frame-Options: DENY",
@@ -36,6 +43,8 @@ requireText("next.config.ts", ['output: "export"', "unoptimized: true"]);
 requireText("src/config/feature-flags.ts", [
   "designPreview: false",
   "pricing: false",
+  "giftBuilderPricing: false",
+  'smartSearch: process.env.NEXT_PUBLIC_FEATURE_SMART_SEARCH !== "false"',
   "tcgplayerPrefill: false",
   "cardtraderCommerce: false",
   "publicSharing: false",
@@ -43,7 +52,7 @@ requireText("src/config/feature-flags.ts", [
 requireText(".github/workflows/sync-public-data.yml", [
   "permissions:",
   "contents: write",
-  "git add public/data/catalog public/data/marketplace",
+  "git add public/data/catalog public/data/marketplace data/semantic/catalog-coverage.json",
   "npm run release:check",
 ]);
 
@@ -57,6 +66,26 @@ for (const workflow of [".github/workflows/ci.yml", ".github/workflows/sync-publ
 
 if (existsSync(join(root, "out/design-preview/index.html"))) {
   failures.push("The disabled design preview was emitted into the production export.");
+}
+
+if (existsSync(binderPartnerCatalogPath)) {
+  try {
+    const catalog = JSON.parse(readFileSync(binderPartnerCatalogPath, "utf8"));
+    if (catalog.schemaVersion !== 1 || typeof catalog.enabled !== "boolean" || !Array.isArray(catalog.partners)) {
+      failures.push("Binder partner catalog has an invalid top-level format.");
+    } else if (catalog.enabled) {
+      const active = catalog.partners.filter((partner) => partner.enabled);
+      if (!active.length) failures.push("Enabled binder partner catalog has no enabled offer.");
+      for (const partner of active) {
+        if (!partner.destinationUrl?.startsWith("https://")) failures.push(`Binder partner ${partner.id ?? "unknown"} has no HTTPS destination.`);
+        if (!partner.reviewAfter || Date.parse(partner.reviewAfter) < Date.now()) failures.push(`Binder partner ${partner.id ?? "unknown"} is stale.`);
+        if (!Array.isArray(partner.evidenceUrls) || !partner.evidenceUrls.length) failures.push(`Binder partner ${partner.id ?? "unknown"} has no evidence URLs.`);
+        if (partner.affiliate?.enabled && !partner.affiliate.text?.trim()) failures.push(`Binder partner ${partner.id ?? "unknown"} has no affiliate disclosure.`);
+      }
+    }
+  } catch {
+    failures.push("Binder partner catalog is not valid JSON.");
+  }
 }
 
 for (const scaffoldAsset of ["public/next.svg", "public/vercel.svg", "src/app/favicon.ico"]) {

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { catalogSets } from "@/data/catalog/set-counts";
 import {
   availableEditionValues,
   availableFinishValues,
@@ -8,6 +9,8 @@ import {
   isVariantSelectionComplete,
   isProviderFallbackVariantSignal,
   isVariantSelectionValid,
+  FIRST_EDITION_CARD_IDS,
+  FIRST_EDITION_SET_IDS,
   variantAvailabilityForCard,
   variantSelectionIssue,
 } from "@/domain/variant-selection";
@@ -87,15 +90,112 @@ describe("TCGdex fallback variant signal", () => {
 
   it("treats the provider fallback as unknown instead of a Non-Holo confirmation", () => {
     expect(isProviderFallbackVariantSignal(fallback)).toBe(true);
-    expect(variantAvailabilityForCard(celebi)).toBeUndefined();
-    expect(createInitialVariantSelection(variantAvailabilityForCard(celebi)).finish).toBe("unspecified");
-    expect(availableFinishValues(variantAvailabilityForCard(celebi))).toContain("holo");
-    expect(variantSelectionIssue({ finish: "holo", edition: "unlimited", printing: "shadowed" }, variantAvailabilityForCard(celebi))).toBeUndefined();
+    const options = variantAvailabilityForCard(celebi);
+    expect(options).toMatchObject({ finishesVerified: false, firstEdition: false, shadowless: false });
+    expect(createInitialVariantSelection(options).finish).toBe("unspecified");
+    expect(availableFinishValues(options)).toContain("holo");
+    expect(availableEditionValues(options)).toEqual(["unspecified", "unlimited"]);
+    expect(availablePrintingValues(options)).toEqual(["shadowed"]);
+    expect(variantSelectionIssue({ finish: "holo", edition: "unlimited", printing: "shadowed" }, options)).toBeUndefined();
   });
 
   it("keeps curated signals that differ from the fallback", () => {
     expect(isProviderFallbackVariantSignal({ normal: true, holo: false, reverse: true, firstEdition: false })).toBe(false);
     expect(isProviderFallbackVariantSignal({ normal: false, holo: true, reverse: false, firstEdition: false })).toBe(false);
     expect(isProviderFallbackVariantSignal({ normal: true, holo: false, reverse: false, firstEdition: true })).toBe(false);
+  });
+});
+
+describe("historical edition and printing policy", () => {
+  const cardOptions = (setId: string, language: "en" | "de" = "en") => variantAvailabilityForCard({
+    setId,
+    ref: { provider: "tcgdex", id: `${setId}-1`, language },
+    availableVariants: { normal: true, holo: false, reverse: false, firstEdition: false },
+  });
+
+  it("allows set-wide First Edition only through Neo Destiny and never for Base Set 2", () => {
+    expect(cardOptions("base1").firstEdition).toBe(true);
+    expect(cardOptions("neo4").firstEdition).toBe(true);
+    expect(cardOptions("base4").firstEdition).toBe(false);
+    expect(cardOptions("lc").firstEdition).toBe(false);
+    expect(cardOptions("ecard1").firstEdition).toBe(false);
+    expect(cardOptions("sm7").firstEdition).toBe(false);
+  });
+
+  it("allows Shadowless only for English Base Set even without reliable finish data", () => {
+    expect(cardOptions("base1", "en").shadowless).toBe(true);
+    expect(cardOptions("base1", "de").shadowless).toBe(false);
+    expect(cardOptions("base2", "en").shadowless).toBe(false);
+  });
+
+  it("supports the verified First Edition Ivy Pikachu promo without enabling its whole set", () => {
+    expect(cardOptions("basep", "en").firstEdition).toBe(true);
+    expect(cardOptions("basep", "de").firstEdition).toBe(false);
+    expect(variantAvailabilityForCard({
+      setId: "basep",
+      ref: { provider: "tcgdex", id: "basep-2", language: "en" },
+    }).firstEdition).toBe(false);
+  });
+
+  it("requires First Edition English Base Set cards to be Shadowless", () => {
+    const bulbasaur = variantAvailabilityForCard({
+      setId: "base1",
+      ref: { provider: "tcgdex", id: "base1-44", language: "en" },
+    });
+
+    expect(availablePrintingValues(bulbasaur, "first-edition")).toEqual(["shadowless"]);
+    expect(availablePrintingValues(bulbasaur, "unlimited")).toEqual(["shadowed", "shadowless"]);
+    expect(variantSelectionIssue({ finish: "normal", edition: "first-edition", printing: "shadowed" }, bulbasaur)).toMatch(/müssen als Shadowless/);
+    expect(variantSelectionIssue({ finish: "normal", edition: "first-edition", printing: "shadowless" }, bulbasaur)).toBeUndefined();
+    expect(variantSelectionIssue({ finish: "normal", edition: "unlimited", printing: "shadowless" }, bulbasaur)).toBeUndefined();
+  });
+
+  it("models both commercial First Edition printings of English Base Set Machamp", () => {
+    const machamp = variantAvailabilityForCard({
+      setId: "base1",
+      ref: { provider: "tcgdex", id: "base1-8", language: "en" },
+    });
+
+    expect(availablePrintingValues(machamp, "first-edition")).toEqual(["shadowed", "shadowless"]);
+    expect(availablePrintingValues(machamp, "unlimited")).toEqual(["shadowed"]);
+    expect(availableFinishValues(machamp, "first-edition")).toEqual(["unspecified", "holo", "other"]);
+    expect(availableFinishValues(machamp, "unlimited")).toEqual(["unspecified", "normal", "other"]);
+    expect(variantSelectionIssue({ finish: "holo", edition: "first-edition", printing: "shadowed" }, machamp)).toBeUndefined();
+    expect(variantSelectionIssue({ finish: "holo", edition: "first-edition", printing: "shadowless" }, machamp)).toBeUndefined();
+    expect(variantSelectionIssue({ finish: "normal", edition: "first-edition", printing: "shadowless" }, machamp)).toMatch(/nur als Holo/);
+    expect(variantSelectionIssue({ finish: "holo", edition: "unlimited", printing: "shadowed", label: "Trainer Deck A" }, machamp)).toMatch(/nur als Non-Holo/);
+    expect(variantSelectionIssue({ finish: "normal", edition: "unlimited", printing: "shadowed" }, machamp)).toMatch(/eigene Bezeichnung/);
+    expect(variantSelectionIssue({ finish: "normal", edition: "unlimited", printing: "shadowed", label: "Trainer Deck A" }, machamp)).toBeUndefined();
+    expect(variantSelectionIssue({ finish: "normal", edition: "unlimited", printing: "shadowless", label: "Trainer Deck A" }, machamp)).toMatch(/nur mit First-Edition-Stempel/);
+  });
+
+  it("overrides contradictory provider edition flags with the historical set policy", () => {
+    const modern = variantAvailabilityForCard({
+      setId: "sm7",
+      ref: { provider: "tcgdex", id: "sm7-112", language: "en" },
+      availableVariants: { normal: false, holo: true, reverse: true, firstEdition: true },
+    });
+
+    expect(modern.finishesVerified).toBe(true);
+    expect(modern.firstEdition).toBe(false);
+    expect(availableEditionValues(modern)).toEqual(["unspecified", "unlimited"]);
+    expect(availablePrintingValues(modern)).toEqual(["shadowed"]);
+  });
+
+  it("audits every synchronized physical set against the allowlists", () => {
+    for (const language of ["en", "de"] as const) {
+      const sets = catalogSets(language);
+      const ids = new Set(sets.map((set) => set.id));
+      for (const setId of FIRST_EDITION_SET_IDS) {
+        if (language === "en" || ids.has(setId)) expect(ids.has(setId)).toBe(true);
+      }
+      for (const set of sets) {
+        const options = cardOptions(set.id, language);
+        const expectedFirstEdition = FIRST_EDITION_SET_IDS.has(set.id)
+          || (language === "en" && FIRST_EDITION_CARD_IDS.has(`${set.id}-1`));
+        expect(options.firstEdition, `${language}/${set.id} First Edition`).toBe(expectedFirstEdition);
+        expect(options.shadowless, `${language}/${set.id} Shadowless`).toBe(language === "en" && set.id === "base1");
+      }
+    }
   });
 });

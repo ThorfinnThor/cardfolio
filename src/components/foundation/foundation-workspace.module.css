@@ -250,6 +250,11 @@
 
 /* Search drawer */
 .selectedSlotHint { margin: 14px 0 0; border: 1px dashed var(--cf-accent); border-radius: 7px; background: var(--cf-accent-soft); color: var(--cf-accent-text); padding: 9px 11px; font-family: var(--cf-font-mono); font-size: 11px; line-height: 1.45; }
+.searchModeSwitch { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 3px; margin-top: 15px; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-field); padding: 3px; }
+.searchModeSwitch button { min-height: 36px; border: 0; border-radius: 6px; background: transparent; color: var(--cf-text2); padding: 6px 8px; font-size: 12px; font-weight: 650; cursor: pointer; }
+.searchModeSwitch button:hover { color: var(--cf-text); }
+.searchModeSwitch button:focus-visible, .languageFilter button:focus-visible, .semanticTagPicker summary:focus-visible, .semanticTagPicker button:focus-visible, .clearSemanticTags:focus-visible, .results button:focus-visible { outline: 2px solid var(--cf-accent); outline-offset: 2px; }
+.searchModeSwitch button[aria-pressed="true"] { background: var(--cf-accent); color: var(--cf-on-accent); }
 .searchPreview { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; padding-top: 14px; }
 .previewBack { justify-self: start; border: 0; background: transparent; color: var(--cf-accent-text); padding: 0; font-size: 12px; font-weight: 650; cursor: pointer; }
 .previewBack:hover { text-decoration: underline; text-underline-offset: 3px; }
@@ -295,6 +300,58 @@
 .loadMoreButton { width: 100%; min-height: 38px; margin-top: 10px; border: 1px dashed var(--cf-line2); border-radius: 8px; background: transparent; color: var(--cf-accent-text); font-size: 12px; font-weight: 650; cursor: pointer; }
 .loadMoreButton:hover:not(:disabled) { border-color: var(--cf-accent); background: var(--cf-accent-soft); }
 .loadMoreButton:disabled { cursor: wait; opacity: .6; }
+.semanticSearch { display: grid; min-width: 0; }
+.semanticDisclosure { display: flex; align-items: flex-start; gap: 8px; margin: 12px 0 0; border-left: 3px solid var(--cf-accent); border-radius: 0 6px 6px 0; background: var(--cf-accent-soft); color: var(--cf-text2); padding: 9px 10px; font-size: 11px; line-height: 1.45; }
+.semanticDisclosure svg { flex: 0 0 auto; margin-top: 1px; color: var(--cf-accent-text); }
+.semanticDisclosure strong { color: var(--cf-text); }
+.semanticTagPicker { min-width: 0; margin-top: 10px; border: 1px solid var(--cf-line); border-radius: 8px; background: var(--cf-surface2); }
+.semanticTagPicker summary { display: flex; min-height: 36px; align-items: center; justify-content: space-between; gap: 8px; padding: 7px 10px; color: var(--cf-text2); font-size: 11px; font-weight: 650; cursor: pointer; }
+.semanticTagPicker summary span { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 9px; font-weight: 500; }
+.semanticTagPicker fieldset { min-width: 0; margin: 0; border: 0; border-top: 1px solid var(--cf-line); padding: 9px; }
+.semanticTagPicker fieldset > div { display: flex; flex-wrap: wrap; gap: 5px; }
+.semanticTagPicker button { min-height: 30px; border: 1px solid var(--cf-line2); border-radius: 999px; background: var(--cf-surface); color: var(--cf-text2); padding: 4px 9px; font-size: 10.5px; font-weight: 600; cursor: pointer; }
+.semanticTagPicker button:hover { border-color: var(--cf-accent); color: var(--cf-accent-text); }
+.semanticTagPicker button[aria-pressed="true"] { border-color: var(--cf-accent); background: var(--cf-accent); color: var(--cf-on-accent); }
+.clearSemanticTags { justify-self: start; margin-top: 8px; border: 0; background: transparent; color: var(--cf-accent-text); padding: 0; font-size: 11px; font-weight: 650; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.semanticResultCount { margin: 12px 0 0; color: var(--cf-text2); font-family: var(--cf-font-mono); font-size: 10.5px; }
+.semanticResults li { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto; align-items: center; }
+.semanticThumb, .semanticThumbFallback { width: 42px; height: 58px; border-radius: 4px; }
+.semanticThumb { display: block; background: var(--cf-surface2); object-fit: contain; }
+.semanticThumbFallback { display: grid; place-items: center; border: 1px dashed var(--cf-line2); background: var(--cf-surface2); color: var(--cf-muted); font-size: 8px; text-align: center; }
+.semanticCaption { display: -webkit-box; overflow: hidden; color: var(--cf-text2); font-size: 10.5px; line-height: 1.35; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.semanticResultTags { overflow: hidden; color: var(--cf-accent-text); font-family: var(--cf-font-mono); font-size: 9px; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+.semanticSelectionSummary { display: grid; gap: 8px; margin-top: 12px; border: 1px solid var(--cf-accent); border-radius: 8px; background: var(--cf-accent-soft); padding: 10px; color: var(--cf-text); }
+.semanticSelectionSummary > div:first-child { display: grid; gap: 2px; }
+.semanticSelectionSummary strong { font-size: 12px; }
+.semanticSelectionSummary span { color: var(--cf-text2); font-size: 10.5px; line-height: 1.35; }
+.semanticSelectionActions { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.semanticSelectionActions .primaryButton { min-height: 34px; flex: 1; font-size: 11px; }
+.semanticResultActions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 5px; }
+.semanticResultActions button { min-width: 70px; }
+.semanticResultActions button[aria-pressed="true"], .semanticSelectedButton { border-color: var(--cf-accent) !important; background: var(--cf-accent) !important; color: var(--cf-on-accent) !important; }
+.semanticResultActions button:disabled { cursor: not-allowed; opacity: .45; }
+.semanticError, .semanticNoResults { display: grid; gap: 8px; margin-top: 12px; }
+.semanticError .error, .semanticNoResults .noResults { margin: 0; }
+.semanticError .secondaryButton, .semanticNoResults .secondaryButton { width: 100%; }
+.pageSelectionDialog { width: min(100%, 720px); }
+.pageSelectionDialog > p:not(.eyebrow) { margin-bottom: 12px; }
+.pageSelectionList { display: grid; gap: 8px; max-height: min(48vh, 520px); overflow-y: auto; margin-top: 12px; padding-right: 3px; }
+.pageSelectionItem { border: 1px solid var(--cf-line); border-radius: 8px; background: var(--cf-surface2); }
+.pageSelectionItem > summary { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 42px; padding: 8px 11px; color: var(--cf-text); font-size: 12px; font-weight: 650; cursor: pointer; }
+.pageSelectionItem > summary small { overflow: hidden; color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 9.5px; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
+.pageSelectionCard { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 12px; border-top: 1px solid var(--cf-line); padding: 10px; }
+.pageSelectionImage { display: grid; min-height: 124px; place-items: center; overflow: hidden; border-radius: 6px; background: var(--cf-page); }
+.pageSelectionImage img { display: block; width: 100%; height: 124px; object-fit: contain; }
+.pageSelectionCard .variantForm { margin-top: 0; }
+.pageSelectionCard .variantHint { margin-top: 10px !important; }
+.removeSelectionButton { min-height: 32px; margin-top: 9px; border: 1px solid color-mix(in srgb, var(--cf-danger) 45%, var(--cf-line2)); border-radius: 7px; background: transparent; color: var(--cf-miss-text); padding: 5px 9px; font-size: 11px; font-weight: 650; cursor: pointer; }
+.removeSelectionButton:hover { background: var(--cf-miss-soft); }
+.selectionTargetFieldset { display: grid; gap: 7px; margin: 16px 0 0; border: 1px solid var(--cf-line); border-radius: 8px; padding: 10px; }
+.selectionTargetFieldset legend { padding: 0 4px; color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; }
+.selectionTargetFieldset label { display: flex; align-items: center; gap: 8px; min-height: 34px; color: var(--cf-text2); font-size: 12px; font-weight: 600; }
+.selectionTargetFieldset label:has(input:disabled) { cursor: not-allowed; opacity: .45; }
+.selectionTargetFieldset label span { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; flex: 1; }
+.selectionTargetFieldset label small { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 9.5px; font-weight: 500; }
 .error { border-left: 3px solid var(--cf-miss); border-radius: 6px; background: var(--cf-miss-soft); color: var(--cf-miss-text) !important; padding: 9px 11px; font-size: 12px; line-height: 1.4; }
 .noResults { margin: 14px 0 0; border: 1px dashed var(--cf-line2); border-radius: 8px; background: var(--cf-surface2); color: var(--cf-text2) !important; padding: 11px; font-size: 12px; line-height: 1.45; }
 
@@ -403,6 +460,10 @@
   .noticeActions { flex-direction: column; }
   .importReport, .footer { align-items: flex-start; flex-direction: column; }
   .importReport > span { text-align: left; }
+  .pageSelectionDialog { max-height: calc(100dvh - 24px); padding: 17px; }
+  .pageSelectionList { max-height: 42vh; }
+  .pageSelectionCard { grid-template-columns: 70px minmax(0, 1fr); gap: 8px; }
+  .pageSelectionImage, .pageSelectionImage img { height: 100px; min-height: 100px; }
 }
 
 @media (max-width: 430px) {
@@ -414,4 +475,11 @@
   .pageEditControls { gap: 4px; }
   .layoutSelect select { min-height: 32px; }
   .dialogActions { align-items: stretch; flex-direction: column-reverse; }
+  .semanticSelectionActions { align-items: stretch; flex-direction: column; }
+  .semanticSelectionActions .clearSemanticTags { align-self: flex-start; }
+  .semanticResultActions { flex-direction: column; }
+  .semanticResultActions button { width: 100%; }
+  .pageSelectionCard { grid-template-columns: 1fr; }
+  .pageSelectionImage, .pageSelectionImage img { height: 160px; min-height: 160px; }
+  .pageSelectionItem > summary { align-items: flex-start; flex-direction: column; }
 }
