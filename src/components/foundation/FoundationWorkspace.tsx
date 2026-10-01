@@ -622,13 +622,15 @@ export function FoundationWorkspace() {
       setBinders(nextBinders);
       setActiveId(result.binder.id);
       setActivePageIndex(0);
-      setGiftBuilderOpen(false);
-      setBinderManagerOpen(false);
+      setGiftBuilderOpen(true);
+      setBinderManagerOpen(true);
       setStorageConflict(false);
       setStorageStatus("saved");
-      setMessage("Geschenk-Binder wurde lokal angelegt und kann jetzt weiter bearbeitet werden.");
+      setMessage("Geschenk-Binder wurde lokal angelegt. Prüfe die Zusammenfassung oder öffne den Binder.");
+      return linkedProject;
     } catch (error) {
       handleStorageError(error, "Geschenk-Binder konnte nicht gespeichert werden.");
+      throw error;
     }
   }
 
@@ -1567,8 +1569,10 @@ export function FoundationWorkspace() {
           <GiftBuilderPanel
             loader={giftLoader}
             pricingEnabled={FEATURES.giftBuilderPricing}
-            onCancel={() => setGiftBuilderOpen(false)}
+            onCancel={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }}
             onCreateBinder={createGiftBinder}
+            onOpenBinder={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(false); }}
+            onCardsPurchase={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(true); setSearchOpen(false); }}
           />
         ) : (
           <BinderOverview

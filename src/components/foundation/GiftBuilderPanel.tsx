@@ -1,15 +1,20 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, Check, Gift, LoaderCircle, RefreshCw, Search, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { ArrowLeft, ArrowRight, Check, Download, ExternalLink, Gift, LoaderCircle, Printer, RefreshCw, Search, ShoppingBag, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
 import type { GiftCandidateLoader } from "@/data/gift/gift-candidate-loader";
+import { loadBinderPartnerCatalog, ReviewedBinderAffiliateAdapter } from "@/data/partners/binder-affiliate-adapter";
 import {
   DeterministicGiftSelectionEngine,
   type GiftCardCandidate,
   type GiftPreferences,
+  type GiftProject,
   type GiftSelectionResult,
 } from "@/domain/gift-builder";
+import type { BinderAffiliateAdapter, BinderOffer } from "@/domain/binder-affiliate";
+import type { GiftPriceRange } from "@/domain/gift-builder";
+import { createGiftPrintSummary } from "@/domain/gift-print-summary";
 import type { CardSnapshot, CatalogSearchItem, VariantSelection } from "@/domain/types";
 import { isVariantSelectionValid, variantAvailabilityForCard, variantSelectionIssue } from "@/domain/variant-selection";
 
@@ -21,10 +26,12 @@ export interface GiftBuilderPanelProps {
   loader: Pick<GiftCandidateLoader, "loadCandidatePool" | "hydrateCandidates">;
   pricingEnabled: boolean;
   onCancel: () => void;
-  onCreateBinder: (selection: GiftSelectionResult, preferences: GiftPreferences) => Promise<void>;
+  onCreateBinder: (selection: GiftSelectionResult, preferences: GiftPreferences) => Promise<GiftProject>;
+  onOpenBinder: () => void;
+  onCardsPurchase: () => void;
 }
 
-type GiftStep = "details" | "candidates" | "review";
+type GiftStep = "details" | "candidates" | "review" | "summary";
 
 const initialPreferences: GiftPreferences = {
   recipientKind: "friend",
@@ -63,7 +70,7 @@ function priceSourceLabel(source: GiftCardCandidate["price"]["source"]): string 
   return "Keine Preisquelle";
 }
 
-function formatRange(range: GiftCardCandidate["price"]["range"], currency: GiftPreferences["currency"]): string | undefined {
+function formatRange(range: Pick<GiftPriceRange, "lowMinor" | "highMinor"> | undefined, currency: GiftPreferences["currency"]): string | undefined {
   if (!range) return undefined;
   return `${formatMoney(range.lowMinor, currency)}–${formatMoney(range.highMinor, currency)}`;
 }
@@ -115,7 +122,7 @@ function safeCandidate(candidate: GiftCardCandidate, pricingEnabled: boolean, cu
   };
 }
 
-export function GiftBuilderPanel({ loader, pricingEnabled, onCancel, onCreateBinder }: GiftBuilderPanelProps) {
+export function GiftBuilderPanel({ loader, pricingEnabled, onCancel, onCreateBinder, onOpenBinder, onCardsPurchase }: GiftBuilderPanelProps) {
   const engine = useMemo(() => new DeterministicGiftSelectionEngine(), []);
   const [step, setStep] = useState<GiftStep>("details");
   const [preferences, setPreferences] = useState<GiftPreferences>(initialPreferences);
@@ -128,6 +135,32 @@ export function GiftBuilderPanel({ loader, pricingEnabled, onCancel, onCreateBin
   const [openVariantKey, setOpenVariantKey] = useState<string>();
   const [excludedKeys, setExcludedKeys] = useState<Set<string>>(new Set());
   const [submitting, setSubmitting] = useState(false);
+  const [giftProject, setGiftProject] = useState<GiftProject>();
+  const [binderOffers, setBinderOffers] = useState<BinderOffer[]>();
+  const [partnerAdapter, setPartnerAdapter] = useState<BinderAffiliateAdapter>();
+  const [partnerLoadError, setPartnerLoadError] = useState<string>();
+  const [greeting, setGreeting] = useState("");
+  const [externalNavigationBlocked, setExternalNavigationBlocked] = useState(false);
+
+  useEffect(() => {
+    if (step !== "summary") return;
+    const controller = new AbortController();
+    void loadBinderPartnerCatalog(controller.signal)
+      .then((catalog) => {
+        if (controller.signal.aborted) return;
+        const adapter = new ReviewedBinderAffiliateAdapter(catalog);
+        setPartnerAdapter(adapter);
+        setBinderOffers([...adapter.listOffers()]);
+        setPartnerLoadError(undefined);
+      })
+      .catch((cause: unknown) => {
+        if (controller.signal.aborted) return;
+        setPartnerAdapter(undefined);
+        setBinderOffers([]);
+        setPartnerLoadError(cause instanceof Error ? cause.message : "Binder-Angebote konnten nicht geladen werden.");
+      });
+    return () => controller.abort();
+  }, [step]);
 
   const updatePreferences = <K extends keyof GiftPreferences>(key: K, value: GiftPreferences[K]) => {
     setPreferences((current) => ({ ...current, [key]: value }));
@@ -206,6 +239,39 @@ export function GiftBuilderPanel({ loader, pricingEnabled, onCancel, onCreateBin
   const reviewReady = Boolean(selection?.selected.length === preferences.targetCardCount
     && selection.selected.every((candidate) => isVariantSelectionValid(candidate.variant, variantAvailabilityForCard(candidate.card))));
   const estimatedRange = selection ? selectionRange(selection.selected) : undefined;
+  const printSummary = selection && giftProject ? createGiftPrintSummary({ project: giftProject, selection, greeting }) : undefined;
+
+  function downloadPrintSummary() {
+    if (!printSummary) return;
+    const lines = [
+      printSummary.title,
+      printSummary.recipientName ? `Für: ${printSummary.recipientName}` : undefined,
+      printSummary.greeting,
+      `${printSummary.subject} · ${printSummary.cardCount} Karten`,
+      `Geschätzter Kartenwert: ${formatMoney(printSummary.cardPurchase.estimatedValueMinor, printSummary.cardPurchase.currency)}`,
+      `Geschätzte Preisspanne: ${formatRange(printSummary.cardPurchase.estimatedRange, printSummary.cardPurchase.currency) ?? "nicht vollständig verfügbar"}`,
+      `Preis unbekannt: ${printSummary.cardPurchase.unknownPriceCount} · angenähert: ${printSummary.cardPurchase.approximatePriceCount}`,
+      "Versand und Steuern sind nicht enthalten.",
+      "Karten und physischer Binder sind getrennte Käufe.",
+      "",
+      "Karten:",
+      ...printSummary.cards.map((card) => `• ${card.name} | ${card.setName} | Nr. ${card.collectorNumber} | ${card.language.toUpperCase()} | ${card.variant}`),
+    ].filter((line): line is string => line !== undefined);
+    const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `${printSummary.title.replace(/[^\p{L}\p{N}-]+/gu, "-").replace(/^-|-$/g, "") || "geschenk-zusammenfassung"}.txt`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function openBinderPartner(offerId: string) {
+    const url = partnerAdapter?.buildExternalUrl(offerId);
+    if (!url) return;
+    const opened = window.open(url, "_blank", "noopener,noreferrer");
+    if (!opened) setExternalNavigationBlocked(true);
+  }
 
   return (
     <section className={styles.panel} aria-labelledby="gift-builder-heading">
@@ -219,9 +285,9 @@ export function GiftBuilderPanel({ loader, pricingEnabled, onCancel, onCreateBin
       </div>
 
       <ol className={styles.steps} aria-label="Gift-Schritte">
-        {(["details", "candidates", "review"] as const).map((item, index) => (
-          <li key={item} data-active={step === item} data-done={(["details", "candidates", "review"] as const).indexOf(step) > index}>
-            <span>{index + 1}</span>{item === "details" ? "Wünsche" : item === "candidates" ? "Auswahl" : "Prüfen"}
+        {(["details", "candidates", "review", "summary"] as const).map((item, index) => (
+          <li key={item} data-active={step === item} data-done={(["details", "candidates", "review", "summary"] as const).indexOf(step) > index} aria-current={step === item ? "step" : undefined}>
+            <span>{index + 1}</span>{item === "details" ? "Wünsche" : item === "candidates" ? "Auswahl" : item === "review" ? "Prüfen" : "Zusammenfassung"}
           </li>
         ))}
       </ol>
@@ -300,7 +366,64 @@ export function GiftBuilderPanel({ loader, pricingEnabled, onCancel, onCreateBin
           <div className={styles.reviewHero}><span className={styles.reviewIcon}><Check size={22} /></span><div><h2>Dein Vorschlag ist bereit</h2><p>{preferences.subjectQuery} · {preferences.targetCardCount} Karten · {preferences.currency}</p></div></div>
           <dl className={styles.reviewMeta}><div><dt>Geschätzter Kartenwert</dt><dd>{formatMoney(selection.estimatedTotalMinor, preferences.currency)}</dd></div><div><dt>Preisspanne</dt><dd>{estimatedRange ? formatRange(estimatedRange, preferences.currency) : "Nicht vollständig verfügbar"}</dd></div><div><dt>Preissicherheit</dt><dd>{selection.unpricedCount ? `${selection.unpricedCount} unbekannt` : selection.approximateCount ? `${selection.approximateCount} angenähert` : "brauchbare Marktwerte"}</dd></div><div><dt>Binder</dt><dd>Normale Cardfolio-Seiten · editierbar</dd></div></dl>
           <p className={styles.reviewNotice}>Der Binder wird lokal angelegt. Karten und physischer Binder sind getrennte Käufe; Versand und Steuern sind nicht enthalten. „Karten besorgen“ folgt danach über die bestehende Fehlkarten-Übergabe.</p>
-          <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={() => setStep("candidates")}><ArrowLeft size={16} /> Auswahl bearbeiten</button><button type="button" className={styles.primaryButton} disabled={submitting} onClick={async () => { setSubmitting(true); try { await onCreateBinder(selection, preferences); } finally { setSubmitting(false); } }}>{submitting ? "Binder wird angelegt…" : "Als Binder anlegen"}</button></div>
+          <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={() => setStep("candidates")}><ArrowLeft size={16} /> Auswahl bearbeiten</button><button type="button" className={styles.primaryButton} disabled={submitting} onClick={async () => { setSubmitting(true); setError(undefined); try { const project = await onCreateBinder(selection, preferences); setGiftProject(project); setStep("summary"); } catch (cause) { setError(cause instanceof Error ? cause.message : "Der Geschenk-Binder konnte nicht angelegt werden."); } finally { setSubmitting(false); } }}>{submitting ? "Binder wird angelegt…" : "Als Binder anlegen"}</button></div>
+        </div>
+      ) : null}
+
+      {step === "summary" && selection && giftProject && printSummary ? (
+        <div className={styles.summaryStep}>
+          <article className={styles.printSummary} aria-labelledby="gift-summary-title">
+            <header className={styles.summaryHeader}>
+              <p className={styles.eyebrow}><Check aria-hidden="true" size={15} /> Lokal angelegt</p>
+              <h2 id="gift-summary-title">{printSummary.title}</h2>
+              <p>{printSummary.recipientName ? `Für ${printSummary.recipientName} · ` : ""}{printSummary.subject} · {printSummary.cardCount} Karten</p>
+            </header>
+            {printSummary.greeting ? <blockquote className={styles.greetingPreview}>{printSummary.greeting}</blockquote> : null}
+            <dl className={styles.summaryMeta}>
+              <div><dt>Geschätzter Kartenwert</dt><dd>{formatMoney(printSummary.cardPurchase.estimatedValueMinor, printSummary.cardPurchase.currency)}</dd></div>
+              <div><dt>Geschätzte Preisspanne</dt><dd>{formatRange(printSummary.cardPurchase.estimatedRange, printSummary.cardPurchase.currency) ?? "Nicht vollständig verfügbar"}</dd></div>
+              <div><dt>Preise ohne Schätzung</dt><dd>{printSummary.cardPurchase.unknownPriceCount} unbekannt · {printSummary.cardPurchase.approximatePriceCount} angenähert</dd></div>
+              <div><dt>Binderpreis</dt><dd>{printSummary.binderPurchase.price ? formatMoney(printSummary.binderPurchase.price.amountMinor, printSummary.binderPurchase.price.currency) : "Kein bestätigter Preis"}</dd></div>
+            </dl>
+            <p className={styles.summaryDisclosure}>Karten und physischer Binder sind getrennte Käufe. Die Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten. Alle Geschenkangaben bleiben lokal in diesem Browser.</p>
+            <section className={styles.summaryCards} aria-labelledby="summary-cards-heading">
+              <h3 id="summary-cards-heading">Karten im Binder</h3>
+              <ol>{printSummary.cards.map((card, index) => <li key={`${card.name}-${card.setName}-${card.collectorNumber}-${index}`}><span>{card.name}</span><small>{card.setName} · Nr. {card.collectorNumber} · {card.language.toUpperCase()} · {card.variant}</small></li>)}</ol>
+            </section>
+            <p className={styles.localHint}>Druckansicht und Textdatei enthalten Kartenangaben, aber keine Pokémon-Kartenbilder oder Logos. Persönliche Fotos werden nicht hochgeladen.</p>
+          </article>
+
+          <label className={styles.greetingField}>Grußtext für die lokale Druckansicht <span>(optional, nur in diesem Browser)</span>
+            <textarea value={greeting} maxLength={500} rows={3} onChange={(event) => setGreeting(event.target.value)} placeholder="Viel Freude mit deinem Binder!" />
+          </label>
+
+          <section className={styles.purchaseOptions} aria-label="Getrennte nächste Schritte">
+            <article className={styles.purchaseCard}>
+              <div><p className={styles.eyebrow}>KARTENKAUF</p><h3>Karten besorgen</h3><p>Öffnet die vorhandene Fehlkarten-Übergabe mit den bekannten TCGplayer- und Cardmarket-Prüfschritten.</p></div>
+              <button type="button" className={styles.primaryButton} onClick={onCardsPurchase}><ShoppingBag aria-hidden="true" size={16} /> Karten besorgen</button>
+            </article>
+            <article className={styles.purchaseCard}>
+              <div><p className={styles.eyebrow}>BINDERKAUF</p><h3>Binder personalisieren</h3>
+                {partnerLoadError ? <p role="status">Angebote sind momentan nicht erreichbar. Du kannst den lokalen Binder weiter bearbeiten.</p> : null}
+                {!partnerLoadError && !binderOffers ? <p role="status">Binder-Angebote werden geprüft…</p> : null}
+                {!partnerLoadError && binderOffers?.length === 0 ? <p role="status">Zurzeit ist kein geprüfter Personalisierungsanbieter verfügbar. Der Anbieterstatus wird vor jeder Aktivierung geprüft.</p> : null}
+                {binderOffers?.map((offer) => <div className={styles.offerRow} key={offer.id}>
+                  <div><strong>{offer.displayName}</strong><small>{offer.price ? `${offer.price.qualifier === "from" ? "ab " : ""}${formatMoney(offer.price.amountMinor, offer.price.currency)} · Stand ${formatDate(offer.price.sourceUpdatedAt)}` : "Kein bestätigter Binderpreis"}</small>
+                    {offer.affiliateDisclosure ? <small>{offer.affiliateDisclosure}</small> : null}
+                    {offer.status !== "available" ? <small>{offer.statusReason ?? "Angebot nicht verfügbar."}</small> : null}
+                  </div>
+                  <button type="button" className={styles.secondaryButton} disabled={offer.status !== "available"} onClick={() => openBinderPartner(offer.id)}>{offer.status === "available" ? <>Binder personalisieren <ExternalLink aria-hidden="true" size={14} /></> : "Derzeit nicht verfügbar"}</button>
+                </div>)}
+                {externalNavigationBlocked ? <p className={styles.warning} role="alert">Der Browser hat den externen Anbieteraufruf blockiert. Erlaube Pop-ups oder öffne den Link nach erneuter Auswahl.</p> : null}
+              </div>
+            </article>
+          </section>
+
+          <div className={styles.summaryActions}>
+            <button type="button" className={styles.secondaryButton} onClick={() => window.print()}><Printer aria-hidden="true" size={16} /> Drucken / als PDF speichern</button>
+            <button type="button" className={styles.secondaryButton} onClick={downloadPrintSummary}><Download aria-hidden="true" size={16} /> Textzusammenfassung herunterladen</button>
+            <button type="button" className={styles.primaryButton} onClick={onOpenBinder}>Binder bearbeiten <ArrowRight aria-hidden="true" size={16} /></button>
+          </div>
         </div>
       ) : null}
     </section>
