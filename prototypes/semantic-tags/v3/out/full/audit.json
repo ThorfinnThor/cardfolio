@@ -1,33 +1,33 @@
 {
- "generatedAt": "2026-10-01T08:25:57.928Z",
- "completedSets": 106,
- "expectedCards": 11574,
- "resultRows": 11574,
+ "generatedAt": "2026-10-01T09:20:20.865Z",
+ "completedSets": 126,
+ "expectedCards": 15147,
+ "resultRows": 15147,
  "schemaErrors": [],
  "tagCounts": {
-  "beach": 149,
-  "water-surface": 1092,
-  "underwater": 348,
-  "forest": 1569,
-  "grassland-field": 1095,
-  "mountain-rocks": 1182,
-  "cave": 250,
-  "desert": 186,
-  "snow-ice": 386,
-  "city": 539,
-  "indoors": 570,
-  "ruins-building": 498,
-  "sky-clouds": 1522,
-  "night": 432,
-  "sunset-sunrise": 222,
-  "fire-lava": 511,
-  "flowers": 686,
-  "food-visible": 168,
-  "human-present": 649,
-  "multiple-pokemon": 864,
-  "sleeping": 126,
-  "flying": 1317,
-  "swimming": 565
+  "beach": 170,
+  "water-surface": 1355,
+  "underwater": 419,
+  "forest": 2098,
+  "grassland-field": 1577,
+  "mountain-rocks": 1643,
+  "cave": 303,
+  "desert": 212,
+  "snow-ice": 499,
+  "city": 751,
+  "indoors": 781,
+  "ruins-building": 747,
+  "sky-clouds": 2304,
+  "night": 547,
+  "sunset-sunrise": 274,
+  "fire-lava": 679,
+  "flowers": 961,
+  "food-visible": 241,
+  "human-present": 1026,
+  "multiple-pokemon": 1033,
+  "sleeping": 157,
+  "flying": 1699,
+  "swimming": 766
  },
  "relationFlags": [
   {
@@ -2155,6 +2155,301 @@
    "id": "xy1-133",
    "tag": "fire-lava",
    "caption": "Fire Energy appears."
+  },
+  {
+   "id": "sv01-005",
+   "tag": "desert",
+   "caption": "A cactus Pokémon in front of a colorful house with flowers."
+  },
+  {
+   "id": "sv01-006",
+   "tag": "desert",
+   "caption": "A scarecrow Pokémon beside glowing green light among cacti."
+  },
+  {
+   "id": "sv01-013",
+   "tag": "grassland-field",
+   "caption": "A green cat Pokémon walking in a flowery meadow."
+  },
+  {
+   "id": "sv01-015",
+   "tag": "flowers",
+   "caption": "A masked cat Pokémon leaping with a pink flower in a sparkling scene."
+  },
+  {
+   "id": "sv01-029",
+   "tag": "multiple-pokemon",
+   "caption": "A two-headed pepper Pokémon breathing fire in a dry landscape."
+  },
+  {
+   "id": "sv01-059",
+   "tag": "forest",
+   "caption": "A white whale-like Pokémon in a snowy forest."
+  },
+  {
+   "id": "sv01-080",
+   "tag": "sky-clouds",
+   "caption": "Miraidon stands amid dark storm clouds and lightning bolts"
+  },
+  {
+   "id": "sv01-084",
+   "tag": "ruins-building",
+   "caption": "Ralts stands before a grand castle-like city building"
+  },
+  {
+   "id": "sv01-087",
+   "tag": "city",
+   "caption": "Shuppet floats by a glowing lantern on a dark street"
+  },
+  {
+   "id": "sv01-096",
+   "tag": "flying",
+   "caption": "Klefki hovers among keys in a room with wings of light"
+  },
+  {
+   "id": "sv01-108",
+   "tag": "flying",
+   "caption": "Primeape throws a powerful punch with flying debris"
+  },
+  {
+   "id": "sv01-120",
+   "tag": "desert",
+   "caption": "Sandaconda coils inside a rocky cave near a cactus"
+  },
+  {
+   "id": "sv01-123",
+   "tag": "sky-clouds",
+   "caption": "Great Tusk charges in a cloud of dust"
+  },
+  {
+   "id": "sv01-126",
+   "tag": "ruins-building",
+   "caption": "Grimer oozes along a path beside a blue building"
+  },
+  {
+   "id": "sv01-129",
+   "tag": "flying",
+   "caption": "Spiritomb hovers in a snowy forest"
+  },
+  {
+   "id": "sv01-133",
+   "tag": "sky-clouds",
+   "caption": "Bisharp stands in a windswept rainy landscape under storm clouds"
+  },
+  {
+   "id": "sv01-141",
+   "tag": "flying",
+   "caption": "Varoom hovers over rubble beneath a golden sky and cliffs"
+  },
+  {
+   "id": "sv01-146",
+   "tag": "flying",
+   "caption": "Zangoose claws forward with sparks flying"
+  },
+  {
+   "id": "sv01-149",
+   "tag": "ruins-building",
+   "caption": "Staravia soars past a tower over a town"
+  },
+  {
+   "id": "sv01-166",
+   "tag": "ruins-building",
+   "caption": "Arven stands with a big backpack before a tower and sky"
+  },
+  {
+   "id": "sv01-172",
+   "tag": "fire-lava",
+   "caption": "A fire orb hovers above a device in blue swirling light"
+  },
+  {
+   "id": "sv01-172",
+   "tag": "flying",
+   "caption": "A fire orb hovers above a device in blue swirling light"
+  },
+  {
+   "id": "sv01-173",
+   "tag": "multiple-pokemon",
+   "caption": "Pipes move a lightning orb between two lamps"
+  },
+  {
+   "id": "sv01-177",
+   "tag": "ruins-building",
+   "caption": "A woman stands on a bridge before rocky hills"
+  },
+  {
+   "id": "sv01-183",
+   "tag": "ruins-building",
+   "caption": "A girl in a hoodie stands by stairs outside a building"
+  },
+  {
+   "id": "sv01-194",
+   "tag": "multiple-pokemon",
+   "caption": "Two balls and a device float in blue light streaks"
+  },
+  {
+   "id": "sv01-195",
+   "tag": "multiple-pokemon",
+   "caption": "Two grinning young people in helmets pose by a wall"
+  },
+  {
+   "id": "sv01-202",
+   "tag": "city",
+   "caption": "Scovillain breathes fire in a busy food street"
+  },
+  {
+   "id": "sv01-202",
+   "tag": "food-visible",
+   "caption": "Scovillain breathes fire in a busy food street"
+  },
+  {
+   "id": "sv01-242",
+   "tag": "multiple-pokemon",
+   "caption": "Two Team Star grunts pose in helmets"
+  },
+  {
+   "id": "swsh1-7",
+   "tag": "desert",
+   "caption": "A cactus Pokémon with big pink flowers under a colorful sky."
+  },
+  {
+   "id": "swsh1-64",
+   "tag": "forest",
+   "caption": "A white moth Pokémon flying in a snowy night forest."
+  },
+  {
+   "id": "swsh1-78",
+   "tag": "multiple-pokemon",
+   "caption": "A small two-toned Pokémon eating a seed near a rock wall."
+  },
+  {
+   "id": "swsh1-106",
+   "tag": "flying",
+   "caption": "A draft horse Pokémon charging through flying rocks."
+  },
+  {
+   "id": "swsh1-123",
+   "tag": "flying",
+   "caption": "A blue toxic frog Pokémon striking amid flying debris."
+  },
+  {
+   "id": "swsh1-125",
+   "tag": "ruins-building",
+   "caption": "A fox Pokémon and a companion sneaking by a lit building at dusk."
+  },
+  {
+   "id": "swsh1-125",
+   "tag": "sunset-sunrise",
+   "caption": "A fox Pokémon and a companion sneaking by a lit building at dusk."
+  },
+  {
+   "id": "swsh1-141",
+   "tag": "sleeping",
+   "caption": "A sleeping Snorlax with spiky armor in a swirl of leaves."
+  },
+  {
+   "id": "swsh1-160",
+   "tag": "multiple-pokemon",
+   "caption": "Two energy orbs linked by a cable in a dark tunnel."
+  },
+  {
+   "id": "swsh1-178",
+   "tag": "ruins-building",
+   "caption": "An old professor standing before a large house with trees."
+  },
+  {
+   "id": "swsh1-183",
+   "tag": "multiple-pokemon",
+   "caption": "A Poké Ball capsule machine linked to another on a striped floor."
+  },
+  {
+   "id": "swsh1-184",
+   "tag": "multiple-pokemon",
+   "caption": "Two pink-masked gang members posing on a city street."
+  },
+  {
+   "id": "swsh1-190",
+   "tag": "multiple-pokemon",
+   "caption": "A cheerful two-toned hamster Pokémon on a bright blue background."
+  },
+  {
+   "id": "swsh10.5-078",
+   "tag": "human-present",
+   "caption": "Professor's Research appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh10.5-084",
+   "tag": "human-present",
+   "caption": "Professor's Research appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh11-163",
+   "tag": "ruins-building",
+   "caption": "Mirage Gate appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh12.5-153",
+   "tag": "fire-lava",
+   "caption": "Fire Energy appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh12-156",
+   "tag": "forest",
+   "caption": "Forest Seal Stone appears among rocky mountains."
+  },
+  {
+   "id": "swsh3.5-66",
+   "tag": "food-visible",
+   "caption": "Suspicious Food Tin appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh3-174",
+   "tag": "fire-lava",
+   "caption": "Heat Fire Energy appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh6-138",
+   "tag": "fire-lava",
+   "caption": "Fire-Resistant Gloves appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh6-163",
+   "tag": "snow-ice",
+   "caption": "Ice Rider Calyrex V appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh6-202",
+   "tag": "snow-ice",
+   "caption": "Ice Rider Calyrex VMAX appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh6-203",
+   "tag": "snow-ice",
+   "caption": "Ice Rider Calyrex VMAX appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh7-150",
+   "tag": "snow-ice",
+   "caption": "Lucky Ice Pop appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh7-153",
+   "tag": "flying",
+   "caption": "Rapid Strike Scroll of the Flying Dragon appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh7-159",
+   "tag": "snow-ice",
+   "caption": "Snow Leaf Badge appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh7-230",
+   "tag": "cave",
+   "caption": "Crystal Cave appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh8-284",
+   "tag": "fire-lava",
+   "caption": "Fire Energy appears against an abstract backdrop."
   }
  ],
  "visualSamples": {
@@ -2177,6 +2472,10 @@
      "caption": "Mallow & Lana appears on a beach with a human and other Pokémon."
     },
     {
+     "id": "swsh2-82",
+     "caption": "Palossand appears on a beach."
+    },
+    {
      "id": "smp-SM152",
      "caption": "Tapu Lele appears on a beach."
     },
@@ -2187,16 +2486,16 @@
     {
      "id": "pl2-22",
      "caption": "A pink Gastrodon on a sandy shore before a waterfall cliff and trees."
-    },
-    {
-     "id": "ex14-35",
-     "caption": "Ivysaur on sand near the sea with cliffs and crystals."
     }
    ],
    "omissions": []
   },
   "water-surface": {
    "positives": [
+    {
+     "id": "swsh4.5-22",
+     "caption": "Buizel swims by the water."
+    },
     {
      "id": "ex14-59",
      "caption": "Numel standing on red earth by a sea with small islands and a volcano."
@@ -2214,20 +2513,16 @@
      "caption": "Gyarados rises from water near a human figure."
     },
     {
+     "id": "swsh6-101",
+     "caption": "Qwilfish swims by the water."
+    },
+    {
      "id": "ex14-27",
      "caption": "Swampert standing in the sea with small islands and a blue sky."
     },
     {
-     "id": "pl2-77",
-     "caption": "A Sealeo swims through waves with bubbles."
-    },
-    {
-     "id": "xy6-18",
-     "caption": "Wingull flies beside open water and other Pokémon."
-    },
-    {
-     "id": "bw3-48",
-     "caption": "Trubbish sits beside blue water under stylized clouds."
+     "id": "swsh8-171",
+     "caption": "Zoroark swims in a forest."
     }
    ],
    "omissions": []
@@ -2235,12 +2530,28 @@
   "underwater": {
    "positives": [
     {
+     "id": "swsh5-9",
+     "caption": "Carnivine appears underwater."
+    },
+    {
      "id": "xy7-26",
      "caption": "Jolteon swims underwater."
     },
     {
+     "id": "swsh12-115",
+     "caption": "Toxapex swims underwater."
+    },
+    {
+     "id": "swshp-SWSH250",
+     "caption": "Lumineon V swims underwater."
+    },
+    {
      "id": "smp-SM03",
      "caption": "Popplio swims underwater."
+    },
+    {
+     "id": "swsh12-114",
+     "caption": "Mareanie swims underwater."
     },
     {
      "id": "sm7-22",
@@ -2249,22 +2560,6 @@
     {
      "id": "sm7-42",
      "caption": "Huntail appears underwater."
-    },
-    {
-     "id": "xy7-23",
-     "caption": "Relicanth swims underwater."
-    },
-    {
-     "id": "sm7-43",
-     "caption": "Gorebyss swims underwater with other Pokémon."
-    },
-    {
-     "id": "ecard2-20",
-     "caption": "Blue Pokémon swims underwater with light rays and stone pillars."
-    },
-    {
-     "id": "xy7-22",
-     "caption": "Vaporeon swims underwater."
     }
    ],
    "omissions": []
@@ -2274,6 +2569,10 @@
     {
      "id": "dp1-64",
      "caption": "A large dark bird flies over treetops while two small birds fly above."
+    },
+    {
+     "id": "sv01-016",
+     "caption": "A small spider with a string ball walking through a purple forest."
     },
     {
      "id": "sm8-11",
@@ -2298,10 +2597,6 @@
     {
      "id": "hgss4-39",
      "caption": "Luvdisc in surface water, a forest, grassland, sunset, swimming."
-    },
-    {
-     "id": "sm7-92",
-     "caption": "Beldum appears in a forest."
     }
    ],
    "omissions": [
@@ -2311,24 +2606,36 @@
      "caption": "Three mole Pokémon heads poke out of a dirt mound on a forest path."
     },
     {
+     "id": "sv01-059",
+     "tag": "forest",
+     "caption": "A white whale-like Pokémon in a snowy forest."
+    },
+    {
+     "id": "swsh1-64",
+     "tag": "forest",
+     "caption": "A white moth Pokémon flying in a snowy night forest."
+    },
+    {
      "id": "ex3-77",
      "tag": "forest",
      "caption": "A small bird Pokémon breathes fire in a dark stormy forest."
-    },
-    {
-     "id": "pop5-13",
-     "tag": "forest",
-     "caption": "Pikachu standing in dark woods with a glow around it."
-    },
-    {
-     "id": "ex12-4",
-     "tag": "forest",
-     "caption": "Delcatty stands on a fallen log in a dark jungle."
     }
    ]
   },
   "grassland-field": {
    "positives": [
+    {
+     "id": "swsh4-83",
+     "caption": "Wooper appears in a grassy field."
+    },
+    {
+     "id": "swsh4-33",
+     "caption": "Oshawott appears in a grassy field."
+    },
+    {
+     "id": "swsh4-23",
+     "caption": "Charmander appears in a grassy field."
+    },
     {
      "id": "ex7-11",
      "caption": "A blue cottonball Pokémon floats among puffs above a flowery meadow."
@@ -2348,21 +2655,14 @@
     {
      "id": "ex2-46",
      "caption": "A green Pokémon wearing a lily-pad hat leaps through tall grass."
-    },
-    {
-     "id": "ex7-74",
-     "caption": "A blurry armadillo Pokémon sits in grass among white puffs."
-    },
-    {
-     "id": "sm1-8",
-     "caption": "Masquerain appears in a grassy field."
-    },
-    {
-     "id": "pl3-96",
-     "caption": "Cherubi smiles among grass and colorful flowers."
     }
    ],
    "omissions": [
+    {
+     "id": "sv01-013",
+     "tag": "grassland-field",
+     "caption": "A green cat Pokémon walking in a flowery meadow."
+    },
     {
      "id": "base4-34",
      "tag": "grassland-field",
@@ -2437,6 +2737,10 @@
      "caption": "Trapinch appears inside a cave."
     },
     {
+     "id": "swsh7-86",
+     "caption": "Roggenrola appears among rocky mountains."
+    },
+    {
      "id": "sm1-70",
      "caption": "Boldore appears among rocky mountains."
     },
@@ -2445,12 +2749,8 @@
      "caption": "Joltik appears in a cave."
     },
     {
-     "id": "ex8-89",
-     "caption": "A waterfall pours into a pool inside a cave"
-    },
-    {
-     "id": "ex7-38",
-     "caption": "A red slug Pokémon stands in a fiery lava cave."
+     "id": "swsh1-39",
+     "caption": "A fiery centipede Pokémon coiled inside a cave with flames."
     }
    ],
    "omissions": [
@@ -2483,6 +2783,10 @@
      "caption": "Dunsparce appears in a desert."
     },
     {
+     "id": "sv01-082",
+     "caption": "Drowzee sits on sandy desert ground beside a rock pillar"
+    },
+    {
      "id": "xy7-40",
      "caption": "Regirock appears in a desert."
     },
@@ -2505,10 +2809,6 @@
     {
      "id": "bw9-68",
      "caption": "Sandile rests on frozen desert ground beneath blue sky."
-    },
-    {
-     "id": "bw9-55",
-     "caption": "Yamask floats through a rocky desert canyon."
     }
    ],
    "omissions": [
@@ -2518,19 +2818,19 @@
      "caption": "A detective in a trench coat stands in a desert-colored plain with red towers."
     },
     {
-     "id": "ex4-1",
+     "id": "sv01-005",
      "tag": "desert",
-     "caption": "A green cactus Pokémon looms against a dark circuit-like background."
+     "caption": "A cactus Pokémon in front of a colorful house with flowers."
     },
     {
-     "id": "ex9-44",
+     "id": "sv01-006",
      "tag": "desert",
-     "caption": "A green cactus Pokémon rolls past orange rocks"
+     "caption": "A scarecrow Pokémon beside glowing green light among cacti."
     },
     {
-     "id": "ex4-24",
+     "id": "sv01-120",
      "tag": "desert",
-     "caption": "A green cactus Pokémon glows in a beam of light."
+     "caption": "Sandaconda coils inside a rocky cave near a cactus"
     }
    ]
   },
@@ -2549,6 +2849,10 @@
      "caption": "Alolan Ninetales appears in snow and ice."
     },
     {
+     "id": "swsh8-145",
+     "caption": "Claydol flies among rocky mountains."
+    },
+    {
      "id": "xy3-62",
      "caption": "Tyrantrum appears among rocky mountains."
     },
@@ -2557,16 +2861,12 @@
      "caption": "Delibird runs across snow beneath a crescent moon."
     },
     {
+     "id": "swsh9-116",
+     "caption": "Castform flies among rocky mountains."
+    },
+    {
      "id": "bw8-27",
      "caption": "Piloswine walks through snowy plants and falling snow."
-    },
-    {
-     "id": "bw8-37",
-     "caption": "Vanilluxe floats through a snowy blue sky."
-    },
-    {
-     "id": "bw10-26",
-     "caption": "Abomasnow stands in a frozen forest."
     }
    ],
    "omissions": [
@@ -2581,14 +2881,14 @@
      "caption": "Aurorus fills the frame amid icy cosmic light."
     },
     {
+     "id": "swsh7-150",
+     "tag": "snow-ice",
+     "caption": "Lucky Ice Pop appears against an abstract backdrop."
+    },
+    {
      "id": "ecard2-73",
      "tag": "snow-ice",
      "caption": "Doduo stands on a small ice-blue patch against an orange pattern."
-    },
-    {
-     "id": "dp5-98",
-     "tag": "snow-ice",
-     "caption": "Glaceon breathing icy mist against a red burst"
     }
    ]
   },
@@ -2611,6 +2911,10 @@
      "caption": "Rattata stands inside a frozen city plaza."
     },
     {
+     "id": "swsh10-149",
+     "caption": "Kamado appears in a city with a human."
+    },
+    {
      "id": "xy7-73",
      "caption": "Faded Town appears among rocky mountains."
     },
@@ -2621,17 +2925,23 @@
     {
      "id": "xy8-107",
      "caption": "Xerneas appears among snow and ice."
-    },
-    {
-     "id": "xyp-XY127",
-     "caption": "Moltres flies above a city beneath a fiery sky."
     }
    ],
    "omissions": [
     {
+     "id": "sv01-202",
+     "tag": "city",
+     "caption": "Scovillain breathes fire in a busy food street"
+    },
+    {
      "id": "base5-69",
      "tag": "city",
      "caption": "Red-white ball creature glowing before blurred city lights at night."
+    },
+    {
+     "id": "sv01-087",
+     "tag": "city",
+     "caption": "Shuppet floats by a glowing lantern on a dark street"
     },
     {
      "id": "ecard2-61",
@@ -2659,26 +2969,34 @@
      "caption": "A red machine-bodied Rotom grins in a room with sparkles."
     },
     {
+     "id": "swsh1-89",
+     "caption": "A teacup Pokémon on a table beside glasses and a cup."
+    },
+    {
      "id": "xy9-107",
      "caption": "Professor Sycamore appears indoors with people."
     },
     {
+     "id": "swsh4-45",
+     "caption": "Voltorb appears in a city."
+    },
+    {
      "id": "xy11-2",
      "caption": "Tangrowth appears indoors."
-    },
-    {
-     "id": "pl2-RT3",
-     "caption": "A red Rotom in a washer-like body in a kitchen with a dish on top."
-    },
-    {
-     "id": "xy12-47",
-     "caption": "Gastly appears indoors."
     }
    ],
    "omissions": []
   },
   "ruins-building": {
    "positives": [
+    {
+     "id": "swsh12-125",
+     "caption": "Klinklang swims in a city."
+    },
+    {
+     "id": "swsh8-130",
+     "caption": "Dragapult flies in a city with other Pokémon."
+    },
     {
      "id": "bw5-82",
      "caption": "Blissey stands on a station platform beside buildings under blue sky."
@@ -2688,28 +3006,20 @@
      "caption": "A professor studies a device outside with Pokémon near a house."
     },
     {
+     "id": "swsh12-124",
+     "caption": "Klang flies in a city."
+    },
+    {
      "id": "sm6-50",
      "caption": "Inkay appears near a building."
     },
     {
-     "id": "bw5-52",
-     "caption": "Cofagrigus rises from a cracked stone tomb amid black shadows."
+     "id": "swsh12-123",
+     "caption": "Klink flies in a city."
     },
     {
-     "id": "bw5-80",
-     "caption": "Chansey stands beside a bright Pokémon Center entrance."
-    },
-    {
-     "id": "bw5-49",
-     "caption": "Slowking stands beside a lighthouse under moonlit clouds."
-    },
-    {
-     "id": "xy4-41",
-     "caption": "Litwick appears among old structures."
-    },
-    {
-     "id": "sm2-116",
-     "caption": "Aether Paradise Conservation Area appears in a forest."
+     "id": "swsh10-183",
+     "caption": "Cyllene appears in a city with a human."
     }
    ],
    "omissions": [
@@ -2729,9 +3039,9 @@
      "caption": "Close-up of a white furry Arcanine with a tiny castle behind."
     },
     {
-     "id": "dp7-17",
+     "id": "sv01-183",
      "tag": "ruins-building",
-     "caption": "A curled-up ghost Pokémon against a purple building-like pattern."
+     "caption": "A girl in a hoodie stands by stairs outside a building"
     }
    ]
   },
@@ -2758,16 +3068,16 @@
      "caption": "Granbull appears among rocky mountains."
     },
     {
+     "id": "swsh4.5-72",
+     "caption": "Skyla appears beneath a cloudy sky with a human."
+    },
+    {
      "id": "neo4-102",
      "caption": "Rhydon and Marill in a stadium before a cheering crowd and cloudy sky."
     },
     {
-     "id": "xyp-XY27",
-     "caption": "Several Pokémon ride a vehicle through a city canal."
-    },
-    {
-     "id": "bw1-29",
-     "caption": "Dewott attacks amid crashing waves by rocky shore with trees."
+     "id": "swsh8-132",
+     "caption": "Sandslash appears among rocky mountains."
     }
    ],
    "omissions": [
@@ -2796,6 +3106,10 @@
   "night": {
    "positives": [
     {
+     "id": "swsh8-157",
+     "caption": "Gengar VMAX appears indoors with a human."
+    },
+    {
      "id": "col1-56",
      "caption": "Eevee in a city, a building, a cloudy sky, night, flight."
     },
@@ -2808,6 +3122,10 @@
      "caption": "Bellossom appears at night."
     },
     {
+     "id": "swsh8-156",
+     "caption": "Gengar V appears indoors with a human."
+    },
+    {
      "id": "xy1-91",
      "caption": "Mr. Mime appears in a forest."
     },
@@ -2818,14 +3136,6 @@
     {
      "id": "ex14-8",
      "caption": "Manectric roaring in front of a large full moon."
-    },
-    {
-     "id": "neo3-65",
-     "caption": "Gyarados swimming in dark choppy water under a starry sky"
-    },
-    {
-     "id": "sm3-68",
-     "caption": "Lunatone appears among rocky mountains."
     }
    ],
    "omissions": [
@@ -2858,6 +3168,10 @@
      "caption": "Latios soaring under dark clouds with an orange horizon"
     },
     {
+     "id": "swsh3-84",
+     "caption": "Diglett appears among rocky mountains."
+    },
+    {
      "id": "ecard1-95",
      "caption": "Bulbasaur howling before a huge radiating sun."
     },
@@ -2880,10 +3194,6 @@
     {
      "id": "dp5-64",
      "caption": "Green Pokemon crouching before a bright glowing horizon"
-    },
-    {
-     "id": "pop7-9",
-     "caption": "Stantler running across a red rocky landscape at sunrise"
     }
    ],
    "omissions": [
@@ -2932,16 +3242,16 @@
      "caption": "Fiery creature standing amid flames and dark embers."
     },
     {
+     "id": "swsh10-165",
+     "caption": "Heatran V appears near flames."
+    },
+    {
      "id": "xy6-63",
      "caption": "Reshiram flies beneath a cloudy sky."
     },
     {
      "id": "xy5-133",
      "caption": "Maxie's Hidden Ball Trick appears among rocky mountains with people."
-    },
-    {
-     "id": "dpp-DP10",
-     "caption": "Infernape attacking with blazing flames around its fists."
     }
    ],
    "omissions": [
@@ -2982,6 +3292,10 @@
      "caption": "Jigglypuff in grass with white flowers"
     },
     {
+     "id": "swsh8-29",
+     "caption": "Vulpix appears in a grassy field."
+    },
+    {
      "id": "ex7-57",
      "caption": "A pink Pokémon floats among leaves, flowers and ocean waves."
     },
@@ -2996,10 +3310,6 @@
     {
      "id": "sm8-140",
      "caption": "Kirlia appears in a grassy field."
-    },
-    {
-     "id": "sm10-157",
-     "caption": "Porygon-Z appears in a forest with other Pokémon."
     }
    ],
    "omissions": [
@@ -3040,6 +3350,14 @@
      "caption": "A duck Pokémon flies holding a leek near mountains and clouds."
     },
     {
+     "id": "swsh2-112",
+     "caption": "Koffing appears indoors with visible food."
+    },
+    {
+     "id": "swsh2-20",
+     "caption": "Applin appears in a forest with visible food."
+    },
+    {
      "id": "ex10-91",
      "caption": "A yellow Sitrus berry on a yellow burst"
     },
@@ -3048,19 +3366,22 @@
      "caption": "A fluffy berry floats against a bright blue sky"
     },
     {
-     "id": "dp4-99",
-     "caption": "A bitten apple core swirling in green light"
-    },
-    {
-     "id": "dp1-30",
-     "caption": "A rabbit Pokémon leaps against a blue sky beside an orange tree."
-    },
-    {
-     "id": "det1-2",
-     "caption": "Ludicolo appears indoors with visible food."
+     "id": "swsh2-21",
+     "caption": "Applin appears in a forest with visible food."
     }
    ],
-   "omissions": []
+   "omissions": [
+    {
+     "id": "sv01-202",
+     "tag": "food-visible",
+     "caption": "Scovillain breathes fire in a busy food street"
+    },
+    {
+     "id": "swsh3.5-66",
+     "tag": "food-visible",
+     "caption": "Suspicious Food Tin appears against an abstract backdrop."
+    }
+   ]
   },
   "human-present": {
    "positives": [
@@ -3077,6 +3398,14 @@
      "caption": "Pokémon Center Lady appears with people."
     },
     {
+     "id": "swsh6-134",
+     "caption": "Doctor appears in a forest with a human."
+    },
+    {
+     "id": "swsh5-151",
+     "caption": "Single Strike Urshifu V appears with a human."
+    },
+    {
      "id": "xy2-104",
      "caption": "Lysandre appears with people."
     },
@@ -3087,36 +3416,28 @@
     {
      "id": "ex6-88",
      "caption": "A smiling young man with glasses stands before sky and plants."
-    },
-    {
-     "id": "sm11-200",
-     "caption": "Hapu appears near a building with a human."
-    },
-    {
-     "id": "gym2-19",
-     "caption": "Koga pointing forward in a ninja outfit against a green background"
     }
    ],
    "omissions": [
+    {
+     "id": "swsh10.5-078",
+     "tag": "human-present",
+     "caption": "Professor's Research appears against an abstract backdrop."
+    },
     {
      "id": "pl1-103",
      "tag": "human-present",
      "caption": "A red Wurmple figure crawls on a dark green leaf."
     },
     {
+     "id": "swsh10.5-084",
+     "tag": "human-present",
+     "caption": "Professor's Research appears against an abstract backdrop."
+    },
+    {
      "id": "dp2-124",
      "tag": "human-present",
      "caption": "Four legendary Pokémon float on a dark starry background in a trainer card illustration."
-    },
-    {
-     "id": "ecard3-54",
-     "tag": "human-present",
-     "caption": "Eevee sits before a yellow wall with stick-figure paintings."
-    },
-    {
-     "id": "pl1-125",
-     "tag": "human-present",
-     "caption": "A dark Palkia in pink and black with a man at the corner."
     }
    ]
   },
@@ -3135,6 +3456,10 @@
      "caption": "Delinquent appears with people and other Pokémon."
     },
     {
+     "id": "cel25-13",
+     "caption": "Cosmog appears indoors with a human and other Pokémon."
+    },
+    {
      "id": "xy5-45",
      "caption": "Spheal appears beside open water with people and with other Pokémon."
     },
@@ -3149,10 +3474,6 @@
     {
      "id": "base5-12",
      "caption": "Pink creature with a shell creature attached and a tiny dark figure on top."
-    },
-    {
-     "id": "sm1-133",
-     "caption": "Team Skull Grunt appears in a city with people and with other Pokémon."
     }
    ],
    "omissions": [
@@ -3185,6 +3506,10 @@
      "caption": "Slaking sleeps in a grassy field."
     },
     {
+     "id": "swsh4-131",
+     "caption": "Snorlax sleeps in a grassy field."
+    },
+    {
      "id": "dp1-37",
      "caption": "A large Snorlax sleeps with its eyes closed in a sunny landscape."
     },
@@ -3207,13 +3532,15 @@
     {
      "id": "g1-RC21",
      "caption": "Sylveon EX sleeps indoors and other Pokémon."
-    },
-    {
-     "id": "sm6-13",
-     "caption": "Heatran sleeps in a cave."
     }
    ],
-   "omissions": []
+   "omissions": [
+    {
+     "id": "swsh1-141",
+     "tag": "sleeping",
+     "caption": "A sleeping Snorlax with spiky armor in a swirl of leaves."
+    }
+   ]
   },
   "flying": {
    "positives": [
@@ -3234,6 +3561,10 @@
      "caption": "Small bird flying low over a green slope under a cloudy blue sky."
     },
     {
+     "id": "swsh3-15",
+     "caption": "Steenee flies beneath a cloudy sky."
+    },
+    {
      "id": "xy6-65",
      "caption": "Spearow flies in a city."
     },
@@ -3244,10 +3575,6 @@
     {
      "id": "pl3-20",
      "caption": "Charizard flies above a dark city while breathing fire."
-    },
-    {
-     "id": "xy8-128",
-     "caption": "Chatot flies in a forest."
     }
    ],
    "omissions": [
@@ -3276,6 +3603,14 @@
   "swimming": {
    "positives": [
     {
+     "id": "sv01-047",
+     "caption": "A sea weasel Pokémon swimming past coral underwater."
+    },
+    {
+     "id": "swsh8-79",
+     "caption": "Inteleon VMAX swims by the water."
+    },
+    {
      "id": "ex3-53",
      "caption": "A red crawfish Pokémon wades in a shallow stream."
     },
@@ -3292,20 +3627,12 @@
      "caption": "Magikarp swims by the water with other Pokémon."
     },
     {
-     "id": "col1-SL8",
-     "caption": "Palkia in surface water, swimming."
+     "id": "sv01-046",
+     "caption": "A sea weasel Pokémon swimming in a pool with lounge chairs."
     },
     {
-     "id": "ex3-51",
-     "caption": "A whiskered fish Pokémon swims through dark water."
-    },
-    {
-     "id": "ecard1-127",
-     "caption": "Qwilfish swimming amid bubbles in green water."
-    },
-    {
-     "id": "sm10-33",
-     "caption": "Squirtle swims by the water."
+     "id": "swsh8-78",
+     "caption": "Inteleon V swims by the water."
     }
    ],
    "omissions": [

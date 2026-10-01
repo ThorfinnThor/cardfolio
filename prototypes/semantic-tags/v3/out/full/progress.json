@@ -847,12 +847,172 @@
    "at": "2026-10-01T08:24:05.908Z",
    "agentTokens": 0,
    "agentMinutes": 0
+  },
+  "cel25": {
+   "cards": 24,
+   "valid": 24,
+   "invalid": 0,
+   "at": "2026-10-01T09:18:45.526Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "fut2020": {
+   "cards": 5,
+   "valid": 5,
+   "invalid": 0,
+   "at": "2026-10-01T09:18:45.567Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "sv01": {
+   "cards": 258,
+   "valid": 258,
+   "invalid": 0,
+   "at": "2026-10-01T09:18:45.608Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "swsh1": {
+   "cards": 216,
+   "valid": 216,
+   "invalid": 0,
+   "at": "2026-10-01T09:18:45.648Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "swsh10.5": {
+   "cards": 88,
+   "valid": 88,
+   "invalid": 0,
+   "at": "2026-10-01T09:18:45.689Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "swsh10": {
+   "cards": 216,
+   "valid": 216,
+   "invalid": 0,
+   "at": "2026-10-01T09:18:45.731Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "swsh11": {
+   "cards": 217,
+   "valid": 217,
+   "invalid": 0,
+   "at": "2026-10-01T09:18:45.774Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "swsh12.5": {
+   "cards": 160,
+   "valid": 160,
+   "invalid": 0,
+   "at": "2026-10-01T09:18:45.814Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "swsh12": {
+   "cards": 215,
+   "valid": 215,
+   "invalid": 0,
+   "at": "2026-10-01T09:18:45.855Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "swsh2": {
+   "cards": 209,
+   "valid": 209,
+   "invalid": 0,
+   "at": "2026-10-01T09:18:45.895Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "swsh3.5": {
+   "cards": 80,
+   "valid": 80,
+   "invalid": 0,
+   "at": "2026-10-01T09:18:45.935Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "swsh3": {
+   "cards": 201,
+   "valid": 201,
+   "invalid": 0,
+   "at": "2026-10-01T09:18:45.975Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "swsh4.5": {
+   "cards": 73,
+   "valid": 73,
+   "invalid": 0,
+   "at": "2026-10-01T09:18:46.016Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "swsh4": {
+   "cards": 203,
+   "valid": 203,
+   "invalid": 0,
+   "at": "2026-10-01T09:18:46.056Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "swsh5": {
+   "cards": 183,
+   "valid": 183,
+   "invalid": 0,
+   "at": "2026-10-01T09:18:46.098Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "swsh6": {
+   "cards": 233,
+   "valid": 233,
+   "invalid": 0,
+   "at": "2026-10-01T09:18:46.142Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "swsh7": {
+   "cards": 237,
+   "valid": 237,
+   "invalid": 0,
+   "at": "2026-10-01T09:18:46.186Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "swsh8": {
+   "cards": 284,
+   "valid": 284,
+   "invalid": 0,
+   "at": "2026-10-01T09:18:46.227Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "swsh9": {
+   "cards": 186,
+   "valid": 186,
+   "invalid": 0,
+   "at": "2026-10-01T09:18:46.268Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
+  },
+  "swshp": {
+   "cards": 285,
+   "valid": 285,
+   "invalid": 0,
+   "at": "2026-10-01T09:18:46.308Z",
+   "agentTokens": 0,
+   "agentMinutes": 0
   }
  },
  "totals": {
-  "sets": 106,
-  "cards": 11574,
-  "valid": 11574,
+  "sets": 126,
+  "cards": 15147,
+  "valid": 15147,
   "invalid": 0,
   "agentTokens": 0,
   "agentMinutes": 16.4
