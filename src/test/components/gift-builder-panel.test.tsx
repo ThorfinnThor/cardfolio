@@ -126,4 +126,35 @@ describe("GiftBuilderPanel", () => {
     fireEvent.click(within(unavailableRow as HTMLLIElement).getByRole("button", { name: "Hinzufügen" }));
     expect(screen.getByText("9 / 9")).toBeInTheDocument();
   });
+
+  it("builds a proposal from one of ten semantic artwork themes", async () => {
+    const loader = {
+      loadCandidatePool: vi.fn(async () => []),
+      hydrateCandidates: vi.fn(async () => Array.from({ length: 9 }, (_, index) => candidateWithArtwork(index + 1))),
+    };
+    const smartSearch = {
+      search: vi.fn(async () => Array.from({ length: 9 }, (_, index) => ({
+        ref: { provider: "tcgdex" as const, id: `gift-ui-${index + 1}`, language: "en" as const },
+        score: 100,
+        reasonCode: "semantic" as const,
+      }))),
+    };
+
+    render(<GiftBuilderPanel loader={loader} smartSearch={smartSearch} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    expect(screen.getAllByRole("radio", { name: /Nach Artwork-Motiv/i })).toHaveLength(1);
+    fireEvent.click(screen.getByRole("radio", { name: /Nach Artwork-Motiv/i }));
+    expect(screen.getAllByRole("radio", { name: /Meer & Wasser/i })).toHaveLength(1);
+    fireEvent.click(screen.getByRole("radio", { name: /Meer & Wasser/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Vorschlag erzeugen/i }));
+
+    await screen.findByText("9 / 9");
+    expect(loader.loadCandidatePool).not.toHaveBeenCalled();
+    expect(smartSearch.search).toHaveBeenCalledWith(expect.objectContaining({
+      text: "Meer",
+      language: "en",
+    }));
+    fireEvent.click(screen.getByRole("button", { name: /Alle passenden Karten ansehen/i }));
+    expect(screen.getByText(/Artwork-Treffer zum Motiv „Meer & Wasser“/i)).toBeInTheDocument();
+  });
 });
