@@ -604,6 +604,13 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
       status: 200,
     });
   });
+  await page.route("https://api.tcgdex.net/v2/en/sets/swsh1", async (route) => {
+    await route.fulfill({
+      body: JSON.stringify({ id: "swsh1", name: "Sword & Shield", serie: { id: "swsh", name: "Sword & Shield" } }),
+      headers,
+      status: 200,
+    });
+  });
   await page.setViewportSize({ height: 900, width: 375 });
   await page.goto("/");
   await page.getByRole("button", { name: "Geschenk erstellen" }).click();
