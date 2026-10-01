@@ -1,33 +1,33 @@
 {
- "generatedAt": "2026-10-01T09:36:47.711Z",
- "completedSets": 129,
- "expectedCards": 15825,
- "resultRows": 15825,
+ "generatedAt": "2026-10-01T09:59:43.054Z",
+ "completedSets": 130,
+ "expectedCards": 16055,
+ "resultRows": 16055,
  "schemaErrors": [],
  "tagCounts": {
   "beach": 174,
-  "water-surface": 1404,
-  "underwater": 455,
-  "forest": 2205,
-  "grassland-field": 1653,
-  "mountain-rocks": 1713,
-  "cave": 312,
-  "desert": 223,
-  "snow-ice": 527,
-  "city": 789,
-  "indoors": 837,
-  "ruins-building": 783,
-  "sky-clouds": 2450,
-  "night": 588,
-  "sunset-sunrise": 298,
-  "fire-lava": 723,
-  "flowers": 1035,
-  "food-visible": 253,
-  "human-present": 1095,
-  "multiple-pokemon": 1068,
-  "sleeping": 168,
-  "flying": 1767,
-  "swimming": 824
+  "water-surface": 1423,
+  "underwater": 484,
+  "forest": 2249,
+  "grassland-field": 1708,
+  "mountain-rocks": 1772,
+  "cave": 324,
+  "desert": 238,
+  "snow-ice": 544,
+  "city": 820,
+  "indoors": 867,
+  "ruins-building": 818,
+  "sky-clouds": 2544,
+  "night": 614,
+  "sunset-sunrise": 306,
+  "fire-lava": 740,
+  "flowers": 1085,
+  "food-visible": 260,
+  "human-present": 1120,
+  "multiple-pokemon": 1102,
+  "sleeping": 179,
+  "flying": 1816,
+  "swimming": 870
  },
  "relationFlags": [
   {
@@ -2718,8 +2718,8 @@
      "caption": "Misdreavus appears in a grassy field."
     },
     {
-     "id": "ex2-46",
-     "caption": "A green Pokémon wearing a lily-pad hat leaps through tall grass."
+     "id": "sv03-003",
+     "caption": "The illustrated subject appears in a grassy field."
     }
    ],
    "omissions": [
@@ -2862,6 +2862,10 @@
      "caption": "Drowzee sits on sandy desert ground beside a rock pillar"
     },
     {
+     "id": "sv03-152",
+     "caption": "The illustrated subject appears inside a cave."
+    },
+    {
      "id": "xy7-40",
      "caption": "Regirock appears in a desert."
     },
@@ -2880,10 +2884,6 @@
     {
      "id": "ex2-60",
      "caption": "A shelled Pokémon burrows into rippling sand."
-    },
-    {
-     "id": "bw9-68",
-     "caption": "Sandile rests on frozen desert ground beneath blue sky."
     }
    ],
    "omissions": [
@@ -3040,6 +3040,10 @@
      "caption": "Starmie appears indoors."
     },
     {
+     "id": "sv03-220",
+     "caption": "The illustrated subject appears on a city street with a person and other Pokémon."
+    },
+    {
      "id": "pl2-RT2",
      "caption": "A red machine-bodied Rotom grins in a room with sparkles."
     },
@@ -3054,10 +3058,6 @@
     {
      "id": "swsh4-45",
      "caption": "Voltorb appears in a city."
-    },
-    {
-     "id": "xy11-2",
-     "caption": "Tangrowth appears indoors."
     }
    ],
    "omissions": []
@@ -3413,6 +3413,10 @@
   "food-visible": {
    "positives": [
     {
+     "id": "sv03-097",
+     "caption": "The illustrated subject appears inside a room with visible food."
+    },
+    {
      "id": "neo3-16",
      "caption": "Celebi floating on a yellow background with berries and leaves"
     },
@@ -3439,10 +3443,6 @@
     {
      "id": "ex10-85",
      "caption": "A fluffy berry floats against a bright blue sky"
-    },
-    {
-     "id": "swsh2-21",
-     "caption": "Applin appears in a forest with visible food."
     }
    ],
    "omissions": [
@@ -3593,6 +3593,10 @@
      "caption": "Cottonee sleeps."
     },
     {
+     "id": "sv03-118",
+     "caption": "The illustrated subject rests asleep beneath a cloudy sky with other Pokémon."
+    },
+    {
      "id": "bw11-11",
      "caption": "Two Swadloon rest together among large forest leaves."
     },
@@ -3603,10 +3607,6 @@
     {
      "id": "ex6-53",
      "caption": "A sleeping cocoon Pokémon hangs from a branch against a dark night sky."
-    },
-    {
-     "id": "g1-RC21",
-     "caption": "Sylveon EX sleeps indoors and other Pokémon."
     }
    ],
    "omissions": [
@@ -3644,12 +3644,12 @@
      "caption": "Spearow flies in a city."
     },
     {
-     "id": "pl3-44",
-     "caption": "Shedinja floats against a colorful abstract background."
+     "id": "sv03-217",
+     "caption": "The illustrated subject swims underwater."
     },
     {
-     "id": "pl3-20",
-     "caption": "Charizard flies above a dark city while breathing fire."
+     "id": "sv03-207",
+     "caption": "The illustrated subject flies in a grassy field with other Pokémon."
     }
    ],
    "omissions": [
@@ -3682,6 +3682,10 @@
      "caption": "A sea weasel Pokémon swimming past coral underwater."
     },
     {
+     "id": "sv03-127",
+     "caption": "The illustrated subject swims underwater with other Pokémon."
+    },
+    {
      "id": "swsh8-79",
      "caption": "Inteleon VMAX swims by the water."
     },
@@ -3704,10 +3708,6 @@
     {
      "id": "sv01-046",
      "caption": "A sea weasel Pokémon swimming in a pool with lounge chairs."
-    },
-    {
-     "id": "swsh8-78",
-     "caption": "Inteleon V swims by the water."
     }
    ],
    "omissions": [
