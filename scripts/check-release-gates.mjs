@@ -22,6 +22,11 @@ function requireText(relativePath, expected) {
 requireFile("out/index.html");
 requireFile("out/help/index.html");
 requireFile("src/app/icon.svg");
+requireFile("data/semantic/card-artwork-tags-v1.manifest.json");
+requireFile("data/semantic/card-artwork-tags-v1.jsonl");
+requireFile("data/semantic/catalog-coverage.json");
+requireFile("data/semantic/search-evaluation-v1.json");
+requireFile("public/data/semantic/card-artwork-search-v1.json");
 requireText("out/_headers", [
   "X-Content-Type-Options: nosniff",
   "X-Frame-Options: DENY",
@@ -36,6 +41,7 @@ requireText("next.config.ts", ['output: "export"', "unoptimized: true"]);
 requireText("src/config/feature-flags.ts", [
   "designPreview: false",
   "pricing: false",
+  'smartSearch: process.env.NEXT_PUBLIC_FEATURE_SMART_SEARCH !== "false"',
   "tcgplayerPrefill: false",
   "cardtraderCommerce: false",
   "publicSharing: false",
@@ -43,7 +49,7 @@ requireText("src/config/feature-flags.ts", [
 requireText(".github/workflows/sync-public-data.yml", [
   "permissions:",
   "contents: write",
-  "git add public/data/catalog public/data/marketplace",
+  "git add public/data/catalog public/data/marketplace data/semantic/catalog-coverage.json",
   "npm run release:check",
 ]);
 

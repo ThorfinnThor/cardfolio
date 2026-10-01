@@ -1,3 +1,5 @@
+import type { CardLanguage, CardRef } from "@/domain/types";
+
 export const SEMANTIC_TAGS = [
   "beach",
   "water-surface",
@@ -82,6 +84,24 @@ export interface SemanticSearchResult {
   row: SemanticCardRow;
   score: number;
   tags: readonly SemanticTag[];
+}
+
+export interface SmartSearchQuery {
+  text: string;
+  language: CardLanguage;
+  limit: number;
+  requiredTags?: readonly SemanticTag[];
+  contextCardIds?: readonly string[];
+}
+
+export interface SmartSearchHit {
+  ref: CardRef;
+  score: number;
+  reasonCode: "semantic" | "reranked" | "fallback";
+}
+
+export interface SmartSearchAdapter {
+  search(query: SmartSearchQuery, signal?: AbortSignal): Promise<SmartSearchHit[]>;
 }
 
 const TAG_BITS = new Map<SemanticTag, number>(SEMANTIC_TAGS.map((tag, index) => [tag, 2 ** index]));

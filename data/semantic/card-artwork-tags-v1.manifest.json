@@ -1,0 +1,32 @@
+{
+  "format": "cardfolio-reviewed-semantic-tags",
+  "version": 1,
+  "source": "TCGdex EN; semantic tags automatically detected",
+  "generatedAt": "2026-10-01",
+  "cardCount": 19635,
+  "tags": [
+    "beach",
+    "water-surface",
+    "underwater",
+    "forest",
+    "grassland-field",
+    "mountain-rocks",
+    "cave",
+    "desert",
+    "snow-ice",
+    "city",
+    "indoors",
+    "ruins-building",
+    "sky-clouds",
+    "night",
+    "sunset-sunrise",
+    "fire-lava",
+    "flowers",
+    "food-visible",
+    "human-present",
+    "multiple-pokemon",
+    "sleeping",
+    "flying",
+    "swimming"
+  ]
+}

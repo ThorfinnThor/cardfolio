@@ -1733,7 +1733,7 @@ export function FoundationWorkspace() {
                 <>
                   <div className={styles.searchModeSwitch} role="group" aria-label="Suchart">
                     <button type="button" aria-pressed={searchMode === "catalog"} onClick={() => setSearchMode("catalog")}>Name / Nummer</button>
-                    <button type="button" aria-pressed={searchMode === "semantic"} onClick={() => setSearchMode("semantic")}>Motiv im Artwork</button>
+                    {FEATURES.smartSearch ? <button type="button" aria-pressed={searchMode === "semantic"} onClick={() => setSearchMode("semantic")}>Motiv im Artwork</button> : null}
                   </div>
                   {searchMode === "semantic" ? (
                     <SemanticCardSearch onPreview={(item) => void previewSearchResult(item)} />

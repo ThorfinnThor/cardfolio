@@ -4,6 +4,8 @@ import { dirname, join } from "node:path";
 const LANGUAGES = ["en", "de"];
 const OUTPUT_DIRECTORY = join(process.cwd(), "public", "data", "catalog");
 const MARKETPLACE_OUTPUT_DIRECTORY = join(process.cwd(), "public", "data", "marketplace");
+const SEMANTIC_INDEX_PATH = join(process.cwd(), "public", "data", "semantic", "card-artwork-search-v1.json");
+const SEMANTIC_COVERAGE_PATH = join(process.cwd(), "data", "semantic", "catalog-coverage.json");
 const MINIMUM_ITEMS = 50;
 const MAXIMUM_SHRINK_RATIO = 0.15;
 const TCGPLAYER_MASS_ENTRY_SOURCE = "https://www.tcgplayer.com/massentry?productline=Pokemon";
@@ -82,6 +84,10 @@ const TCGPLAYER_SET_ALIASES = {
 const TCGPLAYER_UNAVAILABLE_SETS = {
   fut2020: "TCGplayer führt Pokémon Futsal 2020 nicht in der offiziellen Pokémon-Mass-Entry-Setcodeliste.",
   mfb: "TCGplayer führt My First Battle als Marketplace-Set, aber ohne offiziellen Pokémon-Mass-Entry-Setcode.",
+};
+
+const SEMANTIC_BLOCKED_SOURCES = {
+  dc1: "TCGdex lists image references, but all checked source image variants return HTTP 404.",
 };
 
 function normalizeSet(item, seriesBySetId) {
@@ -296,7 +302,10 @@ async function syncTcgplayerMetadata(englishSets) {
     const setMappings = mappedSets.filter((mapping) => mapping.tcgdexSetId === set.id);
     const tcgdexSet = await fetchJson("en", `sets/${encodeURIComponent(set.id)}`);
     if (!Array.isArray(tcgdexSet?.cards)) throw new Error(`TCGdex set ${set.id} has no card list.`);
-    if (!setMappings.length) return { catalogCardCount: tcgdexSet.cards.length, mappings: [], unmatchedCards: [] };
+    const semanticCards = tcgdexSet.cards
+      .filter((card) => typeof card.image === "string" && card.image.trim())
+      .map((card) => ({ id: card.id, setId: set.id }));
+    if (!setMappings.length) return { catalogCardCount: tcgdexSet.cards.length, mappings: [], unmatchedCards: [], semanticCards };
     const products = setMappings.flatMap((mapping) => (productsBySetName.get(mapping.tcgplayerSetName) ?? []).map((product) => ({
       product,
       mapping,
@@ -329,7 +338,7 @@ async function syncTcgplayerMetadata(englishSets) {
       unmatchedCards.push({ card });
       return [];
     });
-    return { catalogCardCount: tcgdexSet.cards.length, mappings, unmatchedCards };
+    return { catalogCardCount: tcgdexSet.cards.length, mappings, unmatchedCards, semanticCards };
   });
   const crossSetMappings = await mapWithConcurrency(
     cardMappingResults.flatMap((result) => result.unmatchedCards),
@@ -422,7 +431,45 @@ async function syncTcgplayerMetadata(englishSets) {
     catalogCards,
     mappedCards: cardMappings.length,
     unmappedCards: catalogCards - cardMappings.length,
+    semanticCards: cardMappingResults.flatMap((result) => result.semanticCards),
   };
+}
+
+async function writeSemanticCoverage(semanticCards) {
+  const index = JSON.parse(await readFile(SEMANTIC_INDEX_PATH, "utf8"));
+  if (!Array.isArray(index.cards)) throw new Error("Semantic artwork index has no cards array.");
+  const uniqueSourceCards = [...new Map(semanticCards.map((card) => [card.id, card])).values()]
+    .sort((left, right) => left.id.localeCompare(right.id));
+  const sourceIds = new Set(uniqueSourceCards.map((card) => card.id));
+  const indexedIds = new Set(index.cards.map((card) => card[0]));
+  const blockedSources = Object.entries(SEMANTIC_BLOCKED_SOURCES).map(([setId, reason]) => ({
+    setId,
+    cardCount: uniqueSourceCards.filter((card) => card.setId === setId).length,
+    reason,
+  }));
+  const blockedSetIds = new Set(blockedSources.map((source) => source.setId));
+  const backlogIds = uniqueSourceCards
+    .filter((card) => !blockedSetIds.has(card.setId) && !indexedIds.has(card.id))
+    .map((card) => card.id);
+  const orphanedIndexIds = [...indexedIds].filter((id) => !sourceIds.has(id)).sort();
+  const blockedSourceCardCount = blockedSources.reduce((total, source) => total + source.cardCount, 0);
+  const coverage = {
+    format: "cardfolio-semantic-catalog-coverage",
+    version: 1,
+    indexedCardCount: indexedIds.size,
+    eligibleSourceCardCount: uniqueSourceCards.length,
+    reviewedCoverageCount: uniqueSourceCards.filter((card) => indexedIds.has(card.id)).length,
+    backlogCount: backlogIds.length,
+    backlogIds,
+    blockedSourceCardCount,
+    blockedSources,
+    orphanedIndexCount: orphanedIndexIds.length,
+    orphanedIndexIds,
+  };
+  await mkdir(dirname(SEMANTIC_COVERAGE_PATH), { recursive: true });
+  await writeFile(SEMANTIC_COVERAGE_PATH, `${JSON.stringify(coverage, null, 2)}\n`, "utf8");
+  if (backlogIds.length) console.warn(`Semantic artwork index has ${backlogIds.length} untagged eligible cards.`);
+  return coverage;
 }
 
 async function fetchSeriesMetadata(language) {
@@ -486,10 +533,12 @@ async function syncLanguage(language) {
 const counts = {};
 for (const language of LANGUAGES) counts[language] = await syncLanguage(language);
 const englishCatalog = JSON.parse(await readFile(join(OUTPUT_DIRECTORY, "en-sets.json"), "utf8"));
-const tcgplayer = await syncTcgplayerMetadata(englishCatalog.items);
+const tcgplayerResult = await syncTcgplayerMetadata(englishCatalog.items);
+const { semanticCards, ...tcgplayer } = tcgplayerResult;
+const semanticCoverage = await writeSemanticCoverage(semanticCards);
 await writeFile(
   join(OUTPUT_DIRECTORY, "manifest.json"),
   `${JSON.stringify({ format: "cardfolio-public-catalog", version: 3, source: "tcgdex", counts, tcgplayer }, null, 2)}\n`,
   "utf8",
 );
-console.log(`Validated public catalog and marketplace metadata: ${JSON.stringify({ counts, tcgplayer })}`);
+console.log(`Validated public catalog and marketplace metadata: ${JSON.stringify({ counts, tcgplayer, semanticCoverage })}`);

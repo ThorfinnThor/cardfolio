@@ -4,6 +4,10 @@ import { inferredCardImageBaseUrl } from "@/data/catalog/images";
 import { collectorTotalForSearchItem } from "@/data/catalog/set-counts";
 import {
   SEMANTIC_TAGS,
+  searchSemanticCards,
+  type SmartSearchAdapter,
+  type SmartSearchHit,
+  type SmartSearchQuery,
   type SemanticSearchIndex,
   type SemanticSearchResult,
 } from "@/domain/semantic-card-search";
@@ -32,14 +36,61 @@ export const semanticSearchIndexSchema = z.object({
   cards: z.array(semanticCardRowSchema),
 });
 
-export async function loadSemanticSearchIndex(signal?: AbortSignal): Promise<SemanticSearchIndex> {
-  const response = await fetch("/data/semantic/card-artwork-search-v1.json", {
-    signal,
-    credentials: "same-origin",
-    headers: { Accept: "application/json" },
-  });
-  if (!response.ok) throw new Error(`Motivindex konnte nicht geladen werden (HTTP ${response.status}).`);
-  return semanticSearchIndexSchema.parse(await response.json());
+export const SEMANTIC_INDEX_TIMEOUT_MS = 8_000;
+
+function signalWithTimeout(parent: AbortSignal | undefined, timeoutMs: number): { signal: AbortSignal; cleanup: () => void } {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(
+    () => controller.abort(new DOMException("Motivindex-Zeitlimit überschritten.", "TimeoutError")),
+    timeoutMs,
+  );
+  const abortFromParent = () => controller.abort(parent?.reason ?? new DOMException("Abgebrochen.", "AbortError"));
+  if (parent?.aborted) abortFromParent();
+  else parent?.addEventListener("abort", abortFromParent, { once: true });
+  return {
+    signal: controller.signal,
+    cleanup: () => {
+      window.clearTimeout(timeout);
+      parent?.removeEventListener("abort", abortFromParent);
+    },
+  };
+}
+
+export async function loadSemanticSearchIndex(
+  signal?: AbortSignal,
+  timeoutMs = SEMANTIC_INDEX_TIMEOUT_MS,
+): Promise<SemanticSearchIndex> {
+  const request = signalWithTimeout(signal, timeoutMs);
+  try {
+    const response = await fetch("/data/semantic/card-artwork-search-v1.json", {
+      signal: request.signal,
+      credentials: "same-origin",
+      headers: { Accept: "application/json" },
+    });
+    if (!response.ok) throw new Error(`Motivindex konnte nicht geladen werden (HTTP ${response.status}).`);
+    return semanticSearchIndexSchema.parse(await response.json());
+  } finally {
+    request.cleanup();
+  }
+}
+
+export class LocalStaticSmartSearchAdapter implements SmartSearchAdapter {
+  constructor(
+    private readonly loadIndex: (signal?: AbortSignal) => Promise<SemanticSearchIndex> = loadSemanticSearchIndex,
+  ) {}
+
+  async search(query: SmartSearchQuery, signal?: AbortSignal): Promise<SmartSearchHit[]> {
+    const index = await this.loadIndex(signal);
+    const outcome = searchSemanticCards(index, query.text, {
+      requiredTags: query.requiredTags,
+      limit: query.limit,
+    });
+    return outcome.results.map((result) => ({
+      ref: { provider: "tcgdex" as const, id: result.row[0], language: query.language },
+      score: result.score,
+      reasonCode: "semantic" as const,
+    }));
+  }
 }
 
 export function semanticResultToCatalogItem(result: SemanticSearchResult): CatalogSearchItem {

@@ -495,3 +495,22 @@ Verification completed:
 - A catalog-wide rule audit covers every synchronized English and German physical set. Unknown finish metadata still permits manual Holo/Reverse selection, while First Edition and Shadowless remain historically constrained.
 - Dependent variant rules prevent impossible English Base Set combinations: First Edition selects Shadowless automatically, with the documented Machamp 8/102 exception for both frame treatments. Its Trainer Deck A prototype is constrained to labelled Non-Holo.
 - The First Edition Ivy Pikachu exception is available only on English Wizards Promo 1 and resolves to its dedicated TCGplayer product rather than enabling First Edition for the entire promo set.
+
+## 2026-10-01 — Smart Search technical completion (Step 1)
+
+Completed:
+
+- Added the `smartSearch` build flag and kept the normal catalog path independent when it is disabled.
+- Introduced provider-neutral Smart Search query/hit/adapter contracts and a single browser-local static-index adapter.
+- Converted the already reviewed V1 data into a committed JSONL source plus manifest and added byte-for-byte build/check commands for the compact public index.
+- Extended the weekly public-data sync with a deterministic coverage report. New physical image-bearing cards become an explicit untagged backlog; tags are never inferred during sync.
+- Added a 50-query automated regression fixture. The current local scorer returns 394/400 relevant top-eight positions versus 40/400 for the identity-only lexical baseline.
+- Added explicit index abort/timeout handling and unit coverage.
+- Completed the required `pokemon-card-explorer` reuse audit without copying its code, embeddings, scraped data or assets.
+- Recorded coverage, payload, benchmark, privacy, cost and release boundaries in `docs/semantic-search-release-gate.md`.
+
+Technical gate:
+
+- 19,635 reviewed cards are indexed; the eligible backlog is zero. The 34 `dc1` cards remain explicitly blocked because the advertised image variants return HTTP 404.
+- The raw runtime index is 2,266,481 bytes and 419,340 bytes at gzip level 9.
+- Product-level error recovery, DE/EN insertion choice, accessibility and required viewport verification remain Step 2 work for Luna.
