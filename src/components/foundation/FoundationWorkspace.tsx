@@ -51,6 +51,7 @@ import { minimumConditionLabels } from "@/domain/purchase-preferences";
 import { validateBackup } from "@/domain/validation";
 import { createInitialVariantSelection, formatVariantSelection, isVariantSelectionValid, selectedPrinting, variantAvailabilityForCard, variantSelectionIssue, type CardVariantOptions } from "@/domain/variant-selection";
 import { catalogQueryKey, detailQueryKey, TCGdexCatalogAdapter } from "@/data/catalog/tcgdex";
+import { LocalStaticSmartSearchAdapter } from "@/data/catalog/semantic-search";
 import { GiftCandidateLoader } from "@/data/gift/gift-candidate-loader";
 import { TCGdexGiftPriceProvider } from "@/data/pricing/gift-price-provider";
 import { catalogSeries, catalogSets, completeCardSnapshotMetadata } from "@/data/catalog/set-counts";
@@ -278,6 +279,7 @@ export function FoundationWorkspace() {
   const giftProjects = useMemo(() => new IndexedDBGiftProjectRepository(), []);
   const catalog = useMemo(() => new TCGdexCatalogAdapter(), []);
   const giftLoader = useMemo(() => new GiftCandidateLoader(catalog, FEATURES.giftBuilderPricing ? new TCGdexGiftPriceProvider() : disabledGiftPriceProvider), [catalog]);
+  const giftSmartSearch = useMemo(() => FEATURES.smartSearch ? new LocalStaticSmartSearchAdapter() : undefined, []);
   const syncChannelRef = useRef<BroadcastChannel | undefined>(undefined);
   const searchReturnFocusRef = useRef<HTMLElement | null>(null);
   const pageSelectionTokenRef = useRef(0);
@@ -1568,6 +1570,7 @@ export function FoundationWorkspace() {
         giftBuilderOpen ? (
           <GiftBuilderPanel
             loader={giftLoader}
+            smartSearch={giftSmartSearch}
             pricingEnabled={FEATURES.giftBuilderPricing}
             onCancel={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }}
             onCreateBinder={createGiftBinder}

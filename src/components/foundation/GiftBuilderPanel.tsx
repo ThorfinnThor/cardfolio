@@ -15,6 +15,8 @@ import {
 import type { BinderAffiliateAdapter, BinderOffer } from "@/domain/binder-affiliate";
 import type { GiftPriceRange } from "@/domain/gift-builder";
 import { createGiftPrintSummary } from "@/domain/gift-print-summary";
+import { GIFT_THEME_PRESETS, giftThemePreset } from "@/domain/gift-theme-presets";
+import type { SmartSearchAdapter } from "@/domain/semantic-card-search";
 import type { CardSnapshot, CatalogSearchItem, VariantSelection } from "@/domain/types";
 import { isVariantSelectionValid, variantAvailabilityForCard, variantSelectionIssue } from "@/domain/variant-selection";
 
@@ -24,6 +26,7 @@ import styles from "./gift-builder.module.css";
 
 export interface GiftBuilderPanelProps {
   loader: Pick<GiftCandidateLoader, "loadCandidatePool" | "hydrateCandidates">;
+  smartSearch?: Pick<SmartSearchAdapter, "search">;
   pricingEnabled: boolean;
   onCancel: () => void;
   onCreateBinder: (selection: GiftSelectionResult, preferences: GiftPreferences) => Promise<GiftProject>;
@@ -32,6 +35,7 @@ export interface GiftBuilderPanelProps {
 }
 
 type GiftStep = "details" | "candidates" | "review" | "summary";
+type GiftDiscoveryMode = "pokemon" | "theme";
 
 const initialPreferences: GiftPreferences = {
   recipientKind: "friend",
@@ -122,10 +126,13 @@ function safeCandidate(candidate: GiftCardCandidate, pricingEnabled: boolean, cu
   };
 }
 
-export function GiftBuilderPanel({ loader, pricingEnabled, onCancel, onCreateBinder, onOpenBinder, onCardsPurchase }: GiftBuilderPanelProps) {
+export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, onCancel, onCreateBinder, onOpenBinder, onCardsPurchase }: GiftBuilderPanelProps) {
   const engine = useMemo(() => new DeterministicGiftSelectionEngine(), []);
   const [step, setStep] = useState<GiftStep>("details");
   const [preferences, setPreferences] = useState<GiftPreferences>(initialPreferences);
+  const [pokemonQuery, setPokemonQuery] = useState(initialPreferences.subjectQuery);
+  const [discoveryMode, setDiscoveryMode] = useState<GiftDiscoveryMode>("pokemon");
+  const [selectedThemeId, setSelectedThemeId] = useState<string>();
   const [briefs, setBriefs] = useState<CatalogSearchItem[]>([]);
   const [candidates, setCandidates] = useState<GiftCardCandidate[]>([]);
   const [selection, setSelection] = useState<GiftSelectionResult>();
@@ -172,15 +179,24 @@ export function GiftBuilderPanel({ loader, pricingEnabled, onCancel, onCreateBin
     setSelection(undefined);
     setExcludedKeys(new Set());
     try {
-      const pool = await loader.loadCandidatePool({
-        subjectQuery: preferences.subjectQuery,
-        language: preferences.preferredLanguage ?? "en",
-        maximum: Math.max(40, preferences.targetCardCount * 3),
-        pageSize: 24,
-      });
-      setBriefs(pool);
+      const maximum = Math.min(80, Math.max(40, preferences.targetCardCount * 3));
+      const theme = discoveryMode === "theme" ? giftThemePreset(selectedThemeId) : undefined;
+      const pool = theme && smartSearch
+        ? (await smartSearch.search({
+          text: theme.query,
+          language: "en",
+          limit: maximum,
+        })).map((hit): CatalogSearchItem => ({ ref: hit.ref, name: theme.label, collectorNumber: "" }))
+        : await loader.loadCandidatePool({
+          subjectQuery: preferences.subjectQuery,
+          language: preferences.preferredLanguage ?? "en",
+          maximum,
+          pageSize: 24,
+        });
       if (!pool.length) {
-        setError("Keine Karten mit diesem Namen gefunden. Prüfe Schreibweise oder Sprache.");
+        setError(theme
+          ? "Keine Karten mit diesem Motiv gefunden. Wähle ein anderes Motiv und versuche es erneut."
+          : "Keine Karten mit diesem Namen gefunden. Prüfe Schreibweise oder Sprache.");
         return;
       }
       const hydrated = await loader.hydrateCandidates(pool, {
@@ -190,6 +206,14 @@ export function GiftBuilderPanel({ loader, pricingEnabled, onCancel, onCreateBin
         preferences: { minimumCondition: "excellent" },
       });
       const safe = hydrated.map((candidate) => safeCandidate(candidate, pricingEnabled, preferences.currency));
+      setBriefs(safe.map(({ card }) => ({
+        ref: card.ref,
+        name: card.name,
+        collectorNumber: card.collectorNumber,
+        imageBaseUrl: card.imageBaseUrl,
+        setId: card.setId,
+        setName: card.setName,
+      })));
       setCandidates(safe);
       setSelection(engine.select({ candidates: safe, preferences }));
       setStep("candidates");
@@ -319,14 +343,47 @@ export function GiftBuilderPanel({ loader, pricingEnabled, onCancel, onCreateBin
               </select>
             </label>
             <label>Sprache
-              <select value={preferences.preferredLanguage ?? "en"} onChange={(event) => updatePreferences("preferredLanguage", event.target.value as "de" | "en") }>
+              <select disabled={discoveryMode === "theme"} value={discoveryMode === "theme" ? "en" : preferences.preferredLanguage ?? "en"} onChange={(event) => updatePreferences("preferredLanguage", event.target.value as "de" | "en") }>
                 <option value="de">Deutsch</option><option value="en">English</option>
               </select>
             </label>
           </div>
-          <label className={styles.subjectField}>Lieblings-Pokémon oder Thema
-            <span className={styles.inputWithIcon}><Search aria-hidden="true" size={17} /><input required value={preferences.subjectQuery} onChange={(event) => updatePreferences("subjectQuery", event.target.value)} placeholder="Zum Beispiel Pikachu" /></span>
-          </label>
+          {smartSearch ? <fieldset className={styles.discoveryMode}>
+            <legend>Wie sollen wir Karten finden?</legend>
+            <div className={styles.choiceRow}>
+              <label className={styles.choice}><input type="radio" name="gift-discovery" checked={discoveryMode === "pokemon"} onChange={() => {
+                setDiscoveryMode("pokemon");
+                updatePreferences("subjectQuery", pokemonQuery);
+              }} />Nach Pokémonname</label>
+              <label className={styles.choice}><input type="radio" name="gift-discovery" checked={discoveryMode === "theme"} onChange={() => setDiscoveryMode("theme")} />Nach Artwork-Motiv</label>
+            </div>
+          </fieldset> : null}
+          {discoveryMode === "pokemon" ? <label className={styles.subjectField}>Lieblings-Pokémon
+            <span className={styles.inputWithIcon}><Search aria-hidden="true" size={17} /><input required value={pokemonQuery} onChange={(event) => {
+              setPokemonQuery(event.target.value);
+              updatePreferences("subjectQuery", event.target.value);
+            }} placeholder="Zum Beispiel Pikachu" /></span>
+          </label> : <fieldset className={styles.themePicker}>
+            <legend>Motiv für den Geschenk-Binder</legend>
+            <p>Wähle eine von zehn kuratierten Ideen. Die lokale Motivsuche bevorzugt Karten mit vorhandenem Artwork.</p>
+            <div className={styles.themeGrid}>
+              {GIFT_THEME_PRESETS.map((theme) => <label className={styles.themeChoice} key={theme.id}>
+                <input
+                  type="radio"
+                  name="gift-theme"
+                  checked={selectedThemeId === theme.id}
+                  onChange={() => {
+                    setSelectedThemeId(theme.id);
+                    updatePreferences("subjectQuery", theme.label);
+                    updatePreferences("preferredLanguage", "en");
+                  }}
+                />
+                <strong>{theme.label}</strong>
+                <span>{theme.description}</span>
+              </label>)}
+            </div>
+            <small>Die Motivsuche nutzt derzeit den geprüften englischen Artwork-Katalog. Der fertige Binder bleibt vollständig editierbar.</small>
+          </fieldset>}
           <div className={styles.choiceGroup}>
             <fieldset><legend>Umfang</legend><div className={styles.choiceRow}>{([9, 18, 36] as const).map((count) => <label key={count} className={styles.choice}><input type="radio" name="gift-count" checked={preferences.targetCardCount === count} onChange={() => updatePreferences("targetCardCount", count)} />{count} Karten</label>)}</div></fieldset>
             <fieldset><legend>Stil</legend><div className={styles.choiceRow}>{(["mixed", "vintage", "modern", "curated"] as const).map((style) => <label key={style} className={styles.choice}><input type="radio" name="gift-style" checked={preferences.style === style} onChange={() => updatePreferences("style", style)} />{style === "mixed" ? "Mix" : style === "vintage" ? "Vintage" : style === "modern" ? "Modern" : "Kuratiert"}</label>)}</div></fieldset>
@@ -340,7 +397,7 @@ export function GiftBuilderPanel({ loader, pricingEnabled, onCancel, onCreateBin
             </label>
           </div>
           <p className={styles.localHint}>{pricingEnabled ? "Name und Geschenkangaben werden nur in diesem Browser gespeichert. Kartenpreise sind Marktschätzungen; Versand und Steuern sind nicht enthalten." : "Name und Geschenkangaben werden nur in diesem Browser gespeichert. Die Preisprüfung ist noch nicht freigegeben; Budget und Toleranz werden daher nicht zugesagt."}</p>
-          <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={onCancel}>Abbrechen</button><button type="submit" className={styles.primaryButton} disabled={loading || !preferences.subjectQuery.trim()}>{loading ? <><LoaderCircle className={styles.spin} size={16} /> Karten werden gesucht…</> : <>Vorschlag erzeugen <ArrowRight size={16} /></>}</button></div>
+          <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={onCancel}>Abbrechen</button><button type="submit" className={styles.primaryButton} disabled={loading || (discoveryMode === "theme" ? !selectedThemeId : !preferences.subjectQuery.trim())}>{loading ? <><LoaderCircle className={styles.spin} size={16} /> Karten werden gesucht…</> : <>Vorschlag erzeugen <ArrowRight size={16} /></>}</button></div>
         </form>
       ) : null}
 
@@ -365,7 +422,7 @@ export function GiftBuilderPanel({ loader, pricingEnabled, onCancel, onCreateBin
           </div>
           <div className={styles.selectionTools}><button type="button" className={styles.secondaryButton} onClick={addCandidate} disabled={selection.selected.length >= preferences.targetCardCount}>+ Karte hinzufügen</button><button type="button" className={styles.secondaryButton} onClick={() => setShowAll((current) => !current)}>{showAll ? "Trefferliste schließen" : `Alle passenden Karten ansehen (${briefs.length})`}</button></div>
           {showAll ? <div className={styles.allResults}>
-            <p>Die Liste enthält Namens-Treffer. Karten, auf denen das Pokémon nur im Artwork vorkommt, sind nicht enthalten.</p>
+            <p>{discoveryMode === "theme" ? `Die Liste enthält Artwork-Treffer zum Motiv „${preferences.subjectQuery}“ aus dem englischen Kartenkatalog.` : "Die Liste enthält Namens-Treffer. Karten, auf denen das Pokémon nur im Artwork vorkommt, sind nicht enthalten."}</p>
             {selection.selected.length >= preferences.targetCardCount ? <p className={styles.resultHint} role="status">Die Zielanzahl ist erreicht. Entferne zuerst oben eine Karte, um hier eine andere hinzuzufügen.</p> : null}
             <ul>{briefs.map((item) => {
               const cardKey = `tcgdex:${item.ref.id}:${item.ref.language}`;

@@ -17,6 +17,16 @@
 .form input, .form select { width: 100%; min-height: 40px; border: 1px solid var(--cf-line2); border-radius: 7px; background: var(--cf-field); color: var(--cf-text); padding: 0 11px; font: inherit; font-size: 13px; }
 .form input:focus, .form select:focus { border-color: var(--cf-accent); outline: 3px solid var(--cf-accent-soft); }
 .subjectField { gap: 8px !important; }
+.discoveryMode, .themePicker { min-width: 0; margin: 0; border: 0; padding: 0; }
+.discoveryMode legend, .themePicker legend { margin-bottom: 8px; color: var(--cf-text2); font-size: 12px; font-weight: 650; }
+.themePicker { display: grid; gap: 10px; }
+.themePicker > p, .themePicker > small { margin: 0; color: var(--cf-muted); font-size: 11px; font-weight: 500; line-height: 1.5; }
+.themeGrid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.themeChoice { position: relative; display: grid !important; align-content: start; gap: 4px !important; min-height: 82px; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-surface2); padding: 11px; color: var(--cf-text) !important; cursor: pointer; }
+.themeChoice:has(input:checked) { border-color: var(--cf-accent); background: var(--cf-accent-soft); box-shadow: inset 0 0 0 1px var(--cf-accent); }
+.themeChoice input { position: absolute; width: 1px; height: 1px; min-height: 0; overflow: hidden; opacity: 0; pointer-events: none; }
+.themeChoice strong { font-size: 12px; }
+.themeChoice span { color: var(--cf-muted); font-size: 10px !important; font-weight: 500; line-height: 1.35; }
 .inputWithIcon { position: relative; display: block; }
 .inputWithIcon svg { position: absolute; top: 11px; left: 11px; color: var(--cf-muted); }
 .inputWithIcon input { padding-left: 37px; }
@@ -125,6 +135,7 @@
 @keyframes spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 1024px) {
+  .themeGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .summaryMeta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .summaryMeta > div:nth-child(2) { border-right: 0; }
   .summaryMeta > div:nth-child(-n + 2) { border-bottom: 1px solid var(--cf-line); }
@@ -134,6 +145,7 @@
   .purchaseOptions { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
+  .themeGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .formGrid, .budgetGrid, .choiceGroup, .summaryBar, .reviewMeta { grid-template-columns: 1fr; }
   .summaryBar > div, .reviewMeta div { border-right: 0; border-bottom: 1px solid var(--cf-line); }
   .summaryBar > div:last-child, .reviewMeta div:last-child { border-bottom: 0; }
