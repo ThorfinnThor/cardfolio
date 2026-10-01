@@ -592,14 +592,14 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await page.route("https://api.tcgdex.net/v2/en/cards?*", async (route) => {
     const url = new URL(route.request().url());
     if (url.searchParams.get("name")?.toLowerCase() !== "pikachu") return route.fallback();
-    const cards = Array.from({ length: 9 }, (_, index) => ({ id: `base1-${index + 1}`, localId: String(index + 1), name: `Pikachu ${index + 1}` }));
+    const cards = Array.from({ length: 9 }, (_, index) => ({ id: `swsh1-${index + 1}`, localId: String(index + 1), name: `Pikachu ${index + 1}` }));
     await route.fulfill({ body: JSON.stringify(cards), headers, status: 200 });
   });
-  await page.route("https://api.tcgdex.net/v2/en/cards/base1-*", async (route) => {
-    const id = new URL(route.request().url()).pathname.split("/").pop() ?? "base1-1";
+  await page.route("https://api.tcgdex.net/v2/en/cards/swsh1-*", async (route) => {
+    const id = new URL(route.request().url()).pathname.split("/").pop() ?? "swsh1-1";
     const localId = id.split("-").pop() ?? "1";
     await route.fulfill({
-      body: JSON.stringify({ id, localId, name: `Pikachu ${localId}`, category: "Pokemon", set: { cardCount: { official: 102 }, id: "base1", name: "Base Set" } }),
+      body: JSON.stringify({ id, localId, name: `Pikachu ${localId}`, category: "Pokemon", set: { cardCount: { official: 202 }, id: "swsh1", name: "Sword & Shield" } }),
       headers,
       status: 200,
     });
