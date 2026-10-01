@@ -134,6 +134,12 @@ function normalizedName(value: string): string {
 function chooseCardCandidate(item: MissingItem, mapping?: TcgplayerCardMapping): TcgplayerCardCandidate | undefined {
   if (!mapping) return undefined;
   let candidates = mapping.candidates;
+  if (item.card.ref.language === "en" && item.card.ref.id === "basep-1") {
+    candidates = candidates.filter((candidate) => /^pikachu\s*\(1\)/i.test(candidate.productName));
+    candidates = candidates.filter((candidate) => item.variant.edition === "first-edition"
+      ? /misprint/i.test(candidate.productName)
+      : !/misprint/i.test(candidate.productName));
+  }
   if (item.variant.printing === "shadowless") {
     candidates = candidates.filter((candidate) => /shadowless/i.test(`${candidate.tcgplayerSetName} ${candidate.productName}`));
   } else {

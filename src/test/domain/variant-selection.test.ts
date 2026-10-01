@@ -9,6 +9,7 @@ import {
   isVariantSelectionComplete,
   isProviderFallbackVariantSignal,
   isVariantSelectionValid,
+  FIRST_EDITION_CARD_IDS,
   FIRST_EDITION_SET_IDS,
   variantAvailabilityForCard,
   variantSelectionIssue,
@@ -127,6 +128,47 @@ describe("historical edition and printing policy", () => {
     expect(cardOptions("base2", "en").shadowless).toBe(false);
   });
 
+  it("supports the verified First Edition Ivy Pikachu promo without enabling its whole set", () => {
+    expect(cardOptions("basep", "en").firstEdition).toBe(true);
+    expect(cardOptions("basep", "de").firstEdition).toBe(false);
+    expect(variantAvailabilityForCard({
+      setId: "basep",
+      ref: { provider: "tcgdex", id: "basep-2", language: "en" },
+    }).firstEdition).toBe(false);
+  });
+
+  it("requires First Edition English Base Set cards to be Shadowless", () => {
+    const bulbasaur = variantAvailabilityForCard({
+      setId: "base1",
+      ref: { provider: "tcgdex", id: "base1-44", language: "en" },
+    });
+
+    expect(availablePrintingValues(bulbasaur, "first-edition")).toEqual(["shadowless"]);
+    expect(availablePrintingValues(bulbasaur, "unlimited")).toEqual(["shadowed", "shadowless"]);
+    expect(variantSelectionIssue({ finish: "normal", edition: "first-edition", printing: "shadowed" }, bulbasaur)).toMatch(/müssen als Shadowless/);
+    expect(variantSelectionIssue({ finish: "normal", edition: "first-edition", printing: "shadowless" }, bulbasaur)).toBeUndefined();
+    expect(variantSelectionIssue({ finish: "normal", edition: "unlimited", printing: "shadowless" }, bulbasaur)).toBeUndefined();
+  });
+
+  it("models both commercial First Edition printings of English Base Set Machamp", () => {
+    const machamp = variantAvailabilityForCard({
+      setId: "base1",
+      ref: { provider: "tcgdex", id: "base1-8", language: "en" },
+    });
+
+    expect(availablePrintingValues(machamp, "first-edition")).toEqual(["shadowed", "shadowless"]);
+    expect(availablePrintingValues(machamp, "unlimited")).toEqual(["shadowed"]);
+    expect(availableFinishValues(machamp, "first-edition")).toEqual(["unspecified", "holo", "other"]);
+    expect(availableFinishValues(machamp, "unlimited")).toEqual(["unspecified", "normal", "other"]);
+    expect(variantSelectionIssue({ finish: "holo", edition: "first-edition", printing: "shadowed" }, machamp)).toBeUndefined();
+    expect(variantSelectionIssue({ finish: "holo", edition: "first-edition", printing: "shadowless" }, machamp)).toBeUndefined();
+    expect(variantSelectionIssue({ finish: "normal", edition: "first-edition", printing: "shadowless" }, machamp)).toMatch(/nur als Holo/);
+    expect(variantSelectionIssue({ finish: "holo", edition: "unlimited", printing: "shadowed", label: "Trainer Deck A" }, machamp)).toMatch(/nur als Non-Holo/);
+    expect(variantSelectionIssue({ finish: "normal", edition: "unlimited", printing: "shadowed" }, machamp)).toMatch(/eigene Bezeichnung/);
+    expect(variantSelectionIssue({ finish: "normal", edition: "unlimited", printing: "shadowed", label: "Trainer Deck A" }, machamp)).toBeUndefined();
+    expect(variantSelectionIssue({ finish: "normal", edition: "unlimited", printing: "shadowless", label: "Trainer Deck A" }, machamp)).toMatch(/nur mit First-Edition-Stempel/);
+  });
+
   it("overrides contradictory provider edition flags with the historical set policy", () => {
     const modern = variantAvailabilityForCard({
       setId: "sm7",
@@ -149,7 +191,9 @@ describe("historical edition and printing policy", () => {
       }
       for (const set of sets) {
         const options = cardOptions(set.id, language);
-        expect(options.firstEdition, `${language}/${set.id} First Edition`).toBe(FIRST_EDITION_SET_IDS.has(set.id));
+        const expectedFirstEdition = FIRST_EDITION_SET_IDS.has(set.id)
+          || (language === "en" && FIRST_EDITION_CARD_IDS.has(`${set.id}-1`));
+        expect(options.firstEdition, `${language}/${set.id} First Edition`).toBe(expectedFirstEdition);
         expect(options.shadowless, `${language}/${set.id} Shadowless`).toBe(language === "en" && set.id === "base1");
       }
     }

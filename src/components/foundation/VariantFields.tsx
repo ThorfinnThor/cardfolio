@@ -9,6 +9,7 @@ import {
   finishLabels,
   formatAvailableVariants,
   printingLabels,
+  requiresVariantLabel,
   selectedPrinting,
   variantSelectionIssue,
   type CardVariantOptions,
@@ -31,11 +32,12 @@ export function VariantFields({
   onVariantChange,
   onPreferencesChange,
 }: VariantFieldsProps) {
-  const finishValues = availableFinishValues(availability);
+  const finishValues = availableFinishValues(availability, variant.edition);
   const editionValues = availableEditionValues(availability);
-  const printingValues = availablePrintingValues(availability);
+  const printingValues = availablePrintingValues(availability, variant.edition);
   const printing = selectedPrinting(variant);
   const issue = variantSelectionIssue(variant, availability);
+  const labelRequired = requiresVariantLabel(variant, availability);
 
   return (
     <>
@@ -56,7 +58,20 @@ export function VariantFields({
           <select
             required
             value={variant.edition}
-            onChange={(event) => onVariantChange({ ...variant, edition: event.target.value as VariantSelection["edition"] })}
+            onChange={(event) => {
+              const edition = event.target.value as VariantSelection["edition"];
+              const compatiblePrintings = availablePrintingValues(availability, edition);
+              const compatibleFinishes = availableFinishValues(availability, edition);
+              const concreteFinishes = compatibleFinishes.filter((value) => value !== "unspecified" && value !== "other");
+              onVariantChange({
+                ...variant,
+                edition,
+                finish: compatibleFinishes.includes(variant.finish)
+                  ? variant.finish
+                  : concreteFinishes.length === 1 ? concreteFinishes[0] : "unspecified",
+                printing: compatiblePrintings.includes(printing) ? printing : compatiblePrintings[0],
+              });
+            }}
           >
             {!editionValues.includes(variant.edition) ? <option value={variant.edition} disabled>{editionLabels[variant.edition]} · nicht bestätigt</option> : null}
             {editionValues.map((value) => <option value={value} key={value}>{editionLabels[value]}</option>)}
@@ -74,12 +89,12 @@ export function VariantFields({
           </select>
         </label>
         <label>
-          Eigene Variantenbezeichnung {variant.finish === "other" ? "(Pflichtfeld)" : "(optional)"}
+          Eigene Variantenbezeichnung {labelRequired ? "(Pflichtfeld)" : "(optional)"}
           <input
             value={variant.label ?? ""}
             maxLength={100}
-            required={variant.finish === "other"}
-            placeholder="z. B. Cosmos Holo"
+            required={labelRequired}
+            placeholder={labelRequired && variant.edition === "unlimited" ? "z. B. Trainer Deck A" : "z. B. Cosmos Holo"}
             onChange={(event) => onVariantChange({ ...variant, label: event.target.value || undefined })}
           />
         </label>

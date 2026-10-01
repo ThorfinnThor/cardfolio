@@ -202,6 +202,70 @@ describe("TCGplayer Mass Entry export", () => {
     });
   });
 
+  it("selects the separate TCGplayer product for the First Edition Ivy Pikachu promo", () => {
+    const mapping: TcgplayerCardMapping = {
+      tcgdexCardId: "basep-1",
+      tcgdexName: "Pikachu",
+      candidates: [
+        { productName: "Aerodactyl (Prerelease)", collectorNumber: "01/62", tcgplayerSetCode: "PR", tcgplayerSetName: "WoTC Promo", foilOnly: true, productId: 154998 },
+        { productName: "Pikachu (1)", collectorNumber: "01/53", tcgplayerSetCode: "PR", tcgplayerSetName: "WoTC Promo", foilOnly: false, productId: 121772 },
+        { productName: "Pikachu (1) (Misprint)", collectorNumber: "01/53", tcgplayerSetCode: "PR", tcgplayerSetName: "WoTC Promo", foilOnly: false, productId: 88065 },
+      ],
+    };
+    const promo = missingItem({
+      card: {
+        ...missingItem().card,
+        key: "tcgdex:basep-1:en",
+        ref: { provider: "tcgdex", id: "basep-1", language: "en" },
+        name: "Pikachu",
+        setId: "basep",
+        setName: "Wizards Black Star Promos",
+        collectorNumber: "1",
+        collectorTotal: "53",
+      },
+      variant: { finish: "normal", edition: "first-edition", printing: "shadowed" },
+      quantity: 1,
+    });
+
+    const exported = createTcgplayerMassEntryExport([promo], TCGPLAYER_SET_MAPPINGS, TCGPLAYER_PRINTING_MAPPINGS, [mapping]);
+
+    expect(exported.text).toBe("1 Pikachu (1) (Misprint) [PR] 01/53");
+    expect(exported.matches[0]).toMatchObject({
+      status: "catalog-verified",
+      cardCandidate: { productId: 88065 },
+    });
+  });
+
+  it("keeps the regular Ivy Pikachu promo separate from the stamped printing", () => {
+    const mapping: TcgplayerCardMapping = {
+      tcgdexCardId: "basep-1",
+      tcgdexName: "Pikachu",
+      candidates: [
+        { productName: "Pikachu (1)", collectorNumber: "01/53", tcgplayerSetCode: "PR", tcgplayerSetName: "WoTC Promo", foilOnly: false, productId: 121772 },
+        { productName: "Pikachu (1) (Misprint)", collectorNumber: "01/53", tcgplayerSetCode: "PR", tcgplayerSetName: "WoTC Promo", foilOnly: false, productId: 88065 },
+      ],
+    };
+    const promo = missingItem({
+      card: {
+        ...missingItem().card,
+        key: "tcgdex:basep-1:en",
+        ref: { provider: "tcgdex", id: "basep-1", language: "en" },
+        name: "Pikachu",
+        setId: "basep",
+        setName: "Wizards Black Star Promos",
+        collectorNumber: "1",
+        collectorTotal: "53",
+      },
+      variant: { finish: "normal", edition: "unlimited", printing: "shadowed" },
+      quantity: 1,
+    });
+
+    const exported = createTcgplayerMassEntryExport([promo], TCGPLAYER_SET_MAPPINGS, TCGPLAYER_PRINTING_MAPPINGS, [mapping]);
+
+    expect(exported.text).toBe("1 Pikachu (1) [PR] 01/53");
+    expect(exported.matches[0]).toMatchObject({ cardCandidate: { productId: 121772 } });
+  });
+
   it("exports the exact verified German Tornupto identity and English Blaine's Charizard printing", () => {
     const typhlosion = missingItem({
       identityKey: "tornupto-neo-genesis",

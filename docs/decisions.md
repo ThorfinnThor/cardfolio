@@ -154,6 +154,9 @@
 - Exceptional promotional printings are not enabled set-wide. They require a separately verified card-level mapping before Cardfolio may offer First Edition.
 - Shadowless is allowed only for English Base Set. German Base Set and every other set expose only `Mit Schatten / Standard`.
 - The full synchronized English and German set catalogs are covered by an allowlist audit, so newly synchronized modern sets cannot inherit First Edition or Shadowless from incomplete provider flags.
+- The verified English Wizards Promo 1 Ivy Pikachu is the first card-level exception. Its First Edition selection maps to TCGplayer's separate `Pikachu (1) (Misprint)` product; the Unlimited selection maps to `Pikachu (1)`.
+- English Base Set First Edition implies Shadowless, except Machamp 8/102: its commercial Holo exists both Shadowless and with the later drop shadow. Its only non-stamped printing is the Non-Holo Trainer Deck A prototype, which therefore requires an explicit custom label and is not silently handed to a generic marketplace product.
+- Historical references: [1st Edition and Shadowless](https://bulbapedia.bulbagarden.net/wiki/Shadowless), [Pikachu Wizards Promo 1](https://bulbapedia.bulbagarden.net/wiki/Pikachu_%28Wizards_Promo_1%29), [Machamp Base Set 8](https://bulbapedia.bulbagarden.net/wiki/Machamp_%28Base_Set%29).
 
 ## 2026-09-29 — TCGdex variant fallback is not a catalog confirmation
 

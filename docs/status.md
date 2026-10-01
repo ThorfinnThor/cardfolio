@@ -493,3 +493,5 @@ Verification completed:
 - Typecheck, ESLint, 84 unit/component tests, static Next.js build, release checks and `git diff --check` passed locally.
 - The browser suite now distinguishes German Base Set, where Shadowless is unavailable, from English Base Set, where the option is present but not preselected.
 - A catalog-wide rule audit covers every synchronized English and German physical set. Unknown finish metadata still permits manual Holo/Reverse selection, while First Edition and Shadowless remain historically constrained.
+- Dependent variant rules prevent impossible English Base Set combinations: First Edition selects Shadowless automatically, with the documented Machamp 8/102 exception for both frame treatments. Its Trainer Deck A prototype is constrained to labelled Non-Holo.
+- The First Edition Ivy Pikachu exception is available only on English Wizards Promo 1 and resolves to its dedicated TCGplayer product rather than enabling First Edition for the entire promo set.
