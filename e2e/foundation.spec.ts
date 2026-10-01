@@ -589,7 +589,7 @@ test("keeps Pocket cards out of the physical binder search", async ({ page }) =>
 
 test("creates an editable Gift Binder from the local-first wizard", async ({ page }) => {
   await mockCatalog(page);
-  await page.route("https://api.tcgdex.net/v2/en/cards", async (route) => {
+  await page.route("https://api.tcgdex.net/v2/en/cards?*", async (route) => {
     const url = new URL(route.request().url());
     if (url.searchParams.get("name")?.toLowerCase() !== "pikachu") return route.fallback();
     const cards = Array.from({ length: 9 }, (_, index) => ({ id: `base1-${index + 1}`, localId: String(index + 1), name: `Pikachu ${index + 1}` }));
@@ -616,7 +616,7 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await page.getByRole("button", { name: "Als Binder anlegen" }).click();
   await expect(page.getByRole("heading", { name: /Geschenk · Pikachu/ })).toBeVisible();
   await expect(page.getByText(/Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten/i)).toBeVisible();
-  await expect(page.getByText(/Kein bestätigter Preis/)).toBeVisible();
+  await expect(page.getByText("Kein bestätigter Preis", { exact: true })).toBeVisible();
   await expect(page.getByText(/Anbieter, Produktkompatibilität/)).toBeVisible();
   await expect(page.getByRole("button", { name: /Derzeit nicht verfügbar/i })).toBeDisabled();
   await page.getByRole("button", { name: /Binder bearbeiten/i }).click();
