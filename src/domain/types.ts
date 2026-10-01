@@ -118,6 +118,17 @@ export interface LocalBackupV1 {
   cards: CardSnapshot[];
 }
 
+export interface LocalBackupV2 {
+  format: "cardfolio-backup";
+  version: 2;
+  exportedAt: string;
+  binders: Binder[];
+  cards: CardSnapshot[];
+  giftProjects: import("./gift-builder").GiftProject[];
+}
+
+export type LocalBackup = LocalBackupV1 | LocalBackupV2;
+
 export interface CatalogQuery {
   name?: string;
   setId?: string;

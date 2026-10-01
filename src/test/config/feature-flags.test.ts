@@ -11,3 +11,10 @@ describe("smart-search feature flag", () => {
     expect((await import("@/config/feature-flags")).FEATURES.smartSearch).toBe(true);
   });
 });
+
+describe("Gift Builder pricing feature flag", () => {
+  it("stays disabled until the written pricing Go/No-Go passes", async () => {
+    vi.resetModules();
+    expect((await import("@/config/feature-flags")).FEATURES.giftBuilderPricing).toBe(false);
+  });
+});

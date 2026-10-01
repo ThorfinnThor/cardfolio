@@ -41,6 +41,7 @@ requireText("next.config.ts", ['output: "export"', "unoptimized: true"]);
 requireText("src/config/feature-flags.ts", [
   "designPreview: false",
   "pricing: false",
+  "giftBuilderPricing: false",
   'smartSearch: process.env.NEXT_PUBLIC_FEATURE_SMART_SEARCH !== "false"',
   "tcgplayerPrefill: false",
   "cardtraderCommerce: false",

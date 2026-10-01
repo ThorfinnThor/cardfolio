@@ -1,4 +1,5 @@
-import type { Binder, CardSnapshot, LocalBackupV1, UUID } from "@/domain/types";
+import type { GiftProject } from "@/domain/gift-builder";
+import type { Binder, CardSnapshot, LocalBackup, LocalBackupV2, UUID } from "@/domain/types";
 import { MAX_BINDERS } from "@/domain/binder-actions";
 import { validateBackup, validateBinder } from "@/domain/validation";
 
@@ -39,6 +40,19 @@ function cloneAsNew(binder: Binder): Binder {
       id: crypto.randomUUID(),
       slots: page.slots.map((entry) => (entry ? { ...entry, id: crypto.randomUUID() } : null)),
     })),
+  };
+}
+
+function cloneGiftProject(project: GiftProject, binderIds: ReadonlyMap<UUID, UUID>): GiftProject {
+  const timestamp = new Date().toISOString();
+  return {
+    ...project,
+    id: crypto.randomUUID(),
+    revision: 0,
+    name: `${project.name} (Import)`.slice(0, 100),
+    binderId: project.binderId ? binderIds.get(project.binderId) : undefined,
+    createdAt: timestamp,
+    updatedAt: timestamp,
   };
 }
 
@@ -144,9 +158,9 @@ export class IndexedDBBinderRepository implements BinderRepository {
     await transaction.done;
   }
 
-  async exportBackup(ids?: UUID[]): Promise<LocalBackupV1> {
+  async exportBackup(ids?: UUID[]): Promise<LocalBackupV2> {
     const database = await openCardfolioDB();
-    const transaction = database.transaction(["binders", "cards"], "readonly");
+    const transaction = database.transaction(["binders", "cards", "giftProjects"], "readonly");
     const allBinders = await transaction.objectStore("binders").getAll();
     const binders = ids ? allBinders.filter((binder) => ids.includes(binder.id)) : allBinders;
     const requiredKeys = new Set(
@@ -155,21 +169,34 @@ export class IndexedDBBinderRepository implements BinderRepository {
       ),
     );
     const cards = (await transaction.objectStore("cards").getAll()).filter((card) => requiredKeys.has(card.key));
+    const allGiftProjects = await transaction.objectStore("giftProjects").getAll();
+    const giftProjects = ids
+      ? allGiftProjects.filter((project) => project.binderId && ids.includes(project.binderId))
+      : allGiftProjects;
     await transaction.done;
     return validateBackup({
       format: "cardfolio-backup",
-      version: 1,
+      version: 2,
       exportedAt: new Date().toISOString(),
       binders,
       cards,
+      giftProjects,
     });
   }
 
-  async importBackup(input: LocalBackupV1, mode: ImportMode): Promise<void> {
+  async importBackup(input: LocalBackup, mode: ImportMode): Promise<void> {
     const backup = validateBackup(input);
-    const binders = mode === "import-as-new" ? backup.binders.map(cloneAsNew) : backup.binders;
+    const binderIds = new Map<UUID, UUID>();
+    const binders = mode === "import-as-new" ? backup.binders.map((binder) => {
+      const cloned = cloneAsNew(binder);
+      binderIds.set(binder.id, cloned.id);
+      return cloned;
+    }) : backup.binders;
+    const giftProjects = mode === "import-as-new"
+      ? backup.giftProjects.map((project) => cloneGiftProject(project, binderIds))
+      : backup.giftProjects;
     const database = await openCardfolioDB();
-    const transaction = database.transaction(["binders", "cards", "settings"], "readwrite");
+    const transaction = database.transaction(["binders", "cards", "settings", "giftProjects"], "readwrite");
     const binderStore = transaction.objectStore("binders");
     const settingsStore = transaction.objectStore("settings");
     const existingBinders = mode === "replace-all" ? [] : await binderStore.getAll();
@@ -181,9 +208,11 @@ export class IndexedDBBinderRepository implements BinderRepository {
     if (mode === "replace-all") {
       await binderStore.clear();
       await transaction.objectStore("cards").clear();
+      await transaction.objectStore("giftProjects").clear();
     }
     for (const binder of binders) await binderStore.put(binder, binder.id);
     for (const card of backup.cards) await transaction.objectStore("cards").put(card, card.key);
+    for (const project of giftProjects) await transaction.objectStore("giftProjects").put(project, project.id);
     const existingOrder = mode === "replace-all"
       ? []
       : sortBinders(
