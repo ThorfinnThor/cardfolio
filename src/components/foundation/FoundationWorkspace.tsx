@@ -43,6 +43,7 @@ import { deriveMissingItems } from "@/domain/missing-items";
 import type { PageSelectionItem, PageSelectionTarget } from "@/domain/page-selection";
 import type { CardmarketHandoffPart } from "@/domain/cardmarket-handoff";
 import type { TcgplayerMassEntryExport } from "@/domain/tcgplayer-export";
+import { createGiftProject, giftSelectionToBinder, type GiftPriceRequest, type GiftPreferences, type GiftSelectionResult, type PriceProvider } from "@/domain/gift-builder";
 import type { Binder, CardSnapshot, CatalogSearchItem, MissingItem, PlannedCard, PurchasePreferences, VariantSelection } from "@/domain/types";
 import { FEATURES } from "@/config/feature-flags";
 import { PRODUCT_DESIGN } from "@/config/product";
@@ -50,13 +51,17 @@ import { minimumConditionLabels } from "@/domain/purchase-preferences";
 import { validateBackup } from "@/domain/validation";
 import { createInitialVariantSelection, formatVariantSelection, isVariantSelectionValid, selectedPrinting, variantAvailabilityForCard, variantSelectionIssue, type CardVariantOptions } from "@/domain/variant-selection";
 import { catalogQueryKey, detailQueryKey, TCGdexCatalogAdapter } from "@/data/catalog/tcgdex";
+import { GiftCandidateLoader } from "@/data/gift/gift-candidate-loader";
+import { TCGdexGiftPriceProvider } from "@/data/pricing/gift-price-provider";
 import { catalogSeries, catalogSets, completeCardSnapshotMetadata } from "@/data/catalog/set-counts";
 import { RevisionConflictError } from "@/data/persistence/binder-repository";
 import { IndexedDBBinderRepository } from "@/data/persistence/indexeddb-binder-repository";
+import { IndexedDBGiftProjectRepository } from "@/data/persistence/gift-project-repository";
 import { persistPageSelection } from "@/data/persistence/page-selection-service";
 
 import { catalogLabel, coverLeather } from "./binder-cover";
 import { BinderOverview } from "./BinderOverview";
+import { GiftBuilderPanel } from "./GiftBuilderPanel";
 import { BinderGrid } from "./BinderGrid";
 import { CardArtwork } from "./CardArtwork";
 import { MissingCardsPanel } from "./MissingCardsPanel";
@@ -67,6 +72,17 @@ import { VariantFields } from "./VariantFields";
 import styles from "./foundation-workspace.module.css";
 
 const MAX_IMPORT_BYTES = 5 * 1024 * 1024;
+
+const disabledGiftPriceProvider: PriceProvider = {
+  async getPrice(request: GiftPriceRequest) {
+    return {
+      currency: request.currency,
+      fetchedAt: request.fetchedAt,
+      confidence: "unknown" as const,
+      issues: ["pricing-feature-gated"],
+    };
+  },
+};
 
 const conditionGrade: Record<PurchasePreferences["minimumCondition"], string> = {
   "near-mint": "NM",
@@ -259,7 +275,9 @@ function mergeLocalizedOptions(
 
 export function FoundationWorkspace() {
   const repository = useMemo(() => new IndexedDBBinderRepository(), []);
+  const giftProjects = useMemo(() => new IndexedDBGiftProjectRepository(), []);
   const catalog = useMemo(() => new TCGdexCatalogAdapter(), []);
+  const giftLoader = useMemo(() => new GiftCandidateLoader(catalog, FEATURES.giftBuilderPricing ? new TCGdexGiftPriceProvider() : disabledGiftPriceProvider), [catalog]);
   const syncChannelRef = useRef<BroadcastChannel | undefined>(undefined);
   const searchReturnFocusRef = useRef<HTMLElement | null>(null);
   const pageSelectionTokenRef = useRef(0);
@@ -304,6 +322,7 @@ export function FoundationWorkspace() {
   const [importReport, setImportReport] = useState<ImportReport>();
   const [storageConflict, setStorageConflict] = useState(false);
   const [binderManagerOpen, setBinderManagerOpen] = useState(false);
+  const [giftBuilderOpen, setGiftBuilderOpen] = useState(false);
   const [celebratedEntryId, setCelebratedEntryId] = useState<string>();
 
   const activeBinder = binders.find((binder) => binder.id === activeId);
@@ -586,6 +605,30 @@ export function FoundationWorkspace() {
       setMessage("Binder wurde lokal gespeichert.");
     } catch (error) {
       handleStorageError(error, "Binder konnte nicht gespeichert werden.");
+    }
+  }
+
+  async function createGiftBinder(selection: GiftSelectionResult, preferences: GiftPreferences) {
+    const name = `Geschenk · ${preferences.subjectQuery.trim()}`.slice(0, BINDER_NAME_MAX_LENGTH);
+    const result = giftSelectionToBinder(selection, name);
+    const project = createGiftProject(name, preferences);
+    const linkedProject = { ...project, binderId: result.binder.id, selectedCardKeys: result.cards.map((card) => card.key) };
+    try {
+      setStorageStatus("saving");
+      await repository.create(result.binder, result.cards);
+      await giftProjects.create(linkedProject);
+      const nextBinders = [result.binder, ...bindersRef.current];
+      bindersRef.current = nextBinders;
+      setBinders(nextBinders);
+      setActiveId(result.binder.id);
+      setActivePageIndex(0);
+      setGiftBuilderOpen(false);
+      setBinderManagerOpen(false);
+      setStorageConflict(false);
+      setStorageStatus("saved");
+      setMessage("Geschenk-Binder wurde lokal angelegt und kann jetzt weiter bearbeitet werden.");
+    } catch (error) {
+      handleStorageError(error, "Geschenk-Binder konnte nicht gespeichert werden.");
     }
   }
 
@@ -1458,13 +1501,13 @@ export function FoundationWorkspace() {
           <span className={styles.brandText}>Cardfolio<small>Wunschbinder · lokal</small></span>
         </button>
         <nav className={styles.primaryNav} aria-label="Hauptnavigation">
-          <button type="button" className={binderManagerOpen ? styles.navItemActive : styles.navItem} onClick={() => setBinderManagerOpen(true)}>
+          <button type="button" className={binderManagerOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }}>
             <BookOpen size={18} /> <span>Meine Binder</span>
           </button>
-          <button type="button" className={!binderManagerOpen && !missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setBinderManagerOpen(false); setMissingOpen(false); }} disabled={!activeBinder}>
+          <button type="button" className={!binderManagerOpen && !missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(false); }} disabled={!activeBinder}>
             <Archive size={18} /> <span>Binder</span>
           </button>
-          <button type="button" className={missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setBinderManagerOpen(false); setMissingOpen(true); setSearchOpen(false); }} disabled={!activeBinder}>
+          <button type="button" className={missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(true); setSearchOpen(false); }} disabled={!activeBinder}>
             <ListFilter size={18} /> <span>Fehlende Karten</span>{stats ? <span className={styles.navBadge}>{stats.missing}</span> : null}
           </button>
         </nav>
@@ -1488,9 +1531,9 @@ export function FoundationWorkspace() {
 
       <div className={styles.mainColumn}>
         <header className={styles.topbar}>
-          <button type="button" className={styles.mobileMenu} onClick={() => setBinderManagerOpen(true)} aria-label="Binderverwaltung öffnen"><Menu size={19} /></button>
+          <button type="button" className={styles.mobileMenu} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }} aria-label="Binderverwaltung öffnen"><Menu size={19} /></button>
           <div className={styles.breadcrumb}>
-            <button type="button" onClick={() => setBinderManagerOpen(true)}>Meine Binder</button>
+            <button type="button" onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }}>Meine Binder</button>
             <span>/</span>
             <strong>{activeBinder?.name ?? "Übersicht"}</strong>
           </div>
@@ -1520,20 +1563,30 @@ export function FoundationWorkspace() {
       ) : null}
 
       {!activeBinder || binderManagerOpen ? (
-        <BinderOverview
-          binders={binders}
-          activeId={activeId}
-          name={name}
-          storageStatus={storageStatus}
-          onNameChange={(event) => setName(event.target.value)}
-          onCreate={createNewBinder}
-          onSelect={selectBinder}
-          onDuplicate={(binder) => void duplicateExistingBinder(binder)}
-          onMove={(binderId, direction) => void moveBinderInOverview(binderId, direction)}
-          onRequestDelete={setBinderToDelete}
-          onExport={exportBackup}
-          onImport={importBackup}
-        />
+        giftBuilderOpen ? (
+          <GiftBuilderPanel
+            loader={giftLoader}
+            pricingEnabled={FEATURES.giftBuilderPricing}
+            onCancel={() => setGiftBuilderOpen(false)}
+            onCreateBinder={createGiftBinder}
+          />
+        ) : (
+          <BinderOverview
+            binders={binders}
+            activeId={activeId}
+            name={name}
+            storageStatus={storageStatus}
+            onNameChange={(event) => setName(event.target.value)}
+            onCreate={createNewBinder}
+            onSelect={selectBinder}
+            onDuplicate={(binder) => void duplicateExistingBinder(binder)}
+            onMove={(binderId, direction) => void moveBinderInOverview(binderId, direction)}
+            onRequestDelete={setBinderToDelete}
+            onExport={exportBackup}
+            onImport={importBackup}
+            onGiftStart={() => { setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
+          />
+        )
       ) : null}
 
       {importReport ? (

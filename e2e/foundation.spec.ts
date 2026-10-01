@@ -587,6 +587,37 @@ test("keeps Pocket cards out of the physical binder search", async ({ page }) =>
   await expect(searchDialog.getByText(/Pocket-Karten können nicht/)).toHaveCount(0);
 });
 
+test("creates an editable Gift Binder from the local-first wizard", async ({ page }) => {
+  await mockCatalog(page);
+  await page.route("https://api.tcgdex.net/v2/en/cards", async (route) => {
+    const url = new URL(route.request().url());
+    if (url.searchParams.get("name")?.toLowerCase() !== "pikachu") return route.fallback();
+    const cards = Array.from({ length: 9 }, (_, index) => ({ id: `base1-${index + 1}`, localId: String(index + 1), name: `Pikachu ${index + 1}` }));
+    await route.fulfill({ body: JSON.stringify(cards), headers, status: 200 });
+  });
+  await page.route("https://api.tcgdex.net/v2/en/cards/base1-*", async (route) => {
+    const id = new URL(route.request().url()).pathname.split("/").pop() ?? "base1-1";
+    const localId = id.split("-").pop() ?? "1";
+    await route.fulfill({
+      body: JSON.stringify({ id, localId, name: `Pikachu ${localId}`, category: "Pokemon", set: { cardCount: { official: 102 }, id: "base1", name: "Base Set" } }),
+      headers,
+      status: 200,
+    });
+  });
+  await page.setViewportSize({ height: 900, width: 375 });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Geschenk erstellen" }).click();
+  await expect(page.getByRole("heading", { name: "Ein persönlicher Kartenbinder" })).toBeVisible();
+  await page.getByRole("button", { name: /Vorschlag erzeugen/ }).click();
+  await expect(page.getByText("9 / 9")).toBeVisible();
+  await expect(page.getByRole("status")).toContainText("Preisprüfung");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(375);
+  await page.getByRole("button", { name: "Auswahl prüfen" }).click();
+  await page.getByRole("button", { name: "Als Binder anlegen" }).click();
+  await expect(page.getByRole("heading", { name: /Geschenk · Pikachu/ })).toBeVisible();
+  await expect(page.getByRole("article", { name: "Pikachu 1, Slot 1" })).toBeVisible();
+});
+
 test("sets, edits and persists the minimum condition for marketplace handoff", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/");
