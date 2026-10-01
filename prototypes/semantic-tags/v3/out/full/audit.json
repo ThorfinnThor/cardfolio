@@ -1,33 +1,33 @@
 {
- "generatedAt": "2026-10-01T09:59:43.054Z",
- "completedSets": 130,
- "expectedCards": 16055,
- "resultRows": 16055,
+ "generatedAt": "2026-10-01T10:08:13.358Z",
+ "completedSets": 131,
+ "expectedCards": 16321,
+ "resultRows": 16321,
  "schemaErrors": [],
  "tagCounts": {
   "beach": 174,
-  "water-surface": 1423,
-  "underwater": 484,
-  "forest": 2249,
-  "grassland-field": 1708,
-  "mountain-rocks": 1772,
-  "cave": 324,
-  "desert": 238,
-  "snow-ice": 544,
-  "city": 820,
-  "indoors": 867,
-  "ruins-building": 818,
-  "sky-clouds": 2544,
-  "night": 614,
-  "sunset-sunrise": 306,
-  "fire-lava": 740,
-  "flowers": 1085,
-  "food-visible": 260,
-  "human-present": 1120,
-  "multiple-pokemon": 1102,
-  "sleeping": 179,
-  "flying": 1816,
-  "swimming": 870
+  "water-surface": 1425,
+  "underwater": 535,
+  "forest": 2314,
+  "grassland-field": 1784,
+  "mountain-rocks": 1854,
+  "cave": 344,
+  "desert": 258,
+  "snow-ice": 563,
+  "city": 861,
+  "indoors": 911,
+  "ruins-building": 866,
+  "sky-clouds": 2643,
+  "night": 643,
+  "sunset-sunrise": 321,
+  "fire-lava": 771,
+  "flowers": 1143,
+  "food-visible": 269,
+  "human-present": 1157,
+  "multiple-pokemon": 1145,
+  "sleeping": 187,
+  "flying": 1895,
+  "swimming": 923
  },
  "relationFlags": [
   {
@@ -3065,12 +3065,20 @@
   "ruins-building": {
    "positives": [
     {
+     "id": "sv04-059",
+     "caption": "The illustrated subject appears in a forest with other Pokémon."
+    },
+    {
      "id": "swsh12-125",
      "caption": "Klinklang swims in a city."
     },
     {
      "id": "swsh8-130",
      "caption": "Dragapult flies in a city with other Pokémon."
+    },
+    {
+     "id": "sv04-044",
+     "caption": "The illustrated subject appears in snow and ice."
     },
     {
      "id": "bw5-82",
@@ -3087,14 +3095,6 @@
     {
      "id": "sm6-50",
      "caption": "Inkay appears near a building."
-    },
-    {
-     "id": "swsh12-123",
-     "caption": "Klink flies in a city."
-    },
-    {
-     "id": "swsh10-183",
-     "caption": "Cyllene appears in a city with a human."
     }
    ],
    "omissions": [
@@ -3371,6 +3371,10 @@
      "caption": "Vulpix appears in a grassy field."
     },
     {
+     "id": "sv04-256",
+     "caption": "The illustrated subject appears in a forest with a person and other Pokémon."
+    },
+    {
      "id": "ex7-57",
      "caption": "A pink Pokémon floats among leaves, flowers and ocean waves."
     },
@@ -3381,10 +3385,6 @@
     {
      "id": "bw1-87",
      "caption": "Audino stands on a path through a forest with small flowers."
-    },
-    {
-     "id": "sm8-140",
-     "caption": "Kirlia appears in a grassy field."
     }
    ],
    "omissions": [
@@ -3597,16 +3597,16 @@
      "caption": "The illustrated subject rests asleep beneath a cloudy sky with other Pokémon."
     },
     {
+     "id": "sv04-175",
+     "caption": "The illustrated subject rests asleep in snow and ice."
+    },
+    {
      "id": "bw11-11",
      "caption": "Two Swadloon rest together among large forest leaves."
     },
     {
      "id": "dp4-82",
      "caption": "Slowpoke asleep among purple flowers and leaves"
-    },
-    {
-     "id": "ex6-53",
-     "caption": "A sleeping cocoon Pokémon hangs from a branch against a dark night sky."
     }
    ],
    "omissions": [
