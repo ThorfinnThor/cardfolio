@@ -1,33 +1,33 @@
 {
- "generatedAt": "2026-10-01T09:20:20.865Z",
- "completedSets": 126,
- "expectedCards": 15147,
- "resultRows": 15147,
+ "generatedAt": "2026-10-01T09:36:47.711Z",
+ "completedSets": 129,
+ "expectedCards": 15825,
+ "resultRows": 15825,
  "schemaErrors": [],
  "tagCounts": {
-  "beach": 170,
-  "water-surface": 1355,
-  "underwater": 419,
-  "forest": 2098,
-  "grassland-field": 1577,
-  "mountain-rocks": 1643,
-  "cave": 303,
-  "desert": 212,
-  "snow-ice": 499,
-  "city": 751,
-  "indoors": 781,
-  "ruins-building": 747,
-  "sky-clouds": 2304,
-  "night": 547,
-  "sunset-sunrise": 274,
-  "fire-lava": 679,
-  "flowers": 961,
-  "food-visible": 241,
-  "human-present": 1026,
-  "multiple-pokemon": 1033,
-  "sleeping": 157,
-  "flying": 1699,
-  "swimming": 766
+  "beach": 174,
+  "water-surface": 1404,
+  "underwater": 455,
+  "forest": 2205,
+  "grassland-field": 1653,
+  "mountain-rocks": 1713,
+  "cave": 312,
+  "desert": 223,
+  "snow-ice": 527,
+  "city": 789,
+  "indoors": 837,
+  "ruins-building": 783,
+  "sky-clouds": 2450,
+  "night": 588,
+  "sunset-sunrise": 298,
+  "fire-lava": 723,
+  "flowers": 1035,
+  "food-visible": 253,
+  "human-present": 1095,
+  "multiple-pokemon": 1068,
+  "sleeping": 168,
+  "flying": 1767,
+  "swimming": 824
  },
  "relationFlags": [
   {
@@ -2450,6 +2450,71 @@
    "id": "swsh8-284",
    "tag": "fire-lava",
    "caption": "Fire Energy appears against an abstract backdrop."
+  },
+  {
+   "id": "sv03.5-024",
+   "tag": "flying",
+   "caption": "Arbok opens its huge mouth amid flying leaves"
+  },
+  {
+   "id": "sv03.5-036",
+   "tag": "forest",
+   "caption": "Clefable floats above a stream in a starry night forest"
+  },
+  {
+   "id": "sv03.5-040",
+   "tag": "flying",
+   "caption": "Wigglytuff charges forward with flying dust"
+  },
+  {
+   "id": "sv03.5-042",
+   "tag": "sky-clouds",
+   "caption": "Golbat swoops under the moon amid purple clouds"
+  },
+  {
+   "id": "sv03.5-054",
+   "tag": "grassland-field",
+   "caption": "Psyduck stands by a pond and flower meadow"
+  },
+  {
+   "id": "sv03.5-084",
+   "tag": "multiple-pokemon",
+   "caption": "Two-headed Doduo runs between rocky cliffs under blue sky"
+  },
+  {
+   "id": "sv03.5-135",
+   "tag": "sky-clouds",
+   "caption": "Jolteon stands amid lightning and bright clouds"
+  },
+  {
+   "id": "sv03.5-138",
+   "tag": "cave",
+   "caption": "Omanyte rests in a blue underwater cave with bubbles"
+  },
+  {
+   "id": "sv03.5-143",
+   "tag": "grassland-field",
+   "caption": "Snorlax sleeps in a forest meadow among white flowers"
+  },
+  {
+   "id": "sv03.5-150",
+   "tag": "ruins-building",
+   "caption": "Mewtwo stands with arms spread in shattered ruins"
+  },
+  {
+   "id": "sv03.5-177",
+   "tag": "ruins-building",
+   "caption": "A man and many Machop and Machoke move boxes in a house"
+  },
+  {
+   "id": "sv03.5-178",
+   "tag": "grassland-field",
+   "caption": "Two Tangela hang from trees in a sunny meadow"
+  },
+  {
+   "id": "sv03.5-206",
+   "tag": "multiple-pokemon",
+   "caption": "Two balls and a device on a golden sparkling background"
   }
  ],
  "visualSamples": {
@@ -2530,12 +2595,20 @@
   "underwater": {
    "positives": [
     {
+     "id": "sv03.5-121",
+     "caption": "Starmie floats among blue coral at the seabed"
+    },
+    {
      "id": "swsh5-9",
      "caption": "Carnivine appears underwater."
     },
     {
      "id": "xy7-26",
      "caption": "Jolteon swims underwater."
+    },
+    {
+     "id": "sv03.5-120",
+     "caption": "Staryu sits among colorful seaweed and coral"
     },
     {
      "id": "swsh12-115",
@@ -2552,14 +2625,6 @@
     {
      "id": "swsh12-114",
      "caption": "Mareanie swims underwater."
-    },
-    {
-     "id": "sm7-22",
-     "caption": "Dhelmise appears underwater."
-    },
-    {
-     "id": "sm7-42",
-     "caption": "Huntail appears underwater."
     }
    ],
    "omissions": []
@@ -2659,14 +2724,24 @@
    ],
    "omissions": [
     {
+     "id": "sv03.5-054",
+     "tag": "grassland-field",
+     "caption": "Psyduck stands by a pond and flower meadow"
+    },
+    {
+     "id": "sv03.5-178",
+     "tag": "grassland-field",
+     "caption": "Two Tangela hang from trees in a sunny meadow"
+    },
+    {
      "id": "sv01-013",
      "tag": "grassland-field",
      "caption": "A green cat Pokémon walking in a flowery meadow."
     },
     {
-     "id": "base4-34",
+     "id": "sv03.5-143",
      "tag": "grassland-field",
-     "caption": "Butterfly creature fluttering over pink flowers in a sunlit meadow."
+     "caption": "Snorlax sleeps in a forest meadow among white flowers"
     }
    ]
   },
@@ -2849,24 +2924,24 @@
      "caption": "Alolan Ninetales appears in snow and ice."
     },
     {
+     "id": "sv02-091",
+     "caption": "The illustrated subject appears in snow and ice."
+    },
+    {
      "id": "swsh8-145",
      "caption": "Claydol flies among rocky mountains."
     },
     {
+     "id": "sv02-058",
+     "caption": "The illustrated subject appears in a grassy field."
+    },
+    {
+     "id": "sv02-090",
+     "caption": "The illustrated subject appears in snow and ice."
+    },
+    {
      "id": "xy3-62",
      "caption": "Tyrantrum appears among rocky mountains."
-    },
-    {
-     "id": "bw7-38",
-     "caption": "Delibird runs across snow beneath a crescent moon."
-    },
-    {
-     "id": "swsh9-116",
-     "caption": "Castform flies among rocky mountains."
-    },
-    {
-     "id": "bw8-27",
-     "caption": "Piloswine walks through snowy plants and falling snow."
     }
    ],
    "omissions": [
@@ -3168,6 +3243,10 @@
      "caption": "Latios soaring under dark clouds with an orange horizon"
     },
     {
+     "id": "sv02-218",
+     "caption": "The illustrated subject appears among rocky cliffs."
+    },
+    {
      "id": "swsh3-84",
      "caption": "Diglett appears among rocky mountains."
     },
@@ -3190,10 +3269,6 @@
     {
      "id": "lc-57",
      "caption": "Omanyte before ancient ruined pillars and an orange sunset sky."
-    },
-    {
-     "id": "dp5-64",
-     "caption": "Green Pokemon crouching before a bright glowing horizon"
     }
    ],
    "omissions": [
@@ -3402,6 +3477,10 @@
      "caption": "Doctor appears in a forest with a human."
     },
     {
+     "id": "sv02-260",
+     "caption": "The illustrated subject appears on a city street with a person."
+    },
+    {
      "id": "swsh5-151",
      "caption": "Single Strike Urshifu V appears with a human."
     },
@@ -3412,10 +3491,6 @@
     {
      "id": "bw11-RC20",
      "caption": "A fashionable woman poses against a sparkling background."
-    },
-    {
-     "id": "ex6-88",
-     "caption": "A smiling young man with glasses stands before sky and plants."
     }
    ],
    "omissions": [
@@ -3456,6 +3531,10 @@
      "caption": "Delinquent appears with people and other Pokémon."
     },
     {
+     "id": "sv03.5-014",
+     "caption": "Kakuna hangs among blue flowers with another Kakuna behind"
+    },
+    {
      "id": "cel25-13",
      "caption": "Cosmog appears indoors with a human and other Pokémon."
     },
@@ -3470,10 +3549,6 @@
     {
      "id": "pop2-1",
      "caption": "A roaring lion Pokémon with other beasts behind it amid lightning"
-    },
-    {
-     "id": "base5-12",
-     "caption": "Pink creature with a shell creature attached and a tiny dark figure on top."
     }
    ],
    "omissions": [

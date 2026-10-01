@@ -6,7 +6,7 @@ the root `package.json` or the lockfile.
 
 ## Status (updated on every stop)
 
-**2026-10-01: Phase A complete, tag list frozen, Phase B at 126/164 sets.**
+**2026-10-01: Phase A complete, tag list frozen, Phase B at 129/164 sets.**
 
 - **Final tags (23, `semantic-tags/v3/final-tags.mjs`):** beach, water-surface, underwater, forest, grassland-field,
   mountain-rocks, cave, desert, snow-ice, city, indoors, ruins-building, sky-clouds, night, sunset-sunrise, fire-lava,
@@ -23,8 +23,8 @@ the root `package.json` or the lockfile.
   | multiple-pokemon | 88 % | 92 % |
 
 - **Final rules:** `v3/tag-rules-final.md`. Phase B agent instructions: `v3/agent-instructions-full.md`.
-- **Phase B:** 164 sets with images, 1,911 sheets. **126 sets and 15,147 of 21,990 cards are complete (69%).** The latest completed 20-set block is `swshp`, `swsh1`, `swsh2`, `swsh3`, `fut2020`, `swsh3.5`, `swsh4`, `swsh4.5`, `swsh5`, `swsh6`, `swsh7`, `cel25`, `swsh8`, `swsh9`, `swsh10`, `swsh10.5`, `swsh11`, `swsh12`, `swsh12.5` and `sv01`. Use `node v3/plan-full.mjs 36` for the next open block (`dc1` remains blocked, so continue with `svp`).
-- **Audit:** all 23 frozen tags were cross-checked before these blocks. A 240-card random sample found five cards requiring correction (2.1% before correction); targeted checks brought the total to 109 corrected cards. Details: `v3/AUDIT.md`, `v3/out/full/audit.json`, `v3/out/full/audit-fixes.json`. The latest validation passes with 15,147/15,147 valid rows and zero schema errors. The new 20-set block added no relationship conflicts; the six reported relation flags all belong to older sets. Caption omission heuristics still contain intentional false positives, especially card names and abstract item/energy art containing scene words.
+- **Phase B:** 164 sets with images, 1,911 sheets. **129 sets and 15,825 of 21,990 cards are complete (72%).** The latest completed sets are `svp`, `sv02` and `sv03.5` (678 cards; `sv03.5` reused the already double-checked Phase A result). The current physical-only block has 17 sets left and continues with `sv03`; `dc1` remains blocked. Pokémon Pocket sets (`A*`, `B*`, `P-A`) are intentionally skipped in accordance with the product requirement that Pocket cards not enter the physical-card catalogue.
+- **Audit:** all 23 frozen tags were cross-checked before these blocks. A 240-card random sample found five cards requiring correction (2.1% before correction); targeted checks brought the total to 109 corrected cards. Details: `v3/AUDIT.md`, `v3/out/full/audit.json`, `v3/out/full/audit-fixes.json`. The latest validation passes with 15,825/15,825 valid rows and zero schema errors. The three latest sets added no relationship conflicts; the six reported relation flags all belong to older sets. Caption omission heuristics still contain intentional false positives, especially card names and abstract item/energy art containing scene words.
 - **Blocked source set:** `dc1` (Double Crisis, 34 cards) currently remains open. TCGdex lists image bases, but all tested variants (`high.webp`, `high.png`, `low.webp`, `low.png`) return HTTP 404 already for `dc1-1`. Do not invent tags without artwork; retry or resolve the source gap separately.
 - **Rejected acceleration attempt (2026-09-30):** local Florence-2 captions plus keyword rules, CLIP/DINO classifiers trained on the completed cards, TF-IDF over generated captions, and MiniLM caption embeddings were evaluated against held-out/manual data. None met the existing quality gate with useful recall (the strongest broad parser reached 66% micro precision / 23% recall; high-precision variants fell to 6–9% recall). No generated rows were ingested or committed. Continue with direct visual tagging from `xy1` onward.
 - **Progress:** `v3/out/full/progress.json` (per set: cards, valid, invalid, tokens, minutes). Results per set: `v3/out/full/<setId>.json`. Invalid results: `v3/out/full/failed.json`.
@@ -44,7 +44,7 @@ stays unchanged. English only. No server, no running costs: static data plus sea
 | 1 | `semantic-search/` | CLIP image vectors (ViT-B/32 and B/16, transformers.js), text query → cosine similarity | **Not usable.** CLIP reads the printed card text: Drowzee HGSS 62 ranks first for "sleeping" because of the attack "Sleep Inducer", while the artwork shows it surfing. 38–46 % of top-8 hits contain the query word in the card text; random cards: 10 %. |
 | 2 | `semantic-tags/` (v1) | Artwork crops on contact sheets, scene tags written by Claude (Sonnet) agents, simple tag search | **127/160** correct top-8 hits across 20 queries (CLIP: "sleeping" 1–2/8, "eating" 0/8) |
 | 3 | `semantic-tags/out/v2` | Stricter schema (kitchen, lightning, interaction, food) and a re-tag | **122/160.** Stricter rules made rare values nearly empty. The two passes also disagreed a lot. 6 untuned queries: 28/48 |
-| 4 | `semantic-tags/v3` | **Multi-label presence tags** with written decision rules, measured with two independent passes plus a precision check | Phase A done; all 23 tags passed. Phase B is 126/164 sets complete and audited. Phase C open. |
+| 4 | `semantic-tags/v3` | **Multi-label presence tags** with written decision rules, measured with two independent passes plus a precision check | Phase A done; all 23 tags passed. Phase B is 129/164 sets complete and audited. Phase C open. |
 
 Main lesson: **tags that are reliable and understandable beat vectors and fine-grained categories.** Anything that
 isn't reliably taggable goes into the free-text caption.
