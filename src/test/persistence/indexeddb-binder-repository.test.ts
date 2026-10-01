@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
 
 import { createBinder, createPlannedCard, placeCard, setPageTitle } from "@/domain/binder-actions";
+import { type PageSelectionDraft } from "@/domain/page-selection";
 import type { CardSnapshot } from "@/domain/types";
 import { RevisionConflictError } from "@/data/persistence/binder-repository";
 import { IndexedDBBinderRepository } from "@/data/persistence/indexeddb-binder-repository";
+import { persistPageSelection } from "@/data/persistence/page-selection-service";
 
 const card: CardSnapshot = {
   key: "tcgdex:base1-1:en",
@@ -58,5 +60,57 @@ describe("IndexedDBBinderRepository", () => {
     expect((await repository.list()).map((item) => item.name)).toEqual(["Roundtrip", "Roundtrip (Import)"]);
     await repository.remove(imported.id, imported.revision);
     expect((await repository.list()).map((item) => item.name)).toEqual(["Roundtrip"]);
+  });
+
+  it("creates a selected page and its card snapshots in one repository operation", async () => {
+    const repository = new IndexedDBBinderRepository();
+    const selection: PageSelectionDraft = {
+      items: [{
+        card,
+        variant: { finish: "normal", edition: "unlimited", printing: "shadowed" },
+        preferences: { minimumCondition: "excellent" },
+      }],
+    };
+
+    const result = await persistPageSelection(repository, selection, {
+      kind: "new-binder",
+      name: "Selected page",
+    });
+    const stored = await repository.get(result.binder.id);
+    const backup = await repository.exportBackup([result.binder.id]);
+
+    expect(stored?.pages[0].slots[0]).toMatchObject({
+      cardKey: card.key,
+      variant: { finish: "normal", edition: "unlimited", printing: "shadowed" },
+      preferences: { minimumCondition: "excellent" },
+    });
+    expect(backup.cards).toEqual([card]);
+  });
+
+  it("persists page selections atomically and rejects a concurrent stale revision", async () => {
+    const repository = new IndexedDBBinderRepository();
+    const binder = createBinder("Concurrent selection");
+    await repository.create(binder, []);
+    const staleBinder = await repository.get(binder.id);
+    if (!staleBinder) throw new Error("Stale binder fixture is missing.");
+
+    await repository.save({ ...binder, description: "Changed in another tab" }, [], binder.revision);
+    const selection: PageSelectionDraft = {
+      items: [{
+        card,
+        variant: { finish: "normal", edition: "unlimited", printing: "shadowed" },
+        preferences: { minimumCondition: "any" },
+      }],
+    };
+
+    await expect(persistPageSelection(repository, selection, {
+      kind: "fill-current-page",
+      binder: staleBinder,
+      pageId: staleBinder.pages[0].id,
+    })).rejects.toBeInstanceOf(RevisionConflictError);
+
+    const current = await repository.get(binder.id);
+    expect(current?.description).toBe("Changed in another tab");
+    expect(current?.pages[0].slots.every((entry) => entry === null)).toBe(true);
   });
 });
