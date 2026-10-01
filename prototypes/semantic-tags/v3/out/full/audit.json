@@ -1,33 +1,33 @@
 {
- "generatedAt": "2026-10-01T10:39:29.562Z",
- "completedSets": 138,
- "expectedCards": 17716,
- "resultRows": 17716,
+ "generatedAt": "2026-10-01T10:52:18.386Z",
+ "completedSets": 146,
+ "expectedCards": 19232,
+ "resultRows": 19232,
  "schemaErrors": [],
  "tagCounts": {
-  "beach": 186,
-  "water-surface": 1509,
-  "underwater": 717,
-  "forest": 2820,
-  "grassland-field": 2284,
-  "mountain-rocks": 2561,
-  "cave": 464,
-  "desert": 352,
-  "snow-ice": 685,
-  "city": 1084,
-  "indoors": 1124,
-  "ruins-building": 1106,
-  "sky-clouds": 3348,
-  "night": 886,
-  "sunset-sunrise": 411,
-  "fire-lava": 903,
-  "flowers": 1472,
-  "food-visible": 360,
-  "human-present": 1336,
-  "multiple-pokemon": 1565,
-  "sleeping": 258,
-  "flying": 2447,
-  "swimming": 1189
+  "beach": 235,
+  "water-surface": 1605,
+  "underwater": 998,
+  "forest": 3418,
+  "grassland-field": 2936,
+  "mountain-rocks": 3346,
+  "cave": 645,
+  "desert": 434,
+  "snow-ice": 818,
+  "city": 1408,
+  "indoors": 1397,
+  "ruins-building": 1434,
+  "sky-clouds": 4222,
+  "night": 1187,
+  "sunset-sunrise": 500,
+  "fire-lava": 1020,
+  "flowers": 1800,
+  "food-visible": 405,
+  "human-present": 1644,
+  "multiple-pokemon": 2095,
+  "sleeping": 311,
+  "flying": 2996,
+  "swimming": 1565
  },
  "relationFlags": [
   {
@@ -2529,6 +2529,14 @@
      "caption": "Dragonair swims on a beach."
     },
     {
+     "id": "sv10.5b-102",
+     "caption": "The illustrated subject swims on a beach with other Pokémon."
+    },
+    {
+     "id": "sv10.5b-101",
+     "caption": "The illustrated subject swims on a beach with other Pokémon."
+    },
+    {
      "id": "pl2-80",
      "caption": "A pink Shellos stands on a sandy beach next to the sea."
     },
@@ -2543,14 +2551,6 @@
     {
      "id": "smp-SM152",
      "caption": "Tapu Lele appears on a beach."
-    },
-    {
-     "id": "sm12-121",
-     "caption": "Crabrawler appears on a beach."
-    },
-    {
-     "id": "pl2-22",
-     "caption": "A pink Gastrodon on a sandy shore before a waterfall cliff and trees."
     }
    ],
    "omissions": []
@@ -2574,6 +2574,10 @@
      "caption": "Staryu swims by the water with other Pokémon."
     },
     {
+     "id": "sv09-087",
+     "caption": "The illustrated subject swims on a beach with a person and other Pokémon."
+    },
+    {
      "id": "xyp-XY60",
      "caption": "Gyarados rises from water near a human figure."
     },
@@ -2584,10 +2588,6 @@
     {
      "id": "swsh6-101",
      "caption": "Qwilfish swims by the water."
-    },
-    {
-     "id": "ex14-27",
-     "caption": "Swampert standing in the sea with small islands and a blue sky."
     }
    ],
    "omissions": []
@@ -2632,8 +2632,16 @@
   "forest": {
    "positives": [
     {
+     "id": "sv10.5w-006",
+     "caption": "The illustrated subject flies in a forest."
+    },
+    {
      "id": "dp1-64",
      "caption": "A large dark bird flies over treetops while two small birds fly above."
+    },
+    {
+     "id": "sv10.5w-074",
+     "caption": "The illustrated subject appears in a forest with other Pokémon."
     },
     {
      "id": "sv01-016",
@@ -2654,14 +2662,6 @@
     {
      "id": "sv08-211",
      "caption": "The illustrated subject appears in a forest with other Pokémon and visible food."
-    },
-    {
-     "id": "gym2-71",
-     "caption": "Paras crawling on a leaf-covered forest floor among tall tree trunks"
-    },
-    {
-     "id": "hgss4-81",
-     "caption": "Venonat in a forest, flowers."
     }
    ],
    "omissions": [
@@ -2694,6 +2694,10 @@
      "caption": "Wooper appears in a grassy field."
     },
     {
+     "id": "sv10.5w-095",
+     "caption": "The illustrated subject swims underwater with other Pokémon."
+    },
+    {
      "id": "swsh4-33",
      "caption": "Oshawott appears in a grassy field."
     },
@@ -2716,10 +2720,6 @@
     {
      "id": "sm10-77",
      "caption": "Misdreavus appears in a grassy field."
-    },
-    {
-     "id": "sv03-003",
-     "caption": "The illustrated subject appears in a grassy field."
     }
    ],
    "omissions": [
@@ -2756,28 +2756,28 @@
      "caption": "The illustrated subject flies among rocky cliffs."
     },
     {
+     "id": "sv10.5w-117",
+     "caption": "The illustrated subject appears in a forest with other Pokémon."
+    },
+    {
+     "id": "sv10.5b-045",
+     "caption": "The illustrated subject rests asleep in a forest."
+    },
+    {
+     "id": "sv10.5w-107",
+     "caption": "The illustrated subject swims underwater with other Pokémon."
+    },
+    {
+     "id": "sv10-244",
+     "caption": "The illustrated subject appears among rocky cliffs."
+    },
+    {
+     "id": "sv10-216",
+     "caption": "The illustrated subject flies among rocky cliffs with a person and other Pokémon."
+    },
+    {
      "id": "dp7-79",
      "caption": "A green gecko Pokémon leans on a rock face with trees beyond."
-    },
-    {
-     "id": "dp7-15",
-     "caption": "A pink scorpion Pokémon attacks on a rocky shore under blue sky."
-    },
-    {
-     "id": "sv04.5-042",
-     "caption": "The illustrated subject rests asleep among rocky cliffs."
-    },
-    {
-     "id": "sv04.5-054",
-     "caption": "The illustrated subject appears among rocky cliffs."
-    },
-    {
-     "id": "sv08-086",
-     "caption": "The illustrated subject appears among rocky cliffs."
-    },
-    {
-     "id": "bw5-64",
-     "caption": "Sandile stands in a quarry before cliffs and machinery."
     }
    ],
    "omissions": [
@@ -2874,16 +2874,16 @@
      "caption": "The illustrated subject appears in a forest with a person."
     },
     {
+     "id": "sv10-052",
+     "caption": "The illustrated subject appears in a grassy field with a person."
+    },
+    {
      "id": "sm12-107",
      "caption": "Trapinch appears in a desert."
     },
     {
      "id": "sm3-62",
      "caption": "Palossand appears in a desert."
-    },
-    {
-     "id": "sv06-100",
-     "caption": "The illustrated subject flies among rocky cliffs with other Pokémon."
     }
    ],
    "omissions": [
@@ -2928,6 +2928,10 @@
      "caption": "The illustrated subject appears in snow and ice."
     },
     {
+     "id": "sv10.5b-028",
+     "caption": "The illustrated subject swims underwater."
+    },
+    {
      "id": "swsh8-145",
      "caption": "Claydol flies among rocky mountains."
     },
@@ -2938,10 +2942,6 @@
     {
      "id": "sv02-090",
      "caption": "The illustrated subject appears in snow and ice."
-    },
-    {
-     "id": "xy3-62",
-     "caption": "Tyrantrum appears among rocky mountains."
     }
    ],
    "omissions": [
@@ -2982,6 +2982,10 @@
      "caption": "Porygon swims beside open water."
     },
     {
+     "id": "sv09-180",
+     "caption": "The illustrated subject appears among rocky cliffs with a person."
+    },
+    {
      "id": "sm6-83",
      "caption": "Flabébé appears in a city."
     },
@@ -2996,10 +3000,6 @@
     {
      "id": "swsh10-149",
      "caption": "Kamado appears in a city with a human."
-    },
-    {
-     "id": "xy7-73",
-     "caption": "Faded Town appears among rocky mountains."
     }
    ],
    "omissions": [
@@ -3028,8 +3028,16 @@
   "indoors": {
    "positives": [
     {
+     "id": "sv10-180",
+     "caption": "The illustrated subject appears on a city street with a person."
+    },
+    {
      "id": "sv04.5-013",
      "caption": "The illustrated subject appears on a city street with a person and other Pokémon and visible food."
+    },
+    {
+     "id": "me02.5-203",
+     "caption": "The illustrated subject appears on a city street."
     },
     {
      "id": "sv08-162",
@@ -3048,16 +3056,8 @@
      "caption": "Rhydon appears indoors with a human."
     },
     {
-     "id": "xy12-31",
-     "caption": "Starmie appears indoors."
-    },
-    {
-     "id": "sv04.5-088",
-     "caption": "The illustrated subject appears on a city street with a person."
-    },
-    {
-     "id": "sv03-220",
-     "caption": "The illustrated subject appears on a city street with a person and other Pokémon."
+     "id": "sv10-127",
+     "caption": "The illustrated subject appears among rocky cliffs with a person and other Pokémon."
     }
    ],
    "omissions": []
@@ -3067,6 +3067,10 @@
     {
      "id": "sv04-059",
      "caption": "The illustrated subject appears in a forest with other Pokémon."
+    },
+    {
+     "id": "sv10-174",
+     "caption": "The illustrated subject appears on a city street with a person."
     },
     {
      "id": "swsh12-125",
@@ -3091,10 +3095,6 @@
     {
      "id": "bw5-98",
      "caption": "A professor studies a device outside with Pokémon near a house."
-    },
-    {
-     "id": "swsh12-124",
-     "caption": "Klang flies in a city."
     }
    ],
    "omissions": [
@@ -3127,12 +3127,20 @@
      "caption": "Skiploom flies beneath a cloudy sky with other Pokémon."
     },
     {
+     "id": "sv10.5w-113",
+     "caption": "The illustrated subject swims underwater with other Pokémon."
+    },
+    {
      "id": "bw8-72",
      "caption": "Donphan charges among rocky cliffs beneath blue sky."
     },
     {
      "id": "bw8-64",
      "caption": "Trubbish stands in grass beneath a cloudy sky."
+    },
+    {
+     "id": "sv10.5w-173",
+     "caption": "The illustrated subject swims underwater."
     },
     {
      "id": "sm1-69",
@@ -3145,14 +3153,6 @@
     {
      "id": "sm1-91",
      "caption": "Granbull appears among rocky mountains."
-    },
-    {
-     "id": "swsh4.5-72",
-     "caption": "Skyla appears beneath a cloudy sky with a human."
-    },
-    {
-     "id": "neo4-102",
-     "caption": "Rhydon and Marill in a stadium before a cheering crowd and cloudy sky."
     }
    ],
    "omissions": [
@@ -3185,6 +3185,10 @@
      "caption": "Gengar VMAX appears indoors with a human."
     },
     {
+     "id": "me02-035",
+     "caption": "The illustrated subject appears on a city street."
+    },
+    {
      "id": "col1-56",
      "caption": "Eevee in a city, a building, a cloudy sky, night, flight."
     },
@@ -3207,10 +3211,6 @@
     {
      "id": "xy1-91",
      "caption": "Mr. Mime appears in a forest."
-    },
-    {
-     "id": "col1-17",
-     "caption": "Ninetales in a forest, rocky terrain, snow and ice, an indoor scene, a building, night, fire."
     }
    ],
    "omissions": [
@@ -3263,12 +3263,12 @@
      "caption": "Hoothoot flies in a city."
     },
     {
-     "id": "ex1-82",
-     "caption": "Grovyle and Oddish near a glowing energy orb under a fiery sky."
+     "id": "me01-183",
+     "caption": "The illustrated subject appears on a city street with a person."
     },
     {
-     "id": "lc-57",
-     "caption": "Omanyte before ancient ruined pillars and an orange sunset sky."
+     "id": "ex1-82",
+     "caption": "Grovyle and Oddish near a glowing energy orb under a fiery sky."
     }
    ],
    "omissions": [
@@ -3305,8 +3305,20 @@
      "caption": "The illustrated subject appears among rocky cliffs."
     },
     {
+     "id": "sv10.5w-098",
+     "caption": "The illustrated subject appears among rocky cliffs with other Pokémon."
+    },
+    {
+     "id": "sv10.5w-018",
+     "caption": "The illustrated subject appears inside a cave."
+    },
+    {
      "id": "ex1-28",
      "caption": "Combusken kicks with a fiery burst before mountains and meadow."
+    },
+    {
+     "id": "sv10.5w-099",
+     "caption": "The illustrated subject appears in a forest with other Pokémon and visible food."
     },
     {
      "id": "xyp-XY59",
@@ -3315,18 +3327,6 @@
     {
      "id": "base4-35",
      "caption": "Red lizard creature slashing near a burning flame on rocks."
-    },
-    {
-     "id": "base4-51",
-     "caption": "Fiery creature standing amid flames and dark embers."
-    },
-    {
-     "id": "swsh10-165",
-     "caption": "Heatran V appears near flames."
-    },
-    {
-     "id": "xy6-63",
-     "caption": "Reshiram flies beneath a cloudy sky."
     }
    ],
    "omissions": [
@@ -3359,6 +3359,14 @@
      "caption": "Butterfree fluttering over pink flowers under a blue sky."
     },
     {
+     "id": "sv10.5b-121",
+     "caption": "The illustrated subject rests asleep underwater with a person and other Pokémon."
+    },
+    {
+     "id": "me02.5-282",
+     "caption": "The illustrated subject appears among flowers with other Pokémon."
+    },
+    {
      "id": "bw3-31",
      "caption": "Jellicent swims underwater with a smaller Frillish near aquatic flowers."
     },
@@ -3377,14 +3385,6 @@
     {
      "id": "swsh8-29",
      "caption": "Vulpix appears in a grassy field."
-    },
-    {
-     "id": "sv04-256",
-     "caption": "The illustrated subject appears in a forest with a person and other Pokémon."
-    },
-    {
-     "id": "sv08-073",
-     "caption": "The illustrated subject swims in a forest with other Pokémon and visible food."
     }
    ],
    "omissions": [
@@ -3433,16 +3433,16 @@
      "caption": "A duck Pokémon flies holding a leek near mountains and clouds."
     },
     {
+     "id": "sv10-158",
+     "caption": "The illustrated subject appears in a forest with a person and other Pokémon and visible food."
+    },
+    {
      "id": "sv05-130",
      "caption": "The illustrated subject appears in a grassy field with a person and other Pokémon and visible food."
     },
     {
      "id": "swsh2-112",
      "caption": "Koffing appears indoors with visible food."
-    },
-    {
-     "id": "swsh2-20",
-     "caption": "Applin appears in a forest with visible food."
     }
    ],
    "omissions": [
@@ -3539,16 +3539,16 @@
      "caption": "The illustrated subject flies in a forest with other Pokémon."
     },
     {
+     "id": "sv10.5w-119",
+     "caption": "The illustrated subject swims underwater with other Pokémon."
+    },
+    {
      "id": "sv03.5-014",
      "caption": "Kakuna hangs among blue flowers with another Kakuna behind"
     },
     {
      "id": "cel25-13",
      "caption": "Cosmog appears indoors with a human and other Pokémon."
-    },
-    {
-     "id": "xy5-45",
-     "caption": "Spheal appears beside open water with people and with other Pokémon."
     }
    ],
    "omissions": [
@@ -3581,6 +3581,10 @@
      "caption": "Slaking sleeps in a grassy field."
     },
     {
+     "id": "sv10-015",
+     "caption": "The illustrated subject rests asleep on a city street with a person and other Pokémon."
+    },
+    {
      "id": "sv05-166",
      "caption": "The illustrated subject rests asleep in a forest with a person and other Pokémon."
     },
@@ -3603,10 +3607,6 @@
     {
      "id": "sv04-175",
      "caption": "The illustrated subject rests asleep in snow and ice."
-    },
-    {
-     "id": "sv05-105",
-     "caption": "The illustrated subject rests asleep in a grassy field."
     }
    ],
    "omissions": [
@@ -3694,6 +3694,10 @@
      "caption": "The illustrated subject swims in a forest with other Pokémon."
     },
     {
+     "id": "sv10-047",
+     "caption": "The illustrated subject swims underwater with a person and other Pokémon."
+    },
+    {
      "id": "sv08-091",
      "caption": "The illustrated subject swims among rocky cliffs."
     },
@@ -3702,12 +3706,8 @@
      "caption": "A red crawfish Pokémon wades in a shallow stream."
     },
     {
-     "id": "xy4-22",
-     "caption": "Alomomola swims underwater."
-    },
-    {
-     "id": "ecard1-111",
-     "caption": "Goldeen swimming beside a waterfall."
+     "id": "sv09-134",
+     "caption": "The illustrated subject swims underwater with a person and other Pokémon."
     }
    ],
    "omissions": [
