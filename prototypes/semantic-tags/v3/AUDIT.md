@@ -25,6 +25,10 @@ The applied corrections and their visual reasons are recorded in `out/full/audit
 
 After the audit corrections, the next nine sets (`pl3`, `pl4`, `ru1`, `hgss1`, `hgssp`, `hgss2`, `hgss3`, `hgss4`, `col1`) were tagged by visually checking every artwork. The same structural and relationship audit was then rerun over the expanded data: 65 sets, 5,876/5,876 valid rows, zero schema errors and no new relationship conflicts. The six documented exceptions above remain unchanged.
 
+## Phase C follow-up
+
+The strict visual review of the final 30 search queries found nine false scene assignments in `col1` (`11`, `13`, `28`, `35`, `38`, `54`, `60`, `82`, `83`). Their tags and captions were corrected and the full structural audit rerun. The final state is 149 sets, 19,635/19,635 valid rows and zero schema errors. Search-result quality is recorded separately in `out/search/self-check.json` (227/240, 94.6%).
+
 ## Limit
 
 This is a strong model-assisted audit, not a human review of all 5,060 individual artworks. Every tag was checked, every row was validated, and the targeted and random checks were corrected; isolated visual judgement errors can still exist. Tags remain automatically detected data and must be labelled accordingly in the product.

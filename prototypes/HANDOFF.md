@@ -6,7 +6,7 @@ the root `package.json` or the lockfile.
 
 ## Status (updated on every stop)
 
-**2026-10-01: Phase A complete, tag list frozen, eligible physical-card portion of Phase B complete at 149/164 sets.**
+**2026-10-01: Phases A-C complete: frozen tags, all eligible physical cards, compact browser search and final evaluation.**
 
 - **Final tags (23, `semantic-tags/v3/final-tags.mjs`):** beach, water-surface, underwater, forest, grassland-field,
   mountain-rocks, cave, desert, snow-ice, city, indoors, ruins-building, sky-clouds, night, sunset-sunrise, fire-lava,
@@ -24,12 +24,13 @@ the root `package.json` or the lockfile.
 
 - **Final rules:** `v3/tag-rules-final.md`. Phase B agent instructions: `v3/agent-instructions-full.md`.
 - **Phase B:** 164 sets with images, 1,911 sheets. **All 149 eligible physical sets and 19,635 of 21,990 catalogue cards are complete (91% of all image-bearing sets; 89% of all image-bearing cards).** The final physical block added `me04`, `me05` and `30th` (403 cards). `dc1` remains blocked. Pokémon Pocket sets (`A*`, `B*`, `P-A`) are intentionally skipped in accordance with the product requirement that Pocket cards not enter the physical-card catalogue. There are no further eligible physical sets waiting for annotation.
-- **Audit:** all 23 frozen tags were cross-checked before these blocks. A 240-card random sample found five cards requiring correction (2.1% before correction); targeted checks brought the total to 109 corrected cards. Details: `v3/AUDIT.md`, `v3/out/full/audit.json`, `v3/out/full/audit-fixes.json`. The latest validation passes with 19,635/19,635 valid rows and zero schema errors. The three final sets added no relationship conflicts; the six reported relation flags all belong to older sets. Caption omission heuristics still contain intentional false positives, especially card names and abstract item/energy art containing scene words.
+- **Audit:** all 23 frozen tags were cross-checked before these blocks. A 240-card random sample found five cards requiring correction (2.1% before correction); targeted checks brought the total to 109 corrected cards. Phase C's result sheets exposed nine additional false scene assignments in `col1`; those tags and captions were corrected before the final search check. Details: `v3/AUDIT.md`, `v3/out/full/audit.json`, `v3/out/full/audit-fixes.json`, `v3/out/search/self-check.json`. The latest validation passes with 19,635/19,635 valid rows and zero schema errors.
 - **Partial source gap in a completed set:** TCGdex returns HTTP 404 for all image variants of the `30th` special IDs `B`, `G` and `R`. Those three rows are retained with empty tags and the caption `Artwork unavailable from the source.`; the other 158 cards in the set were visually tagged normally. Do not infer artwork tags for the three unavailable cards.
 - **Blocked source set:** `dc1` (Double Crisis, 34 cards) currently remains open. TCGdex lists image bases, but all tested variants (`high.webp`, `high.png`, `low.webp`, `low.png`) return HTTP 404 already for `dc1-1`. Do not invent tags without artwork; retry or resolve the source gap separately.
 - **Rejected acceleration attempt (2026-09-30):** local Florence-2 captions plus keyword rules, CLIP/DINO classifiers trained on the completed cards, TF-IDF over generated captions, and MiniLM caption embeddings were evaluated against held-out/manual data. None met the existing quality gate with useful recall (the strongest broad parser reached 66% micro precision / 23% recall; high-precision variants fell to 6–9% recall). No generated rows were ingested or committed. Continue with direct visual tagging from `xy1` onward.
 - **Progress:** `v3/out/full/progress.json` (per set: cards, valid, invalid, tokens, minutes). Results per set: `v3/out/full/<setId>.json`. Invalid results: `v3/out/full/failed.json`.
-- **Starting / resuming:** the eligible physical annotation queue is complete. `node v3/plan-full.mjs 36` now lists only intentionally skipped Pocket work and the blocked `dc1` source gap; do not process either without changing the documented product/source decision. The next implementation block is Phase C search and evaluation.
+- **Phase C:** `v3/search.mjs` is dependency-free browser/Node domain logic with explicit tag synonyms, whole-word caption fallback for unmapped terms and honest sparse results. `v3/out/search/compact-index.json` contains all 19,635 cards as id + 23-bit mask + caption. Size: 1.273 MiB raw, 0.256 MiB gzip. The strict visual check scored **227/240 (94.6%)** over the original 20 and 10 new queries; three top-eight slots were intentionally left empty. See `v3/out/search/evaluation.json`, `size.json` and `self-check.json`.
+- **Starting / resuming:** Phases A-C are complete. `node v3/plan-full.mjs 36` lists only intentionally skipped Pocket work and blocked `dc1`; do not process either without changing the product/source decision. The next block is a separate reviewed app integration PR (static data under `public/data`, domain tests and semantic-search UI).
 - **Known issues:** Node on macOS needs `NODE_EXTRA_CA_CERTS=/etc/ssl/cert.pem`. `high.webp` returns a 404 for a few cards (e.g. sv03.5-163); the sheet builder then uses `high.png`. The usage limit can stop runs; everything is resumable per set.
 
 ## Goal
@@ -45,7 +46,7 @@ stays unchanged. English only. No server, no running costs: static data plus sea
 | 1 | `semantic-search/` | CLIP image vectors (ViT-B/32 and B/16, transformers.js), text query → cosine similarity | **Not usable.** CLIP reads the printed card text: Drowzee HGSS 62 ranks first for "sleeping" because of the attack "Sleep Inducer", while the artwork shows it surfing. 38–46 % of top-8 hits contain the query word in the card text; random cards: 10 %. |
 | 2 | `semantic-tags/` (v1) | Artwork crops on contact sheets, scene tags written by Claude (Sonnet) agents, simple tag search | **127/160** correct top-8 hits across 20 queries (CLIP: "sleeping" 1–2/8, "eating" 0/8) |
 | 3 | `semantic-tags/out/v2` | Stricter schema (kitchen, lightning, interaction, food) and a re-tag | **122/160.** Stricter rules made rare values nearly empty. The two passes also disagreed a lot. 6 untuned queries: 28/48 |
-| 4 | `semantic-tags/v3` | **Multi-label presence tags** with written decision rules, measured with two independent passes plus a precision check | Phase A done; all 23 tags passed. All 149 eligible physical sets in Phase B are complete and audited; `dc1` is source-blocked and Pocket is intentionally excluded. Phase C open. |
+| 4 | `semantic-tags/v3` | **Multi-label presence tags** plus explicit synonym/caption search | **227/240 (94.6%)** across 30 full-catalogue queries after strict visual checking. 19,635 cards; compact index 1.273 MiB raw / 0.256 MiB gzip. |
 
 Main lesson: **tags that are reliable and understandable beat vectors and fine-grained categories.** Anything that
 isn't reliably taggable goes into the free-text caption.
@@ -102,11 +103,11 @@ same cards and then measured against the same gate. If they pass, the final list
    - Pushes: every few sets. The run can be resumed at any time.
    - Result: 149 sets and 19,635 cards, all schema-valid. `dc1` remains the separate physical source gap and Pocket is outside product scope.
    - Quality check: 10 random sets × 24 cards checked by eye, reported as an error rate.
-3. **Phase C: free-text search.**
+3. **Phase C: free-text search (complete).**
    - Module: `v3/search.mjs`, plain JS with no dependencies, runs in the browser and in Node.
    - Matching: an explicit synonym table maps query words to tags (e.g. seaside/shore → beach, woods/jungle → forest). Words it can't map are returned as `unmappedTerms` and searched in the caption instead; no invented matches.
    - Index: compact (tags as a bitmask plus the caption); raw and gzip size to be reported.
-   - Test: 20 original plus 10 new queries on the full catalogue, strict self-check on 240 slots.
+   - Test: 20 original plus 10 new queries on the full catalogue; strict self-check: 227/240 (94.6%), with borderline and three deliberately unfilled slots counted as misses.
 
 ## Rules that apply (AGENTS.md plus the owner's decisions)
 
@@ -185,9 +186,9 @@ node v3/ingest-full.mjs <result.json>  # validate and store one set
 
 1. `git fetch` and check out `claude/project-thread-jqmwl5`. Read this file, `semantic-tags/v3/tag-rules-final.md` and `semantic-tags/v3/AUDIT.md`.
 2. Verify `v3/out/full/progress.json` and `v3/out/full/audit.json`; the expected totals are 149 sets, 19,635 valid cards and zero schema errors.
-3. Build Phase C (`v3/search.mjs`) and test it on the completed physical catalogue.
+3. Phase C is complete. Rebuild with `node v3/build-search-index.mjs`, then run `node --test v3/search.test.mjs` and `node v3/evaluate-search.mjs` after data changes.
 4. Resolve `dc1` only if its artwork source becomes available; do not tag it from invented or inferred imagery. Keep Pocket excluded unless the owner changes the product requirement.
-5. After Phase C, prepare a separate integration PR (data file, domain search module with tests, UI, `docs/decisions.md` entries) with integration review.
+5. Prepare a separate integration PR (data file, domain search module with tests, UI, `docs/decisions.md` entries) with integration review.
 
 ## Before merging PR #3
 
