@@ -1,33 +1,33 @@
 {
- "generatedAt": "2026-09-30T21:24:57.314Z",
- "completedSets": 94,
- "expectedCards": 9577,
- "resultRows": 9577,
+ "generatedAt": "2026-10-01T07:44:48.836Z",
+ "completedSets": 96,
+ "expectedCards": 9875,
+ "resultRows": 9875,
  "schemaErrors": [],
  "tagCounts": {
-  "beach": 123,
-  "water-surface": 918,
-  "underwater": 299,
-  "forest": 1254,
-  "grassland-field": 939,
-  "mountain-rocks": 975,
-  "cave": 195,
-  "desert": 146,
-  "snow-ice": 321,
-  "city": 439,
-  "indoors": 430,
-  "ruins-building": 446,
-  "sky-clouds": 1366,
-  "night": 364,
-  "sunset-sunrise": 203,
-  "fire-lava": 429,
-  "flowers": 555,
-  "food-visible": 130,
-  "human-present": 444,
-  "multiple-pokemon": 648,
-  "sleeping": 92,
-  "flying": 1162,
-  "swimming": 525
+  "beach": 128,
+  "water-surface": 948,
+  "underwater": 305,
+  "forest": 1306,
+  "grassland-field": 962,
+  "mountain-rocks": 1015,
+  "cave": 203,
+  "desert": 160,
+  "snow-ice": 333,
+  "city": 448,
+  "indoors": 450,
+  "ruins-building": 453,
+  "sky-clouds": 1403,
+  "night": 371,
+  "sunset-sunrise": 204,
+  "fire-lava": 440,
+  "flowers": 570,
+  "food-visible": 136,
+  "human-present": 471,
+  "multiple-pokemon": 672,
+  "sleeping": 98,
+  "flying": 1190,
+  "swimming": 534
  },
  "relationFlags": [
   {
@@ -2206,6 +2206,10 @@
      "caption": "Ivysaur on sand near the sea with cliffs and crystals."
     },
     {
+     "id": "sm4-15",
+     "caption": "Staryu swims by the water with other Pokémon."
+    },
+    {
      "id": "xyp-XY60",
      "caption": "Gyarados rises from water near a human figure."
     },
@@ -2224,10 +2228,6 @@
     {
      "id": "bw3-48",
      "caption": "Trubbish sits beside blue water under stylized clouds."
-    },
-    {
-     "id": "xyp-XY55",
-     "caption": "Swampert rises amid splashing water."
     }
    ],
    "omissions": []
@@ -2276,6 +2276,10 @@
      "caption": "A large dark bird flies over treetops while two small birds fly above."
     },
     {
+     "id": "sm4-2",
+     "caption": "Kakuna appears in a forest with other Pokémon."
+    },
+    {
      "id": "pl4-78",
      "caption": "Treecko clings to a branch amid forest leaves."
     },
@@ -2298,10 +2302,6 @@
     {
      "id": "sm2-69",
      "caption": "Nosepass appears in a forest."
-    },
-    {
-     "id": "hgss4-70",
-     "caption": "Nidoran ♂ in a forest, grassland."
     }
    ],
    "omissions": [
