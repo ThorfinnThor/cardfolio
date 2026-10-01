@@ -533,3 +533,23 @@ Verification:
 Handoff:
 
 - No merge or deployment was performed. The next work block is Step 3, Sol: implement the shared selection-to-binder-page domain engine.
+
+## 2026-10-01 — Gift marketplace and binder-partner controls (Step 7)
+
+Completed:
+
+- Added a pure Gift marketplace wrapper around the existing TCGplayer and Cardmarket exporters. Every result declares `ownershipEffect: none`; external navigation never marks a card purchased or present.
+- Added the provider-neutral `BinderAffiliateAdapter` and a runtime JSON catalog with catalog/offer switches, verification expiry, evidence URLs, HTTPS validation, optional static affiliate parameters and mandatory affiliate disclosure.
+- Kept the production binder-partner catalog disabled because no provider agreement, compatible personalized product, current price or privacy review is recorded.
+- Added a local text-only Print Summary contract with separate card estimate and binder price fields. Card images, Pokémon logos and photo uploads are absent by construction.
+- Recorded the official provider, affiliate, rights, external-navigation, privacy, stale-offer and pricing gates in `docs/gift-commerce-release-gates.md` and strengthened the release script for enabled partner configurations.
+- Added integration coverage for disabled/stale/invalid offers, safe static URL construction, missing prices, marketplace-export reuse, ownership neutrality and text-only print data.
+
+Verification:
+
+- Typecheck, ESLint, 30 Vitest files / 161 tests, static Next.js build, release checks and `git diff --check` passed locally.
+- No browser-facing controls were added in this Sol step; the summary, disabled/no-offer presentation and two distinct purchase CTAs belong to Step 8.
+
+Handoff:
+
+- No merge or deployment was performed. The next work block is Step 8, Luna: Gift Summary, printable/downloadable local output, partner/no-offer states and final responsive/accessibility verification.

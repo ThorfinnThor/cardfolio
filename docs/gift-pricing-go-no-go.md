@@ -18,7 +18,9 @@ Status: **NO-GO for public pricing presets**. `FEATURES.giftBuilderPricing` rema
 
 ## Why the gate is still closed
 
-The production release still needs a measured Pikachu plus two-other-Pokémon benchmark covering price availability, cache hit rate, request count and time to first results. The current TCGdex printing/price mapping caveat also needs a fresh review immediately before public enablement. UI copy, accessibility and failure states are Step 6 work; partner and disclosure review is Step 7.
+The production release still needs a measured Pikachu plus two-other-Pokémon benchmark covering price availability, cache hit rate, request count and time to first results. The current TCGdex printing/price mapping caveat also needs a fresh review immediately before public enablement.
+
+The 2026-10-01 Step-7 provider review confirms that TCGplayer directs applications using pricing data to its partner APIs and requires direct contact for commission terms. Cardfolio has no recorded partner/API approval. TCGdex's MIT repository license is not treated as a grant to commercially reuse third-party marketplace data or Pokémon artwork. These are additional reasons to keep the public pricing flag disabled; see `gift-commerce-release-gates.md`.
 
 ## Go criteria
 

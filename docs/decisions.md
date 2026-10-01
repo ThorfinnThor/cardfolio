@@ -180,3 +180,11 @@
 - Cardfolio previously displayed it as "Katalog bestätigt: Non-Holo / Normal", preselected Non-Holo and blocked Holo and Reverse Holo, e.g. for the holo-only Celebi & Bisaflor GX (Team Up 159/181).
 - The exact fallback shape is now treated as missing variant data in the adapter and when reading stored snapshots. All finishes stay selectable and the finish is not preselected. No schema or backup change is needed.
 - Trade-off: a card whose curated data genuinely says only Non-Holo (no Reverse, no First Edition) also shows as unconfirmed. That costs one manual choice but never blocks a real printing.
+
+## 2026-10-01 — Gift commerce stays split, local and provider-gated
+
+- Gift completion reuses the existing TCGplayer and Cardmarket exporters. Preparing or opening a provider has the explicit ownership effect `none`; only the collector marks a card as present.
+- Card acquisition and a physical binder are separate purchases with separate price fields. Missing prices remain unknown.
+- Physical-binder destinations live in a reviewed runtime JSON catalog rather than UI components. Catalog-level and offer-level switches, review dates and evidence URLs allow offers to fail closed.
+- No binder offer is currently enabled. TCGplayer affiliate mode also remains off because Cardfolio has no approved partner code; Cardmarket remains a manual Wants/search handoff.
+- The printable Gift contract contains text identity only. Pokémon artwork/logos are not exported as cover assets, and Cardfolio does not accept or upload personal photos.

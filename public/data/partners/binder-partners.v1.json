@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "enabled": false,
+  "reviewedAt": "2026-10-01",
+  "disabledReason": "Es ist noch kein Anbieter für personalisierte Binder vertraglich und technisch freigegeben.",
+  "partners": [
+    {
+      "id": "personalization-partner-pending",
+      "displayName": "Personalisierter Binder",
+      "enabled": false,
+      "verifiedAt": "2026-10-01",
+      "reviewAfter": "2026-10-31",
+      "disabledReason": "Anbieter, Produktkompatibilität, Preis, Affiliate-Vertrag und Datenschutz müssen vor der Aktivierung erneut geprüft werden.",
+      "affiliate": {
+        "enabled": false
+      },
+      "capabilities": {
+        "personalization": false,
+        "photoUpload": false
+      },
+      "evidenceUrls": [
+        "https://www.pokemon.com/uk/legal/terms-of-use"
+      ]
+    }
+  ]
+}
