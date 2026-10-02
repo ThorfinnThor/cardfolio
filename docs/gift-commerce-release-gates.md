@@ -15,7 +15,8 @@ This is an engineering release gate, not legal advice. It records the evidence C
 | TCGplayer affiliate links | NO-GO | No approved Cardfolio partner account/code is configured. Partner status and unavoidable disclosure are required first. |
 | Cardmarket affiliate/deep integration | NO-GO | No current official affiliate agreement or approved Cardfolio API access is on file. Only documented public Wants/search pages are linked. |
 | Personalized binder partner | NO-GO | No provider has passed product compatibility, personalization, price, privacy, affiliate and stale-link review. The repository catalog is centrally disabled. |
-| Gift card-price presets | NO-GO | `FEATURES.giftBuilderPricing` remains false; see `gift-pricing-go-no-go.md`. |
+| Gift card-price estimates | Conditional GO | TCGdex provider metrics may be shown as dated, unverbindliche estimates with unknown/approximate counts. No budget, stock, seller or checkout claim is made. |
+| Gift budget guarantee / price-led presets | NO-GO | `FEATURES.giftBudgetGuarantee` and legacy `FEATURES.giftBuilderPricing` remain false; see `gift-pricing-go-no-go.md`. |
 | Printable Gift Summary | Contract ready | Text-only local document. It may contain the user's local greeting and card identity, but no Pokémon art/logo or personal-photo upload. |
 
 ## Official evidence reviewed

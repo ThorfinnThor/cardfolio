@@ -1,5 +1,16 @@
 # Implementation status
 
+## 2026-10-02 — Artwork-Prüfung: Zusatzrunden abgeschlossen
+
+Implemented:
+
+- Der eingecheckte Review-Stand enthält 428 visuelle Entscheidungen: 328 menschliche und 100 KI-gestützte Prüfungen anhand der tatsächlich gerenderten Kartenbilder.
+- Die Herkunft steht pro neuem Datensatz in `source`; ältere Datensätze ohne Feld gelten als `human`.
+- Alle zehn Motive verfügen jetzt über mindestens neun dominante Treffer. Die zuvor schwachen Motive erreichen Stadt 12, Himmel & Wolken 9 und Blumen 16.
+- Nebenmotive und falsche Kandidaten wurden nicht zur Erfüllung der Mindestabdeckung hochgestuft.
+
+Verification: typecheck, ESLint, 184 Vitest-Tests, reproduzierbarer Semantic-Index, statischer Build und Release-Gates bestanden.
+
 ## 2026-09-27 — Foundation package
 
 Implemented:
@@ -576,3 +587,23 @@ Verification:
 Handoff:
 
 - No merge or deployment was performed. The next release-quality block is a final visual/accessibility check of the changed Gift result list at the required viewports, followed by GitHub CI review and an explicit merge/deploy decision. Gift pricing remains a separate NO-GO until its provider-rights and measured coverage gates pass.
+
+## 2026-10-02 — Human Gift-theme quality gate and estimate-only pricing
+
+Completed:
+
+- Split broad automatic artwork search from strict Gift-theme matching. Gift presets now accept only card/tag relations explicitly reviewed as `dominant`; results are never padded with automatic or background-only matches.
+- Added a development-only local review route for a stratified 200-relation pilot across ten Gift themes. Decisions autosave in the browser, export as JSON and merge through a validated reproducible build step.
+- Seeded the nine reported Snow/Ice decisions, excluding the water/nature false positives and background-only snow from Gift proposals.
+- Split TCGdex price estimates from budget guarantees. Available Cardmarket EUR or TCGplayer USD metrics and source-derived ranges are visible with source, date and confidence; unknown values remain unknown. Budget guarantees and price-led claims remain disabled.
+
+Verification target:
+
+- Keep the curated overlay reproducible and add visual reviews for newly synced cards before they can enter Gift proposals.
+# 2026-10-02 – Artwork-Prüfung priorisiert neue Full Arts
+
+- Die lokale 200er-Prüfstichprobe enthält pro Motiv mindestens zehn neuere Full-Art-Kandidaten aus Mega Evolution beziehungsweise Scarlet & Violet und verteilt sie über mindestens sechs Sets.
+- Zwanzig Reservekandidaten pro Motiv ersetzen Karten automatisch, wenn weder das primäre TCGdex-Bild noch ein verifizierter Sprach-Fallback lädt.
+- Bewertungsaktionen bleiben gesperrt, bis das Kartenbild tatsächlich geladen ist; bestehende lokale Entscheidungen bleiben bei einer Neuordnung der Stichprobe gespeichert und exportierbar.
+- Der Review-Stand umfasst 428 eindeutige Entscheidungen: 146 dominant, 63 Nebenmotiv, 182 falsch und 37 unsicher. Davon stammen 328 aus dem menschlichen Export und 100 aus einer KI-gestützten Sichtprüfung der gerenderten Kartenbilder.
+- Alle zehn Motive verfügen über mindestens neun dominante Treffer; Stadt erreicht 12, Himmel & Wolken 9 und Blumen 16.

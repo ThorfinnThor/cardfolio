@@ -13,18 +13,22 @@ This gate covers the technical half of D-05. Product states, responsive behavior
 - Feature gate: `NEXT_PUBLIC_FEATURE_SMART_SEARCH=false` removes the productive entry point. The default is enabled for the prepared review build.
 - Failure boundary: index loading supports a caller abort signal and an explicit 8-second timeout. The ordinary name/number catalog path is independent.
 
-## Reviewed source and deterministic build
+## Automatic source, curated Gift review and deterministic build
 
 - Source manifest: `data/semantic/card-artwork-tags-v1.manifest.json`
-- Reviewed source rows: `data/semantic/card-artwork-tags-v1.jsonl`
+- Automatically inferred source rows: `data/semantic/card-artwork-tags-v1.jsonl`
+- Curated Gift-theme decisions with human/AI-assisted provenance: `data/semantic/gift-theme-reviews-v1.json`
 - Public index: `public/data/semantic/card-artwork-search-v1.json`
+- Public Gift review overlay: `public/data/semantic/gift-theme-reviews-v1.json`
 - Index version: 1
 - Frozen vocabulary: 23 visual tags
 - Build: `npm run semantic:index:build`
 - Reproducibility check: `npm run semantic:index:check`
 - Fixed evaluation: `npm run semantic:evaluate`
 
-The public index is generated only from the committed reviewed rows. The scheduled catalog workflow audits coverage but never invents or publishes tags for new cards.
+The broad Smart Search index is generated from committed automatic annotations. Those annotations are not represented as visually reviewed truth. Gift-theme search applies a second, curated relation per card and tag and accepts only `dominant` decisions. `secondary`, `incorrect` and `unsure` are excluded from Gift proposals. Every relation records whether it was reviewed by a person or AI-assisted against the rendered image. The scheduled catalog workflow audits coverage but never invents or publishes review decisions.
+
+The local-only `/artwork-review/` route creates a deterministic 200-relation pilot: ten top-ranked and ten distributed candidates for each of the ten Gift themes. Decisions autosave locally and export as JSON. Import uses `npm run semantic:reviews:import -- <file>` followed by the normal index build. Production builds keep this quality tool disabled.
 
 ## Coverage and payload
 
@@ -46,7 +50,7 @@ The public index is generated only from the committed reviewed rows. The schedul
 - Identity-only lexical baseline: 40/400 relevant positions.
 - Automated release floors: no per-query shortfall, at least 375/400 semantic relevance and more than 300 relevant positions above the lexical baseline.
 
-The evaluation fixture is committed before runtime and scores only declared tag/caption evidence. It is a regression guard, not a claim that generated tags are objectively correct for every artwork.
+The evaluation fixture is committed before runtime and scores only declared tag/caption evidence. It is a broad-search regression guard, not a claim that generated tags are objectively correct for every artwork. Gift presets require their separate visually curated `dominant` gate.
 
 ## Cost, latency and ongoing operation
 
@@ -54,7 +58,7 @@ The evaluation fixture is committed before runtime and scores only declared tag/
 - Scheduled inference cost: none; GitHub Actions only compares catalog identities with the reviewed source.
 - Initial load cost: one lazily requested 419,340-byte gzip payload under the current build.
 - Search computation: synchronous local scoring after the index has loaded; the 50-query Vitest evaluation completes in approximately one second on the development machine, including fixture/index parsing and test overhead.
-- New cards: require a separate human-reviewed tagging pass followed by the deterministic build command.
+- New cards: require a separate visual tagging pass followed by the deterministic build command.
 
 Exact browser load/search timings and Core Web Vitals must be recorded during Step 2 at 375, 768, 1024 and 1440 px. They are deliberately not inferred from a Node test.
 

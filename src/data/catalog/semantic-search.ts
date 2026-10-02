@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { inferredCardImageBaseUrl } from "@/data/catalog/images";
 import { collectorTotalForSearchItem } from "@/data/catalog/set-counts";
+import { ARTWORK_REVIEW_SOURCES, ARTWORK_REVIEW_VERDICTS, isDominantArtworkMatch, type ArtworkReviewIndex } from "@/domain/artwork-review";
 import {
   SEMANTIC_TAGS,
   searchSemanticCards,
@@ -37,6 +38,20 @@ export const semanticSearchIndexSchema = z.object({
 });
 
 export const SEMANTIC_INDEX_TIMEOUT_MS = 8_000;
+
+const artworkReviewSchema = z.object({
+  cardId: z.string().min(1),
+  tag: semanticTagSchema,
+  verdict: z.enum(ARTWORK_REVIEW_VERDICTS),
+  reviewedAt: z.iso.datetime(),
+  source: z.enum(ARTWORK_REVIEW_SOURCES).optional(),
+});
+
+export const artworkReviewIndexSchema = z.object({
+  version: z.literal(1),
+  generatedAt: z.iso.datetime(),
+  reviews: z.array(artworkReviewSchema),
+});
 
 function signalWithTimeout(parent: AbortSignal | undefined, timeoutMs: number): { signal: AbortSignal; cleanup: () => void } {
   const controller = new AbortController();
@@ -74,21 +89,37 @@ export async function loadSemanticSearchIndex(
   }
 }
 
+export async function loadArtworkReviewIndex(signal?: AbortSignal): Promise<ArtworkReviewIndex> {
+  const response = await fetch("/data/semantic/gift-theme-reviews-v1.json", {
+    signal,
+    credentials: "same-origin",
+    headers: { Accept: "application/json" },
+  });
+  if (!response.ok) throw new Error(`Motivprüfungen konnten nicht geladen werden (HTTP ${response.status}).`);
+  return artworkReviewIndexSchema.parse(await response.json());
+}
+
 export class LocalStaticSmartSearchAdapter implements SmartSearchAdapter {
   constructor(
     private readonly loadIndex: (signal?: AbortSignal) => Promise<SemanticSearchIndex> = loadSemanticSearchIndex,
+    private readonly loadReviews: (signal?: AbortSignal) => Promise<ArtworkReviewIndex> = loadArtworkReviewIndex,
   ) {}
 
   async search(query: SmartSearchQuery, signal?: AbortSignal): Promise<SmartSearchHit[]> {
     const index = await this.loadIndex(signal);
     const outcome = searchSemanticCards(index, query.text, {
       requiredTags: query.requiredTags,
-      limit: query.limit,
+      limit: query.matchQuality === "dominant" ? index.cards.length : query.limit,
     });
-    return outcome.results.map((result) => ({
+    const reviewed = query.matchQuality === "dominant" ? await this.loadReviews(signal) : undefined;
+    const motifTags = [...new Set([...outcome.parsed.mappedTags, ...(query.requiredTags ?? [])])];
+    const results = reviewed
+      ? outcome.results.filter((result) => isDominantArtworkMatch(reviewed, result.row[0], motifTags))
+      : outcome.results;
+    return results.slice(0, query.limit).map((result) => ({
       ref: { provider: "tcgdex" as const, id: result.row[0], language: query.language },
       score: result.score,
-      reasonCode: "semantic" as const,
+      reasonCode: reviewed ? "curated-reviewed" as const : "semantic" as const,
     }));
   }
 }

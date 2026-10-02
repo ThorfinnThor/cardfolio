@@ -92,12 +92,17 @@ export interface SmartSearchQuery {
   limit: number;
   requiredTags?: readonly SemanticTag[];
   contextCardIds?: readonly string[];
+  /**
+   * Broad search accepts automatically inferred tags. Dominant search is
+   * intentionally stricter and only returns visually reviewed artwork motifs.
+   */
+  matchQuality?: "broad" | "dominant";
 }
 
 export interface SmartSearchHit {
   ref: CardRef;
   score: number;
-  reasonCode: "semantic" | "reranked" | "fallback";
+  reasonCode: "semantic" | "curated-reviewed" | "reranked" | "fallback";
 }
 
 export interface SmartSearchAdapter {

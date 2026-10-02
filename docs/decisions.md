@@ -188,3 +188,13 @@
 - Physical-binder destinations live in a reviewed runtime JSON catalog rather than UI components. Catalog-level and offer-level switches, review dates and evidence URLs allow offers to fail closed.
 - No binder offer is currently enabled. TCGplayer affiliate mode also remains off because Cardfolio has no approved partner code; Cardmarket remains a manual Wants/search handoff.
 - The printable Gift contract contains text identity only. Pokémon artwork/logos are not exported as cover assets, and Cardfolio does not accept or upload personal photos.
+
+## 2026-10-02 — Gift themes require dominant visual review; prices are estimates only
+
+- Broad Smart Search continues to use the complete automatic tag/caption index and explicitly labels that inference as fallible.
+- Gift artwork presets use a separate visual review relation with `dominant`, `secondary`, `incorrect` and `unsure`. Only `dominant` may enter a Gift proposal; sparse reviewed pools fail closed instead of being padded with unreviewed cards. New relations carry provenance (`human` or `ai-assisted`); legacy relations without the field are treated as human. AI-assisted reviews are based on the rendered card image, not only on generated captions.
+- A development-only `/artwork-review/` workflow prepares a deterministic 200-relation pilot across all ten Gift themes, autosaves locally and exports a mergeable JSON file. No review data is uploaded.
+- Sobald die ersten 20 Bewertungen eines Themas abgeschlossen sind und insgesamt weniger als neun passende `dominant`-Entscheidungen vorliegen, wird automatisch eine 20-Karten-Zusatzrunde eingeblendet; bereits gespeicherte Entscheidungen bleiben erhalten.
+- The first nine Snow/Ice relations from the reported failure are recorded: Vanilluxe, Vanillite and Bouffalant are dominant; background-only and false water/nature matches are excluded.
+- TCGdex Cardmarket/TCGplayer metrics may be shown as dated, source-labelled estimates. Unknown stays unknown and real provider metrics alone form a range.
+- Estimate display and budget guarantees are separate gates. Estimate display is enabled; budget guarantees, price-led ranking claims, affiliate use, shipping, tax, stock and checkout claims remain disabled.

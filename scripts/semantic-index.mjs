@@ -5,6 +5,8 @@ const root = process.cwd();
 const manifestPath = join(root, "data", "semantic", "card-artwork-tags-v1.manifest.json");
 const sourcePath = join(root, "data", "semantic", "card-artwork-tags-v1.jsonl");
 const publicPath = join(root, "public", "data", "semantic", "card-artwork-search-v1.json");
+const reviewSourcePath = join(root, "data", "semantic", "gift-theme-reviews-v1.json");
+const publicReviewPath = join(root, "public", "data", "semantic", "gift-theme-reviews-v1.json");
 const coveragePath = join(root, "data", "semantic", "catalog-coverage.json");
 
 function assertString(value, label) {
@@ -51,6 +53,35 @@ async function readReviewedSource() {
   };
 }
 
+async function readArtworkReviews(index) {
+  const source = JSON.parse(await readFile(reviewSourcePath, "utf8"));
+  if (source.version !== 1 || !Array.isArray(source.reviews)) throw new Error("Invalid artwork-review source.");
+  const cardIds = new Set(index.cards.map((row) => row[0]));
+  const knownTags = new Set(index.tags);
+  const knownVerdicts = new Set(["dominant", "secondary", "incorrect", "unsure"]);
+  const knownSources = new Set(["human", "ai-assisted"]);
+  const seen = new Set();
+  const reviews = source.reviews.map((review, position) => {
+    const cardId = assertString(review.cardId, `review ${position + 1} card id`);
+    const tag = assertString(review.tag, `${cardId} tag`);
+    const verdict = assertString(review.verdict, `${cardId} verdict`);
+    const reviewedAt = assertString(review.reviewedAt, `${cardId} reviewedAt`);
+    const source = review.source === undefined ? "human" : assertString(review.source, `${cardId} source`);
+    if (!cardIds.has(cardId)) throw new Error(`Artwork review references an unknown card: ${cardId}`);
+    if (!knownTags.has(tag)) throw new Error(`Artwork review references an unknown tag: ${tag}`);
+    if (!knownVerdicts.has(verdict)) throw new Error(`Artwork review has an unsupported verdict: ${verdict}`);
+    if (!Number.isFinite(Date.parse(reviewedAt))) throw new Error(`Artwork review has an invalid timestamp: ${cardId}:${tag}`);
+    if (!knownSources.has(source)) throw new Error(`Artwork review has an unsupported source: ${cardId}:${tag}`);
+    const key = `${cardId}:${tag}`;
+    if (seen.has(key)) throw new Error(`Duplicate artwork review: ${key}`);
+    seen.add(key);
+    return { cardId, tag, verdict, reviewedAt, source };
+  }).sort((left, right) => left.cardId.localeCompare(right.cardId) || left.tag.localeCompare(right.tag));
+  const generatedAt = assertString(source.generatedAt, "artwork review generatedAt");
+  if (!Number.isFinite(Date.parse(generatedAt))) throw new Error("Artwork review generatedAt is invalid.");
+  return { version: 1, generatedAt, reviews };
+}
+
 async function bootstrapSource() {
   const index = JSON.parse(await readFile(publicPath, "utf8"));
   const maxMask = 2 ** index.tags.length - 1;
@@ -85,15 +116,20 @@ async function bootstrapSource() {
 async function buildIndex(write) {
   const index = await readReviewedSource();
   const serialized = `${JSON.stringify(index)}\n`;
+  const reviews = await readArtworkReviews(index);
+  const serializedReviews = `${JSON.stringify(reviews)}\n`;
   if (write) {
     await mkdir(dirname(publicPath), { recursive: true });
     await writeFile(publicPath, serialized);
-    console.log(`Built semantic index: ${index.cards.length} cards, ${Buffer.byteLength(serialized)} bytes.`);
+    await writeFile(publicReviewPath, serializedReviews);
+    console.log(`Built semantic index: ${index.cards.length} cards, ${Buffer.byteLength(serialized)} bytes; ${reviews.reviews.length} curated reviews.`);
     return;
   }
   const current = await readFile(publicPath, "utf8");
   if (current !== serialized) throw new Error("Public semantic index differs from the reviewed source. Run npm run semantic:index:build.");
-  console.log(`Semantic index is reproducible: ${index.cards.length} cards, ${Buffer.byteLength(serialized)} bytes.`);
+  const currentReviews = await readFile(publicReviewPath, "utf8");
+  if (currentReviews !== serializedReviews) throw new Error("Public artwork reviews differ from the reviewed source. Run npm run semantic:index:build.");
+  console.log(`Semantic index is reproducible: ${index.cards.length} cards, ${Buffer.byteLength(serialized)} bytes; ${reviews.reviews.length} curated reviews.`);
 }
 
 async function coverageSummary() {

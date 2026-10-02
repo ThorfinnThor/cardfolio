@@ -1,5 +1,5 @@
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { GiftBuilderPanel } from "@/components/foundation/GiftBuilderPanel";
 import { createGiftProject, type GiftCardCandidate } from "@/domain/gift-builder";
@@ -22,6 +22,8 @@ const disabledPartners = {
     evidenceUrls: ["https://example.com/terms"],
   }],
 };
+
+afterEach(() => cleanup());
 
 function candidate(index: number): GiftCardCandidate {
   const id = `gift-ui-${index}`;
@@ -73,7 +75,7 @@ describe("GiftBuilderPanel", () => {
     render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={onCreateBinder} onOpenBinder={vi.fn()} onCardsPurchase={onCardsPurchase} />);
 
     fireEvent.click(screen.getByRole("button", { name: /Vorschlag erzeugen/i }));
-    await screen.findByText("9 / 9");
+    expect(await screen.findAllByText("9 / 9")).not.toHaveLength(0);
     expect(screen.getByRole("status")).toHaveTextContent("Preisprüfung");
     fireEvent.click(screen.getByRole("button", { name: /Auswahl prüfen/i }));
     await screen.findByRole("heading", { name: /Vorschlag ist bereit/i });
@@ -153,8 +155,41 @@ describe("GiftBuilderPanel", () => {
     expect(smartSearch.search).toHaveBeenCalledWith(expect.objectContaining({
       text: "Meer",
       language: "en",
+      matchQuality: "dominant",
     }));
     fireEvent.click(screen.getByRole("button", { name: /Alle passenden Karten ansehen/i }));
     expect(screen.getByText(/Artwork-Treffer zum Motiv „Meer & Wasser“/i)).toBeInTheDocument();
+  });
+
+  it("shows price estimates without claiming that the gift is under budget", async () => {
+    const briefs: CatalogSearchItem[] = Array.from({ length: 9 }, (_, index) => ({
+      ref: { provider: "tcgdex", id: `gift-ui-${index + 1}`, language: "en" },
+      name: `Pikachu ${index + 1}`,
+      collectorNumber: String(index + 1),
+    }));
+    const loader = {
+      loadCandidatePool: vi.fn(async () => briefs),
+      hydrateCandidates: vi.fn(async () => Array.from({ length: 9 }, (_, index) => ({
+        ...candidateWithArtwork(index + 1),
+        price: {
+          source: "tcgdex-cardmarket" as const,
+          currency: "EUR" as const,
+          amountMinor: 100,
+          range: { lowMinor: 80, highMinor: 120, lowMetric: "low", highMetric: "avg" },
+          fetchedAt: "2026-10-01T10:00:00.000Z",
+          sourceUpdatedAt: "2026-10-01T09:00:00.000Z",
+          confidence: "usable" as const,
+          issues: [],
+        },
+      }))),
+    };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled budgetGuaranteeEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Vorschlag erzeugen/i }));
+    expect(await screen.findAllByText("9 / 9")).not.toHaveLength(0);
+    expect(screen.getAllByText((_, element) => element?.tagName === "B" && element.textContent?.includes("1,00") === true)).toHaveLength(9);
+    expect(screen.getByText(/9,00/)).toBeInTheDocument();
+    expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("keine Budget-, Verfügbarkeits- oder Kaufzusage"))).toBe(true);
+    expect(screen.getByText(/Unbekannte oder nur angenäherte Preise verhindern/i)).toBeInTheDocument();
   });
 });

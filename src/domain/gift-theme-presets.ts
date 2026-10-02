@@ -9,9 +9,9 @@ export interface GiftThemePreset {
 }
 
 /**
- * Curated, deliberately broad artwork themes for the Gift Builder.
- * Each query maps only to reviewed semantic tags and stays broad enough for
- * a useful 36-card gift-binder candidate pool.
+ * Curated artwork themes for the Gift Builder. The preset only describes the
+ * automatic candidate query; Gift proposals apply the separate visual
+ * `dominant` review gate before any card can enter the candidate pool.
  */
 export const GIFT_THEME_PRESETS: readonly GiftThemePreset[] = [
   { id: "sea", label: "Meer & Wasser", description: "Küste, Seen und Unterwasserwelten", query: "Meer", mappedTags: ["water-surface", "underwater"] },

@@ -13,8 +13,10 @@ describe("smart-search feature flag", () => {
 });
 
 describe("Gift Builder pricing feature flag", () => {
-  it("stays disabled until the written pricing Go/No-Go passes", async () => {
+  it("shows estimates while keeping budget guarantees disabled", async () => {
     vi.resetModules();
     expect((await import("@/config/feature-flags")).FEATURES.giftBuilderPricing).toBe(false);
+    expect((await import("@/config/feature-flags")).FEATURES.giftPriceEstimates).toBe(true);
+    expect((await import("@/config/feature-flags")).FEATURES.giftBudgetGuarantee).toBe(false);
   });
 });

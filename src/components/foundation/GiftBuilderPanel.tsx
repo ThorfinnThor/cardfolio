@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import type { GiftCandidateLoader } from "@/data/gift/gift-candidate-loader";
 import { loadBinderPartnerCatalog, ReviewedBinderAffiliateAdapter } from "@/data/partners/binder-affiliate-adapter";
+import { FEATURES } from "@/config/feature-flags";
 import {
   DeterministicGiftSelectionEngine,
   type GiftCardCandidate,
@@ -28,6 +29,7 @@ export interface GiftBuilderPanelProps {
   loader: Pick<GiftCandidateLoader, "loadCandidatePool" | "hydrateCandidates">;
   smartSearch?: Pick<SmartSearchAdapter, "search">;
   pricingEnabled: boolean;
+  budgetGuaranteeEnabled?: boolean;
   onCancel: () => void;
   onCreateBinder: (selection: GiftSelectionResult, preferences: GiftPreferences) => Promise<GiftProject>;
   onOpenBinder: () => void;
@@ -126,7 +128,7 @@ function safeCandidate(candidate: GiftCardCandidate, pricingEnabled: boolean, cu
   };
 }
 
-export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, onCancel, onCreateBinder, onOpenBinder, onCardsPurchase }: GiftBuilderPanelProps) {
+export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGuaranteeEnabled = false, onCancel, onCreateBinder, onOpenBinder, onCardsPurchase }: GiftBuilderPanelProps) {
   const engine = useMemo(() => new DeterministicGiftSelectionEngine(), []);
   const [step, setStep] = useState<GiftStep>("details");
   const [preferences, setPreferences] = useState<GiftPreferences>(initialPreferences);
@@ -186,6 +188,7 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, onCancel
           text: theme.query,
           language: "en",
           limit: maximum,
+          matchQuality: "dominant",
         })).map((hit): CatalogSearchItem => ({ ref: hit.ref, name: theme.label, collectorNumber: "" }))
         : await loader.loadCandidatePool({
           subjectQuery: preferences.subjectQuery,
@@ -195,8 +198,12 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, onCancel
         });
       if (!pool.length) {
         setError(theme
-          ? "Keine Karten mit diesem Motiv gefunden. Wähle ein anderes Motiv und versuche es erneut."
+          ? "Für dieses Motiv gibt es noch keine visuell bestätigten dominanten Artwork-Treffer. Prüfe zuerst Karten in der lokalen Artwork-Prüfung."
           : "Keine Karten mit diesem Namen gefunden. Prüfe Schreibweise oder Sprache.");
+        return;
+      }
+      if (theme && pool.length < preferences.targetCardCount) {
+        setError(`Für „${theme.label}“ sind erst ${pool.length} dominante Artwork-Treffer geprüft. Für diesen Binder werden ${preferences.targetCardCount} benötigt; unbestätigte Treffer werden nicht mehr automatisch ergänzt.`);
         return;
       }
       const hydrated = await loader.hydrateCandidates(pool, {
@@ -215,7 +222,11 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, onCancel
         setName: card.setName,
       })));
       setCandidates(safe);
-      setSelection(engine.select({ candidates: safe, preferences }));
+      const selectionCandidates = budgetGuaranteeEnabled ? safe : safe.map((candidate) => candidate.price.confidence === "usable" ? {
+        ...candidate,
+        price: { ...candidate.price, confidence: "approximate" as const, issues: [...candidate.price.issues, "estimate-only-no-budget-guarantee"] },
+      } : candidate);
+      setSelection(engine.select({ candidates: selectionCandidates, preferences }));
       setStep("candidates");
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Karten konnten nicht geladen werden. Prüfe die Verbindung und versuche es erneut.");
@@ -324,7 +335,7 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, onCancel
         ))}
       </ol>
 
-      {error ? <div className={styles.error} role="alert"><strong>Vorschlag konnte nicht geladen werden</strong><span>{error}</span><button type="button" className={styles.secondaryButton} onClick={() => void createProposal()}><RefreshCw size={15} /> Erneut versuchen</button></div> : null}
+      {error ? <div className={styles.error} role="alert"><strong>Vorschlag konnte nicht geladen werden</strong><span>{error}</span>{FEATURES.artworkReview && discoveryMode === "theme" ? <a className={styles.secondaryButton} href="/artwork-review/">Artwork lokal prüfen</a> : null}<button type="button" className={styles.secondaryButton} onClick={() => void createProposal()}><RefreshCw size={15} /> Erneut versuchen</button></div> : null}
 
       {step === "details" ? (
         <form className={styles.form} onSubmit={(event) => { event.preventDefault(); void createProposal(); }}>
@@ -396,7 +407,7 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, onCancel
               <select value={preferences.budgetTolerancePercent ?? 0} onChange={(event) => updatePreferences("budgetTolerancePercent", Number(event.target.value) as GiftPreferences["budgetTolerancePercent"])}><option value="0">Keine</option><option value="5">Bis 5 %</option><option value="10">Bis 10 %</option><option value="15">Bis 15 %</option></select>
             </label>
           </div>
-          <p className={styles.localHint}>{pricingEnabled ? "Name und Geschenkangaben werden nur in diesem Browser gespeichert. Kartenpreise sind Marktschätzungen; Versand und Steuern sind nicht enthalten." : "Name und Geschenkangaben werden nur in diesem Browser gespeichert. Die Preisprüfung ist noch nicht freigegeben; Budget und Toleranz werden daher nicht zugesagt."}</p>
+          <p className={styles.localHint}>{pricingEnabled ? `Name und Geschenkangaben werden nur in diesem Browser gespeichert. Kartenpreise sind unverbindliche Marktschätzungen; Versand und Steuern sind nicht enthalten.${budgetGuaranteeEnabled ? "" : " Das Budget dient nur zur Orientierung und wird nicht garantiert."}` : "Name und Geschenkangaben werden nur in diesem Browser gespeichert. Die Preisprüfung ist noch nicht freigegeben; Budget und Toleranz werden daher nicht zugesagt."}</p>
           <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={onCancel}>Abbrechen</button><button type="submit" className={styles.primaryButton} disabled={loading || (discoveryMode === "theme" ? !selectedThemeId : !preferences.subjectQuery.trim())}>{loading ? <><LoaderCircle className={styles.spin} size={16} /> Karten werden gesucht…</> : <>Vorschlag erzeugen <ArrowRight size={16} /></>}</button></div>
         </form>
       ) : null}
@@ -405,6 +416,7 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, onCancel
         <div className={styles.resultsStep}>
           <div className={styles.summaryBar} data-status={selection.budgetStatus}><div><strong>{selection.selected.length} / {preferences.targetCardCount}</strong><span>ausgewählte Karten</span></div><div><strong>{pricingEnabled ? formatMoney(selection.estimatedTotalMinor, preferences.currency) : "Preisprüfung aus"}</strong><span>{pricingEnabled ? selection.budgetStatus === "unknown" ? "Schätzung unvollständig" : "geschätzter Kartenwert" : "noch nicht freigegeben"}</span></div><div><strong>{pricingEnabled ? selection.unpricedCount : "–"}</strong><span>{pricingEnabled ? "ohne Preis" : "keine Budgetzusage"}</span></div></div>
           {!pricingEnabled ? <p className={styles.gateNotice} role="status">Die Preisprüfung ist derzeit noch deaktiviert. Karten können trotzdem ausgewählt und als normaler Binder gespeichert werden; es gibt keine Budgetzusage.</p> : null}
+          {pricingEnabled && !budgetGuaranteeEnabled ? <p className={styles.gateNotice} role="status">Angezeigt werden unverbindliche TCGdex-Marktschätzungen. Sie steuern die Auswahl nicht und sind keine Budget-, Verfügbarkeits- oder Kaufzusage.</p> : null}
           {selection.budgetStatus === "over" ? <p className={styles.warning} role="status">Die günstigste vollständige Auswahl liegt über deinem Budget. Karten können ersetzt oder entfernt werden.</p> : null}
           {selection.budgetStatus === "unknown" && pricingEnabled ? <p className={styles.warning} role="status">Unbekannte oder nur angenäherte Preise verhindern eine sichere „unter Budget“-Aussage.</p> : null}
           <div className={styles.cardGrid}>
@@ -446,7 +458,7 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, onCancel
         <div className={styles.reviewStep}>
           <div className={styles.reviewHero}><span className={styles.reviewIcon}><Check size={22} /></span><div><h2>Dein Vorschlag ist bereit</h2><p>{preferences.subjectQuery} · {preferences.targetCardCount} Karten · {preferences.currency}</p></div></div>
           <dl className={styles.reviewMeta}><div><dt>{pricingEnabled ? "Geschätzter Kartenwert" : "Preisprüfung"}</dt><dd>{pricingEnabled ? formatMoney(selection.estimatedTotalMinor, preferences.currency) : "Deaktiviert"}</dd></div><div><dt>Preisspanne</dt><dd>{pricingEnabled && estimatedRange ? formatRange(estimatedRange, preferences.currency) : pricingEnabled ? "Nicht vollständig verfügbar" : "Nicht berechnet"}</dd></div><div><dt>Preissicherheit</dt><dd>{pricingEnabled ? selection.unpricedCount ? `${selection.unpricedCount} unbekannt` : selection.approximateCount ? `${selection.approximateCount} angenähert` : "brauchbare Marktwerte" : "Keine Budgetzusage"}</dd></div><div><dt>Binder</dt><dd>Normale Cardfolio-Seiten · editierbar</dd></div></dl>
-          <p className={styles.reviewNotice}>Der Binder wird lokal angelegt. Karten und physischer Binder sind getrennte Käufe; Versand und Steuern sind nicht enthalten. „Karten besorgen“ folgt danach über die bestehende Fehlkarten-Übergabe.</p>
+          <p className={styles.reviewNotice}>Der Binder wird lokal angelegt. Karten und physischer Binder sind getrennte Käufe; Preisangaben sind unverbindliche Markt-Schätzwerte, Versand und Steuern sind nicht enthalten. „Karten besorgen“ folgt danach über die bestehende Fehlkarten-Übergabe.</p>
           <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={() => setStep("candidates")}><ArrowLeft size={16} /> Auswahl bearbeiten</button><button type="button" className={styles.primaryButton} disabled={submitting} onClick={async () => { setSubmitting(true); setError(undefined); try { const project = await onCreateBinder(selection, preferences); setGiftProject(project); setStep("summary"); } catch (cause) { setError(cause instanceof Error ? cause.message : "Der Geschenk-Binder konnte nicht angelegt werden."); } finally { setSubmitting(false); } }}>{submitting ? "Binder wird angelegt…" : "Als Binder anlegen"}</button></div>
         </div>
       ) : null}

@@ -17,6 +17,7 @@
     "semantic:index:build": "node scripts/semantic-index.mjs build",
     "semantic:index:check": "node scripts/semantic-index.mjs check",
     "semantic:index:bootstrap": "node scripts/semantic-index.mjs bootstrap-source",
+    "semantic:reviews:import": "node scripts/import-artwork-reviews.mjs",
     "semantic:coverage:summary": "node scripts/semantic-index.mjs coverage-summary",
     "semantic:evaluate": "vitest run src/test/domain/semantic-card-search.benchmark.test.ts --reporter=verbose",
     "release:check": "node scripts/check-release-gates.mjs"

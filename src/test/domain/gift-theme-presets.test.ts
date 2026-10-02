@@ -4,7 +4,7 @@ import { GIFT_THEME_PRESETS } from "@/domain/gift-theme-presets";
 import { parseSemanticQuery } from "@/domain/semantic-card-search";
 
 describe("gift theme presets", () => {
-  it("offers ten unique themes backed by reviewed semantic tags", () => {
+  it("offers ten unique themes backed by the frozen semantic vocabulary", () => {
     expect(GIFT_THEME_PRESETS).toHaveLength(10);
     expect(new Set(GIFT_THEME_PRESETS.map((theme) => theme.id))).toHaveLength(10);
 

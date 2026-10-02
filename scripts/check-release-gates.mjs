@@ -24,9 +24,11 @@ requireFile("out/help/index.html");
 requireFile("src/app/icon.svg");
 requireFile("data/semantic/card-artwork-tags-v1.manifest.json");
 requireFile("data/semantic/card-artwork-tags-v1.jsonl");
+requireFile("data/semantic/gift-theme-reviews-v1.json");
 requireFile("data/semantic/catalog-coverage.json");
 requireFile("data/semantic/search-evaluation-v1.json");
 requireFile("public/data/semantic/card-artwork-search-v1.json");
+requireFile("public/data/semantic/gift-theme-reviews-v1.json");
 const binderPartnerCatalogPath = requireFile("public/data/partners/binder-partners.v1.json");
 requireFile("docs/gift-commerce-release-gates.md");
 requireText("out/_headers", [
@@ -44,6 +46,9 @@ requireText("src/config/feature-flags.ts", [
   "designPreview: false",
   "pricing: false",
   "giftBuilderPricing: false",
+  'giftPriceEstimates: process.env.NEXT_PUBLIC_FEATURE_GIFT_PRICE_ESTIMATES !== "false"',
+  "giftBudgetGuarantee: false",
+  'artworkReview: process.env.NEXT_PUBLIC_FEATURE_ARTWORK_REVIEW === "true" || process.env.NODE_ENV !== "production"',
   'smartSearch: process.env.NEXT_PUBLIC_FEATURE_SMART_SEARCH !== "false"',
   "tcgplayerPrefill: false",
   "cardtraderCommerce: false",

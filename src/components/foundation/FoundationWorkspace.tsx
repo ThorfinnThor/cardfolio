@@ -278,7 +278,7 @@ export function FoundationWorkspace() {
   const repository = useMemo(() => new IndexedDBBinderRepository(), []);
   const giftProjects = useMemo(() => new IndexedDBGiftProjectRepository(), []);
   const catalog = useMemo(() => new TCGdexCatalogAdapter(), []);
-  const giftLoader = useMemo(() => new GiftCandidateLoader(catalog, FEATURES.giftBuilderPricing ? new TCGdexGiftPriceProvider() : disabledGiftPriceProvider), [catalog]);
+  const giftLoader = useMemo(() => new GiftCandidateLoader(catalog, FEATURES.giftPriceEstimates ? new TCGdexGiftPriceProvider() : disabledGiftPriceProvider), [catalog]);
   const giftSmartSearch = useMemo(() => FEATURES.smartSearch ? new LocalStaticSmartSearchAdapter() : undefined, []);
   const syncChannelRef = useRef<BroadcastChannel | undefined>(undefined);
   const searchReturnFocusRef = useRef<HTMLElement | null>(null);
@@ -1571,7 +1571,8 @@ export function FoundationWorkspace() {
           <GiftBuilderPanel
             loader={giftLoader}
             smartSearch={giftSmartSearch}
-            pricingEnabled={FEATURES.giftBuilderPricing}
+            pricingEnabled={FEATURES.giftPriceEstimates}
+            budgetGuaranteeEnabled={FEATURES.giftBudgetGuarantee}
             onCancel={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }}
             onCreateBinder={createGiftBinder}
             onOpenBinder={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(false); }}
