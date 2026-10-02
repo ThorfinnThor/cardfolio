@@ -1,0 +1,28 @@
+{
+ "reviewer": "the orchestrating Claude session (not the Sonnet taggers), looking at a fresh contact sheet of each query's top 8 (temp file, deleted afterwards)",
+ "rule": "a hit counts if the drawn scene matches the query; borderline cases counted as misses unless clearly matching",
+ "correctTotal": 127,
+ "slots": 160,
+ "perQuery": {
+  "at the beach": {"correct": 8, "misses": []},
+  "in the forest": {"correct": 8, "misses": []},
+  "at night": {"correct": 8, "misses": []},
+  "in the snow": {"correct": 8, "misses": []},
+  "underwater": {"correct": 8, "misses": []},
+  "in space": {"correct": 2, "misses": ["dp1-1 (holo foil sparkle, not space)", "sm1-66 (whole-card thumbnail, space not verifiable)", "only 4 results in total"]},
+  "on a mountain": {"correct": 6, "misses": ["bw1-77 (coastal cliff)", "dp1-21 (no mountain visible)"]},
+  "in a city": {"correct": 8, "misses": []},
+  "sleeping": {"correct": 6, "misses": ["sv01-250 (human asleep at a desk, not a Pokémon)", "base1-43 (Abra sitting, eyes always closed; ambiguous)"]},
+  "eating food": {"correct": 5, "misses": ["sv01-249 (human cooking)", "sv01-059 (snow in mouth, not food)", "ex1-74 (no food visible)"]},
+  "flying in the sky": {"correct": 7, "misses": ["dp1-56 (jumping, not flying)"]},
+  "near a volcano": {"correct": 5, "misses": ["base1-36 (fire background, no volcano)", "sm1-26 (fire and rocks, no volcano)", "sv01-034 (flames, no volcano)"]},
+  "in the rain": {"correct": 4, "misses": ["hgss1-122 (energy card, storm lines)", "sv01-133 (storm clouds, no rain)", "dp1-54 (lightning, no rain)", "ex1-39 (no rain visible)"]},
+  "in a desert": {"correct": 8, "misses": []},
+  "at sunset": {"correct": 7, "misses": ["dp1-91 (pink clouds, no clear sunset)"]},
+  "with flowers": {"correct": 8, "misses": []},
+  "in a cave": {"correct": 8, "misses": []},
+  "two pokemon playing together": {"correct": 4, "misses": ["hgss1-2 (not playing)", "hgss1-30 (second Pokémon far away, not playing)", "hgss1-77 (one Pokémon)", "sv01-152 (one Pokémon)"]},
+  "a pokemon with a human trainer": {"correct": 7, "misses": ["sv01-218 (no human visible in the whole-card thumbnail)"]},
+  "in a kitchen": {"correct": 2, "misses": ["hgss1-36, sv03.5-081, sv03.5-082, sv03.5-125, swsh1-147, swsh1-6 (indoors or not, but no kitchen; schema has no kitchen value)"]}
+ }
+}

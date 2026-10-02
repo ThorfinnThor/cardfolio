@@ -1,0 +1,52 @@
+{
+ "schemaVersion": 2,
+ "baseline": "out/tags.json (v1) is unchanged; v2 = v1 with place/weather/activity re-tagged and interaction/food_visible added",
+ "cardsRelooked": 1579,
+ "note": "All 1,579 cards were re-looked (not only a candidate subset), so no random control sample was needed; see candidateFilterCheck.",
+ "fieldsRetagged": [
+  "place",
+  "weather",
+  "activity",
+  "interaction (new)",
+  "food_visible (new)"
+ ],
+ "newValues": {
+  "place": [
+   "kitchen"
+  ],
+  "weather": [
+   "lightning"
+  ]
+ },
+ "wallClock": {
+  "start": "2026-09-30T00:10:30Z",
+  "end": "2026-09-30T00:16:26Z",
+  "minutes": 5.9
+ },
+ "agentMinutes": 18.0,
+ "subagentTokens": 634972,
+ "schemaFixesAfterMerge": [
+  {
+   "id": "swsh1-168",
+   "field": "interaction",
+   "was": "1",
+   "now": "none",
+   "why": "out-of-vocabulary value"
+  },
+  {
+   "id": "swsh1-182",
+   "field": "interaction",
+   "was": "1",
+   "now": "none",
+   "why": "out-of-vocabulary value"
+  }
+ ],
+ "candidateFilterCheck": {
+  "filter": "coordinator candidate rule applied to v1 tags",
+  "candidates": 875,
+  "nonCandidates": 704,
+  "cardsChangedAmongNonCandidates": 466,
+  "relevantChangesAmongNonCandidates": 0,
+  "explanation": "Changes outside the filter were cosmetic (e.g. weather none-visible->clear, place plain-background->abstract); none produced kitchen/space/volcano/lightning/rain."
+ }
+}

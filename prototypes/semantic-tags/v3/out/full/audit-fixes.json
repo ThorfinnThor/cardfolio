@@ -1,0 +1,1471 @@
+[
+ {
+  "id": "base1-42",
+  "setId": "base1",
+  "add": [
+   "water-surface"
+  ],
+  "remove": [],
+  "reason": "sea is visible behind the beach",
+  "resultTags": [
+   "beach",
+   "water-surface"
+  ]
+ },
+ {
+  "id": "base3-51",
+  "setId": "base3",
+  "add": [
+   "water-surface"
+  ],
+  "remove": [],
+  "reason": "sea is visible behind the beach",
+  "resultTags": [
+   "beach",
+   "water-surface",
+   "sky-clouds"
+  ]
+ },
+ {
+  "id": "lc-23",
+  "setId": "lc",
+  "add": [
+   "water-surface"
+  ],
+  "remove": [],
+  "reason": "sea is visible beside the beach at sunset",
+  "resultTags": [
+   "beach",
+   "water-surface",
+   "sunset-sunrise"
+  ]
+ },
+ {
+  "id": "ecard1-102",
+  "setId": "ecard1",
+  "add": [
+   "water-surface"
+  ],
+  "remove": [],
+  "reason": "waves form the visible water setting",
+  "resultTags": [
+   "water-surface",
+   "swimming"
+  ]
+ },
+ {
+  "id": "ecard1-131",
+  "setId": "ecard1",
+  "add": [
+   "water-surface"
+  ],
+  "remove": [],
+  "reason": "surf is visible at the beach edge",
+  "resultTags": [
+   "beach",
+   "water-surface"
+  ]
+ },
+ {
+  "id": "ex2-17",
+  "setId": "ex2",
+  "add": [
+   "water-surface"
+  ],
+  "remove": [],
+  "reason": "visible water and spray surround the Pokemon",
+  "resultTags": [
+   "water-surface",
+   "swimming"
+  ]
+ },
+ {
+  "id": "ex1-22",
+  "setId": "ex1",
+  "add": [
+   "underwater"
+  ],
+  "remove": [],
+  "reason": "submerged view with bubbles and water light",
+  "resultTags": [
+   "underwater",
+   "sky-clouds",
+   "swimming"
+  ]
+ },
+ {
+  "id": "ex6-66",
+  "setId": "ex6",
+  "add": [
+   "water-surface"
+  ],
+  "remove": [],
+  "reason": "water is visible at the shore",
+  "resultTags": [
+   "beach",
+   "water-surface"
+  ]
+ },
+ {
+  "id": "ex7-73",
+  "setId": "ex7",
+  "add": [
+   "water-surface"
+  ],
+  "remove": [],
+  "reason": "Pokemon swims through visibly drawn water",
+  "resultTags": [
+   "water-surface",
+   "swimming"
+  ]
+ },
+ {
+  "id": "ex10-37",
+  "setId": "ex10",
+  "add": [
+   "water-surface"
+  ],
+  "remove": [],
+  "reason": "waves are visible at the beach",
+  "resultTags": [
+   "beach",
+   "water-surface",
+   "multiple-pokemon"
+  ]
+ },
+ {
+  "id": "dp1-69",
+  "setId": "dp1",
+  "add": [
+   "water-surface"
+  ],
+  "remove": [],
+  "reason": "water and surf are visible behind the pebble beach",
+  "resultTags": [
+   "beach",
+   "water-surface"
+  ]
+ },
+ {
+  "id": "dp4-62",
+  "setId": "dp4",
+  "add": [
+   "underwater"
+  ],
+  "remove": [],
+  "reason": "seabed and underwater scene are visible",
+  "resultTags": [
+   "underwater",
+   "night"
+  ]
+ },
+ {
+  "id": "ex13-57",
+  "setId": "ex13",
+  "add": [
+   "underwater",
+   "swimming"
+  ],
+  "remove": [],
+  "reason": "Pokemon swims in a submerged scene",
+  "resultTags": [
+   "underwater",
+   "swimming"
+  ]
+ },
+ {
+  "id": "si1-13",
+  "setId": "si1",
+  "add": [],
+  "remove": [
+   "beach"
+  ],
+  "reason": "sandy ground is shown without a sea shoreline",
+  "resultTags": [
+   "forest",
+   "multiple-pokemon"
+  ]
+ },
+ {
+  "id": "gym1-36",
+  "setId": "gym1",
+  "add": [
+   "forest"
+  ],
+  "remove": [],
+  "reason": "dense trees form the background",
+  "resultTags": [
+   "forest",
+   "multiple-pokemon"
+  ]
+ },
+ {
+  "id": "ecard2-89",
+  "setId": "ecard2",
+  "add": [
+   "forest"
+  ],
+  "remove": [],
+  "reason": "tree trunks and woodland ground form the setting",
+  "resultTags": [
+   "forest",
+   "mountain-rocks"
+  ]
+ },
+ {
+  "id": "ex1-68",
+  "setId": "ex1",
+  "add": [
+   "forest"
+  ],
+  "remove": [],
+  "reason": "dense woodland is visible behind the Pokemon",
+  "resultTags": [
+   "forest"
+  ]
+ },
+ {
+  "id": "ex5-35",
+  "setId": "ex5",
+  "add": [
+   "forest"
+  ],
+  "remove": [],
+  "reason": "Pokemon stands on a wooded forest floor",
+  "resultTags": [
+   "forest"
+  ]
+ },
+ {
+  "id": "ex6-1",
+  "setId": "ex6",
+  "add": [
+   "forest"
+  ],
+  "remove": [],
+  "reason": "dark trees form the background behind the flying Pokemon",
+  "resultTags": [
+   "forest",
+   "flying"
+  ]
+ },
+ {
+  "id": "ex7-33",
+  "setId": "ex7",
+  "add": [
+   "forest"
+  ],
+  "remove": [],
+  "reason": "dense night forest is visible behind the grass",
+  "resultTags": [
+   "forest",
+   "grassland-field",
+   "night"
+  ]
+ },
+ {
+  "id": "ex10-33",
+  "setId": "ex10",
+  "add": [
+   "forest"
+  ],
+  "remove": [],
+  "reason": "leaf-covered forest floor forms the setting",
+  "resultTags": [
+   "forest"
+  ]
+ },
+ {
+  "id": "ex11-36",
+  "setId": "ex11",
+  "add": [
+   "forest"
+  ],
+  "remove": [],
+  "reason": "mossy woodland floor and vegetation are visible",
+  "resultTags": [
+   "forest"
+  ]
+ },
+ {
+  "id": "ex14-66",
+  "setId": "ex14",
+  "add": [
+   "forest"
+  ],
+  "remove": [],
+  "reason": "dense stylized trees form the setting",
+  "resultTags": [
+   "forest"
+  ]
+ },
+ {
+  "id": "dpp-DP21",
+  "setId": "dpp",
+  "add": [
+   "forest"
+  ],
+  "remove": [],
+  "reason": "dark woods are visible behind the Pokemon",
+  "resultTags": [
+   "forest"
+  ]
+ },
+ {
+  "id": "pl2-112",
+  "setId": "pl2",
+  "add": [
+   "forest"
+  ],
+  "remove": [],
+  "reason": "dark glowing forest is visible in the artwork",
+  "resultTags": [
+   "forest"
+  ]
+ },
+ {
+  "id": "gym1-99",
+  "setId": "gym1",
+  "add": [
+   "grassland-field"
+  ],
+  "remove": [],
+  "reason": "open grassy ground is the main setting",
+  "resultTags": [
+   "grassland-field",
+   "flowers",
+   "human-present"
+  ]
+ },
+ {
+  "id": "ecard2-60",
+  "setId": "ecard2",
+  "add": [
+   "grassland-field"
+  ],
+  "remove": [],
+  "reason": "open grassy field is the main ground",
+  "resultTags": [
+   "grassland-field"
+  ]
+ },
+ {
+  "id": "pop7-2",
+  "setId": "pop7",
+  "add": [
+   "grassland-field"
+  ],
+  "remove": [],
+  "reason": "open field is visible under the evening sky",
+  "resultTags": [
+   "forest",
+   "grassland-field",
+   "sunset-sunrise"
+  ]
+ },
+ {
+  "id": "pop3-10",
+  "setId": "pop3",
+  "add": [],
+  "remove": [
+   "forest"
+  ],
+  "reason": "palms and steps form a tropical arena, not dense forest",
+  "resultTags": [
+   "sky-clouds"
+  ]
+ },
+ {
+  "id": "gym1-39",
+  "setId": "gym1",
+  "add": [
+   "mountain-rocks"
+  ],
+  "remove": [],
+  "reason": "large cliff face forms the setting",
+  "resultTags": [
+   "mountain-rocks",
+   "sunset-sunrise",
+   "flying"
+  ]
+ },
+ {
+  "id": "ex6-65",
+  "setId": "ex6",
+  "add": [
+   "mountain-rocks"
+  ],
+  "remove": [],
+  "reason": "large coastal cliff is visible",
+  "resultTags": [
+   "beach",
+   "water-surface",
+   "mountain-rocks",
+   "sunset-sunrise"
+  ]
+ },
+ {
+  "id": "ex6-78",
+  "setId": "ex6",
+  "add": [
+   "mountain-rocks"
+  ],
+  "remove": [],
+  "reason": "snowy mountains form the background",
+  "resultTags": [
+   "mountain-rocks",
+   "snow-ice",
+   "multiple-pokemon"
+  ]
+ },
+ {
+  "id": "ecard3-77",
+  "setId": "ecard3",
+  "add": [
+   "cave"
+  ],
+  "remove": [],
+  "reason": "split waterline scene is inside a stalactite cave",
+  "resultTags": [
+   "water-surface",
+   "underwater",
+   "cave",
+   "multiple-pokemon",
+   "swimming"
+  ]
+ },
+ {
+  "id": "ex7-38",
+  "setId": "ex7",
+  "add": [
+   "cave"
+  ],
+  "remove": [],
+  "reason": "rock walls enclose the lava cave",
+  "resultTags": [
+   "cave",
+   "fire-lava"
+  ]
+ },
+ {
+  "id": "ex11-49",
+  "setId": "ex11",
+  "add": [
+   "cave",
+   "flying"
+  ],
+  "remove": [],
+  "reason": "Pokemon visibly hovers inside a rocky cave",
+  "resultTags": [
+   "cave",
+   "flying"
+  ]
+ },
+ {
+  "id": "ex12-43",
+  "setId": "ex12",
+  "add": [
+   "cave"
+  ],
+  "remove": [],
+  "reason": "ice cave walls enclose the scene",
+  "resultTags": [
+   "cave",
+   "snow-ice"
+  ]
+ },
+ {
+  "id": "ex16-52",
+  "setId": "ex16",
+  "add": [
+   "cave"
+  ],
+  "remove": [],
+  "reason": "rocky cavern encloses the scene",
+  "resultTags": [
+   "cave"
+  ]
+ },
+ {
+  "id": "base4-37",
+  "setId": "base4",
+  "add": [
+   "desert"
+  ],
+  "remove": [],
+  "reason": "dry sandy plain forms the setting",
+  "resultTags": [
+   "desert"
+  ]
+ },
+ {
+  "id": "pl2-64",
+  "setId": "pl2",
+  "add": [],
+  "remove": [
+   "desert"
+  ],
+  "reason": "sand lies in a green park-like scene, not an arid desert",
+  "resultTags": []
+ },
+ {
+  "id": "pl2-3",
+  "setId": "pl2",
+  "add": [
+   "city"
+  ],
+  "remove": [],
+  "reason": "several city towers form the outdoor background",
+  "resultTags": [
+   "city",
+   "night",
+   "flying"
+  ]
+ },
+ {
+  "id": "bwp-BW35",
+  "setId": "bwp",
+  "add": [
+   "city",
+   "ruins-building"
+  ],
+  "remove": [],
+  "reason": "bridge and multiple city buildings are clearly visible",
+  "resultTags": [
+   "city",
+   "ruins-building",
+   "sky-clouds"
+  ]
+ },
+ {
+  "id": "ecard2-19",
+  "setId": "ecard2",
+  "add": [
+   "ruins-building"
+  ],
+  "remove": [],
+  "reason": "sunken ruins are clearly visible",
+  "resultTags": [
+   "underwater",
+   "ruins-building",
+   "swimming"
+  ]
+ },
+ {
+  "id": "neo2-74",
+  "setId": "neo2",
+  "add": [
+   "ruins-building"
+  ],
+  "remove": [],
+  "reason": "carved ruin wall is the main artwork",
+  "resultTags": [
+   "ruins-building"
+  ]
+ },
+ {
+  "id": "ex4-47",
+  "setId": "ex4",
+  "add": [
+   "ruins-building"
+  ],
+  "remove": [],
+  "reason": "man-made gate is a clear part of the scene",
+  "resultTags": [
+   "ruins-building"
+  ]
+ },
+ {
+  "id": "base5-69",
+  "setId": "base5",
+  "add": [],
+  "remove": [
+   "city"
+  ],
+  "reason": "blurred lights do not show streets or buildings",
+  "resultTags": [
+   "night"
+  ]
+ },
+ {
+  "id": "base1-57",
+  "setId": "base1",
+  "add": [
+   "snow-ice"
+  ],
+  "remove": [],
+  "reason": "snow is visible on the mountains",
+  "resultTags": [
+   "grassland-field",
+   "mountain-rocks",
+   "snow-ice",
+   "night"
+  ]
+ },
+ {
+  "id": "basep-29",
+  "setId": "basep",
+  "add": [
+   "snow-ice"
+  ],
+  "remove": [],
+  "reason": "Pokemon is on a visibly frozen lake",
+  "resultTags": [
+   "water-surface",
+   "snow-ice"
+  ]
+ },
+ {
+  "id": "lc-85",
+  "setId": "lc",
+  "add": [
+   "snow-ice"
+  ],
+  "remove": [],
+  "reason": "snow is visible on the mountains",
+  "resultTags": [
+   "grassland-field",
+   "mountain-rocks",
+   "snow-ice"
+  ]
+ },
+ {
+  "id": "ex4-96",
+  "setId": "ex4",
+  "add": [
+   "snow-ice"
+  ],
+  "remove": [],
+  "reason": "ice formations are visible in the background",
+  "resultTags": [
+   "snow-ice"
+  ]
+ },
+ {
+  "id": "ecard3-16",
+  "setId": "ecard3",
+  "add": [
+   "snow-ice"
+  ],
+  "remove": [],
+  "reason": "snow is visible on the mountains",
+  "resultTags": [
+   "mountain-rocks",
+   "snow-ice"
+  ]
+ },
+ {
+  "id": "ex6-114",
+  "setId": "ex6",
+  "add": [
+   "snow-ice"
+  ],
+  "remove": [],
+  "reason": "ice formations are visible around the flying Pokemon",
+  "resultTags": [
+   "snow-ice",
+   "flying"
+  ]
+ },
+ {
+  "id": "ex13-3",
+  "setId": "ex13",
+  "add": [
+   "snow-ice"
+  ],
+  "remove": [],
+  "reason": "blue ice crystals form the background",
+  "resultTags": [
+   "snow-ice",
+   "flying"
+  ]
+ },
+ {
+  "id": "ex14-52",
+  "setId": "ex14",
+  "add": [
+   "snow-ice"
+  ],
+  "remove": [],
+  "reason": "ice shards are clearly visible",
+  "resultTags": [
+   "snow-ice",
+   "sky-clouds",
+   "flying"
+  ]
+ },
+ {
+  "id": "dp1-24",
+  "setId": "dp1",
+  "add": [
+   "snow-ice"
+  ],
+  "remove": [],
+  "reason": "snow is visible on the mountains",
+  "resultTags": [
+   "mountain-rocks",
+   "snow-ice",
+   "sky-clouds",
+   "flying"
+  ]
+ },
+ {
+  "id": "dp1-112",
+  "setId": "dp1",
+  "add": [
+   "snow-ice"
+  ],
+  "remove": [],
+  "reason": "snow is visible on the mountains",
+  "resultTags": [
+   "mountain-rocks",
+   "snow-ice",
+   "sky-clouds",
+   "human-present"
+  ]
+ },
+ {
+  "id": "dp3-123",
+  "setId": "dp3",
+  "add": [
+   "snow-ice"
+  ],
+  "remove": [],
+  "reason": "snow is visible on the mountains",
+  "resultTags": [
+   "mountain-rocks",
+   "snow-ice",
+   "sky-clouds",
+   "human-present"
+  ]
+ },
+ {
+  "id": "pl2-6",
+  "setId": "pl2",
+  "add": [
+   "snow-ice"
+  ],
+  "remove": [],
+  "reason": "Pokemon is surrounded by an icy scene",
+  "resultTags": [
+   "snow-ice"
+  ]
+ },
+ {
+  "id": "bw1-14",
+  "setId": "bw1",
+  "add": [
+   "snow-ice"
+  ],
+  "remove": [],
+  "reason": "snow is visible on the mountain",
+  "resultTags": [
+   "mountain-rocks",
+   "snow-ice",
+   "flowers"
+  ]
+ },
+ {
+  "id": "bw1-66",
+  "setId": "bw1",
+  "add": [
+   "snow-ice"
+  ],
+  "remove": [],
+  "reason": "snow is visible on the mountain",
+  "resultTags": [
+   "mountain-rocks",
+   "snow-ice",
+   "sky-clouds",
+   "flowers"
+  ]
+ },
+ {
+  "id": "bwp-BW37",
+  "setId": "bwp",
+  "add": [
+   "snow-ice"
+  ],
+  "remove": [],
+  "reason": "ice formations are visible in the clash",
+  "resultTags": [
+   "snow-ice",
+   "multiple-pokemon"
+  ]
+ },
+ {
+  "id": "bwp-BW70",
+  "setId": "bwp",
+  "add": [
+   "snow-ice"
+  ],
+  "remove": [],
+  "reason": "snow is visible on the mountains",
+  "resultTags": [
+   "grassland-field",
+   "mountain-rocks",
+   "snow-ice",
+   "sky-clouds"
+  ]
+ },
+ {
+  "id": "ecard2-18",
+  "setId": "ecard2",
+  "add": [
+   "city",
+   "snow-ice"
+  ],
+  "remove": [],
+  "reason": "town street and flying ice shards are clearly visible",
+  "resultTags": [
+   "snow-ice",
+   "city"
+  ]
+ },
+ {
+  "id": "ex14-16",
+  "setId": "ex14",
+  "add": [
+   "snow-ice"
+  ],
+  "remove": [],
+  "reason": "blue ice shards are clearly visible",
+  "resultTags": [
+   "snow-ice",
+   "flying"
+  ]
+ },
+ {
+  "id": "bwp-BW63",
+  "setId": "bwp",
+  "add": [
+   "snow-ice"
+  ],
+  "remove": [],
+  "reason": "ice formations are visible in the clash",
+  "resultTags": [
+   "snow-ice"
+  ]
+ },
+ {
+  "id": "bw2-30",
+  "setId": "bw2",
+  "add": [
+   "snow-ice"
+  ],
+  "remove": [],
+  "reason": "flying ice shards are clearly visible",
+  "resultTags": [
+   "snow-ice"
+  ]
+ },
+ {
+  "id": "neo3-22",
+  "setId": "neo3",
+  "add": [
+   "night"
+  ],
+  "remove": [],
+  "reason": "starry night sky is visible",
+  "resultTags": [
+   "ruins-building",
+   "night"
+  ]
+ },
+ {
+  "id": "neo3-65",
+  "setId": "neo3",
+  "add": [
+   "night"
+  ],
+  "remove": [],
+  "reason": "starry night sky fills the artwork",
+  "resultTags": [
+   "water-surface",
+   "night",
+   "swimming"
+  ]
+ },
+ {
+  "id": "ecard1-27",
+  "setId": "ecard1",
+  "add": [
+   "night"
+  ],
+  "remove": [],
+  "reason": "bird flies across a starry night sky",
+  "resultTags": [
+   "night",
+   "flying"
+  ]
+ },
+ {
+  "id": "gym2-103",
+  "setId": "gym2",
+  "add": [
+   "night"
+  ],
+  "remove": [],
+  "reason": "rain falls in a clearly dark outdoor night scene",
+  "resultTags": [
+   "night",
+   "human-present"
+  ]
+ },
+ {
+  "id": "ex8-21",
+  "setId": "ex8",
+  "add": [
+   "night"
+  ],
+  "remove": [],
+  "reason": "starry night sky is visible above the water",
+  "resultTags": [
+   "water-surface",
+   "night",
+   "swimming"
+  ]
+ },
+ {
+  "id": "dpp-DP15",
+  "setId": "dpp",
+  "add": [
+   "night"
+  ],
+  "remove": [],
+  "reason": "starry night sky is visible",
+  "resultTags": [
+   "night"
+  ]
+ },
+ {
+  "id": "dp4-27",
+  "setId": "dp4",
+  "add": [
+   "night"
+  ],
+  "remove": [],
+  "reason": "moonlit dark outdoor scene is visible",
+  "resultTags": [
+   "forest",
+   "night"
+  ]
+ },
+ {
+  "id": "dp7-9",
+  "setId": "dp7",
+  "add": [
+   "night"
+  ],
+  "remove": [],
+  "reason": "moonlit blue forest is visible",
+  "resultTags": [
+   "forest",
+   "night"
+  ]
+ },
+ {
+  "id": "dpp-DP35",
+  "setId": "dpp",
+  "add": [
+   "night"
+  ],
+  "remove": [],
+  "reason": "clouds and stars form a visible night sky",
+  "resultTags": [
+   "night"
+  ]
+ },
+ {
+  "id": "dp3-5",
+  "setId": "dp3",
+  "add": [
+   "night"
+  ],
+  "remove": [],
+  "reason": "Pokemon glides through a visible starry night sky",
+  "resultTags": [
+   "night",
+   "flying"
+  ]
+ },
+ {
+  "id": "dp3-14",
+  "setId": "dp3",
+  "add": [
+   "night"
+  ],
+  "remove": [],
+  "reason": "Pokemon glides through a visible starry night sky",
+  "resultTags": [
+   "night",
+   "flying"
+  ]
+ },
+ {
+  "id": "pop1-8",
+  "setId": "pop1",
+  "add": [
+   "sunset-sunrise"
+  ],
+  "remove": [],
+  "reason": "orange evening sky and low sun are visible",
+  "resultTags": [
+   "city",
+   "sunset-sunrise"
+  ]
+ },
+ {
+  "id": "ex3-59",
+  "setId": "ex3",
+  "add": [
+   "sunset-sunrise"
+  ],
+  "remove": [],
+  "reason": "orange-purple dusk sky is visible",
+  "resultTags": [
+   "sunset-sunrise",
+   "multiple-pokemon"
+  ]
+ },
+ {
+  "id": "dp1-81",
+  "setId": "dp1",
+  "add": [
+   "sunset-sunrise"
+  ],
+  "remove": [],
+  "reason": "pink-orange evening sky fills the background",
+  "resultTags": [
+   "mountain-rocks",
+   "city",
+   "night",
+   "sunset-sunrise"
+  ]
+ },
+ {
+  "id": "dp4-23",
+  "setId": "dp4",
+  "add": [
+   "sunset-sunrise"
+  ],
+  "remove": [],
+  "reason": "purple-pink evening sky fills the background",
+  "resultTags": [
+   "sunset-sunrise",
+   "flying"
+  ]
+ },
+ {
+  "id": "dp6-53",
+  "setId": "dp6",
+  "add": [
+   "sunset-sunrise"
+  ],
+  "remove": [],
+  "reason": "purple dusk sky and clouds form the background",
+  "resultTags": [
+   "sky-clouds",
+   "sunset-sunrise",
+   "flying"
+  ]
+ },
+ {
+  "id": "pop8-1",
+  "setId": "pop8",
+  "add": [
+   "sunset-sunrise"
+  ],
+  "remove": [],
+  "reason": "orange horizon shows a clear sunset",
+  "resultTags": [
+   "sunset-sunrise"
+  ]
+ },
+ {
+  "id": "neo3-16",
+  "setId": "neo3",
+  "add": [
+   "food-visible"
+  ],
+  "remove": [],
+  "reason": "berries and fruit are clearly drawn",
+  "resultTags": [
+   "food-visible"
+  ]
+ },
+ {
+  "id": "ex3-80",
+  "setId": "ex3",
+  "add": [
+   "food-visible"
+  ],
+  "remove": [],
+  "reason": "Pokemon visibly holds a berry",
+  "resultTags": [
+   "forest",
+   "food-visible"
+  ]
+ },
+ {
+  "id": "ex10-15",
+  "setId": "ex10",
+  "add": [
+   "food-visible"
+  ],
+  "remove": [],
+  "reason": "fruit is clearly drawn on the tree",
+  "resultTags": [
+   "food-visible"
+  ]
+ },
+ {
+  "id": "ex15-72",
+  "setId": "ex15",
+  "add": [
+   "food-visible"
+  ],
+  "remove": [],
+  "reason": "cut fruit is clearly drawn",
+  "resultTags": [
+   "food-visible"
+  ]
+ },
+ {
+  "id": "neo4-51",
+  "setId": "neo4",
+  "add": [
+   "sleeping"
+  ],
+  "remove": [],
+  "reason": "a separate background Pokemon is visibly asleep",
+  "resultTags": [
+   "grassland-field",
+   "flowers",
+   "multiple-pokemon",
+   "sleeping"
+  ]
+ },
+ {
+  "id": "ex6-53",
+  "setId": "ex6",
+  "add": [
+   "sleeping"
+  ],
+  "remove": [],
+  "reason": "Pokemon rests with closed eyes",
+  "resultTags": [
+   "night",
+   "sleeping"
+  ]
+ },
+ {
+  "id": "base3-47",
+  "setId": "base3",
+  "add": [
+   "flying"
+  ],
+  "remove": [],
+  "reason": "Pokemon visibly hovers above the ground",
+  "resultTags": [
+   "flying"
+  ]
+ },
+ {
+  "id": "si1-10",
+  "setId": "si1",
+  "add": [
+   "flying"
+  ],
+  "remove": [],
+  "reason": "small background Pokemon is airborne with wings spread",
+  "resultTags": [
+   "water-surface",
+   "multiple-pokemon",
+   "flying",
+   "swimming"
+  ]
+ },
+ {
+  "id": "ex2-53",
+  "setId": "ex2",
+  "add": [
+   "flying"
+  ],
+  "remove": [],
+  "reason": "winged Pokemon visibly hovers above the ground",
+  "resultTags": [
+   "sunset-sunrise",
+   "flying"
+  ]
+ },
+ {
+  "id": "ex3-63",
+  "setId": "ex3",
+  "add": [
+   "flying"
+  ],
+  "remove": [],
+  "reason": "Pokemon visibly hovers indoors",
+  "resultTags": [
+   "indoors",
+   "flying"
+  ]
+ },
+ {
+  "id": "ex3-87",
+  "setId": "ex3",
+  "add": [
+   "flying"
+  ],
+  "remove": [],
+  "reason": "bird visibly flies over the water",
+  "resultTags": [
+   "water-surface",
+   "human-present",
+   "flying"
+  ]
+ },
+ {
+  "id": "ex3-100",
+  "setId": "ex3",
+  "add": [
+   "flying"
+  ],
+  "remove": [],
+  "reason": "Pokemon is airborne with wings spread",
+  "resultTags": [
+   "flying"
+  ]
+ },
+ {
+  "id": "ex2-2",
+  "setId": "ex2",
+  "add": [
+   "flying",
+   "multiple-pokemon"
+  ],
+  "remove": [],
+  "reason": "small background bat is visibly airborne",
+  "resultTags": [
+   "multiple-pokemon",
+   "flying"
+  ]
+ },
+ {
+  "id": "ecard2-52",
+  "setId": "ecard2",
+  "add": [
+   "flying"
+  ],
+  "remove": [],
+  "reason": "Pokemon visibly hovers",
+  "resultTags": [
+   "night",
+   "flying"
+  ]
+ },
+ {
+  "id": "ecard2-39",
+  "setId": "ecard2",
+  "add": [
+   "flying"
+  ],
+  "remove": [],
+  "reason": "winged Pokemon visibly hovers above the ground",
+  "resultTags": [
+   "city",
+   "ruins-building",
+   "flying"
+  ]
+ },
+ {
+  "id": "ecard2-149",
+  "setId": "ecard2",
+  "add": [
+   "flying"
+  ],
+  "remove": [],
+  "reason": "Pokemon is airborne with wings spread",
+  "resultTags": [
+   "flying"
+  ]
+ },
+ {
+  "id": "ecard3-26",
+  "setId": "ecard3",
+  "add": [
+   "flying"
+  ],
+  "remove": [],
+  "reason": "small background bird is airborne",
+  "resultTags": [
+   "mountain-rocks",
+   "night",
+   "multiple-pokemon",
+   "flying"
+  ]
+ },
+ {
+  "id": "ecard3-104",
+  "setId": "ecard3",
+  "add": [
+   "flying",
+   "multiple-pokemon"
+  ],
+  "remove": [],
+  "reason": "several background bats are visibly airborne",
+  "resultTags": [
+   "water-surface",
+   "cave",
+   "snow-ice",
+   "multiple-pokemon",
+   "flying"
+  ]
+ },
+ {
+  "id": "ex11-48",
+  "setId": "ex11",
+  "add": [
+   "flying"
+  ],
+  "remove": [],
+  "reason": "Pokemon visibly hovers in the forest",
+  "resultTags": [
+   "forest",
+   "flying"
+  ]
+ },
+ {
+  "id": "ex13-38",
+  "setId": "ex13",
+  "add": [
+   "flying"
+  ],
+  "remove": [],
+  "reason": "Pokemon visibly floats above the ground",
+  "resultTags": [
+   "flying"
+  ]
+ },
+ {
+  "id": "ex13-59",
+  "setId": "ex13",
+  "add": [
+   "flying"
+  ],
+  "remove": [],
+  "reason": "Pokemon visibly hovers in the air",
+  "resultTags": [
+   "flying"
+  ]
+ },
+ {
+  "id": "dp3-42",
+  "setId": "dp3",
+  "add": [
+   "flying"
+  ],
+  "remove": [],
+  "reason": "Pokemon visibly hovers among the plants",
+  "resultTags": [
+   "forest",
+   "flowers",
+   "flying"
+  ]
+ },
+ {
+  "id": "dp3-43",
+  "setId": "dp3",
+  "add": [
+   "flying"
+  ],
+  "remove": [],
+  "reason": "Pokemon visibly hovers inside a building",
+  "resultTags": [
+   "city",
+   "flying"
+  ]
+ },
+ {
+  "id": "dp7-5",
+  "setId": "dp7",
+  "add": [
+   "flying"
+  ],
+  "remove": [],
+  "reason": "Pokemon visibly hovers in the forest",
+  "resultTags": [
+   "forest",
+   "flying"
+  ]
+ },
+ {
+  "id": "dp7-36",
+  "setId": "dp7",
+  "add": [
+   "flying"
+  ],
+  "remove": [],
+  "reason": "Pokemon visibly floats above the landscape",
+  "resultTags": [
+   "forest",
+   "grassland-field",
+   "sky-clouds",
+   "flying"
+  ]
+ },
+ {
+  "id": "pl2-50",
+  "setId": "pl2",
+  "add": [
+   "flying"
+  ],
+  "remove": [],
+  "reason": "Pokemon visibly hovers above the water",
+  "resultTags": [
+   "water-surface",
+   "flying"
+  ]
+ },
+ {
+  "id": "bw2-50",
+  "setId": "bw2",
+  "add": [
+   "flying"
+  ],
+  "remove": [],
+  "reason": "Pokemon visibly hovers above the ground",
+  "resultTags": [
+   "forest",
+   "mountain-rocks",
+   "sky-clouds",
+   "flying"
+  ]
+ },
+ {
+  "id": "ecard2-61",
+  "setId": "ecard2",
+  "add": [
+   "indoors"
+  ],
+  "remove": [],
+  "reason": "Pokemon is inside beside a window overlooking the city",
+  "resultTags": [
+   "indoors"
+  ]
+ },
+ {
+  "id": "dp6-131",
+  "setId": "dp6",
+  "add": [
+   "ruins-building"
+  ],
+  "remove": [],
+  "reason": "a man-made building is clearly visible behind the person",
+  "resultTags": [
+   "ruins-building",
+   "human-present"
+  ]
+ }
+]
