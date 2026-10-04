@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
+import { asCollection } from "./cardtrader-response.mjs";
 
 const API_BASE = "https://api.cardtrader.com/api/v2";
 const REQUEST_TIMEOUT_MS = 30_000;
@@ -68,12 +69,16 @@ async function get(path) {
 }
 
 const info = await get("/info");
-const games = await get("/games");
+const games = asCollection(await get("/games"), "games");
 const pokemon = games.find((game) => /pok[eé]mon/i.test(`${game.name} ${game.display_name}`));
 if (!pokemon) throw new Error("The CardTrader games response contains no Pokémon game.");
 
-const categories = await get(`/categories?${new URLSearchParams({ game_id: String(pokemon.id) })}`);
-const expansions = (await get("/expansions")).filter((expansion) => expansion.game_id === pokemon.id);
+const categories = asCollection(
+  await get(`/categories?${new URLSearchParams({ game_id: String(pokemon.id) })}`),
+  "categories",
+);
+const expansions = asCollection(await get("/expansions"), "expansions")
+  .filter((expansion) => expansion.game_id === pokemon.id);
 const selectedExpansions = maxExpansions > 0 ? expansions.slice(0, maxExpansions) : expansions;
 const blueprintsByExpansion = {};
 
@@ -82,7 +87,10 @@ for (let index = 0; index < selectedExpansions.length; index += 4) {
   const batch = selectedExpansions.slice(index, index + 4);
   const results = await Promise.all(batch.map(async (expansion) => [
     String(expansion.id),
-    await get(`/blueprints/export?${new URLSearchParams({ expansion_id: String(expansion.id) })}`),
+    asCollection(
+      await get(`/blueprints/export?${new URLSearchParams({ expansion_id: String(expansion.id) })}`),
+      "blueprints",
+    ),
   ]));
   Object.assign(blueprintsByExpansion, Object.fromEntries(results));
   if (index + batch.length < selectedExpansions.length) await wait(300);
