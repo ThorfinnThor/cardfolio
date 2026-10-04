@@ -11,9 +11,14 @@ describe("CardTrader response normalization", () => {
     expect(asCollection({ 1: { id: 1 }, 5: { id: 5 } }, "games")).toEqual([{ id: 1 }, { id: 5 }]);
   });
 
-  it("unwraps data collections and accepts empty objects", () => {
+  it("unwraps data and endpoint-named collections and accepts empty objects", () => {
     expect(asCollection({ data: [{ id: 5 }] }, "games")).toEqual([{ id: 5 }]);
+    expect(asCollection({ games: [{ id: 5 }] }, "games")).toEqual([{ id: 5 }]);
     expect(asCollection({}, "blueprints")).toEqual([]);
+  });
+
+  it("ignores scalar metadata beside ID-keyed records", () => {
+    expect(asCollection({ 1: { id: 1 }, request_id: "public-request-id" }, "games")).toEqual([{ id: 1 }]);
   });
 
   it("rejects unsupported shapes without including response contents", () => {
