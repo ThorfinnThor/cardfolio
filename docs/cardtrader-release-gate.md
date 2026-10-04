@@ -6,7 +6,7 @@ Stand: 4. Oktober 2026
 
 CardTrader ist in Cardfolio **noch nicht produktiv freigegeben**. Die providerneutrale Katalogschnittstelle, Laufzeitschemas, konservative Mappinglogik und reproduzierbare Audit-Werkzeuge sind vorbereitet. Alle UI-Flags bleiben aus.
 
-Das GitHub-Actions-Secret `CARDTRADER_API_TOKEN` wurde am 4. Oktober 2026 unter dem korrekten Namen registriert; sein Wert wurde nicht gelesen oder ausgegeben. Der manuell startbare, read-only Workflow ist vorbereitet, ein authentifizierter Discovery-Lauf wurde aber noch nicht gestartet. Eine schriftliche Produktionsfreigabe von CardTrader liegt ebenfalls noch nicht vor. Das ist kein stiller Restpunkt: Preise, Verfügbarkeit, Providerbilder und verbundene Wishlists bleiben deshalb No-Go.
+Das GitHub-Actions-Secret `CARDTRADER_API_TOKEN` wurde am 4. Oktober 2026 unter dem korrekten Namen registriert; sein Wert wurde nicht gelesen oder ausgegeben. Der vollständige authentifizierte Read-only-Lauf [37220216995](https://github.com/ThorfinnThor/cardfolio/actions/runs/37220216995) wurde erfolgreich abgeschlossen. Eine schriftliche Produktionsfreigabe von CardTrader liegt weiterhin nicht vor. Das ist kein stiller Restpunkt: Preise, Verfügbarkeit, Providerbilder und verbundene Wishlists bleiben deshalb No-Go.
 
 ### Aktueller Abdeckungsbericht
 
@@ -15,11 +15,21 @@ Das GitHub-Actions-Secret `CARDTRADER_API_TOKEN` wurde am 4. Oktober 2026 unter 
 | Englische TCGdex-Setdatensätze | 205 |
 | Deutsche TCGdex-Setdatensätze | 144 |
 | Zu prüfende sprachspezifische Setdatensätze | 349 |
+| CardTrader-Pokémon-Expansionen | 856 |
+| Gelesene Blueprints | 75.652 |
+| Blueprints mit `image_url` | 75.652 |
+| Blueprints ohne `image_url` | 0 |
 | Manuell verifizierte CardTrader-Zuordnungen | 0 |
 | Automatisch freigegebene Namenskandidaten | 0 |
-| Live-Kandidaten/mehrdeutige/fehlende Treffer | ausstehend – Discovery-Workflow noch nicht ausgeführt |
+| Manuell zu prüfende Namenskandidaten | 179 |
+| Mehrdeutige Namenskandidaten | 0 |
+| Nicht zugeordnete Setdatensätze | 170 |
 
-Damit beträgt die **verifizierte Abdeckung derzeit 0/349 (0 %)**. Das ist absichtlich ehrlicher als eine aus Setnamen geschätzte Freigabe. Nach einem Discovery-Lauf erzeugt `cardtrader:audit` den vollständigen maschinenlesbaren Bericht; Namensgleichheit bleibt dabei immer prüfpflichtig.
+Damit beträgt die **verifizierte Abdeckung weiterhin 0/349 (0 %)**. Das ist absichtlich ehrlicher als eine aus Setnamen geschätzte Freigabe: Alle 179 exakten Namenskandidaten bleiben `review-required`, bis ihre Expansion-ID manuell bestätigt wurde. Die 170 nicht zugeordneten Datensätze benötigen Aliasregeln oder eine individuelle Prüfung.
+
+Dass alle 75.652 gelesenen Blueprints eine Bild-URL melden, ist nur ein technischer
+Verfügbarkeitswert. Es ist weder eine Nutzungsfreigabe noch ein Nachweis für Sprache,
+Auflösung oder dauerhaft erreichbare Dateien. Die Bildfunktion bleibt deshalb aus.
 
 ## Offiziell verifizierter API-Vertrag
 
@@ -83,17 +93,18 @@ enthält nur `discovery-summary.json` und `mapping-audit.json`; Token, Authoriza
 
 Der Mapping-Audit vergleicht alle derzeit synchronisierten deutschen und englischen TCGdex-Sets mit CardTrader-Expansions. Ein exakter Namenskandidat bleibt `review-required`. Erst eine manuelle Aufnahme in `data/marketplace/cardtrader-set-review.json` macht ihn `verified`. Mehrdeutige oder fehlende Treffer werden nie automatisch gewählt.
 
-## Noch ausstehende Live-Stichproben
+## Noch ausstehende Prüfungen
 
-Nach Bereitstellung eines Testtokens müssen folgende Ergebnisse in einer aktualisierten Fassung dieses Dokuments ergänzt werden:
+Der Kataloglauf bestätigt unter anderem die Property-Namen `condition`,
+`pokemon_language`, `pokemon_reverse`, `first_edition`, `collector_number`,
+`pokemon_rarity` und `pokemon_species`. Noch offen bleiben:
 
-1. Pokémon-Game-ID und Single-Card-Kategorie-ID.
-2. Alle Pokémon-Property-Namen, Defaultwerte und Zustandswerte.
-3. Anzahl TCGdex-Sets je Status `verified`, `review-required`, `ambiguous`, `unmapped`.
-4. Blueprint-Stichprobe für direkte Cardmarket-/TCGplayer-IDs.
-5. Anteil vorhandener `image_url`, Host, Sprache, Auflösung und fehlende Bilder.
-6. Nur nach Markt-API-Freigabe: Währungen, Filtertreue für Sprache/Finish/Zustand, Caching und Angebotsstichprobe.
-7. Nur nach Wishlist-Freigabe: private Test-Wishlist mit bestätigten Blueprints und kontrolliertem Teilfehlerfall.
+1. Zulässige Werte, Defaultwerte und Kombinationen der Pokémon-Properties sicher aggregieren.
+2. Die 179 Namenskandidaten manuell prüfen und Aliasregeln für 170 nicht zugeordnete Sets entwickeln.
+3. Blueprint-Stichprobe für direkte Cardmarket-/TCGplayer-IDs.
+4. Bild-Host, Sprache, Auflösung und Rechtefreigabe getrennt prüfen.
+5. Nur nach Markt-API-Freigabe: Währungen, Filtertreue für Sprache/Finish/Zustand, Caching und Angebotsstichprobe.
+6. Nur nach Wishlist-Freigabe: private Test-Wishlist mit bestätigten Blueprints und kontrolliertem Teilfehlerfall.
 
 ## Entwurf für die schriftliche Anfrage
 

@@ -212,4 +212,6 @@
 - “Offers” and “Wishlist” remain separate disabled actions until their independent release gates pass. Unknown or stale prices are shown as such and never coerced to zero.
 - The repository has an Actions secret named `CARDTRADER_API_TOKEN`. Its presence was verified through secret metadata only; its value was not read. A manually dispatched, read-only workflow now consumes it only for the discovery step; registration alone cannot trigger an API call.
 - The workflow uploads only a public-safe summary and conservative mapping audit for seven days. The raw discovery snapshot, account identifiers, blueprint rows and image URLs remain on the ephemeral runner and are never committed or uploaded.
+- The authenticated full-catalog run on 2026-10-04 read 856 Pokémon expansions and 75,652 blueprints. It produced 179 exact-name review candidates, 170 unmapped language-specific TCGdex sets, no ambiguous candidates and zero automatically verified mappings.
+- All sampled blueprint records exposed an image URL, but URL presence grants neither artwork rights nor a language/quality guarantee. CardTrader images remain disabled.
 - `.env.example` contains only an empty server-side placeholder. A release check rejects a populated example or any `NEXT_PUBLIC_CARDTRADER_API_TOKEN` declaration.
