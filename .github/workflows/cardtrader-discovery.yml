@@ -1,0 +1,57 @@
+name: CardTrader read-only discovery
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_expansions:
+        description: "Anzahl Expansionen (0 = vollständiger Katalog)"
+        required: true
+        default: "3"
+        type: choice
+        options:
+          - "3"
+          - "10"
+          - "0"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cardtrader-read-only-discovery
+  cancel-in-progress: false
+
+jobs:
+  discovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+      - name: Read CardTrader catalog and create local snapshot
+        env:
+          CARDTRADER_API_TOKEN: ${{ secrets.CARDTRADER_API_TOKEN }}
+        run: >-
+          npm run cardtrader:discover --
+          --max-expansions "${{ inputs.max_expansions }}"
+          --out .cardtrader/discovery.json
+          --summary-out .cardtrader/discovery-summary.json
+      - name: Audit conservative TCGdex mappings
+        run: >-
+          npm run cardtrader:audit --
+          --snapshot .cardtrader/discovery.json
+          --out .cardtrader/mapping-audit.json
+      - name: Publish safe run summary
+        shell: bash
+        run: node scripts/cardtrader-workflow-summary.mjs >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload redacted audit artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: cardtrader-read-only-audit-${{ github.run_id }}
+          path: |
+            .cardtrader/discovery-summary.json
+            .cardtrader/mapping-audit.json
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 7

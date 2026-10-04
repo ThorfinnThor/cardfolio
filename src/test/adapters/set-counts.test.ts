@@ -2,11 +2,14 @@ import { describe, expect, it } from "vitest";
 
 import {
   catalogSeries,
+  catalogSetIndex,
+  catalogSetMetadata,
   catalogSets,
   collectorTotalForSearchItem,
   completeCardSnapshotMetadata,
   setIdFromCardId,
   setMetadataForSearchItem,
+  searchCatalogSets,
 } from "@/data/catalog/set-counts";
 
 describe("catalog set counts", () => {
@@ -24,6 +27,9 @@ describe("catalog set counts", () => {
     expect(catalogSets("de", "base")).toContainEqual(expect.objectContaining({ id: "base1", name: "Grundset" }));
     expect(catalogSets("de", "base").some((set) => set.id === "A1")).toBe(false);
     expect(setMetadataForSearchItem("en", "base1-4", "4")).toMatchObject({ id: "base1", name: "Base Set" });
+    expect(catalogSetMetadata("en", "base1")).toMatchObject({ provider: "tcgdex", id: "base1", language: "en" });
+    expect(catalogSetIndex().some((set) => set.id === "base1" && set.names.de === "Grundset" && set.names.en === "Base Set")).toBe(true);
+    expect(searchCatalogSets("Grundset", "de").map((set) => set.id)).toContain("base1");
   });
 
   it("upgrades stored English cards without artwork to the verified fallback image", () => {

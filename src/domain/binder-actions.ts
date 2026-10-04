@@ -47,6 +47,14 @@ function now(): string {
   return new Date().toISOString();
 }
 
+function variantReviewFor(variant: VariantSelection): PlannedCard["variantReview"] {
+  return variant.finish === "unspecified"
+    || variant.edition === "unspecified"
+    || (variant.printing ?? "unspecified") === "unspecified"
+    ? "required"
+    : undefined;
+}
+
 function slotCount(binder: Pick<Binder, "layout">): number {
   return binder.layout.rows * binder.layout.columns;
 }
@@ -96,6 +104,7 @@ export function createPlannedCard(
     id: newId(),
     cardKey,
     variant: { ...variant },
+    variantReview: variantReviewFor(variant),
     preferences: { ...preferences },
     owned: false,
     addedAt: now(),
@@ -304,7 +313,11 @@ export function setCardVariant(binder: Binder, entryId: UUID, variant: VariantSe
     slots: page.slots.map((entry) => {
       if (entry?.id !== entryId) return entry;
       found = true;
-      return { ...entry, variant: { ...variant } };
+      return {
+        ...entry,
+        variant: { ...variant },
+        variantReview: variantReviewFor(variant),
+      };
     }),
   }));
   if (!found) throw new Error("Planned card does not exist.");

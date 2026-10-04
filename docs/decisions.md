@@ -198,3 +198,18 @@
 - The first nine Snow/Ice relations from the reported failure are recorded: Vanilluxe, Vanillite and Bouffalant are dominant; background-only and false water/nature matches are excluded.
 - TCGdex Cardmarket/TCGplayer metrics may be shown as dated, source-labelled estimates. Unknown stays unknown and real provider metrics alone form a range.
 - Estimate display and budget guarantees are separate gates. Estimate display is enabled; budget guarantees, price-led ranking claims, affiliate use, shipping, tax, stock and checkout claims remain disabled.
+
+## 2026-10-04 — CardTrader remains fail-closed pending API and rights approval
+
+- CardTrader catalog access is isolated behind a provider-neutral read-only adapter with runtime validation. It has no cart or purchase methods and receives a token only at runtime.
+- A unique direct foreign ID may become a verified blueprint mapping. Set/number/name matches are only review candidates; ambiguous candidates are never selected automatically.
+- Local discovery snapshots live under ignored `.cardtrader/`, redact `shared_secret` and never contain tokens or Wishlist contents.
+- CardTrader's official terms require an individual request for market APIs containing site data, availability and pricing. Catalog mapping, provider images, price/availability and connected Wishlists therefore have separate disabled feature flags and separate release decisions.
+- Provider image availability is not treated as artwork permission. Written CardTrader permission and the underlying artwork-rights review are both required.
+- `cardtraderCommerce` is permanently outside the planned Cardfolio flow; Cardfolio will not call cart or purchase endpoints.
+- The missing-card panel has one progressive provider switch. CardTrader's disabled preview explains mapping, image, price, shipping/tax and connection status without showing a second marketplace block at the same time.
+- CardTrader output rows repeat language, finish, edition, condition and quantity. Image provenance is explicit (`Cardfolio`, `Fallback`, or `missing`); a provider image is never presented as an unlabelled local card image.
+- “Offers” and “Wishlist” remain separate disabled actions until their independent release gates pass. Unknown or stale prices are shown as such and never coerced to zero.
+- The repository has an Actions secret named `CARDTRADER_API_TOKEN`. Its presence was verified through secret metadata only; its value was not read. A manually dispatched, read-only workflow now consumes it only for the discovery step; registration alone cannot trigger an API call.
+- The workflow uploads only a public-safe summary and conservative mapping audit for seven days. The raw discovery snapshot, account identifiers, blueprint rows and image URLs remain on the ephemeral runner and are never committed or uploaded.
+- `.env.example` contains only an empty server-side placeholder. A release check rejects a populated example or any `NEXT_PUBLIC_CARDTRADER_API_TOKEN` declaration.

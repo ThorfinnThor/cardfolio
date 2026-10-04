@@ -9,6 +9,10 @@ export const FEATURES = {
   tcgplayerTextExport: true,
   tcgplayerPrefill: false,
   cardmarketImport: true,
+  cardtraderCatalog: false,
+  cardtraderImages: false,
+  cardtraderPrices: false,
+  cardtraderWishlist: false,
   cardtraderCommerce: false,
   publicSharing: false,
 } as const;

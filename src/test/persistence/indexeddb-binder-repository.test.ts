@@ -5,7 +5,11 @@ import { type PageSelectionDraft } from "@/domain/page-selection";
 import type { CardSnapshot } from "@/domain/types";
 import { RevisionConflictError } from "@/data/persistence/binder-repository";
 import { IndexedDBBinderRepository } from "@/data/persistence/indexeddb-binder-repository";
-import { persistPageSelection } from "@/data/persistence/page-selection-service";
+import {
+  persistPageSelection,
+  persistPageSelectionUndo,
+  persistReversiblePageSelection,
+} from "@/data/persistence/page-selection-service";
 
 const card: CardSnapshot = {
   key: "tcgdex:base1-1:en",
@@ -46,6 +50,7 @@ describe("IndexedDBBinderRepository", () => {
     const backup = await repository.exportBackup([binder.id]);
     expect(backup.binders[0].description).toBe("Saved");
     expect(backup.binders[0].pages[0].title).toBe("Showcase");
+    expect(backup.binders[0].pages[0].slots[0]?.variantReview).toBe("required");
     expect(backup.cards).toEqual([card]);
 
     await repository.importBackup(backup, "import-as-new");
@@ -56,6 +61,7 @@ describe("IndexedDBBinderRepository", () => {
 
     const imported = binders.find((item) => item.name === "Roundtrip (Import)");
     if (!imported) throw new Error("Imported binder fixture is missing.");
+    expect(imported.pages[0].slots[0]?.variantReview).toBe("required");
     await repository.saveOrder([binder.id, imported.id]);
     expect((await repository.list()).map((item) => item.name)).toEqual(["Roundtrip", "Roundtrip (Import)"]);
     await repository.remove(imported.id, imported.revision);
@@ -112,5 +118,54 @@ describe("IndexedDBBinderRepository", () => {
     const current = await repository.get(binder.id);
     expect(current?.description).toBe("Changed in another tab");
     expect(current?.pages[0].slots.every((entry) => entry === null)).toBe(true);
+  });
+
+  it("persists and safely undoes an exact-slot selection", async () => {
+    const repository = new IndexedDBBinderRepository();
+    const binder = createBinder("Undo selection");
+    await repository.create(binder, []);
+    const selection: PageSelectionDraft = {
+      items: [{
+        card,
+        variant: { finish: "normal", edition: "unlimited", printing: "shadowed" },
+        preferences: { minimumCondition: "any" },
+      }],
+    };
+
+    const inserted = await persistReversiblePageSelection(repository, selection, {
+      kind: "fill-current-page",
+      binder,
+      pageId: binder.pages[0].id,
+      slotIndexes: [6],
+    });
+    expect(inserted.binder.revision).toBe(1);
+    expect(inserted.binder.pages[0].slots[6]?.cardKey).toBe(card.key);
+
+    const undone = await persistPageSelectionUndo(repository, inserted.binder, inserted.undo);
+    expect(undone.revision).toBe(2);
+    expect(undone.pages[0].slots[6]).toBeNull();
+  });
+
+  it("rejects undo after another tab saved a later revision", async () => {
+    const repository = new IndexedDBBinderRepository();
+    const binder = createBinder("Stale undo");
+    await repository.create(binder, []);
+    const inserted = await persistReversiblePageSelection(repository, {
+      items: [{
+        card,
+        variant: { finish: "normal", edition: "unlimited", printing: "shadowed" },
+        preferences: { minimumCondition: "any" },
+      }],
+    }, {
+      kind: "fill-current-page",
+      binder,
+      pageId: binder.pages[0].id,
+    });
+    await repository.save({ ...inserted.binder, description: "Later edit" }, [], inserted.binder.revision);
+
+    await expect(
+      persistPageSelectionUndo(repository, inserted.binder, inserted.undo),
+    ).rejects.toBeInstanceOf(RevisionConflictError);
+    expect((await repository.get(binder.id))?.description).toBe("Later edit");
   });
 });

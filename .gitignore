@@ -37,6 +37,9 @@ yarn-error.log*
 .env*
 !.env.example
 
+# local CardTrader API discovery snapshots (may contain account-scoped metadata)
+/.cardtrader/
+
 # vercel
 .vercel
 

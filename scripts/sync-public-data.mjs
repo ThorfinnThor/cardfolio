@@ -12,6 +12,7 @@ const IMAGE_FALLBACK_LANGUAGES = ["en", "de", "es", "it", "pt", "fr"];
 const TCGPLAYER_MASS_ENTRY_SOURCE = "https://www.tcgplayer.com/massentry?productline=Pokemon";
 const TCGPLAYER_SET_CODES_URL = "https://mpapi.tcgplayer.com/v2/massentry/sets/3";
 const TCGPLAYER_SEARCH_URL = "https://mp-search-api.tcgplayer.com/v1/search/request";
+const setDetailCache = new Map();
 
 const TCGPLAYER_SET_ALIASES = {
   "2011bw": ["McDonald's Promos 2011"],
@@ -101,11 +102,29 @@ function normalizeSet(item, seriesBySetId) {
     throw new Error(`Set ${item.id} has invalid card counts.`);
   }
   const series = seriesBySetId.get(item.id);
+  const releaseDate = item.releaseDate;
+  if (releaseDate != null && (typeof releaseDate !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(releaseDate))) {
+    throw new Error(`Set ${item.id} has an invalid release date.`);
+  }
+  const normalizeAsset = (value, kind) => {
+    if (value == null) return undefined;
+    if (typeof value !== "string" || !value.trim()) throw new Error(`Set ${item.id} has an invalid ${kind}.`);
+    const url = new URL(value);
+    if (url.protocol !== "https:" || url.hostname !== "assets.tcgdex.net") {
+      throw new Error(`Set ${item.id} has an unsupported ${kind} origin.`);
+    }
+    return url.toString().replace(/\/$/, "");
+  };
+  const logo = normalizeAsset(item.logo, "logo");
+  const symbol = normalizeAsset(item.symbol, "symbol");
   return {
     id: item.id,
     name: item.name,
     cardCount: { official, total },
     ...(series ? { series } : {}),
+    ...(releaseDate ? { releaseDate } : {}),
+    ...(logo ? { logo } : {}),
+    ...(symbol ? { symbol } : {}),
   };
 }
 
@@ -116,6 +135,17 @@ async function fetchJson(language, path) {
   });
   if (!response.ok) throw new Error(`TCGdex ${language}/${path} failed with HTTP ${response.status}.`);
   return response.json();
+}
+
+async function fetchSetDetail(language, setId) {
+  const key = `${language}:${setId}`;
+  if (!setDetailCache.has(key)) {
+    setDetailCache.set(key, fetchJson(language, `sets/${encodeURIComponent(setId)}`).catch((error) => {
+      setDetailCache.delete(key);
+      throw error;
+    }));
+  }
+  return setDetailCache.get(key);
 }
 
 async function fetchRemoteJson(url, init, label) {
@@ -301,7 +331,7 @@ async function syncTcgplayerMetadata(englishSets) {
 
   const cardMappingResults = await mapWithConcurrency(englishSets, 6, async (set) => {
     const setMappings = mappedSets.filter((mapping) => mapping.tcgdexSetId === set.id);
-    const tcgdexSet = await fetchJson("en", `sets/${encodeURIComponent(set.id)}`);
+    const tcgdexSet = await fetchSetDetail("en", set.id);
     if (!Array.isArray(tcgdexSet?.cards)) throw new Error(`TCGdex set ${set.id} has no card list.`);
     const semanticCards = tcgdexSet.cards
       .filter((card) => typeof card.image === "string" && card.image.trim())
@@ -496,7 +526,7 @@ async function imageExists(baseUrl) {
 // Record one verified external image reference per such card; no bytes are stored.
 async function syncImageFallbacks(englishSets) {
   const setsWithCards = await mapWithConcurrency(englishSets, 6, async (set) => {
-    const tcgdexSet = await fetchJson("en", `sets/${encodeURIComponent(set.id)}`);
+    const tcgdexSet = await fetchSetDetail("en", set.id);
     if (!Array.isArray(tcgdexSet?.cards)) throw new Error(`TCGdex set ${set.id} has no card list.`);
     return { set, cards: tcgdexSet.cards };
   });
@@ -568,12 +598,15 @@ async function readPreviousCount(path) {
   }
 }
 
-async function syncLanguage(language) {
+async function syncLanguage(language, releaseDatesBySetId) {
   const { digitalSetIds, seriesBySetId } = await fetchSeriesMetadata(language);
   const raw = await fetchJson(language, "sets");
   if (!Array.isArray(raw)) throw new Error(`TCGdex ${language} sets response is not an array.`);
-  const items = raw
-    .filter((item) => !digitalSetIds.has(item?.id))
+  const physicalSets = raw.filter((item) => !digitalSetIds.has(item?.id));
+  const details = language === "en"
+    ? await mapWithConcurrency(physicalSets, 6, async (item) => fetchSetDetail(language, item.id))
+    : physicalSets.map((item) => ({ ...item, releaseDate: releaseDatesBySetId.get(item.id) }));
+  const items = details
     .map((item) => normalizeSet(item, seriesBySetId))
     .sort((a, b) => a.id.localeCompare(b.id));
   if (items.length < MINIMUM_ITEMS) throw new Error(`TCGdex ${language} returned only ${items.length} sets.`);
@@ -585,11 +618,56 @@ async function syncLanguage(language) {
   }
   await mkdir(dirname(path), { recursive: true });
   await writeFile(path, `${JSON.stringify({ source: "tcgdex", language, items }, null, 2)}\n`, "utf8");
-  return items.length;
+  return {
+    count: items.length,
+    items,
+    assets: {
+      sets: items.length,
+      logos: items.filter((item) => item.logo).length,
+      symbols: items.filter((item) => item.symbol).length,
+      missingLogoSetIds: items.filter((item) => !item.logo).map((item) => item.id),
+      missingSymbolSetIds: items.filter((item) => !item.symbol).map((item) => item.id),
+    },
+  };
 }
 
 const counts = {};
-for (const language of LANGUAGES) counts[language] = await syncLanguage(language);
+const synchronized = {};
+const releaseDatesBySetId = new Map();
+for (const language of LANGUAGES) {
+  synchronized[language] = await syncLanguage(language, releaseDatesBySetId);
+  if (language === "en") {
+    synchronized[language].items.forEach((set) => {
+      if (set.releaseDate) releaseDatesBySetId.set(set.id, set.releaseDate);
+    });
+  }
+  counts[language] = synchronized[language].count;
+}
+const setAssets = Object.fromEntries(LANGUAGES.map((language) => [language, synchronized[language].assets]));
+await writeFile(
+  join(OUTPUT_DIRECTORY, "set-asset-report.json"),
+  `${JSON.stringify({ format: "cardfolio-set-asset-report", version: 1, source: "tcgdex", languages: setAssets }, null, 2)}\n`,
+  "utf8",
+);
+if (process.argv.includes("--sets-only")) {
+  let previousManifest = {};
+  try {
+    previousManifest = JSON.parse(await readFile(join(OUTPUT_DIRECTORY, "manifest.json"), "utf8"));
+  } catch {
+    // A first catalogue sync has no previous marketplace fields to preserve.
+  }
+  await writeFile(
+    join(OUTPUT_DIRECTORY, "manifest.json"),
+    `${JSON.stringify({ ...previousManifest, format: "cardfolio-public-catalog", version: 4, source: "tcgdex", counts, setAssets: Object.fromEntries(LANGUAGES.map((language) => [language, {
+      sets: setAssets[language].sets,
+      logos: setAssets[language].logos,
+      symbols: setAssets[language].symbols,
+    }])) }, null, 2)}\n`,
+    "utf8",
+  );
+  console.log(`Validated public set catalog: ${JSON.stringify({ counts, setAssets })}`);
+  process.exit(0);
+}
 const englishCatalog = JSON.parse(await readFile(join(OUTPUT_DIRECTORY, "en-sets.json"), "utf8"));
 const tcgplayerResult = await syncTcgplayerMetadata(englishCatalog.items);
 const { semanticCards, ...tcgplayer } = tcgplayerResult;
@@ -597,7 +675,11 @@ const semanticCoverage = await writeSemanticCoverage(semanticCards);
 const imageFallbacks = await syncImageFallbacks(englishCatalog.items);
 await writeFile(
   join(OUTPUT_DIRECTORY, "manifest.json"),
-  `${JSON.stringify({ format: "cardfolio-public-catalog", version: 3, source: "tcgdex", counts, tcgplayer, imageFallbacks }, null, 2)}\n`,
+  `${JSON.stringify({ format: "cardfolio-public-catalog", version: 4, source: "tcgdex", counts, setAssets: Object.fromEntries(LANGUAGES.map((language) => [language, {
+    sets: setAssets[language].sets,
+    logos: setAssets[language].logos,
+    symbols: setAssets[language].symbols,
+  }])), tcgplayer, imageFallbacks }, null, 2)}\n`,
   "utf8",
 );
-console.log(`Validated public catalog and marketplace metadata: ${JSON.stringify({ counts, tcgplayer, semanticCoverage, imageFallbacks })}`);
+console.log(`Validated public catalog and marketplace metadata: ${JSON.stringify({ counts, setAssets, tcgplayer, semanticCoverage, imageFallbacks })}`);

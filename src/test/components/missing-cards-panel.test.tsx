@@ -184,4 +184,21 @@ describe("MissingCardsPanel", () => {
     expect(screen.queryByRole("heading", { name: "TCGplayer Mass Entry" })).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Cardmarket Deckliste" })).toBeInTheDocument();
   });
+
+  it("keeps CardTrader progressive and shows one clear, non-purchase preview", () => {
+    render(<MissingCardsPanel {...props()} />);
+
+    expect(screen.queryByRole("button", { name: "CardTrader" })).not.toBeInTheDocument();
+    cleanup();
+
+    render(<MissingCardsPanel {...props()} cardtraderEnabled cardtraderStatus="not-approved" />);
+    fireEvent.click(screen.getByRole("button", { name: "CardTrader" }));
+    expect(screen.getByRole("heading", { name: "CardTrader" })).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("noch nicht freigegeben");
+    expect(screen.getByText("Preis unbekannt")).toBeInTheDocument();
+    expect(screen.getByText("Versand & Steuer")).toBeInTheDocument();
+    expect(screen.getByText("1× Bulbasaur")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Wishlist erstellen" })).toBeDisabled();
+    expect(screen.getAllByText("Noch nicht freigegeben")).toHaveLength(2);
+  });
 });

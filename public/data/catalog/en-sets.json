@@ -12,7 +12,8 @@
       "series": {
         "id": "mc",
         "name": "McDonald's Collection"
-      }
+      },
+      "releaseDate": "2011-06-17"
     },
     {
       "id": "2012bw",
@@ -24,7 +25,8 @@
       "series": {
         "id": "mc",
         "name": "McDonald's Collection"
-      }
+      },
+      "releaseDate": "2012-06-15"
     },
     {
       "id": "2014xy",
@@ -36,7 +38,8 @@
       "series": {
         "id": "mc",
         "name": "McDonald's Collection"
-      }
+      },
+      "releaseDate": "2014-05-23"
     },
     {
       "id": "2015xy",
@@ -48,7 +51,8 @@
       "series": {
         "id": "mc",
         "name": "McDonald's Collection"
-      }
+      },
+      "releaseDate": "2015-11-27"
     },
     {
       "id": "2016xy",
@@ -60,7 +64,8 @@
       "series": {
         "id": "mc",
         "name": "McDonald's Collection"
-      }
+      },
+      "releaseDate": "2016-08-20"
     },
     {
       "id": "2017sm",
@@ -72,7 +77,8 @@
       "series": {
         "id": "mc",
         "name": "McDonald's Collection"
-      }
+      },
+      "releaseDate": "2017-08-03"
     },
     {
       "id": "2018sm",
@@ -84,7 +90,8 @@
       "series": {
         "id": "mc",
         "name": "McDonald's Collection"
-      }
+      },
+      "releaseDate": "2018-10-19"
     },
     {
       "id": "2019sm",
@@ -96,7 +103,8 @@
       "series": {
         "id": "mc",
         "name": "McDonald's Collection"
-      }
+      },
+      "releaseDate": "2019-10-15"
     },
     {
       "id": "2021swsh",
@@ -108,7 +116,9 @@
       "series": {
         "id": "mc",
         "name": "McDonald's Collection"
-      }
+      },
+      "releaseDate": "2021-02-09",
+      "symbol": "https://assets.tcgdex.net/univ/mc/2021swsh/symbol"
     },
     {
       "id": "2022swsh",
@@ -120,7 +130,8 @@
       "series": {
         "id": "mc",
         "name": "McDonald's Collection"
-      }
+      },
+      "releaseDate": "2022-08-03"
     },
     {
       "id": "2023sv",
@@ -132,7 +143,8 @@
       "series": {
         "id": "mc",
         "name": "McDonald's Collection"
-      }
+      },
+      "releaseDate": "2023-08-01"
     },
     {
       "id": "2024sv",
@@ -144,7 +156,8 @@
       "series": {
         "id": "mc",
         "name": "McDonald's Collection"
-      }
+      },
+      "releaseDate": "2024-12-04"
     },
     {
       "id": "30th",
@@ -156,7 +169,8 @@
       "series": {
         "id": "me",
         "name": "Mega Evolution"
-      }
+      },
+      "releaseDate": "2026-09-16"
     },
     {
       "id": "30th-c",
@@ -168,7 +182,8 @@
       "series": {
         "id": "me",
         "name": "Mega Evolution"
-      }
+      },
+      "releaseDate": "2026-09-16"
     },
     {
       "id": "base1",
@@ -180,7 +195,9 @@
       "series": {
         "id": "base",
         "name": "Base"
-      }
+      },
+      "releaseDate": "1999-01-09",
+      "logo": "https://assets.tcgdex.net/en/base/base1/logo"
     },
     {
       "id": "base2",
@@ -192,7 +209,10 @@
       "series": {
         "id": "base",
         "name": "Base"
-      }
+      },
+      "releaseDate": "1999-06-16",
+      "logo": "https://assets.tcgdex.net/en/base/base2/logo",
+      "symbol": "https://assets.tcgdex.net/univ/base/base2/symbol"
     },
     {
       "id": "base3",
@@ -204,7 +224,10 @@
       "series": {
         "id": "base",
         "name": "Base"
-      }
+      },
+      "releaseDate": "1999-10-10",
+      "logo": "https://assets.tcgdex.net/en/base/base3/logo",
+      "symbol": "https://assets.tcgdex.net/univ/base/base3/symbol"
     },
     {
       "id": "base4",
@@ -216,7 +239,10 @@
       "series": {
         "id": "base",
         "name": "Base"
-      }
+      },
+      "releaseDate": "2000-02-24",
+      "logo": "https://assets.tcgdex.net/en/base/base4/logo",
+      "symbol": "https://assets.tcgdex.net/univ/base/base4/symbol"
     },
     {
       "id": "base5",
@@ -228,7 +254,10 @@
       "series": {
         "id": "base",
         "name": "Base"
-      }
+      },
+      "releaseDate": "2000-04-24",
+      "logo": "https://assets.tcgdex.net/en/base/base5/logo",
+      "symbol": "https://assets.tcgdex.net/univ/base/base5/symbol"
     },
     {
       "id": "basep",
@@ -240,7 +269,10 @@
       "series": {
         "id": "base",
         "name": "Base"
-      }
+      },
+      "releaseDate": "1999-07-01",
+      "logo": "https://assets.tcgdex.net/en/base/basep/logo",
+      "symbol": "https://assets.tcgdex.net/univ/base/basep/symbol"
     },
     {
       "id": "bog",
@@ -252,7 +284,9 @@
       "series": {
         "id": "ecard",
         "name": "E-Card"
-      }
+      },
+      "releaseDate": "2002-12-01",
+      "symbol": "https://assets.tcgdex.net/univ/ecard/bog/symbol"
     },
     {
       "id": "bw1",
@@ -264,7 +298,10 @@
       "series": {
         "id": "bw",
         "name": "Black & White"
-      }
+      },
+      "releaseDate": "2011-04-25",
+      "logo": "https://assets.tcgdex.net/en/bw/bw1/logo",
+      "symbol": "https://assets.tcgdex.net/univ/bw/bw1/symbol"
     },
     {
       "id": "bw10",
@@ -276,7 +313,10 @@
       "series": {
         "id": "bw",
         "name": "Black & White"
-      }
+      },
+      "releaseDate": "2013-08-14",
+      "logo": "https://assets.tcgdex.net/en/bw/bw10/logo",
+      "symbol": "https://assets.tcgdex.net/univ/bw/bw10/symbol"
     },
     {
       "id": "bw11",
@@ -288,7 +328,10 @@
       "series": {
         "id": "bw",
         "name": "Black & White"
-      }
+      },
+      "releaseDate": "2013-11-06",
+      "logo": "https://assets.tcgdex.net/en/bw/bw11/logo",
+      "symbol": "https://assets.tcgdex.net/univ/bw/bw11/symbol"
     },
     {
       "id": "bw2",
@@ -300,7 +343,10 @@
       "series": {
         "id": "bw",
         "name": "Black & White"
-      }
+      },
+      "releaseDate": "2011-08-31",
+      "logo": "https://assets.tcgdex.net/en/bw/bw2/logo",
+      "symbol": "https://assets.tcgdex.net/univ/bw/bw2/symbol"
     },
     {
       "id": "bw3",
@@ -312,7 +358,10 @@
       "series": {
         "id": "bw",
         "name": "Black & White"
-      }
+      },
+      "releaseDate": "2011-11-16",
+      "logo": "https://assets.tcgdex.net/en/bw/bw3/logo",
+      "symbol": "https://assets.tcgdex.net/univ/bw/bw3/symbol"
     },
     {
       "id": "bw4",
@@ -324,7 +373,10 @@
       "series": {
         "id": "bw",
         "name": "Black & White"
-      }
+      },
+      "releaseDate": "2012-02-08",
+      "logo": "https://assets.tcgdex.net/en/bw/bw4/logo",
+      "symbol": "https://assets.tcgdex.net/univ/bw/bw4/symbol"
     },
     {
       "id": "bw5",
@@ -336,7 +388,10 @@
       "series": {
         "id": "bw",
         "name": "Black & White"
-      }
+      },
+      "releaseDate": "2012-05-09",
+      "logo": "https://assets.tcgdex.net/en/bw/bw5/logo",
+      "symbol": "https://assets.tcgdex.net/univ/bw/bw5/symbol"
     },
     {
       "id": "bw6",
@@ -348,7 +403,10 @@
       "series": {
         "id": "bw",
         "name": "Black & White"
-      }
+      },
+      "releaseDate": "2012-08-15",
+      "logo": "https://assets.tcgdex.net/en/bw/bw6/logo",
+      "symbol": "https://assets.tcgdex.net/univ/bw/bw6/symbol"
     },
     {
       "id": "bw7",
@@ -360,7 +418,10 @@
       "series": {
         "id": "bw",
         "name": "Black & White"
-      }
+      },
+      "releaseDate": "2012-11-07",
+      "logo": "https://assets.tcgdex.net/en/bw/bw7/logo",
+      "symbol": "https://assets.tcgdex.net/univ/bw/bw7/symbol"
     },
     {
       "id": "bw8",
@@ -372,7 +433,10 @@
       "series": {
         "id": "bw",
         "name": "Black & White"
-      }
+      },
+      "releaseDate": "2013-02-06",
+      "logo": "https://assets.tcgdex.net/en/bw/bw8/logo",
+      "symbol": "https://assets.tcgdex.net/univ/bw/bw8/symbol"
     },
     {
       "id": "bw9",
@@ -384,7 +448,10 @@
       "series": {
         "id": "bw",
         "name": "Black & White"
-      }
+      },
+      "releaseDate": "2013-05-08",
+      "logo": "https://assets.tcgdex.net/en/bw/bw9/logo",
+      "symbol": "https://assets.tcgdex.net/univ/bw/bw9/symbol"
     },
     {
       "id": "bwp",
@@ -396,7 +463,10 @@
       "series": {
         "id": "bw",
         "name": "Black & White"
-      }
+      },
+      "releaseDate": "2011-04-26",
+      "logo": "https://assets.tcgdex.net/en/bw/bwp/logo",
+      "symbol": "https://assets.tcgdex.net/univ/bw/bwp/symbol"
     },
     {
       "id": "cel25",
@@ -408,7 +478,10 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2021-10-08",
+      "logo": "https://assets.tcgdex.net/en/swsh/cel25/logo",
+      "symbol": "https://assets.tcgdex.net/univ/swsh/cel25/symbol"
     },
     {
       "id": "cel25cc",
@@ -420,7 +493,8 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2021-10-08"
     },
     {
       "id": "col1",
@@ -432,7 +506,10 @@
       "series": {
         "id": "col",
         "name": "Call of Legends"
-      }
+      },
+      "releaseDate": "2011-02-09",
+      "logo": "https://assets.tcgdex.net/en/col/col1/logo",
+      "symbol": "https://assets.tcgdex.net/univ/col/col1/symbol"
     },
     {
       "id": "dc1",
@@ -444,7 +521,10 @@
       "series": {
         "id": "xy",
         "name": "XY"
-      }
+      },
+      "releaseDate": "2015-03-25",
+      "logo": "https://assets.tcgdex.net/en/xy/dc1/logo",
+      "symbol": "https://assets.tcgdex.net/univ/xy/dc1/symbol"
     },
     {
       "id": "det1",
@@ -456,7 +536,10 @@
       "series": {
         "id": "sm",
         "name": "Sun & Moon"
-      }
+      },
+      "releaseDate": "2019-03-29",
+      "logo": "https://assets.tcgdex.net/en/sm/det1/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sm/det1/symbol"
     },
     {
       "id": "dp1",
@@ -468,7 +551,10 @@
       "series": {
         "id": "dp",
         "name": "Diamond & Pearl"
-      }
+      },
+      "releaseDate": "2007-05-01",
+      "logo": "https://assets.tcgdex.net/en/dp/dp1/logo",
+      "symbol": "https://assets.tcgdex.net/univ/dp/dp1/symbol"
     },
     {
       "id": "dp2",
@@ -480,7 +566,10 @@
       "series": {
         "id": "dp",
         "name": "Diamond & Pearl"
-      }
+      },
+      "releaseDate": "2007-08-01",
+      "logo": "https://assets.tcgdex.net/en/dp/dp2/logo",
+      "symbol": "https://assets.tcgdex.net/univ/dp/dp2/symbol"
     },
     {
       "id": "dp3",
@@ -492,7 +581,10 @@
       "series": {
         "id": "dp",
         "name": "Diamond & Pearl"
-      }
+      },
+      "releaseDate": "2007-11-01",
+      "logo": "https://assets.tcgdex.net/en/dp/dp3/logo",
+      "symbol": "https://assets.tcgdex.net/univ/dp/dp3/symbol"
     },
     {
       "id": "dp4",
@@ -504,7 +596,10 @@
       "series": {
         "id": "dp",
         "name": "Diamond & Pearl"
-      }
+      },
+      "releaseDate": "2008-02-01",
+      "logo": "https://assets.tcgdex.net/en/dp/dp4/logo",
+      "symbol": "https://assets.tcgdex.net/univ/dp/dp4/symbol"
     },
     {
       "id": "dp5",
@@ -516,7 +611,10 @@
       "series": {
         "id": "dp",
         "name": "Diamond & Pearl"
-      }
+      },
+      "releaseDate": "2008-05-01",
+      "logo": "https://assets.tcgdex.net/en/dp/dp5/logo",
+      "symbol": "https://assets.tcgdex.net/univ/dp/dp5/symbol"
     },
     {
       "id": "dp6",
@@ -528,7 +626,10 @@
       "series": {
         "id": "dp",
         "name": "Diamond & Pearl"
-      }
+      },
+      "releaseDate": "2008-08-01",
+      "logo": "https://assets.tcgdex.net/en/dp/dp6/logo",
+      "symbol": "https://assets.tcgdex.net/univ/dp/dp6/symbol"
     },
     {
       "id": "dp7",
@@ -540,7 +641,10 @@
       "series": {
         "id": "dp",
         "name": "Diamond & Pearl"
-      }
+      },
+      "releaseDate": "2008-11-01",
+      "logo": "https://assets.tcgdex.net/en/dp/dp7/logo",
+      "symbol": "https://assets.tcgdex.net/univ/dp/dp7/symbol"
     },
     {
       "id": "dpp",
@@ -552,7 +656,10 @@
       "series": {
         "id": "dp",
         "name": "Diamond & Pearl"
-      }
+      },
+      "releaseDate": "2007-05-01",
+      "logo": "https://assets.tcgdex.net/en/dp/dpp/logo",
+      "symbol": "https://assets.tcgdex.net/univ/dp/dpp/symbol"
     },
     {
       "id": "dv1",
@@ -564,7 +671,10 @@
       "series": {
         "id": "bw",
         "name": "Black & White"
-      }
+      },
+      "releaseDate": "2012-10-05",
+      "logo": "https://assets.tcgdex.net/en/bw/dv1/logo",
+      "symbol": "https://assets.tcgdex.net/univ/bw/dv1/symbol"
     },
     {
       "id": "ecard1",
@@ -576,7 +686,10 @@
       "series": {
         "id": "ecard",
         "name": "E-Card"
-      }
+      },
+      "releaseDate": "2002-09-15",
+      "logo": "https://assets.tcgdex.net/en/ecard/ecard1/logo",
+      "symbol": "https://assets.tcgdex.net/univ/ecard/ecard1/symbol"
     },
     {
       "id": "ecard2",
@@ -588,7 +701,10 @@
       "series": {
         "id": "ecard",
         "name": "E-Card"
-      }
+      },
+      "releaseDate": "2003-01-15",
+      "logo": "https://assets.tcgdex.net/en/ecard/ecard2/logo",
+      "symbol": "https://assets.tcgdex.net/univ/ecard/ecard2/symbol"
     },
     {
       "id": "ecard3",
@@ -600,7 +716,10 @@
       "series": {
         "id": "ecard",
         "name": "E-Card"
-      }
+      },
+      "releaseDate": "2003-05-12",
+      "logo": "https://assets.tcgdex.net/en/ecard/ecard3/logo",
+      "symbol": "https://assets.tcgdex.net/univ/ecard/ecard3/symbol"
     },
     {
       "id": "ex1",
@@ -612,7 +731,10 @@
       "series": {
         "id": "ex",
         "name": "EX"
-      }
+      },
+      "releaseDate": "2003-07-01",
+      "logo": "https://assets.tcgdex.net/en/ex/ex1/logo",
+      "symbol": "https://assets.tcgdex.net/univ/ex/ex1/symbol"
     },
     {
       "id": "ex10",
@@ -624,7 +746,10 @@
       "series": {
         "id": "ex",
         "name": "EX"
-      }
+      },
+      "releaseDate": "2005-08-22",
+      "logo": "https://assets.tcgdex.net/en/ex/ex10/logo",
+      "symbol": "https://assets.tcgdex.net/univ/ex/ex10/symbol"
     },
     {
       "id": "ex11",
@@ -636,7 +761,10 @@
       "series": {
         "id": "ex",
         "name": "EX"
-      }
+      },
+      "releaseDate": "2005-10-31",
+      "logo": "https://assets.tcgdex.net/en/ex/ex11/logo",
+      "symbol": "https://assets.tcgdex.net/univ/ex/ex11/symbol"
     },
     {
       "id": "ex12",
@@ -648,7 +776,10 @@
       "series": {
         "id": "ex",
         "name": "EX"
-      }
+      },
+      "releaseDate": "2006-02-13",
+      "logo": "https://assets.tcgdex.net/en/ex/ex12/logo",
+      "symbol": "https://assets.tcgdex.net/univ/ex/ex12/symbol"
     },
     {
       "id": "ex13",
@@ -660,7 +791,10 @@
       "series": {
         "id": "ex",
         "name": "EX"
-      }
+      },
+      "releaseDate": "2006-05-03",
+      "logo": "https://assets.tcgdex.net/en/ex/ex13/logo",
+      "symbol": "https://assets.tcgdex.net/univ/ex/ex13/symbol"
     },
     {
       "id": "ex14",
@@ -672,7 +806,10 @@
       "series": {
         "id": "ex",
         "name": "EX"
-      }
+      },
+      "releaseDate": "2006-08-30",
+      "logo": "https://assets.tcgdex.net/en/ex/ex14/logo",
+      "symbol": "https://assets.tcgdex.net/univ/ex/ex14/symbol"
     },
     {
       "id": "ex15",
@@ -684,7 +821,10 @@
       "series": {
         "id": "ex",
         "name": "EX"
-      }
+      },
+      "releaseDate": "2006-11-08",
+      "logo": "https://assets.tcgdex.net/en/ex/ex15/logo",
+      "symbol": "https://assets.tcgdex.net/univ/ex/ex15/symbol"
     },
     {
       "id": "ex16",
@@ -696,7 +836,10 @@
       "series": {
         "id": "ex",
         "name": "EX"
-      }
+      },
+      "releaseDate": "2007-02-17",
+      "logo": "https://assets.tcgdex.net/en/ex/ex16/logo",
+      "symbol": "https://assets.tcgdex.net/univ/ex/ex16/symbol"
     },
     {
       "id": "ex2",
@@ -708,7 +851,10 @@
       "series": {
         "id": "ex",
         "name": "EX"
-      }
+      },
+      "releaseDate": "2003-09-18",
+      "logo": "https://assets.tcgdex.net/en/ex/ex2/logo",
+      "symbol": "https://assets.tcgdex.net/univ/ex/ex2/symbol"
     },
     {
       "id": "ex3",
@@ -720,7 +866,10 @@
       "series": {
         "id": "ex",
         "name": "EX"
-      }
+      },
+      "releaseDate": "2003-11-24",
+      "logo": "https://assets.tcgdex.net/en/ex/ex3/logo",
+      "symbol": "https://assets.tcgdex.net/univ/ex/ex3/symbol"
     },
     {
       "id": "ex4",
@@ -732,7 +881,10 @@
       "series": {
         "id": "ex",
         "name": "EX"
-      }
+      },
+      "releaseDate": "2004-03-01",
+      "logo": "https://assets.tcgdex.net/en/ex/ex4/logo",
+      "symbol": "https://assets.tcgdex.net/univ/ex/ex4/symbol"
     },
     {
       "id": "ex5",
@@ -744,7 +896,10 @@
       "series": {
         "id": "ex",
         "name": "EX"
-      }
+      },
+      "releaseDate": "2004-06-01",
+      "logo": "https://assets.tcgdex.net/en/ex/ex5/logo",
+      "symbol": "https://assets.tcgdex.net/univ/ex/ex5/symbol"
     },
     {
       "id": "ex5.5",
@@ -756,7 +911,8 @@
       "series": {
         "id": "ex",
         "name": "EX"
-      }
+      },
+      "releaseDate": "2004-07-01"
     },
     {
       "id": "ex6",
@@ -768,7 +924,10 @@
       "series": {
         "id": "ex",
         "name": "EX"
-      }
+      },
+      "releaseDate": "2004-09-01",
+      "logo": "https://assets.tcgdex.net/en/ex/ex6/logo",
+      "symbol": "https://assets.tcgdex.net/univ/ex/ex6/symbol"
     },
     {
       "id": "ex7",
@@ -780,7 +939,10 @@
       "series": {
         "id": "ex",
         "name": "EX"
-      }
+      },
+      "releaseDate": "2004-11-01",
+      "logo": "https://assets.tcgdex.net/en/ex/ex7/logo",
+      "symbol": "https://assets.tcgdex.net/univ/ex/ex7/symbol"
     },
     {
       "id": "ex8",
@@ -792,7 +954,10 @@
       "series": {
         "id": "ex",
         "name": "EX"
-      }
+      },
+      "releaseDate": "2005-02-01",
+      "logo": "https://assets.tcgdex.net/en/ex/ex8/logo",
+      "symbol": "https://assets.tcgdex.net/univ/ex/ex8/symbol"
     },
     {
       "id": "ex9",
@@ -804,7 +969,10 @@
       "series": {
         "id": "ex",
         "name": "EX"
-      }
+      },
+      "releaseDate": "2005-05-09",
+      "logo": "https://assets.tcgdex.net/en/ex/ex9/logo",
+      "symbol": "https://assets.tcgdex.net/univ/ex/ex9/symbol"
     },
     {
       "id": "exu",
@@ -816,7 +984,8 @@
       "series": {
         "id": "ex",
         "name": "EX"
-      }
+      },
+      "releaseDate": "2005-08-22"
     },
     {
       "id": "fut2020",
@@ -828,7 +997,10 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2020-09-11",
+      "logo": "https://assets.tcgdex.net/en/swsh/fut2020/logo",
+      "symbol": "https://assets.tcgdex.net/univ/swsh/fut2020/symbol"
     },
     {
       "id": "g1",
@@ -840,7 +1012,10 @@
       "series": {
         "id": "xy",
         "name": "XY"
-      }
+      },
+      "releaseDate": "2016-02-22",
+      "logo": "https://assets.tcgdex.net/en/xy/g1/logo",
+      "symbol": "https://assets.tcgdex.net/univ/xy/g1/symbol"
     },
     {
       "id": "gym1",
@@ -852,7 +1027,10 @@
       "series": {
         "id": "gym",
         "name": "Gym"
-      }
+      },
+      "releaseDate": "2000-08-14",
+      "logo": "https://assets.tcgdex.net/en/gym/gym1/logo",
+      "symbol": "https://assets.tcgdex.net/univ/gym/gym1/symbol"
     },
     {
       "id": "gym2",
@@ -864,7 +1042,10 @@
       "series": {
         "id": "gym",
         "name": "Gym"
-      }
+      },
+      "releaseDate": "2000-10-16",
+      "logo": "https://assets.tcgdex.net/en/gym/gym2/logo",
+      "symbol": "https://assets.tcgdex.net/univ/gym/gym2/symbol"
     },
     {
       "id": "hgss1",
@@ -876,7 +1057,10 @@
       "series": {
         "id": "hgss",
         "name": "HeartGold & SoulSilver"
-      }
+      },
+      "releaseDate": "2010-02-10",
+      "logo": "https://assets.tcgdex.net/en/hgss/hgss1/logo",
+      "symbol": "https://assets.tcgdex.net/univ/hgss/hgss1/symbol"
     },
     {
       "id": "hgss2",
@@ -888,7 +1072,10 @@
       "series": {
         "id": "hgss",
         "name": "HeartGold & SoulSilver"
-      }
+      },
+      "releaseDate": "2010-05-12",
+      "logo": "https://assets.tcgdex.net/en/hgss/hgss2/logo",
+      "symbol": "https://assets.tcgdex.net/univ/hgss/hgss2/symbol"
     },
     {
       "id": "hgss3",
@@ -900,7 +1087,10 @@
       "series": {
         "id": "hgss",
         "name": "HeartGold & SoulSilver"
-      }
+      },
+      "releaseDate": "2010-08-18",
+      "logo": "https://assets.tcgdex.net/en/hgss/hgss3/logo",
+      "symbol": "https://assets.tcgdex.net/univ/hgss/hgss3/symbol"
     },
     {
       "id": "hgss4",
@@ -912,7 +1102,10 @@
       "series": {
         "id": "hgss",
         "name": "HeartGold & SoulSilver"
-      }
+      },
+      "releaseDate": "2010-11-03",
+      "logo": "https://assets.tcgdex.net/en/hgss/hgss4/logo",
+      "symbol": "https://assets.tcgdex.net/univ/hgss/hgss4/symbol"
     },
     {
       "id": "hgssp",
@@ -924,7 +1117,10 @@
       "series": {
         "id": "hgss",
         "name": "HeartGold & SoulSilver"
-      }
+      },
+      "releaseDate": "2010-02-11",
+      "logo": "https://assets.tcgdex.net/en/hgss/hgssp/logo",
+      "symbol": "https://assets.tcgdex.net/univ/hgss/hgssp/symbol"
     },
     {
       "id": "jumbo",
@@ -936,7 +1132,8 @@
       "series": {
         "id": "misc",
         "name": "Miscellaneous"
-      }
+      },
+      "releaseDate": "2000-02-01"
     },
     {
       "id": "lc",
@@ -948,7 +1145,10 @@
       "series": {
         "id": "lc",
         "name": "Legendary Collection"
-      }
+      },
+      "releaseDate": "2002-05-24",
+      "logo": "https://assets.tcgdex.net/en/lc/lc/logo",
+      "symbol": "https://assets.tcgdex.net/univ/lc/lc/symbol"
     },
     {
       "id": "me01",
@@ -960,7 +1160,10 @@
       "series": {
         "id": "me",
         "name": "Mega Evolution"
-      }
+      },
+      "releaseDate": "2025-09-26",
+      "logo": "https://assets.tcgdex.net/en/me/me01/logo",
+      "symbol": "https://assets.tcgdex.net/univ/me/me01/symbol"
     },
     {
       "id": "me02",
@@ -972,7 +1175,9 @@
       "series": {
         "id": "me",
         "name": "Mega Evolution"
-      }
+      },
+      "releaseDate": "2025-11-14",
+      "logo": "https://assets.tcgdex.net/en/me/me02/logo"
     },
     {
       "id": "me02.5",
@@ -984,7 +1189,10 @@
       "series": {
         "id": "me",
         "name": "Mega Evolution"
-      }
+      },
+      "releaseDate": "2026-01-30",
+      "logo": "https://assets.tcgdex.net/en/me/me02.5/logo",
+      "symbol": "https://assets.tcgdex.net/univ/me/me02.5/symbol"
     },
     {
       "id": "me03",
@@ -996,7 +1204,10 @@
       "series": {
         "id": "me",
         "name": "Mega Evolution"
-      }
+      },
+      "releaseDate": "2026-03-27",
+      "logo": "https://assets.tcgdex.net/en/me/me03/logo",
+      "symbol": "https://assets.tcgdex.net/univ/me/me03/symbol"
     },
     {
       "id": "me04",
@@ -1008,7 +1219,10 @@
       "series": {
         "id": "me",
         "name": "Mega Evolution"
-      }
+      },
+      "releaseDate": "2026-05-22",
+      "logo": "https://assets.tcgdex.net/en/me/me04/logo",
+      "symbol": "https://assets.tcgdex.net/univ/me/me04/symbol"
     },
     {
       "id": "me05",
@@ -1020,7 +1234,10 @@
       "series": {
         "id": "me",
         "name": "Mega Evolution"
-      }
+      },
+      "releaseDate": "2026-07-17",
+      "logo": "https://assets.tcgdex.net/en/me/me05/logo",
+      "symbol": "https://assets.tcgdex.net/univ/me/me05/symbol"
     },
     {
       "id": "mee",
@@ -1032,7 +1249,8 @@
       "series": {
         "id": "me",
         "name": "Mega Evolution"
-      }
+      },
+      "releaseDate": "2025-09-25"
     },
     {
       "id": "mep",
@@ -1044,7 +1262,8 @@
       "series": {
         "id": "me",
         "name": "Mega Evolution"
-      }
+      },
+      "releaseDate": "2025-09-26"
     },
     {
       "id": "mfb",
@@ -1056,7 +1275,8 @@
       "series": {
         "id": "sv",
         "name": "Scarlet & Violet"
-      }
+      },
+      "releaseDate": "2023-09-29"
     },
     {
       "id": "miscp",
@@ -1068,7 +1288,8 @@
       "series": {
         "id": "misc",
         "name": "Miscellaneous"
-      }
+      },
+      "releaseDate": "1996-01-01"
     },
     {
       "id": "neo1",
@@ -1080,7 +1301,10 @@
       "series": {
         "id": "neo",
         "name": "Neo"
-      }
+      },
+      "releaseDate": "2000-12-16",
+      "logo": "https://assets.tcgdex.net/en/neo/neo1/logo",
+      "symbol": "https://assets.tcgdex.net/univ/neo/neo1/symbol"
     },
     {
       "id": "neo2",
@@ -1092,7 +1316,10 @@
       "series": {
         "id": "neo",
         "name": "Neo"
-      }
+      },
+      "releaseDate": "2001-06-01",
+      "logo": "https://assets.tcgdex.net/en/neo/neo2/logo",
+      "symbol": "https://assets.tcgdex.net/univ/neo/neo2/symbol"
     },
     {
       "id": "neo3",
@@ -1104,7 +1331,10 @@
       "series": {
         "id": "neo",
         "name": "Neo"
-      }
+      },
+      "releaseDate": "2001-09-21",
+      "logo": "https://assets.tcgdex.net/en/neo/neo3/logo",
+      "symbol": "https://assets.tcgdex.net/univ/neo/neo3/symbol"
     },
     {
       "id": "neo4",
@@ -1116,7 +1346,10 @@
       "series": {
         "id": "neo",
         "name": "Neo"
-      }
+      },
+      "releaseDate": "2002-02-28",
+      "logo": "https://assets.tcgdex.net/en/neo/neo4/logo",
+      "symbol": "https://assets.tcgdex.net/univ/neo/neo4/symbol"
     },
     {
       "id": "np",
@@ -1128,7 +1361,10 @@
       "series": {
         "id": "pop",
         "name": "POP"
-      }
+      },
+      "releaseDate": "2003-10-01",
+      "logo": "https://assets.tcgdex.net/en/pop/np/logo",
+      "symbol": "https://assets.tcgdex.net/univ/pop/np/symbol"
     },
     {
       "id": "pl1",
@@ -1140,7 +1376,10 @@
       "series": {
         "id": "pl",
         "name": "Platinum"
-      }
+      },
+      "releaseDate": "2009-02-11",
+      "logo": "https://assets.tcgdex.net/en/pl/pl1/logo",
+      "symbol": "https://assets.tcgdex.net/univ/pl/pl1/symbol"
     },
     {
       "id": "pl2",
@@ -1152,7 +1391,10 @@
       "series": {
         "id": "pl",
         "name": "Platinum"
-      }
+      },
+      "releaseDate": "2009-05-16",
+      "logo": "https://assets.tcgdex.net/en/pl/pl2/logo",
+      "symbol": "https://assets.tcgdex.net/univ/pl/pl2/symbol"
     },
     {
       "id": "pl3",
@@ -1164,7 +1406,10 @@
       "series": {
         "id": "pl",
         "name": "Platinum"
-      }
+      },
+      "releaseDate": "2009-08-19",
+      "logo": "https://assets.tcgdex.net/en/pl/pl3/logo",
+      "symbol": "https://assets.tcgdex.net/univ/pl/pl3/symbol"
     },
     {
       "id": "pl4",
@@ -1176,7 +1421,10 @@
       "series": {
         "id": "pl",
         "name": "Platinum"
-      }
+      },
+      "releaseDate": "2009-11-04",
+      "logo": "https://assets.tcgdex.net/en/pl/pl4/logo",
+      "symbol": "https://assets.tcgdex.net/univ/pl/pl4/symbol"
     },
     {
       "id": "pop1",
@@ -1188,7 +1436,10 @@
       "series": {
         "id": "pop",
         "name": "POP"
-      }
+      },
+      "releaseDate": "2004-09-01",
+      "logo": "https://assets.tcgdex.net/en/pop/pop1/logo",
+      "symbol": "https://assets.tcgdex.net/univ/pop/pop1/symbol"
     },
     {
       "id": "pop2",
@@ -1200,7 +1451,10 @@
       "series": {
         "id": "pop",
         "name": "POP"
-      }
+      },
+      "releaseDate": "2005-08-01",
+      "logo": "https://assets.tcgdex.net/en/pop/pop2/logo",
+      "symbol": "https://assets.tcgdex.net/univ/pop/pop2/symbol"
     },
     {
       "id": "pop3",
@@ -1212,7 +1466,10 @@
       "series": {
         "id": "pop",
         "name": "POP"
-      }
+      },
+      "releaseDate": "2006-04-01",
+      "logo": "https://assets.tcgdex.net/en/pop/pop3/logo",
+      "symbol": "https://assets.tcgdex.net/univ/pop/pop3/symbol"
     },
     {
       "id": "pop4",
@@ -1224,7 +1481,10 @@
       "series": {
         "id": "pop",
         "name": "POP"
-      }
+      },
+      "releaseDate": "2006-08-01",
+      "logo": "https://assets.tcgdex.net/en/pop/pop4/logo",
+      "symbol": "https://assets.tcgdex.net/univ/pop/pop4/symbol"
     },
     {
       "id": "pop5",
@@ -1236,7 +1496,10 @@
       "series": {
         "id": "pop",
         "name": "POP"
-      }
+      },
+      "releaseDate": "2007-03-01",
+      "logo": "https://assets.tcgdex.net/en/pop/pop5/logo",
+      "symbol": "https://assets.tcgdex.net/univ/pop/pop5/symbol"
     },
     {
       "id": "pop6",
@@ -1248,7 +1511,10 @@
       "series": {
         "id": "pop",
         "name": "POP"
-      }
+      },
+      "releaseDate": "2007-09-01",
+      "logo": "https://assets.tcgdex.net/en/pop/pop6/logo",
+      "symbol": "https://assets.tcgdex.net/univ/pop/pop6/symbol"
     },
     {
       "id": "pop7",
@@ -1260,7 +1526,10 @@
       "series": {
         "id": "pop",
         "name": "POP"
-      }
+      },
+      "releaseDate": "2008-03-01",
+      "logo": "https://assets.tcgdex.net/en/pop/pop7/logo",
+      "symbol": "https://assets.tcgdex.net/univ/pop/pop7/symbol"
     },
     {
       "id": "pop8",
@@ -1272,7 +1541,10 @@
       "series": {
         "id": "pop",
         "name": "POP"
-      }
+      },
+      "releaseDate": "2008-09-01",
+      "logo": "https://assets.tcgdex.net/en/pop/pop8/logo",
+      "symbol": "https://assets.tcgdex.net/univ/pop/pop8/symbol"
     },
     {
       "id": "pop9",
@@ -1284,7 +1556,10 @@
       "series": {
         "id": "pop",
         "name": "POP"
-      }
+      },
+      "releaseDate": "2009-03-01",
+      "logo": "https://assets.tcgdex.net/en/pop/pop9/logo",
+      "symbol": "https://assets.tcgdex.net/univ/pop/pop9/symbol"
     },
     {
       "id": "rc",
@@ -1296,7 +1571,8 @@
       "series": {
         "id": "bw",
         "name": "Black & White"
-      }
+      },
+      "releaseDate": "2013-11-06"
     },
     {
       "id": "ru1",
@@ -1308,7 +1584,10 @@
       "series": {
         "id": "pl",
         "name": "Platinum"
-      }
+      },
+      "releaseDate": "2009-12-02",
+      "logo": "https://assets.tcgdex.net/en/pl/ru1/logo",
+      "symbol": "https://assets.tcgdex.net/univ/pl/ru1/symbol"
     },
     {
       "id": "si1",
@@ -1320,7 +1599,10 @@
       "series": {
         "id": "neo",
         "name": "Neo"
-      }
+      },
+      "releaseDate": "2001-07-31",
+      "logo": "https://assets.tcgdex.net/en/neo/si1/logo",
+      "symbol": "https://assets.tcgdex.net/univ/neo/si1/symbol"
     },
     {
       "id": "sm1",
@@ -1332,7 +1614,10 @@
       "series": {
         "id": "sm",
         "name": "Sun & Moon"
-      }
+      },
+      "releaseDate": "2017-02-03",
+      "logo": "https://assets.tcgdex.net/en/sm/sm1/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sm/sm1/symbol"
     },
     {
       "id": "sm10",
@@ -1344,7 +1629,10 @@
       "series": {
         "id": "sm",
         "name": "Sun & Moon"
-      }
+      },
+      "releaseDate": "2019-05-03",
+      "logo": "https://assets.tcgdex.net/en/sm/sm10/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sm/sm10/symbol"
     },
     {
       "id": "sm11",
@@ -1356,7 +1644,10 @@
       "series": {
         "id": "sm",
         "name": "Sun & Moon"
-      }
+      },
+      "releaseDate": "2019-08-02",
+      "logo": "https://assets.tcgdex.net/en/sm/sm11/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sm/sm11/symbol"
     },
     {
       "id": "sm115",
@@ -1368,7 +1659,10 @@
       "series": {
         "id": "sm",
         "name": "Sun & Moon"
-      }
+      },
+      "releaseDate": "2019-08-23",
+      "logo": "https://assets.tcgdex.net/en/sm/sm115/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sm/sm115/symbol"
     },
     {
       "id": "sm12",
@@ -1380,7 +1674,10 @@
       "series": {
         "id": "sm",
         "name": "Sun & Moon"
-      }
+      },
+      "releaseDate": "2019-11-01",
+      "logo": "https://assets.tcgdex.net/en/sm/sm12/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sm/sm12/symbol"
     },
     {
       "id": "sm2",
@@ -1392,7 +1689,10 @@
       "series": {
         "id": "sm",
         "name": "Sun & Moon"
-      }
+      },
+      "releaseDate": "2017-05-05",
+      "logo": "https://assets.tcgdex.net/en/sm/sm2/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sm/sm2/symbol"
     },
     {
       "id": "sm3",
@@ -1404,7 +1704,10 @@
       "series": {
         "id": "sm",
         "name": "Sun & Moon"
-      }
+      },
+      "releaseDate": "2017-08-04",
+      "logo": "https://assets.tcgdex.net/en/sm/sm3/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sm/sm3/symbol"
     },
     {
       "id": "sm3.5",
@@ -1416,7 +1719,8 @@
       "series": {
         "id": "sm",
         "name": "Sun & Moon"
-      }
+      },
+      "releaseDate": "2017-10-06"
     },
     {
       "id": "sm4",
@@ -1428,7 +1732,10 @@
       "series": {
         "id": "sm",
         "name": "Sun & Moon"
-      }
+      },
+      "releaseDate": "2017-11-03",
+      "logo": "https://assets.tcgdex.net/en/sm/sm4/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sm/sm4/symbol"
     },
     {
       "id": "sm5",
@@ -1440,7 +1747,10 @@
       "series": {
         "id": "sm",
         "name": "Sun & Moon"
-      }
+      },
+      "releaseDate": "2018-02-02",
+      "logo": "https://assets.tcgdex.net/en/sm/sm5/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sm/sm5/symbol"
     },
     {
       "id": "sm6",
@@ -1452,7 +1762,10 @@
       "series": {
         "id": "sm",
         "name": "Sun & Moon"
-      }
+      },
+      "releaseDate": "2018-05-04",
+      "logo": "https://assets.tcgdex.net/en/sm/sm6/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sm/sm6/symbol"
     },
     {
       "id": "sm7",
@@ -1464,7 +1777,10 @@
       "series": {
         "id": "sm",
         "name": "Sun & Moon"
-      }
+      },
+      "releaseDate": "2018-08-03",
+      "logo": "https://assets.tcgdex.net/en/sm/sm7/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sm/sm7/symbol"
     },
     {
       "id": "sm7.5",
@@ -1476,7 +1792,8 @@
       "series": {
         "id": "sm",
         "name": "Sun & Moon"
-      }
+      },
+      "releaseDate": "2018-09-07"
     },
     {
       "id": "sm8",
@@ -1488,7 +1805,10 @@
       "series": {
         "id": "sm",
         "name": "Sun & Moon"
-      }
+      },
+      "releaseDate": "2018-11-02",
+      "logo": "https://assets.tcgdex.net/en/sm/sm8/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sm/sm8/symbol"
     },
     {
       "id": "sm9",
@@ -1500,7 +1820,10 @@
       "series": {
         "id": "sm",
         "name": "Sun & Moon"
-      }
+      },
+      "releaseDate": "2019-01-31",
+      "logo": "https://assets.tcgdex.net/en/sm/sm9/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sm/sm9/symbol"
     },
     {
       "id": "sma",
@@ -1512,7 +1835,9 @@
       "series": {
         "id": "sm",
         "name": "Sun & Moon"
-      }
+      },
+      "releaseDate": "2019-08-23",
+      "symbol": "https://assets.tcgdex.net/univ/sm/sma/symbol"
     },
     {
       "id": "smp",
@@ -1524,7 +1849,10 @@
       "series": {
         "id": "sm",
         "name": "Sun & Moon"
-      }
+      },
+      "releaseDate": "2017-02-03",
+      "logo": "https://assets.tcgdex.net/en/sm/smp/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sm/smp/symbol"
     },
     {
       "id": "sp",
@@ -1536,7 +1864,9 @@
       "series": {
         "id": "ecard",
         "name": "E-Card"
-      }
+      },
+      "releaseDate": "2002-08-01",
+      "symbol": "https://assets.tcgdex.net/univ/ecard/sp/symbol"
     },
     {
       "id": "sv01",
@@ -1548,7 +1878,10 @@
       "series": {
         "id": "sv",
         "name": "Scarlet & Violet"
-      }
+      },
+      "releaseDate": "2023-03-31",
+      "logo": "https://assets.tcgdex.net/en/sv/sv01/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sv/sv01/symbol"
     },
     {
       "id": "sv02",
@@ -1560,7 +1893,10 @@
       "series": {
         "id": "sv",
         "name": "Scarlet & Violet"
-      }
+      },
+      "releaseDate": "2023-06-09",
+      "logo": "https://assets.tcgdex.net/en/sv/sv02/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sv/sv02/symbol"
     },
     {
       "id": "sv03",
@@ -1572,7 +1908,10 @@
       "series": {
         "id": "sv",
         "name": "Scarlet & Violet"
-      }
+      },
+      "releaseDate": "2023-08-11",
+      "logo": "https://assets.tcgdex.net/en/sv/sv03/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sv/sv03/symbol"
     },
     {
       "id": "sv03.5",
@@ -1584,7 +1923,10 @@
       "series": {
         "id": "sv",
         "name": "Scarlet & Violet"
-      }
+      },
+      "releaseDate": "2023-09-22",
+      "logo": "https://assets.tcgdex.net/en/sv/sv03.5/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sv/sv03.5/symbol"
     },
     {
       "id": "sv04",
@@ -1596,7 +1938,10 @@
       "series": {
         "id": "sv",
         "name": "Scarlet & Violet"
-      }
+      },
+      "releaseDate": "2023-11-03",
+      "logo": "https://assets.tcgdex.net/en/sv/sv04/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sv/sv04/symbol"
     },
     {
       "id": "sv04.5",
@@ -1608,7 +1953,10 @@
       "series": {
         "id": "sv",
         "name": "Scarlet & Violet"
-      }
+      },
+      "releaseDate": "2024-01-26",
+      "logo": "https://assets.tcgdex.net/en/sv/sv04.5/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sv/sv04.5/symbol"
     },
     {
       "id": "sv05",
@@ -1620,7 +1968,9 @@
       "series": {
         "id": "sv",
         "name": "Scarlet & Violet"
-      }
+      },
+      "releaseDate": "2024-03-22",
+      "symbol": "https://assets.tcgdex.net/univ/sv/sv05/symbol"
     },
     {
       "id": "sv06",
@@ -1632,7 +1982,10 @@
       "series": {
         "id": "sv",
         "name": "Scarlet & Violet"
-      }
+      },
+      "releaseDate": "2024-05-24",
+      "logo": "https://assets.tcgdex.net/en/sv/sv06/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sv/sv06/symbol"
     },
     {
       "id": "sv06.5",
@@ -1644,7 +1997,10 @@
       "series": {
         "id": "sv",
         "name": "Scarlet & Violet"
-      }
+      },
+      "releaseDate": "2024-08-02",
+      "logo": "https://assets.tcgdex.net/en/sv/sv06.5/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sv/sv06.5/symbol"
     },
     {
       "id": "sv07",
@@ -1656,7 +2012,9 @@
       "series": {
         "id": "sv",
         "name": "Scarlet & Violet"
-      }
+      },
+      "releaseDate": "2024-09-13",
+      "logo": "https://assets.tcgdex.net/en/sv/sv07/logo"
     },
     {
       "id": "sv08",
@@ -1668,7 +2026,9 @@
       "series": {
         "id": "sv",
         "name": "Scarlet & Violet"
-      }
+      },
+      "releaseDate": "2024-11-08",
+      "logo": "https://assets.tcgdex.net/en/sv/sv08/logo"
     },
     {
       "id": "sv08.5",
@@ -1680,7 +2040,9 @@
       "series": {
         "id": "sv",
         "name": "Scarlet & Violet"
-      }
+      },
+      "releaseDate": "2025-01-17",
+      "logo": "https://assets.tcgdex.net/en/sv/sv08.5/logo"
     },
     {
       "id": "sv09",
@@ -1692,7 +2054,10 @@
       "series": {
         "id": "sv",
         "name": "Scarlet & Violet"
-      }
+      },
+      "releaseDate": "2025-03-28",
+      "logo": "https://assets.tcgdex.net/en/sv/sv09/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sv/sv09/symbol"
     },
     {
       "id": "sv10",
@@ -1704,7 +2069,10 @@
       "series": {
         "id": "sv",
         "name": "Scarlet & Violet"
-      }
+      },
+      "releaseDate": "2025-05-30",
+      "logo": "https://assets.tcgdex.net/en/sv/sv10/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sv/sv10/symbol"
     },
     {
       "id": "sv10.5b",
@@ -1716,7 +2084,10 @@
       "series": {
         "id": "sv",
         "name": "Scarlet & Violet"
-      }
+      },
+      "releaseDate": "2025-07-17",
+      "logo": "https://assets.tcgdex.net/en/sv/sv10.5b/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sv/sv10.5b/symbol"
     },
     {
       "id": "sv10.5w",
@@ -1728,7 +2099,10 @@
       "series": {
         "id": "sv",
         "name": "Scarlet & Violet"
-      }
+      },
+      "releaseDate": "2025-07-17",
+      "logo": "https://assets.tcgdex.net/en/sv/sv10.5w/logo",
+      "symbol": "https://assets.tcgdex.net/univ/sv/sv10.5w/symbol"
     },
     {
       "id": "sve",
@@ -1740,7 +2114,8 @@
       "series": {
         "id": "sv",
         "name": "Scarlet & Violet"
-      }
+      },
+      "releaseDate": "2023-03-31"
     },
     {
       "id": "svp",
@@ -1752,7 +2127,8 @@
       "series": {
         "id": "sv",
         "name": "Scarlet & Violet"
-      }
+      },
+      "releaseDate": "2023-03-31"
     },
     {
       "id": "swsh1",
@@ -1764,7 +2140,10 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2020-02-07",
+      "logo": "https://assets.tcgdex.net/en/swsh/swsh1/logo",
+      "symbol": "https://assets.tcgdex.net/univ/swsh/swsh1/symbol"
     },
     {
       "id": "swsh10",
@@ -1776,7 +2155,10 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2022-05-27",
+      "logo": "https://assets.tcgdex.net/en/swsh/swsh10/logo",
+      "symbol": "https://assets.tcgdex.net/univ/swsh/swsh10/symbol"
     },
     {
       "id": "swsh10.5",
@@ -1788,7 +2170,10 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2022-07-01",
+      "logo": "https://assets.tcgdex.net/en/swsh/swsh10.5/logo",
+      "symbol": "https://assets.tcgdex.net/univ/swsh/swsh10.5/symbol"
     },
     {
       "id": "swsh10tg",
@@ -1800,7 +2185,8 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2022-05-27"
     },
     {
       "id": "swsh11",
@@ -1812,7 +2198,10 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2022-09-09",
+      "logo": "https://assets.tcgdex.net/en/swsh/swsh11/logo",
+      "symbol": "https://assets.tcgdex.net/univ/swsh/swsh11/symbol"
     },
     {
       "id": "swsh11tg",
@@ -1824,7 +2213,8 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2022-09-09"
     },
     {
       "id": "swsh12",
@@ -1836,7 +2226,10 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2022-11-11",
+      "logo": "https://assets.tcgdex.net/en/swsh/swsh12/logo",
+      "symbol": "https://assets.tcgdex.net/univ/swsh/swsh12/symbol"
     },
     {
       "id": "swsh12.5",
@@ -1848,7 +2241,10 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2023-01-20",
+      "logo": "https://assets.tcgdex.net/en/swsh/swsh12.5/logo",
+      "symbol": "https://assets.tcgdex.net/univ/swsh/swsh12.5/symbol"
     },
     {
       "id": "swsh12.5gg",
@@ -1860,7 +2256,8 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2023-01-20"
     },
     {
       "id": "swsh12tg",
@@ -1872,7 +2269,8 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2022-11-11"
     },
     {
       "id": "swsh2",
@@ -1884,7 +2282,10 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2020-05-01",
+      "logo": "https://assets.tcgdex.net/en/swsh/swsh2/logo",
+      "symbol": "https://assets.tcgdex.net/univ/swsh/swsh2/symbol"
     },
     {
       "id": "swsh3",
@@ -1896,7 +2297,10 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2020-08-14",
+      "logo": "https://assets.tcgdex.net/en/swsh/swsh3/logo",
+      "symbol": "https://assets.tcgdex.net/univ/swsh/swsh3/symbol"
     },
     {
       "id": "swsh3.5",
@@ -1908,7 +2312,10 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2020-09-25",
+      "logo": "https://assets.tcgdex.net/en/swsh/swsh3.5/logo",
+      "symbol": "https://assets.tcgdex.net/univ/swsh/swsh3.5/symbol"
     },
     {
       "id": "swsh4",
@@ -1920,7 +2327,10 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2020-11-13",
+      "logo": "https://assets.tcgdex.net/en/swsh/swsh4/logo",
+      "symbol": "https://assets.tcgdex.net/univ/swsh/swsh4/symbol"
     },
     {
       "id": "swsh4.5",
@@ -1932,7 +2342,10 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2021-02-19",
+      "logo": "https://assets.tcgdex.net/en/swsh/swsh4.5/logo",
+      "symbol": "https://assets.tcgdex.net/univ/swsh/swsh4.5/symbol"
     },
     {
       "id": "swsh4.5sv",
@@ -1944,7 +2357,8 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2021-02-19"
     },
     {
       "id": "swsh5",
@@ -1956,7 +2370,10 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2021-03-19",
+      "logo": "https://assets.tcgdex.net/en/swsh/swsh5/logo",
+      "symbol": "https://assets.tcgdex.net/univ/swsh/swsh5/symbol"
     },
     {
       "id": "swsh6",
@@ -1968,7 +2385,10 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2021-06-18",
+      "logo": "https://assets.tcgdex.net/en/swsh/swsh6/logo",
+      "symbol": "https://assets.tcgdex.net/univ/swsh/swsh6/symbol"
     },
     {
       "id": "swsh7",
@@ -1980,7 +2400,10 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2021-08-27",
+      "logo": "https://assets.tcgdex.net/en/swsh/swsh7/logo",
+      "symbol": "https://assets.tcgdex.net/univ/swsh/swsh7/symbol"
     },
     {
       "id": "swsh8",
@@ -1992,7 +2415,10 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2021-11-12",
+      "logo": "https://assets.tcgdex.net/en/swsh/swsh8/logo",
+      "symbol": "https://assets.tcgdex.net/univ/swsh/swsh8/symbol"
     },
     {
       "id": "swsh9",
@@ -2004,7 +2430,10 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2022-02-25",
+      "logo": "https://assets.tcgdex.net/en/swsh/swsh9/logo",
+      "symbol": "https://assets.tcgdex.net/univ/swsh/swsh9/symbol"
     },
     {
       "id": "swsh9tg",
@@ -2016,7 +2445,8 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2022-02-25"
     },
     {
       "id": "swshp",
@@ -2028,7 +2458,10 @@
       "series": {
         "id": "swsh",
         "name": "Sword & Shield"
-      }
+      },
+      "releaseDate": "2019-11-15",
+      "logo": "https://assets.tcgdex.net/en/swsh/swshp/logo",
+      "symbol": "https://assets.tcgdex.net/univ/swsh/swshp/symbol"
     },
     {
       "id": "tk-bw-e",
@@ -2040,7 +2473,8 @@
       "series": {
         "id": "tk",
         "name": "Trainer kits"
-      }
+      },
+      "releaseDate": "2011-09-01"
     },
     {
       "id": "tk-bw-z",
@@ -2052,7 +2486,8 @@
       "series": {
         "id": "tk",
         "name": "Trainer kits"
-      }
+      },
+      "releaseDate": "2011-09-01"
     },
     {
       "id": "tk-dp-l",
@@ -2064,7 +2499,9 @@
       "series": {
         "id": "tk",
         "name": "Trainer kits"
-      }
+      },
+      "releaseDate": "2007-09-01",
+      "symbol": "https://assets.tcgdex.net/univ/tk/tk-dp-l/symbol"
     },
     {
       "id": "tk-dp-m",
@@ -2076,7 +2513,9 @@
       "series": {
         "id": "tk",
         "name": "Trainer kits"
-      }
+      },
+      "releaseDate": "2007-09-01",
+      "symbol": "https://assets.tcgdex.net/univ/tk/tk-dp-m/symbol"
     },
     {
       "id": "tk-ex-latia",
@@ -2088,7 +2527,9 @@
       "series": {
         "id": "tk",
         "name": "Trainer kits"
-      }
+      },
+      "releaseDate": "2004-07-01",
+      "symbol": "https://assets.tcgdex.net/univ/tk/tk-ex-latia/symbol"
     },
     {
       "id": "tk-ex-latio",
@@ -2100,7 +2541,9 @@
       "series": {
         "id": "tk",
         "name": "Trainer kits"
-      }
+      },
+      "releaseDate": "2004-07-01",
+      "symbol": "https://assets.tcgdex.net/univ/tk/tk-ex-latio/symbol"
     },
     {
       "id": "tk-ex-m",
@@ -2112,7 +2555,8 @@
       "series": {
         "id": "tk",
         "name": "Trainer kits"
-      }
+      },
+      "releaseDate": "2006-03-01"
     },
     {
       "id": "tk-ex-p",
@@ -2124,7 +2568,9 @@
       "series": {
         "id": "tk",
         "name": "Trainer kits"
-      }
+      },
+      "releaseDate": "2006-03-01",
+      "symbol": "https://assets.tcgdex.net/univ/tk/tk-ex-p/symbol"
     },
     {
       "id": "tk-hs-g",
@@ -2136,7 +2582,9 @@
       "series": {
         "id": "tk",
         "name": "Trainer kits"
-      }
+      },
+      "releaseDate": "2010-05-01",
+      "symbol": "https://assets.tcgdex.net/univ/tk/tk-hs-g/symbol"
     },
     {
       "id": "tk-hs-r",
@@ -2148,7 +2596,9 @@
       "series": {
         "id": "tk",
         "name": "Trainer kits"
-      }
+      },
+      "releaseDate": "2010-05-01",
+      "symbol": "https://assets.tcgdex.net/univ/tk/tk-hs-r/symbol"
     },
     {
       "id": "tk-sm-l",
@@ -2160,7 +2610,9 @@
       "series": {
         "id": "tk",
         "name": "Trainer kits"
-      }
+      },
+      "releaseDate": "2017-04-21",
+      "symbol": "https://assets.tcgdex.net/univ/tk/tk-sm-l/symbol"
     },
     {
       "id": "tk-sm-r",
@@ -2172,7 +2624,9 @@
       "series": {
         "id": "tk",
         "name": "Trainer kits"
-      }
+      },
+      "releaseDate": "2017-04-21",
+      "symbol": "https://assets.tcgdex.net/univ/tk/tk-sm-r/symbol"
     },
     {
       "id": "tk-xy-b",
@@ -2184,7 +2638,9 @@
       "series": {
         "id": "tk",
         "name": "Trainer kits"
-      }
+      },
+      "releaseDate": "2014-11-01",
+      "symbol": "https://assets.tcgdex.net/univ/tk/tk-xy-b/symbol"
     },
     {
       "id": "tk-xy-latia",
@@ -2196,7 +2652,9 @@
       "series": {
         "id": "tk",
         "name": "Trainer kits"
-      }
+      },
+      "releaseDate": "2015-04-29",
+      "symbol": "https://assets.tcgdex.net/univ/tk/tk-xy-latia/symbol"
     },
     {
       "id": "tk-xy-latio",
@@ -2208,7 +2666,9 @@
       "series": {
         "id": "tk",
         "name": "Trainer kits"
-      }
+      },
+      "releaseDate": "2015-04-29",
+      "symbol": "https://assets.tcgdex.net/univ/tk/tk-xy-latio/symbol"
     },
     {
       "id": "tk-xy-n",
@@ -2220,7 +2680,9 @@
       "series": {
         "id": "tk",
         "name": "Trainer kits"
-      }
+      },
+      "releaseDate": "2014-03-12",
+      "symbol": "https://assets.tcgdex.net/univ/tk/tk-xy-n/symbol"
     },
     {
       "id": "tk-xy-p",
@@ -2232,7 +2694,9 @@
       "series": {
         "id": "tk",
         "name": "Trainer kits"
-      }
+      },
+      "releaseDate": "2016-04-27",
+      "symbol": "https://assets.tcgdex.net/univ/tk/tk-xy-p/symbol"
     },
     {
       "id": "tk-xy-su",
@@ -2244,7 +2708,9 @@
       "series": {
         "id": "tk",
         "name": "Trainer kits"
-      }
+      },
+      "releaseDate": "2016-04-27",
+      "symbol": "https://assets.tcgdex.net/univ/tk/tk-xy-su/symbol"
     },
     {
       "id": "tk-xy-sy",
@@ -2256,7 +2722,9 @@
       "series": {
         "id": "tk",
         "name": "Trainer kits"
-      }
+      },
+      "releaseDate": "2014-03-12",
+      "symbol": "https://assets.tcgdex.net/univ/tk/tk-xy-sy/symbol"
     },
     {
       "id": "tk-xy-w",
@@ -2268,7 +2736,9 @@
       "series": {
         "id": "tk",
         "name": "Trainer kits"
-      }
+      },
+      "releaseDate": "2014-11-01",
+      "symbol": "https://assets.tcgdex.net/univ/tk/tk-xy-w/symbol"
     },
     {
       "id": "wp",
@@ -2280,7 +2750,8 @@
       "series": {
         "id": "base",
         "name": "Base"
-      }
+      },
+      "releaseDate": "1999-09-01"
     },
     {
       "id": "xy0",
@@ -2292,7 +2763,10 @@
       "series": {
         "id": "xy",
         "name": "XY"
-      }
+      },
+      "releaseDate": "2013-11-08",
+      "logo": "https://assets.tcgdex.net/en/xy/xy0/logo",
+      "symbol": "https://assets.tcgdex.net/univ/xy/xy0/symbol"
     },
     {
       "id": "xy1",
@@ -2304,7 +2778,10 @@
       "series": {
         "id": "xy",
         "name": "XY"
-      }
+      },
+      "releaseDate": "2014-02-05",
+      "logo": "https://assets.tcgdex.net/en/xy/xy1/logo",
+      "symbol": "https://assets.tcgdex.net/univ/xy/xy1/symbol"
     },
     {
       "id": "xy10",
@@ -2316,7 +2793,10 @@
       "series": {
         "id": "xy",
         "name": "XY"
-      }
+      },
+      "releaseDate": "2016-05-02",
+      "logo": "https://assets.tcgdex.net/en/xy/xy10/logo",
+      "symbol": "https://assets.tcgdex.net/univ/xy/xy10/symbol"
     },
     {
       "id": "xy11",
@@ -2328,7 +2808,10 @@
       "series": {
         "id": "xy",
         "name": "XY"
-      }
+      },
+      "releaseDate": "2016-08-03",
+      "logo": "https://assets.tcgdex.net/en/xy/xy11/logo",
+      "symbol": "https://assets.tcgdex.net/univ/xy/xy11/symbol"
     },
     {
       "id": "xy12",
@@ -2340,7 +2823,10 @@
       "series": {
         "id": "xy",
         "name": "XY"
-      }
+      },
+      "releaseDate": "2016-11-02",
+      "logo": "https://assets.tcgdex.net/en/xy/xy12/logo",
+      "symbol": "https://assets.tcgdex.net/univ/xy/xy12/symbol"
     },
     {
       "id": "xy2",
@@ -2352,7 +2838,10 @@
       "series": {
         "id": "xy",
         "name": "XY"
-      }
+      },
+      "releaseDate": "2014-05-07",
+      "logo": "https://assets.tcgdex.net/en/xy/xy2/logo",
+      "symbol": "https://assets.tcgdex.net/univ/xy/xy2/symbol"
     },
     {
       "id": "xy3",
@@ -2364,7 +2853,10 @@
       "series": {
         "id": "xy",
         "name": "XY"
-      }
+      },
+      "releaseDate": "2014-08-13",
+      "logo": "https://assets.tcgdex.net/en/xy/xy3/logo",
+      "symbol": "https://assets.tcgdex.net/univ/xy/xy3/symbol"
     },
     {
       "id": "xy4",
@@ -2376,7 +2868,10 @@
       "series": {
         "id": "xy",
         "name": "XY"
-      }
+      },
+      "releaseDate": "2014-11-05",
+      "logo": "https://assets.tcgdex.net/en/xy/xy4/logo",
+      "symbol": "https://assets.tcgdex.net/univ/xy/xy4/symbol"
     },
     {
       "id": "xy5",
@@ -2388,7 +2883,10 @@
       "series": {
         "id": "xy",
         "name": "XY"
-      }
+      },
+      "releaseDate": "2015-02-04",
+      "logo": "https://assets.tcgdex.net/en/xy/xy5/logo",
+      "symbol": "https://assets.tcgdex.net/univ/xy/xy5/symbol"
     },
     {
       "id": "xy6",
@@ -2400,7 +2898,10 @@
       "series": {
         "id": "xy",
         "name": "XY"
-      }
+      },
+      "releaseDate": "2015-05-06",
+      "logo": "https://assets.tcgdex.net/en/xy/xy6/logo",
+      "symbol": "https://assets.tcgdex.net/univ/xy/xy6/symbol"
     },
     {
       "id": "xy7",
@@ -2412,7 +2913,10 @@
       "series": {
         "id": "xy",
         "name": "XY"
-      }
+      },
+      "releaseDate": "2015-08-12",
+      "logo": "https://assets.tcgdex.net/en/xy/xy7/logo",
+      "symbol": "https://assets.tcgdex.net/univ/xy/xy7/symbol"
     },
     {
       "id": "xy8",
@@ -2424,7 +2928,10 @@
       "series": {
         "id": "xy",
         "name": "XY"
-      }
+      },
+      "releaseDate": "2015-11-04",
+      "logo": "https://assets.tcgdex.net/en/xy/xy8/logo",
+      "symbol": "https://assets.tcgdex.net/univ/xy/xy8/symbol"
     },
     {
       "id": "xy9",
@@ -2436,7 +2943,10 @@
       "series": {
         "id": "xy",
         "name": "XY"
-      }
+      },
+      "releaseDate": "2016-02-03",
+      "logo": "https://assets.tcgdex.net/en/xy/xy9/logo",
+      "symbol": "https://assets.tcgdex.net/univ/xy/xy9/symbol"
     },
     {
       "id": "xya",
@@ -2448,7 +2958,8 @@
       "series": {
         "id": "xy",
         "name": "XY"
-      }
+      },
+      "releaseDate": "2014-02-05"
     },
     {
       "id": "xyp",
@@ -2460,7 +2971,10 @@
       "series": {
         "id": "xy",
         "name": "XY"
-      }
+      },
+      "releaseDate": "2013-10-12",
+      "logo": "https://assets.tcgdex.net/en/xy/xyp/logo",
+      "symbol": "https://assets.tcgdex.net/univ/xy/xyp/symbol"
     }
   ]
 }

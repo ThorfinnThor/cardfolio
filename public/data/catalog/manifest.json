@@ -1,6 +1,6 @@
 {
   "format": "cardfolio-public-catalog",
-  "version": 3,
+  "version": 4,
   "source": "tcgdex",
   "counts": {
     "en": 205,
@@ -13,5 +13,17 @@
     "catalogCards": 21290,
     "mappedCards": 21241,
     "unmappedCards": 49
+  },
+  "setAssets": {
+    "en": {
+      "sets": 205,
+      "logos": 146,
+      "symbols": 163
+    },
+    "de": {
+      "sets": 144,
+      "logos": 38,
+      "symbols": 122
+    }
   }
 }

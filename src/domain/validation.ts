@@ -69,6 +69,7 @@ export const plannedCardSchema = z.object({
     printing: z.enum(["shadowless", "shadowed", "unspecified"]).optional(),
     label: z.string().max(100).optional(),
   }),
+  variantReview: z.literal("required").optional(),
   preferences: z.object({
     minimumCondition: z.enum(["near-mint", "excellent", "lightly-played", "played", "any"]),
   }),

@@ -174,7 +174,7 @@
 }
 
 @media print {
-  :global(body *) { visibility: hidden !important; }
+  :global(body):has(.printSummary) * { visibility: hidden !important; }
   .printSummary, .printSummary * { visibility: visible !important; }
   .printSummary { position: absolute; inset: 0; width: 100%; border: 0; background: #fff; color: #111; padding: 0; }
   .printSummary :global(*) { box-shadow: none !important; }

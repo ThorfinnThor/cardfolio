@@ -11,7 +11,7 @@ import {
   BINDER_NAME_MAX_LENGTH,
   changeBinderLayout,
   createBinder,
-  createPlannedCard,
+  makeCardKey,
   deletePage,
   duplicateBinder,
   duplicatePage,
@@ -20,7 +20,6 @@ import {
   movePage,
   moveOrSwapCard,
   PAGE_TITLE_MAX_LENGTH,
-  placeCard,
   previewBinderLayoutChange,
   removeCard,
   renameBinder,
@@ -37,14 +36,18 @@ import {
   type SupportedBinderLayout,
 } from "@/domain/binder-actions";
 import { deriveBinderStats } from "@/domain/binder-stats";
+import { sortCatalogSearchItems, type CatalogResultSort } from "@/domain/catalog-sort";
 import { formatCollectorNumber, parseCatalogSearch } from "@/domain/catalog-search";
 import { createMissingItemsCsvExport, createMissingItemsTextExport } from "@/domain/missing-items-export";
 import { deriveMissingItems } from "@/domain/missing-items";
 import type { PageSelectionItem, PageSelectionTarget } from "@/domain/page-selection";
+import type { PageSelectionUndoToken } from "@/domain/reversible-page-selection";
 import type { CardmarketHandoffPart } from "@/domain/cardmarket-handoff";
 import type { TcgplayerMassEntryExport } from "@/domain/tcgplayer-export";
 import { createGiftProject, giftSelectionToBinder, type GiftPriceRequest, type GiftPreferences, type GiftSelectionResult, type PriceProvider } from "@/domain/gift-builder";
-import type { Binder, CardSnapshot, CatalogSearchItem, MissingItem, PlannedCard, PurchasePreferences, VariantSelection } from "@/domain/types";
+import type { Binder, CardLanguage, CardSnapshot, CatalogSearchItem, MissingItem, PlannedCard, PurchasePreferences, VariantSelection } from "@/domain/types";
+import { catalogSetAssetUrl, type CatalogSetIndexEntry } from "@/domain/catalog-set";
+import { setBinderPlanTarget, setBinderPlanToDraft, type SetBinderPlan } from "@/domain/set-binder-plan";
 import { FEATURES } from "@/config/feature-flags";
 import { PRODUCT_DESIGN } from "@/config/product";
 import { minimumConditionLabels } from "@/domain/purchase-preferences";
@@ -54,15 +57,16 @@ import { catalogQueryKey, detailQueryKey, TCGdexCatalogAdapter } from "@/data/ca
 import { LocalStaticSmartSearchAdapter } from "@/data/catalog/semantic-search";
 import { GiftCandidateLoader } from "@/data/gift/gift-candidate-loader";
 import { TCGdexGiftPriceProvider } from "@/data/pricing/gift-price-provider";
-import { catalogSeries, catalogSets, completeCardSnapshotMetadata } from "@/data/catalog/set-counts";
+import { catalogSeries, catalogSets, catalogSetIndex, completeCardSnapshotMetadata, searchCatalogSets, setMetadataForSearchItem } from "@/data/catalog/set-counts";
 import { RevisionConflictError } from "@/data/persistence/binder-repository";
 import { IndexedDBBinderRepository } from "@/data/persistence/indexeddb-binder-repository";
 import { IndexedDBGiftProjectRepository } from "@/data/persistence/gift-project-repository";
-import { persistPageSelection } from "@/data/persistence/page-selection-service";
+import { persistPageSelection, persistPageSelectionUndo, persistReversiblePageSelection } from "@/data/persistence/page-selection-service";
 
 import { catalogLabel, coverLeather } from "./binder-cover";
 import { BinderOverview } from "./BinderOverview";
 import { GiftBuilderPanel } from "./GiftBuilderPanel";
+import { SetBinderWizard } from "./SetBinderWizard";
 import { BinderGrid } from "./BinderGrid";
 import { CardArtwork } from "./CardArtwork";
 import { MissingCardsPanel } from "./MissingCardsPanel";
@@ -96,6 +100,7 @@ const conditionGrade: Record<PurchasePreferences["minimumCondition"], string> = 
 type CopyState = "idle" | "copied" | "error";
 type SearchLanguage = "all" | "de" | "en";
 type SearchMode = "catalog" | "semantic";
+type SearchEntity = "cards" | "sets";
 type SearchFilterOption = { id: string; label: string };
 type ImportReport = { binderCount: number; cardCount: number; plannedCount: number; names: string[] };
 type BinderSyncMessage =
@@ -274,6 +279,58 @@ function mergeLocalizedOptions(
     .sort((left, right) => left.label.localeCompare(right.label, "de"));
 }
 
+function nextFreeSlotLocation(binder: Binder): SlotLocation | undefined {
+  for (const page of binder.pages) {
+    const slotIndex = page.slots.findIndex((slot) => slot === null);
+    if (slotIndex >= 0) return { pageId: page.id, slotIndex };
+  }
+  return undefined;
+}
+
+function CatalogResultArtwork({ item, className = styles.resultArtwork, fallbackClassName = styles.resultArtworkFallback }: { item: CatalogSearchItem; className?: string; fallbackClassName?: string }) {
+  return (
+    <CardArtwork
+      card={{
+        name: item.name,
+        setName: item.setName ?? "Karte",
+        collectorNumber: item.collectorNumber,
+        ref: item.ref,
+        imageBaseUrl: item.imageBaseUrl,
+        imageFallbackBaseUrl: undefined,
+      }}
+      className={className}
+      fallback={<span className={fallbackClassName}>Kein Bild</span>}
+    />
+  );
+}
+
+function CatalogSetArtwork({ entry, language }: { entry: CatalogSetIndexEntry; language: SearchLanguage }) {
+  const candidates = useMemo(() => {
+    const languages: CardLanguage[] = language === "all" ? ["en", "de"] : [language, language === "en" ? "de" : "en"];
+    return languages
+      .flatMap((candidate) => [entry.assets[candidate]?.logo, entry.assets[candidate]?.symbol])
+      .filter((asset): asset is NonNullable<typeof asset> => Boolean(asset))
+      .filter((asset, index, assets) => assets.findIndex((candidate) => candidate.baseUrl === asset.baseUrl) === index);
+  }, [entry, language]);
+  const [failedIndex, setFailedIndex] = useState(0);
+  const asset = candidates[failedIndex];
+
+  if (!asset) return <span className={styles.setResultLogoFallback}>Kein Setbild</span>;
+
+  return (
+    <span className={styles.setResultLogo}>
+      {/* Set artwork is served from the provider's runtime asset CDN; the existing card image fallback uses the same strategy. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={catalogSetAssetUrl(asset)}
+        alt=""
+        loading="lazy"
+        onError={() => setFailedIndex((current) => current + 1)}
+      />
+    </span>
+  );
+}
+
 export function FoundationWorkspace() {
   const repository = useMemo(() => new IndexedDBBinderRepository(), []);
   const giftProjects = useMemo(() => new IndexedDBGiftProjectRepository(), []);
@@ -282,6 +339,8 @@ export function FoundationWorkspace() {
   const giftSmartSearch = useMemo(() => FEATURES.smartSearch ? new LocalStaticSmartSearchAdapter() : undefined, []);
   const syncChannelRef = useRef<BroadcastChannel | undefined>(undefined);
   const searchReturnFocusRef = useRef<HTMLElement | null>(null);
+  const searchDrawerRef = useRef<HTMLElement | null>(null);
+  const searchScrollTopRef = useRef(0);
   const pageSelectionTokenRef = useRef(0);
   const bindersRef = useRef<Binder[]>([]);
   const binderWriteQueuesRef = useRef(new Map<string, Promise<void>>());
@@ -292,9 +351,11 @@ export function FoundationWorkspace() {
   const [name, setName] = useState("");
   const [searchText, setSearchText] = useState("");
   const [searchMode, setSearchMode] = useState<SearchMode>("catalog");
+  const [searchEntity, setSearchEntity] = useState<SearchEntity>("cards");
   const [searchLanguage, setSearchLanguage] = useState<SearchLanguage>("all");
   const [searchSeriesId, setSearchSeriesId] = useState("");
   const [searchSetId, setSearchSetId] = useState("");
+  const [searchSort, setSearchSort] = useState<CatalogResultSort>("relevance");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchPreview, setSearchPreview] = useState<SearchPreview>();
@@ -309,6 +370,7 @@ export function FoundationWorkspace() {
   const [cardsBinderId, setCardsBinderId] = useState<string>();
   const [storageStatus, setStorageStatus] = useState("initializing");
   const [message, setMessage] = useState<string>();
+  const [lastInsertUndo, setLastInsertUndo] = useState<{ binderId: string; token: PageSelectionUndoToken; label: string }>();
   const [binderToDelete, setBinderToDelete] = useState<Binder>();
   const [binderRename, setBinderRename] = useState<BinderRenameRequest>();
   const [pageRename, setPageRename] = useState<PageRenameRequest>();
@@ -325,12 +387,24 @@ export function FoundationWorkspace() {
   const [storageConflict, setStorageConflict] = useState(false);
   const [binderManagerOpen, setBinderManagerOpen] = useState(false);
   const [giftBuilderOpen, setGiftBuilderOpen] = useState(false);
+  const [setBinderWizardOpen, setSetBinderWizardOpen] = useState(false);
+  const [catalogSelection, setCatalogSelection] = useState<CatalogSearchItem[]>([]);
   const [celebratedEntryId, setCelebratedEntryId] = useState<string>();
 
   const activeBinder = binders.find((binder) => binder.id === activeId);
   const activePage = activeBinder?.pages[Math.min(activePageIndex, Math.max(activeBinder.pages.length - 1, 0))];
   const visiblePageIndex = activeBinder && activePage ? activeBinder.pages.indexOf(activePage) : 0;
   const activePageTitle = activePage?.title || `Seite ${visiblePageIndex + 1}`;
+  const insertionTarget = activeBinder
+    ? (selectedLocation ?? nextFreeSlotLocation(activeBinder))
+    : undefined;
+  const insertionTargetPageIndex = activeBinder && insertionTarget
+    ? activeBinder.pages.findIndex((page) => page.id === insertionTarget.pageId)
+    : -1;
+  const insertionTargetPage = activeBinder && insertionTargetPageIndex >= 0
+    ? activeBinder.pages[insertionTargetPageIndex]
+    : undefined;
+  const insertionTargetPageTitle = insertionTargetPage?.title || (insertionTargetPageIndex >= 0 ? `Seite ${insertionTargetPageIndex + 1}` : undefined);
 
   useEffect(() => {
     repository
@@ -414,6 +488,8 @@ export function FoundationWorkspace() {
   const setOptions = useMemo(() => searchLanguage === "all"
     ? mergeLocalizedOptions(catalogSets("de", searchSeriesId || undefined), catalogSets("en", searchSeriesId || undefined))
     : catalogSets(searchLanguage, searchSeriesId || undefined).map((set) => ({ id: set.id, label: set.name })), [searchLanguage, searchSeriesId]);
+  const setSearchResults = useMemo(() => searchCatalogSets(searchText, searchLanguage)
+    .filter((entry) => !searchSeriesId || entry.series[searchLanguage === "all" ? "en" : searchLanguage]?.id === searchSeriesId || entry.series[searchLanguage === "all" ? "de" : searchLanguage]?.id === searchSeriesId), [searchLanguage, searchSeriesId, searchText]);
 
   useEffect(() => {
     if (searchSeriesId && !seriesOptions.some((option) => option.id === searchSeriesId)) {
@@ -426,7 +502,10 @@ export function FoundationWorkspace() {
     if (searchSetId && !setOptions.some((option) => option.id === searchSetId)) setSearchSetId("");
   }, [searchSetId, setOptions]);
 
-  const searchEnabled = Boolean(searchSetId || (parsedSearch.name?.length ?? 0) >= 2 || parsedSearch.collectorNumber);
+  // Opening the browser is also a useful discovery action. TCGdex supports a
+  // paginated catalogue request without a name filter, so an empty query can
+  // show real cards immediately instead of presenting an empty drawer.
+  const searchEnabled = searchOpen && searchMode === "catalog" && searchEntity === "cards";
   const searchPageSize = searchLanguage === "all" ? 20 : 40;
   const germanCatalogQuery = { language: "de" as const, ...parsedSearch, setId: searchSetId || undefined, page: 0, pageSize: searchPageSize };
   const englishCatalogQuery = { language: "en" as const, ...parsedSearch, setId: searchSetId || undefined, page: 0, pageSize: searchPageSize };
@@ -435,7 +514,7 @@ export function FoundationWorkspace() {
     queryKey: ["infinite-search", ...catalogQueryKey(germanCatalogQuery)],
     queryFn: ({ signal, pageParam }) =>
       catalog.search({ ...germanCatalogQuery, page: pageParam }, signal),
-    enabled: searchMode === "catalog" && searchEnabled && searchLanguage !== "en",
+    enabled: searchEnabled && searchLanguage !== "en",
     staleTime: 10 * 60 * 1_000,
     initialPageParam: 1,
     getNextPageParam: (lastPage, pages) => lastPage.hasMore ? pages.length + 1 : undefined,
@@ -445,7 +524,7 @@ export function FoundationWorkspace() {
     queryKey: ["infinite-search", ...catalogQueryKey(englishCatalogQuery)],
     queryFn: ({ signal, pageParam }) =>
       catalog.search({ ...englishCatalogQuery, page: pageParam }, signal),
-    enabled: searchMode === "catalog" && searchEnabled && searchLanguage !== "de",
+    enabled: searchEnabled && searchLanguage !== "de",
     staleTime: 10 * 60 * 1_000,
     initialPageParam: 1,
     getNextPageParam: (lastPage, pages) => lastPage.hasMore ? pages.length + 1 : undefined,
@@ -458,6 +537,11 @@ export function FoundationWorkspace() {
     : searchLanguage === "en"
       ? englishSearchResults
       : interleaveSearchResults(germanSearchResults, englishSearchResults);
+  const sortedSearchResults = useMemo(() => sortCatalogSearchItems(
+    searchResults,
+    searchSort,
+    (item) => setMetadataForSearchItem(item.ref.language, item.ref.id, item.collectorNumber),
+  ), [searchResults, searchSort]);
   const searchIsRunning = searchLanguage === "de"
     ? germanSearchQuery.isFetching
     : searchLanguage === "en"
@@ -484,6 +568,13 @@ export function FoundationWorkspace() {
     const requests: Promise<unknown>[] = [];
     if (searchLanguage !== "en" && germanSearchQuery.hasNextPage) requests.push(germanSearchQuery.fetchNextPage());
     if (searchLanguage !== "de" && englishSearchQuery.hasNextPage) requests.push(englishSearchQuery.fetchNextPage());
+    await Promise.all(requests);
+  }
+
+  async function retryCatalogSearch() {
+    const requests: Promise<unknown>[] = [];
+    if (searchLanguage !== "en") requests.push(germanSearchQuery.refetch());
+    if (searchLanguage !== "de") requests.push(englishSearchQuery.refetch());
     await Promise.all(requests);
   }
 
@@ -519,6 +610,8 @@ export function FoundationWorkspace() {
   ): Promise<Binder> {
     const previous = binderWriteQueuesRef.current.get(binderId) ?? Promise.resolve();
     const operation = previous.catch(() => undefined).then(async () => {
+      // Any later mutation invalidates a short-lived insert undo token.
+      setLastInsertUndo(undefined);
       const current = bindersRef.current.find((binder) => binder.id === binderId);
       if (!current) throw new Error("Der Binder ist nicht mehr verfügbar.");
       const saved = await repository.save(update(current), cardSnapshots, current.revision);
@@ -632,6 +725,27 @@ export function FoundationWorkspace() {
       return linkedProject;
     } catch (error) {
       handleStorageError(error, "Geschenk-Binder konnte nicht gespeichert werden.");
+      throw error;
+    }
+  }
+
+  async function createSetBinder(plan: SetBinderPlan, name: string) {
+    try {
+      setStorageStatus("saving");
+      const result = await persistPageSelection(repository, setBinderPlanToDraft(plan), setBinderPlanTarget(plan, name));
+      publishBinderChange(result.binder);
+      publishBinderOrderChange();
+      const nextBinders = [result.binder, ...bindersRef.current];
+      bindersRef.current = nextBinders;
+      setBinders(nextBinders);
+      setActiveId(result.binder.id);
+      setActivePageIndex(0);
+      setSetBinderWizardOpen(false);
+      setBinderManagerOpen(false);
+      setStorageStatus("saved");
+      setMessage(`${plan.selectedCardCount} Karten aus ${plan.setName} wurden eingeplant. Varianten mit Prüfhinweis kannst du anschließend ergänzen.`);
+    } catch (error) {
+      handleStorageError(error, "Der Set-Binder konnte nicht angelegt werden.");
       throw error;
     }
   }
@@ -907,6 +1021,7 @@ export function FoundationWorkspace() {
   }
 
   async function previewSearchResult(item: CatalogSearchItem) {
+    searchScrollTopRef.current = searchDrawerRef.current?.scrollTop ?? 0;
     setSearchPreview({
       item,
       status: "loading",
@@ -1037,7 +1152,7 @@ export function FoundationWorkspace() {
       : current);
   }
 
-  function reviewSemanticSelection(items: CatalogSearchItem[]) {
+  function reviewSemanticSelection(items: CatalogSearchItem[], preferredLanguage?: "de" | "en") {
     if (!activeBinder || !items.length) return;
     const token = pageSelectionTokenRef.current + 1;
     pageSelectionTokenRef.current = token;
@@ -1045,8 +1160,20 @@ export function FoundationWorkspace() {
     setSearchOpen(false);
     setPageSelectionReviewOpen(true);
     const preserveItems = pageSelectionRequest?.items ?? [];
-    setPageSelectionRequest({ sourceItems: items, items: [], language: pageSelectionRequest?.language ?? "en", status: "loading" });
-    void hydratePageSelection(items, pageSelectionRequest?.language ?? "en", token, preserveItems);
+    const language = preferredLanguage ?? pageSelectionRequest?.language ?? "en";
+    setPageSelectionRequest({ sourceItems: items, items: [], language, status: "loading" });
+    void hydratePageSelection(items, language, token, preserveItems);
+  }
+
+  function toggleCatalogSelection(item: CatalogSearchItem) {
+    setCatalogSelection((current) => current.some((candidate) => candidate.ref.id === item.ref.id && candidate.ref.language === item.ref.language)
+      ? current.filter((candidate) => candidate.ref.id !== item.ref.id || candidate.ref.language !== item.ref.language)
+      : current.length >= 9 ? current : [...current, item]);
+  }
+
+  function reviewCatalogSelection() {
+    if (!catalogSelection.length) return;
+    reviewSemanticSelection(catalogSelection, searchLanguage === "de" ? "de" : "en");
   }
 
   function changePageSelectionLanguage(language: "de" | "en") {
@@ -1084,7 +1211,9 @@ export function FoundationWorkspace() {
       ? { kind: "new-binder", name: binderName }
       : target === "new-page"
         ? { kind: "new-page", binder: activeBinder }
-        : { kind: "fill-current-page", binder: activeBinder, pageId: activePage.id };
+        : target === "fill-continuously"
+          ? { kind: "fill-continuously", binder: activeBinder, start: nextFreeSlotLocation(activeBinder) ?? { pageId: activePage.id, slotIndex: activePage.slots.length }, overflow: "add-pages" }
+          : { kind: "fill-current-page", binder: activeBinder, pageId: activePage.id };
     setPageSelectionSubmitting(true);
     try {
       setStorageStatus("saving");
@@ -1112,6 +1241,7 @@ export function FoundationWorkspace() {
       setCardsBinderId(result.binder.id);
       setPageSelectionRequest(undefined);
       setPageSelectionReviewOpen(false);
+      setCatalogSelection([]);
       setPageSelectionSubmitting(false);
       setStorageStatus("saved");
       setMessage(`${request.items.length} ${request.items.length === 1 ? "Karte wurde" : "Karten wurden"} als Binderseite übernommen.`);
@@ -1123,8 +1253,27 @@ export function FoundationWorkspace() {
 
   function fallbackToCatalogSearch(query: string) {
     setSearchMode("catalog");
+    setSearchEntity("cards");
     setSearchLanguage("all");
     setSearchText(query);
+  }
+
+  function resetSearchFilters() {
+    setSearchLanguage("all");
+    setSearchSeriesId("");
+    setSearchSetId("");
+    setSearchText("");
+  }
+
+  function openSetFromSearch(entry: CatalogSetIndexEntry) {
+    setSearchEntity("cards");
+    setSearchText("");
+    setSearchSort("collector-number");
+    const preferredSeries = searchLanguage === "all"
+      ? entry.series.en ?? entry.series.de
+      : entry.series[searchLanguage];
+    setSearchSeriesId(preferredSeries?.id ?? "");
+    setSearchSetId(entry.id);
   }
 
   function changePreviewLanguage(language: "de" | "en") {
@@ -1147,9 +1296,10 @@ export function FoundationWorkspace() {
           ...selectedLocation,
           slot: activeBinder.pages.find((page) => page.id === selectedLocation.pageId)?.slots[selectedLocation.slotIndex],
         }
-      : activeBinder.pages
-        .flatMap((page) => page.slots.map((slot, slotIndex) => ({ pageId: page.id, slotIndex, slot })))
-        .find((candidate) => candidate.slot === null);
+      : (() => {
+          const candidate = nextFreeSlotLocation(activeBinder);
+          return candidate ? { ...candidate, slot: activeBinder.pages.find((page) => page.id === candidate.pageId)?.slots[candidate.slotIndex] } : undefined;
+        })();
     if (!location) {
       setMessage("Der ausgewählte Slot ist nicht mehr verfügbar.");
       return;
@@ -1161,22 +1311,26 @@ export function FoundationWorkspace() {
     setPreviewSubmitting(true);
     try {
       const snapshot = searchPreview.snapshot;
-      const plannedCard = createPlannedCard(snapshot.key, searchPreview.variant, searchPreview.preferences);
       setStorageStatus("saving");
-      const saved = await persistBinderChange(
-        activeBinder.id,
-        (binder) => placeCard(binder, location, plannedCard),
-        [snapshot],
+      const result = await persistReversiblePageSelection(
+        repository,
+        {
+          items: [{ card: snapshot, variant: searchPreview.variant, preferences: searchPreview.preferences }],
+        },
+        { kind: "fill-current-page", binder: activeBinder, pageId: location.pageId, slotIndexes: [location.slotIndex] },
       );
+      const saved = result.binder;
+      replaceBinderInMemory(saved);
+      publishBinderChange(saved);
       setCards((current) => new Map(current).set(snapshot.key, snapshot));
       setSelectedLocation(undefined);
       setMovingLocation(undefined);
       setSearchOpen(false);
       setSearchPreview(undefined);
-      setSearchText("");
       const targetPageIndex = saved.pages.findIndex((page) => page.id === location.pageId);
       if (targetPageIndex >= 0) setActivePageIndex(targetPageIndex);
       setContextLocation(location);
+      setLastInsertUndo({ binderId: saved.id, token: result.undo, label: snapshot.name });
       setStorageStatus("saved");
       setMessage(`${snapshot.name} wurde eingesetzt.`);
     } catch (error) {
@@ -1194,6 +1348,25 @@ export function FoundationWorkspace() {
     setSearchPreview(undefined);
     setSearchOpen(true);
     setMessage(location ? `Slot ${location.slotIndex + 1} ausgewählt. Suche eine Karte zum Einsetzen.` : undefined);
+  }
+
+  async function undoLastInsert() {
+    if (!activeBinder || !lastInsertUndo || lastInsertUndo.binderId !== activeBinder.id) return;
+    try {
+      setStorageStatus("saving");
+      const current = bindersRef.current.find((binder) => binder.id === activeBinder.id);
+      if (!current) throw new Error("Der Binder ist nicht mehr verfügbar.");
+      const saved = await persistPageSelectionUndo(repository, current, lastInsertUndo.token);
+      replaceBinderInMemory(saved);
+      publishBinderChange(saved);
+      setLastInsertUndo(undefined);
+      setContextLocation(undefined);
+      setStorageStatus("saved");
+      setMessage(`${lastInsertUndo.label} wurde wieder entfernt.`);
+    } catch (error) {
+      setLastInsertUndo(undefined);
+      handleStorageError(error, "Das Einsetzen konnte nicht sicher rückgängig gemacht werden.");
+    }
   }
 
   function closeSearch() {
@@ -1555,7 +1728,9 @@ export function FoundationWorkspace() {
       {message ? (
         <div className={styles.notice} role="status" data-conflict={storageConflict}>
           <span>{message}</span>
-          {storageConflict ? (
+          {lastInsertUndo && lastInsertUndo.binderId === activeId && !storageConflict ? (
+            <button type="button" onClick={() => void undoLastInsert()}>Rückgängig</button>
+          ) : storageConflict ? (
             <button type="button" onClick={reloadActiveBinder}>Aktuellen Stand laden</button>
           ) : storageStatus === "error" ? (
             <div className={styles.noticeActions}>
@@ -1567,7 +1742,14 @@ export function FoundationWorkspace() {
       ) : null}
 
       {!activeBinder || binderManagerOpen ? (
-        giftBuilderOpen ? (
+        setBinderWizardOpen ? (
+          <SetBinderWizard
+            catalog={catalog}
+            sets={catalogSetIndex()}
+            onCancel={() => setSetBinderWizardOpen(false)}
+            onCreate={createSetBinder}
+          />
+        ) : giftBuilderOpen ? (
           <GiftBuilderPanel
             loader={giftLoader}
             smartSearch={giftSmartSearch}
@@ -1593,6 +1775,7 @@ export function FoundationWorkspace() {
             onExport={exportBackup}
             onImport={importBackup}
             onGiftStart={() => { setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
+            onSetStart={() => { setSetBinderWizardOpen(true); setGiftBuilderOpen(false); setBinderManagerOpen(true); setMissingOpen(false); }}
           />
         )
       ) : null}
@@ -1814,6 +1997,7 @@ export function FoundationWorkspace() {
               onCardmarketPrepare={(items) => void prepareCardmarketHandoff(items)}
               onCardmarketCopy={copyCardmarketHandoff}
               onCardmarketTextExport={downloadCardmarketHandoff}
+              cardtraderEnabled={FEATURES.cardtraderCatalog}
             />
           ) : (
           <div className={styles.workspace}>
@@ -1948,7 +2132,7 @@ export function FoundationWorkspace() {
               ) : null}
             </section>
 
-            {searchOpen ? <aside className={styles.searchDrawer} aria-labelledby="search-heading" role="dialog" aria-modal="false">
+            {searchOpen ? <aside ref={searchDrawerRef} className={styles.searchDrawer} aria-labelledby="search-heading" role="dialog" aria-modal="false">
               <div className={styles.drawerHeader}>
                 <div>
                   <p className={styles.eyebrow}>{searchPreview ? "Ausgabe prüfen" : "Karte einsetzen"}</p>
@@ -1956,13 +2140,24 @@ export function FoundationWorkspace() {
                 </div>
                 <button type="button" className={styles.drawerClose} onClick={closeSearch} aria-label="Suche schließen"><X size={18} /></button>
               </div>
-              {selectedLocation ? <p className={styles.selectedSlotHint}>Ziel: Seite {visiblePageIndex + 1}, Slot {selectedLocation.slotIndex + 1}</p> : <p className={styles.selectedSlotHint}>Wähle einen Treffer, um ihn in den nächsten freien Slot einzusetzen.</p>}
+              {insertionTarget ? (
+                <p className={styles.selectedSlotHint}>
+                  Ziel: {activeBinder?.name} · {insertionTargetPageTitle} · Slot {insertionTarget.slotIndex + 1}
+                </p>
+              ) : (
+                <p className={styles.selectedSlotHint}>Alle Binderplätze sind belegt. Lege zuerst eine neue Seite an.</p>
+              )}
               {searchPreview ? (
                 <div className={styles.searchPreview}>
                   <button
                     type="button"
                     className={styles.previewBack}
-                    onClick={() => setSearchPreview(undefined)}
+                    onClick={() => {
+                      setSearchPreview(undefined);
+                      window.requestAnimationFrame(() => {
+                        if (searchDrawerRef.current) searchDrawerRef.current.scrollTop = searchScrollTopRef.current;
+                      });
+                    }}
                   >
                     ← Zurück zu den Suchergebnissen
                   </button>
@@ -2021,7 +2216,7 @@ export function FoundationWorkspace() {
                 <>
                   <div className={styles.searchModeSwitch} role="group" aria-label="Suchart">
                     <button type="button" aria-pressed={searchMode === "catalog"} onClick={() => setSearchMode("catalog")}>Name / Nummer</button>
-                    {FEATURES.smartSearch ? <button type="button" aria-pressed={searchMode === "semantic"} onClick={() => setSearchMode("semantic")}>Motiv im Artwork</button> : null}
+                    {FEATURES.smartSearch ? <button type="button" aria-pressed={searchMode === "semantic"} onClick={() => { setSearchMode("semantic"); setSearchEntity("cards"); }}>Motiv im Artwork</button> : null}
                   </div>
                   {searchMode === "semantic" ? (
                     <SemanticCardSearch
@@ -2033,8 +2228,12 @@ export function FoundationWorkspace() {
                     />
                   ) : (
                     <>
+                      <div className={styles.searchEntityTabs} role="tablist" aria-label="Kataloginhalt">
+                        <button type="button" role="tab" aria-selected={searchEntity === "cards"} onClick={() => setSearchEntity("cards")}>Karten</button>
+                        <button type="button" role="tab" aria-selected={searchEntity === "sets"} onClick={() => setSearchEntity("sets")}>Sets</button>
+                      </div>
                       <fieldset className={styles.languageFilter}>
-                        <legend>Kartensprache</legend>
+                        <legend>{searchEntity === "sets" ? "Set-Sprache" : "Kartensprache"}</legend>
                         <div>
                           {([
                             ["all", "Alle"],
@@ -2052,50 +2251,157 @@ export function FoundationWorkspace() {
                           ))}
                         </div>
                       </fieldset>
-                      <div className={styles.catalogFilters}>
-                        <label htmlFor="card-series-filter">
-                          Serie
-                          <select
-                            id="card-series-filter"
-                            value={searchSeriesId}
-                            onChange={(event) => {
-                              setSearchSeriesId(event.target.value);
-                              setSearchSetId("");
-                            }}
-                          >
-                            <option value="">Alle Serien</option>
-                            {seriesOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
-                          </select>
-                        </label>
-                        <label htmlFor="card-set-filter">
-                          Set
-                          <select id="card-set-filter" value={searchSetId} onChange={(event) => setSearchSetId(event.target.value)}>
-                            <option value="">Alle Sets</option>
-                            {setOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
-                          </select>
-                        </label>
-                      </div>
                       <label className={styles.searchLabel} htmlFor="card-search">
                         <Search aria-hidden="true" size={18} />
-                        <input id="card-search" value={searchText} onChange={(event) => setSearchText(event.target.value)} placeholder="Name oder Nummer, z. B. Glurak 4/102" autoFocus />
+                        <input id="card-search" value={searchText} onChange={(event) => setSearchText(event.target.value)} placeholder={searchEntity === "sets" ? "Set, Serie oder Set-ID suchen" : "Name oder Nummer, z. B. Glurak 4/102"} autoFocus />
                       </label>
-                      {searchIsRunning && searchEnabled ? <p>Suche läuft…</p> : null}
-                      {searchError ? <p className={styles.error}>Ein Sprachkatalog konnte nicht geladen werden: {searchError.message}</p> : null}
-                      {!searchEnabled ? <p className={styles.searchHint}>Gib mindestens zwei Buchstaben oder eine Kartennummer ein – oder wähle ein Set.</p> : null}
-                      {searchHasCompleted && !searchResults.length ? <p className={styles.noResults}>Keine Karten mit diesen Filtern gefunden. Prüfe Name, Sprache, Serie oder Set.</p> : null}
-                      <ul className={styles.results}>
-                        {searchResults.map((item) => (
-                          <li key={`${item.ref.language}-${item.ref.id}`}>
-                            <span><strong>{item.name}</strong><small>{item.ref.language.toUpperCase()} · {item.setName ? `${item.setName} · ` : ""}Nr. {formatCollectorNumber(item.collectorNumber, item.collectorTotal)}</small></span>
-                            <button type="button" onClick={() => void previewSearchResult(item)}>Prüfen</button>
-                          </li>
-                        ))}
-                      </ul>
-                      {searchHasMore ? (
-                        <button type="button" className={styles.loadMoreButton} disabled={searchIsLoadingMore} onClick={() => void loadMoreSearchResults()}>
-                          {searchIsLoadingMore ? "Weitere Treffer werden geladen…" : "Mehr laden"}
-                        </button>
-                      ) : null}
+                      {searchEntity === "sets" ? (
+                        <>
+                          <div className={styles.catalogFilters}>
+                            <label htmlFor="set-series-filter">
+                              Serie
+                              <select
+                                id="set-series-filter"
+                                value={searchSeriesId}
+                                onChange={(event) => setSearchSeriesId(event.target.value)}
+                              >
+                                <option value="">Alle Serien</option>
+                                {seriesOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
+                              </select>
+                            </label>
+                          </div>
+                          <div className={styles.filterChipBar} aria-label="Aktive Filter">
+                            {searchLanguage !== "all" ? <button type="button" className={styles.filterChip} onClick={() => setSearchLanguage("all")}>Sprache: {searchLanguage.toUpperCase()} ×</button> : null}
+                            {searchSeriesId ? <button type="button" className={styles.filterChip} onClick={() => setSearchSeriesId("")}>Serie entfernen ×</button> : null}
+                            {searchText.trim() ? <button type="button" className={styles.filterChip} onClick={() => setSearchText("")}>Suche löschen ×</button> : null}
+                            {(searchLanguage !== "all" || searchSeriesId || searchText.trim()) ? <button type="button" className={styles.filterReset} onClick={resetSearchFilters}>Alle Filter zurücksetzen</button> : null}
+                          </div>
+                          {!searchText.trim() ? <p className={styles.searchHint}>Entdecke ein Set, öffne es und sortiere anschließend die Karten nach Kartennummer.</p> : null}
+                          {setSearchResults.length ? (
+                            <ul className={styles.setResultGrid} aria-label="Settreffer">
+                              {setSearchResults.map((entry) => {
+                                const displayLanguage = searchLanguage === "all" ? "en" : searchLanguage;
+                                const displayName = entry.names[displayLanguage] ?? entry.names.en ?? entry.names.de ?? entry.id;
+                                const displaySeries = entry.series[displayLanguage] ?? entry.series.en ?? entry.series.de;
+                                return (
+                                  <li key={entry.id} className={styles.setResultTile}>
+                                    <CatalogSetArtwork entry={entry} language={searchLanguage} />
+                                    <div className={styles.setResultDetails}>
+                                      <strong>{displayName}</strong>
+                                      <span>{displaySeries?.name ?? "Serie unbekannt"}</span>
+                                      <small>{entry.releaseDate ? new Intl.DateTimeFormat("de-DE", { dateStyle: "medium" }).format(new Date(entry.releaseDate)) : "Erscheinungsdatum unbekannt"} · {entry.cardCount.total} Karten</small>
+                                    </div>
+                                    <button type="button" className={styles.secondaryButton} onClick={() => openSetFromSearch(entry)}>Set öffnen</button>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          ) : <div className={styles.noResults}><p>Keine Sets mit diesen Filtern gefunden.</p><div className={styles.emptyActions}><button type="button" className={styles.secondaryButton} onClick={resetSearchFilters}>Filter zurücksetzen</button><button type="button" className={styles.secondaryButton} onClick={() => setSearchLanguage("all")}>Alle Sprachen</button></div></div>}
+                        </>
+                      ) : (
+                        <>
+                          <div className={styles.catalogFilters}>
+                            <label htmlFor="card-series-filter">
+                              Serie
+                              <select
+                                id="card-series-filter"
+                                value={searchSeriesId}
+                                onChange={(event) => {
+                                  setSearchSeriesId(event.target.value);
+                                  setSearchSetId("");
+                                }}
+                              >
+                                <option value="">Alle Serien</option>
+                                {seriesOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
+                              </select>
+                            </label>
+                            <label htmlFor="card-set-filter">
+                              Set
+                              <select id="card-set-filter" value={searchSetId} onChange={(event) => setSearchSetId(event.target.value)}>
+                                <option value="">Alle Sets</option>
+                                {setOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
+                              </select>
+                            </label>
+                            <label htmlFor="card-sort-filter">
+                              Sortierung
+                              <select id="card-sort-filter" value={searchSort} onChange={(event) => setSearchSort(event.target.value as CatalogResultSort)}>
+                                <option value="relevance">Relevanz</option>
+                                <option value="set-number">Set → Nummer</option>
+                                <option value="collector-number">Kartennummer</option>
+                                <option value="release-date">Erscheinungsdatum</option>
+                              </select>
+                            </label>
+                          </div>
+                          <div className={styles.filterChipBar} aria-label="Aktive Filter">
+                            {searchLanguage !== "all" ? <button type="button" className={styles.filterChip} onClick={() => setSearchLanguage("all")}>Sprache: {searchLanguage.toUpperCase()} ×</button> : null}
+                            {searchSeriesId ? <button type="button" className={styles.filterChip} onClick={() => { setSearchSeriesId(""); setSearchSetId(""); }}>Serie entfernen ×</button> : null}
+                            {searchSetId ? <button type="button" className={styles.filterChip} onClick={() => setSearchSetId("")}>Set entfernen ×</button> : null}
+                            {searchText.trim() ? <button type="button" className={styles.filterChip} onClick={() => setSearchText("")}>Suche löschen ×</button> : null}
+                            {(searchLanguage !== "all" || searchSeriesId || searchSetId || searchText.trim()) ? <button type="button" className={styles.filterReset} onClick={resetSearchFilters}>Alle Filter zurücksetzen</button> : null}
+                          </div>
+                          {searchIsRunning && searchEnabled ? <p role="status">Karten werden geladen…</p> : null}
+                          {searchError ? (
+                            <div className={styles.searchError} role="alert">
+                              <p className={styles.error}>Der Kartenkatalog konnte nicht geladen werden: {searchError.message}</p>
+                              <button type="button" className={styles.secondaryButton} onClick={() => void retryCatalogSearch()}>Erneut versuchen</button>
+                            </div>
+                          ) : null}
+                          {!searchText.trim() && !searchSetId ? <p className={styles.searchHint}>Entdecken: erste Karten aus dem Katalog. Suche oder filtere weiter, wenn du eine bestimmte Karte suchst.</p> : null}
+                          {searchIsRunning && !searchResults.length ? (
+                            <ul className={styles.results} aria-label="Kartentreffer werden geladen" aria-busy="true">
+                              {Array.from({ length: 5 }, (_, index) => (
+                                <li key={`search-skeleton-${index}`} className={styles.resultSkeleton} aria-hidden="true">
+                                  <span />
+                                  <span><i /><i /></span>
+                                  <b />
+                                </li>
+                              ))}
+                            </ul>
+                          ) : null}
+                          {searchHasCompleted && !searchResults.length ? (
+                            <div className={styles.noResults}>
+                              <p>Keine Karten mit diesen Filtern gefunden. Prüfe Name, Sprache, Serie oder Set.</p>
+                              <div className={styles.emptyActions}>
+                                {searchText.trim() ? <button type="button" className={styles.secondaryButton} onClick={() => setSearchText("")}>Suche löschen</button> : null}
+                                {searchSetId || searchSeriesId ? <button type="button" className={styles.secondaryButton} onClick={() => { setSearchSetId(""); setSearchSeriesId(""); }}>Set/Serie entfernen</button> : null}
+                                {searchLanguage !== "all" ? <button type="button" className={styles.secondaryButton} onClick={() => setSearchLanguage("all")}>Alle Sprachen</button> : null}
+                              </div>
+                            </div>
+                          ) : null}
+                          <ul className={styles.cardResultGrid} aria-label="Kartentreffer">
+                            {sortedSearchResults.map((item) => {
+                              const existing = activeBinder?.pages.flatMap((page) => page.slots).find((slot) => slot?.cardKey === makeCardKey(item.ref));
+                              const selected = catalogSelection.some((candidate) => candidate.ref.id === item.ref.id && candidate.ref.language === item.ref.language);
+                              return (
+                                <li key={`${item.ref.language}-${item.ref.id}`} className={styles.cardResultTile}>
+                                  <CatalogResultArtwork item={item} className={styles.cardResultArtwork} fallbackClassName={styles.cardResultArtworkFallback} />
+                                  <div className={styles.cardResultDetails}>
+                                    <strong>{item.name}</strong>
+                                    <span>{item.setName ?? "Set unbekannt"}</span>
+                                    <small>{item.ref.language.toUpperCase()} · Nr. {formatCollectorNumber(item.collectorNumber, item.collectorTotal)}</small>
+                                    {existing ? <small className={styles.resultStatus}>{existing.owned ? "Vorhanden" : "Bereits eingeplant"}</small> : null}
+                                  </div>
+                                  <div className={styles.resultActions}>
+                                    <button type="button" className={selected ? styles.primaryButton : styles.secondaryButton} onClick={() => toggleCatalogSelection(item)}>{selected ? "Ausgewählt" : "Auswählen"}</button>
+                                    <button type="button" className={styles.secondaryButton} onClick={() => void previewSearchResult(item)}>{existing ? "Noch einmal" : "Prüfen"}</button>
+                                  </div>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                          {catalogSelection.length ? (
+                            <div className={styles.selectionDock} role="region" aria-label="Kartenauswahl">
+                              <div><strong>{catalogSelection.length} Karten ausgewählt</strong><span>Maximal 9 pro Auswahl · Varianten werden vor dem Speichern geprüft.</span></div>
+                              <div className={styles.selectionDockActions}><button type="button" className={styles.secondaryButton} onClick={() => setCatalogSelection([])}>Auswahl leeren</button><button type="button" className={styles.primaryButton} onClick={reviewCatalogSelection}>Auswahl prüfen</button></div>
+                            </div>
+                          ) : null}
+                          {searchHasMore ? (
+                            <button type="button" className={styles.loadMoreButton} disabled={searchIsLoadingMore} onClick={() => void loadMoreSearchResults()}>
+                              {searchIsLoadingMore ? "Weitere Treffer werden geladen…" : "Mehr laden"}
+                            </button>
+                          ) : null}
+                        </>
+                      )}
                     </>
                   )}
                 </>

@@ -82,6 +82,18 @@ describe("page selection domain", () => {
     );
   });
 
+  it.each([10, 18, 36])("adds enough pages for %i cards when overflow is explicitly allowed", (count) => {
+    const result = applyPageSelection(draft(count), {
+      kind: "new-binder",
+      name: `Continuous ${count}`,
+      overflow: "add-pages",
+    });
+
+    expect(result.binder.pages).toHaveLength(Math.ceil(count / 9));
+    expect(result.placements).toHaveLength(count);
+    expect(result.binder.pages.flatMap((page) => page.slots).filter(Boolean)).toHaveLength(count);
+  });
+
   it("fills only free slots on the chosen page in deterministic reading order", () => {
     const original = createBinder("Existing");
     const occupiedA = createPlannedCard(card(90).key, completeVariant);
@@ -99,6 +111,71 @@ describe("page selection domain", () => {
     expect(result.binder.pages[0].slots[0]?.id).toBe(occupiedA.id);
     expect(result.binder.pages[0].slots[3]?.id).toBe(occupiedB.id);
     expect(withOccupied.pages[0].slots[1]).toBeNull();
+  });
+
+  it("starts on an explicit free slot and never backfills earlier gaps", () => {
+    const binder = createBinder("Start slot");
+    const result = applyPageSelection(draft(3), {
+      kind: "fill-current-page",
+      binder,
+      pageId: binder.pages[0].id,
+      startSlotIndex: 4,
+    });
+
+    expect(result.placements.map((placement) => placement.slotIndex)).toEqual([4, 5, 6]);
+    expect(result.binder.pages[0].slots.slice(0, 4)).toEqual([null, null, null, null]);
+  });
+
+  it("fills continuously across existing pages and skips every planned card", () => {
+    let binder = addPage(createBinder("Continuous range"));
+    binder = placeCard(
+      binder,
+      { pageId: binder.pages[0].id, slotIndex: 6 },
+      createPlannedCard(card(90).key, completeVariant),
+    );
+    binder = placeCard(
+      binder,
+      { pageId: binder.pages[1].id, slotIndex: 0 },
+      createPlannedCard(card(91).key, completeVariant),
+    );
+
+    const result = applyPageSelection(draft(4), {
+      kind: "fill-continuously",
+      binder,
+      start: { pageId: binder.pages[0].id, slotIndex: 5 },
+      overflow: "reject",
+    });
+
+    expect(result.placements.map((placement) => [placement.pageId, placement.slotIndex])).toEqual([
+      [binder.pages[0].id, 5],
+      [binder.pages[0].id, 7],
+      [binder.pages[0].id, 8],
+      [binder.pages[1].id, 1],
+    ]);
+    expect(result.binder.pages[0].slots[6]?.cardKey).toBe(card(90).key);
+    expect(result.binder.pages[1].slots[0]?.cardKey).toBe(card(91).key);
+  });
+
+  it("requires an explicit overflow decision for a continuous range", () => {
+    const binder = createBinder("Overflow decision");
+    expectPageSelectionError(
+      () => applyPageSelection(draft(10), {
+        kind: "fill-continuously",
+        binder,
+        start: { pageId: binder.pages[0].id, slotIndex: 0 },
+        overflow: "reject",
+      }),
+      "insufficient-capacity",
+    );
+
+    const result = applyPageSelection(draft(10), {
+      kind: "fill-continuously",
+      binder,
+      start: { pageId: binder.pages[0].id, slotIndex: 0 },
+      overflow: "add-pages",
+    });
+    expect(result.binder.pages).toHaveLength(2);
+    expect(result.placements.at(-1)).toMatchObject({ pageId: result.binder.pages[1].id, slotIndex: 0 });
   });
 
   it("adds and fills one explicit new page without changing the previous page", () => {
@@ -144,6 +221,63 @@ describe("page selection domain", () => {
       () => applyPageSelection({ items: [item, item] }, { kind: "new-binder", name: "Duplicates" }),
       "duplicate-card",
     );
+  });
+
+  it("allows duplicate card identities only when the draft records explicit copies", () => {
+    const item = draft(1).items[0];
+    const result = applyPageSelection({
+      items: [item, item],
+      allowDuplicateCardKeys: true,
+    }, { kind: "new-binder", name: "Two copies" });
+
+    expect(result.placements).toHaveLength(2);
+    expect(result.placements[0].entryId).not.toBe(result.placements[1].entryId);
+    expect(result.binder.pages[0].slots.slice(0, 2).map((entry) => entry?.cardKey)).toEqual([
+      item.card.key,
+      item.card.key,
+    ]);
+  });
+
+  it("uses explicit free target slots without filling earlier gaps", () => {
+    const binder = createBinder("Explicit targets");
+    const result = applyPageSelection(draft(2), {
+      kind: "fill-current-page",
+      binder,
+      pageId: binder.pages[0].id,
+      slotIndexes: [4, 7],
+    });
+
+    expect(result.placements.map((placement) => placement.slotIndex)).toEqual([4, 7]);
+    expect(result.binder.pages[0].slots[0]).toBeNull();
+  });
+
+  it("rejects invalid or occupied explicit target slots atomically", () => {
+    const original = createBinder("Explicit targets");
+    const occupied = placeCard(
+      original,
+      { pageId: original.pages[0].id, slotIndex: 4 },
+      createPlannedCard(card(90).key, completeVariant),
+    );
+    expectPageSelectionError(
+      () => applyPageSelection(draft(2), {
+        kind: "fill-current-page",
+        binder: occupied,
+        pageId: occupied.pages[0].id,
+        slotIndexes: [2],
+      }),
+      "invalid-slot-selection",
+    );
+    expectPageSelectionError(
+      () => applyPageSelection(draft(2), {
+        kind: "fill-current-page",
+        binder: occupied,
+        pageId: occupied.pages[0].id,
+        slotIndexes: [2, 4],
+      }),
+      "target-slot-occupied",
+    );
+    expect(occupied.pages[0].slots[2]).toBeNull();
+    expect(occupied.pages[0].slots[4]?.cardKey).toBe(card(90).key);
   });
 
   it("preserves explicit English and German identities for the same provider ID", () => {
@@ -212,6 +346,40 @@ describe("page selection domain", () => {
           preferences: { minimumCondition: "any" },
         }],
       }, { kind: "new-binder", name: "Historical mismatch" }),
+      "invalid-variant",
+    );
+  });
+
+  it("persists an unresolved variant only as explicitly review-required", () => {
+    const result = applyPageSelection({
+      items: [{
+        card: card(3),
+        variant: { finish: "unspecified", edition: "unlimited", printing: "shadowed" },
+        preferences: { minimumCondition: "any" },
+      }],
+      allowUnresolvedVariants: true,
+    }, { kind: "new-binder", name: "Review variants" });
+
+    expect(result.placements[0].variantReviewRequired).toBe(true);
+    expect(result.binder.pages[0].slots[0]?.variantReview).toBe("required");
+  });
+
+  it("does not use review-required mode to accept a completed invalid printing", () => {
+    const baseSetCard = card(4, "en", {
+      key: "tcgdex:base1-4:en",
+      ref: { provider: "tcgdex", id: "base1-4", language: "en" },
+      setId: "base1",
+      setName: "Base Set",
+    });
+    expectPageSelectionError(
+      () => applyPageSelection({
+        items: [{
+          card: baseSetCard,
+          variant: { finish: "normal", edition: "first-edition", printing: "shadowed" },
+          preferences: { minimumCondition: "any" },
+        }],
+        allowUnresolvedVariants: true,
+      }, { kind: "new-binder", name: "Invalid review escape" }),
       "invalid-variant",
     );
   });

@@ -31,6 +31,11 @@ requireFile("public/data/semantic/card-artwork-search-v1.json");
 requireFile("public/data/semantic/gift-theme-reviews-v1.json");
 const binderPartnerCatalogPath = requireFile("public/data/partners/binder-partners.v1.json");
 requireFile("docs/gift-commerce-release-gates.md");
+requireFile("docs/cardtrader-release-gate.md");
+requireFile("docs/cardtrader-secret-operations.md");
+requireFile("data/marketplace/cardtrader-set-review.json");
+const cardtraderWorkflowPath = requireFile(".github/workflows/cardtrader-discovery.yml");
+const exampleEnvironmentPath = requireFile(".env.example");
 requireText("out/_headers", [
   "X-Content-Type-Options: nosniff",
   "X-Frame-Options: DENY",
@@ -51,6 +56,10 @@ requireText("src/config/feature-flags.ts", [
   'artworkReview: process.env.NEXT_PUBLIC_FEATURE_ARTWORK_REVIEW === "true" || process.env.NODE_ENV !== "production"',
   'smartSearch: process.env.NEXT_PUBLIC_FEATURE_SMART_SEARCH !== "false"',
   "tcgplayerPrefill: false",
+  "cardtraderCatalog: false",
+  "cardtraderImages: false",
+  "cardtraderPrices: false",
+  "cardtraderWishlist: false",
   "cardtraderCommerce: false",
   "publicSharing: false",
 ]);
@@ -60,8 +69,23 @@ requireText(".github/workflows/sync-public-data.yml", [
   "git add public/data/catalog public/data/marketplace data/semantic/catalog-coverage.json",
   "npm run release:check",
 ]);
+requireText(".github/workflows/cardtrader-discovery.yml", [
+  "workflow_dispatch:",
+  "contents: read",
+  "CARDTRADER_API_TOKEN: ${{ secrets.CARDTRADER_API_TOKEN }}",
+  "npm run cardtrader:discover",
+  "npm run cardtrader:audit",
+  ".cardtrader/discovery-summary.json",
+  ".cardtrader/mapping-audit.json",
+  "if-no-files-found: error",
+  "retention-days: 7",
+]);
 
-for (const workflow of [".github/workflows/ci.yml", ".github/workflows/sync-public-data.yml"]) {
+for (const workflow of [
+  ".github/workflows/ci.yml",
+  ".github/workflows/sync-public-data.yml",
+  ".github/workflows/cardtrader-discovery.yml",
+]) {
   const content = readFileSync(join(root, workflow), "utf8");
   for (const line of content.split("\n").filter((value) => value.includes("uses:"))) {
     if (!/@[a-f0-9]{40}(?:\s+#|\s*$)/.test(line)) failures.push(`${workflow} contains an action that is not pinned to a full commit SHA: ${line.trim()}`);
@@ -69,8 +93,37 @@ for (const workflow of [".github/workflows/ci.yml", ".github/workflows/sync-publ
   if (/wrangler|cloudflare\/pages-action/i.test(content)) failures.push(`${workflow} must not deploy; Cloudflare Pages Git integration owns deployment.`);
 }
 
+if (existsSync(cardtraderWorkflowPath)) {
+  const workflow = readFileSync(cardtraderWorkflowPath, "utf8");
+  if (/^\s*schedule:/m.test(workflow)) failures.push("CardTrader discovery must remain manually triggered.");
+  if (/contents:\s*write/.test(workflow)) failures.push("CardTrader discovery must not receive repository write access.");
+  for (const forbidden of ["marketplace/products", "wishlist", "cart/add", "purchase"]) {
+    if (workflow.toLocaleLowerCase("en-US").includes(forbidden)) {
+      failures.push(`CardTrader discovery workflow contains forbidden capability: ${forbidden}`);
+    }
+  }
+  const secretReferences = workflow.match(/secrets\.CARDTRADER_API_TOKEN/g) ?? [];
+  if (secretReferences.length !== 1) {
+    failures.push("CardTrader discovery must reference CARDTRADER_API_TOKEN exactly once in its step environment.");
+  }
+  const uploadStep = workflow.slice(workflow.indexOf("Upload redacted audit artifacts"));
+  if (/\.cardtrader\/discovery\.json/.test(uploadStep)) {
+    failures.push("CardTrader discovery must never upload the raw discovery snapshot.");
+  }
+}
+
 if (existsSync(join(root, "out/design-preview/index.html"))) {
   failures.push("The disabled design preview was emitted into the production export.");
+}
+
+if (existsSync(exampleEnvironmentPath)) {
+  const exampleEnvironment = readFileSync(exampleEnvironmentPath, "utf8");
+  if (!/^CARDTRADER_API_TOKEN=\s*$/m.test(exampleEnvironment)) {
+    failures.push(".env.example must contain an empty CARDTRADER_API_TOKEN placeholder.");
+  }
+  if (/NEXT_PUBLIC_CARDTRADER_API_TOKEN/.test(exampleEnvironment)) {
+    failures.push("The CardTrader token must never be exposed as a NEXT_PUBLIC variable.");
+  }
 }
 
 if (existsSync(binderPartnerCatalogPath)) {

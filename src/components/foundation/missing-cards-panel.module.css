@@ -38,6 +38,31 @@
 .marketplaceHeader a { min-height: 40px; display: inline-flex; flex: 0 0 auto; align-items: center; gap: 6px; border: 1px solid var(--cf-accent); border-radius: 8px; color: var(--cf-accent-text); padding: 8px 12px; font-size: .8rem; font-weight: 650; text-decoration: none; }
 .marketplaceHeader a:hover { background: var(--cf-accent-soft); }
 .marketplaceUnavailable { flex: 0 0 auto; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-surface); color: var(--cf-muted); padding: 10px 11px; font-size: .78rem; font-weight: 600; }
+.marketplaceStatus { flex: 0 0 auto; border: 1px solid var(--cf-line2); border-radius: 999px; background: var(--cf-surface); color: var(--cf-text2); padding: 7px 10px; font-family: var(--cf-font-mono); font-size: .68rem; font-weight: 650; }
+.marketplaceStatus[data-status="ready"] { border-color: color-mix(in srgb, var(--cf-ok) 45%, var(--cf-line2)); color: var(--cf-ok-text); }
+.marketplaceStatus[data-status="stale"], .marketplaceStatus[data-status="review-required"] { border-color: color-mix(in srgb, var(--cf-accent) 55%, var(--cf-line2)); color: var(--cf-accent-text); }
+.cardtraderStatus { display: grid; gap: 4px; margin-top: 14px; border: 1px solid var(--cf-line2); border-left: 3px solid var(--cf-accent); border-radius: 8px; background: var(--cf-surface); padding: 11px 13px; }
+.cardtraderStatus strong { color: var(--cf-text); font-size: .84rem; }
+.cardtraderStatus p { margin: 0; color: var(--cf-text2); font-size: .78rem; line-height: 1.5; }
+.cardtraderFacts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+.cardtraderFacts > div { display: grid; gap: 3px; min-width: 0; border: 1px solid var(--cf-line); border-radius: 8px; background: var(--cf-surface); padding: 10px 11px; }
+.cardtraderFacts span { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: .65rem; letter-spacing: .08em; text-transform: uppercase; }
+.cardtraderFacts strong { overflow: hidden; color: var(--cf-text); font-size: .82rem; text-overflow: ellipsis; white-space: nowrap; }
+.cardtraderFacts small { color: var(--cf-text2); font-size: .7rem; line-height: 1.4; }
+.cardtraderPreview { margin-top: 14px; border-top: 1px dashed var(--cf-line2); padding-top: 12px; }
+.cardtraderPreview > strong { color: var(--cf-text); font-size: .8rem; }
+.cardtraderPreview ul { display: grid; gap: 0; margin: 8px 0 0; overflow: hidden; border: 1px solid var(--cf-line); border-radius: 8px; padding: 0; list-style: none; }
+.cardtraderPreview li { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--cf-line); background: var(--cf-surface); padding: 9px 11px; }
+.cardtraderPreview li:last-child { border-bottom: 0; }
+.cardtraderPreview li:nth-child(even) { background: var(--cf-surface2); }
+.cardtraderPreview li > span:first-child { display: grid; min-width: 0; gap: 3px; }
+.cardtraderPreview b { overflow: hidden; color: var(--cf-text); font-size: .78rem; text-overflow: ellipsis; white-space: nowrap; }
+.cardtraderPreview small { overflow: hidden; color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: .68rem; text-overflow: ellipsis; white-space: nowrap; }
+.cardtraderTags { display: flex; flex: 0 1 auto; flex-wrap: wrap; justify-content: flex-end; gap: 4px; }
+.cardtraderTags em { border: 1px solid var(--cf-line2); border-radius: 5px; background: var(--cf-field); color: var(--cf-text2); padding: 3px 6px; font-family: var(--cf-font-mono); font-size: .63rem; font-style: normal; white-space: nowrap; }
+.cardtraderConnection { margin-top: 12px; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-surface); }
+.cardtraderConnection summary { cursor: pointer; color: var(--cf-accent-text); padding: 10px 11px; font-size: .78rem; font-weight: 650; }
+.cardtraderConnection p { margin: 0; border-top: 1px solid var(--cf-line); color: var(--cf-text2); padding: 10px 11px; font-size: .75rem; line-height: 1.5; }
 .handoffSteps { display: grid; gap: 5px; margin: 14px 0 0; border: 1px solid var(--cf-line); border-radius: 8px; background: var(--cf-surface); color: var(--cf-text2); padding: 11px 12px 11px 32px; font-size: .78rem; line-height: 1.5; }
 .handoffSteps::marker, .handoffSteps li::marker { color: var(--cf-accent-text); font-family: var(--cf-font-mono); }
 .massEntryPreview { display: grid; gap: 7px; margin-top: 14px; color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: .68rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; }
@@ -65,7 +90,13 @@
 .marketplaceSearches a { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 5px; color: var(--cf-accent-text); font-size: .76rem; font-weight: 650; text-underline-offset: 3px; }
 
 /* Missing list rows — slab-compact */
+.groupList { display: grid; gap: 14px; margin-top: 18px; }
+.missingGroup { min-width: 0; }
+.groupHeader { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--cf-line2); padding: 0 2px 7px; }
+.groupHeader h3 { margin: 0; color: var(--cf-accent-text); font-family: var(--cf-font-display); font-size: .95rem; font-weight: 600; }
+.groupHeader span { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: .68rem; }
 .list { display: grid; gap: 0; margin: 18px 0 0; overflow: hidden; border: 1px solid var(--cf-line); border-radius: 10px; padding: 0; list-style: none; }
+.missingGroup .list { margin-top: 8px; }
 .item { min-width: 0; gap: 12px; border-bottom: 1px solid var(--cf-line); background: var(--cf-surface); padding: 11px 14px; }
 .item:last-child { border-bottom: 0; }
 .item:nth-child(even) { background: var(--cf-surface2); }
@@ -90,6 +121,10 @@
   .metadata { width: 100%; justify-content: flex-start; padding-left: 52px; }
   .marketplaceHeader { align-items: stretch; flex-direction: column; }
   .marketplaceHeader a { justify-content: center; }
+  .marketplaceStatus { align-self: flex-start; }
+  .cardtraderFacts { grid-template-columns: 1fr; }
+  .cardtraderPreview li { align-items: stretch; flex-direction: column; }
+  .cardtraderTags { justify-content: flex-start; }
   .marketplaceSearches li { align-items: stretch; flex-direction: column; }
   .marketplaceSearches a { min-height: 36px; justify-content: center; border: 1px solid var(--cf-line2); border-radius: 7px; text-decoration: none; }
   .marketplaceChoice { align-items: stretch; flex-direction: column; }

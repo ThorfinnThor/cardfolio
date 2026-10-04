@@ -9,7 +9,7 @@ import { CardArtwork } from "./CardArtwork";
 import { VariantFields } from "./VariantFields";
 import styles from "./foundation-workspace.module.css";
 
-export type PageSelectionReviewTarget = "new-page" | "fill-current-page" | "new-binder";
+export type PageSelectionReviewTarget = "new-page" | "fill-current-page" | "fill-continuously" | "new-binder";
 
 interface PageSelectionReviewProps {
   items: PageSelectionItem[];
@@ -53,6 +53,7 @@ export function PageSelectionReview({
   onConfirm,
 }: PageSelectionReviewProps) {
   const availableSlots = freeSlots(binder, pageId);
+  const hasAnyFreeSlot = binder.pages.some((page) => page.slots.some((slot) => slot === null));
   const newPageCapacity = pageCapacity(binder);
   const currentPageFits = items.length <= availableSlots;
   const newPageFits = items.length <= newPageCapacity;
@@ -121,6 +122,10 @@ export function PageSelectionReview({
           <label>
             <input type="radio" name="page-selection-target" value="fill-current-page" checked={target === "fill-current-page"} disabled={!currentPageFits} onChange={() => setTarget("fill-current-page")} />
             <span>Freie Plätze auf Seite {binder.pages.findIndex((page) => page.id === pageId) + 1} <small>{availableSlots} frei</small></span>
+          </label>
+          <label>
+            <input type="radio" name="page-selection-target" value="fill-continuously" checked={target === "fill-continuously"} disabled={!hasAnyFreeSlot} onChange={() => setTarget("fill-continuously")} />
+            <span>Ab nächstem freien Platz fortlaufend <small>bei Bedarf weitere Seiten</small></span>
           </label>
           <label>
             <input type="radio" name="page-selection-target" value="new-binder" checked={target === "new-binder"} onChange={() => setTarget("new-binder")} />

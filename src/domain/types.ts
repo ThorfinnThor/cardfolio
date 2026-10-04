@@ -57,6 +57,8 @@ export interface PlannedCard {
   id: UUID;
   cardKey: CardKey;
   variant: VariantSelection;
+  /** Present only while the physical printing still needs to be confirmed. */
+  variantReview?: "required";
   preferences: PurchasePreferences;
   owned: boolean;
   addedAt: string;

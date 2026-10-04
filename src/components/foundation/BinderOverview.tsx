@@ -1,6 +1,6 @@
 "use client";
 
-import { Archive, ArrowLeft, ArrowRight, Copy, Gift, Plus, Trash2 } from "lucide-react";
+import { Archive, ArrowLeft, ArrowRight, BookOpen, Copy, Gift, Plus, Trash2 } from "lucide-react";
 import type { ChangeEvent, CSSProperties, FormEvent } from "react";
 
 import { deriveBinderStats } from "@/domain/binder-stats";
@@ -24,6 +24,7 @@ interface BinderOverviewProps {
   onExport: () => void;
   onImport: (event: ChangeEvent<HTMLInputElement>) => void;
   onGiftStart?: () => void;
+  onSetStart?: () => void;
 }
 
 export function BinderOverview({
@@ -40,6 +41,7 @@ export function BinderOverview({
   onExport,
   onImport,
   onGiftStart,
+  onSetStart,
 }: BinderOverviewProps) {
   const totalPlanned = binders.reduce((total, binder) => total + deriveBinderStats(binder).planned, 0);
   const totalOwned = binders.reduce((total, binder) => total + deriveBinderStats(binder).owned, 0);
@@ -107,6 +109,10 @@ export function BinderOverview({
           <button type="button" className={styles.entryChoice} onClick={() => onGiftStart?.()}>
             <Gift aria-hidden="true" size={18} />
             <span><strong>Geschenk erstellen</strong><small>Lieblings-Pokémon, Budget und Umfang auswählen.</small></span>
+          </button>
+          <button type="button" className={styles.entryChoice} onClick={() => onSetStart?.()}>
+            <BookOpen aria-hidden="true" size={18} />
+            <span><strong>Mit einem Set starten</strong><small>Set, Sprache und Varianten wählen; Karten und Seiten werden vorbereitet.</small></span>
           </button>
         </div>
       </div>
