@@ -5,7 +5,7 @@ export function asCollection(payload, label) {
     throw new Error(`CardTrader ${label} response is not a collection.`);
   }
 
-  for (const wrapper of ["data", "items", "results", label]) {
+  for (const wrapper of ["array", "data", "items", "results", label]) {
     if (Object.hasOwn(payload, wrapper)) return asCollection(payload[wrapper], label);
   }
 

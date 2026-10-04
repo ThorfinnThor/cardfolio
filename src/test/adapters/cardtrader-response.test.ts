@@ -12,6 +12,7 @@ describe("CardTrader response normalization", () => {
   });
 
   it("unwraps data and endpoint-named collections and accepts empty objects", () => {
+    expect(asCollection({ array: [{ id: 5 }] }, "games")).toEqual([{ id: 5 }]);
     expect(asCollection({ data: [{ id: 5 }] }, "games")).toEqual([{ id: 5 }]);
     expect(asCollection({ games: [{ id: 5 }] }, "games")).toEqual([{ id: 5 }]);
     expect(asCollection({}, "blueprints")).toEqual([]);
