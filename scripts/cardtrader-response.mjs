@@ -18,5 +18,9 @@ export function asCollection(payload, label) {
     return values;
   }
 
-  throw new Error(`CardTrader ${label} response has an unsupported collection shape.`);
+  const shape = Object.entries(payload)
+    .slice(0, 12)
+    .map(([key, value]) => `${key}:${Array.isArray(value) ? "array" : typeof value}`)
+    .join(",");
+  throw new Error(`CardTrader ${label} response has an unsupported collection shape (${shape || "empty"}).`);
 }

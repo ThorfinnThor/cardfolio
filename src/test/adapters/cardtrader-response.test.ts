@@ -23,5 +23,9 @@ describe("CardTrader response normalization", () => {
 
   it("rejects unsupported shapes without including response contents", () => {
     expect(() => asCollection("unexpected-secret", "games")).toThrow("CardTrader games response is not a collection.");
+    expect(() => asCollection({ count: 2, status: "unexpected-secret" }, "games"))
+      .toThrow("CardTrader games response has an unsupported collection shape (count:number,status:string).");
+    expect(() => asCollection({ count: 2, status: "unexpected-secret" }, "games"))
+      .not.toThrow(/unexpected-secret/);
   });
 });
