@@ -57,9 +57,9 @@ const decisions = sets.map((set) => {
       suggestedExpansions: [],
     };
   }
-  const candidates = exactExpansionMatches(comparisonNames, set.id, expansions);
+  const candidates = exactExpansionMatches(comparisonNames, expansions);
   const method = candidates.length
-    ? candidates.some((candidate) => candidate.name === set.name) ? "exact-name-or-code" : "exact-cross-language-name-or-code"
+    ? candidates.some((candidate) => candidate.name === set.name) ? "exact-name" : "exact-cross-language-name"
     : "none";
   return {
     catalogKey: set.catalogKey,
@@ -73,7 +73,7 @@ const decisions = sets.map((set) => {
     method,
     candidateExpansionIds: candidates.map((candidate) => String(candidate.id)),
     candidateExpansions: candidates.map(expansionReference),
-    suggestedExpansions: candidates.length ? [] : rankExpansionSuggestions(comparisonNames, set.id, expansions),
+    suggestedExpansions: candidates.length ? [] : rankExpansionSuggestions(comparisonNames, expansions),
   };
 });
 

@@ -43,25 +43,23 @@ function nameScore(left, right) {
   const normalizedRight = normalizeSetName(right);
   if (!normalizedLeft || !normalizedRight) return 0;
   if (normalizedLeft === normalizedRight) return 1;
+  const leftYears = normalizedLeft.match(/\b(?:19|20)\d{2}\b/g) ?? [];
+  const rightYears = normalizedRight.match(/\b(?:19|20)\d{2}\b/g) ?? [];
+  if (leftYears.length && rightYears.length && !leftYears.some((year) => rightYears.includes(year))) return 0;
   const containment = normalizedLeft.includes(normalizedRight) || normalizedRight.includes(normalizedLeft) ? 0.72 : 0;
   return Math.max(dice(normalizedLeft, normalizedRight), tokenJaccard(normalizedLeft, normalizedRight), containment);
 }
 
-export function exactExpansionMatches(names, setId, expansions) {
+export function exactExpansionMatches(names, expansions) {
   const normalizedNames = new Set(names.map(normalizeSetName).filter(Boolean));
-  const normalizedId = normalizeSetName(setId);
-  return expansions.filter((expansion) =>
-    normalizedNames.has(normalizeSetName(expansion.name))
-    || (normalizedId && normalizedId === normalizeSetName(expansion.code)),
-  );
+  return expansions.filter((expansion) => normalizedNames.has(normalizeSetName(expansion.name)));
 }
 
-export function rankExpansionSuggestions(names, setId, expansions, limit = 3) {
-  const normalizedId = normalizeSetName(setId);
+export function rankExpansionSuggestions(names, expansions, limit = 3) {
   return expansions
     .map((expansion) => {
-      let score = normalizedId && normalizedId === normalizeSetName(expansion.code) ? 1 : 0;
-      let matchedAgainst = score === 1 ? `code:${setId}` : names[0];
+      let score = 0;
+      let matchedAgainst = names[0];
       for (const name of names) {
         const candidateScore = nameScore(name, expansion.name);
         if (candidateScore > score) {
