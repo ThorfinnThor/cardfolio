@@ -133,6 +133,13 @@ const snapshot = {
     propertyNames: propertyDefinitions.map((property) => property.name),
     propertyDefinitions,
     cardCategoryIds: [...cardCategoryIds].sort((left, right) => left - right),
+    categorySummaries: categories
+      .map((category) => ({
+        id: category.id,
+        name: category.name,
+        propertyNames: (category.properties ?? []).map((property) => property.name).sort(),
+      }))
+      .sort((left, right) => left.id - right.id),
     cardPropertyNames: cardPropertyDefinitions.map((property) => property.name),
     cardPropertyDefinitions,
   },
