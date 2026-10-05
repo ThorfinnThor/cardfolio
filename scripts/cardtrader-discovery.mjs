@@ -102,6 +102,16 @@ const propertyDefinitions = summarizeProperties([
   ...categories.map((category) => ({ source: "category", properties: category.properties })),
   ...blueprints.flatMap((blueprint) => [{ source: "blueprint", properties: blueprint.editable_properties }]),
 ]);
+const cardCategories = categories.filter((category) =>
+  category.properties?.some((property) => ["collector_number", "pokemon_language"].includes(property.name)),
+);
+const cardCategoryIds = new Set(cardCategories.map((category) => category.id));
+const cardPropertyDefinitions = summarizeProperties([
+  ...cardCategories.map((category) => ({ source: "category", properties: category.properties })),
+  ...blueprints
+    .filter((blueprint) => cardCategoryIds.has(blueprint.category_id))
+    .map((blueprint) => ({ source: "blueprint", properties: blueprint.editable_properties })),
+]);
 const snapshot = {
   schemaVersion: 1,
   generatedAt: new Date().toISOString(),
@@ -122,6 +132,9 @@ const snapshot = {
     missingBlueprintImages: blueprints.filter((blueprint) => !blueprint.image_url).length,
     propertyNames: propertyDefinitions.map((property) => property.name),
     propertyDefinitions,
+    cardCategoryIds: [...cardCategoryIds].sort((left, right) => left - right),
+    cardPropertyNames: cardPropertyDefinitions.map((property) => property.name),
+    cardPropertyDefinitions,
   },
   marketplaceSamples: {
     status: "not-requested",
