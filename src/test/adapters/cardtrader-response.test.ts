@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { asCollection } from "../../../scripts/cardtrader-response.mjs";
+import { summarizeProperties } from "../../../scripts/cardtrader-properties.mjs";
 
 describe("CardTrader response normalization", () => {
   it("keeps documented array responses", () => {
@@ -28,5 +29,37 @@ describe("CardTrader response normalization", () => {
       .toThrow("CardTrader games response has an unsupported collection shape (count:number,status:string).");
     expect(() => asCollection({ count: 2, status: "unexpected-secret" }, "games"))
       .not.toThrow(/unexpected-secret/);
+  });
+
+  it("summarizes safe property metadata without copying card rows", () => {
+    expect(summarizeProperties([
+      {
+        source: "category",
+        properties: [{
+          name: "first_edition",
+          type: "boolean",
+          default_value: false,
+          possible_values: [false, true],
+        }],
+      },
+      {
+        source: "blueprint",
+        properties: [{
+          name: "first_edition",
+          type: "boolean",
+          default_value: false,
+          possible_values: [false, true],
+          secret: "must-not-be-copied",
+        }],
+      },
+    ])).toEqual([{
+      name: "first_edition",
+      types: ["boolean"],
+      defaultValues: [false],
+      possibleValues: [false, true],
+      occurrenceCount: 2,
+      categoryCount: 1,
+      blueprintCount: 1,
+    }]);
   });
 });

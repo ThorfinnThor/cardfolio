@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { asCollection } from "./cardtrader-response.mjs";
+import { summarizeProperties } from "./cardtrader-properties.mjs";
 
 const API_BASE = "https://api.cardtrader.com/api/v2";
 const REQUEST_TIMEOUT_MS = 30_000;
@@ -97,6 +98,10 @@ for (let index = 0; index < selectedExpansions.length; index += 4) {
 }
 
 const blueprints = Object.values(blueprintsByExpansion).flat();
+const propertyDefinitions = summarizeProperties([
+  ...categories.map((category) => ({ source: "category", properties: category.properties })),
+  ...blueprints.flatMap((blueprint) => [{ source: "blueprint", properties: blueprint.editable_properties }]),
+]);
 const snapshot = {
   schemaVersion: 1,
   generatedAt: new Date().toISOString(),
@@ -115,10 +120,8 @@ const snapshot = {
     blueprintCount: blueprints.length,
     blueprintImages: blueprints.filter((blueprint) => Boolean(blueprint.image_url)).length,
     missingBlueprintImages: blueprints.filter((blueprint) => !blueprint.image_url).length,
-    propertyNames: [...new Set([
-      ...categories.flatMap((category) => category.properties ?? []),
-      ...blueprints.flatMap((blueprint) => blueprint.editable_properties ?? []),
-    ].map((property) => property.name))].sort(),
+    propertyNames: propertyDefinitions.map((property) => property.name),
+    propertyDefinitions,
   },
   marketplaceSamples: {
     status: "not-requested",
