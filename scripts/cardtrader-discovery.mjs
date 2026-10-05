@@ -102,9 +102,10 @@ const propertyDefinitions = summarizeProperties([
   ...categories.map((category) => ({ source: "category", properties: category.properties })),
   ...blueprints.flatMap((blueprint) => [{ source: "blueprint", properties: blueprint.editable_properties }]),
 ]);
-const cardCategories = categories.filter((category) =>
-  category.properties?.some((property) => ["collector_number", "pokemon_language"].includes(property.name)),
-);
+const cardCategories = categories.filter((category) => category.name?.trim() === "Pokémon Singles");
+if (cardCategories.length !== 1) {
+  throw new Error("CardTrader liefert keine eindeutige Kategorie 'Pokémon Singles'. Kartenvarianten bleiben ungeprüft.");
+}
 const cardCategoryIds = new Set(cardCategories.map((category) => category.id));
 const cardPropertyDefinitions = summarizeProperties([
   ...cardCategories.map((category) => ({ source: "category", properties: category.properties })),
