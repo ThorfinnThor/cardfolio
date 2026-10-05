@@ -338,7 +338,7 @@ Ohne verbundene CardTrader-Sitzung erzeugt Cardfolio nur eine überprüfbare Vor
 
 **Abnahme:** Es gibt einen reproduzierbaren Abdeckungsbericht, keine unsichere automatische Zuordnung, keine Secrets im Client/Repo und eine dokumentierte Go/No-Go-Entscheidung je Datenart.
 
-**Umsetzungsstand 04.10.2026:** Adapter, Zod-Schemas, konservative Mappinglogik, lokale Discovery-/Audit-Skripte, getrennte deaktivierte Flags und Rechte-Gate sind umgesetzt. Der Bericht weist 0/349 verifizierte sprachspezifische Setdatensätze aus. Testtoken-Lauf, Bild-/Property-/Marktstichprobe und schriftliche CardTrader-Freigabe bleiben externe Blocker; kein betroffener Datentyp wurde deshalb freigeschaltet. Details: `docs/cardtrader-release-gate.md`.
+**Umsetzungsstand 05.10.2026:** Adapter, Zod-Schemas, konservative Mappinglogik, lokale Discovery-/Audit-Skripte, getrennte deaktivierte Flags und Rechte-Gate sind umgesetzt. Der authentifizierte Read-only-Vollaudit und die sichere Property-Auswertung sind abgeschlossen. Der Bericht weist weiterhin 0/349 verifizierte sprachspezifische Setdatensätze aus; 284 Kandidaten müssen manuell bestätigt werden, 2 sind mehrdeutig und 63 nicht zugeordnet. Bild-/Marktstichprobe und schriftliche CardTrader-Freigabe bleiben externe Blocker; kein betroffener Datentyp wurde deshalb freigeschaltet. Details: `docs/cardtrader-release-gate.md`.
 
 **Danach:** Zu Luna wechseln.
 

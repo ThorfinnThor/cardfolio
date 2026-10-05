@@ -6,7 +6,7 @@ Stand: 5. Oktober 2026
 
 CardTrader ist in Cardfolio **noch nicht produktiv freigegeben**. Die providerneutrale Katalogschnittstelle, Laufzeitschemas, konservative Mappinglogik und reproduzierbare Audit-Werkzeuge sind vorbereitet. Alle UI-Flags bleiben aus.
 
-Das GitHub-Actions-Secret `CARDTRADER_API_TOKEN` wurde am 4. Oktober 2026 unter dem korrekten Namen registriert; sein Wert wurde nicht gelesen oder ausgegeben. Der vollständige authentifizierte Read-only-Lauf [37253882297](https://github.com/ThorfinnThor/cardfolio/actions/runs/37253882297) wurde erfolgreich abgeschlossen. Eine schriftliche Produktionsfreigabe von CardTrader liegt weiterhin nicht vor. Das ist kein stiller Restpunkt: Preise, Verfügbarkeit, Providerbilder und verbundene Wishlists bleiben deshalb No-Go.
+Das GitHub-Actions-Secret `CARDTRADER_API_TOKEN` wurde am 4. Oktober 2026 unter dem korrekten Namen registriert; sein Wert wurde nicht gelesen oder ausgegeben. Der vollständige authentifizierte Read-only-Lauf [37254900493](https://github.com/ThorfinnThor/cardfolio/actions/runs/37254900493) wurde erfolgreich abgeschlossen. Eine schriftliche Produktionsfreigabe von CardTrader liegt weiterhin nicht vor. Das ist kein stiller Restpunkt: Preise, Verfügbarkeit, Providerbilder und verbundene Wishlists bleiben deshalb No-Go.
 
 ### Aktueller Abdeckungsbericht
 
@@ -21,11 +21,13 @@ Das GitHub-Actions-Secret `CARDTRADER_API_TOKEN` wurde am 4. Oktober 2026 unter 
 | Blueprints ohne `image_url` | 0 |
 | Manuell verifizierte CardTrader-Zuordnungen | 0 |
 | Automatisch freigegebene Namenskandidaten | 0 |
-| Manuell zu prüfende Namenskandidaten | 179 |
-| Mehrdeutige Namenskandidaten | 0 |
-| Nicht zugeordnete Setdatensätze | 170 |
+| Manuell zu prüfende Namenskandidaten | 284 |
+| Mehrdeutige Namenskandidaten | 2 |
+| Nicht zugeordnete Setdatensätze | 63 |
+| Nicht zugeordnet, aber mit unverbindlichem Vorschlag | 59 |
+| Nicht zugeordnet und ohne Vorschlag | 4 |
 
-Damit beträgt die **verifizierte Abdeckung weiterhin 0/349 (0 %)**. Das ist absichtlich ehrlicher als eine aus Setnamen geschätzte Freigabe: Alle 179 exakten Namenskandidaten bleiben `review-required`, bis ihre Expansion-ID manuell bestätigt wurde. Die 170 nicht zugeordneten Datensätze benötigen Aliasregeln oder eine individuelle Prüfung.
+Damit beträgt die **verifizierte Abdeckung weiterhin 0/349 (0 %)**. Das ist absichtlich ehrlicher als eine aus Setnamen geschätzte Freigabe: Alle 284 direkten oder sprachübergreifend exakten Namenskandidaten bleiben `review-required`, bis ihre Expansion-ID manuell bestätigt wurde. Die zwei echten Mehrdeutigkeiten betreffen `Holon Phantoms`. Von den 63 nicht zugeordneten Datensätzen besitzen 59 lediglich unverbindliche Ähnlichkeitsvorschläge; vier haben keinen Vorschlag. CardTrader-Codes werden wegen belegter Kollisionen mit TCGdex-Set-IDs nicht als Zuordnungssignal verwendet.
 
 Dass alle 75.652 gelesenen Blueprints eine Bild-URL melden, ist nur ein technischer
 Verfügbarkeitswert. Es ist weder eine Nutzungsfreigabe noch ein Nachweis für Sprache,
@@ -107,7 +109,7 @@ Workflow bereit. Er erhält das Secret nur im Discovery-Schritt, besitzt ledigli
 enthält nur `discovery-summary.json` und `mapping-audit.json`; Token, Authorization-Header,
 `shared_secret`, Kontokennungen, rohe Blueprints und Bild-URLs sind ausgeschlossen.
 
-Der Mapping-Audit vergleicht alle derzeit synchronisierten deutschen und englischen TCGdex-Sets mit CardTrader-Expansions. Ein exakter Namenskandidat bleibt `review-required`. Erst eine manuelle Aufnahme in `data/marketplace/cardtrader-set-review.json` macht ihn `verified`. Mehrdeutige oder fehlende Treffer werden nie automatisch gewählt.
+Der Mapping-Audit vergleicht alle derzeit synchronisierten deutschen und englischen TCGdex-Sets mit CardTrader-Expansions. Für deutsche Sets wird zusätzlich der englische Name derselben TCGdex-Set-ID als Vergleichsname verwendet. Ein exakter Namenskandidat bleibt `review-required`. Erst eine manuelle Aufnahme in `data/marketplace/cardtrader-set-review.json` macht ihn `verified`. Mehrdeutige oder fehlende Treffer werden nie automatisch gewählt. Das Artifact `mapping-review.md` enthält eine abhakbare Prüfwarteschlange mit CardTrader-ID, Code und Namen sowie höchstens drei klar als unverbindlich markierten Ähnlichkeitsvorschlägen.
 
 ## Noch ausstehende Prüfungen
 
@@ -115,7 +117,7 @@ Der Kataloglauf bestätigt unter anderem die Property-Namen `condition`,
 `pokemon_language`, `pokemon_reverse`, `first_edition`, `collector_number`,
 `pokemon_rarity` und `pokemon_species`. Noch offen bleiben:
 
-1. Die 179 Namenskandidaten manuell prüfen und Aliasregeln für 170 nicht zugeordnete Sets entwickeln.
+1. Die 284 Namenskandidaten anhand der erzeugten Prüfwarteschlange manuell bestätigen, zwei `Holon Phantoms`-Mehrdeutigkeiten auflösen und Aliasregeln für 63 nicht zugeordnete Sets entwickeln.
 2. Eine separat geprüfte Quelle für Holo/Non-Holo/Shadowless identifizieren oder eine manuelle Variantentabelle entwerfen.
 3. Blueprint-Stichprobe für direkte Cardmarket-/TCGplayer-IDs.
 4. Bild-Host, Sprache, Auflösung und Rechtefreigabe getrennt prüfen.
