@@ -42,6 +42,8 @@ jobs:
           npm run cardtrader:audit --
           --snapshot .cardtrader/discovery.json
           --out .cardtrader/mapping-audit.json
+      - name: Create manual mapping review queue
+        run: npm run cardtrader:review-report -- .cardtrader/mapping-audit.json .cardtrader/mapping-review.md
       - name: Publish safe run summary
         shell: bash
         run: node scripts/cardtrader-workflow-summary.mjs >> "$GITHUB_STEP_SUMMARY"
@@ -52,6 +54,7 @@ jobs:
           path: |
             .cardtrader/discovery-summary.json
             .cardtrader/mapping-audit.json
+            .cardtrader/mapping-review.md
           if-no-files-found: error
           include-hidden-files: true
           retention-days: 7

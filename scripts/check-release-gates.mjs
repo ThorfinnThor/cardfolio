@@ -75,8 +75,10 @@ requireText(".github/workflows/cardtrader-discovery.yml", [
   "CARDTRADER_API_TOKEN: ${{ secrets.CARDTRADER_API_TOKEN }}",
   "npm run cardtrader:discover",
   "npm run cardtrader:audit",
+  "npm run cardtrader:review-report",
   ".cardtrader/discovery-summary.json",
   ".cardtrader/mapping-audit.json",
+  ".cardtrader/mapping-review.md",
   "if-no-files-found: error",
   "retention-days: 7",
 ]);

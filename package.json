@@ -19,6 +19,7 @@
     "catalog:audit:summary": "node scripts/catalog-audit.mjs --summary",
     "cardtrader:discover": "node scripts/cardtrader-discovery.mjs",
     "cardtrader:audit": "node scripts/cardtrader-mapping-audit.mjs",
+    "cardtrader:review-report": "node scripts/cardtrader-review-report.mjs",
     "cardtrader:summary": "node scripts/cardtrader-workflow-summary.mjs",
     "semantic:index:build": "node scripts/semantic-index.mjs build",
     "semantic:index:check": "node scripts/semantic-index.mjs check",
