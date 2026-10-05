@@ -1,12 +1,12 @@
 # CardTrader Discovery und Release-Gate
 
-Stand: 4. Oktober 2026
+Stand: 5. Oktober 2026
 
 ## Ergebnis
 
 CardTrader ist in Cardfolio **noch nicht produktiv freigegeben**. Die providerneutrale Katalogschnittstelle, Laufzeitschemas, konservative Mappinglogik und reproduzierbare Audit-Werkzeuge sind vorbereitet. Alle UI-Flags bleiben aus.
 
-Das GitHub-Actions-Secret `CARDTRADER_API_TOKEN` wurde am 4. Oktober 2026 unter dem korrekten Namen registriert; sein Wert wurde nicht gelesen oder ausgegeben. Der vollständige authentifizierte Read-only-Lauf [37220216995](https://github.com/ThorfinnThor/cardfolio/actions/runs/37220216995) wurde erfolgreich abgeschlossen. Eine schriftliche Produktionsfreigabe von CardTrader liegt weiterhin nicht vor. Das ist kein stiller Restpunkt: Preise, Verfügbarkeit, Providerbilder und verbundene Wishlists bleiben deshalb No-Go.
+Das GitHub-Actions-Secret `CARDTRADER_API_TOKEN` wurde am 4. Oktober 2026 unter dem korrekten Namen registriert; sein Wert wurde nicht gelesen oder ausgegeben. Der vollständige authentifizierte Read-only-Lauf [37253882297](https://github.com/ThorfinnThor/cardfolio/actions/runs/37253882297) wurde erfolgreich abgeschlossen. Eine schriftliche Produktionsfreigabe von CardTrader liegt weiterhin nicht vor. Das ist kein stiller Restpunkt: Preise, Verfügbarkeit, Providerbilder und verbundene Wishlists bleiben deshalb No-Go.
 
 ### Aktueller Abdeckungsbericht
 
@@ -44,7 +44,23 @@ Quelle ist ausschließlich die [offizielle API-Referenz](https://www.cardtrader.
 - Wishlist-Positionen unterstützen unter anderem `blueprint_id`, Menge, Sprache, Zustand, Foil, Reverse und First Edition. Der Freitextimport kann unbekannte Zeilen laut Dokumentation still ignorieren; Cardfolio bereitet deshalb ausschließlich explizite, bestätigte `blueprint_id`-Positionen vor.
 - Der read-only Adapter enthält absichtlich keine Methoden für `/cart`, `/cart/add` oder `/purchase`.
 
-Die Pokémon-spezifischen Eigenschaftsnamen und zulässigen Zustände werden **nicht** aus den Magic-Beispielen der Dokumentation abgeleitet. Sie müssen aus einem authentifizierten Pokémon-Kategorie-/Blueprint-Snapshot übernommen und anschließend festgeschrieben werden.
+Die Pokémon-spezifischen Eigenschaftsnamen und zulässigen Zustände werden **nicht** aus den Magic-Beispielen der Dokumentation abgeleitet. Sie wurden aus einem authentifizierten Pokémon-Kategorie-/Blueprint-Snapshot übernommen und anschließend sicher redigiert zusammengefasst.
+
+### Verifizierte Einzelkarten-Properties
+
+Der Vollaudit verwendet ausschließlich die CardTrader-Kategorie `Pokémon Singles` (Kategorie-ID `73`). Zubehör, Booster, Tins, Complete Sets und `Pokémon Oversized` werden nicht als Einzelkartenvarianten verwendet.
+
+| Property | Beobachtete Werte | Cardfolio-Verwendung |
+|---|---|---|
+| `pokemon_language` | `de`, `en`, `es`, `fr`, `id`, `it`, `jp`, `kr`, `nl`, `pl`, `pt`, `ru`, `sv`, `th`, `zh-CN`, `zh-TW` | Sprachfilter und Exportfeld |
+| `condition` | `Mint`, `Near Mint`, `Slightly Played`, `Moderately Played`, `Played`, `Poor` | Zustandsauswahl; Default `Near Mint` |
+| `first_edition` | `false`, `true` | Editionsauswahl |
+| `pokemon_reverse` | `false`, `true` | Reverse-Auswahl |
+| `altered` | `false`, `true` | Nur anzeigen, wenn der Nutzer eine veränderte Karte ausdrücklich auswählt |
+| `signed` | `false`, `true` | Nur anzeigen, wenn Signatur erfasst werden soll |
+| `tournament_legal` | `false`, `true` | Kein Sammlungsvariant-Default; separates optionales Merkmal |
+
+CardTrader liefert in `Pokémon Singles` kein eigenes Property für `holo`, `non-holo` oder `shadowless`. Diese Werte werden daher nicht aus CardTrader erfunden oder stillschweigend gemappt. Eine spätere Holo-/Non-Holo-/Shadowless-Zuordnung braucht eine separat geprüfte Variantendatenquelle oder eine manuelle, nachvollziehbare Mappingtabelle. `collector_number`, `pokemon_rarity`, `pokemon_attack` und `pokemon_species` sind in der Kategorie vorhanden, aber nicht als vollständige allgemeine Auswahlwerte definiert.
 
 ### Blueprint und Product nicht verwechseln
 
@@ -99,8 +115,8 @@ Der Kataloglauf bestätigt unter anderem die Property-Namen `condition`,
 `pokemon_language`, `pokemon_reverse`, `first_edition`, `collector_number`,
 `pokemon_rarity` und `pokemon_species`. Noch offen bleiben:
 
-1. Zulässige Werte, Defaultwerte und Kombinationen der Pokémon-Properties sicher aggregieren.
-2. Die 179 Namenskandidaten manuell prüfen und Aliasregeln für 170 nicht zugeordnete Sets entwickeln.
+1. Die 179 Namenskandidaten manuell prüfen und Aliasregeln für 170 nicht zugeordnete Sets entwickeln.
+2. Eine separat geprüfte Quelle für Holo/Non-Holo/Shadowless identifizieren oder eine manuelle Variantentabelle entwerfen.
 3. Blueprint-Stichprobe für direkte Cardmarket-/TCGplayer-IDs.
 4. Bild-Host, Sprache, Auflösung und Rechtefreigabe getrennt prüfen.
 5. Nur nach Markt-API-Freigabe: Währungen, Filtertreue für Sprache/Finish/Zustand, Caching und Angebotsstichprobe.
