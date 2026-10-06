@@ -186,7 +186,20 @@
     { "catalogKey": "en:tk-hs-r", "cardtraderExpansionId": "1940" },
     { "catalogKey": "en:tk-xy-b", "cardtraderExpansionId": "1945" },
     { "catalogKey": "en:tk-xy-n", "cardtraderExpansionId": "1944" },
-    { "catalogKey": "en:tk-xy-sy", "cardtraderExpansionId": "1943" }
+    { "catalogKey": "en:tk-xy-sy", "cardtraderExpansionId": "1943" },
+    { "catalogKey": "en:tk-xy-w", "cardtraderExpansionId": "1946" },
+    { "catalogKey": "en:xy10", "cardtraderExpansionId": "1579" },
+    { "catalogKey": "de:xy10", "cardtraderExpansionId": "1579" },
+    { "catalogKey": "en:xy11", "cardtraderExpansionId": "1580" },
+    { "catalogKey": "de:xy11", "cardtraderExpansionId": "1580" },
+    { "catalogKey": "en:xy12", "cardtraderExpansionId": "1586" },
+    { "catalogKey": "de:xy12", "cardtraderExpansionId": "1586" },
+    { "catalogKey": "en:xy3", "cardtraderExpansionId": "1566" },
+    { "catalogKey": "de:xy3", "cardtraderExpansionId": "1566" },
+    { "catalogKey": "en:xy5", "cardtraderExpansionId": "1569" },
+    { "catalogKey": "de:xy5", "cardtraderExpansionId": "1569" },
+    { "catalogKey": "en:xy8", "cardtraderExpansionId": "1575" },
+    { "catalogKey": "de:xy8", "cardtraderExpansionId": "1575" }
   ],
   "notes": [
     "Only manually reviewed mappings belong in this file.",
@@ -199,6 +212,8 @@
     "Fourth batch: English review-required candidates 76–100 checked against the same authenticated read-only audit on 2026-10-06. Nineteen expansion matches confirmed by matching total blueprint counts, or—only for POP Series 1–6 and 9—matching distinct blueprint-name counts plus exact expansion names. Ten corresponding German locale records share the same TCGdex set IDs and use the same expansion IDs. The POP evidence confirms expansion-level coverage only, not printing/variant identity.",
     "Fifth batch: English review-required candidates 101–125 checked against the same authenticated read-only audit on 2026-10-06. Fourteen exact-name expansion matches confirmed by matching TCGdex total-card and Pokémon Singles blueprint counts; all fourteen have a German locale record with the same TCGdex set ID and expansion ID.",
     "Held for card-level follow-up due count mismatch: Team Up (196 vs 206), SM Black Star Promos (248 vs 333), Scarlet & Violet (258 vs 268), Paldea Evolved (279 vs 287), 151 (207 vs 208), Twilight Masquerade (226 vs 227), Shrouded Fable (99 vs 107), Sword & Shield (216 vs 228), Astral Radiance (216 vs 246), Lost Origin (217 vs 248), Silver Tempest (215 vs 245), Crown Zenith (160 vs 238), Champion's Path (80 vs 89), Shining Fates (73 vs 195), Chilling Reign (233 vs 234), Brilliant Stars (186 vs 225), SWSH Black Star Promos (307 vs 317), XY Trainer Kit (Latias) (30 vs 40), and XY Trainer Kit (Latios) (30 vs 40). Count mismatches may reflect catalog representation/variants and are not by themselves proof of an incorrect expansion.",
-    "Sixth batch: English review-required candidates 126–150 checked against the same authenticated read-only audit on 2026-10-06. Seventeen exact or punctuation-normalized expansion matches confirmed by matching TCGdex total-card and Pokémon Singles blueprint counts; six corresponding German locale records share the same TCGdex set IDs and use the same expansion IDs."
+    "Sixth batch: English review-required candidates 126–150 checked against the same authenticated read-only audit on 2026-10-06. Seventeen exact or punctuation-normalized expansion matches confirmed by matching TCGdex total-card and Pokémon Singles blueprint counts; six corresponding German locale records share the same TCGdex set IDs and use the same expansion IDs.",
+    "Seventh batch: the final fourteen English review-required candidates (151–164) checked against the same authenticated read-only audit on 2026-10-06. Seven exact or punctuation-normalized expansion matches confirmed by matching TCGdex total-card and Pokémon Singles blueprint counts; six corresponding German locale records share the same TCGdex set IDs and use the same expansion IDs.",
+    "Held for card-level follow-up due count mismatch: XY (146 vs 151), Flashfire (110 vs 109), Phantom Forces (124 vs 122), Roaring Skies (112 vs 110), Ancient Origins (101 vs 100), BREAKpoint (126 vs 123), and XY Black Star Promos (216 vs 271). Count mismatches may reflect catalog representation/variants and are not by themselves proof of an incorrect expansion."
   ]
 }
