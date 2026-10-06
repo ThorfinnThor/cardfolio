@@ -12,7 +12,7 @@ function clean(value) {
 function exactRow(decision) {
   const candidate = decision.candidateExpansions?.[0];
   const tcgdexCount = decision.tcgdexCardCount?.total ?? decision.tcgdexCardCount?.official ?? "—";
-  return `| ${clean(decision.catalogKey)} | ${clean(decision.setName)} | ${clean(decision.releaseDate)} | ${clean(tcgdexCount)} | ${clean(candidate?.singlesBlueprintCount)} | ${clean(candidate?.uniqueSinglesBlueprintNames)} | ${clean(candidate?.id)} | ${clean(candidate?.code)} | ${clean(candidate?.name)} | ☐ |`;
+  return `| ${clean(decision.catalogKey)} | ${clean(decision.setName)} | ${clean(decision.releaseDate)} | ${clean(tcgdexCount)} | ${clean(candidate?.singlesBlueprintCount)} | ${clean(candidate?.uniqueSinglesBlueprintNames)} | ${clean(candidate?.blueprintsWithCollectorNumber)} | ${clean(candidate?.uniqueCollectorNumbers)} | ${clean(candidate?.id)} | ${clean(candidate?.code)} | ${clean(candidate?.name)} | ☐ |`;
 }
 
 function suggestionCell(decision) {
@@ -38,8 +38,8 @@ const lines = [
   "",
   "## Exakte oder sprachübergreifend exakte Kandidaten",
   "",
-  "| Katalogschlüssel | TCGdex-Set | Release | TCGdex Karten gesamt | CardTrader Einzelkarten-Blueprints | eindeutige Blueprint-Namen | CardTrader-ID | Code | CardTrader-Name | Geprüft |",
-  "|---|---|---|---:|---:|---:|---:|---|---|---|",
+  "| Katalogschlüssel | TCGdex-Set | Release | TCGdex Karten gesamt | CardTrader Einzelkarten-Blueprints | eindeutige Blueprint-Namen | Blueprints mit Kartennummer | eindeutige Kartennummern | CardTrader-ID | Code | CardTrader-Name | Geprüft |",
+  "|---|---|---|---:|---:|---:|---:|---:|---|---|---|---|",
   ...exact.map(exactRow),
   "",
   "## Mehrdeutige Kandidaten",

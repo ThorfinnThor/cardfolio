@@ -34,9 +34,19 @@ if (!singlesCategoryId) throw new Error("The snapshot has no Pokémon Singles ca
 const singlesBlueprintsByExpansion = new Map();
 for (const [expansionId, expansionBlueprints] of Object.entries(snapshot.blueprintsByExpansion ?? {})) {
   const singles = expansionBlueprints.filter((blueprint) => blueprint.category_id === singlesCategoryId);
+  const collectorNumbers = new Set();
+  let blueprintsWithCollectorNumber = 0;
+  for (const blueprint of singles) {
+    const collectorNumber = blueprint.editable_properties?.find((property) => property.name === "collector_number")?.default_value;
+    if (typeof collectorNumber !== "string" || !collectorNumber.trim()) continue;
+    blueprintsWithCollectorNumber += 1;
+    collectorNumbers.add(collectorNumber.trim());
+  }
   singlesBlueprintsByExpansion.set(expansionId, {
     count: singles.length,
     uniqueNames: new Set(singles.map((blueprint) => blueprint.name)).size,
+    blueprintsWithCollectorNumber,
+    uniqueCollectorNumbers: collectorNumbers.size,
   });
 }
 const reviewed = new Map(review.mappings.map((mapping) => [mapping.catalogKey, mapping]));
@@ -54,7 +64,7 @@ const decisions = sets.map((set) => {
   if (accepted) {
     const expansion = expansions.find((candidate) => String(candidate.id) === String(accepted.cardtraderExpansionId));
     if (!expansion) throw new Error(`Reviewed mapping ${set.catalogKey} references an unknown CardTrader expansion.`);
-    const cardCoverage = singlesBlueprintsByExpansion.get(String(expansion.id)) ?? { count: 0, uniqueNames: 0 };
+    const cardCoverage = singlesBlueprintsByExpansion.get(String(expansion.id)) ?? { count: 0, uniqueNames: 0, blueprintsWithCollectorNumber: 0, uniqueCollectorNumbers: 0 };
     return {
       catalogKey: set.catalogKey,
       setId: set.id,
@@ -70,17 +80,21 @@ const decisions = sets.map((set) => {
         ...expansionReference(expansion),
         singlesBlueprintCount: cardCoverage.count,
         uniqueSinglesBlueprintNames: cardCoverage.uniqueNames,
+        blueprintsWithCollectorNumber: cardCoverage.blueprintsWithCollectorNumber,
+        uniqueCollectorNumbers: cardCoverage.uniqueCollectorNumbers,
       }],
       suggestedExpansions: [],
     };
   }
   const candidates = exactExpansionMatches(comparisonNames, expansions);
   const candidateExpansions = candidates.map((candidate) => {
-    const cardCoverage = singlesBlueprintsByExpansion.get(String(candidate.id)) ?? { count: 0, uniqueNames: 0 };
+    const cardCoverage = singlesBlueprintsByExpansion.get(String(candidate.id)) ?? { count: 0, uniqueNames: 0, blueprintsWithCollectorNumber: 0, uniqueCollectorNumbers: 0 };
     return {
       ...expansionReference(candidate),
       singlesBlueprintCount: cardCoverage.count,
       uniqueSinglesBlueprintNames: cardCoverage.uniqueNames,
+      blueprintsWithCollectorNumber: cardCoverage.blueprintsWithCollectorNumber,
+      uniqueCollectorNumbers: cardCoverage.uniqueCollectorNumbers,
     };
   });
   const method = candidates.length

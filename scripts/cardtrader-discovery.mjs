@@ -113,6 +113,28 @@ const cardPropertyDefinitions = summarizeProperties([
     .filter((blueprint) => cardCategoryIds.has(blueprint.category_id))
     .map((blueprint) => ({ source: "blueprint", properties: blueprint.editable_properties })),
 ]);
+const cardBlueprintCoverageByExpansion = Object.fromEntries(
+  Object.entries(blueprintsByExpansion).map(([expansionId, expansionBlueprints]) => {
+    const singles = expansionBlueprints.filter((blueprint) => cardCategoryIds.has(blueprint.category_id));
+    const names = new Set(singles.map((blueprint) => blueprint.name));
+    const collectorNumbers = new Set();
+    let blueprintsWithCollectorNumber = 0;
+
+    for (const blueprint of singles) {
+      const collectorNumber = blueprint.editable_properties?.find((property) => property.name === "collector_number")?.default_value;
+      if (typeof collectorNumber !== "string" || !collectorNumber.trim()) continue;
+      blueprintsWithCollectorNumber += 1;
+      collectorNumbers.add(collectorNumber.trim());
+    }
+
+    return [expansionId, {
+      singlesBlueprintCount: singles.length,
+      uniqueSinglesBlueprintNames: names.size,
+      blueprintsWithCollectorNumber,
+      uniqueCollectorNumbers: collectorNumbers.size,
+    }];
+  }),
+);
 const snapshot = {
   schemaVersion: 1,
   generatedAt: new Date().toISOString(),
@@ -143,6 +165,7 @@ const snapshot = {
       .sort((left, right) => left.id - right.id),
     cardPropertyNames: cardPropertyDefinitions.map((property) => property.name),
     cardPropertyDefinitions,
+    cardBlueprintCoverageByExpansion,
   },
   marketplaceSamples: {
     status: "not-requested",
