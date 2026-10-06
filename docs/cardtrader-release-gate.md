@@ -1,12 +1,12 @@
 # CardTrader Discovery und Release-Gate
 
-Stand: 5. Oktober 2026
+Stand: 6. Oktober 2026
 
 ## Ergebnis
 
 CardTrader ist in Cardfolio **noch nicht produktiv freigegeben**. Die providerneutrale Katalogschnittstelle, Laufzeitschemas, konservative Mappinglogik und reproduzierbare Audit-Werkzeuge sind vorbereitet. Alle UI-Flags bleiben aus.
 
-Das GitHub-Actions-Secret `CARDTRADER_API_TOKEN` wurde am 4. Oktober 2026 unter dem korrekten Namen registriert; sein Wert wurde nicht gelesen oder ausgegeben. Der vollständige authentifizierte Read-only-Lauf [37254900493](https://github.com/ThorfinnThor/cardfolio/actions/runs/37254900493) wurde erfolgreich abgeschlossen. Eine schriftliche Produktionsfreigabe von CardTrader liegt weiterhin nicht vor. Das ist kein stiller Restpunkt: Preise, Verfügbarkeit, Providerbilder und verbundene Wishlists bleiben deshalb No-Go.
+Das GitHub-Actions-Secret `CARDTRADER_API_TOKEN` wurde am 4. Oktober 2026 unter dem korrekten Namen registriert; sein Wert wurde nicht gelesen oder ausgegeben. Der vollständige authentifizierte Read-only-Lauf [37412387905](https://github.com/ThorfinnThor/cardfolio/actions/runs/37412387905) wurde am 6. Oktober erfolgreich abgeschlossen. Im ersten manuellen Batch wurden 20 Expansion-Zuordnungen anhand exakter Expansionnamen und übereinstimmender TCGdex-/Pokémon-Singles-Kartenzahlen bestätigt; elf gleich-IDige deutsche Katalogdatensätze verwenden dieselben Expansionen. Fünf Sets mit abweichenden Kartenzahlen bleiben ungeprüft. Eine schriftliche Produktionsfreigabe von CardTrader liegt weiterhin nicht vor. Preise, Verfügbarkeit, Providerbilder und verbundene Wishlists bleiben deshalb No-Go.
 
 ### Aktueller Abdeckungsbericht
 
@@ -19,15 +19,15 @@ Das GitHub-Actions-Secret `CARDTRADER_API_TOKEN` wurde am 4. Oktober 2026 unter 
 | Gelesene Blueprints | 75.652 |
 | Blueprints mit `image_url` | 75.652 |
 | Blueprints ohne `image_url` | 0 |
-| Manuell verifizierte CardTrader-Zuordnungen | 0 |
+| Manuell verifizierte sprachspezifische CardTrader-Zuordnungen | 31 |
 | Automatisch freigegebene Namenskandidaten | 0 |
-| Manuell zu prüfende Namenskandidaten | 284 |
+| Manuell zu prüfende Namenskandidaten | 253 |
 | Mehrdeutige Namenskandidaten | 2 |
 | Nicht zugeordnete Setdatensätze | 63 |
 | Nicht zugeordnet, aber mit unverbindlichem Vorschlag | 59 |
 | Nicht zugeordnet und ohne Vorschlag | 4 |
 
-Damit beträgt die **verifizierte Abdeckung weiterhin 0/349 (0 %)**. Das ist absichtlich ehrlicher als eine aus Setnamen geschätzte Freigabe: Alle 284 direkten oder sprachübergreifend exakten Namenskandidaten bleiben `review-required`, bis ihre Expansion-ID manuell bestätigt wurde. Die zwei echten Mehrdeutigkeiten betreffen `Holon Phantoms`. Von den 63 nicht zugeordneten Datensätzen besitzen 59 lediglich unverbindliche Ähnlichkeitsvorschläge; vier haben keinen Vorschlag. CardTrader-Codes werden wegen belegter Kollisionen mit TCGdex-Set-IDs nicht als Zuordnungssignal verwendet.
+Damit beträgt die **manuell bestätigte sprachspezifische Expansion-Abdeckung 31/349 (8,9 %)**. Die Zuordnungen belegen die Expansion, nicht die Identität jedes einzelnen Blueprints oder einer konkreten Kartenvariante. 253 weitere direkte oder sprachübergreifend exakte Namenskandidaten bleiben `review-required`; fünf Kandidaten des ersten 25er-Batches wurden wegen abweichender Kartenzahlen zurückgestellt. Die zwei echten Mehrdeutigkeiten betreffen `Holon Phantoms`. Von den 63 nicht zugeordneten Datensätzen besitzen 59 lediglich unverbindliche Ähnlichkeitsvorschläge; vier haben keinen Vorschlag. CardTrader-Codes werden wegen belegter Kollisionen mit TCGdex-Set-IDs nicht als Zuordnungssignal verwendet.
 
 Dass alle 75.652 gelesenen Blueprints eine Bild-URL melden, ist nur ein technischer
 Verfügbarkeitswert. Es ist weder eine Nutzungsfreigabe noch ein Nachweis für Sprache,
@@ -117,7 +117,7 @@ Der Kataloglauf bestätigt unter anderem die Property-Namen `condition`,
 `pokemon_language`, `pokemon_reverse`, `first_edition`, `collector_number`,
 `pokemon_rarity` und `pokemon_species`. Noch offen bleiben:
 
-1. Die 284 Namenskandidaten anhand der erzeugten Prüfwarteschlange manuell bestätigen, zwei `Holon Phantoms`-Mehrdeutigkeiten auflösen und Aliasregeln für 63 nicht zugeordnete Sets entwickeln.
+1. Die 253 verbleibenden Namenskandidaten anhand der erzeugten Prüfwarteschlange manuell bestätigen, die fünf wegen Kartenzahl-Abweichungen zurückgestellten Sets und zwei `Holon Phantoms`-Mehrdeutigkeiten auflösen sowie Aliasregeln für 63 nicht zugeordnete Sets entwickeln.
 2. Eine separat geprüfte Quelle für Holo/Non-Holo/Shadowless identifizieren oder eine manuelle Variantentabelle entwerfen.
 3. Blueprint-Stichprobe für direkte Cardmarket-/TCGplayer-IDs.
 4. Bild-Host, Sprache, Auflösung und Rechtefreigabe getrennt prüfen.
