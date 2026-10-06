@@ -29,6 +29,16 @@ const catalogs = await Promise.all(["en", "de"].map(async (language) => {
 }));
 const sets = catalogs.flat();
 const expansions = snapshot.expansions.filter((expansion) => expansion.game_id === snapshot.pokemonGame.id);
+const singlesCategoryId = snapshot.categories.find((category) => category.name?.trim() === "Pokémon Singles")?.id;
+if (!singlesCategoryId) throw new Error("The snapshot has no Pokémon Singles category; card coverage cannot be audited.");
+const singlesBlueprintsByExpansion = new Map();
+for (const [expansionId, expansionBlueprints] of Object.entries(snapshot.blueprintsByExpansion ?? {})) {
+  const singles = expansionBlueprints.filter((blueprint) => blueprint.category_id === singlesCategoryId);
+  singlesBlueprintsByExpansion.set(expansionId, {
+    count: singles.length,
+    uniqueNames: new Set(singles.map((blueprint) => blueprint.name)).size,
+  });
+}
 const reviewed = new Map(review.mappings.map((mapping) => [mapping.catalogKey, mapping]));
 const namesBySetId = new Map();
 for (const set of sets) {
@@ -39,10 +49,12 @@ for (const set of sets) {
 
 const decisions = sets.map((set) => {
   const comparisonNames = [...(namesBySetId.get(set.id) ?? new Set([set.name]))];
+  const tcgdexCardCount = set.cardCount ?? null;
   const accepted = reviewed.get(set.catalogKey);
   if (accepted) {
     const expansion = expansions.find((candidate) => String(candidate.id) === String(accepted.cardtraderExpansionId));
     if (!expansion) throw new Error(`Reviewed mapping ${set.catalogKey} references an unknown CardTrader expansion.`);
+    const cardCoverage = singlesBlueprintsByExpansion.get(String(expansion.id)) ?? { count: 0, uniqueNames: 0 };
     return {
       catalogKey: set.catalogKey,
       setId: set.id,
@@ -50,14 +62,27 @@ const decisions = sets.map((set) => {
       language: set.language,
       seriesName: set.series?.name,
       releaseDate: set.releaseDate,
+      tcgdexCardCount,
       status: "verified",
       method: "manual-review",
       candidateExpansionIds: [String(accepted.cardtraderExpansionId)],
-      candidateExpansions: [expansionReference(expansion)],
+      candidateExpansions: [{
+        ...expansionReference(expansion),
+        singlesBlueprintCount: cardCoverage.count,
+        uniqueSinglesBlueprintNames: cardCoverage.uniqueNames,
+      }],
       suggestedExpansions: [],
     };
   }
   const candidates = exactExpansionMatches(comparisonNames, expansions);
+  const candidateExpansions = candidates.map((candidate) => {
+    const cardCoverage = singlesBlueprintsByExpansion.get(String(candidate.id)) ?? { count: 0, uniqueNames: 0 };
+    return {
+      ...expansionReference(candidate),
+      singlesBlueprintCount: cardCoverage.count,
+      uniqueSinglesBlueprintNames: cardCoverage.uniqueNames,
+    };
+  });
   const method = candidates.length
     ? candidates.some((candidate) => candidate.name === set.name) ? "exact-name" : "exact-cross-language-name"
     : "none";
@@ -68,11 +93,12 @@ const decisions = sets.map((set) => {
     language: set.language,
     seriesName: set.series?.name,
     releaseDate: set.releaseDate,
+    tcgdexCardCount,
     comparisonNames,
     status: candidates.length === 1 ? "review-required" : candidates.length > 1 ? "ambiguous" : "unmapped",
     method,
     candidateExpansionIds: candidates.map((candidate) => String(candidate.id)),
-    candidateExpansions: candidates.map(expansionReference),
+    candidateExpansions,
     suggestedExpansions: candidates.length ? [] : rankExpansionSuggestions(comparisonNames, expansions),
   };
 });
