@@ -135,7 +135,35 @@
     { "catalogKey": "en:sm5", "cardtraderExpansionId": "1599" },
     { "catalogKey": "de:sm5", "cardtraderExpansionId": "1599" },
     { "catalogKey": "en:sm6", "cardtraderExpansionId": "1600" },
-    { "catalogKey": "de:sm6", "cardtraderExpansionId": "1600" }
+    { "catalogKey": "de:sm6", "cardtraderExpansionId": "1600" },
+    { "catalogKey": "en:sm7", "cardtraderExpansionId": "1603" },
+    { "catalogKey": "de:sm7", "cardtraderExpansionId": "1603" },
+    { "catalogKey": "en:sm7.5", "cardtraderExpansionId": "1604" },
+    { "catalogKey": "de:sm7.5", "cardtraderExpansionId": "1604" },
+    { "catalogKey": "en:sm8", "cardtraderExpansionId": "1606" },
+    { "catalogKey": "de:sm8", "cardtraderExpansionId": "1606" },
+    { "catalogKey": "en:sv03", "cardtraderExpansionId": "3371" },
+    { "catalogKey": "de:sv03", "cardtraderExpansionId": "3371" },
+    { "catalogKey": "en:sv04", "cardtraderExpansionId": "3468" },
+    { "catalogKey": "de:sv04", "cardtraderExpansionId": "3468" },
+    { "catalogKey": "en:sv04.5", "cardtraderExpansionId": "3561" },
+    { "catalogKey": "de:sv04.5", "cardtraderExpansionId": "3561" },
+    { "catalogKey": "en:sv05", "cardtraderExpansionId": "3605" },
+    { "catalogKey": "de:sv05", "cardtraderExpansionId": "3605" },
+    { "catalogKey": "en:sv07", "cardtraderExpansionId": "3787" },
+    { "catalogKey": "de:sv07", "cardtraderExpansionId": "3787" },
+    { "catalogKey": "en:sv08", "cardtraderExpansionId": "3878" },
+    { "catalogKey": "de:sv08", "cardtraderExpansionId": "3878" },
+    { "catalogKey": "en:sv08.5", "cardtraderExpansionId": "3929" },
+    { "catalogKey": "de:sv08.5", "cardtraderExpansionId": "3929" },
+    { "catalogKey": "en:sv09", "cardtraderExpansionId": "4008" },
+    { "catalogKey": "de:sv09", "cardtraderExpansionId": "4008" },
+    { "catalogKey": "en:sv10", "cardtraderExpansionId": "4079" },
+    { "catalogKey": "de:sv10", "cardtraderExpansionId": "4079" },
+    { "catalogKey": "en:sv10.5b", "cardtraderExpansionId": "4195" },
+    { "catalogKey": "de:sv10.5b", "cardtraderExpansionId": "4195" },
+    { "catalogKey": "en:sv10.5w", "cardtraderExpansionId": "4196" },
+    { "catalogKey": "de:sv10.5w", "cardtraderExpansionId": "4196" }
   ],
   "notes": [
     "Only manually reviewed mappings belong in this file.",
@@ -145,6 +173,8 @@
     "Second batch: the next 25 English review-required candidates checked against authenticated CardTrader Pokémon Singles in read-only workflow 37412387905 on 2026-10-06. Twenty expansion matches confirmed by matching card counts and exact or TCGdex-linked EX-prefixed English expansion names; nineteen corresponding German locale records share those TCGdex set IDs and use the same expansion IDs.",
     "Third batch: English review-required candidates 51–75 checked against the same authenticated read-only audit on 2026-10-06. Nineteen expansion matches confirmed by matching card counts and exact or clearly corresponding TCGdex-linked names; fourteen corresponding German locale records share those TCGdex set IDs and use the same expansion IDs.",
     "Held for card-level follow-up due count mismatch: Generations (117 vs 83), Triumphant (103 vs 104), HGSS Black Star Promos (25 vs 33), MEP Black Star Promos (112 vs 131), Miscellaneous Promos (1 vs 110), Nintendo Black Star Promos (40 vs 63), POP Series 7 (17 vs 23 blueprints / 19 unique names), POP Series 8 (17 vs 29 / 18), Sun & Moon (172 vs 173 / 146), Unbroken Bonds (234 vs 236 / 182), Hidden Fates (69 vs 172 / 157), and Crimson Invasion (125 vs 124 / 104). Count mismatches may reflect catalog representation/variants and are not by themselves proof of an incorrect expansion.",
-    "Fourth batch: English review-required candidates 76–100 checked against the same authenticated read-only audit on 2026-10-06. Nineteen expansion matches confirmed by matching total blueprint counts, or—only for POP Series 1–6 and 9—matching distinct blueprint-name counts plus exact expansion names. Ten corresponding German locale records share the same TCGdex set IDs and use the same expansion IDs. The POP evidence confirms expansion-level coverage only, not printing/variant identity."
+    "Fourth batch: English review-required candidates 76–100 checked against the same authenticated read-only audit on 2026-10-06. Nineteen expansion matches confirmed by matching total blueprint counts, or—only for POP Series 1–6 and 9—matching distinct blueprint-name counts plus exact expansion names. Ten corresponding German locale records share the same TCGdex set IDs and use the same expansion IDs. The POP evidence confirms expansion-level coverage only, not printing/variant identity.",
+    "Fifth batch: English review-required candidates 101–125 checked against the same authenticated read-only audit on 2026-10-06. Fourteen exact-name expansion matches confirmed by matching TCGdex total-card and Pokémon Singles blueprint counts; all fourteen have a German locale record with the same TCGdex set ID and expansion ID.",
+    "Held for card-level follow-up due count mismatch: Team Up (196 vs 206), SM Black Star Promos (248 vs 333), Scarlet & Violet (258 vs 268), Paldea Evolved (279 vs 287), 151 (207 vs 208), Twilight Masquerade (226 vs 227), Shrouded Fable (99 vs 107), Sword & Shield (216 vs 228), Astral Radiance (216 vs 246), Lost Origin (217 vs 248), and Silver Tempest (215 vs 245). Count mismatches may reflect catalog representation/variants and are not by themselves proof of an incorrect expansion."
   ]
 }
