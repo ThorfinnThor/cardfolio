@@ -19,7 +19,13 @@ function exactRow(decision) {
 function suggestionCell(decision) {
   if (!decision.suggestedExpansions?.length) return "kein Vorschlag";
   return decision.suggestedExpansions
-    .map((candidate) => `${clean(candidate.name)} (${clean(candidate.code)}, ID ${clean(candidate.id)}, ${candidate.score})`)
+    .map((candidate) => {
+      const coverage = decision.suggestionCardNameCoverage?.find((entry) => entry.expansionId === candidate.id);
+      const coverageLabel = coverage?.status === "complete"
+        ? `, Namen ${coverage.normalizedUniqueNameMatches}/${coverage.tcgdexUniqueNameCount}`
+        : "";
+      return `${clean(candidate.name)} (${clean(candidate.code)}, ID ${clean(candidate.id)}, Ähnlichkeit ${candidate.score}, Blueprints ${candidate.singlesBlueprintCount}, eindeutige Namen ${candidate.uniqueSinglesBlueprintNames}${coverageLabel})`;
+    })
     .join("<br>");
 }
 

@@ -7,6 +7,8 @@ const discovery = JSON.parse(await readFile(discoveryPath, "utf8"));
 const audit = JSON.parse(await readFile(auditPath, "utf8"));
 const nameAudited = audit.decisions?.filter((decision) => decision.cardNameCoverage?.status === "complete") ?? [];
 const fullNormalizedNameCoverage = nameAudited.filter((decision) => decision.cardNameCoverage.normalizedCoverage === 1);
+const aliasAudited = audit.decisions?.filter((decision) => decision.suggestionCardNameCoverage?.some((entry) => entry.status === "complete")) ?? [];
+const aliasSuggestionsWithFullCoverage = aliasAudited.filter((decision) => decision.suggestionCardNameCoverage.some((entry) => entry.normalizedCoverage === 1));
 
 const rows = [
   "## CardTrader Read-only-Discovery",
@@ -21,6 +23,8 @@ const rows = [
   `- Nicht zugeordnet: ${audit.counts?.unmapped ?? 0}`,
   `- Kandidaten mit englischem Kartennamen-Abgleich: ${nameAudited.length}`,
   `- Davon mit vollständiger normalisierter Namensabdeckung: ${fullNormalizedNameCoverage.length}`,
+  `- Nicht zugeordnete EN-Sets mit geprüftem Alias-Vorschlag: ${aliasAudited.length}`,
+  `- Davon mit mindestens einem Vorschlag mit vollständiger Namensabdeckung: ${aliasSuggestionsWithFullCoverage.length}`,
   "",
   "> Der rohe Discovery-Snapshot wurde nicht als Artifact hochgeladen. Preise, Marketplace-Produkte, Bild-URLs, Wishlists, Warenkörbe und Käufe wurden nicht angefordert beziehungsweise nicht veröffentlicht.",
 ];
