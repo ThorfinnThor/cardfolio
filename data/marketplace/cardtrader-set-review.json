@@ -70,6 +70,8 @@
     { "catalogKey": "de:dp6", "cardtraderExpansionId": "1527" },
     { "catalogKey": "en:dp7", "cardtraderExpansionId": "1529" },
     { "catalogKey": "de:dp7", "cardtraderExpansionId": "1529" },
+    { "catalogKey": "en:dpp", "cardtraderExpansionId": "1517" },
+    { "catalogKey": "de:dpp", "cardtraderExpansionId": "1517" },
     { "catalogKey": "en:dv1", "cardtraderExpansionId": "1553" },
     { "catalogKey": "de:dv1", "cardtraderExpansionId": "1553" },
     { "catalogKey": "en:ecard1", "cardtraderExpansionId": "1488" },
@@ -145,6 +147,7 @@
     { "catalogKey": "en:pop4", "cardtraderExpansionId": "1512" },
     { "catalogKey": "en:pop5", "cardtraderExpansionId": "1516" },
     { "catalogKey": "en:pop6", "cardtraderExpansionId": "1520" },
+    { "catalogKey": "en:pop7", "cardtraderExpansionId": "1524" },
     { "catalogKey": "en:pop8", "cardtraderExpansionId": "1528" },
     { "catalogKey": "en:pop9", "cardtraderExpansionId": "1531" },
     { "catalogKey": "en:ru1", "cardtraderExpansionId": "1535" },
@@ -303,6 +306,7 @@
     "Held for card-level follow-up due count mismatch: XY (146 vs 151), Flashfire (110 vs 109), Phantom Forces (124 vs 122), Roaring Skies (112 vs 110), Ancient Origins (101 vs 100), BREAKpoint (126 vs 123), and XY Black Star Promos (216 vs 271). Count mismatches may reflect catalog representation/variants and are not by themselves proof of an incorrect expansion.",
     "Eighth batch: Best of Game (9 official cards vs 18 total blueprints), Generations (83 official cards vs 83 unique blueprint names), and Twilight Masquerade (167 official cards vs 167 unique blueprint names) were confirmed against the full read-only audit. The exact expansion names/IDs matched, and the distinct-name count equals the official TCGdex card count. The mapping confirms expansion-level coverage only; printing and variant identity remain unverified. German Generations and Maskerade im Zwielicht records use the same expansion IDs.",
     "Ninth batch: workflow 37592043338 compared aggregate English card-name coverage for all 44 remaining exact-name count mismatches. Twenty-eight exact expansion candidates contained every normalized unique TCGdex card name and were confirmed at expansion level; 24 corresponding German records share those TCGdex set IDs and expansion IDs. The artifact exposes counts only, not raw card-name lists. Printing, finish, language variant and individual blueprint identity remain unverified.",
-    "Tenth batch: fourteen of the sixteen remaining English exact-name candidates were confirmed at expansion level using at least 94% normalized TCGdex-name coverage, or complete reverse coverage for Legendary Treasures where CardTrader contains an exact-name subset. Twelve corresponding German records share the same set and expansion IDs. DP Black Star Promos and POP Series 7 remain review-required. High name overlap confirms the expansion only, never an individual printing or variant."
+    "Tenth batch: fourteen of the sixteen remaining English exact-name candidates were confirmed at expansion level using at least 94% normalized TCGdex-name coverage, or complete reverse coverage for Legendary Treasures where CardTrader contains an exact-name subset. Twelve corresponding German records share the same set and expansion IDs. DP Black Star Promos and POP Series 7 remained review-required at this stage. High name overlap confirms the expansion only, never an individual printing or variant.",
+    "Eleventh batch: DP Black Star Promos (CardTrader expansion 1517) and POP Series 7 (1524) were confirmed from their official CardTrader expansion pages. CardTrader explicitly describes POP Series 7 as a 17-card checklist while exposing 23 Singles blueprints, proving the excess is catalog representation rather than a different expansion. DP Black Star Promos is likewise the exact official expansion and includes additional Singles/variant records. English and German DP catalog records share expansion 1517. Individual printing and variant mappings remain unverified."
   ]
 }
