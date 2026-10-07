@@ -6,7 +6,7 @@ Stand: 7. Oktober 2026
 
 CardTrader ist in Cardfolio **noch nicht produktiv freigegeben**. Die providerneutrale Katalogschnittstelle, Laufzeitschemas, konservative Mappinglogik und reproduzierbare Audit-Werkzeuge sind vorbereitet. Alle UI-Flags bleiben aus.
 
-Das GitHub-Actions-Secret `CARDTRADER_API_TOKEN` wurde am 4. Oktober 2026 unter dem korrekten Namen registriert; sein Wert wurde nicht gelesen oder ausgegeben. Die vollständigen authentifizierten Read-only-Läufe [37412387905](https://github.com/ThorfinnThor/cardfolio/actions/runs/37412387905), [37524478301](https://github.com/ThorfinnThor/cardfolio/actions/runs/37524478301), [37589460298](https://github.com/ThorfinnThor/cardfolio/actions/runs/37589460298), der Kartenname-Audit [37592043338](https://github.com/ThorfinnThor/cardfolio/actions/runs/37592043338) und der bestätigende Abschlusslauf [37592887597](https://github.com/ThorfinnThor/cardfolio/actions/runs/37592887597) wurden am 6./7. Oktober erfolgreich abgeschlossen. Der Kartenname-Audit verglich alle 44 verbliebenen englischen Mengendifferenzen. Bei 28 exakt benannten Expansionen waren sämtliche normalisierten eindeutigen TCGdex-Kartennamen in CardTrader vorhanden; diese 28 englischen und 24 zugehörigen deutschen Datensätze wurden auf Expansionsebene bestätigt. Damit sind 148 englische Expansion-Zuordnungen bestätigt; 107 gleich-IDige deutsche Katalogdatensätze verwenden dieselben Expansionen. Der Abschlusslauf bestätigt 255 verifizierte und 29 weiter zu prüfende sprachspezifische Datensätze. 16 englische Sets mit unvollständiger Namensabdeckung bleiben ungeprüft. Der Folgeaudit zeigte außerdem, dass `collector_number` in den Blueprint-Daten nicht als durchgängige individuelle Kartennummer vorliegt: Im gesamten Katalog war nur ein Blueprint mit einem konfigurierten Standardwert vorhanden. Eine schriftliche Produktionsfreigabe von CardTrader liegt weiterhin nicht vor. Preise, Verfügbarkeit, Providerbilder und verbundene Wishlists bleiben deshalb No-Go.
+Das GitHub-Actions-Secret `CARDTRADER_API_TOKEN` wurde am 4. Oktober 2026 unter dem korrekten Namen registriert; sein Wert wurde nicht gelesen oder ausgegeben. Die vollständigen authentifizierten Read-only-Läufe [37412387905](https://github.com/ThorfinnThor/cardfolio/actions/runs/37412387905), [37524478301](https://github.com/ThorfinnThor/cardfolio/actions/runs/37524478301), [37589460298](https://github.com/ThorfinnThor/cardfolio/actions/runs/37589460298), der Kartenname-Audit [37592043338](https://github.com/ThorfinnThor/cardfolio/actions/runs/37592043338) und der bestätigende Abschlusslauf [37592887597](https://github.com/ThorfinnThor/cardfolio/actions/runs/37592887597) wurden am 6./7. Oktober erfolgreich abgeschlossen. Der Kartenname-Audit verglich alle 44 verbliebenen englischen Mengendifferenzen. Zunächst wurden 28 exakt benannte Expansionen mit vollständiger normalisierter TCGdex-Namensabdeckung bestätigt. Weitere 14 exakte Kandidaten wurden anschließend mit mindestens 94 % TCGdex-Namensabdeckung bestätigt; bei Legendary Treasures war stattdessen die CardTrader-Namensmenge vollständig in TCGdex enthalten. Damit sind 162 englische Expansion-Zuordnungen bestätigt; 119 gleich-IDige deutsche Katalogdatensätze verwenden dieselben Expansionen. Es bleiben DP Black Star Promos, dessen Namensabdeckung auffällig niedrig ist, sowie POP Series 7 und der deutsche DP-Datensatz ungeprüft. Der Folgeaudit zeigte außerdem, dass `collector_number` in den Blueprint-Daten nicht als durchgängige individuelle Kartennummer vorliegt: Im gesamten Katalog war nur ein Blueprint mit einem konfigurierten Standardwert vorhanden. Eine schriftliche Produktionsfreigabe von CardTrader liegt weiterhin nicht vor. Preise, Verfügbarkeit, Providerbilder und verbundene Wishlists bleiben deshalb No-Go.
 
 ### Aktueller Abdeckungsbericht
 
@@ -19,15 +19,15 @@ Das GitHub-Actions-Secret `CARDTRADER_API_TOKEN` wurde am 4. Oktober 2026 unter 
 | Gelesene Blueprints | 75.652 |
 | Blueprints mit `image_url` | 75.652 |
 | Blueprints ohne `image_url` | 0 |
-| Manuell verifizierte sprachspezifische CardTrader-Zuordnungen | 255 |
+| Manuell verifizierte sprachspezifische CardTrader-Zuordnungen | 281 |
 | Automatisch freigegebene Namenskandidaten | 0 |
-| Manuell zu prüfende Namenskandidaten | 29 |
+| Manuell zu prüfende Namenskandidaten | 3 |
 | Mehrdeutige Namenskandidaten | 2 |
 | Nicht zugeordnete Setdatensätze | 63 |
 | Nicht zugeordnet, aber mit unverbindlichem Vorschlag | 59 |
 | Nicht zugeordnet und ohne Vorschlag | 4 |
 
-Damit beträgt die **manuell bestätigte sprachspezifische Expansion-Abdeckung 255/349 (73,1 %)**. Die Zuordnungen belegen die Expansion, nicht die Identität jedes einzelnen Blueprints oder einer konkreten Kartenvariante. 29 weitere direkte oder sprachübergreifend exakte Namenskandidaten bleiben `review-required`; davon sind 16 englische Kandidaten mit unvollständiger Kartenname-Abdeckung und 13 die zugehörigen deutschen Datensätze. Die zwei echten Mehrdeutigkeiten betreffen `Holon Phantoms`. Von den 63 nicht zugeordneten Datensätzen besitzen 59 lediglich unverbindliche Ähnlichkeitsvorschläge; vier haben keinen Vorschlag. CardTrader-Codes werden wegen belegter Kollisionen mit TCGdex-Set-IDs nicht als Zuordnungssignal verwendet.
+Damit beträgt die **manuell bestätigte sprachspezifische Expansion-Abdeckung 281/349 (80,5 %)**. Die Zuordnungen belegen die Expansion, nicht die Identität jedes einzelnen Blueprints oder einer konkreten Kartenvariante. Drei direkte oder sprachübergreifend exakte Namenskandidaten bleiben `review-required`: DP Black Star Promos in EN und DE sowie POP Series 7 in EN. Die zwei echten Mehrdeutigkeiten betreffen `Holon Phantoms`. Von den 63 nicht zugeordneten Datensätzen besitzen 59 lediglich unverbindliche Ähnlichkeitsvorschläge; vier haben keinen Vorschlag. CardTrader-Codes werden wegen belegter Kollisionen mit TCGdex-Set-IDs nicht als Zuordnungssignal verwendet.
 
 Dass alle 75.652 gelesenen Blueprints eine Bild-URL melden, ist nur ein technischer
 Verfügbarkeitswert. Es ist weder eine Nutzungsfreigabe noch ein Nachweis für Sprache,
@@ -117,7 +117,7 @@ Der Kataloglauf bestätigt unter anderem die Property-Namen `condition`,
 `pokemon_language`, `pokemon_reverse`, `first_edition`, `collector_number`,
 `pokemon_rarity` und `pokemon_species`. Noch offen bleiben:
 
-1. Die 29 verbleibenden Namenskandidaten auf Kartenebene prüfen, die zwei `Holon Phantoms`-Mehrdeutigkeiten auflösen und nachvollziehbare Aliasregeln für 63 nicht zugeordnete Sets entwickeln.
+1. DP Black Star Promos und POP Series 7 anhand der verbleibenden Namensabweichungen prüfen, die zwei `Holon Phantoms`-Mehrdeutigkeiten auflösen und nachvollziehbare Aliasregeln für 63 nicht zugeordnete Sets entwickeln.
 2. Eine separat geprüfte Quelle für Holo/Non-Holo/Shadowless identifizieren oder eine manuelle Variantentabelle entwerfen.
 3. Blueprint-Stichprobe für direkte Cardmarket-/TCGplayer-IDs.
 4. Bild-Host, Sprache, Auflösung und Rechtefreigabe getrennt prüfen.
