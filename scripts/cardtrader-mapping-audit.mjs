@@ -7,6 +7,10 @@ import {
 } from "./cardtrader-set-matching.mjs";
 
 const args = process.argv.slice(2);
+const TCGDEX_API_BASE = "https://api.tcgdex.net/v2/en";
+const REQUEST_TIMEOUT_MS = 30_000;
+const MAX_ATTEMPTS = 3;
+
 function requiredOption(name) {
   const index = args.indexOf(name);
   const value = index >= 0 ? args[index + 1] : undefined;
@@ -17,6 +21,46 @@ function requiredOption(name) {
 function option(name, fallback) {
   const index = args.indexOf(name);
   return resolve(index >= 0 ? args[index + 1] : fallback);
+}
+
+function wait(milliseconds) {
+  return new Promise((resolveWait) => setTimeout(resolveWait, milliseconds));
+}
+
+async function fetchTcgdexSet(setId) {
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt += 1) {
+    try {
+      const response = await fetch(`${TCGDEX_API_BASE}/sets/${encodeURIComponent(setId)}`, {
+        headers: { Accept: "application/json" },
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+      });
+      if (response.ok) return response.json();
+      if (response.status < 500 || attempt === MAX_ATTEMPTS) {
+        throw new Error(`TCGdex set ${setId} failed with HTTP ${response.status}.`);
+      }
+    } catch (error) {
+      if (attempt === MAX_ATTEMPTS) throw error;
+    }
+    await wait(attempt * 1_000);
+  }
+  throw new Error(`TCGdex set ${setId} could not be loaded.`);
+}
+
+function caseFoldCardName(value) {
+  return String(value ?? "").normalize("NFKC").trim().toLocaleLowerCase("en");
+}
+
+function normalizeCardName(value) {
+  return caseFoldCardName(value)
+    .normalize("NFKD")
+    .replaceAll(/\p{Diacritic}/gu, "")
+    .replaceAll(/[^a-z0-9]+/g, "");
+}
+
+function overlapCount(left, right) {
+  let matches = 0;
+  for (const value of left) if (value && right.has(value)) matches += 1;
+  return matches;
 }
 
 const snapshotPath = requiredOption("--snapshot");
@@ -117,12 +161,60 @@ const decisions = sets.map((set) => {
   };
 });
 
+const englishNameAuditCandidates = decisions.filter((decision) => (
+  decision.language === "en"
+  && decision.status === "review-required"
+  && decision.candidateExpansionIds.length === 1
+));
+for (let index = 0; index < englishNameAuditCandidates.length; index += 8) {
+  const batch = englishNameAuditCandidates.slice(index, index + 8);
+  const results = await Promise.all(batch.map(async (decision) => {
+    const expansionId = decision.candidateExpansionIds[0];
+    try {
+      const tcgdexSet = await fetchTcgdexSet(decision.setId);
+      if (!Array.isArray(tcgdexSet.cards)) throw new Error(`TCGdex set ${decision.setId} has no card list.`);
+      const cardtraderBlueprints = (snapshot.blueprintsByExpansion?.[expansionId] ?? [])
+        .filter((blueprint) => blueprint.category_id === singlesCategoryId);
+      const tcgdexCaseFolded = new Set(tcgdexSet.cards.map((card) => caseFoldCardName(card.name)).filter(Boolean));
+      const cardtraderCaseFolded = new Set(cardtraderBlueprints.map((blueprint) => caseFoldCardName(blueprint.name)).filter(Boolean));
+      const tcgdexNormalized = new Set(tcgdexSet.cards.map((card) => normalizeCardName(card.name)).filter(Boolean));
+      const cardtraderNormalized = new Set(cardtraderBlueprints.map((blueprint) => normalizeCardName(blueprint.name)).filter(Boolean));
+      const caseFoldedMatches = overlapCount(tcgdexCaseFolded, cardtraderCaseFolded);
+      const normalizedMatches = overlapCount(tcgdexNormalized, cardtraderNormalized);
+      return [decision.setId, expansionId, {
+        status: "complete",
+        sourceLanguage: "en",
+        tcgdexCardCount: tcgdexSet.cards.length,
+        tcgdexUniqueNameCount: tcgdexCaseFolded.size,
+        cardtraderUniqueNameCount: cardtraderCaseFolded.size,
+        exactUniqueNameMatches: caseFoldedMatches,
+        normalizedUniqueNameMatches: normalizedMatches,
+        unmatchedTcgdexUniqueNames: Math.max(tcgdexNormalized.size - normalizedMatches, 0),
+        exactCoverage: tcgdexCaseFolded.size ? caseFoldedMatches / tcgdexCaseFolded.size : 0,
+        normalizedCoverage: tcgdexNormalized.size ? normalizedMatches / tcgdexNormalized.size : 0,
+      }];
+    } catch {
+      return [decision.setId, expansionId, {
+        status: "unavailable",
+        sourceLanguage: "en",
+      }];
+    }
+  }));
+
+  for (const [setId, expansionId, cardNameCoverage] of results) {
+    for (const decision of decisions) {
+      if (decision.setId !== setId || decision.candidateExpansionIds[0] !== expansionId) continue;
+      decision.cardNameCoverage = cardNameCoverage;
+    }
+  }
+}
+
 const counts = Object.fromEntries(["verified", "review-required", "ambiguous", "unmapped"].map((status) => [
   status,
   decisions.filter((decision) => decision.status === status).length,
 ]));
 const report = {
-  schemaVersion: 2,
+  schemaVersion: 3,
   generatedAt: new Date().toISOString(),
   snapshotGeneratedAt: snapshot.generatedAt,
   catalogSetCount: sets.length,
@@ -130,7 +222,7 @@ const report = {
   counts,
   verifiedCoverage: sets.length ? counts.verified / sets.length : 0,
   decisions,
-  policy: "Only entries in cardtrader-set-review.json are verified. Exact-name results remain review-required.",
+  policy: "Only entries in cardtrader-set-review.json are verified. Exact-name and card-name-overlap results remain review-required until manually reviewed. Card names are reduced to aggregate counts in this report.",
 };
 
 await writeFile(outputPath, `${JSON.stringify(report, null, 2)}\n`);
