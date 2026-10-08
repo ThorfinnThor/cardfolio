@@ -164,7 +164,11 @@ Ohne verbundene CardTrader-Sitzung erzeugt Cardfolio nur eine überprüfbare Vor
 - [x] Schritt 5 — Visueller Karten- und Set-Browser
 - [x] Schritt 6 — Mehrfachauswahl, Set-Binder und Fehlkarten-Gruppierung
 - [x] Schritt 7 — Geführte Binder-Erstellung und Mehrfach-UX
-- [ ] Schritte 8–12
+- [x] Schritt 8 — CardTrader Discovery, Mapping und Rechte-Gate; produktive Daten bleiben NO-GO
+- [x] Schritt 9 — CardTrader-UX vorbereitet und hinter deaktivierten Flags geschützt
+- [ ] Schritt 10 — Extern blockiert: keine Freigabe und kein vertrauenswürdiges Karten-/Variantenmapping
+- [ ] Schritt 11 — Technische Fokusarbeit erledigt; menschliche Viewport-, Screenreader- und Einsteigerabnahme offen
+- [x] Schritt 12 — Technischer Release-Kandidat dokumentiert; öffentliche Produktion bleibt NO-GO
 
 ## Schritt 1 — Luna: Einsteigerstrecke und Kartenbrowser-Spezifikation
 
@@ -424,7 +428,9 @@ Ohne verbundene CardTrader-Sitzung erzeugt Cardfolio nur eine überprüfbare Vor
 
 **Abnahme:** Kein P0/P1-Fehler, keine Secrets oder nicht freigegebenen Daten im Client, alle Kernstrecken grün und jede externe Behauptung mit Datenstand/Quelle versehen.
 
-**Danach:** Den Nutzer um ausdrückliche Freigabe für Merge und Deployment bitten.
+**Umsetzungsstand 08.10.2026:** Für den Anwendungscommit `0f92ecadfed801f1939f92adf5b0257ad8ab26c1` bestehen Typecheck, Lint, 44 Testdateien mit 248 Unit-/Component-Tests, statischer Build, Release-Checks, reproduzierbare Release-Evidence und 21 Chromium-E2E-Tests ohne Flaky Retry. Die E2E-Strecke umfasst Einzelkarte, Reload, Undo, atomare Mehrfachauswahl, fortlaufende Befüllung, Set-Binder, Smart-Search-Einfügen, Backup/Restore sowie Marketplace-Handoffs. Bundle, öffentliche Daten, semantischer Index, Katalog- und Mappingabdeckung werden maschinenlesbar im CI-Lauf protokolliert; es werden null Raster-Kartenbilder ausgeliefert. Die technische Go/No-Go-Tabelle, Rollbackgrenzen und verbleibenden menschlichen beziehungsweise externen Blocker stehen in `docs/technical-release-candidate-2026-10-08.md`. CardTrader-Datenarten bleiben einzeln deaktiviert. Öffentliche Produktion und Deployment sind nicht freigegeben.
+
+**Danach:** Zu Luna wechseln und die noch offene menschliche Abnahme aus Schritt 11 durchführen. Erst nach Schließen aller übrigen NO-GO-Gates darf Sol einen finalen Produktions-Release-Record vorbereiten und um ausdrückliche Deployment-Freigabe bitten.
 
 ## Empfohlene Priorität
 
