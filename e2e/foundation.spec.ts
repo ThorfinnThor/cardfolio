@@ -337,7 +337,12 @@ test("reviews multiple cards and fills from the next free slot continuously", as
   await search.getByRole("button", { name: "Auswahl prüfen" }).click();
 
   const review = page.getByRole("dialog", { name: "2 Karten als Auswahl übernehmen" });
-  for (const finish of await review.getByLabel("Finish").all()) await finish.selectOption("normal");
+  const reviewItems = review.locator("details");
+  for (let index = 0; index < await reviewItems.count(); index += 1) {
+    const reviewItem = reviewItems.nth(index);
+    if ((await reviewItem.getAttribute("open")) === null) await reviewItem.locator("summary").click();
+    await reviewItem.getByLabel("Finish").selectOption("normal");
+  }
   await review.getByLabel("Ab nächstem freien Platz fortlaufend").check();
   await review.getByRole("button", { name: "Auswahl übernehmen" }).click();
 
@@ -353,9 +358,14 @@ test("creates a reviewed set binder through the guided start", async ({ page }) 
 
   const wizard = page.getByRole("region", { name: "Binder mit einem Set erstellen" });
   await wizard.getByPlaceholder(/Base Set/).fill("Base Set");
-  await wizard.getByRole("button").filter({ hasText: /^Base Set/ }).first().click();
+  const baseSet = wizard.locator('[aria-label="Sets auswählen"] button').filter({
+    has: wizard.getByText("Base Set", { exact: true }),
+  });
+  await expect(baseSet).toHaveCount(1);
+  await baseSet.click();
   await wizard.getByRole("button", { name: "Set prüfen" }).click();
-  await expect(wizard.getByText(/1 Karten · 1 Seiten/)).toBeVisible();
+  await expect(wizard.getByLabel("Bindername")).toHaveValue("Base Set");
+  await expect(wizard.getByText(/Katalog liefert 1 von erwarteten 102 Karten/).first()).toBeVisible();
   await wizard.getByLabel("Bindername").fill("Geführtes Base Set");
   await wizard.getByRole("button", { name: "Binder anlegen" }).click();
 
