@@ -402,6 +402,8 @@ Ohne verbundene CardTrader-Sitzung erzeugt Cardfolio nur eine überprüfbare Vor
 
 **Abnahme:** Die definierten Einsteigeraufgaben sind ohne externe Erklärung abschließbar; es gibt keine Fokusfalle, verdeckte Hauptaktion oder rein farbliche Statusinformation.
 
+**Umsetzungsstand 08.10.2026:** Die gemeinsame Modal-Schicht hält den Tastaturfokus jetzt in allen echten Bestätigungs- und Auswahlfenstern, unterstützt zyklisches Tabben und schließt per Escape über die jeweils sichtbare Abbrechen-Aktion. Die Suchleiste behält ihre bestehende mobile Fokus-Rückgabe. Der Browser-Test deckt den Fokuszyklus und Escape im Binder-Umbenennen ab; die lokale macOS-Sandbox konnte Chromium beim gezielten Playwright-Lauf wegen einer Betriebssystem-Berechtigung (`MachPortRendezvous … Permission denied`) nicht starten, daher bleibt die vollständige Browserabnahme CI-pflichtig. Die vier Viewports, Screenreader-Prüfung und der Einsteigertest mit Personen bleiben offen.
+
 **Danach:** Zu Sol wechseln.
 
 ## Schritt 12 — Sol: End-to-End-Abnahme und Release-Gates

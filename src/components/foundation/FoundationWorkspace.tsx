@@ -77,6 +77,16 @@ import { VariantFields } from "./VariantFields";
 import styles from "./foundation-workspace.module.css";
 
 const MAX_IMPORT_BYTES = 5 * 1024 * 1024;
+const MODAL_FOCUSABLE_SELECTOR = [
+  "a[href]",
+  "button:not(:disabled)",
+  "input:not(:disabled)",
+  "select:not(:disabled)",
+  "textarea:not(:disabled)",
+  "summary",
+  "[contenteditable=\"true\"]",
+  "[tabindex]:not([tabindex=\"-1\"])",
+].join(",");
 
 const disabledGiftPriceProvider: PriceProvider = {
   async getPrice(request: GiftPriceRequest) {
@@ -249,6 +259,57 @@ function AutosaveTextarea({
   );
 }
 
+function useModalFocusManagement(open: boolean) {
+  useEffect(() => {
+    if (!open) return;
+    const dialog = document.querySelector<HTMLElement>('[role="dialog"][aria-modal="true"]');
+    if (!dialog) return;
+
+    const focusableElements = () => Array.from(dialog.querySelectorAll<HTMLElement>(MODAL_FOCUSABLE_SELECTOR))
+      .filter((element) => element.getClientRects().length > 0 && !element.hasAttribute("aria-hidden"));
+    const initialFocus = window.requestAnimationFrame(() => {
+      const current = document.activeElement;
+      if (current instanceof HTMLElement && dialog.contains(current)) return;
+      focusableElements()[0]?.focus();
+    });
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!dialog.isConnected) return;
+      if (event.key === "Escape") {
+        const cancel = dialog.querySelector<HTMLButtonElement>("[data-dialog-cancel]");
+        if (cancel) {
+          event.preventDefault();
+          cancel.click();
+        }
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const focusable = focusableElements();
+      if (!focusable.length) {
+        event.preventDefault();
+        dialog.focus();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const current = document.activeElement;
+      if (event.shiftKey && (current === first || !dialog.contains(current))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (current === last || !dialog.contains(current))) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    if (!dialog.hasAttribute("tabindex")) dialog.tabIndex = -1;
+    document.addEventListener("keydown", handleKeyDown, true);
+    return () => {
+      window.cancelAnimationFrame(initialFocus);
+      document.removeEventListener("keydown", handleKeyDown, true);
+    };
+  }, [open]);
+}
+
 function interleaveSearchResults(
   germanItems: readonly CatalogSearchItem[],
   englishItems: readonly CatalogSearchItem[],
@@ -340,6 +401,8 @@ export function FoundationWorkspace() {
   const syncChannelRef = useRef<BroadcastChannel | undefined>(undefined);
   const searchReturnFocusRef = useRef<HTMLElement | null>(null);
   const searchDrawerRef = useRef<HTMLElement | null>(null);
+  const modalReturnFocusRef = useRef<HTMLElement | null>(null);
+  const previousModalOpenRef = useRef(false);
   const searchScrollTopRef = useRef(0);
   const pageSelectionTokenRef = useRef(0);
   const bindersRef = useRef<Binder[]>([]);
@@ -405,6 +468,27 @@ export function FoundationWorkspace() {
     ? activeBinder.pages[insertionTargetPageIndex]
     : undefined;
   const insertionTargetPageTitle = insertionTargetPage?.title || (insertionTargetPageIndex >= 0 ? `Seite ${insertionTargetPageIndex + 1}` : undefined);
+  const modalOpen = Boolean(binderRename || pageRename || binderToDelete || pageToDelete || cardToRemove || variantEdit || layoutChange || pageSelectionReviewOpen);
+
+  useModalFocusManagement(modalOpen);
+
+  useEffect(() => {
+    const rememberFocus = (event: FocusEvent) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement) || target.closest('[role="dialog"][aria-modal="true"]')) return;
+      modalReturnFocusRef.current = target;
+    };
+    document.addEventListener("focusin", rememberFocus);
+    return () => document.removeEventListener("focusin", rememberFocus);
+  }, []);
+
+  useEffect(() => {
+    if (!modalOpen && previousModalOpenRef.current) {
+      const returnFocus = modalReturnFocusRef.current;
+      if (returnFocus && document.contains(returnFocus)) window.requestAnimationFrame(() => returnFocus.focus());
+    }
+    previousModalOpenRef.current = modalOpen;
+  }, [modalOpen]);
 
   useEffect(() => {
     repository
@@ -1809,7 +1893,7 @@ export function FoundationWorkspace() {
                 <small>{binderRename.name.length} / {BINDER_NAME_MAX_LENGTH}</small>
               </label>
               <div className={styles.dialogActions}>
-                <button type="button" className={styles.secondaryButton} onClick={() => setBinderRename(undefined)}>Abbrechen</button>
+                <button type="button" className={styles.secondaryButton} data-dialog-cancel onClick={() => setBinderRename(undefined)}>Abbrechen</button>
                 <button type="submit" className={styles.confirmButton} disabled={!binderRename.name.trim()}>Namen speichern</button>
               </div>
             </form>
@@ -1837,7 +1921,7 @@ export function FoundationWorkspace() {
                 <small>{pageRename.title.length} / {PAGE_TITLE_MAX_LENGTH}</small>
               </label>
               <div className={styles.dialogActions}>
-                <button type="button" className={styles.secondaryButton} onClick={() => setPageRename(undefined)}>Abbrechen</button>
+                <button type="button" className={styles.secondaryButton} data-dialog-cancel onClick={() => setPageRename(undefined)}>Abbrechen</button>
                 <button type="submit" className={styles.confirmButton}>Titel speichern</button>
               </div>
             </form>
@@ -1852,7 +1936,7 @@ export function FoundationWorkspace() {
             <h2 id="delete-binder-heading">„{binderToDelete.name}“ wirklich löschen?</h2>
             <p>Alle Seiten und Karten dieses Binders werden aus diesem Browser entfernt. Ein Export ist danach nicht mehr möglich.</p>
             <div className={styles.dialogActions}>
-              <button type="button" className={styles.secondaryButton} onClick={() => setBinderToDelete(undefined)}>Abbrechen</button>
+              <button type="button" className={styles.secondaryButton} data-dialog-cancel onClick={() => setBinderToDelete(undefined)}>Abbrechen</button>
               <button type="button" className={styles.dangerButton} onClick={deleteBinder}>Binder löschen</button>
             </div>
           </section>
@@ -1871,7 +1955,7 @@ export function FoundationWorkspace() {
               {pageToDelete.hasNote ? " Auch die Seitennotiz wird gelöscht." : ""}
             </p>
             <div className={styles.dialogActions}>
-              <button type="button" className={styles.secondaryButton} onClick={() => setPageToDelete(undefined)}>Abbrechen</button>
+              <button type="button" className={styles.secondaryButton} data-dialog-cancel onClick={() => setPageToDelete(undefined)}>Abbrechen</button>
               <button type="button" className={styles.dangerButton} onClick={confirmPageDelete}>Seite löschen</button>
             </div>
           </section>
@@ -1885,7 +1969,7 @@ export function FoundationWorkspace() {
             <h2 id="remove-card-heading">„{cardToRemove.label}“ aus dem Binder entfernen?</h2>
             <p>Die Karte wird aus diesem lokalen Binder entfernt. Dieser Schritt kann nicht automatisch rückgängig gemacht werden.</p>
             <div className={styles.dialogActions}>
-              <button type="button" className={styles.secondaryButton} onClick={() => setCardToRemove(undefined)}>Abbrechen</button>
+              <button type="button" className={styles.secondaryButton} data-dialog-cancel onClick={() => setCardToRemove(undefined)}>Abbrechen</button>
               <button type="button" className={styles.dangerButton} onClick={confirmRemoveCard}>Karte entfernen</button>
             </div>
           </section>
@@ -1906,7 +1990,7 @@ export function FoundationWorkspace() {
               onPreferencesChange={(preferences) => setVariantEdit((current) => current ? { ...current, preferences } : current)}
             />
             <div className={styles.dialogActions}>
-              <button type="button" className={styles.secondaryButton} onClick={() => setVariantEdit(undefined)}>Abbrechen</button>
+              <button type="button" className={styles.secondaryButton} data-dialog-cancel onClick={() => setVariantEdit(undefined)}>Abbrechen</button>
               <button type="button" className={styles.confirmButton} disabled={!isVariantSelectionValid(variantEdit.variant, variantEdit.availableVariants)} onClick={saveVariantEdit}>Angaben speichern</button>
             </div>
           </section>
@@ -1928,7 +2012,7 @@ export function FoundationWorkspace() {
               <span><strong>{layoutChange.preview.pagesAfter}</strong> Seiten danach</span>
             </div>
             <div className={styles.dialogActions}>
-              <button type="button" className={styles.secondaryButton} onClick={() => setLayoutChange(undefined)}>Abbrechen</button>
+              <button type="button" className={styles.secondaryButton} data-dialog-cancel onClick={() => setLayoutChange(undefined)}>Abbrechen</button>
               <button type="button" className={styles.confirmButton} onClick={confirmLayoutChange}>Format anwenden</button>
             </div>
           </section>

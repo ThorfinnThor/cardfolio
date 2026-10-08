@@ -336,8 +336,20 @@ test("renames binders and safely duplicates and deletes pages", async ({ page })
   const renameDialog = page.getByRole("dialog", { name: "Binder umbenennen" });
   const nameInput = renameDialog.getByRole("textbox", { name: "Bindername" });
   await expect(nameInput).toHaveAttribute("maxlength", "100");
-  await nameInput.fill("Verwaltung Neu");
-  await renameDialog.getByRole("button", { name: "Namen speichern" }).click();
+  await expect(nameInput).toBeFocused();
+  await page.keyboard.press("Tab");
+  await page.keyboard.press("Tab");
+  await page.keyboard.press("Tab");
+  await expect(nameInput).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(renameDialog).toBeHidden();
+  await expect(page.getByRole("button", { name: "Binder umbenennen" })).toBeFocused();
+  await page.getByRole("button", { name: "Binder umbenennen" }).click();
+  const reopenedRenameDialog = page.getByRole("dialog", { name: "Binder umbenennen" });
+  const reopenedNameInput = reopenedRenameDialog.getByRole("textbox", { name: "Bindername" });
+  await expect(reopenedNameInput).toBeFocused();
+  await reopenedNameInput.fill("Verwaltung Neu");
+  await reopenedRenameDialog.getByRole("button", { name: "Namen speichern" }).click();
   await expect(page.getByRole("heading", { name: "Verwaltung Neu", exact: true })).toBeVisible();
 
   await addCard(page, 1, "Bulbasaur", "Bulbasaur");

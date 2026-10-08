@@ -140,7 +140,7 @@ export function PageSelectionReview({
         ) : null}
         <div className={styles.dialogActions}>
           <button type="button" className={styles.secondaryButton} disabled={submitting} onClick={onContinueSearch}>Weitere Karten auswählen</button>
-          <button type="button" className={styles.secondaryButton} disabled={submitting} onClick={onCancel}>Abbrechen</button>
+          <button type="button" className={styles.secondaryButton} data-dialog-cancel disabled={submitting} onClick={onCancel}>Abbrechen</button>
           <button type="button" className={styles.confirmButton} disabled={loading || submitting || !complete || !items.length || (target === "new-binder" && !binderName.trim())} onClick={() => onConfirm(target, binderName)}>
             {submitting ? "Wird gespeichert…" : "Auswahl übernehmen"}
           </button>
