@@ -625,7 +625,7 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await expect(page.getByRole("heading", { name: /Geschenk · Pikachu/ })).toBeVisible();
   await expect(page.getByText(/Die Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten/i)).toBeVisible();
   await expect(page.getByText("Kein bestätigter Preis", { exact: true })).toBeVisible();
-  await expect(page.getByText(/Zurzeit ist kein geprüfter Personalisierungsanbieter verfügbar/i)).toBeVisible();
+  await expect(page.getByText(/Es ist noch kein Anbieter.*vertraglich und technisch freigegeben/i)).toBeVisible();
   await expect(page.getByRole("button", { name: /Derzeit nicht verfügbar/i })).toBeDisabled();
   await page.getByRole("button", { name: /Binder bearbeiten/i }).click();
   await expect(page.getByRole("article", { name: "Pikachu 1, Slot 1" })).toBeVisible();
@@ -776,8 +776,8 @@ test("exports the verified Tornupto and Blaine's Charizard identities to TCGplay
   await expect(missingCards.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue(
     "1 Blaine's Charizard [G2] 002/132\n1 Typhlosion (17) [N1] 017/111",
   );
-  await expect(missingCards.getByText("Neo Genesis · Nr. 17/111")).toBeVisible();
-  await expect(missingCards.getByText("Gym Challenge · Nr. 2/132")).toBeVisible();
+  await expect(missingCards.getByRole("region", { name: "Neo Genesis · DE" }).getByText("Nr. 17/111")).toBeVisible();
+  await expect(missingCards.getByRole("region", { name: "Gym Challenge · EN" }).getByText("Nr. 2/132")).toBeVisible();
 
   await missingCards.getByRole("button", { name: "Cardmarket" }).click();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue(
