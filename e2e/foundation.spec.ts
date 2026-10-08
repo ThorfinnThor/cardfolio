@@ -342,9 +342,8 @@ test("reviews multiple cards and fills from the next free slot continuously", as
     const reviewItem = reviewItems.nth(index);
     await reviewItem.evaluate((element) => { (element as HTMLDetailsElement).open = true; });
     await reviewItem.getByLabel("Finish").selectOption("normal");
-    await reviewItem.getByLabel("Edition").selectOption("unlimited");
-    await reviewItem.getByLabel("Druckvariante").selectOption("shadowed");
     await expect(reviewItem.getByLabel("Finish")).toHaveValue("normal");
+    await expect(reviewItem.getByText("Finish, Edition und Druckvariante müssen vollständig festgelegt werden.")).toHaveCount(0);
   }
   await review.getByLabel("Ab nächstem freien Platz fortlaufend").check();
   const confirmSelection = review.getByRole("button", { name: "Auswahl übernehmen" });
