@@ -70,6 +70,7 @@ async function mockCatalog(page: Page) {
           category: "Pokemon",
           attacks: [{ name: "Leech Seed" }],
           set: { cardCount: { official: 102 }, id: "base1", name: "Base Set" },
+          variants: { firstEdition: true, holo: false, normal: true, reverse: false },
         }),
         headers,
         status: 200,
@@ -86,6 +87,7 @@ async function mockCatalog(page: Page) {
           category: "Pokemon",
           attacks: [{ name: "Vine Whip" }, { name: "Poisonpowder" }],
           set: { cardCount: { official: 102 }, id: "base1", name: "Base Set" },
+          variants: { firstEdition: true, holo: false, normal: true, reverse: false },
         }),
         headers,
         status: 200,
@@ -337,14 +339,7 @@ test("reviews multiple cards and fills from the next free slot continuously", as
   await search.getByRole("button", { name: "Auswahl prüfen" }).click();
 
   const review = page.getByRole("dialog", { name: "2 Karten als Auswahl übernehmen" });
-  const reviewItems = review.locator("details");
-  for (let index = 0; index < await reviewItems.count(); index += 1) {
-    const reviewItem = reviewItems.nth(index);
-    await reviewItem.evaluate((element) => { (element as HTMLDetailsElement).open = true; });
-    await reviewItem.getByLabel("Finish").selectOption("normal");
-    await expect(reviewItem.getByLabel("Finish")).toHaveValue("normal");
-    await expect(reviewItem.getByText("Finish, Edition und Druckvariante müssen vollständig festgelegt werden.")).toHaveCount(0);
-  }
+  for (const finish of await review.getByLabel("Finish").all()) await expect(finish).toHaveValue("normal");
   await review.getByLabel("Ab nächstem freien Platz fortlaufend").check();
   const confirmSelection = review.getByRole("button", { name: "Auswahl übernehmen" });
   await expect(confirmSelection).toBeEnabled();
