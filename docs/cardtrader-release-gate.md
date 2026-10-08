@@ -1,6 +1,6 @@
 # CardTrader Discovery und Release-Gate
 
-Stand: 7. Oktober 2026
+Stand: 8. Oktober 2026
 
 ## Ergebnis
 
@@ -8,7 +8,7 @@ CardTrader ist in Cardfolio **noch nicht produktiv freigegeben**. Die providerne
 
 Das GitHub-Actions-Secret `CARDTRADER_API_TOKEN` wurde am 4. Oktober 2026 unter dem korrekten Namen registriert; sein Wert wurde nicht gelesen oder ausgegeben. Die vollständigen authentifizierten Read-only-Läufe [37412387905](https://github.com/ThorfinnThor/cardfolio/actions/runs/37412387905), [37524478301](https://github.com/ThorfinnThor/cardfolio/actions/runs/37524478301), [37589460298](https://github.com/ThorfinnThor/cardfolio/actions/runs/37589460298), der Kartenname-Audit [37592043338](https://github.com/ThorfinnThor/cardfolio/actions/runs/37592043338), der Zwischenlauf [37592887597](https://github.com/ThorfinnThor/cardfolio/actions/runs/37592887597), der Mehrdeutigkeits-Audit [37595141688](https://github.com/ThorfinnThor/cardfolio/actions/runs/37595141688), der Alias-Audit [37598481498](https://github.com/ThorfinnThor/cardfolio/actions/runs/37598481498), dessen Kontrolllauf [37599346206](https://github.com/ThorfinnThor/cardfolio/actions/runs/37599346206) und der abschließende Vollaudit [37600327615](https://github.com/ThorfinnThor/cardfolio/actions/runs/37600327615) wurden am 6./7. Oktober erfolgreich abgeschlossen. Der Kartenname-Audit verglich alle 44 verbliebenen englischen Mengendifferenzen. Zunächst wurden 28 exakt benannte Expansionen mit vollständiger normalisierter TCGdex-Namensabdeckung bestätigt. Weitere 14 exakte Kandidaten wurden anschließend mit mindestens 94 % TCGdex-Namensabdeckung bestätigt; bei Legendary Treasures war stattdessen die CardTrader-Namensmenge vollständig in TCGdex enthalten. Die letzten exakten Fälle wurden über die offiziellen CardTrader-Seiten für [DP Black Star Promos](https://www.cardtrader.com/en/games/pokemon/expansions/dp-black-star-promos/blueprints_search) und [POP Series 7](https://www.cardtrader.com/en-US/games/pokemon/expansions/pop-series-7/categories) bestätigt. Die Holon-Phantoms-Mehrdeutigkeit wurde zugunsten von [EX Holon Phantoms](https://www.cardtrader.com/en/games/pokemon/expansions/ex-holon-phantoms/categories) aufgelöst. Der Alias-Audit verglich anschließend bis zu drei Namensvorschläge je noch nicht zugeordnetem englischem Set anhand aggregierter Kartenname-Überschneidungen. Weitere offizielle CardTrader-Seiten bestätigten [Radiant Collection Legendary Treasure](https://www.cardtrader.com/en-US/games/pokemon/expansions/radiant-collection-legendary-treasure/categories), die [Lycanroc-Hälfte](https://www.cardtrader.com/en/games/pokemon/expansions/sun-moon-trainer-kit-lycanroc-alolan-raichu-lycanroc/categories/pokemon-singles/blueprints_search) und die [Alolan-Raichu-Hälfte](https://www.cardtrader.com/en-US/games/pokemon/expansions/sun-moon-trainer-kit-lycanroc-alolan-raichu-alolan-raichu/categories/pokemon-singles/blueprints_search?embedded=10) des Sun-&-Moon-Trainer-Kits sowie die [Suicune-Hälfte](https://www.cardtrader.com/en/games/pokemon/expansions/xy-trainer-kit-pikachu-libre-suicune-suicune/categories/pokemon-dice/blueprints_search) des XY-Trainer-Kits. Insgesamt sind nun 194 englische Expansionen und 141 deutsche Gegenstücke bestätigt. Der Audit zeigte außerdem, dass `collector_number` in den Blueprint-Daten nicht als durchgängige individuelle Kartennummer vorliegt: Im gesamten Katalog war nur ein Blueprint mit einem konfigurierten Standardwert vorhanden. Eine schriftliche Produktionsfreigabe von CardTrader liegt weiterhin nicht vor. Preise, Verfügbarkeit, Providerbilder und verbundene Wishlists bleiben deshalb No-Go.
 
-Der Vollaudit [37741208480](https://github.com/ThorfinnThor/cardfolio/actions/runs/37741208480) bestätigte anschließend die manuell ausgewählten Provider-Namen [Futsal Promos](https://www.cardtrader.com/en/games/pokemon/expansions/futsal-promos/categories/pokemon-singles/blueprints_search) und [Platinum Arceus](https://www.cardtrader.com/en/games/pokemon/expansions/platinum-arceus/categories/pokemon-singles/blueprints). Futsal stimmt in allen fünf eindeutigen Kartennamen überein; Platinum Arceus enthält wie das TCGdex-Set exakt 111 Einzelkarten-Blueprints. Nach der manuellen Übernahme bestätigt der Katalog 338 verifizierte, 0 direkt zu prüfende, 0 mehrdeutige und 11 nicht zugeordnete Datensätze.
+Der Vollaudit [37741208480](https://github.com/ThorfinnThor/cardfolio/actions/runs/37741208480) bestätigte anschließend die manuell ausgewählten Provider-Namen [Futsal Promos](https://www.cardtrader.com/en/games/pokemon/expansions/futsal-promos/categories/pokemon-singles/blueprints_search) und [Platinum Arceus](https://www.cardtrader.com/en/games/pokemon/expansions/platinum-arceus/categories/pokemon-singles/blueprints). Futsal stimmt in allen fünf eindeutigen Kartennamen überein; Platinum Arceus enthält wie das TCGdex-Set exakt 111 Einzelkarten-Blueprints. Der abschließende Vollaudit [37742020790](https://github.com/ThorfinnThor/cardfolio/actions/runs/37742020790) bestätigt 338 verifizierte und 11 begründet vom Expansion-Export ausgeschlossene Datensätze. Es bleiben 0 direkt zu prüfende, 0 mehrdeutige und 0 unklassifizierte Datensätze.
 
 ### Aktueller Abdeckungsbericht
 
@@ -25,9 +25,10 @@ Der Vollaudit [37741208480](https://github.com/ThorfinnThor/cardfolio/actions/ru
 | Automatisch freigegebene Namenskandidaten | 0 |
 | Manuell zu prüfende Namenskandidaten | 0 |
 | Mehrdeutige Namenskandidaten | 0 |
-| Nicht zugeordnete Setdatensätze | 11 |
+| Begründet vom Expansion-Export ausgeschlossene Setdatensätze | 11 |
+| Nicht klassifizierte Setdatensätze | 0 |
 
-Damit beträgt die **manuell bestätigte sprachspezifische Expansion-Abdeckung 338/349 (96,8 %)**. Die Zuordnungen belegen die Expansion, nicht die Identität jedes einzelnen Blueprints oder einer konkreten Kartenvariante. Es bleiben keine direkten, sprachübergreifend exakten oder mehrdeutigen Namenskandidaten. CardTrader-Codes werden wegen belegter Kollisionen mit TCGdex-Set-IDs nicht als Zuordnungssignal verwendet.
+Damit beträgt die **manuell bestätigte sprachspezifische Expansion-Abdeckung 338/349 (96,8 %)**. Alle 349 Datensätze sind geprüft und klassifiziert; die elf Ausschlüsse werden ausdrücklich nicht als CardTrader-Abdeckung gezählt. Die Zuordnungen belegen die Expansion, nicht die Identität jedes einzelnen Blueprints oder einer konkreten Kartenvariante. Es bleiben keine direkten, sprachübergreifend exakten oder mehrdeutigen Namenskandidaten. CardTrader-Codes werden wegen belegter Kollisionen mit TCGdex-Set-IDs nicht als Zuordnungssignal verwendet.
 
 Dass alle 75.652 gelesenen Blueprints eine Bild-URL melden, ist nur ein technischer
 Verfügbarkeitswert. Es ist weder eine Nutzungsfreigabe noch ein Nachweis für Sprache,
@@ -117,7 +118,7 @@ Der Kataloglauf bestätigt unter anderem die Property-Namen `condition`,
 `pokemon_language`, `pokemon_reverse`, `first_edition`, `collector_number`,
 `pokemon_rarity` und `pokemon_species`. Noch offen bleiben:
 
-1. Die verbleibenden 11 nicht zugeordneten Sonderfälle einzeln prüfen; keine Parent-/Subset- oder Jahreszuordnung allein aus Namensähnlichkeit ableiten.
+1. Die elf dokumentierten Ausschlüsse bei neuen Katalogläufen erneut prüfen; insbesondere die 30th Classic Collection aktivieren, sobald CardTrader verwertbare Singles-Blueprints liefert.
 2. Eine separat geprüfte Quelle für Holo/Non-Holo/Shadowless identifizieren oder eine manuelle Variantentabelle entwerfen.
 3. Blueprint-Stichprobe für direkte Cardmarket-/TCGplayer-IDs.
 4. Bild-Host, Sprache, Auflösung und Rechtefreigabe getrennt prüfen.
