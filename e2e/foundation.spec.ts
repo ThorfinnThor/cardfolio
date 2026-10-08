@@ -550,7 +550,8 @@ test("searches German and English catalogs and labels the result language", asyn
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
   await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Glurak");
   const germanResult = page.getByRole("listitem").filter({ hasText: "Glurak" });
-  await expect(germanResult).toContainText("DE · Grundset · Nr. 4/102");
+  await expect(germanResult).toContainText("Grundset");
+  await expect(germanResult).toContainText("DE · Nr. 4/102");
   await germanResult.getByRole("button", { name: "Prüfen" }).click();
 
   const preview = page.getByRole("dialog", { name: "Karte prüfen" });
@@ -617,14 +618,14 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await expect(page.getByRole("heading", { name: "Ein persönlicher Kartenbinder" })).toBeVisible();
   await page.getByRole("button", { name: /Vorschlag erzeugen/ }).click();
   await expect(page.getByText("9 / 9")).toBeVisible();
-  await expect(page.getByRole("status")).toContainText("Preisprüfung");
+  await expect(page.getByText(/Angezeigt werden unverbindliche TCGdex-Marktschätzungen/i)).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(375);
   await page.getByRole("button", { name: "Auswahl prüfen" }).click();
   await page.getByRole("button", { name: "Als Binder anlegen" }).click();
   await expect(page.getByRole("heading", { name: /Geschenk · Pikachu/ })).toBeVisible();
-  await expect(page.getByText(/Für Karten wird derzeit kein Preis berechnet und keine Budgetzusage abgegeben/i)).toBeVisible();
+  await expect(page.getByText(/Die Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten/i)).toBeVisible();
   await expect(page.getByText("Kein bestätigter Preis", { exact: true })).toBeVisible();
-  await expect(page.getByText(/noch kein Anbieter.*vertraglich und technisch freigegeben/i)).toBeVisible();
+  await expect(page.getByText(/Zurzeit ist kein geprüfter Personalisierungsanbieter verfügbar/i)).toBeVisible();
   await expect(page.getByRole("button", { name: /Derzeit nicht verfügbar/i })).toBeDisabled();
   await page.getByRole("button", { name: /Binder bearbeiten/i }).click();
   await expect(page.getByRole("article", { name: "Pikachu 1, Slot 1" })).toBeVisible();
@@ -675,18 +676,22 @@ test("filters equal card names by language and balances the combined results", a
   await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Pikachu");
   const results = page.getByRole("listitem").filter({ hasText: "Pikachu" });
   await expect(results).toHaveCount(2);
-  await expect(results.nth(0)).toContainText("DE · Grundset · Nr. 58/102");
-  await expect(results.nth(1)).toContainText("EN · Base Set · Nr. 58/102");
+  await expect(results.nth(0)).toContainText("Grundset");
+  await expect(results.nth(0)).toContainText("DE · Nr. 58/102");
+  await expect(results.nth(1)).toContainText("Base Set");
+  await expect(results.nth(1)).toContainText("EN · Nr. 58/102");
 
   await page.getByRole("button", { name: "English" }).click();
   await expect(results).toHaveCount(1);
-  await expect(results).toContainText("EN · Base Set · Nr. 58/102");
-  await expect(results).not.toContainText("DE · Grundset · Nr. 58/102");
+  await expect(results).toContainText("Base Set");
+  await expect(results).toContainText("EN · Nr. 58/102");
+  await expect(results).not.toContainText("DE · Nr. 58/102");
 
   await page.getByRole("button", { name: "Deutsch" }).click();
   await expect(results).toHaveCount(1);
-  await expect(results).toContainText("DE · Grundset · Nr. 58/102");
-  await expect(results).not.toContainText("EN · Base Set · Nr. 58/102");
+  await expect(results).toContainText("Grundset");
+  await expect(results).toContainText("DE · Nr. 58/102");
+  await expect(results).not.toContainText("EN · Nr. 58/102");
 });
 
 test("browses a selected set and loads catalog results page by page", async ({ page }) => {
@@ -702,7 +707,8 @@ test("browses a selected set and loads catalog results page by page", async ({ p
 
   const searchDialog = page.getByRole("dialog", { name: "Karte suchen" });
   await expect(searchDialog.getByRole("listitem")).toHaveCount(1);
-  await expect(searchDialog.getByRole("listitem")).toContainText("Base Set · Nr. 1/102");
+  await expect(searchDialog.getByRole("listitem")).toContainText("Base Set");
+  await expect(searchDialog.getByRole("listitem")).toContainText("EN · Nr. 1/102");
 
   await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Bulk");
   await expect(searchDialog.getByRole("listitem")).toHaveCount(40);
@@ -723,7 +729,8 @@ test("finds and displays an exact full collector number", async ({ page }) => {
   await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Charizard 04/102");
   const result = page.getByRole("listitem").filter({ hasText: "Charizard" });
   await expect(result).toHaveCount(1);
-  await expect(result).toContainText("EN · Grundset · Nr. 4/102");
+  await expect(result).toContainText("Grundset");
+  await expect(result).toContainText("EN · Nr. 4/102");
   await result.getByRole("button", { name: "Prüfen" }).click();
   const preview = page.getByRole("dialog", { name: "Karte prüfen" });
   await expect(preview).toContainText("4/102");
@@ -767,13 +774,13 @@ test("exports the verified Tornupto and Blaine's Charizard identities to TCGplay
 
   await expect(missingCards.getByText("2 übergabebereit · 2 Produktzuordnungen · 0 prüfen")).toBeVisible();
   await expect(missingCards.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue(
-    "1 Typhlosion (17) [N1] 017/111\n1 Blaine's Charizard [G2] 002/132",
+    "1 Blaine's Charizard [G2] 002/132\n1 Typhlosion (17) [N1] 017/111",
   );
   await expect(missingCards.getByText("Neo Genesis · Nr. 17/111")).toBeVisible();
   await expect(missingCards.getByText("Gym Challenge · Nr. 2/132")).toBeVisible();
 
   await missingCards.getByRole("button", { name: "Cardmarket" }).click();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue(
-    "1x Typhlosion Fire Recharge Flame Burst\n1x Blaine's Charizard Roaring Flames Flame Jet",
+    "1x Blaine's Charizard Roaring Flames Flame Jet\n1x Typhlosion Fire Recharge Flame Burst",
   );
 });
