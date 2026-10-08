@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "provider": "cardtrader",
-  "reviewedAt": "2026-10-07",
+  "reviewedAt": "2026-10-08",
   "source": "https://www.cardtrader.com/en-EU/docs/api/full/reference",
   "mappings": [
     { "catalogKey": "en:2011bw", "cardtraderExpansionId": "1545" },
@@ -143,6 +143,8 @@
     { "catalogKey": "de:pl2", "cardtraderExpansionId": "1532" },
     { "catalogKey": "en:pl3", "cardtraderExpansionId": "1533" },
     { "catalogKey": "de:pl3", "cardtraderExpansionId": "1533" },
+    { "catalogKey": "en:pl4", "cardtraderExpansionId": "1878" },
+    { "catalogKey": "de:pl4", "cardtraderExpansionId": "1878" },
     { "catalogKey": "en:pop1", "cardtraderExpansionId": "1501" },
     { "catalogKey": "en:pop2", "cardtraderExpansionId": "1506" },
     { "catalogKey": "en:pop3", "cardtraderExpansionId": "1510" },
@@ -338,6 +340,7 @@
     { "catalogKey": "en:tk-sm-l", "cardtraderExpansionId": "1949" },
     { "catalogKey": "en:tk-sm-r", "cardtraderExpansionId": "1950" },
     { "catalogKey": "en:tk-xy-su", "cardtraderExpansionId": "1948" },
+    { "catalogKey": "en:fut2020", "cardtraderExpansionId": "2112" },
     { "catalogKey": "en:wp", "cardtraderExpansionId": "1475" }
   ],
   "notes": [
@@ -361,6 +364,7 @@
     "Eleventh batch: DP Black Star Promos (CardTrader expansion 1517) and POP Series 7 (1524) were confirmed from their official CardTrader expansion pages. CardTrader explicitly describes POP Series 7 as a 17-card checklist while exposing 23 Singles blueprints, proving the excess is catalog representation rather than a different expansion. DP Black Star Promos is likewise the exact official expansion and includes additional Singles/variant records. English and German DP catalog records share expansion 1517. Individual printing and variant mappings remain unverified.",
     "Twelfth batch: the two Holon Phantoms ambiguities were resolved to CardTrader expansion 1511 (EX Holon Phantoms), whose official CardTrader page describes the 110-card set and exposes 111 Singles blueprints, matching TCGdex 110 official / 111 total cards. Expansion 2002 (Holon Phantoms) exposes only 53 Singles and is not the matching international EX set. English and German TCGdex records therefore share expansion 1511.",
     "Thirteenth batch: full read-only workflow 37598481498 audited up to three fuzzy expansion-name suggestions for every remaining English unmapped set and published only aggregate name-overlap counts. Forty-two catalog records were confirmed: EX-prefix aliases, the 2021 McDonald's anniversary set, energy-set singular/plural aliases, SV promos, Pokémon GO, Trainer Gallery/Shiny Vault/Galarian Gallery subsets mapped to their international parent expansions, the Pikachu Libre trainer-kit subset, and Kalos Starter Set. German records reuse an expansion only where they share the same TCGdex set ID. Scarlet & Violet Energy deliberately maps to the dedicated Energy expansion 3247 rather than the superficially overlapping Promos expansion; no alias is accepted automatically from similarity alone.",
-    "Fourteenth batch: official CardTrader expansion pages confirmed the 25-card Radiant Collection Legendary Treasure subset, the two 30-card Sun & Moon Lycanroc/Alolan Raichu trainer-kit halves, the 30-card XY Pikachu Libre/Suicune halves, and W Promos. The corresponding CardTrader expansion IDs are 1931, 1949, 1950, 1947/1948, and 1475. The Celebrations Classic Collection is represented inside the 50-blueprint Celebrations expansion 2310; aggregate overlap found 22 of 25 unique TCGdex names. These mappings remain expansion-level only. The similarly named 2004 EX Latias/Latios trainer-kit records were deliberately not mapped to the 2015 XY trainer-kit expansions."
+    "Fourteenth batch: official CardTrader expansion pages confirmed the 25-card Radiant Collection Legendary Treasure subset, the two 30-card Sun & Moon Lycanroc/Alolan Raichu trainer-kit halves, the 30-card XY Pikachu Libre/Suicune halves, and W Promos. The corresponding CardTrader expansion IDs are 1931, 1949, 1950, 1947/1948, and 1475. The Celebrations Classic Collection is represented inside the 50-blueprint Celebrations expansion 2310; aggregate overlap found 22 of 25 unique TCGdex names. These mappings remain expansion-level only. The similarly named 2004 EX Latias/Latios trainer-kit records were deliberately not mapped to the 2015 XY trainer-kit expansions.",
+    "Fifteenth batch: full read-only workflow 37741208480 resolved the manually selected provider names Futsal Promos and Platinum Arceus. Futsal Promos expansion 2112 matched all five unique TCGdex card names. Platinum Arceus expansion 1878 exposes exactly 111 Singles blueprints for the 111-card TCGdex Arceus set; its official CardTrader expansion page confirms the provider name. The English and German Arceus records share the same TCGdex set ID and CardTrader expansion."
   ]
 }
