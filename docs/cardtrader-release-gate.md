@@ -10,6 +10,8 @@ Das GitHub-Actions-Secret `CARDTRADER_API_TOKEN` wurde am 4. Oktober 2026 unter 
 
 Der Vollaudit [37741208480](https://github.com/ThorfinnThor/cardfolio/actions/runs/37741208480) bestätigte anschließend die manuell ausgewählten Provider-Namen [Futsal Promos](https://www.cardtrader.com/en/games/pokemon/expansions/futsal-promos/categories/pokemon-singles/blueprints_search) und [Platinum Arceus](https://www.cardtrader.com/en/games/pokemon/expansions/platinum-arceus/categories/pokemon-singles/blueprints). Futsal stimmt in allen fünf eindeutigen Kartennamen überein; Platinum Arceus enthält wie das TCGdex-Set exakt 111 Einzelkarten-Blueprints. Der abschließende Vollaudit [37742020790](https://github.com/ThorfinnThor/cardfolio/actions/runs/37742020790) bestätigt 338 verifizierte und 11 begründet vom Expansion-Export ausgeschlossene Datensätze. Es bleiben 0 direkt zu prüfende, 0 mehrdeutige und 0 unklassifizierte Datensätze.
 
+Der anschließende Fremd-ID-Vollaudit [37746589168](https://github.com/ThorfinnThor/cardfolio/actions/runs/37746589168) wertete ausschließlich sichere Aggregatwerte aus. Er prüfte alle 69.874 Blueprints der Kategorie `Pokémon Singles` sowie separat die 21.948 Blueprints in den 188 CardTrader-Expansionen, die durch die 338 verifizierten sprachspezifischen Set-Zuordnungen abgedeckt werden. Im verifizierten Umfang besitzen 21.780 Blueprints mindestens eine innerhalb des gesamten gelesenen Pokémon-Singles-Katalogs eindeutige Cardmarket- oder TCGplayer-ID; 168 besitzen keine der beiden IDs. Es wurden keine mehrfach für verschiedene Blueprints verwendeten Fremd-ID-Werte und keine ungültigen Identifier festgestellt. Das veröffentlichte Artifact enthält nur diese Summen, niemals die Fremd-IDs oder Blueprint-Zeilen selbst.
+
 ### Aktueller Abdeckungsbericht
 
 | Messwert | Ergebnis |
@@ -19,6 +21,7 @@ Der Vollaudit [37741208480](https://github.com/ThorfinnThor/cardfolio/actions/ru
 | Zu prüfende sprachspezifische Setdatensätze | 349 |
 | CardTrader-Pokémon-Expansionen | 856 |
 | Gelesene Blueprints | 75.652 |
+| Blueprints der Kategorie `Pokémon Singles` | 69.874 |
 | Blueprints mit `image_url` | 75.652 |
 | Blueprints ohne `image_url` | 0 |
 | Manuell verifizierte sprachspezifische CardTrader-Zuordnungen | 338 |
@@ -27,12 +30,25 @@ Der Vollaudit [37741208480](https://github.com/ThorfinnThor/cardfolio/actions/ru
 | Mehrdeutige Namenskandidaten | 0 |
 | Begründet vom Expansion-Export ausgeschlossene Setdatensätze | 11 |
 | Nicht klassifizierte Setdatensätze | 0 |
+| `Pokémon Singles` in 188 verifizierten CardTrader-Expansionen | 21.948 |
+| Davon mit mindestens einer katalogweit eindeutigen Fremd-ID | 21.780 |
+| Davon ohne Cardmarket- und TCGplayer-ID | 168 |
+| Mehrfach für verschiedene Blueprints verwendete Fremd-ID-Werte | 0 |
 
 Damit beträgt die **manuell bestätigte sprachspezifische Expansion-Abdeckung 338/349 (96,8 %)**. Alle 349 Datensätze sind geprüft und klassifiziert; die elf Ausschlüsse werden ausdrücklich nicht als CardTrader-Abdeckung gezählt. Die Zuordnungen belegen die Expansion, nicht die Identität jedes einzelnen Blueprints oder einer konkreten Kartenvariante. Es bleiben keine direkten, sprachübergreifend exakten oder mehrdeutigen Namenskandidaten. CardTrader-Codes werden wegen belegter Kollisionen mit TCGdex-Set-IDs nicht als Zuordnungssignal verwendet.
 
 Dass alle 75.652 gelesenen Blueprints eine Bild-URL melden, ist nur ein technischer
 Verfügbarkeitswert. Es ist weder eine Nutzungsfreigabe noch ein Nachweis für Sprache,
 Auflösung oder dauerhaft erreichbare Dateien. Die Bildfunktion bleibt deshalb aus.
+
+Auch die hohe Fremd-ID-Abdeckung ist noch kein Karten-Mapping. Der aktuell
+dokumentierte [TCGdex-Card-Vertrag](https://tcgdex.dev/es/reference/card) enthält keine
+entsprechenden direkten Cardmarket-/TCGplayer-Produkt-IDs pro konkreter Variante.
+TCGdex weist in seiner [FAQ](https://tcgdex.dev/fr/faq) außerdem auf bekannte falsche
+Marketplace-Zuordnungen hin und beschreibt `variants_detailed` mit expliziten
+Provider-IDs als noch in Entwicklung. Eine TCGdex-Preiszeile, ein Kartenname oder eine
+ähnliche Set-/Kartennummer darf deshalb nicht als Ersatz für eine direkte, überprüfte
+Quell-ID verwendet werden.
 
 ## Offiziell verifizierter API-Vertrag
 
@@ -85,7 +101,7 @@ Die [CardTrader-Nutzungsbedingungen](https://static.cardtrader.com/en/pages/term
 | Daten/Funktion | Status | Voraussetzung für Go |
 |---|---|---|
 | Katalog-Mapping | **No-Go** | Testtoken-Audit, schriftliche Bestätigung für den geplanten öffentlichen Cardfolio-Einsatz und manuell geprüfte Set-Zuordnungen |
-| Blueprint-Fremd-IDs | **No-Go** | Eindeutige ID-Stichprobe und dokumentierte Erlaubnis zur Speicherung minimaler Mappingdaten |
+| Blueprint-Fremd-IDs | **No-Go** | Quellseitige direkte Varianten-ID oder manuell überprüftes Kartenmapping sowie dokumentierte Erlaubnis zur Speicherung minimaler Mappingdaten |
 | Providerbilder als Fallback | **No-Go** | Schriftliche Erlaubnis von CardTrader und separate Klärung der Rechte des jeweiligen Bildinhabers; HTTPS-/Sprach-/Missing-Image-Audit |
 | Aggregierte Preise/Verfügbarkeit | **No-Go** | Markt-API-Freigabe, Variantenfilter-Stichprobe, TTL, Währungstrennung und verständlicher Stale-Status |
 | Private Wishlist | **No-Go** | Testkonto-Lauf, explizite Nutzerbestätigung, kein Token im Browser/Backup und Teilfehlerbehandlung |
@@ -107,10 +123,11 @@ Für einen kleinen, billigen Probelauf kann `--max-expansions 3` verwendet werde
 In GitHub steht dafür `CardTrader read-only discovery` als ausschließlich manueller
 Workflow bereit. Er erhält das Secret nur im Discovery-Schritt, besitzt lediglich
 `contents: read` und lädt nicht den Rohsnapshot hoch. Das sieben Tage aufbewahrte Artifact
-enthält nur `discovery-summary.json`, `mapping-audit.json` und `mapping-review.md`; Token, Authorization-Header,
+enthält nur `discovery-summary.json`, `mapping-audit.json`, `mapping-review.md` und
+`blueprint-id-audit.json`; Token, Authorization-Header,
 `shared_secret`, Kontokennungen, rohe Blueprints und Bild-URLs sind ausgeschlossen.
 
-Der Mapping-Audit vergleicht alle derzeit synchronisierten deutschen und englischen TCGdex-Sets mit CardTrader-Expansions. Für deutsche Sets wird zusätzlich der englische Name derselben TCGdex-Set-ID als Vergleichsname verwendet. Ein exakter Namenskandidat bleibt `review-required`. Abweichende, anhand offizieller CardTrader-Seiten ausgewählte Namen werden getrennt in `data/marketplace/cardtrader-set-candidates.json` dokumentiert und im authentifizierten Audit exakt aufgelöst; auch sie bleiben `review-required`. Erst eine manuelle Aufnahme in `data/marketplace/cardtrader-set-review.json` macht einen Kandidaten `verified`. Sets, die wegen fehlender Providerdaten, einer anderen Produktkategorie oder eines nötigen Karten-Mappings nicht sicher auf genau eine Expansion abgebildet werden können, stehen mit Begründung und Evidenz in `data/marketplace/cardtrader-set-exclusions.json`; sie bleiben im Bericht sichtbar und zählen nie als verifiziert. Mehrdeutige oder fehlende Treffer werden nie automatisch gewählt. Das Artifact `mapping-review.md` enthält eine abhakbare Prüfwarteschlange mit CardTrader-ID, Code und Namen sowie höchstens drei klar als unverbindlich markierten Ähnlichkeitsvorschlägen. Für englische, nicht zugeordnete Sets vergleicht der Vollaudit zusätzlich die Kartennamen dieser Vorschläge; auch vollständige Überschneidung ist nur Evidenz und keine automatische Freigabe. Der Audit vergleicht außerdem Gesamtzahlen, eindeutige Blueprint-Namen und das Vorhandensein eines konfigurierten `collector_number`-Standardwerts. Rohlisten mit Kartennamen, Roh-Blueprints und tatsächliche Kartennummernwerte werden nicht veröffentlicht. `collector_number` ist **keine tatsächliche Kartennummernabdeckung**: Die Blueprint-Daten stellten im vollständigen Lauf nur einen solchen Standardwert bereit.
+Der Mapping-Audit vergleicht alle derzeit synchronisierten deutschen und englischen TCGdex-Sets mit CardTrader-Expansions. Für deutsche Sets wird zusätzlich der englische Name derselben TCGdex-Set-ID als Vergleichsname verwendet. Ein exakter Namenskandidat bleibt `review-required`. Abweichende, anhand offizieller CardTrader-Seiten ausgewählte Namen werden getrennt in `data/marketplace/cardtrader-set-candidates.json` dokumentiert und im authentifizierten Audit exakt aufgelöst; auch sie bleiben `review-required`. Erst eine manuelle Aufnahme in `data/marketplace/cardtrader-set-review.json` macht einen Kandidaten `verified`. Sets, die wegen fehlender Providerdaten, einer anderen Produktkategorie oder eines nötigen Karten-Mappings nicht sicher auf genau eine Expansion abgebildet werden können, stehen mit Begründung und Evidenz in `data/marketplace/cardtrader-set-exclusions.json`; sie bleiben im Bericht sichtbar und zählen nie als verifiziert. Mehrdeutige oder fehlende Treffer werden nie automatisch gewählt. Das Artifact `mapping-review.md` enthält eine abhakbare Prüfwarteschlange mit CardTrader-ID, Code und Namen sowie höchstens drei klar als unverbindlich markierten Ähnlichkeitsvorschlägen. Für englische, nicht zugeordnete Sets vergleicht der Vollaudit zusätzlich die Kartennamen dieser Vorschläge; auch vollständige Überschneidung ist nur Evidenz und keine automatische Freigabe. Der Audit vergleicht außerdem Gesamtzahlen, eindeutige Blueprint-Namen und das Vorhandensein eines konfigurierten `collector_number`-Standardwerts. Rohlisten mit Kartennamen, Roh-Blueprints und tatsächliche Kartennummernwerte werden nicht veröffentlicht. `collector_number` ist **keine tatsächliche Kartennummernabdeckung**: Die Blueprint-Daten stellten im vollständigen Lauf nur einen solchen Standardwert bereit. Der zusätzliche Fremd-ID-Audit veröffentlicht ausschließlich Summen zu Vorhandensein, Gültigkeit und Eindeutigkeit der `card_market_ids` und `tcg_player_id`. Er darf eine automatische Mapping-Kandidatur nur dann feststellen, wenn eine Quell-ID genau einen Blueprint im geprüften Umfang auflöst; ohne passende Quell-ID findet keine automatische Verknüpfung statt.
 
 ## Noch ausstehende Prüfungen
 
@@ -120,7 +137,7 @@ Der Kataloglauf bestätigt unter anderem die Property-Namen `condition`,
 
 1. Die elf dokumentierten Ausschlüsse bei neuen Katalogläufen erneut prüfen; insbesondere die 30th Classic Collection aktivieren, sobald CardTrader verwertbare Singles-Blueprints liefert.
 2. Eine separat geprüfte Quelle für Holo/Non-Holo/Shadowless identifizieren oder eine manuelle Variantentabelle entwerfen.
-3. Blueprint-Stichprobe für direkte Cardmarket-/TCGplayer-IDs.
+3. Auf das angekündigte TCGdex-Feld `variants_detailed` warten oder eine andere zulässige direkte Quell-ID bzw. eine manuell überprüfte Karten-Mappingtabelle bereitstellen; danach den Fremd-ID-Audit erneut als Karten-Mapping-Audit ausführen.
 4. Bild-Host, Sprache, Auflösung und Rechtefreigabe getrennt prüfen.
 5. Nur nach Markt-API-Freigabe: Währungen, Filtertreue für Sprache/Finish/Zustand, Caching und Angebotsstichprobe.
 6. Nur nach Wishlist-Freigabe: private Test-Wishlist mit bestätigten Blueprints und kontrolliertem Teilfehlerfall.
