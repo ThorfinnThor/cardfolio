@@ -21,7 +21,7 @@ interface PageSelectionReviewProps {
   notice?: string;
   error?: string;
   onLanguageChange: (language: "de" | "en") => void;
-  onChange: (items: PageSelectionItem[]) => void;
+  onChange: (update: (items: PageSelectionItem[]) => PageSelectionItem[]) => void;
   onRemove: (cardKey: string) => void;
   onContinueSearch: () => void;
   onCancel: () => void;
@@ -65,7 +65,7 @@ export function PageSelectionReview({
   const [binderName, setBinderName] = useBinderName();
 
   function updateItem(cardKey: string, update: (item: PageSelectionItem) => PageSelectionItem) {
-    onChange(items.map((item) => item.card.key === cardKey ? update(item) : item));
+    onChange((current) => current.map((item) => item.card.key === cardKey ? update(item) : item));
   }
 
   return (

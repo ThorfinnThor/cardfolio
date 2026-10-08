@@ -1269,8 +1269,8 @@ export function FoundationWorkspace() {
     void hydratePageSelection(current.sourceItems, language, token);
   }
 
-  function updatePageSelectionItems(items: PageSelectionItem[]) {
-    setPageSelectionRequest((current) => current ? { ...current, items } : current);
+  function updatePageSelectionItems(update: (items: PageSelectionItem[]) => PageSelectionItem[]) {
+    setPageSelectionRequest((current) => current ? { ...current, items: update(current.items) } : current);
   }
 
   function removePageSelectionItem(cardKey: string) {
