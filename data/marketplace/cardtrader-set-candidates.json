@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "provider": "cardtrader",
+  "purpose": "Manually selected CardTrader expansion names for catalog sets whose provider name is not an exact TCGdex name. These are audit candidates, not verified mappings.",
+  "candidates": [
+    {
+      "catalogKey": "en:fut2020",
+      "cardtraderExpansionName": "Futsal Promos",
+      "evidenceUrl": "https://www.cardtrader.com/en/games/pokemon/expansions/futsal-promos/categories/pokemon-singles/blueprints_search"
+    },
+    {
+      "catalogKey": "en:pl4",
+      "cardtraderExpansionName": "Platinum Arceus",
+      "evidenceUrl": "https://www.cardtrader.com/en/games/pokemon/expansions/platinum-arceus/categories/pokemon-singles/blueprints"
+    },
+    {
+      "catalogKey": "de:pl4",
+      "cardtraderExpansionName": "Platinum Arceus",
+      "evidenceUrl": "https://www.cardtrader.com/en/games/pokemon/expansions/platinum-arceus/categories/pokemon-singles/blueprints"
+    }
+  ]
+}

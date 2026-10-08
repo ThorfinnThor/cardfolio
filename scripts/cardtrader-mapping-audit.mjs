@@ -88,6 +88,7 @@ const snapshotPath = requiredOption("--snapshot");
 const outputPath = option("--out", ".cardtrader/mapping-audit.json");
 const snapshot = JSON.parse(await readFile(snapshotPath, "utf8"));
 const review = JSON.parse(await readFile(resolve("data/marketplace/cardtrader-set-review.json"), "utf8"));
+const manualCandidates = JSON.parse(await readFile(resolve("data/marketplace/cardtrader-set-candidates.json"), "utf8"));
 const catalogs = await Promise.all(["en", "de"].map(async (language) => {
   const catalog = JSON.parse(await readFile(resolve(`public/data/catalog/${language}-sets.json`), "utf8"));
   return catalog.items.map((set) => ({ ...set, language, catalogKey: `${language}:${set.id}` }));
@@ -115,6 +116,18 @@ for (const [expansionId, expansionBlueprints] of Object.entries(snapshot.bluepri
   });
 }
 const reviewed = new Map(review.mappings.map((mapping) => [mapping.catalogKey, mapping]));
+const selectedCandidates = new Map(manualCandidates.candidates.map((candidate) => [candidate.catalogKey, candidate]));
+if (selectedCandidates.size !== manualCandidates.candidates.length) {
+  throw new Error("cardtrader-set-candidates.json contains duplicate catalogKey values.");
+}
+for (const candidate of manualCandidates.candidates) {
+  if (!sets.some((set) => set.catalogKey === candidate.catalogKey)) {
+    throw new Error(`Manual candidate ${candidate.catalogKey} references an unknown catalog set.`);
+  }
+  if (reviewed.has(candidate.catalogKey)) {
+    throw new Error(`Manual candidate ${candidate.catalogKey} is already present in cardtrader-set-review.json.`);
+  }
+}
 const namesBySetId = new Map();
 for (const set of sets) {
   const names = namesBySetId.get(set.id) ?? new Set();
@@ -151,7 +164,13 @@ const decisions = sets.map((set) => {
       suggestedExpansions: [],
     };
   }
-  const candidates = exactExpansionMatches(comparisonNames, expansions);
+  const selectedCandidate = selectedCandidates.get(set.catalogKey);
+  const candidates = selectedCandidate
+    ? expansions.filter((candidate) => candidate.name?.trim() === selectedCandidate.cardtraderExpansionName.trim())
+    : exactExpansionMatches(comparisonNames, expansions);
+  if (selectedCandidate && candidates.length !== 1) {
+    throw new Error(`Manual candidate ${set.catalogKey} expected exactly one CardTrader expansion named ${selectedCandidate.cardtraderExpansionName}, found ${candidates.length}.`);
+  }
   const candidateExpansions = candidates.map((candidate) => {
     const cardCoverage = singlesBlueprintsByExpansion.get(String(candidate.id)) ?? { count: 0, uniqueNames: 0, blueprintsWithCollectorNumber: 0, uniqueCollectorNumbers: 0 };
     return {
@@ -163,7 +182,9 @@ const decisions = sets.map((set) => {
     };
   });
   const method = candidates.length
-    ? candidates.some((candidate) => candidate.name === set.name) ? "exact-name" : "exact-cross-language-name"
+    ? selectedCandidate
+      ? "manual-name-candidate"
+      : candidates.some((candidate) => candidate.name === set.name) ? "exact-name" : "exact-cross-language-name"
     : "none";
   return {
     catalogKey: set.catalogKey,
@@ -174,6 +195,7 @@ const decisions = sets.map((set) => {
     releaseDate: set.releaseDate,
     tcgdexCardCount,
     comparisonNames,
+    ...(selectedCandidate ? { candidateEvidenceUrl: selectedCandidate.evidenceUrl } : {}),
     status: candidates.length === 1 ? "review-required" : candidates.length > 1 ? "ambiguous" : "unmapped",
     method,
     candidateExpansionIds: candidates.map((candidate) => String(candidate.id)),

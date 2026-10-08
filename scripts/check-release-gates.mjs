@@ -34,6 +34,7 @@ requireFile("docs/gift-commerce-release-gates.md");
 requireFile("docs/cardtrader-release-gate.md");
 requireFile("docs/cardtrader-secret-operations.md");
 requireFile("data/marketplace/cardtrader-set-review.json");
+requireFile("data/marketplace/cardtrader-set-candidates.json");
 const cardtraderWorkflowPath = requireFile(".github/workflows/cardtrader-discovery.yml");
 const exampleEnvironmentPath = requireFile(".env.example");
 requireText("out/_headers", [
