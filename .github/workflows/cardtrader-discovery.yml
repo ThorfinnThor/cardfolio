@@ -42,6 +42,12 @@ jobs:
           npm run cardtrader:audit --
           --snapshot .cardtrader/discovery.json
           --out .cardtrader/mapping-audit.json
+      - name: Audit direct blueprint provider IDs
+        run: >-
+          npm run cardtrader:blueprint-id-audit --
+          --snapshot .cardtrader/discovery.json
+          --review data/marketplace/cardtrader-set-review.json
+          --out .cardtrader/blueprint-id-audit.json
       - name: Create manual mapping review queue
         run: npm run cardtrader:review-report -- .cardtrader/mapping-audit.json .cardtrader/mapping-review.md
       - name: Publish safe run summary
@@ -55,6 +61,7 @@ jobs:
             .cardtrader/discovery-summary.json
             .cardtrader/mapping-audit.json
             .cardtrader/mapping-review.md
+            .cardtrader/blueprint-id-audit.json
           if-no-files-found: error
           include-hidden-files: true
           retention-days: 7
