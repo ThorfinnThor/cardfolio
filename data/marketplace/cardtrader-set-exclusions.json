@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "provider": "cardtrader",
+  "reviewedAt": "2026-10-08",
+  "purpose": "Catalog sets that must not receive an expansion-level CardTrader Singles mapping until the documented provider or source limitation is resolved.",
+  "exclusions": [
+    {
+      "catalogKey": "en:2022swsh",
+      "category": "provider-expansion-missing",
+      "reason": "The authenticated CardTrader expansion catalog has no dedicated McDonald's Collection 2022 Singles expansion.",
+      "evidenceUrls": [
+        "https://github.com/ThorfinnThor/cardfolio/actions/runs/37741208480",
+        "https://www.cardtrader.com/en/games/pokemon/expansions"
+      ]
+    },
+    {
+      "catalogKey": "en:2023sv",
+      "category": "provider-expansion-missing",
+      "reason": "The authenticated CardTrader expansion catalog has no dedicated McDonald's Collection 2023 Singles expansion.",
+      "evidenceUrls": [
+        "https://github.com/ThorfinnThor/cardfolio/actions/runs/37741208480",
+        "https://www.cardtrader.com/en/games/pokemon/expansions"
+      ]
+    },
+    {
+      "catalogKey": "en:2024sv",
+      "category": "provider-expansion-missing",
+      "reason": "The authenticated CardTrader expansion catalog has no dedicated McDonald's Collection 2024 Singles expansion.",
+      "evidenceUrls": [
+        "https://github.com/ThorfinnThor/cardfolio/actions/runs/37741208480",
+        "https://www.cardtrader.com/en/games/pokemon/expansions"
+      ]
+    },
+    {
+      "catalogKey": "en:30th-c",
+      "category": "provider-expansion-pending",
+      "reason": "TCGdex already exposes the 30-card Classic Collection subset, but the current CardTrader 30th Celebration catalog has no usable Singles blueprints for that subset.",
+      "evidenceUrls": [
+        "https://api.tcgdex.net/v2/en/sets/30th-c",
+        "https://www.cardtrader.com/en/games/pokemon/expansions/30th-celebration/categories/pokemon-singles/blueprints_search"
+      ]
+    },
+    {
+      "catalogKey": "de:30th-c",
+      "category": "provider-expansion-pending",
+      "reason": "The German locale shares the TCGdex Classic Collection subset, but CardTrader currently has no usable Singles blueprints for that subset.",
+      "evidenceUrls": [
+        "https://api.tcgdex.net/v2/en/sets/30th-c",
+        "https://www.cardtrader.com/en/games/pokemon/expansions/30th-celebration/categories/pokemon-singles/blueprints_search"
+      ]
+    },
+    {
+      "catalogKey": "en:jumbo",
+      "category": "unsupported-product-category",
+      "reason": "TCGdex Jumbo cards belong to CardTrader's Oversized product category, while Cardfolio's reviewed mapping contract is restricted to Pokémon Singles.",
+      "evidenceUrls": [
+        "https://github.com/ThorfinnThor/cardfolio/actions/runs/37741208480"
+      ]
+    },
+    {
+      "catalogKey": "en:sp",
+      "category": "insufficient-source-data",
+      "reason": "The TCGdex Sample set reports ten cards but currently returns no card list; the eight-card CardTrader For Position Only expansion therefore cannot be validated as the same set.",
+      "evidenceUrls": [
+        "https://api.tcgdex.net/v2/en/sets/sp",
+        "https://www.cardtrader.com/en/games/pokemon/expansions/for-position-only/categories/pokemon-singles/blueprints_search"
+      ]
+    },
+    {
+      "catalogKey": "en:tk-ex-latia",
+      "category": "provider-model-mismatch",
+      "reason": "CardTrader models the 2004 EX Trainer Kit product but does not expose the ten Latias-half card identities as a matching Singles expansion. The similarly named Latias ex Half Deck is a different Japanese release.",
+      "evidenceUrls": [
+        "https://www.cardtrader.com/en-US/games/pokemon/expansions/ex-trainer-kit/categories",
+        "https://www.cardtrader.com/en/games/pokemon/expansions/latias-ex-half-deck/categories"
+      ]
+    },
+    {
+      "catalogKey": "en:tk-ex-latio",
+      "category": "provider-model-mismatch",
+      "reason": "CardTrader models the 2004 EX Trainer Kit product but does not expose the ten Latios-half card identities as a matching Singles expansion. The similarly named Latios ex Half Deck is a different Japanese release.",
+      "evidenceUrls": [
+        "https://www.cardtrader.com/en-US/games/pokemon/expansions/ex-trainer-kit/categories",
+        "https://www.cardtrader.com/en-US/games/pokemon/expansions/latios-ex-half-deck/categories"
+      ]
+    },
+    {
+      "catalogKey": "en:xya",
+      "category": "split-provider-expansions",
+      "reason": "Yellow A Alternate is a cross-set reprint grouping. CardTrader files the individual cards under their source promo expansions, so a single expansion mapping would be wrong and card-level mapping is required.",
+      "evidenceUrls": [
+        "https://www.pokemon.com/us/pokemon-tcg/pokemon-cards/series/xya/107a/",
+        "https://www.cardtrader.com/games/pokemon/expansions/phantom-forces-promos/categories/pokemon-singles/blueprints"
+      ]
+    },
+    {
+      "catalogKey": "de:xya",
+      "category": "split-provider-expansions",
+      "reason": "The German locale shares the Yellow A Alternate cross-set grouping. A single CardTrader expansion would be wrong and card-level mapping is required.",
+      "evidenceUrls": [
+        "https://www.pokemon.com/us/pokemon-tcg/pokemon-cards/series/xya/107a/",
+        "https://www.cardtrader.com/games/pokemon/expansions/phantom-forces-promos/categories/pokemon-singles/blueprints"
+      ]
+    }
+  ]
+}

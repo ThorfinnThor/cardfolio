@@ -18,6 +18,7 @@ const rows = [
   `- Gelesene Blueprints: ${discovery.summary?.blueprintCount ?? 0}`,
   `- TCGdex-Setdatensätze im Mapping-Audit: ${audit.catalogSetCount ?? 0}`,
   `- Verifiziert: ${audit.counts?.verified ?? 0}`,
+  `- Bewusst vom Expansion-Export ausgeschlossen: ${audit.counts?.excluded ?? 0}`,
   `- Manuell zu prüfen: ${audit.counts?.["review-required"] ?? 0}`,
   `- Mehrdeutig: ${audit.counts?.ambiguous ?? 0}`,
   `- Nicht zugeordnet: ${audit.counts?.unmapped ?? 0}`,

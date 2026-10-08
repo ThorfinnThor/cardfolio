@@ -32,6 +32,7 @@ function suggestionCell(decision) {
 const exact = audit.decisions.filter((decision) => decision.status === "review-required");
 const ambiguous = audit.decisions.filter((decision) => decision.status === "ambiguous");
 const unmapped = audit.decisions.filter((decision) => decision.status === "unmapped");
+const excluded = audit.decisions.filter((decision) => decision.status === "excluded");
 const lines = [
   "# CardTrader-Setprüfung",
   "",
@@ -42,6 +43,7 @@ const lines = [
   `- Direkt zu prüfen: ${exact.length}`,
   `- Mehrdeutig: ${ambiguous.length}`,
   `- Nicht zugeordnet: ${unmapped.length}`,
+  `- Bewusst vom Expansion-Export ausgeschlossen: ${excluded.length}`,
   "",
   "## Exakte oder sprachübergreifend exakte Kandidaten",
   "",
@@ -61,7 +63,13 @@ const lines = [
   "|---|---|---|---|---|",
   ...unmapped.map((decision) => `| ${clean(decision.catalogKey)} | ${clean(decision.setName)} | ${decision.comparisonNames.map(clean).join(" / ")} | ${suggestionCell(decision)} | ☐ |`),
   "",
+  "## Bewusst vom Expansion-Export ausgeschlossene Sets",
+  "",
+  "| Katalogschlüssel | TCGdex-Set | Klassifikation | Begründung | Evidenz |",
+  "|---|---|---|---|---|",
+  ...excluded.map((decision) => `| ${clean(decision.catalogKey)} | ${clean(decision.setName)} | ${clean(decision.exclusionCategory)} | ${clean(decision.exclusionReason)} | ${(decision.exclusionEvidenceUrls ?? []).map((url) => `[Quelle](${clean(url)})`).join(" ")} |`),
+  "",
 ];
 
 await writeFile(outputPath, lines.join("\n"));
-console.log(JSON.stringify({ outputPath, exact: exact.length, ambiguous: ambiguous.length, unmapped: unmapped.length }, null, 2));
+console.log(JSON.stringify({ outputPath, exact: exact.length, ambiguous: ambiguous.length, unmapped: unmapped.length, excluded: excluded.length }, null, 2));

@@ -89,6 +89,7 @@ const outputPath = option("--out", ".cardtrader/mapping-audit.json");
 const snapshot = JSON.parse(await readFile(snapshotPath, "utf8"));
 const review = JSON.parse(await readFile(resolve("data/marketplace/cardtrader-set-review.json"), "utf8"));
 const manualCandidates = JSON.parse(await readFile(resolve("data/marketplace/cardtrader-set-candidates.json"), "utf8"));
+const manualExclusions = JSON.parse(await readFile(resolve("data/marketplace/cardtrader-set-exclusions.json"), "utf8"));
 const catalogs = await Promise.all(["en", "de"].map(async (language) => {
   const catalog = JSON.parse(await readFile(resolve(`public/data/catalog/${language}-sets.json`), "utf8"));
   return catalog.items.map((set) => ({ ...set, language, catalogKey: `${language}:${set.id}` }));
@@ -117,8 +118,23 @@ for (const [expansionId, expansionBlueprints] of Object.entries(snapshot.bluepri
 }
 const reviewed = new Map(review.mappings.map((mapping) => [mapping.catalogKey, mapping]));
 const selectedCandidates = new Map(manualCandidates.candidates.map((candidate) => [candidate.catalogKey, candidate]));
+const excluded = new Map(manualExclusions.exclusions.map((exclusion) => [exclusion.catalogKey, exclusion]));
 if (selectedCandidates.size !== manualCandidates.candidates.length) {
   throw new Error("cardtrader-set-candidates.json contains duplicate catalogKey values.");
+}
+if (excluded.size !== manualExclusions.exclusions.length) {
+  throw new Error("cardtrader-set-exclusions.json contains duplicate catalogKey values.");
+}
+for (const exclusion of manualExclusions.exclusions) {
+  if (!sets.some((set) => set.catalogKey === exclusion.catalogKey)) {
+    throw new Error(`Manual exclusion ${exclusion.catalogKey} references an unknown catalog set.`);
+  }
+  if (reviewed.has(exclusion.catalogKey) || selectedCandidates.has(exclusion.catalogKey)) {
+    throw new Error(`Manual exclusion ${exclusion.catalogKey} conflicts with a reviewed mapping or audit candidate.`);
+  }
+  if (!exclusion.category?.trim() || !exclusion.reason?.trim()) {
+    throw new Error(`Manual exclusion ${exclusion.catalogKey} requires category and reason.`);
+  }
 }
 for (const candidate of manualCandidates.candidates) {
   if (!sets.some((set) => set.catalogKey === candidate.catalogKey)) {
@@ -161,6 +177,26 @@ const decisions = sets.map((set) => {
         blueprintsWithCollectorNumber: cardCoverage.blueprintsWithCollectorNumber,
         uniqueCollectorNumbers: cardCoverage.uniqueCollectorNumbers,
       }],
+      suggestedExpansions: [],
+    };
+  }
+  const exclusion = excluded.get(set.catalogKey);
+  if (exclusion) {
+    return {
+      catalogKey: set.catalogKey,
+      setId: set.id,
+      setName: set.name,
+      language: set.language,
+      seriesName: set.series?.name,
+      releaseDate: set.releaseDate,
+      tcgdexCardCount,
+      status: "excluded",
+      method: "manual-classification",
+      exclusionCategory: exclusion.category,
+      exclusionReason: exclusion.reason,
+      exclusionEvidenceUrls: exclusion.evidenceUrls ?? [],
+      candidateExpansionIds: [],
+      candidateExpansions: [],
       suggestedExpansions: [],
     };
   }
@@ -279,12 +315,12 @@ for (let index = 0; index < englishAliasAuditCandidates.length; index += 8) {
   }
 }
 
-const counts = Object.fromEntries(["verified", "review-required", "ambiguous", "unmapped"].map((status) => [
+const counts = Object.fromEntries(["verified", "excluded", "review-required", "ambiguous", "unmapped"].map((status) => [
   status,
   decisions.filter((decision) => decision.status === status).length,
 ]));
 const report = {
-  schemaVersion: 4,
+  schemaVersion: 5,
   generatedAt: new Date().toISOString(),
   snapshotGeneratedAt: snapshot.generatedAt,
   catalogSetCount: sets.length,
@@ -292,7 +328,7 @@ const report = {
   counts,
   verifiedCoverage: sets.length ? counts.verified / sets.length : 0,
   decisions,
-  policy: "Only entries in cardtrader-set-review.json are verified. Exact-name, fuzzy-name and card-name-overlap results remain review-required until manually reviewed. Card names are reduced to aggregate counts in this report.",
+  policy: "Only entries in cardtrader-set-review.json are verified. Entries in cardtrader-set-exclusions.json are explicitly unavailable for expansion-level export and are never counted as verified. Exact-name, fuzzy-name and card-name-overlap results remain review-required until manually reviewed. Card names are reduced to aggregate counts in this report.",
 };
 
 await writeFile(outputPath, `${JSON.stringify(report, null, 2)}\n`);
