@@ -303,6 +303,67 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   await cleanContext.close();
 });
 
+test("inserts one card and safely undoes the exact saved mutation", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/");
+  await page.getByLabel("Bindername").fill("Undo Binder");
+  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+
+  await addCard(page, 1, "Bulbasaur", "Bulbasaur");
+  await expect(page.getByRole("article", { name: "Bulbasaur, Slot 1" })).toBeVisible();
+  await page.getByRole("button", { name: "Rückgängig" }).click();
+  await expect(page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" })).toBeVisible();
+  await expect(page.getByRole("article", { name: "Bulbasaur, Slot 1" })).toHaveCount(0);
+
+  await page.reload();
+  await expect(page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" })).toBeVisible();
+});
+
+test("reviews multiple cards and fills from the next free slot continuously", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/");
+  await page.getByLabel("Bindername").fill("Mehrfachauswahl");
+  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await addCard(page, 1, "Bulbasaur", "Bulbasaur");
+
+  await page.getByRole("button", { name: "Freier Platz 2, Karte einsetzen" }).click();
+  const search = page.getByRole("dialog", { name: "Karte suchen" });
+  const query = search.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102");
+  await query.fill("Bulbasaur");
+  await search.getByRole("listitem").filter({ hasText: "Bulbasaur" }).getByRole("button", { name: "Auswählen" }).click();
+  await query.fill("Ivysaur");
+  await search.getByRole("listitem").filter({ hasText: "Ivysaur" }).getByRole("button", { name: "Auswählen" }).click();
+  await expect(search.getByText("2 Karten ausgewählt")).toBeVisible();
+  await search.getByRole("button", { name: "Auswahl prüfen" }).click();
+
+  const review = page.getByRole("dialog", { name: "2 Karten als Auswahl übernehmen" });
+  for (const finish of await review.getByLabel("Finish").all()) await finish.selectOption("normal");
+  await review.getByLabel("Ab nächstem freien Platz fortlaufend").check();
+  await review.getByRole("button", { name: "Auswahl übernehmen" }).click();
+
+  await expect(page.getByRole("article", { name: "Bulbasaur, Slot 2" })).toBeVisible();
+  await expect(page.getByRole("article", { name: "Ivysaur, Slot 3" })).toBeVisible();
+  await expect(page.getByText(/2 Karten wurden ab dem nächsten freien Platz eingeplant/)).toBeVisible();
+});
+
+test("creates a reviewed set binder through the guided start", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/");
+  await page.getByRole("button", { name: "Mit einem Set starten" }).click();
+
+  const wizard = page.getByRole("region", { name: "Binder mit einem Set erstellen" });
+  await wizard.getByPlaceholder(/Base Set/).fill("Base Set");
+  await wizard.getByRole("button").filter({ hasText: /^Base Set/ }).first().click();
+  await wizard.getByRole("button", { name: "Set prüfen" }).click();
+  await expect(wizard.getByText(/1 Karten · 1 Seiten/)).toBeVisible();
+  await wizard.getByLabel("Bindername").fill("Geführtes Base Set");
+  await wizard.getByRole("button", { name: "Binder anlegen" }).click();
+
+  await expect(page.getByRole("heading", { name: "Geführtes Base Set", exact: true })).toBeVisible();
+  await expect(page.getByRole("article", { name: "Bulbasaur, Slot 1" })).toBeVisible();
+  await expect(page.getByText(/1 Karten aus Base Set wurden eingeplant/)).toBeVisible();
+});
+
 test("autosaves the binder description and each page note across reloads", async ({ page }) => {
   await page.goto("/");
   await page.getByLabel("Bindername").fill("Notizen Binder");
@@ -537,6 +598,10 @@ test("offers Smart Search recovery, language choice and no mobile overflow", asy
   await expect(preview.getByText("Kartensprache für den Binder")).toBeVisible();
   await preview.getByRole("button", { name: "Deutsch" }).click();
   await expect(preview.getByRole("button", { name: "Deutsch" })).toHaveAttribute("aria-pressed", "true");
+  await preview.getByLabel("Finish").selectOption("holo");
+  await preview.getByLabel("Edition").selectOption("unlimited");
+  await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
+  await expect(page.getByRole("article", { name: "Glurak, Slot 1" })).toBeVisible();
 });
 
 test("offers a direct normal-search fallback when the Smart Search index fails", async ({ page }) => {
@@ -673,6 +738,9 @@ test("sets, edits and persists the minimum condition for marketplace handoff", a
   await expect(page.getByRole("definition").filter({ hasText: "Lightly Played" })).toBeVisible();
   await page.getByRole("button", { name: /Fehlende Karten \(1\)/ }).click();
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
+  await expect(missingCards.getByRole("button", { name: "TCGplayer" })).toBeVisible();
+  await expect(missingCards.getByRole("button", { name: "Cardmarket" })).toBeVisible();
+  await expect(missingCards.getByRole("button", { name: "CardTrader" })).toHaveCount(0);
   await missingCards.getByRole("button", { name: "Cardmarket" }).click();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue("1x Ivysaur Vine Whip Poisonpowder");
   await expect(missingCards.getByText("Lightly Played", { exact: true })).toBeVisible();

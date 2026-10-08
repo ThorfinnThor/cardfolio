@@ -9,7 +9,7 @@ Complete this file for the exact commit before each public release. Do not repla
 | Build date/time (UTC) | `TBD` |
 | Production origin | `TBD` |
 | Cloudflare Pages project | `TBD` |
-| Database schema | IndexedDB `cardfolio`, version 1; binder schema 1; backup format 1 |
+| Database schema | IndexedDB `cardfolio`, version 2; binder schema 1; backup format 2 (imports format 1) |
 | Browsers and versions tested | `TBD` |
 | Mobile viewport/device tested | `TBD` |
 | CI run URL | `TBD` |
@@ -20,9 +20,18 @@ Complete this file for the exact commit before each public release. Do not repla
 
 - `designPreview`: false
 - `pricing`: false
+- `giftBuilderPricing`: false
+- `giftPriceEstimates`: true by default; can be disabled with `NEXT_PUBLIC_FEATURE_GIFT_PRICE_ESTIMATES=false`
+- `giftBudgetGuarantee`: false
+- `artworkReview`: false in production unless explicitly enabled
+- `smartSearch`: true by default; can be disabled with `NEXT_PUBLIC_FEATURE_SMART_SEARCH=false`
 - `tcgplayerTextExport`: true
 - `tcgplayerPrefill`: false
 - `cardmarketImport`: true
+- `cardtraderCatalog`: false
+- `cardtraderImages`: false
+- `cardtraderPrices`: false
+- `cardtraderWishlist`: false
 - `cardtraderCommerce`: false
 - `publicSharing`: false
 
@@ -38,6 +47,7 @@ Complete this file for the exact commit before each public release. Do not repla
 - [ ] 375 px layout has no horizontal overflow and keyboard focus remains visible.
 - [ ] Preview-origin data is treated as separate from production-origin data.
 - [ ] No card image bytes, user backups or private binder data appear in the deployed asset inventory.
+- [ ] `npm run release:evidence` records bundle/data sizes and reports zero bundled raster images.
 
 ## Known limitations
 

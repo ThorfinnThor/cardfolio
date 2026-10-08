@@ -33,6 +33,7 @@ const binderPartnerCatalogPath = requireFile("public/data/partners/binder-partne
 requireFile("docs/gift-commerce-release-gates.md");
 requireFile("docs/cardtrader-release-gate.md");
 requireFile("docs/cardtrader-secret-operations.md");
+requireFile("scripts/release-evidence.mjs");
 requireFile("data/marketplace/cardtrader-set-review.json");
 requireFile("data/marketplace/cardtrader-set-candidates.json");
 requireFile("data/marketplace/cardtrader-set-exclusions.json");
@@ -85,6 +86,9 @@ requireText(".github/workflows/cardtrader-discovery.yml", [
   ".cardtrader/blueprint-id-audit.json",
   "if-no-files-found: error",
   "retention-days: 7",
+]);
+requireText(".github/workflows/ci.yml", [
+  "npm run release:evidence",
 ]);
 
 for (const workflow of [
