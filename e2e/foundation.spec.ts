@@ -340,15 +340,20 @@ test("reviews multiple cards and fills from the next free slot continuously", as
   const reviewItems = review.locator("details");
   for (let index = 0; index < await reviewItems.count(); index += 1) {
     const reviewItem = reviewItems.nth(index);
-    if ((await reviewItem.getAttribute("open")) === null) await reviewItem.locator("summary").click();
+    await reviewItem.evaluate((element) => { (element as HTMLDetailsElement).open = true; });
     await reviewItem.getByLabel("Finish").selectOption("normal");
+    await reviewItem.getByLabel("Edition").selectOption("unlimited");
+    await reviewItem.getByLabel("Druckvariante").selectOption("shadowed");
+    await expect(reviewItem.getByLabel("Finish")).toHaveValue("normal");
   }
   await review.getByLabel("Ab nächstem freien Platz fortlaufend").check();
-  await review.getByRole("button", { name: "Auswahl übernehmen" }).click();
+  const confirmSelection = review.getByRole("button", { name: "Auswahl übernehmen" });
+  await expect(confirmSelection).toBeEnabled();
+  await confirmSelection.click();
 
   await expect(page.getByRole("article", { name: "Bulbasaur, Slot 2" })).toBeVisible();
   await expect(page.getByRole("article", { name: "Ivysaur, Slot 3" })).toBeVisible();
-  await expect(page.getByText(/2 Karten wurden ab dem nächsten freien Platz eingeplant/)).toBeVisible();
+  await expect(page.getByText("2 Karten wurden als Binderseite übernommen.")).toBeVisible();
 });
 
 test("creates a reviewed set binder through the guided start", async ({ page }) => {
@@ -358,9 +363,7 @@ test("creates a reviewed set binder through the guided start", async ({ page }) 
 
   const wizard = page.getByRole("region", { name: "Binder mit einem Set erstellen" });
   await wizard.getByPlaceholder(/Base Set/).fill("Base Set");
-  const baseSet = wizard.locator('[aria-label="Sets auswählen"] button').filter({
-    has: wizard.getByText("Base Set", { exact: true }),
-  });
+  const baseSet = wizard.locator('[aria-label="Sets auswählen"] button').filter({ hasText: /Base Set.*102 Karten/ });
   await expect(baseSet).toHaveCount(1);
   await baseSet.click();
   await wizard.getByRole("button", { name: "Set prüfen" }).click();
