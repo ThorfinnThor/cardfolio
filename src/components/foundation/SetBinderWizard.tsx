@@ -17,6 +17,14 @@ interface SetBinderWizardProps {
   onCreate: (plan: SetBinderPlan, name: string) => Promise<void>;
 }
 
+function formatReleaseDate(value?: string): string | undefined {
+  if (!value) return undefined;
+  const [year, month, day] = value.split("-").map(Number);
+  if (!year || !month || !day) return undefined;
+  return new Intl.DateTimeFormat("de-DE", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" })
+    .format(new Date(Date.UTC(year, month - 1, day)));
+}
+
 export function SetBinderWizard({ catalog, sets, onCancel, onCreate }: SetBinderWizardProps) {
   const [query, setQuery] = useState("");
   const [language, setLanguage] = useState<CardLanguage>("de");
@@ -111,7 +119,8 @@ export function SetBinderWizard({ catalog, sets, onCancel, onCreate }: SetBinder
             const languageName = entry.names[language];
             const translatedName = language === "en" && languageName !== label ? `Englischer Setname: ${languageName} · ` : "";
             const seriesName = entry.series.de?.name ?? entry.series[language]?.name ?? "Serie unbekannt";
-            return <button type="button" key={entry.id} className={`${styles.setWizardSet} ${selectedId === entry.id ? styles.setWizardSetActive : ""}`} onClick={() => { setSelectedId(entry.id); setError(undefined); }}><span><strong>{label}</strong><small>{translatedName}{seriesName} · {entry.cardCount.total} Karten</small></span>{selectedId === entry.id ? <Check size={18} /> : null}</button>;
+            const releaseDate = formatReleaseDate(entry.releaseDate);
+            return <button type="button" key={entry.id} className={`${styles.setWizardSet} ${selectedId === entry.id ? styles.setWizardSetActive : ""}`} onClick={() => { setSelectedId(entry.id); setError(undefined); }}><span><strong>{label}</strong><small>{translatedName}Serie: {seriesName}{releaseDate ? ` · Veröffentlicht: ${releaseDate}` : ""} · {entry.cardCount.total} Karten</small></span>{selectedId === entry.id ? <Check size={18} /> : null}</button>;
           })}
           {!visibleSets.length ? <p className={styles.searchHint}>Keine Sets gefunden.</p> : null}
         </div>

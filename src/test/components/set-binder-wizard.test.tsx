@@ -12,6 +12,7 @@ const sets: CatalogSetIndexEntry[] = [{
   id: "base1",
   names: { de: "Grundset", en: "Base Set" },
   series: { de: { id: "base", name: "Basis" }, en: { id: "base", name: "Base" } },
+  releaseDate: "1999-01-09",
   cardCount: { official: 102, total: 102 },
   assets: {},
 }, {
@@ -42,7 +43,7 @@ describe("SetBinderWizard", () => {
     render(<SetBinderWizard catalog={catalog} sets={sets} onCancel={vi.fn()} onCreate={vi.fn()} />);
 
     expect(screen.getByLabelText("Kartensprache")).toHaveValue("de");
-    expect(screen.getByRole("button", { name: /Grundset.*102 Karten/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Grundset.*Serie: Basis.*Veröffentlicht: 09.01.1999.*102 Karten/ })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /English-only Set/ })).not.toBeInTheDocument();
   });
 
