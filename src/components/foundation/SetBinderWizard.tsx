@@ -19,7 +19,7 @@ interface SetBinderWizardProps {
 
 export function SetBinderWizard({ catalog, sets, onCancel, onCreate }: SetBinderWizardProps) {
   const [query, setQuery] = useState("");
-  const [language, setLanguage] = useState<CardLanguage>("en");
+  const [language, setLanguage] = useState<CardLanguage>("de");
   const [scope, setScope] = useState<"official-numbered" | "complete-catalog">("official-numbered");
   const [variantStrategy, setVariantStrategy] = useState<"one-per-card" | "all-confirmed-finishes">("one-per-card");
   const [selectedId, setSelectedId] = useState<string>();
@@ -31,12 +31,12 @@ export function SetBinderWizard({ catalog, sets, onCancel, onCreate }: SetBinder
 
   const visibleSets = useMemo(() => {
     const terms = query.trim().toLocaleLowerCase("de-DE").split(/\s+/).filter(Boolean);
-    return sets.filter((entry) => terms.every((term) => [entry.id, entry.names.de, entry.names.en, entry.series.de?.name, entry.series.en?.name]
+    return sets.filter((entry) => entry.names[language] && terms.every((term) => [entry.id, entry.names.de, entry.names.en, entry.series.de?.name, entry.series.en?.name]
       .filter(Boolean)
       .some((value) => value!.toLocaleLowerCase("de-DE").includes(term))));
-  }, [query, sets]);
-  const selectedSet = sets.find((entry) => entry.id === selectedId);
-  const displayName = selectedSet?.names[language] ?? selectedSet?.names.en ?? selectedSet?.names.de ?? selectedSet?.id ?? "";
+  }, [language, query, sets]);
+  const selectedSet = visibleSets.find((entry) => entry.id === selectedId);
+  const displayName = selectedSet?.names.de ?? selectedSet?.names[language] ?? selectedSet?.id ?? "";
 
   async function loadSet() {
     if (!selectedSet) return;
@@ -44,21 +44,26 @@ export function SetBinderWizard({ catalog, sets, onCancel, onCreate }: SetBinder
     setError(undefined);
     setPlan(undefined);
     try {
-      const items = [] as { ref: { provider: "tcgdex"; id: string; language: CardLanguage } }[];
+      const items = new Map<string, { ref: { provider: "tcgdex"; id: string; language: CardLanguage } }>();
       let page = 1;
       let hasMore = true;
       while (hasMore && page <= 20) {
         const result = await catalog.search({ language, setId: selectedSet.id, page, pageSize: 100 });
-        items.push(...result.items);
+        for (const item of result.items) {
+          const belongsToSelectedSet = item.setId === selectedSet.id || item.ref.id.startsWith(`${selectedSet.id}-`);
+          if (belongsToSelectedSet && item.ref.language === language) items.set(item.ref.id, item);
+        }
         hasMore = result.hasMore;
         page += 1;
       }
-      if (!items.length) throw new Error("Für diese Sprache wurden keine physischen Karten gefunden.");
+      if (!items.size) throw new Error("Für dieses Set wurden in der gewählten Kartensprache keine physischen Karten gefunden.");
       const cards: CardSnapshot[] = [];
-      for (let index = 0; index < items.length; index += 6) {
-        const batch = await Promise.all(items.slice(index, index + 6).map((item) => catalog.getCard(item.ref)));
-        cards.push(...batch.filter((card) => card.physicalStatus !== "digital"));
+      const exactItems = [...items.values()];
+      for (let index = 0; index < exactItems.length; index += 6) {
+        const batch = await Promise.all(exactItems.slice(index, index + 6).map((item) => catalog.getCard(item.ref)));
+        cards.push(...batch.filter((card) => card.physicalStatus !== "digital" && card.setId === selectedSet.id && card.ref.language === language));
       }
+      if (!cards.length) throw new Error("Der Kartenkatalog hat für dieses Set keine eindeutig zuordenbaren Karten geliefert.");
       const nextPlan = createSetBinderPlan({
         setId: selectedSet.id,
         setName: displayName,
@@ -94,16 +99,19 @@ export function SetBinderWizard({ catalog, sets, onCancel, onCreate }: SetBinder
         <div><p className={styles.eyebrow}>Geführter Start</p><h1 id="set-wizard-heading">Binder mit einem Set erstellen</h1><p>Wähle Sprache und Umfang. Vor dem Speichern siehst du Kartenanzahl, Seiten und offene Varianten.</p></div>
       </div>
       <div className={styles.setWizardControls}>
-        <label><span>Set suchen</span><div className={styles.searchLabel}><Search size={16} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="z. B. Base Set oder  Base1" /></div></label>
-        <label><span>Sprache</span><select value={language} onChange={(event) => { setLanguage(event.target.value as CardLanguage); setPlan(undefined); }}><option value="en">English</option><option value="de">Deutsch</option></select></label>
+        <label><span>Set suchen</span><div className={styles.searchLabel}><Search size={16} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="z. B. Grundset oder Base Set" /></div></label>
+        <label><span>Kartensprache</span><select value={language} onChange={(event) => { setLanguage(event.target.value as CardLanguage); setSelectedId(undefined); setPlan(undefined); setError(undefined); }}><option value="de">Deutsch</option><option value="en">Englisch</option></select></label>
         <label><span>Umfang</span><select value={scope} onChange={(event) => { setScope(event.target.value as typeof scope); setPlan(undefined); }}><option value="official-numbered">Offizielle Nummern</option><option value="complete-catalog">Kompletter Katalog</option></select></label>
         <label><span>Varianten</span><select value={variantStrategy} onChange={(event) => { setVariantStrategy(event.target.value as typeof variantStrategy); setPlan(undefined); }}><option value="one-per-card">Eine Ausgabe pro Karte</option><option value="all-confirmed-finishes">Alle bestätigten Finishes</option></select></label>
       </div>
       {!plan ? (
         <div className={styles.setWizardSetList} aria-label="Sets auswählen">
           {visibleSets.slice(0, 80).map((entry) => {
-            const label = entry.names[language] ?? entry.names.en ?? entry.names.de ?? entry.id;
-            return <button type="button" key={entry.id} className={`${styles.setWizardSet} ${selectedId === entry.id ? styles.setWizardSetActive : ""}`} onClick={() => setSelectedId(entry.id)}><span><strong>{label}</strong><small>{entry.series[language]?.name ?? entry.series.en?.name ?? "Serie unbekannt"} · {entry.cardCount.total} Karten</small></span>{selectedId === entry.id ? <Check size={18} /> : null}</button>;
+            const label = entry.names.de ?? entry.names[language] ?? entry.id;
+            const languageName = entry.names[language];
+            const translatedName = language === "en" && languageName !== label ? `Englischer Setname: ${languageName} · ` : "";
+            const seriesName = entry.series.de?.name ?? entry.series[language]?.name ?? "Serie unbekannt";
+            return <button type="button" key={entry.id} className={`${styles.setWizardSet} ${selectedId === entry.id ? styles.setWizardSetActive : ""}`} onClick={() => { setSelectedId(entry.id); setError(undefined); }}><span><strong>{label}</strong><small>{translatedName}{seriesName} · {entry.cardCount.total} Karten</small></span>{selectedId === entry.id ? <Check size={18} /> : null}</button>;
           })}
           {!visibleSets.length ? <p className={styles.searchHint}>Keine Sets gefunden.</p> : null}
         </div>

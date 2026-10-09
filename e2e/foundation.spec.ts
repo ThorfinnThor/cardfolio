@@ -13,8 +13,17 @@ async function mockCatalog(page: Page) {
 
     if (url.pathname.endsWith("/cards")) {
       const query = url.searchParams.get("name")?.toLowerCase();
+      const setId = url.searchParams.get("set.id");
       const language = url.pathname.split("/")[2];
       const pageNumber = Number(url.searchParams.get("pagination:page") ?? "1");
+      if (setId === "base1") {
+        await route.fulfill({
+          body: JSON.stringify(pageNumber === 1 ? [{ id: "base1-1", localId: "1", name: language === "de" ? "Bisasam" : "Bulbasaur" }] : []),
+          headers,
+          status: 200,
+        });
+        return;
+      }
       if (language === "en" && query?.includes("mixed")) {
         await route.fulfill({
           body: JSON.stringify([
@@ -357,18 +366,18 @@ test("creates a reviewed set binder through the guided start", async ({ page }) 
 
   const wizard = page.getByRole("region", { name: "Binder mit einem Set erstellen" });
   await wizard.getByPlaceholder(/Base Set/).fill("Base Set");
-  const baseSet = wizard.locator('[aria-label="Sets auswählen"] button').filter({ hasText: /Base Set.*102 Karten/ });
+  const baseSet = wizard.locator('[aria-label="Sets auswählen"] button').filter({ hasText: /Grundset.*102 Karten/ });
   await expect(baseSet).toHaveCount(1);
   await baseSet.click();
   await wizard.getByRole("button", { name: "Set prüfen" }).click();
-  await expect(wizard.getByLabel("Bindername")).toHaveValue("Base Set");
+  await expect(wizard.getByLabel("Bindername")).toHaveValue("Grundset");
   await expect(wizard.getByText(/Katalog liefert 1 von erwarteten 102 Karten/).first()).toBeVisible();
   await wizard.getByLabel("Bindername").fill("Geführtes Base Set");
   await wizard.getByRole("button", { name: "Binder anlegen" }).click();
 
   await expect(page.getByRole("heading", { name: "Geführtes Base Set", exact: true })).toBeVisible();
   await expect(page.getByRole("article", { name: "Bulbasaur, Slot 1" })).toBeVisible();
-  await expect(page.getByText(/1 Karten aus Base Set wurden eingeplant/)).toBeVisible();
+  await expect(page.getByText(/1 Karten aus Grundset wurden eingeplant/)).toBeVisible();
 });
 
 test("autosaves the binder description and each page note across reloads", async ({ page }) => {

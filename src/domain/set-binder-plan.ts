@@ -61,9 +61,9 @@ function selectedCards(request: SetBinderPlanRequest): CardSnapshot[] {
   const unique = new Map<string, CardSnapshot>();
   for (const card of request.cards) {
     if (card.setId !== request.setId || card.ref.language !== request.language) {
-      throw new SetBinderPlanError("Every card in a set-binder plan must match its set and language.");
+      throw new SetBinderPlanError("Alle Karten des Set-Binders müssen zum gewählten Set und zur gewählten Kartensprache gehören.");
     }
-    if (unique.has(card.key)) throw new SetBinderPlanError(`Duplicate card snapshot in set plan: ${card.key}.`);
+    if (unique.has(card.key)) throw new SetBinderPlanError(`Doppelte Karte im Set-Plan: ${card.key}.`);
     unique.set(card.key, card);
   }
   const cards = [...unique.values()];
@@ -96,10 +96,10 @@ function entriesForCard(card: CardSnapshot, strategy: SetVariantStrategy): SetBi
 /** Builds a deterministic, provider-independent plan from a complete set result. */
 export function createSetBinderPlan(request: SetBinderPlanRequest): SetBinderPlan {
   const layout = request.layout ?? { rows: 3, columns: 3 };
-  if (!supportedLayout(layout)) throw new SetBinderPlanError("The selected binder layout is not supported.");
-  if (!request.setId.trim() || !request.setName.trim()) throw new SetBinderPlanError("Set ID and name are required.");
+  if (!supportedLayout(layout)) throw new SetBinderPlanError("Das gewählte Binderformat wird nicht unterstützt.");
+  if (!request.setId.trim() || !request.setName.trim()) throw new SetBinderPlanError("Set-ID und Setname sind erforderlich.");
   if (request.catalogCardCount.official < 0 || request.catalogCardCount.total < request.catalogCardCount.official) {
-    throw new SetBinderPlanError("Set card counts are inconsistent.");
+    throw new SetBinderPlanError("Die Kartenanzahlen des Sets sind widersprüchlich.");
   }
 
   const cards = selectedCards(request);
@@ -110,7 +110,7 @@ export function createSetBinderPlan(request: SetBinderPlanRequest): SetBinderPla
   const slotsPerPage = layout.rows * layout.columns;
   const pageCount = Math.max(1, Math.ceil(entries.length / slotsPerPage));
   if (pageCount > MAX_BINDER_PAGES) {
-    throw new SetBinderPlanError(`This plan needs ${pageCount} pages; the binder limit is ${MAX_BINDER_PAGES}.`);
+    throw new SetBinderPlanError(`Dieser Plan benötigt ${pageCount} Seiten; erlaubt sind höchstens ${MAX_BINDER_PAGES}.`);
   }
   const coverageComplete = cards.length === expectedCardCount;
   const issues = [
