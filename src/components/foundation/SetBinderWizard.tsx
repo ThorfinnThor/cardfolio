@@ -25,10 +25,16 @@ function formatReleaseDate(value?: string): string | undefined {
     .format(new Date(Date.UTC(year, month - 1, day)));
 }
 
+function formatCardCount(cardCount: CatalogSetIndexEntry["cardCount"]): string {
+  const secretCount = cardCount.total - cardCount.official;
+  if (secretCount <= 0) return `${cardCount.total} Karten`;
+  return `${cardCount.total} Karten insgesamt (${cardCount.official} regulär + ${secretCount} Secret Rares)`;
+}
+
 export function SetBinderWizard({ catalog, sets, onCancel, onCreate }: SetBinderWizardProps) {
   const [query, setQuery] = useState("");
   const [language, setLanguage] = useState<CardLanguage>("de");
-  const [scope, setScope] = useState<"official-numbered" | "complete-catalog">("official-numbered");
+  const [scope, setScope] = useState<"official-numbered" | "complete-catalog">("complete-catalog");
   const [variantStrategy, setVariantStrategy] = useState<"one-per-card" | "all-confirmed-finishes">("one-per-card");
   const [selectedId, setSelectedId] = useState<string>();
   const [plan, setPlan] = useState<SetBinderPlan>();
@@ -109,7 +115,7 @@ export function SetBinderWizard({ catalog, sets, onCancel, onCreate }: SetBinder
       <div className={styles.setWizardControls}>
         <label><span>Set suchen</span><div className={styles.searchLabel}><Search size={16} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="z. B. Grundset oder Base Set" /></div></label>
         <label><span>Kartensprache</span><select value={language} onChange={(event) => { setLanguage(event.target.value as CardLanguage); setSelectedId(undefined); setPlan(undefined); setError(undefined); }}><option value="de">Deutsch</option><option value="en">Englisch</option></select></label>
-        <label><span>Umfang</span><select value={scope} onChange={(event) => { setScope(event.target.value as typeof scope); setPlan(undefined); }}><option value="official-numbered">Offizielle Nummern</option><option value="complete-catalog">Kompletter Katalog</option></select></label>
+        <label><span>Umfang</span><select value={scope} onChange={(event) => { setScope(event.target.value as typeof scope); setPlan(undefined); }}><option value="complete-catalog">Komplettes Set (inkl. Secret Rares)</option><option value="official-numbered">Nur reguläre Nummern (ohne Secret Rares)</option></select></label>
         <label><span>Varianten</span><select value={variantStrategy} onChange={(event) => { setVariantStrategy(event.target.value as typeof variantStrategy); setPlan(undefined); }}><option value="one-per-card">Eine Ausgabe pro Karte</option><option value="all-confirmed-finishes">Alle bestätigten Finishes</option></select></label>
       </div>
       {!plan ? (
@@ -120,7 +126,7 @@ export function SetBinderWizard({ catalog, sets, onCancel, onCreate }: SetBinder
             const translatedName = language === "en" && languageName !== label ? `Englischer Setname: ${languageName} · ` : "";
             const seriesName = entry.series.de?.name ?? entry.series[language]?.name ?? "Serie unbekannt";
             const releaseDate = formatReleaseDate(entry.releaseDate);
-            return <button type="button" key={entry.id} className={`${styles.setWizardSet} ${selectedId === entry.id ? styles.setWizardSetActive : ""}`} onClick={() => { setSelectedId(entry.id); setError(undefined); }}><span><strong>{label}</strong><small>{translatedName}Serie: {seriesName}{releaseDate ? ` · Veröffentlicht: ${releaseDate}` : ""} · {entry.cardCount.total} Karten</small></span>{selectedId === entry.id ? <Check size={18} /> : null}</button>;
+            return <button type="button" key={entry.id} className={`${styles.setWizardSet} ${selectedId === entry.id ? styles.setWizardSetActive : ""}`} onClick={() => { setSelectedId(entry.id); setError(undefined); }}><span><strong>{label}</strong><small>{translatedName}Serie: {seriesName}{releaseDate ? ` · Veröffentlicht: ${releaseDate}` : ""} · {formatCardCount(entry.cardCount)}</small></span>{selectedId === entry.id ? <Check size={18} /> : null}</button>;
           })}
           {!visibleSets.length ? <p className={styles.searchHint}>Keine Sets gefunden.</p> : null}
         </div>

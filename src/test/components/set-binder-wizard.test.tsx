@@ -22,6 +22,14 @@ const sets: CatalogSetIndexEntry[] = [{
   series: { en: { id: "other", name: "Other" } },
   cardCount: { official: 1, total: 1 },
   assets: {},
+}, {
+  provider: "tcgdex",
+  id: "sv08.5",
+  names: { de: "Prismatische Entwicklungen", en: "Prismatic Evolutions" },
+  series: { de: { id: "sv", name: "Karmesin & Purpur" }, en: { id: "sv", name: "Scarlet & Violet" } },
+  releaseDate: "2025-01-17",
+  cardCount: { official: 131, total: 180 },
+  assets: {},
 }];
 
 function card(id: string, setId = "base1"): CardSnapshot {
@@ -43,7 +51,9 @@ describe("SetBinderWizard", () => {
     render(<SetBinderWizard catalog={catalog} sets={sets} onCancel={vi.fn()} onCreate={vi.fn()} />);
 
     expect(screen.getByLabelText("Kartensprache")).toHaveValue("de");
+    expect(screen.getByLabelText("Umfang")).toHaveValue("complete-catalog");
     expect(screen.getByRole("button", { name: /Grundset.*Serie: Basis.*Veröffentlicht: 09.01.1999.*102 Karten/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Prismatische Entwicklungen.*180 Karten insgesamt \(131 regulär \+ 49 Secret Rares\)/ })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /English-only Set/ })).not.toBeInTheDocument();
   });
 
