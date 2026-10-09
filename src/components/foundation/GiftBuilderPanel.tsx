@@ -9,6 +9,7 @@ import { FEATURES } from "@/config/feature-flags";
 import {
   DeterministicGiftSelectionEngine,
   giftCandidateHasArtwork,
+  giftCandidateHasPrice,
   type GiftCardCandidate,
   type GiftPreferences,
   type GiftProject,
@@ -215,7 +216,11 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
       });
       const safe = hydrated
         .map((candidate) => safeCandidate(candidate, pricingEnabled, preferences.currency))
-        .toSorted((left, right) => Number(!giftCandidateHasArtwork(left)) - Number(!giftCandidateHasArtwork(right)));
+        .toSorted((left, right) =>
+          Number(!giftCandidateHasArtwork(left)) - Number(!giftCandidateHasArtwork(right))
+          || Number(!giftCandidateHasPrice(left)) - Number(!giftCandidateHasPrice(right))
+          || (left.price.amountMinor ?? Number.MAX_SAFE_INTEGER) - (right.price.amountMinor ?? Number.MAX_SAFE_INTEGER)
+          || left.card.key.localeCompare(right.card.key));
       setBriefs(safe.map(({ card }) => ({
         ref: card.ref,
         name: card.name,
@@ -484,9 +489,15 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
             <p className={styles.summaryDisclosure}>Karten und physischer Binder sind getrennte Käufe. {pricingEnabled ? "Die Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten." : "Für Karten wird derzeit kein Preis berechnet und keine Budgetzusage abgegeben."} Alle Geschenkangaben bleiben lokal in diesem Browser.</p>
             <section className={styles.summaryCards} aria-labelledby="summary-cards-heading">
               <h3 id="summary-cards-heading">Karten im Binder</h3>
-              <ol>{printSummary.cards.map((card, index) => <li key={`${card.name}-${card.setName}-${card.collectorNumber}-${index}`}><span>{card.name}</span><small>{card.setName} · Nr. {card.collectorNumber} · {card.language.toUpperCase()} · {card.variant}</small></li>)}</ol>
+              <ol>{printSummary.cards.map((card, index) => {
+                const candidate = selection.selected[index];
+                return <li key={candidate?.card.key ?? `${card.name}-${card.setName}-${card.collectorNumber}-${index}`}>
+                  {candidate ? <CardArtwork card={candidate.card} className={styles.summaryCardImage} fallback={<span className={styles.summaryCardImageFallback}>Kein Bild</span>} /> : <span className={styles.summaryCardImageFallback}>Kein Bild</span>}
+                  <span className={styles.summaryCardIdentity}><strong>{card.name}</strong><small>{card.setName} · Nr. {card.collectorNumber} · {card.language.toUpperCase()} · {card.variant}</small></span>
+                </li>;
+              })}</ol>
             </section>
-            <p className={styles.localHint}>Druckansicht und Textdatei enthalten Kartenangaben, aber keine Pokémon-Kartenbilder oder Logos. Persönliche Fotos werden nicht hochgeladen.</p>
+            <p className={styles.localHint}>Die Bildschirmansicht zeigt verfügbare Katalogbilder. Druckansicht und Textdatei enthalten nur Kartenangaben und keine Pokémon-Kartenbilder oder Logos. Persönliche Fotos werden nicht hochgeladen.</p>
           </article>
 
           <label className={styles.greetingField}>Grußtext für die lokale Druckansicht <span>(optional, nur in diesem Browser)</span>

@@ -59,6 +59,7 @@ requireText("src/config/feature-flags.ts", [
   'artworkReview: process.env.NEXT_PUBLIC_FEATURE_ARTWORK_REVIEW === "true" || process.env.NODE_ENV !== "production"',
   'smartSearch: process.env.NEXT_PUBLIC_FEATURE_SMART_SEARCH !== "false"',
   "tcgplayerPrefill: false",
+  "cardtraderPreview: true",
   "cardtraderCatalog: false",
   "cardtraderImages: false",
   "cardtraderPrices: false",

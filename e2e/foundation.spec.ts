@@ -756,7 +756,9 @@ test("sets, edits and persists the minimum condition for marketplace handoff", a
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   await expect(missingCards.getByRole("button", { name: "TCGplayer" })).toBeVisible();
   await expect(missingCards.getByRole("button", { name: "Cardmarket" })).toBeVisible();
-  await expect(missingCards.getByRole("button", { name: "CardTrader" })).toHaveCount(0);
+  await missingCards.getByRole("button", { name: "CardTrader · Vorschau" }).click();
+  await expect(missingCards.getByRole("status")).toContainText("noch nicht freigegeben");
+  await expect(missingCards.getByRole("button", { name: "Wishlist erstellen" })).toBeDisabled();
   await missingCards.getByRole("button", { name: "Cardmarket" }).click();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue("1x Ivysaur Vine Whip Poisonpowder");
   await expect(missingCards.getByText("Lightly Played", { exact: true })).toBeVisible();

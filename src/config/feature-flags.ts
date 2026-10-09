@@ -9,6 +9,7 @@ export const FEATURES = {
   tcgplayerTextExport: true,
   tcgplayerPrefill: false,
   cardmarketImport: true,
+  cardtraderPreview: true,
   cardtraderCatalog: false,
   cardtraderImages: false,
   cardtraderPrices: false,

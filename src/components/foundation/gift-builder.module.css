@@ -112,9 +112,13 @@
 .summaryCards { display: grid; gap: 8px; }
 .summaryCards h3, .purchaseCard h3 { margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: 16px; font-weight: 600; }
 .summaryCards ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 18px; margin: 0; padding: 0; list-style: none; }
-.summaryCards li { display: grid; gap: 2px; min-width: 0; border-bottom: 1px solid var(--cf-line); padding: 8px 0; }
-.summaryCards li span { color: var(--cf-text); font-size: 12px; font-weight: 650; }
-.summaryCards li small { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 9px; overflow-wrap: anywhere; }
+.summaryCards li { display: grid; grid-template-columns: 56px minmax(0, 1fr); align-items: center; gap: 10px; min-width: 0; border-bottom: 1px solid var(--cf-line); padding: 8px 0; }
+.summaryCardImage, .summaryCardImageFallback { display: grid; width: 56px; height: 76px; place-items: center; overflow: hidden; border-radius: 5px; background: var(--cf-field); color: var(--cf-muted); font-size: 8px; text-align: center; }
+.summaryCardImage img { width: 100%; height: 100%; object-fit: contain; }
+.summaryCardImage > span { display: none; }
+.summaryCardIdentity { display: grid; gap: 3px; min-width: 0; }
+.summaryCardIdentity strong { color: var(--cf-text); font-size: 12px; font-weight: 650; }
+.summaryCardIdentity small { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 9px; overflow-wrap: anywhere; }
 .greetingField { display: grid; gap: 7px; color: var(--cf-text2); font-size: 12px; font-weight: 650; }
 .greetingField span { color: var(--cf-muted); font-size: 10px; font-weight: 500; }
 .greetingField textarea { width: 100%; resize: vertical; border: 1px solid var(--cf-line2); border-radius: 7px; background: var(--cf-field); color: var(--cf-text); padding: 10px; font: inherit; font-size: 13px; }
@@ -178,5 +182,6 @@
   .printSummary, .printSummary * { visibility: visible !important; }
   .printSummary { position: absolute; inset: 0; width: 100%; border: 0; background: #fff; color: #111; padding: 0; }
   .printSummary :global(*) { box-shadow: none !important; }
-  .greetingField, .purchaseOptions, .summaryActions, .header, .steps, .printSummary .localHint { display: none !important; }
+  .greetingField, .purchaseOptions, .summaryActions, .header, .steps, .printSummary .localHint, .summaryCardImage, .summaryCardImageFallback { display: none !important; }
+  .summaryCards li { grid-template-columns: 1fr; }
 }

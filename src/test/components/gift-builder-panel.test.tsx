@@ -66,7 +66,7 @@ describe("GiftBuilderPanel", () => {
     }));
     const loader = {
       loadCandidatePool: vi.fn(async () => briefs),
-      hydrateCandidates: vi.fn(async () => Array.from({ length: 9 }, (_, index) => candidate(index + 1))),
+      hydrateCandidates: vi.fn(async () => Array.from({ length: 9 }, (_, index) => candidateWithArtwork(index + 1))),
     };
     vi.stubGlobal("fetch", vi.fn(async () => ({ ok: true, json: async () => disabledPartners })));
     const onCreateBinder = vi.fn(async (_selection, preferences) => createGiftProject("Geschenk · Pikachu", preferences));
@@ -86,6 +86,7 @@ describe("GiftBuilderPanel", () => {
       expect.objectContaining({ subjectQuery: "Pikachu", targetCardCount: 9 }),
     );
     await screen.findByRole("heading", { name: "Geschenk · Pikachu" });
+    expect(screen.getAllByRole("img", { name: /Pikachu 1, Set 1 1/i }).length).toBeGreaterThan(0);
     expect(screen.getByText("Keine Budgetzusage")).toBeInTheDocument();
     expect(await screen.findByText(/Kein freigegebener Anbieter/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Derzeit nicht verfügbar/i })).toBeDisabled();

@@ -191,8 +191,8 @@ describe("MissingCardsPanel", () => {
     expect(screen.queryByRole("button", { name: "CardTrader" })).not.toBeInTheDocument();
     cleanup();
 
-    render(<MissingCardsPanel {...props()} cardtraderEnabled cardtraderStatus="not-approved" />);
-    fireEvent.click(screen.getByRole("button", { name: "CardTrader" }));
+    render(<MissingCardsPanel {...props()} cardtraderPreviewVisible cardtraderStatus="not-approved" />);
+    fireEvent.click(screen.getByRole("button", { name: "CardTrader · Vorschau" }));
     expect(screen.getByRole("heading", { name: "CardTrader" })).toBeInTheDocument();
     expect(screen.getByRole("status")).toHaveTextContent("noch nicht freigegeben");
     expect(screen.getByText("Preis unbekannt")).toBeInTheDocument();

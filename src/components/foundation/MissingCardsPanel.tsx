@@ -51,6 +51,7 @@ interface MissingCardsPanelProps {
   onCardmarketCopy?: (part: CardmarketHandoffPart) => void;
   onCardmarketTextExport?: (part: CardmarketHandoffPart) => void;
   cardtraderEnabled?: boolean;
+  cardtraderPreviewVisible?: boolean;
   cardtraderStatus?: CardTraderStatus;
   cardtraderQuote?: CardTraderQuotePreview;
 }
@@ -75,6 +76,7 @@ export function MissingCardsPanel({
   onCardmarketCopy,
   onCardmarketTextExport,
   cardtraderEnabled = false,
+  cardtraderPreviewVisible = false,
   cardtraderStatus = "not-approved",
   cardtraderQuote = { status: "unknown" },
 }: MissingCardsPanelProps) {
@@ -153,7 +155,7 @@ export function MissingCardsPanel({
       {copyState === "error" ? <p className={styles.error} role="status">Kopieren wurde vom Browser nicht erlaubt. Nutze stattdessen TXT oder CSV.</p> : null}
       {warnings.map((warning) => <p className={styles.warning} role="note" key={warning}>{warning}</p>)}
 
-      {tcgplayerEnabled || cardmarketEnabled || cardtraderEnabled ? (
+      {tcgplayerEnabled || cardmarketEnabled || cardtraderEnabled || cardtraderPreviewVisible ? (
         <section className={styles.marketplaceChoice} aria-labelledby="marketplace-choice-heading">
           <div>
             <h3 id="marketplace-choice-heading">Marketplace-Übergabe</h3>
@@ -180,12 +182,12 @@ export function MissingCardsPanel({
                 }}
               >Cardmarket</button>
             ) : null}
-            {cardtraderEnabled ? (
+            {cardtraderEnabled || cardtraderPreviewVisible ? (
               <button
                 type="button"
                 aria-pressed={marketplaceChoice === "cardtrader"}
                 onClick={() => setMarketplaceChoice("cardtrader")}
-              >CardTrader</button>
+              >CardTrader{!cardtraderEnabled ? " · Vorschau" : ""}</button>
             ) : null}
           </div>
         </section>
@@ -356,7 +358,7 @@ export function MissingCardsPanel({
         </section>
       ) : null}
 
-      {marketplaceChoice === "cardtrader" && cardtraderEnabled ? (
+      {marketplaceChoice === "cardtrader" && (cardtraderEnabled || cardtraderPreviewVisible) ? (
         <CardTraderPanel items={visibleItems} status={cardtraderStatus} quote={cardtraderQuote} />
       ) : null}
 

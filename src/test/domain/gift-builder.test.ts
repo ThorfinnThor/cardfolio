@@ -135,6 +135,31 @@ describe("deterministic Gift selection", () => {
     expect(result.selected.map((item) => item.card.key)).not.toContain(candidates[9].card.key);
   });
 
+  it("prioritizes cards with price estimates before unpriced cards when all prices are non-binding", () => {
+    const priced = Array.from({ length: 9 }, (_, index) => candidate(index + 1, {
+      card: {
+        ...candidate(index + 1).card,
+        setId: "same-set",
+        imageBaseUrl: `https://assets.tcgdex.net/en/set/card-${index + 1}`,
+      },
+      price: { ...candidate(index + 1).price, confidence: "approximate" },
+    }));
+    const unpriced = candidate(10, {
+      card: {
+        ...candidate(10).card,
+        setId: "diverse-set",
+        imageBaseUrl: "https://assets.tcgdex.net/en/set/card-10",
+      },
+      price: { currency: "EUR", fetchedAt: "2026-10-01T00:00:00.000Z", confidence: "unknown", issues: ["missing-pricing"] },
+    });
+
+    const result = engine.select({ candidates: [...priced, unpriced], preferences: preferences() });
+
+    expect(result.selected).toHaveLength(9);
+    expect(result.unpricedCount).toBe(0);
+    expect(result.selected.map((item) => item.card.key)).not.toContain(unpriced.card.key);
+  });
+
   it("removes duplicates and incomplete variants and reports a too-small pool", () => {
     const first = candidate(1);
     const incomplete = candidate(2, {

@@ -2081,6 +2081,7 @@ export function FoundationWorkspace() {
               onCardmarketPrepare={(items) => void prepareCardmarketHandoff(items)}
               onCardmarketCopy={copyCardmarketHandoff}
               onCardmarketTextExport={downloadCardmarketHandoff}
+              cardtraderPreviewVisible={FEATURES.cardtraderPreview}
               cardtraderEnabled={FEATURES.cardtraderCatalog}
             />
           ) : (
