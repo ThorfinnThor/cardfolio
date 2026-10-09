@@ -116,6 +116,25 @@ describe("deterministic Gift selection", () => {
     expect(result.selected.map((item) => item.card.key)).not.toContain(candidates[9].card.key);
   });
 
+  it("prioritizes artwork over a cheaper card when the illustrated selection still fits the budget", () => {
+    const candidates = Array.from({ length: 10 }, (_, index) => candidate(index + 1, {
+      card: {
+        ...candidate(index + 1).card,
+        imageBaseUrl: index < 9 ? `https://assets.tcgdex.net/en/set/card-${index + 1}` : undefined,
+      },
+      price: {
+        ...candidate(index + 1).price,
+        amountMinor: index < 9 ? 500 : 1,
+      },
+    }));
+
+    const result = engine.select({ candidates, preferences: preferences() });
+
+    expect(result.selected).toHaveLength(9);
+    expect(result.selected.every((item) => Boolean(item.card.imageBaseUrl || item.card.imageFallbackBaseUrl))).toBe(true);
+    expect(result.selected.map((item) => item.card.key)).not.toContain(candidates[9].card.key);
+  });
+
   it("removes duplicates and incomplete variants and reports a too-small pool", () => {
     const first = candidate(1);
     const incomplete = candidate(2, {

@@ -122,15 +122,15 @@ function styleMatches(candidate: GiftCardCandidate, style: GiftStyle): boolean {
   return true;
 }
 
-function hasArtwork(candidate: GiftCardCandidate): boolean {
+export function giftCandidateHasArtwork(candidate: GiftCardCandidate): boolean {
   return Boolean(candidate.card.imageBaseUrl || candidate.card.imageFallbackBaseUrl);
 }
 
 function stableCandidateOrder(left: GiftCardCandidate, right: GiftCardCandidate): number {
   const leftPrice = left.price.amountMinor ?? Number.MAX_SAFE_INTEGER;
   const rightPrice = right.price.amountMinor ?? Number.MAX_SAFE_INTEGER;
-  return leftPrice - rightPrice
-    || Number(!hasArtwork(left)) - Number(!hasArtwork(right))
+  return Number(!giftCandidateHasArtwork(left)) - Number(!giftCandidateHasArtwork(right))
+    || leftPrice - rightPrice
     || (left.releaseYear ?? Number.MAX_SAFE_INTEGER) - (right.releaseYear ?? Number.MAX_SAFE_INTEGER)
     || left.card.setId.localeCompare(right.card.setId)
     || left.card.key.localeCompare(right.card.key);
@@ -143,7 +143,8 @@ function diverseOrder(candidates: GiftCardCandidate[]): GiftCardCandidate[] {
   const yearCounts = new Map<number, number>();
   while (remaining.length) {
     remaining.sort((left, right) =>
-      (setCounts.get(left.card.setId) ?? 0) - (setCounts.get(right.card.setId) ?? 0)
+      Number(!giftCandidateHasArtwork(left)) - Number(!giftCandidateHasArtwork(right))
+      || (setCounts.get(left.card.setId) ?? 0) - (setCounts.get(right.card.setId) ?? 0)
       || (left.releaseYear === undefined ? 1 : yearCounts.get(left.releaseYear) ?? 0)
         - (right.releaseYear === undefined ? 1 : yearCounts.get(right.releaseYear) ?? 0)
       || stableCandidateOrder(left, right));
@@ -170,7 +171,8 @@ function diverseSelectionWithinBudget(
   let total = 0;
   while (selected.length < target) {
     const ranked = [...remaining].sort((left, right) =>
-      (setCounts.get(left.card.setId) ?? 0) - (setCounts.get(right.card.setId) ?? 0)
+      Number(!giftCandidateHasArtwork(left)) - Number(!giftCandidateHasArtwork(right))
+      || (setCounts.get(left.card.setId) ?? 0) - (setCounts.get(right.card.setId) ?? 0)
       || (left.releaseYear === undefined ? 1 : yearCounts.get(left.releaseYear) ?? 0)
         - (right.releaseYear === undefined ? 1 : yearCounts.get(right.releaseYear) ?? 0)
       || stableCandidateOrder(left, right));

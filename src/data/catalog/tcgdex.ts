@@ -12,7 +12,6 @@ import { isProviderFallbackVariantSignal } from "@/domain/variant-selection";
 
 import { tcgdexCardSchema, tcgdexSearchResponseSchema, tcgdexSetSchema } from "./schemas";
 import { verifiedImageFallback } from "./image-fallbacks";
-import { inferredCardImageBaseUrl } from "./images";
 import { collectorTotalForSearchItem, setMetadataForSearchItem } from "./set-counts";
 
 const BASE_URL = "https://api.tcgdex.net/v2";
@@ -216,11 +215,15 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
     }
     const setUrl = new URL(`${BASE_URL}/${ref.language}/sets/${encodeURIComponent(card.set.id)}`);
     const set = tcgdexSetSchema.parse(await fetchJson(setUrl, signal));
-    const inferredImages = set.serie ? [
-      inferredCardImageBaseUrl(ref.language, set.serie.id, card.set.id, card.localId),
-      ...(ref.language === "de" ? [inferredCardImageBaseUrl("en", set.serie.id, card.set.id, card.localId)] : []),
-    ] : [];
-    const imageCandidates = [card.image, verifiedImageFallback(ref.language, ref.id), englishCard?.image, ...inferredImages]
+    // Never treat a URL derived from set/card IDs as available artwork. TCGdex
+    // has gaps where those plausible URLs return 404. Only provider-supplied or
+    // synchronously verified external references may influence gift ranking.
+    const imageCandidates = [
+      card.image,
+      verifiedImageFallback(ref.language, ref.id),
+      englishCard?.image,
+      ref.language === "de" ? verifiedImageFallback("en", ref.id) : undefined,
+    ]
       .filter((value): value is string => Boolean(value))
       .filter((value, index, values) => values.indexOf(value) === index);
     const snapshot: CardSnapshot = {

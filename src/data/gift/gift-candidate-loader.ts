@@ -35,6 +35,7 @@ export interface GiftCandidateHydrationOptions {
 }
 
 const DEFAULT_CACHE_TTL_MS = 24 * 60 * 60 * 1_000;
+const GIFT_CANDIDATE_CACHE_VERSION = 2;
 
 function abortReason(signal?: AbortSignal): unknown {
   return signal?.reason ?? new DOMException("Operation aborted", "AbortError");
@@ -49,10 +50,10 @@ async function cachedDetail(key: string): Promise<GiftCandidateCacheRecord | und
   return undefined;
 }
 
-async function storeDetail(detail: TCGdexGiftCardDetail, ttlMs: number): Promise<void> {
+async function storeDetail(key: string, detail: TCGdexGiftCardDetail, ttlMs: number): Promise<void> {
   const cachedAt = new Date().toISOString();
   const value: GiftCandidateCacheRecord = {
-    key: detail.card.key,
+    key,
     card: detail.card,
     rawPricing: detail.rawPricing,
     releaseYear: detail.releaseYear,
@@ -60,7 +61,7 @@ async function storeDetail(detail: TCGdexGiftCardDetail, ttlMs: number): Promise
     expiresAt: new Date(Date.now() + ttlMs).toISOString(),
   };
   const database = await openCardfolioDB();
-  await database.put("giftCandidateCache", value, value.key);
+  await database.put("giftCandidateCache", value, key);
 }
 
 export class GiftCandidateLoader {
@@ -122,14 +123,14 @@ export class GiftCandidateLoader {
         const index = cursor;
         cursor += 1;
         const brief = items[index];
-        const key = `tcgdex:${brief.ref.id}:${brief.ref.language}`;
+        const key = `gift-candidate-v${GIFT_CANDIDATE_CACHE_VERSION}:tcgdex:${brief.ref.id}:${brief.ref.language}`;
         const cached = await cachedDetail(key);
         let detail: TCGdexGiftCardDetail;
         if (cached) {
           detail = { card: cached.card, rawPricing: cached.rawPricing, releaseYear: cached.releaseYear };
         } else if (this.catalog.getGiftCardDetail) {
           detail = await this.catalog.getGiftCardDetail(brief.ref, signal);
-          await storeDetail(detail, ttl);
+          await storeDetail(key, detail, ttl);
         } else {
           detail = { card: await this.catalog.getCard(brief.ref, signal), rawPricing: undefined };
         }

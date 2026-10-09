@@ -8,6 +8,7 @@ import { loadBinderPartnerCatalog, ReviewedBinderAffiliateAdapter } from "@/data
 import { FEATURES } from "@/config/feature-flags";
 import {
   DeterministicGiftSelectionEngine,
+  giftCandidateHasArtwork,
   type GiftCardCandidate,
   type GiftPreferences,
   type GiftProject,
@@ -212,7 +213,9 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
         concurrency: 4,
         preferences: { minimumCondition: "excellent" },
       });
-      const safe = hydrated.map((candidate) => safeCandidate(candidate, pricingEnabled, preferences.currency));
+      const safe = hydrated
+        .map((candidate) => safeCandidate(candidate, pricingEnabled, preferences.currency))
+        .toSorted((left, right) => Number(!giftCandidateHasArtwork(left)) - Number(!giftCandidateHasArtwork(right)));
       setBriefs(safe.map(({ card }) => ({
         ref: card.ref,
         name: card.name,

@@ -9,7 +9,6 @@ import {
 } from "@/domain/catalog-set";
 import type { CardLanguage, CardSnapshot } from "@/domain/types";
 import { verifiedImageFallback } from "./image-fallbacks";
-import { inferredCardImageBaseUrl } from "./images";
 
 export type CatalogSetRecord = {
   id: string;
@@ -136,14 +135,10 @@ export function setMetadataForSearchItem(
 }
 
 export function completeCardSnapshotMetadata(card: CardSnapshot): CardSnapshot {
-  const set = catalogs[card.ref.language].get(card.setId);
   const collectorTotal = card.collectorTotal ?? collectorTotalForSearchItem(card.ref.language, card.ref.id, card.collectorNumber);
-  const inferredImages = set?.series ? [
-    inferredCardImageBaseUrl(card.ref.language, set.series.id, card.setId, card.collectorNumber),
-    ...(card.ref.language === "de" ? [inferredCardImageBaseUrl("en", set.series.id, card.setId, card.collectorNumber)] : []),
-  ] : [];
-  const verifiedFallback = verifiedImageFallback(card.ref.language, card.ref.id);
-  const imageCandidates = [verifiedFallback, card.imageBaseUrl, card.imageFallbackBaseUrl, ...inferredImages]
+  const verifiedFallback = verifiedImageFallback(card.ref.language, card.ref.id)
+    ?? (card.ref.language === "de" ? verifiedImageFallback("en", card.ref.id) : undefined);
+  const imageCandidates = [verifiedFallback, card.imageBaseUrl, card.imageFallbackBaseUrl]
     .filter((value): value is string => Boolean(value))
     .filter((value, index, values) => values.indexOf(value) === index);
   return {

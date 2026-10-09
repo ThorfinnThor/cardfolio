@@ -170,12 +170,12 @@ describe("TCGdexCatalogAdapter", () => {
     const card = await adapter.getCard({ provider: "tcgdex", id: "base1-4", language: "de" });
 
     expect(card.imageBaseUrl).toBe("https://assets.tcgdex.net/en/base/base1/4");
-    expect(card.imageFallbackBaseUrl).toBe("https://assets.tcgdex.net/de/base/base1/4");
+    expect(card.imageFallbackBaseUrl).toBeUndefined();
     expect(card.collectorTotal).toBe("102");
     expect(card.availableVariants).toEqual({ normal: false, holo: true, reverse: false, firstEdition: true, shadowless: false });
   });
 
-  it("derives localized and English artwork paths when TCGdex omits existing image metadata", async () => {
+  it("uses only a verified fallback when TCGdex omits image metadata", async () => {
     vi.spyOn(globalThis, "fetch")
       .mockResolvedValueOnce(new Response(JSON.stringify({
         id: "mep-007",
@@ -200,8 +200,8 @@ describe("TCGdexCatalogAdapter", () => {
     const adapter = new TCGdexCatalogAdapter();
     const card = await adapter.getCard({ provider: "tcgdex", id: "mep-007", language: "de" });
 
-    expect(card.imageBaseUrl).toBe("https://assets.tcgdex.net/de/me/mep/007");
-    expect(card.imageFallbackBaseUrl).toBe("https://assets.tcgdex.net/en/me/mep/007");
+    expect(card.imageBaseUrl).toBe("https://assets.tcgdex.net/en/me/mep/007");
+    expect(card.imageFallbackBaseUrl).toBeUndefined();
   });
 
   it("uses a verified image from another language when TCGdex lists an English card without one", async () => {
@@ -226,7 +226,29 @@ describe("TCGdexCatalogAdapter", () => {
 
     const card = await adapter.getCard(search.items[0].ref);
     expect(card.imageBaseUrl).toBe("https://assets.tcgdex.net/de/sm/sm3.5/1");
-    expect(card.imageFallbackBaseUrl).toBe("https://assets.tcgdex.net/en/sm/sm3.5/1");
+    expect(card.imageFallbackBaseUrl).toBeUndefined();
+  });
+
+  it("does not invent an artwork URL when neither provider metadata nor a verified fallback exists", async () => {
+    vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        id: "base1-999",
+        localId: "999",
+        name: "Missing artwork fixture",
+        image: null,
+        set: { cardCount: { official: 102 }, id: "base1", name: "Base Set" },
+      })))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        id: "base1",
+        name: "Base Set",
+        serie: { id: "base", name: "Base" },
+      })));
+
+    const adapter = new TCGdexCatalogAdapter();
+    const card = await adapter.getCard({ provider: "tcgdex", id: "base1-999", language: "en" });
+
+    expect(card.imageBaseUrl).toBeUndefined();
+    expect(card.imageFallbackBaseUrl).toBeUndefined();
   });
 
   it("holds back an unknown set until the synchronized catalog classifies it", async () => {
