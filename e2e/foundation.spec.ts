@@ -16,7 +16,7 @@ async function mockCatalog(page: Page) {
       const setId = url.searchParams.get("set.id");
       const language = url.pathname.split("/")[2];
       const pageNumber = Number(url.searchParams.get("pagination:page") ?? "1");
-      if (setId === "base1") {
+      if (setId === "base1" && !query) {
         await route.fulfill({
           body: JSON.stringify(pageNumber === 1 ? [{ id: "base1-1", localId: "1", name: language === "de" ? "Bisasam" : "Bulbasaur" }] : []),
           headers,
