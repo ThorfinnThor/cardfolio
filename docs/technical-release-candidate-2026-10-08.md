@@ -1,6 +1,6 @@
 # Cardfolio technical release candidate — 2026-10-08
 
-This record assesses application commit `0f92ecadfed801f1939f92adf5b0257ad8ab26c1`. The documentation commit containing this record is a follow-up only. It is not a public-production approval and does not authorize deployment, provider writes, commerce, or use of CardTrader data.
+This record assesses application commit `79c873488d15d3a8cb1105d474d15130f8aad158`. Its functional baseline is `0f92ecadfed801f1939f92adf5b0257ad8ab26c1`; the current commit adds the responsive/accessibility acceptance check and its human-abnahme checklist. It is not a public-production approval and does not authorize deployment, provider writes, commerce, or use of CardTrader data.
 
 ## Decision
 
@@ -11,9 +11,9 @@ The browser-to-storage-to-static-export paths are green in CI. Public production
 ## Verified baseline
 
 - Branch: `main`
-- Application commit: `0f92ecadfed801f1939f92adf5b0257ad8ab26c1`
-- CI: [run 37753882717](https://github.com/ThorfinnThor/cardfolio/actions/runs/37753882717)
-- Result: typecheck, lint, 44 test files with 248 unit/component tests, static build, release checks, release evidence, and 21 Chromium E2E tests passed without a flaky retry.
+- Application commit: `79c873488d15d3a8cb1105d474d15130f8aad158`
+- CI: [run 37906686540](https://github.com/ThorfinnThor/cardfolio/actions/runs/37906686540)
+- Result: typecheck, lint, 44 test files with 248 unit/component tests, static build, release checks, release evidence, and 22 Chromium E2E tests passed without a flaky retry.
 - Local Playwright is not authoritative on this host because macOS blocked Chromium's `MachPortRendezvous` sandbox startup. The clean Ubuntu CI run is the browser-test evidence.
 
 ## Release evidence
