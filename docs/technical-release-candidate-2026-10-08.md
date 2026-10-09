@@ -74,3 +74,5 @@ Gzip output can vary slightly by platform metadata. The table records the author
 4. Choose the repository license and the final production origin.
 5. Complete `docs/release-record-template.md` for the exact intended production commit and verify the real Cloudflare origin.
 6. Obtain explicit deployment approval. This record alone is not that approval.
+
+The formal current NO-GO record is `docs/release-record-2026-10-09-no-go.md`.
