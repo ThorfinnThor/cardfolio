@@ -1,6 +1,6 @@
 # CardTrader Discovery und Release-Gate
 
-Stand: 8. Oktober 2026
+Stand: 9. Oktober 2026
 
 ## Ergebnis
 
@@ -142,14 +142,60 @@ Der Kataloglauf bestätigt unter anderem die Property-Namen `condition`,
 5. Nur nach Markt-API-Freigabe: Währungen, Filtertreue für Sprache/Finish/Zustand, Caching und Angebotsstichprobe.
 6. Nur nach Wishlist-Freigabe: private Test-Wishlist mit bestätigten Blueprints und kontrolliertem Teilfehlerfall.
 
-## Entwurf für die schriftliche Anfrage
+## Schriftliche Freigabeanfrage und blockierendes To-do
 
-Dieser Text ist vorbereitet, aber **nicht versendet**, weil noch keine Betreiberadresse und kein autorisiertes CardTrader-Testkonto hinterlegt sind.
+Status: **versandfertig, noch nicht versendet**. Bis eine eindeutige schriftliche Antwort
+vorliegt, bleiben `cardtraderCatalog`, `cardtraderImages`, `cardtraderPrices`,
+`cardtraderWishlist` und `cardtraderCommerce` deaktiviert. Die sichtbare
+CardTrader-Vorschau ist keine Datenfreigabe und führt keine Providerabfrage aus.
 
-> Subject: Production API permission for Cardfolio Pokémon binder planning
+### Versandfertige E-Mail
+
+**Subject:** API permission request for Cardfolio Pokémon binder planning
+
+> Hello CardTrader API / Partnerships Team,
 >
-> Hello CardTrader team,  
-> Cardfolio is a client-side Pokémon binder planning application. It does not sell cards and will not call cart or purchase endpoints. We would like written confirmation for the following separate uses: (1) mapping our TCGdex card identities to CardTrader expansion/blueprint IDs, storing only the minimal reviewed mapping; (2) showing a CardTrader blueprint image only as a clearly labelled fallback; (3) showing dated aggregate price/availability ranges derived from exact language/finish/condition filters; and (4) creating a private wishlist only after the user explicitly confirms every exact blueprint and connects their own token.  
-> Please confirm which uses are permitted, any attribution/caching/retention requirements, whether provider image URLs may be rendered in a public commercial application, and the rate limits/approval needed for marketplace data. We will not scrape the website and will not expose or persist user tokens in the browser or repository.
+> my name is Schayan and I am developing Cardfolio, a local-first web application that helps Pokémon collectors — including parents and beginners — plan physical card binders and prepare missing-card lists. A current preview is available at https://cardfolio-780.pages.dev.
+>
+> Cardfolio does not sell cards and does not perform purchases. We will not scrape the CardTrader website and we do not intend to call cart or purchase endpoints. API credentials are kept server-side as a GitHub Actions secret and are never exposed in the browser, repository, local backups or exported binder files.
+>
+> We would like your written permission and technical guidance for the following capabilities. Please confirm each item separately, because we will keep every capability disabled unless it is explicitly approved:
+>
+> 1. **Catalog mapping:** Read CardTrader expansions and blueprints and store a minimal reviewed mapping between our TCGdex card identities and CardTrader expansion/blueprint IDs.
+> 2. **Marketplace prices and availability:** Read `/marketplace/products` for an exact blueprint and filter by language, condition and available variant properties. Cardfolio would display only dated, non-binding aggregate information such as the lowest matching offer, a typical offer range and the number of matching offers. Shipping, taxes and fees would be shown as excluded. We would not present these values as guaranteed market prices.
+> 3. **Blueprint images:** Display a CardTrader blueprint image only as a clearly labelled fallback when our primary catalog has no image. We would reference the provider URL rather than redistribute an image archive.
+> 4. **Private Wishlist:** In a later phase, create a private Wishlist only after the user connects their own CardTrader account and explicitly confirms the exact blueprint, quantity, language, condition and variant. Tokens would not be stored in browser backups or exported files.
+>
+> Could you please confirm:
+>
+> - which of these four uses are permitted for a public application and for future commercial operation;
+> - whether a separate market-API or partnership approval is required for price and availability data;
+> - any required attribution, links or CardTrader branding;
+> - permitted caching duration, refresh frequency and retention of aggregate price data;
+> - whether blueprint image URLs may be rendered as described and whether additional image-rights restrictions apply;
+> - the applicable rate limits and recommended request pattern for `/marketplace/products`;
+> - whether storing the minimal expansion/blueprint-ID mapping is permitted;
+> - and whether you require a separate production API token or application registration.
+>
+> We are happy to provide screenshots, a more detailed data-flow description or a limited test plan. Until we receive your written confirmation, CardTrader catalog data, images, prices and Wishlist actions will remain disabled in Cardfolio.
+>
+> Thank you for your guidance.
+>
+> Best regards<br>
+> Schayan<br>
+> Cardfolio
 
-Eine Antwort wird wörtlich mit Datum, Ansprechpartner und Umfang in diesem Dokument ergänzt; eine unklare Antwort gilt nicht als Freigabe.
+### Nachverfolgung
+
+- [ ] Anfrage über einen offiziellen CardTrader-Support-/API-Kanal versenden.
+- [ ] Versanddatum und verwendeten Kontaktkanal hier dokumentieren.
+- [ ] Vollständige Antwort mit Datum und Ansprechpartner ablegen oder verlinken.
+- [ ] Freigabe für Katalog, Preise, Bilder und Wishlist **jeweils getrennt** als Go/No-Go bewerten.
+- [ ] Bei unklarer oder nur mündlicher Antwort nachfragen; sie gilt bis dahin als No-Go.
+- [ ] Erst nach Preisfreigabe einen gedrosselten Read-only-Test für `/marketplace/products` durchführen.
+- [ ] Filtertreue, Währung, TTL, Ausreißer, leere Angebote und Stale-Status testen.
+- [ ] Erst danach `cardtraderPrices` in einem separaten Commit aktivieren; die übrigen Flags unverändert lassen.
+
+Eine Erlaubnis für eine Datenart öffnet keine andere automatisch. Insbesondere bleiben
+Wishlist-Schreibzugriffe und Providerbilder deaktiviert, wenn CardTrader ausschließlich
+die Preisnutzung freigibt.
