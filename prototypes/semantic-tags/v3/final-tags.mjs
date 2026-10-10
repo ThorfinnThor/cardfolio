@@ -1,0 +1,27 @@
+// Frozen v3 tag list (2026-09-30): passed the Phase A gate (precision >= 85 %, positive agreement >= 80 %).
+// Order defines the bit order of the search index. Do not reorder; append new tags at the end.
+export const FINAL_TAGS = [
+  'beach',
+  'water-surface',
+  'underwater',
+  'forest',
+  'grassland-field',
+  'mountain-rocks',
+  'cave',
+  'desert',
+  'snow-ice',
+  'city',
+  'indoors',
+  'ruins-building',
+  'sky-clouds',
+  'night',
+  'sunset-sunrise',
+  'fire-lava',
+  'flowers',
+  'food-visible',
+  'human-present',
+  'multiple-pokemon',
+  'sleeping',
+  'flying',
+  'swimming',
+];

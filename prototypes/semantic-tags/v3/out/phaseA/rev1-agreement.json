@@ -1,0 +1,32 @@
+{
+ "night": {
+  "both": 31,
+  "onlyA": 2,
+  "onlyB": 3,
+  "positiveAgreement": 0.925
+ },
+ "flying": {
+  "both": 103,
+  "onlyA": 9,
+  "onlyB": 16,
+  "positiveAgreement": 0.892
+ },
+ "ruins-building": {
+  "both": 63,
+  "onlyA": 9,
+  "onlyB": 6,
+  "positiveAgreement": 0.894
+ },
+ "water-surface": {
+  "both": 121,
+  "onlyA": 12,
+  "onlyB": 9,
+  "positiveAgreement": 0.92
+ },
+ "multiple-pokemon": {
+  "both": 62,
+  "onlyA": 5,
+  "onlyB": 6,
+  "positiveAgreement": 0.919
+ }
+}

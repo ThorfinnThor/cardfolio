@@ -1,0 +1,4010 @@
+{
+ "generatedAt": "2026-09-30T00:04:46.918Z",
+ "tagging": {
+  "cards": 1579,
+  "tagger": "Claude Sonnet subagents (4 in parallel) looking at contact sheets; no API or model service",
+  "sheets": "132 contact sheets, 12 artwork crops each (4x3); whole card for secret rares and full-art rule boxes",
+  "wallClock": {
+   "start": "2026-09-29T23:54:41Z",
+   "end": "2026-09-30T00:02:27Z",
+   "minutes": 7.8
+  },
+  "agentMinutes": 24.4,
+  "subagentTokens": 703449,
+  "schemaFixesAfterMerge": [
+   {
+    "id": "hgss1-97",
+    "field": "pokemon_count",
+    "was": "3",
+    "now": "3+",
+    "why": "out-of-vocabulary \"3\""
+   },
+   {
+    "id": "sv01-165",
+    "field": "pokemon_count",
+    "was": "3",
+    "now": "3+",
+    "why": "out-of-vocabulary \"3\""
+   },
+   {
+    "id": "sv03.5-033",
+    "field": "place",
+    "was": "night",
+    "now": "unclear",
+    "why": "\"night\" given as place; caption says misty landscape"
+   },
+   {
+    "id": "sv03.5-130",
+    "field": "time",
+    "was": "storm",
+    "now": "unclear",
+    "why": "\"storm\" given as time (weather already storm)"
+   },
+   {
+    "id": "sv03.5-135",
+    "field": "time",
+    "was": "storm",
+    "now": "unclear",
+    "why": "\"storm\" given as time (weather already storm)"
+   },
+   {
+    "id": "sv03.5-145",
+    "field": "time",
+    "was": "storm",
+    "now": "unclear",
+    "why": "\"storm\" given as time (weather already storm)"
+   },
+   {
+    "id": "sv03.5-151",
+    "field": "time",
+    "was": "space",
+    "now": "unclear",
+    "why": "\"space\" given as time"
+   },
+   {
+    "id": "sv03.5-177",
+    "field": "caption",
+    "was": "0",
+    "now": "A person and several Machop-family Pokémon moving boxes in a building under construction.",
+    "why": "caption and confidence swapped"
+   },
+   {
+    "id": "sv03.5-177",
+    "field": "confidence",
+    "was": "A person and several Machop-family Pokémon moving boxes in a building under construction.",
+    "now": "medium",
+    "why": "caption and confidence swapped"
+   }
+  ],
+  "imageHandling": "high.webp fetched into memory, cropped, composited into a sheet in a temp dir outside the repo, sheet deleted after each 4-sheet batch; temp dir removed at the end",
+  "notes": [
+   "sv03.5-163 high.webp returns 404; the agent used high.png for that card"
+  ],
+  "extrapolation": {
+   "cardsWithImageEn": 21990,
+   "cardsPerAgentMinute": 64.7,
+   "agentHours": 5.7,
+   "wallHoursWith4Agents": 1.4,
+   "subagentTokensEstimate": 9796608
+  }
+ },
+ "distribution": {
+  "kind": {
+   "pokemon": 1274,
+   "trainer": 234,
+   "energy": 70,
+   "other": 1
+  },
+  "place": {
+   "plain-background": 218,
+   "forest": 226,
+   "grassland": 207,
+   "abstract": 244,
+   "mountain": 96,
+   "underwater": 67,
+   "ocean": 49,
+   "river-lake": 65,
+   "volcano": 15,
+   "snow-ice": 16,
+   "beach": 36,
+   "garden": 44,
+   "desert": 44,
+   "sky": 53,
+   "indoors": 60,
+   "city": 55,
+   "jungle": 22,
+   "swamp": 2,
+   "cave": 33,
+   "space": 4,
+   "unclear": 10,
+   "ruins": 13
+  },
+  "time": {
+   "unclear": 550,
+   "day": 871,
+   "night": 108,
+   "sunset-sunrise": 50
+  },
+  "weather": {
+   "none-visible": 1473,
+   "wind": 59,
+   "fog": 8,
+   "storm": 28,
+   "snow": 5,
+   "rain": 6
+  },
+  "pokemon_count": {
+   "0": 276,
+   "1": 1217,
+   "2": 56,
+   "3+": 30
+  },
+  "human_present": {
+   "false": 1494,
+   "true": 85
+  },
+  "has_flowers": {
+   "false": 1436,
+   "true": 143
+  },
+  "confidence": {
+   "high": 1033,
+   "medium": 448,
+   "low": 98
+  },
+  "activity": {
+   "posing": 727,
+   "using-move": 242,
+   "fighting": 117,
+   "flying": 136,
+   "swimming": 90,
+   "other": 14,
+   "resting": 73,
+   "sleeping": 11,
+   "running": 117,
+   "none-visible": 195,
+   "playing": 79,
+   "eating": 6
+  }
+ },
+ "selfCheck": {
+  "reviewer": "the orchestrating Claude session (not the Sonnet taggers), looking at a fresh contact sheet of each query's top 8 (temp file, deleted afterwards)",
+  "rule": "a hit counts if the drawn scene matches the query; borderline cases counted as misses unless clearly matching",
+  "correctTotal": 127,
+  "slots": 160,
+  "perQuery": {
+   "at the beach": {
+    "correct": 8,
+    "misses": []
+   },
+   "in the forest": {
+    "correct": 8,
+    "misses": []
+   },
+   "at night": {
+    "correct": 8,
+    "misses": []
+   },
+   "in the snow": {
+    "correct": 8,
+    "misses": []
+   },
+   "underwater": {
+    "correct": 8,
+    "misses": []
+   },
+   "in space": {
+    "correct": 2,
+    "misses": [
+     "dp1-1 (holo foil sparkle, not space)",
+     "sm1-66 (whole-card thumbnail, space not verifiable)",
+     "only 4 results in total"
+    ]
+   },
+   "on a mountain": {
+    "correct": 6,
+    "misses": [
+     "bw1-77 (coastal cliff)",
+     "dp1-21 (no mountain visible)"
+    ]
+   },
+   "in a city": {
+    "correct": 8,
+    "misses": []
+   },
+   "sleeping": {
+    "correct": 6,
+    "misses": [
+     "sv01-250 (human asleep at a desk, not a Pokémon)",
+     "base1-43 (Abra sitting, eyes always closed; ambiguous)"
+    ]
+   },
+   "eating food": {
+    "correct": 5,
+    "misses": [
+     "sv01-249 (human cooking)",
+     "sv01-059 (snow in mouth, not food)",
+     "ex1-74 (no food visible)"
+    ]
+   },
+   "flying in the sky": {
+    "correct": 7,
+    "misses": [
+     "dp1-56 (jumping, not flying)"
+    ]
+   },
+   "near a volcano": {
+    "correct": 5,
+    "misses": [
+     "base1-36 (fire background, no volcano)",
+     "sm1-26 (fire and rocks, no volcano)",
+     "sv01-034 (flames, no volcano)"
+    ]
+   },
+   "in the rain": {
+    "correct": 4,
+    "misses": [
+     "hgss1-122 (energy card, storm lines)",
+     "sv01-133 (storm clouds, no rain)",
+     "dp1-54 (lightning, no rain)",
+     "ex1-39 (no rain visible)"
+    ]
+   },
+   "in a desert": {
+    "correct": 8,
+    "misses": []
+   },
+   "at sunset": {
+    "correct": 7,
+    "misses": [
+     "dp1-91 (pink clouds, no clear sunset)"
+    ]
+   },
+   "with flowers": {
+    "correct": 8,
+    "misses": []
+   },
+   "in a cave": {
+    "correct": 8,
+    "misses": []
+   },
+   "two pokemon playing together": {
+    "correct": 4,
+    "misses": [
+     "hgss1-2 (not playing)",
+     "hgss1-30 (second Pokémon far away, not playing)",
+     "hgss1-77 (one Pokémon)",
+     "sv01-152 (one Pokémon)"
+    ]
+   },
+   "a pokemon with a human trainer": {
+    "correct": 7,
+    "misses": [
+     "sv01-218 (no human visible in the whole-card thumbnail)"
+    ]
+   },
+   "in a kitchen": {
+    "correct": 2,
+    "misses": [
+     "hgss1-36, sv03.5-081, sv03.5-082, sv03.5-125, swsh1-147, swsh1-6 (indoors or not, but no kitchen; schema has no kitchen value)"
+    ]
+   }
+  }
+ },
+ "results": {
+  "at the beach": {
+   "matchingCards": 58,
+   "top8": [
+    {
+     "id": "bw1-61",
+     "name": "Throh",
+     "set": "Black & White",
+     "setId": "bw1",
+     "localId": "61",
+     "image": "https://assets.tcgdex.net/en/bw/bw1/61",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "beach",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A judo Pokémon tightens its belt on a beach by the sea.",
+     "confidence": "high"
+    },
+    {
+     "id": "bw1-69",
+     "name": "Scrafty",
+     "set": "Black & White",
+     "setId": "bw1",
+     "localId": "69",
+     "image": "https://assets.tcgdex.net/en/bw/bw1/69",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "beach",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "fighting"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A fierce orange Pokémon in a wide stance on a beach with rocks and clouds.",
+     "confidence": "high"
+    },
+    {
+     "id": "dp1-69",
+     "name": "Azurill",
+     "set": "Diamond & Pearl",
+     "setId": "dp1",
+     "localId": "69",
+     "image": "https://assets.tcgdex.net/en/dp/dp1/69",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "beach",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A small blue mouse creature stands on a pebble beach near the sea.",
+     "confidence": "high"
+    },
+    {
+     "id": "hgss1-11",
+     "name": "Shuckle",
+     "set": "HeartGold SoulSilver",
+     "setId": "hgss1",
+     "localId": "11",
+     "image": "https://assets.tcgdex.net/en/hgss/hgss1/11",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "beach",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A red shelled turtle stands on a sandy beach with trees and houses.",
+     "confidence": "high"
+    },
+    {
+     "id": "sm1-37",
+     "name": "Wingull",
+     "set": "Sun & Moon",
+     "setId": "sm1",
+     "localId": "37",
+     "image": "https://assets.tcgdex.net/en/sm/sm1/37",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "beach",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "3+",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A gull Pokémon on a rock with more gulls flying by a tropical beach.",
+     "confidence": "high"
+    },
+    {
+     "id": "sm1-38",
+     "name": "Pelipper",
+     "set": "Sun & Moon",
+     "setId": "sm1",
+     "localId": "38",
+     "image": "https://assets.tcgdex.net/en/sm/sm1/38",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "beach",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A pelican Pokémon flies over a tropical shore and islands.",
+     "confidence": "high"
+    },
+    {
+     "id": "sm1-39",
+     "name": "Popplio",
+     "set": "Sun & Moon",
+     "setId": "sm1",
+     "localId": "39",
+     "image": "https://assets.tcgdex.net/en/sm/sm1/39",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "beach",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "playing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A happy sea lion Pokémon splashes on a rocky shore with palm trees.",
+     "confidence": "high"
+    },
+    {
+     "id": "sm1-57",
+     "name": "Alolan Grimer",
+     "set": "Sun & Moon",
+     "setId": "sm1",
+     "localId": "57",
+     "image": "https://assets.tcgdex.net/en/sm/sm1/57",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "beach",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A green sludge Pokémon reaches out on a beach with palm trees and rubbish.",
+     "confidence": "high"
+    }
+   ]
+  },
+  "in the forest": {
+   "matchingCards": 304,
+   "top8": [
+    {
+     "id": "base1-30",
+     "name": "Ivysaur",
+     "set": "Base Set",
+     "setId": "base1",
+     "localId": "30",
+     "image": "https://assets.tcgdex.net/en/base/base1/30",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A green plant toad with a pink bud on its back in dark forest.",
+     "confidence": "high"
+    },
+    {
+     "id": "base1-54",
+     "name": "Metapod",
+     "set": "Base Set",
+     "setId": "base1",
+     "localId": "54",
+     "image": "https://assets.tcgdex.net/en/base/base1/54",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "resting"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A green cocoon hangs in dark forest with tall tree trunks.",
+     "confidence": "high"
+    },
+    {
+     "id": "base1-58",
+     "name": "Pikachu",
+     "set": "Base Set",
+     "setId": "base1",
+     "localId": "58",
+     "image": "https://assets.tcgdex.net/en/base/base1/58",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A yellow mouse with sparking cheeks stands in a forest with purple sky light.",
+     "confidence": "high"
+    },
+    {
+     "id": "bw1-1",
+     "name": "Snivy",
+     "set": "Black & White",
+     "setId": "bw1",
+     "localId": "1",
+     "image": "https://assets.tcgdex.net/en/bw/bw1/1",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": true
+     },
+     "caption": "A green snake Pokémon stands in a sunlit forest with light rays.",
+     "confidence": "high"
+    },
+    {
+     "id": "bw1-3",
+     "name": "Servine",
+     "set": "Black & White",
+     "setId": "bw1",
+     "localId": "3",
+     "image": "https://assets.tcgdex.net/en/bw/bw1/3",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": true
+     },
+     "caption": "A green snake Pokémon stands on a path in a bright forest with flowers.",
+     "confidence": "high"
+    },
+    {
+     "id": "bw1-43",
+     "name": "Zebstrika",
+     "set": "Black & White",
+     "setId": "bw1",
+     "localId": "43",
+     "image": "https://assets.tcgdex.net/en/bw/bw1/43",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A striped zebra Pokémon stands among trees and a large trunk.",
+     "confidence": "high"
+    },
+    {
+     "id": "bw1-49",
+     "name": "Musharna",
+     "set": "Black & White",
+     "setId": "bw1",
+     "localId": "49",
+     "image": "https://assets.tcgdex.net/en/bw/bw1/49",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "sleeping"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": true
+     },
+     "caption": "A purple Pokémon sleeps curled up on grass in a forest.",
+     "confidence": "high"
+    },
+    {
+     "id": "bw1-51",
+     "name": "Swoobat",
+     "set": "Black & White",
+     "setId": "bw1",
+     "localId": "51",
+     "image": "https://assets.tcgdex.net/en/bw/bw1/51",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "night",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A blue bat Pokémon flies before a large moon over pine trees.",
+     "confidence": "high"
+    }
+   ]
+  },
+  "at night": {
+   "matchingCards": 110,
+   "top8": [
+    {
+     "id": "bw1-51",
+     "name": "Swoobat",
+     "set": "Black & White",
+     "setId": "bw1",
+     "localId": "51",
+     "image": "https://assets.tcgdex.net/en/bw/bw1/51",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "night",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A blue bat Pokémon flies before a large moon over pine trees.",
+     "confidence": "high"
+    },
+    {
+     "id": "dp1-77",
+     "name": "Clefairy",
+     "set": "Diamond & Pearl",
+     "setId": "dp1",
+     "localId": "77",
+     "image": "https://assets.tcgdex.net/en/dp/dp1/77",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "garden",
+      "time": "night",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": true
+     },
+     "caption": "A pink fairy creature waves under a crescent moon over pink flowers.",
+     "confidence": "high"
+    },
+    {
+     "id": "hgss1-42",
+     "name": "Flaaffy",
+     "set": "HeartGold SoulSilver",
+     "setId": "hgss1",
+     "localId": "42",
+     "image": "https://assets.tcgdex.net/en/hgss/hgss1/42",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "river-lake",
+      "time": "night",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A pink and blue woolly creature stands by a lake under a crescent moon with a glowing tail ball.",
+     "confidence": "high"
+    },
+    {
+     "id": "hgss1-66",
+     "name": "Hoothoot",
+     "set": "HeartGold SoulSilver",
+     "setId": "hgss1",
+     "localId": "66",
+     "image": "https://assets.tcgdex.net/en/hgss/hgss1/66",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "night",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "2",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "Two owl Pokémon fly at night under a full moon near trees and lamps.",
+     "confidence": "high"
+    },
+    {
+     "id": "hgss1-8",
+     "name": "Noctowl",
+     "set": "HeartGold SoulSilver",
+     "setId": "hgss1",
+     "localId": "8",
+     "image": "https://assets.tcgdex.net/en/hgss/hgss1/8",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "river-lake",
+      "time": "night",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A brown owl perches on a branch by a moonlit lake with a distant house.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv01-001",
+     "name": "Pineco",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "001",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/001",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "night",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A spiky pine cone Pokemon hangs from a tree branch under a full moon.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv01-006",
+     "name": "Cacturne",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "006",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/006",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "desert",
+      "time": "night",
+      "weather": "none-visible",
+      "activity": [
+       "using-move",
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A scarecrow-like cactus Pokemon holds a glowing green orb at night among cacti.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv01-087",
+     "name": "Shuppet",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "087",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/087",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "city",
+      "time": "night",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A blue ghost Pokémon floats beside a glowing lantern and lit windows at night.",
+     "confidence": "high"
+    }
+   ]
+  },
+  "in the snow": {
+   "matchingCards": 54,
+   "top8": [
+    {
+     "id": "sv01-017",
+     "name": "Tarountula",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "017",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/017",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "snow-ice",
+      "time": "day",
+      "weather": "snow",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A spider Pokemon with a gray yarn ball on a branch in snowy birch trees.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv01-129",
+     "name": "Spiritomb",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "129",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/129",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "snow-ice",
+      "time": "day",
+      "weather": "snow",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A round pink spirit Pokémon with green lights in a snowy forest.",
+     "confidence": "high"
+    },
+    {
+     "id": "hgss1-39",
+     "name": "Delibird",
+     "set": "HeartGold SoulSilver",
+     "setId": "hgss1",
+     "localId": "39",
+     "image": "https://assets.tcgdex.net/en/hgss/hgss1/39",
+     "score": 7.7,
+     "tags": {
+      "kind": "pokemon",
+      "place": "snow-ice",
+      "time": "day",
+      "weather": "snow",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A white and red penguin-bird sits among ice crystals with snowflakes.",
+     "confidence": "medium"
+    },
+    {
+     "id": "swsh1-149",
+     "name": "Drampa",
+     "set": "Sword & Shield",
+     "setId": "swsh1",
+     "localId": "149",
+     "image": "https://assets.tcgdex.net/en/swsh/swsh1/149",
+     "score": 7.7,
+     "tags": {
+      "kind": "pokemon",
+      "place": "snow-ice",
+      "time": "night",
+      "weather": "snow",
+      "activity": [
+       "resting"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A large dragon Pokemon sits in a snowy cave entrance with snow falling.",
+     "confidence": "medium"
+    },
+    {
+     "id": "dp1-85",
+     "name": "Hoothoot",
+     "set": "Diamond & Pearl",
+     "setId": "dp1",
+     "localId": "85",
+     "image": "https://assets.tcgdex.net/en/dp/dp1/85",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "snow-ice",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A round brown owl stands on snowy ground with bird tracks and snowy trees.",
+     "confidence": "high"
+    },
+    {
+     "id": "dp1-95",
+     "name": "Rhyhorn",
+     "set": "Diamond & Pearl",
+     "setId": "dp1",
+     "localId": "95",
+     "image": "https://assets.tcgdex.net/en/dp/dp1/95",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "snow-ice",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "running"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A grey rhino charges across snow with bare trees and cloudy sky.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv01-058",
+     "name": "Cetoddle",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "058",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/058",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "snow-ice",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "playing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A white whale Pokemon with open mouth slides in snow with a mountain behind.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv01-059",
+     "name": "Cetoddle",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "059",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/059",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "snow-ice",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "playing",
+       "eating"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A white whale Pokemon with open mouth sits in snow among bare trees.",
+     "confidence": "high"
+    }
+   ]
+  },
+  "underwater": {
+   "matchingCards": 109,
+   "top8": [
+    {
+     "id": "hgss1-9",
+     "name": "Quagsire",
+     "set": "HeartGold SoulSilver",
+     "setId": "hgss1",
+     "localId": "9",
+     "image": "https://assets.tcgdex.net/en/hgss/hgss1/9",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "underwater",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "swimming"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A blue amphibious fish creature swims underwater with bubbles and water plants.",
+     "confidence": "high"
+    },
+    {
+     "id": "sm1-41",
+     "name": "Primarina",
+     "set": "Sun & Moon",
+     "setId": "sm1",
+     "localId": "41",
+     "image": "https://assets.tcgdex.net/en/sm/sm1/41",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "underwater",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "swimming"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A mermaid-like Pokémon glides underwater over coral.",
+     "confidence": "high"
+    },
+    {
+     "id": "sm1-49",
+     "name": "Chinchou",
+     "set": "Sun & Moon",
+     "setId": "sm1",
+     "localId": "49",
+     "image": "https://assets.tcgdex.net/en/sm/sm1/49",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "underwater",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "swimming"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A blue angler Pokémon swims underwater with seaweed and bubbles.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv03.5-134",
+     "name": "Vaporeon",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "134",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/134",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "underwater",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "swimming"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A blue fin-eared Pokémon swims over pink coral underwater.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv03.5-139",
+     "name": "Omastar",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "139",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/139",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "underwater",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "swimming"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A spiral-shelled Pokémon with tentacles in pink underwater seaweed.",
+     "confidence": "high"
+    },
+    {
+     "id": "base1-25",
+     "name": "Dewgong",
+     "set": "Base Set",
+     "setId": "base1",
+     "localId": "25",
+     "image": "https://assets.tcgdex.net/en/base/base1/25",
+     "score": 6.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "underwater",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "swimming"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A white seal swims among bubbles near ice in blue water.",
+     "confidence": "high"
+    },
+    {
+     "id": "bw1-39",
+     "name": "Alomomola",
+     "set": "Black & White",
+     "setId": "bw1",
+     "localId": "39",
+     "image": "https://assets.tcgdex.net/en/bw/bw1/39",
+     "score": 6.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "underwater",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "swimming"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A pink fish Pokémon swims in clear blue water.",
+     "confidence": "high"
+    },
+    {
+     "id": "dp1-26",
+     "name": "Floatzel",
+     "set": "Diamond & Pearl",
+     "setId": "dp1",
+     "localId": "26",
+     "image": "https://assets.tcgdex.net/en/dp/dp1/26",
+     "score": 6.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "underwater",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "swimming"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "An orange sea weasel swims among bubbles in blue water.",
+     "confidence": "high"
+    }
+   ]
+  },
+  "in space": {
+   "matchingCards": 4,
+   "top8": [
+    {
+     "id": "sm1-65",
+     "name": "Cosmoem",
+     "set": "Sun & Moon",
+     "setId": "sm1",
+     "localId": "65",
+     "image": "https://assets.tcgdex.net/en/sm/sm1/65",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "space",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "resting"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A cocoon-like star Pokémon floats in a sparkling rainbow cosmos.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv01-248",
+     "name": "Iron Treads ex",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "248",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/248",
+     "score": 4.7,
+     "tags": {
+      "kind": "pokemon",
+      "place": "space",
+      "time": "night",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A black and red armored Pokémon rolls in front of a starry sky with a planet.",
+     "confidence": "medium"
+    },
+    {
+     "id": "dp1-1",
+     "name": "Dialga",
+     "set": "Diamond & Pearl",
+     "setId": "dp1",
+     "localId": "1",
+     "image": "https://assets.tcgdex.net/en/dp/dp1/1",
+     "score": 3.7,
+     "tags": {
+      "kind": "pokemon",
+      "place": "space",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A large blue and silver dragon stands against a sparkling background.",
+     "confidence": "medium"
+    },
+    {
+     "id": "sm1-66",
+     "name": "Lunala GX",
+     "set": "Sun & Moon",
+     "setId": "sm1",
+     "localId": "66",
+     "image": "https://assets.tcgdex.net/en/sm/sm1/66",
+     "score": 3.6,
+     "tags": {
+      "kind": "pokemon",
+      "place": "space",
+      "time": "night",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A dark purple moon Pokémon with spread wings amid starry light, shown on a whole card.",
+     "confidence": "low"
+    }
+   ]
+  },
+  "on a mountain": {
+   "matchingCards": 123,
+   "top8": [
+    {
+     "id": "base1-37",
+     "name": "Nidorino",
+     "set": "Base Set",
+     "setId": "base1",
+     "localId": "37",
+     "image": "https://assets.tcgdex.net/en/base/base1/37",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "mountain",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A pink horned creature crouches on rocky ground before red cliffs.",
+     "confidence": "high"
+    },
+    {
+     "id": "bw1-14",
+     "name": "Sawsbuck",
+     "set": "Black & White",
+     "setId": "bw1",
+     "localId": "14",
+     "image": "https://assets.tcgdex.net/en/bw/bw1/14",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "mountain",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": true
+     },
+     "caption": "A stag Pokémon stands in a meadow with a snowy mountain behind.",
+     "confidence": "high"
+    },
+    {
+     "id": "bw1-53",
+     "name": "Whirlipede",
+     "set": "Black & White",
+     "setId": "bw1",
+     "localId": "53",
+     "image": "https://assets.tcgdex.net/en/bw/bw1/53",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "mountain",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "using-move"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A grey spiked curled Pokémon rolls with rocks flying around near a cliff.",
+     "confidence": "high"
+    },
+    {
+     "id": "bw1-74",
+     "name": "Klink",
+     "set": "Black & White",
+     "setId": "bw1",
+     "localId": "74",
+     "image": "https://assets.tcgdex.net/en/bw/bw1/74",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "mountain",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "2",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "Two gear Pokémon float over rocky cliffs and green forest under a blue sky.",
+     "confidence": "high"
+    },
+    {
+     "id": "bw1-77",
+     "name": "Patrat",
+     "set": "Black & White",
+     "setId": "bw1",
+     "localId": "77",
+     "image": "https://assets.tcgdex.net/en/bw/bw1/77",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "mountain",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A brown rodent Pokémon shades its eyes on a cliff edge above the sea.",
+     "confidence": "high"
+    },
+    {
+     "id": "bw1-8",
+     "name": "Simisage",
+     "set": "Black & White",
+     "setId": "bw1",
+     "localId": "8",
+     "image": "https://assets.tcgdex.net/en/bw/bw1/8",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "mountain",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A green monkey Pokémon waves near a waterfall and rock cliff.",
+     "confidence": "high"
+    },
+    {
+     "id": "dp1-20",
+     "name": "Bibarel",
+     "set": "Diamond & Pearl",
+     "setId": "dp1",
+     "localId": "20",
+     "image": "https://assets.tcgdex.net/en/dp/dp1/20",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "mountain",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A brown beaver sits on a cliff with canyon and bushes behind.",
+     "confidence": "high"
+    },
+    {
+     "id": "dp1-21",
+     "name": "Carnivine",
+     "set": "Diamond & Pearl",
+     "setId": "dp1",
+     "localId": "21",
+     "image": "https://assets.tcgdex.net/en/dp/dp1/21",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "mountain",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A green flytrap creature hangs in the air with mountains behind.",
+     "confidence": "high"
+    }
+   ]
+  },
+  "in a city": {
+   "matchingCards": 62,
+   "top8": [
+    {
+     "id": "sv01-011",
+     "name": "Skiddo",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "011",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/011",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "city",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A small leafy goat Pokemon stands before colorful city buildings.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv01-084",
+     "name": "Ralts",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "084",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/084",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "city",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A small white and green Pokémon stands before a large brick academy building.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv01-107",
+     "name": "Mankey",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "107",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/107",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "city",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "fighting",
+       "running"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A furious pig monkey Pokémon charges past a town building.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv01-126",
+     "name": "Grimer",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "126",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/126",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "city",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A purple sludge Pokémon oozes along a path near a blue building and trees.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv01-149",
+     "name": "Staravia",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "149",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/149",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "city",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A bird Pokémon flies over a sunny town with a tall spire.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv01-162",
+     "name": "Squawkabilly",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "162",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/162",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "city",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A green parrot Pokémon squawks on a ledge with a town and clouds behind.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv03.5-062",
+     "name": "Poliwrath",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "062",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/062",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "city",
+      "time": "night",
+      "weather": "none-visible",
+      "activity": [
+       "fighting",
+       "running"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A blue Pokémon leaps with a fist in a neon-lit city.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv03.5-068",
+     "name": "Machamp",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "068",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/068",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "city",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A four-armed muscular Pokémon flexes on a rooftop with buildings around.",
+     "confidence": "high"
+    }
+   ]
+  },
+  "sleeping": {
+   "matchingCards": 14,
+   "top8": [
+    {
+     "id": "bw1-49",
+     "name": "Musharna",
+     "set": "Black & White",
+     "setId": "bw1",
+     "localId": "49",
+     "image": "https://assets.tcgdex.net/en/bw/bw1/49",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "sleeping"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": true
+     },
+     "caption": "A purple Pokémon sleeps curled up on grass in a forest.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv03.5-143",
+     "name": "Snorlax",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "143",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/143",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "sleeping",
+       "resting"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": true
+     },
+     "caption": "A huge blue Pokémon sleeps on a forest floor with white wildflowers.",
+     "confidence": "high"
+    },
+    {
+     "id": "swsh1-147",
+     "name": "Cinccino",
+     "set": "Sword & Shield",
+     "setId": "swsh1",
+     "localId": "147",
+     "image": "https://assets.tcgdex.net/en/swsh/swsh1/147",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "indoors",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "sleeping",
+       "resting"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": true
+     },
+     "caption": "A fluffy white Pokemon sleeps curled on a pink flower cushion.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv03.5-044",
+     "name": "Gloom",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "044",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/044",
+     "score": 4.7,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "sleeping",
+       "resting"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": true
+     },
+     "caption": "A blue Pokémon with a red flower drools while dozing among bushes.",
+     "confidence": "medium"
+    },
+    {
+     "id": "sv01-250",
+     "name": "Jacq",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "250",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/250",
+     "score": 4.2,
+     "tags": {
+      "kind": "trainer",
+      "place": "indoors",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "sleeping"
+      ],
+      "pokemon_count": "0",
+      "human_present": true,
+      "has_flowers": false
+     },
+     "caption": "A professor sleeps at a cluttered desk in a sunlit room.",
+     "confidence": "medium"
+    },
+    {
+     "id": "sv03.5-086",
+     "name": "Seel",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "086",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/086",
+     "score": 3.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "snow-ice",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "sleeping",
+       "resting"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A white seal Pokémon with eyes closed lies on ice floes.",
+     "confidence": "high"
+    },
+    {
+     "id": "base1-43",
+     "name": "Abra",
+     "set": "Base Set",
+     "setId": "base1",
+     "localId": "43",
+     "image": "https://assets.tcgdex.net/en/base/base1/43",
+     "score": 3.7,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "night",
+      "weather": "none-visible",
+      "activity": [
+       "sleeping"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A yellow fox-like creature sits with head bowed by a tree under a blue starry sky.",
+     "confidence": "medium"
+    },
+    {
+     "id": "sv01-115",
+     "name": "Sandile",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "115",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/115",
+     "score": 3.7,
+     "tags": {
+      "kind": "pokemon",
+      "place": "abstract",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "sleeping",
+       "resting"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A masked croc Pokémon lies curled in a colourful swirling patterned background.",
+     "confidence": "medium"
+    }
+   ]
+  },
+  "eating food": {
+   "matchingCards": 17,
+   "top8": [
+    {
+     "id": "sv01-151",
+     "name": "Skwovet",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "151",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/151",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "grassland",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "eating"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A grey squirrel Pokémon sits on a stump holding a berry on a grassy path.",
+     "confidence": "high"
+    },
+    {
+     "id": "swsh1-140",
+     "name": "Snorlax",
+     "set": "Sword & Shield",
+     "setId": "swsh1",
+     "localId": "140",
+     "image": "https://assets.tcgdex.net/en/swsh/swsh1/140",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "eating"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A large Pokemon eats a red berry sitting in an orchard with fruit trees.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv01-152",
+     "name": "Greedent",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "152",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/152",
+     "score": 4.7,
+     "tags": {
+      "kind": "pokemon",
+      "place": "city",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "eating",
+       "playing"
+      ],
+      "pokemon_count": "2",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A brown squirrel Pokémon hugs berries in a colourful town square.",
+     "confidence": "medium"
+    },
+    {
+     "id": "sv01-249",
+     "name": "Arven",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "249",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/249",
+     "score": 4.2,
+     "tags": {
+      "kind": "trainer",
+      "place": "forest",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "eating",
+       "playing"
+      ],
+      "pokemon_count": "0",
+      "human_present": true,
+      "has_flowers": false
+     },
+     "caption": "A boy prepares food at a picnic table in a sunny forest clearing.",
+     "confidence": "medium"
+    },
+    {
+     "id": "swsh1-78",
+     "name": "Morpeko",
+     "set": "Sword & Shield",
+     "setId": "swsh1",
+     "localId": "78",
+     "image": "https://assets.tcgdex.net/en/swsh/swsh1/78",
+     "score": 3.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "grassland",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "eating"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A small two-toned Pokemon nibbles a seed near a red rock.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv01-059",
+     "name": "Cetoddle",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "059",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/059",
+     "score": 2.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "snow-ice",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "playing",
+       "eating"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A white whale Pokemon with open mouth sits in snow among bare trees.",
+     "confidence": "high"
+    },
+    {
+     "id": "ex1-74",
+     "name": "Torchic",
+     "set": "Ruby & Sapphire",
+     "setId": "ex1",
+     "localId": "74",
+     "image": "https://assets.tcgdex.net/en/ex/ex1/74",
+     "score": 1.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "grassland",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A round orange chick stands in grass with berries and trees behind.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv01-095",
+     "name": "Dedenne",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "095",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/095",
+     "score": 1.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "jungle",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A happy orange mouse Pokémon among green leaves near a waterfall and red berries.",
+     "confidence": "high"
+    }
+   ]
+  },
+  "flying in the sky": {
+   "matchingCards": 263,
+   "top8": [
+    {
+     "id": "bw1-73",
+     "name": "Mandibuzz",
+     "set": "Black & White",
+     "setId": "bw1",
+     "localId": "73",
+     "image": "https://assets.tcgdex.net/en/bw/bw1/73",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "sky",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A vulture Pokémon soars in the sky above rocky cliffs.",
+     "confidence": "high"
+    },
+    {
+     "id": "dp1-24",
+     "name": "Drifblim",
+     "set": "Diamond & Pearl",
+     "setId": "dp1",
+     "localId": "24",
+     "image": "https://assets.tcgdex.net/en/dp/dp1/24",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "sky",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A purple balloon ghost floats in the sky above snowy mountains.",
+     "confidence": "high"
+    },
+    {
+     "id": "dp1-25",
+     "name": "Dustox",
+     "set": "Diamond & Pearl",
+     "setId": "dp1",
+     "localId": "25",
+     "image": "https://assets.tcgdex.net/en/dp/dp1/25",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "sky",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A green-winged moth creature flies over pine trees under a blue sky.",
+     "confidence": "high"
+    },
+    {
+     "id": "dp1-34",
+     "name": "Noctowl",
+     "set": "Diamond & Pearl",
+     "setId": "dp1",
+     "localId": "34",
+     "image": "https://assets.tcgdex.net/en/dp/dp1/34",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "sky",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A brown owl flies with spread wings in a cloudy blue sky.",
+     "confidence": "high"
+    },
+    {
+     "id": "dp1-46",
+     "name": "Drifloon",
+     "set": "Diamond & Pearl",
+     "setId": "dp1",
+     "localId": "46",
+     "image": "https://assets.tcgdex.net/en/dp/dp1/46",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "sky",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A purple balloon ghost floats before green trees under a blue sky.",
+     "confidence": "high"
+    },
+    {
+     "id": "dp1-56",
+     "name": "Monferno",
+     "set": "Diamond & Pearl",
+     "setId": "dp1",
+     "localId": "56",
+     "image": "https://assets.tcgdex.net/en/dp/dp1/56",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "sky",
+      "time": "sunset-sunrise",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A fire monkey leaps through the sky with a flame tail.",
+     "confidence": "high"
+    },
+    {
+     "id": "dp1-64",
+     "name": "Staravia",
+     "set": "Diamond & Pearl",
+     "setId": "dp1",
+     "localId": "64",
+     "image": "https://assets.tcgdex.net/en/dp/dp1/64",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "sky",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "3+",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A dark bird with orange feet flies over treetops with more birds behind.",
+     "confidence": "high"
+    },
+    {
+     "id": "ex1-19",
+     "name": "Pelipper",
+     "set": "Ruby & Sapphire",
+     "setId": "ex1",
+     "localId": "19",
+     "image": "https://assets.tcgdex.net/en/ex/ex1/19",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "sky",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "2",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A yellow-beaked pelican-like bird flies over crashing waves with another small bird.",
+     "confidence": "high"
+    }
+   ]
+  },
+  "near a volcano": {
+   "matchingCards": 17,
+   "top8": [
+    {
+     "id": "sv03.5-199",
+     "name": "Charizard ex",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "199",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/199",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "volcano",
+      "time": "sunset-sunrise",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "An orange dragon Pokémon flies over a volcano at sunset among pink clouds.",
+     "confidence": "high"
+    },
+    {
+     "id": "xy1-20",
+     "name": "Slugma",
+     "set": "XY",
+     "setId": "xy1",
+     "localId": "20",
+     "image": "https://assets.tcgdex.net/en/xy/xy1/20",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "volcano",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "An orange lava slug Pokémon on rocky ground with lava and smoke.",
+     "confidence": "high"
+    },
+    {
+     "id": "xy1-21",
+     "name": "Magcargo",
+     "set": "XY",
+     "setId": "xy1",
+     "localId": "21",
+     "image": "https://assets.tcgdex.net/en/xy/xy1/21",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "volcano",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A red lava snail Pokémon with a dark shell amid lava, rocks and flames.",
+     "confidence": "high"
+    },
+    {
+     "id": "base1-36",
+     "name": "Magmar",
+     "set": "Base Set",
+     "setId": "base1",
+     "localId": "36",
+     "image": "https://assets.tcgdex.net/en/base/base1/36",
+     "score": 3.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "volcano",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A fiery yellow and red creature stands amid flames on a dark red background.",
+     "confidence": "high"
+    },
+    {
+     "id": "sm1-23",
+     "name": "Torkoal",
+     "set": "Sun & Moon",
+     "setId": "sm1",
+     "localId": "23",
+     "image": "https://assets.tcgdex.net/en/sm/sm1/23",
+     "score": 3.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "volcano",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "using-move"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A turtle Pokémon puffs white smoke on a red rocky landscape under a blue sky.",
+     "confidence": "high"
+    },
+    {
+     "id": "sm1-26",
+     "name": "Incineroar",
+     "set": "Sun & Moon",
+     "setId": "sm1",
+     "localId": "26",
+     "image": "https://assets.tcgdex.net/en/sm/sm1/26",
+     "score": 3.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "volcano",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "fighting"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A fierce red wrestler cat Pokémon roars with claws out amid flames.",
+     "confidence": "high"
+    },
+    {
+     "id": "sm1-86",
+     "name": "Alolan Diglett",
+     "set": "Sun & Moon",
+     "setId": "sm1",
+     "localId": "86",
+     "image": "https://assets.tcgdex.net/en/sm/sm1/86",
+     "score": 3.7,
+     "tags": {
+      "kind": "pokemon",
+      "place": "volcano",
+      "time": "night",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A brown mole Pokemon pops from rocks against a dark rocky landscape.",
+     "confidence": "medium"
+    },
+    {
+     "id": "sv01-034",
+     "name": "Houndoom",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "034",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/034",
+     "score": 3.7,
+     "tags": {
+      "kind": "pokemon",
+      "place": "volcano",
+      "time": "night",
+      "weather": "none-visible",
+      "activity": [
+       "fighting",
+       "using-move"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A dark horned hound Pokemon crouches with flames on a rocky ground.",
+     "confidence": "medium"
+    }
+   ]
+  },
+  "in the rain": {
+   "matchingCards": 64,
+   "top8": [
+    {
+     "id": "sv01-071",
+     "name": "Toxel",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "071",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/071",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "grassland",
+      "time": "day",
+      "weather": "rain",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A purple baby Pokemon crouches in rain among puddles and mushrooms.",
+     "confidence": "high"
+    },
+    {
+     "id": "swsh1-136",
+     "name": "Cufant",
+     "set": "Sword & Shield",
+     "setId": "swsh1",
+     "localId": "136",
+     "image": "https://assets.tcgdex.net/en/swsh/swsh1/136",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "river-lake",
+      "time": "day",
+      "weather": "rain",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": true
+     },
+     "caption": "A small elephant Pokemon stands in a pond in rain among lotus flowers.",
+     "confidence": "high"
+    },
+    {
+     "id": "sm1-52",
+     "name": "Vikavolt",
+     "set": "Sun & Moon",
+     "setId": "sm1",
+     "localId": "52",
+     "image": "https://assets.tcgdex.net/en/sm/sm1/52",
+     "score": 4.7,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "day",
+      "weather": "rain",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A dark stag beetle Pokémon dives in front of a waterfall with rain streaks.",
+     "confidence": "medium"
+    },
+    {
+     "id": "sv03.5-176",
+     "name": "Poliwhirl",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "176",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/176",
+     "score": 4.6,
+     "tags": {
+      "kind": "pokemon",
+      "place": "river-lake",
+      "time": "day",
+      "weather": "rain",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A blue Pokémon with a swirl belly in a rainy pond with ripples.",
+     "confidence": "low"
+    },
+    {
+     "id": "hgss1-122",
+     "name": "Metal Energy",
+     "set": "HeartGold SoulSilver",
+     "setId": "hgss1",
+     "localId": "122",
+     "image": "https://assets.tcgdex.net/en/hgss/hgss1/122",
+     "score": 4.2,
+     "tags": {
+      "kind": "energy",
+      "place": "city",
+      "time": "unclear",
+      "weather": "rain",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A grey Pokémon silhouette and a tower amid diagonal rain lines.",
+     "confidence": "medium"
+    },
+    {
+     "id": "sv01-133",
+     "name": "Bisharp",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "133",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/133",
+     "score": 3.7,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "night",
+      "weather": "rain",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A blade Pokémon stands in a stormy forest under dark clouds.",
+     "confidence": "medium"
+    },
+    {
+     "id": "dp1-54",
+     "name": "Magneton",
+     "set": "Diamond & Pearl",
+     "setId": "dp1",
+     "localId": "54",
+     "image": "https://assets.tcgdex.net/en/dp/dp1/54",
+     "score": 2.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "mountain",
+      "time": "day",
+      "weather": "storm",
+      "activity": [
+       "using-move"
+      ],
+      "pokemon_count": "3+",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "Three connected magnet balls crackle with lightning before purple mountains.",
+     "confidence": "high"
+    },
+    {
+     "id": "ex1-39",
+     "name": "Manectric",
+     "set": "Ruby & Sapphire",
+     "setId": "ex1",
+     "localId": "39",
+     "image": "https://assets.tcgdex.net/en/ex/ex1/39",
+     "score": 2.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "mountain",
+      "time": "day",
+      "weather": "storm",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A blue and yellow electric wolf stands on a rock under a stormy sky.",
+     "confidence": "high"
+    }
+   ]
+  },
+  "in a desert": {
+   "matchingCards": 44,
+   "top8": [
+    {
+     "id": "base1-48",
+     "name": "Doduo",
+     "set": "Base Set",
+     "setId": "base1",
+     "localId": "48",
+     "image": "https://assets.tcgdex.net/en/base/base1/48",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "desert",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "running"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A two-headed brown bird runs fast across a sandy desert with a cactus.",
+     "confidence": "high"
+    },
+    {
+     "id": "bw1-63",
+     "name": "Sandile",
+     "set": "Black & White",
+     "setId": "bw1",
+     "localId": "63",
+     "image": "https://assets.tcgdex.net/en/bw/bw1/63",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "desert",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A small yellow crocodile Pokémon stands on dry desert ground.",
+     "confidence": "high"
+    },
+    {
+     "id": "dp1-51",
+     "name": "Hippopotas",
+     "set": "Diamond & Pearl",
+     "setId": "dp1",
+     "localId": "51",
+     "image": "https://assets.tcgdex.net/en/dp/dp1/51",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "desert",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A tan sand hippo creature blasts sand from its side on a desert plain.",
+     "confidence": "high"
+    },
+    {
+     "id": "ex1-15",
+     "name": "Blaziken",
+     "set": "Ruby & Sapphire",
+     "setId": "ex1",
+     "localId": "15",
+     "image": "https://assets.tcgdex.net/en/ex/ex1/15",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "desert",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "fighting"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A red and white fighting bird leaps in a rocky desert under blue sky.",
+     "confidence": "high"
+    },
+    {
+     "id": "ex1-50",
+     "name": "Aron",
+     "set": "Ruby & Sapphire",
+     "setId": "ex1",
+     "localId": "50",
+     "image": "https://assets.tcgdex.net/en/ex/ex1/50",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "desert",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A small steel creature stands on rocky desert ground with mountains behind.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv01-120",
+     "name": "Sandaconda",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "120",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/120",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "desert",
+      "time": "sunset-sunrise",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A shelled sand snake Pokémon coils in a rocky desert canyon.",
+     "confidence": "high"
+    },
+    {
+     "id": "swsh1-107",
+     "name": "Silicobra",
+     "set": "Sword & Shield",
+     "setId": "swsh1",
+     "localId": "107",
+     "image": "https://assets.tcgdex.net/en/swsh/swsh1/107",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "desert",
+      "time": "sunset-sunrise",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A sand snake Pokemon coils on red dunes under a low sun.",
+     "confidence": "high"
+    },
+    {
+     "id": "swsh1-108",
+     "name": "Silicobra",
+     "set": "Sword & Shield",
+     "setId": "swsh1",
+     "localId": "108",
+     "image": "https://assets.tcgdex.net/en/swsh/swsh1/108",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "desert",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing",
+       "using-move"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A sand snake Pokemon hisses in a sandy desert with pink hills.",
+     "confidence": "high"
+    }
+   ]
+  },
+  "at sunset": {
+   "matchingCards": 56,
+   "top8": [
+    {
+     "id": "base1-26",
+     "name": "Dratini",
+     "set": "Base Set",
+     "setId": "base1",
+     "localId": "26",
+     "image": "https://assets.tcgdex.net/en/base/base1/26",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "ocean",
+      "time": "sunset-sunrise",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A blue serpent rises before a sunset over a calm sea.",
+     "confidence": "high"
+    },
+    {
+     "id": "dp1-91",
+     "name": "Misdreavus",
+     "set": "Diamond & Pearl",
+     "setId": "dp1",
+     "localId": "91",
+     "image": "https://assets.tcgdex.net/en/dp/dp1/91",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "sky",
+      "time": "sunset-sunrise",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A blue ghost with a pearl necklace floats before a pink cloudy sunset sky.",
+     "confidence": "high"
+    },
+    {
+     "id": "sm1-101",
+     "name": "Eevee",
+     "set": "Sun & Moon",
+     "setId": "sm1",
+     "localId": "101",
+     "image": "https://assets.tcgdex.net/en/sm/sm1/101",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "grassland",
+      "time": "sunset-sunrise",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A brown fox Pokemon stands in grass under a pink dusk sky.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv03.5-008",
+     "name": "Wartortle",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "008",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/008",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "ocean",
+      "time": "sunset-sunrise",
+      "weather": "none-visible",
+      "activity": [
+       "swimming",
+       "playing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A blue turtle Pokémon leaps over the sea at sunset.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv03.5-018",
+     "name": "Pidgeot",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "018",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/018",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "sky",
+      "time": "sunset-sunrise",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A large bird Pokémon flies across a pink sunset sky.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv03.5-022",
+     "name": "Fearow",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "022",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/022",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "mountain",
+      "time": "sunset-sunrise",
+      "weather": "none-visible",
+      "activity": [
+       "flying",
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A long-beaked bird Pokémon spreads its wings on a rock at dusk.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv03.5-056",
+     "name": "Mankey",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "056",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/056",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "jungle",
+      "time": "sunset-sunrise",
+      "weather": "none-visible",
+      "activity": [
+       "fighting",
+       "playing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A pig monkey Pokémon clings to a tree trunk against a red sunset sky.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv03.5-066",
+     "name": "Machop",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "066",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/066",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "mountain",
+      "time": "sunset-sunrise",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A muscular blue Pokémon flexes on a rock at sunset.",
+     "confidence": "high"
+    }
+   ]
+  },
+  "with flowers": {
+   "matchingCards": 156,
+   "top8": [
+    {
+     "id": "base1-44",
+     "name": "Bulbasaur",
+     "set": "Base Set",
+     "setId": "base1",
+     "localId": "44",
+     "image": "https://assets.tcgdex.net/en/base/base1/44",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "garden",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": true
+     },
+     "caption": "A green plant toad crouches among pink flowers with a steaming bulb.",
+     "confidence": "high"
+    },
+    {
+     "id": "bw1-10",
+     "name": "Lilligant",
+     "set": "Black & White",
+     "setId": "bw1",
+     "localId": "10",
+     "image": "https://assets.tcgdex.net/en/bw/bw1/10",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "garden",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": true
+     },
+     "caption": "A flower-headed Pokémon stands among soft pink and purple flowers.",
+     "confidence": "high"
+    },
+    {
+     "id": "bw1-89",
+     "name": "Cinccino",
+     "set": "Black & White",
+     "setId": "bw1",
+     "localId": "89",
+     "image": "https://assets.tcgdex.net/en/bw/bw1/89",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "garden",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": true
+     },
+     "caption": "A white chinchilla Pokémon with a scarf-like tail stands among plants and flowers.",
+     "confidence": "high"
+    },
+    {
+     "id": "bw1-9",
+     "name": "Petilil",
+     "set": "Black & White",
+     "setId": "bw1",
+     "localId": "9",
+     "image": "https://assets.tcgdex.net/en/bw/bw1/9",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "garden",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": true
+     },
+     "caption": "A small bulb Pokémon stands on a path amid colourful flowers and foliage.",
+     "confidence": "high"
+    },
+    {
+     "id": "dp1-77",
+     "name": "Clefairy",
+     "set": "Diamond & Pearl",
+     "setId": "dp1",
+     "localId": "77",
+     "image": "https://assets.tcgdex.net/en/dp/dp1/77",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "garden",
+      "time": "night",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": true
+     },
+     "caption": "A pink fairy creature waves under a crescent moon over pink flowers.",
+     "confidence": "high"
+    },
+    {
+     "id": "ex1-5",
+     "name": "Delcatty",
+     "set": "Ruby & Sapphire",
+     "setId": "ex1",
+     "localId": "5",
+     "image": "https://assets.tcgdex.net/en/ex/ex1/5",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "garden",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": true
+     },
+     "caption": "A purple-eared cat creature sits among blue flowers.",
+     "confidence": "high"
+    },
+    {
+     "id": "ex1-67",
+     "name": "Ralts",
+     "set": "Ruby & Sapphire",
+     "setId": "ex1",
+     "localId": "67",
+     "image": "https://assets.tcgdex.net/en/ex/ex1/67",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "garden",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": true
+     },
+     "caption": "A small green-helmeted creature hides among yellow flowers.",
+     "confidence": "high"
+    },
+    {
+     "id": "hgss1-21",
+     "name": "Furret",
+     "set": "HeartGold SoulSilver",
+     "setId": "hgss1",
+     "localId": "21",
+     "image": "https://assets.tcgdex.net/en/hgss/hgss1/21",
+     "score": 7.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "garden",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "playing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": true
+     },
+     "caption": "A long-bodied striped creature smiles among pink flowers on a swirled pink background.",
+     "confidence": "high"
+    }
+   ]
+  },
+  "in a cave": {
+   "matchingCards": 34,
+   "top8": [
+    {
+     "id": "ex1-25",
+     "name": "Aron",
+     "set": "Ruby & Sapphire",
+     "setId": "ex1",
+     "localId": "25",
+     "image": "https://assets.tcgdex.net/en/ex/ex1/25",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "cave",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A small steel armor creature stands in a crystal-filled blue cave.",
+     "confidence": "high"
+    },
+    {
+     "id": "ex1-36",
+     "name": "Lairon",
+     "set": "Ruby & Sapphire",
+     "setId": "ex1",
+     "localId": "36",
+     "image": "https://assets.tcgdex.net/en/ex/ex1/36",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "cave",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A grey armored creature with white spiky shell walks on rocky ground in a cave.",
+     "confidence": "high"
+    },
+    {
+     "id": "hgss1-24",
+     "name": "Lapras",
+     "set": "HeartGold SoulSilver",
+     "setId": "hgss1",
+     "localId": "24",
+     "image": "https://assets.tcgdex.net/en/hgss/hgss1/24",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "cave",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "swimming"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A blue shelled creature swims in a golden glowing cave pool.",
+     "confidence": "high"
+    },
+    {
+     "id": "hgss1-54",
+     "name": "Unown",
+     "set": "HeartGold SoulSilver",
+     "setId": "hgss1",
+     "localId": "54",
+     "image": "https://assets.tcgdex.net/en/hgss/hgss1/54",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "cave",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "none-visible"
+      ],
+      "pokemon_count": "3+",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "Several black eye-shaped letter creatures surround golden swirls in a cave.",
+     "confidence": "high"
+    },
+    {
+     "id": "hgss1-55",
+     "name": "Unown",
+     "set": "HeartGold SoulSilver",
+     "setId": "hgss1",
+     "localId": "55",
+     "image": "https://assets.tcgdex.net/en/hgss/hgss1/55",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "cave",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "none-visible"
+      ],
+      "pokemon_count": "3+",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "Several black eye-shaped letter creatures surround silvery swirls in a cave.",
+     "confidence": "high"
+    },
+    {
+     "id": "sm1-70",
+     "name": "Boldore",
+     "set": "Sun & Moon",
+     "setId": "sm1",
+     "localId": "70",
+     "image": "https://assets.tcgdex.net/en/sm/sm1/70",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "cave",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A blue rock Pokemon stands in front of a stone cave wall.",
+     "confidence": "high"
+    },
+    {
+     "id": "sm1-87",
+     "name": "Alolan Dugtrio",
+     "set": "Sun & Moon",
+     "setId": "sm1",
+     "localId": "87",
+     "image": "https://assets.tcgdex.net/en/sm/sm1/87",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "cave",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "3+",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "Three mole Pokemon with golden hair stand among rocks in a cave.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv03.5-041",
+     "name": "Zubat",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "041",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/041",
+     "score": 4.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "cave",
+      "time": "night",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A blue bat Pokémon with open mouth flies in a dark cave.",
+     "confidence": "high"
+    }
+   ]
+  },
+  "two pokemon playing together": {
+   "matchingCards": 155,
+   "top8": [
+    {
+     "id": "ex1-62",
+     "name": "Phanpy",
+     "set": "Ruby & Sapphire",
+     "setId": "ex1",
+     "localId": "62",
+     "image": "https://assets.tcgdex.net/en/ex/ex1/62",
+     "score": 6.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "playing"
+      ],
+      "pokemon_count": "2",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "Two grey elephant creatures play amid bare autumn trees.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv01-159",
+     "name": "Tandemaus",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "159",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/159",
+     "score": 5.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "playing",
+       "posing"
+      ],
+      "pokemon_count": "2",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "Two white mouse Pokémon stand beside a red berry in a pastel forest.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv01-160",
+     "name": "Tandemaus",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "160",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/160",
+     "score": 5.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "playing",
+       "posing"
+      ],
+      "pokemon_count": "2",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "Two white mouse Pokémon stand in a sunny clearing among big mushrooms.",
+     "confidence": "high"
+    },
+    {
+     "id": "hgss1-2",
+     "name": "Azumarill",
+     "set": "HeartGold SoulSilver",
+     "setId": "hgss1",
+     "localId": "2",
+     "image": "https://assets.tcgdex.net/en/hgss/hgss1/2",
+     "score": 5.7,
+     "tags": {
+      "kind": "pokemon",
+      "place": "city",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "playing"
+      ],
+      "pokemon_count": "2",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A blue round rabbit creature rolls past a house with another one behind and rocks flying.",
+     "confidence": "medium"
+    },
+    {
+     "id": "hgss1-30",
+     "name": "Smoochum",
+     "set": "HeartGold SoulSilver",
+     "setId": "hgss1",
+     "localId": "30",
+     "image": "https://assets.tcgdex.net/en/hgss/hgss1/30",
+     "score": 5.7,
+     "tags": {
+      "kind": "pokemon",
+      "place": "grassland",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "playing"
+      ],
+      "pokemon_count": "2",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A pink-purple girl-like creature tumbles in the foreground with a smaller one in the background.",
+     "confidence": "medium"
+    },
+    {
+     "id": "sv03.5-178",
+     "name": "Tangela",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "178",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/178",
+     "score": 5.7,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "playing",
+       "posing"
+      ],
+      "pokemon_count": "2",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "Two blue vine ball Pokémon hang from and stand under a tree in a sunny meadow.",
+     "confidence": "medium"
+    },
+    {
+     "id": "hgss1-77",
+     "name": "Phanpy",
+     "set": "HeartGold SoulSilver",
+     "setId": "hgss1",
+     "localId": "77",
+     "image": "https://assets.tcgdex.net/en/hgss/hgss1/77",
+     "score": 4.7,
+     "tags": {
+      "kind": "pokemon",
+      "place": "grassland",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "playing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A blue elephant Pokémon lies on its back playfully with hills behind.",
+     "confidence": "medium"
+    },
+    {
+     "id": "sv01-152",
+     "name": "Greedent",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "152",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/152",
+     "score": 4.7,
+     "tags": {
+      "kind": "pokemon",
+      "place": "city",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "eating",
+       "playing"
+      ],
+      "pokemon_count": "2",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A brown squirrel Pokémon hugs berries in a colourful town square.",
+     "confidence": "medium"
+    }
+   ]
+  },
+  "a pokemon with a human trainer": {
+   "matchingCards": 86,
+   "top8": [
+    {
+     "id": "sv01-211",
+     "name": "Ralts",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "211",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/211",
+     "score": 6.7,
+     "tags": {
+      "kind": "pokemon",
+      "place": "indoors",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": true,
+      "has_flowers": false
+     },
+     "caption": "A woman unpacks boxes in a living room while a small green and white Pokémon watches.",
+     "confidence": "medium"
+    },
+    {
+     "id": "sv01-212",
+     "name": "Kirlia",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "212",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/212",
+     "score": 6.7,
+     "tags": {
+      "kind": "pokemon",
+      "place": "indoors",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "resting",
+       "posing"
+      ],
+      "pokemon_count": "2",
+      "human_present": true,
+      "has_flowers": false
+     },
+     "caption": "A woman on an orange sofa with a green Pokémon and a small white Pokémon.",
+     "confidence": "medium"
+    },
+    {
+     "id": "sv03.5-177",
+     "name": "Machoke",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "177",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/177",
+     "score": 6.7,
+     "tags": {
+      "kind": "pokemon",
+      "place": "indoors",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "playing",
+       "posing"
+      ],
+      "pokemon_count": "3+",
+      "human_present": true,
+      "has_flowers": false
+     },
+     "caption": "A person and several Machop-family Pokémon moving boxes in a building under construction.",
+     "confidence": "medium"
+    },
+    {
+     "id": "sv01-218",
+     "name": "Mabosstiff",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "218",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/218",
+     "score": 6.6,
+     "tags": {
+      "kind": "pokemon",
+      "place": "forest",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": true,
+      "has_flowers": false
+     },
+     "caption": "A big grey dog Pokémon sits in a sunlit forest with a person's legs above.",
+     "confidence": "low"
+    },
+    {
+     "id": "base1-77",
+     "name": "Pokémon Trader",
+     "set": "Base Set",
+     "setId": "base1",
+     "localId": "77",
+     "image": "https://assets.tcgdex.net/en/base/base1/77",
+     "score": 6.3,
+     "tags": {
+      "kind": "trainer",
+      "place": "plain-background",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": true,
+      "has_flowers": false
+     },
+     "caption": "A man in a top hat and suit stands with a small bird on a green painted background.",
+     "confidence": "high"
+    },
+    {
+     "id": "hgss1-97",
+     "name": "Pokémon Collector",
+     "set": "HeartGold SoulSilver",
+     "setId": "hgss1",
+     "localId": "97",
+     "image": "https://assets.tcgdex.net/en/hgss/hgss1/97",
+     "score": 6.3,
+     "tags": {
+      "kind": "trainer",
+      "place": "indoors",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "3+",
+      "human_present": true,
+      "has_flowers": false
+     },
+     "caption": "A man at a desk holding a Poké Ball with three small Pokémon in a cluttered room.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv01-239",
+     "name": "Penny",
+     "set": "Scarlet & Violet",
+     "setId": "sv01",
+     "localId": "239",
+     "image": "https://assets.tcgdex.net/en/sv/sv01/239",
+     "score": 6.2,
+     "tags": {
+      "kind": "trainer",
+      "place": "indoors",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": true,
+      "has_flowers": false
+     },
+     "caption": "A red-haired girl in a hoodie stands with an Eevee in a room with screens.",
+     "confidence": "medium"
+    },
+    {
+     "id": "sv03.5-204",
+     "name": "Giovanni's Charisma",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "204",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/204",
+     "score": 6.2,
+     "tags": {
+      "kind": "trainer",
+      "place": "indoors",
+      "time": "night",
+      "weather": "none-visible",
+      "activity": [
+       "resting",
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": true,
+      "has_flowers": false
+     },
+     "caption": "A man in a black suit sits on a sofa with a cat Pokémon in a dim lit room.",
+     "confidence": "medium"
+    }
+   ]
+  },
+  "in a kitchen": {
+   "matchingCards": 60,
+   "top8": [
+    {
+     "id": "swsh1-90",
+     "name": "Polteageist",
+     "set": "Sword & Shield",
+     "setId": "swsh1",
+     "localId": "90",
+     "image": "https://assets.tcgdex.net/en/swsh/swsh1/90",
+     "score": 6.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "indoors",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A teapot Pokemon floats in a kitchen with a stove behind.",
+     "confidence": "high"
+    },
+    {
+     "id": "hgss1-36",
+     "name": "Blissey",
+     "set": "HeartGold SoulSilver",
+     "setId": "hgss1",
+     "localId": "36",
+     "image": "https://assets.tcgdex.net/en/hgss/hgss1/36",
+     "score": 3.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "indoors",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A pink winged round creature stands in a room with a map on the wall.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv03.5-081",
+     "name": "Magnemite",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "081",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/081",
+     "score": 3.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "indoors",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A magnet Pokémon floats in a yellow-walled industrial room.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv03.5-082",
+     "name": "Magneton",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "082",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/082",
+     "score": 3.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "indoors",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "flying"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A trio-magnet Pokémon floats in a power plant interior with pipes.",
+     "confidence": "high"
+    },
+    {
+     "id": "sv03.5-125",
+     "name": "Electabuzz",
+     "set": "151",
+     "setId": "sv03.5",
+     "localId": "125",
+     "image": "https://assets.tcgdex.net/en/sv/sv03.5/125",
+     "score": 3.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "indoors",
+      "time": "night",
+      "weather": "storm",
+      "activity": [
+       "using-move",
+       "fighting"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A striped yellow Pokémon crackles with lightning in a dark power plant.",
+     "confidence": "high"
+    },
+    {
+     "id": "swsh1-147",
+     "name": "Cinccino",
+     "set": "Sword & Shield",
+     "setId": "swsh1",
+     "localId": "147",
+     "image": "https://assets.tcgdex.net/en/swsh/swsh1/147",
+     "score": 3.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "indoors",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "sleeping",
+       "resting"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": true
+     },
+     "caption": "A fluffy white Pokemon sleeps curled on a pink flower cushion.",
+     "confidence": "high"
+    },
+    {
+     "id": "swsh1-6",
+     "name": "Whimsicott",
+     "set": "Sword & Shield",
+     "setId": "swsh1",
+     "localId": "6",
+     "image": "https://assets.tcgdex.net/en/swsh/swsh1/6",
+     "score": 3.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "indoors",
+      "time": "day",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": true
+     },
+     "caption": "A fluffy Pokemon stands at a window with curtains and a flower vase.",
+     "confidence": "high"
+    },
+    {
+     "id": "swsh1-89",
+     "name": "Sinistea",
+     "set": "Sword & Shield",
+     "setId": "swsh1",
+     "localId": "89",
+     "image": "https://assets.tcgdex.net/en/swsh/swsh1/89",
+     "score": 3.8,
+     "tags": {
+      "kind": "pokemon",
+      "place": "indoors",
+      "time": "unclear",
+      "weather": "none-visible",
+      "activity": [
+       "posing"
+      ],
+      "pokemon_count": "1",
+      "human_present": false,
+      "has_flowers": false
+     },
+     "caption": "A teacup Pokemon sits on a table beside drinking glasses and a cup.",
+     "confidence": "high"
+    }
+   ]
+  }
+ }
+}

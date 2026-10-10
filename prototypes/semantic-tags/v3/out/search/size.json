@@ -1,0 +1,10 @@
+{
+  "cards": 19635,
+  "tags": 23,
+  "rawBytes": 1334506,
+  "rawMiB": 1.273,
+  "gzipBytes": 268027,
+  "gzipMiB": 0.256,
+  "bytesPerCardRaw": 68,
+  "bytesPerCardGzip": 13.7
+}
