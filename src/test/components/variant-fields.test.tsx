@@ -7,6 +7,22 @@ import { VariantFields } from "@/components/foundation/VariantFields";
 afterEach(() => cleanup());
 
 describe("VariantFields", () => {
+  it("can explain condition choices in plain language for beginners", () => {
+    render(
+      <VariantFields
+        variant={{ finish: "normal", edition: "unlimited", printing: "shadowed" }}
+        preferences={{ minimumCondition: "excellent" }}
+        availability={{ normal: true, holo: false, reverse: false, firstEdition: false, shadowless: false }}
+        explainCondition
+        onVariantChange={vi.fn()}
+        onPreferencesChange={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText(/Unsere Empfehlung für Geschenke/)).toBeInTheDocument();
+    expect(screen.getByText("Was bedeutet der Kartenzustand?")).toBeInTheDocument();
+  });
+
   it("hides finishes, editions and printings that the catalog does not confirm", () => {
     render(
       <VariantFields
@@ -18,10 +34,10 @@ describe("VariantFields", () => {
       />,
     );
 
-    const finish = screen.getByRole("combobox", { name: "Finish" });
-    expect(within(finish).getByRole("option", { name: "Holo" })).toBeInTheDocument();
-    expect(within(finish).queryByRole("option", { name: "Non-Holo / Normal" })).not.toBeInTheDocument();
-    expect(within(finish).queryByRole("option", { name: "Reverse Holo" })).not.toBeInTheDocument();
+    const finish = screen.getByRole("combobox", { name: "Ausführung der Karte" });
+    expect(within(finish).getByRole("option", { name: "Holo – Bildbereich glänzt" })).toBeInTheDocument();
+    expect(within(finish).queryByRole("option", { name: "Normal – nicht glänzend" })).not.toBeInTheDocument();
+    expect(within(finish).queryByRole("option", { name: "Reverse Holo – übrige Karte glänzt" })).not.toBeInTheDocument();
     expect(within(screen.getByRole("combobox", { name: "Edition" })).queryByRole("option", { name: "First Edition" })).not.toBeInTheDocument();
     expect(within(screen.getByRole("combobox", { name: "Druckvariante" })).queryByRole("option", { name: "Shadowless" })).not.toBeInTheDocument();
     expect(screen.getByRole("status")).toHaveTextContent("vollständig festgelegt");
@@ -40,7 +56,7 @@ describe("VariantFields", () => {
 
     expect(within(screen.getByRole("combobox", { name: "Edition" })).getByRole("option", { name: "First Edition" })).toBeInTheDocument();
     expect(within(screen.getByRole("combobox", { name: "Druckvariante" })).getByRole("option", { name: "Shadowless" })).toBeInTheDocument();
-    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("Für die Bestellung vorbereitet");
   });
 
   it("keeps unknown finishes manual while hiding impossible modern printings", () => {
@@ -61,7 +77,7 @@ describe("VariantFields", () => {
       />,
     );
 
-    expect(within(screen.getByRole("combobox", { name: "Finish" })).getByRole("option", { name: "Holo" })).toBeInTheDocument();
+    expect(within(screen.getByRole("combobox", { name: "Ausführung der Karte" })).getByRole("option", { name: "Holo – Bildbereich glänzt" })).toBeInTheDocument();
     expect(within(screen.getByRole("combobox", { name: "Edition" })).queryByRole("option", { name: "First Edition" })).not.toBeInTheDocument();
     expect(within(screen.getByRole("combobox", { name: "Druckvariante" })).queryByRole("option", { name: "Shadowless" })).not.toBeInTheDocument();
     expect(screen.getByText(/Finish bleibt manuell/)).toBeInTheDocument();
@@ -135,8 +151,9 @@ describe("VariantFields", () => {
       />,
     );
 
-    expect(within(screen.getByRole("combobox", { name: "Mindestzustand" })).getByRole("option", {
-      name: "Excellent (Cardmarket) / Lightly Played (TCGplayer)",
+    expect(within(screen.getByRole("combobox", { name: "Mindestzustand beim Kauf" })).getByRole("option", {
+      name: "Sehr gut – kleine Spuren okay (empfohlen)",
     })).toBeInTheDocument();
+    expect(screen.getByText(/Cardmarket: Near Mint oder Excellent/)).toBeInTheDocument();
   });
 });

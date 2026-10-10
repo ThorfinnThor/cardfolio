@@ -21,12 +21,15 @@ export interface CardSnapshot {
   imageBaseUrl?: string;
   imageFallbackBaseUrl?: string;
   category?: "pokemon" | "trainer" | "energy" | "other";
+  level?: string;
+  levelChecked?: true;
   abilities?: string[];
   attacks?: string[];
   englishIdentity?: {
     name: string;
     setName: string;
     category?: "pokemon" | "trainer" | "energy" | "other";
+    level?: string;
     abilities: string[];
     attacks: string[];
   };

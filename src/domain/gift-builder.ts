@@ -232,27 +232,27 @@ export class DeterministicGiftSelectionEngine implements GiftSelectionEngine {
     }
 
     const target = preferences.targetCardCount;
-    const usable = eligible.filter((candidate) =>
-      candidate.price.confidence === "usable"
+    const priced = eligible.filter((candidate) =>
+      candidate.price.confidence !== "unknown"
       && candidate.price.currency === preferences.currency
       && candidate.price.amountMinor !== undefined,
     ).sort(stableCandidateOrder);
-    const uncertain = eligible.filter((candidate) => !usable.includes(candidate)).sort(stableCandidateOrder);
+    const uncertain = eligible.filter((candidate) => !priced.includes(candidate)).sort(stableCandidateOrder);
     const tolerance = preferences.budgetTolerancePercent ?? 0;
     const ceiling = preferences.budgetMinor + Math.floor(preferences.budgetMinor * tolerance / 100);
-    const cheapestTarget = usable.slice(0, target);
+    const cheapestTarget = priced.slice(0, target);
     const cheapestTotal = cheapestTarget.reduce((sum, item) => sum + (item.price.amountMinor ?? 0), 0);
 
     let selectedPool: GiftCardCandidate[];
-    if (usable.length >= target && cheapestTotal <= ceiling) {
-      // Prefer set/year diversity only when the cheapest remaining cards prove
-      // that the choice can still finish within the user-selected ceiling.
-      selectedPool = diverseSelectionWithinBudget(usable, target, ceiling);
-    } else if (usable.length >= target) {
+    if (priced.length >= target && cheapestTotal <= ceiling) {
+      // Price estimates may guide the proposal even when they are not strong
+      // enough for a checkout guarantee. The UI keeps that distinction clear.
+      selectedPool = diverseSelectionWithinBudget(priced, target, ceiling);
+    } else if (priced.length >= target) {
       selectedPool = diverseOrder(cheapestTarget);
       issues.add("budget-impossible");
     } else {
-      selectedPool = diverseOrder([...usable, ...uncertain]).slice(0, target);
+      selectedPool = diverseOrder([...priced, ...uncertain]).slice(0, target);
     }
 
     const selected: GiftCardCandidate[] = [];
@@ -267,10 +267,12 @@ export class DeterministicGiftSelectionEngine implements GiftSelectionEngine {
     const estimatedTotalMinor = allAmountsKnown
       ? selected.reduce((sum, candidate) => sum + (candidate.price.amountMinor ?? 0), 0)
       : undefined;
-    const allUsable = selected.length > 0 && selected.every((candidate) =>
-      candidate.price.confidence === "usable" && candidate.price.currency === preferences.currency,
+    const allPriced = selected.length > 0 && selected.every((candidate) =>
+      candidate.price.confidence !== "unknown"
+      && candidate.price.currency === preferences.currency
+      && candidate.price.amountMinor !== undefined,
     );
-    const budgetStatus = !allUsable || estimatedTotalMinor === undefined
+    const budgetStatus = !allPriced || estimatedTotalMinor === undefined
       ? "unknown" as const
       : estimatedTotalMinor <= preferences.budgetMinor
         ? "within" as const

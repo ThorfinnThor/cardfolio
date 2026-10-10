@@ -31,6 +31,19 @@ describe("BinderOverview", () => {
     expect(screen.getByRole("heading", { name: "Noch kein Binder" })).toBeInTheDocument();
     expect(screen.getByText("Lege deinen ersten lokalen Binder an. Deine Daten werden nur in diesem Browser gespeichert.")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Ersten Binder erstellen" })).toBeInTheDocument();
+    expect(screen.getByRole("list", { name: "So entsteht dein Binder" }).children).toHaveLength(4);
+  });
+
+  it("offers clear beginner starts for gifts and complete sets", () => {
+    const onGiftStart = vi.fn();
+    const onSetStart = vi.fn();
+    render(<BinderOverview {...props({ onGiftStart, onSetStart })} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Geschenk erstellen" }));
+    fireEvent.click(screen.getByRole("button", { name: "Mit einem Set starten" }));
+
+    expect(onGiftStart).toHaveBeenCalledOnce();
+    expect(onSetStart).toHaveBeenCalledOnce();
   });
 
   it("offers persistent binder ordering and duplication controls", () => {

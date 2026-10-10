@@ -1,6 +1,6 @@
 "use client";
 
-import { Clipboard, Download, ExternalLink, FileDown, Search, X } from "lucide-react";
+import { ArrowRight, Clipboard, Download, ExternalLink, FileDown, Search, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { loadTcgplayerCardMappings } from "@/data/marketplace/tcgplayer-card-mappings";
@@ -10,9 +10,11 @@ import { createCardmarketHandoff, type CardmarketHandoffPart } from "@/domain/ca
 import { formatCollectorNumber } from "@/domain/catalog-search";
 import { groupMissingItemsBySet } from "@/domain/missing-items";
 import { missingItemReviewNote } from "@/domain/missing-items-export";
-import { minimumConditionLabels } from "@/domain/purchase-preferences";
+import { conditionProfile, conditionProfiles } from "@/domain/purchase-preferences";
+import { ConditionGuide } from "./ConditionGuide";
+import { GuidedFlow } from "./GuidedFlow";
 import { createTcgplayerMassEntryExport, type TcgplayerCardMapping, type TcgplayerMassEntryExport } from "@/domain/tcgplayer-export";
-import type { MissingItem } from "@/domain/types";
+import type { MissingItem, PurchasePreferences } from "@/domain/types";
 import { printingLabels, selectedPrinting } from "@/domain/variant-selection";
 
 import styles from "./missing-cards-panel.module.css";
@@ -21,6 +23,12 @@ const finishLabels = { normal: "Non-Holo / Normal", holo: "Holo", reverse: "Reve
 const editionLabels = { unlimited: "Unlimited", "first-edition": "First Edition", unspecified: "Nicht angegeben" } as const;
 type MarketplaceChoice = "tcgplayer" | "cardmarket" | "cardtrader";
 type CardTraderStatus = "not-approved" | "not-connected" | "review-required" | "stale" | "ready";
+
+const PURCHASE_FLOW = [
+  { label: "Zustand wählen", description: "Wir erklären, was die Begriffe bedeuten" },
+  { label: "Anbieter wählen", description: "Cardmarket, TCGplayer oder CardTrader" },
+  { label: "Liste öffnen", description: "Beim Anbieter prüfen und erst dort kaufen" },
+] as const;
 
 export interface CardTraderQuotePreview {
   status: "unknown" | "estimated" | "stale" | "ready";
@@ -38,6 +46,7 @@ interface MissingCardsPanelProps {
   onCopy: (items: readonly MissingItem[]) => void;
   onTextExport: (items: readonly MissingItem[]) => void;
   onCsvExport: (items: readonly MissingItem[]) => void;
+  onConditionsChange?: (items: readonly MissingItem[], condition: PurchasePreferences["minimumCondition"]) => void;
   onClose: () => void;
   tcgplayerEnabled?: boolean;
   tcgplayerCardMappings?: readonly TcgplayerCardMapping[];
@@ -63,6 +72,7 @@ export function MissingCardsPanel({
   onCopy,
   onTextExport,
   onCsvExport,
+  onConditionsChange,
   onClose,
   tcgplayerEnabled = false,
   tcgplayerCardMappings,
@@ -83,6 +93,7 @@ export function MissingCardsPanel({
   const [query, setQuery] = useState("");
   const [cardmarketPartIndex, setCardmarketPartIndex] = useState(0);
   const [marketplaceChoice, setMarketplaceChoice] = useState<MarketplaceChoice>();
+  const [purchaseStep, setPurchaseStep] = useState(onConditionsChange && items.length ? 1 : 2);
   const [loadedTcgplayerMappings, setLoadedTcgplayerMappings] = useState<readonly TcgplayerCardMapping[]>();
   const [tcgplayerMappingsError, setTcgplayerMappingsError] = useState<string>();
   const tcgplayerMappings = tcgplayerCardMappings ?? loadedTcgplayerMappings;
@@ -125,6 +136,10 @@ export function MissingCardsPanel({
     ? Math.min(cardmarketPartIndex, cardmarketHandoff.parts.length - 1)
     : 0;
   const activeCardmarketPart = cardmarketHandoff?.parts[activeCardmarketPartIndex];
+  const tcgplayerPreparedMatches = tcgplayerExport?.matches.filter((match) => match.line) ?? [];
+  const tcgplayerExceptions = tcgplayerExport?.matches.filter((match) => !match.line) ?? [];
+  const visibleConditions = new Set(visibleItems.map((item) => item.preferences.minimumCondition));
+  const sharedCondition = visibleConditions.size === 1 ? [...visibleConditions][0] : undefined;
 
   return (
     <section className={styles.panel} aria-labelledby="missing-cards-heading">
@@ -133,9 +148,12 @@ export function MissingCardsPanel({
           <p className={styles.eyebrow}>Einkaufsliste · lokal</p>
           <h2 id="missing-cards-heading">Fehlende Karten</h2>
           <p className={styles.subline}>{visibleItems.length} Positionen · {visibleQuantity} Exemplare · aus diesem Binder</p>
+          <p className={styles.intro}>Cardfolio verkauft keine Karten. Wir bereiten deine Liste verständlich vor; gekauft wird erst beim gewählten Anbieter.</p>
         </div>
         <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Fehlkartenansicht schließen"><X size={18} /></button>
       </div>
+
+      <div className={styles.flowWrapper}><GuidedFlow steps={PURCHASE_FLOW} currentStep={marketplaceChoice ? 3 : purchaseStep} label="Schritte zum Kartenkauf" /></div>
 
       <div className={styles.toolbar}>
         <label className={styles.searchLabel} htmlFor="missing-card-filter">
@@ -143,51 +161,78 @@ export function MissingCardsPanel({
           <span className={styles.srOnly}>Fehlkarten filtern</span>
           <input id="missing-card-filter" placeholder="Name, Set oder Nummer" onChange={(event) => setQuery(event.target.value)} />
         </label>
-        <div className={styles.exportActions}>
-          <button type="button" className={styles.secondaryButton} onClick={() => onCopy(visibleItems)} disabled={!visibleItems.length}>
-            <Clipboard size={16} /> {copyState === "copied" ? "Kopiert" : "Liste kopieren"}
-          </button>
-          <button type="button" className={styles.secondaryButton} onClick={() => onTextExport(visibleItems)} disabled={!visibleItems.length}><Download size={16} /> TXT</button>
-          <button type="button" className={styles.primaryButton} onClick={() => onCsvExport(visibleItems)} disabled={!visibleItems.length}><FileDown size={16} /> CSV</button>
-        </div>
+        <span className={styles.searchHint}>{visibleItems.length} Kartenpositionen werden vorbereitet</span>
       </div>
 
       {copyState === "error" ? <p className={styles.error} role="status">Kopieren wurde vom Browser nicht erlaubt. Nutze stattdessen TXT oder CSV.</p> : null}
       {warnings.map((warning) => <p className={styles.warning} role="note" key={warning}>{warning}</p>)}
 
+      {onConditionsChange && visibleItems.length ? (
+        <div className={styles.conditionBlock}>
+          <section className={styles.conditionSetup} aria-labelledby="missing-condition-heading">
+            <div>
+              <span className={styles.stepTag}>Schritt 1</span>
+              <h3 id="missing-condition-heading">Gewünschter Kartenzustand</h3>
+              <p>Gilt für alle aktuell angezeigten Karten. Einzelne Karten kannst du unten abweichend einstellen.</p>
+            </div>
+            <label htmlFor="missing-condition-all">
+              <span>Zustand für alle</span>
+              <select
+                id="missing-condition-all"
+                aria-label="Zustand für alle"
+                value={sharedCondition ?? "mixed"}
+                onChange={(event) => onConditionsChange(visibleItems, event.target.value as PurchasePreferences["minimumCondition"])}
+              >
+                {sharedCondition ? null : <option value="mixed" disabled>Unterschiedliche Zustände</option>}
+                {conditionProfiles.map((profile) => <option value={profile.value} key={profile.value}>{profile.label}</option>)}
+              </select>
+              <small>{sharedCondition ? conditionProfile(sharedCondition).providerSummary : "Die Karten haben unterschiedliche Zustandswünsche."}</small>
+            </label>
+          </section>
+          <ConditionGuide />
+          <button type="button" className={styles.continueButton} onClick={() => { setPurchaseStep(2); document.getElementById("marketplace-choice")?.scrollIntoView({ behavior: "smooth", block: "center" }); }}>
+            Zustand übernehmen & Anbieter wählen <ArrowRight aria-hidden="true" size={19} />
+          </button>
+        </div>
+      ) : null}
+
       {tcgplayerEnabled || cardmarketEnabled || cardtraderEnabled || cardtraderPreviewVisible ? (
-        <section className={styles.marketplaceChoice} aria-labelledby="marketplace-choice-heading">
+        <section className={styles.marketplaceChoice} id="marketplace-choice" aria-labelledby="marketplace-choice-heading">
           <div>
-            <h3 id="marketplace-choice-heading">Marketplace-Übergabe</h3>
-            <p>Wähle einen Anbieter. Es wird immer nur die dazugehörige Übergabe angezeigt.</p>
+            <span className={styles.stepTag}>Schritt 2</span>
+            <h3 id="marketplace-choice-heading">Wo möchtest du die Karten kaufen?</h3>
+            <p>Wähle einen Anbieter. Danach zeigt Cardfolio nur die passende Einkaufsliste und erklärt den nächsten Klick.</p>
           </div>
           <div className={styles.marketplaceChoiceActions} role="group" aria-label="Marketplace auswählen">
             {tcgplayerEnabled ? (
               <button
                 type="button"
+                aria-label="TCGplayer"
                 aria-pressed={marketplaceChoice === "tcgplayer"}
                 onClick={() => {
                   setTcgplayerMappingsError(undefined);
                   setMarketplaceChoice("tcgplayer");
                 }}
-              >TCGplayer</button>
+              ><strong>TCGplayer</strong><small>Mass Entry vorbereiten</small><ArrowRight aria-hidden="true" size={17} /></button>
             ) : null}
             {cardmarketEnabled ? (
               <button
                 type="button"
+                aria-label="Cardmarket"
                 aria-pressed={marketplaceChoice === "cardmarket"}
                 onClick={() => {
                   setMarketplaceChoice("cardmarket");
                   onCardmarketPrepare?.(visibleItems);
                 }}
-              >Cardmarket</button>
+              ><strong>Cardmarket</strong><small>Wants-Liste vorbereiten</small><ArrowRight aria-hidden="true" size={17} /></button>
             ) : null}
             {cardtraderEnabled || cardtraderPreviewVisible ? (
               <button
                 type="button"
+                aria-label={`CardTrader${!cardtraderEnabled ? " · Vorschau" : ""}`}
                 aria-pressed={marketplaceChoice === "cardtrader"}
                 onClick={() => setMarketplaceChoice("cardtrader")}
-              >CardTrader{!cardtraderEnabled ? " · Vorschau" : ""}</button>
+              ><strong>CardTrader{!cardtraderEnabled ? " · Vorschau" : ""}</strong><small>{cardtraderEnabled ? "Wishlist vorbereiten" : "Wishlist-Freigabe ausstehend"}</small><ArrowRight aria-hidden="true" size={17} /></button>
             ) : null}
           </div>
         </section>
@@ -197,7 +242,7 @@ export function MissingCardsPanel({
         <section className={styles.marketplacePanel} aria-labelledby="tcgplayer-export-heading">
           <div className={styles.marketplaceHeader}>
             <div>
-              <p className={styles.eyebrow}>Kataloggeprüfte Marketplace-Übergabe</p>
+              <p className={styles.eyebrow}>Vorbereitete Marketplace-Übergabe</p>
               <h3 id="tcgplayer-export-heading">TCGplayer Mass Entry</h3>
               <p>{tcgplayerExport.readyCount} übergabebereit · {tcgplayerExport.verifiedCount} Produktzuordnungen · {tcgplayerExport.reviewRequiredCount} prüfen</p>
             </div>
@@ -207,6 +252,26 @@ export function MissingCardsPanel({
               </a>
             ) : <span className={styles.marketplaceUnavailable}>Keine sichere Übergabe verfügbar</span>}
           </div>
+
+          <div className={styles.reviewOverview} data-has-exceptions={tcgplayerExceptions.length > 0}>
+            <strong>{tcgplayerExceptions.length > 0 ? tcgplayerExceptions.length === 1 ? "1 Karte braucht deine Aufmerksamkeit" : `${tcgplayerExceptions.length} Karten brauchen deine Aufmerksamkeit` : "Alle Karten sind für die Übergabe vorbereitet"}</strong>
+            <span>{tcgplayerPreparedMatches.length} vorbereitet · {tcgplayerExceptions.length} nicht automatisch zugeordnet</span>
+          </div>
+
+          {tcgplayerExceptions.length ? (
+            <div className={styles.reviewList}>
+              <strong>Vor der Übergabe prüfen</strong>
+              <p className={styles.reviewExplanation}>Diese Karten bleiben in deiner Fehlkartenliste, werden aber nicht automatisch übertragen, solange die TCGplayer-Zuordnung nicht eindeutig ist.</p>
+              <ul>
+                {tcgplayerExceptions.map((match) => (
+                  <li key={match.identityKey}>
+                    <span>{match.quantity}× {match.cardName} · {match.setName} · {match.collectorNumber}</span>
+                    <small>{match.status === "candidate" ? "Kandidat" : "Nicht zugeordnet"}: {match.reason}</small>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
           {tcgplayerExport.text ? (
             <ol className={styles.handoffSteps} aria-label="TCGplayer-Übergabeschritte">
@@ -238,36 +303,26 @@ export function MissingCardsPanel({
           </div>
 
           {tcgplayerCopyState === "error" ? <p className={styles.error} role="status">Kopieren wurde nicht erlaubt. Der Text bleibt oben markierbar oder kann als TXT geladen werden.</p> : null}
-          {tcgplayerExport.warnings.map((warning) => <p className={styles.warning} role="note" key={warning}>{warning}</p>)}
+          {tcgplayerExport.warnings.length ? (
+            <details className={styles.guidanceDisclosure}>
+              <summary>Wichtige Hinweise anzeigen ({tcgplayerExport.warnings.length})</summary>
+              <div>{tcgplayerExport.warnings.map((warning) => <p className={styles.warning} role="note" key={warning}>{warning}</p>)}</div>
+            </details>
+          ) : null}
 
-          {tcgplayerExport.matches.some((match) => match.line) ? (
-            <div className={styles.reviewList}>
-              <strong>Bei TCGplayer nach dem Einfügen auswählen</strong>
-              <p className={styles.reviewExplanation}>Mass Entry übernimmt Karte, Set und Nummer. Printing und Zustand wählst du anschließend bei TCGplayer mit diesen Filtern aus, bevor du auf „Add to Cart“ klickst.</p>
+          {tcgplayerPreparedMatches.length ? (
+            <details className={styles.preparedCards}>
+              <summary>Bereits vorbereitete Karten anzeigen ({tcgplayerPreparedMatches.length})</summary>
+              <p>Mass Entry übernimmt Karte, Set und Nummer. Printing und Zustand wählst du anschließend bei TCGplayer mit diesen Filtern aus, bevor du auf „Add to Cart“ klickst.</p>
               <ul>
-                {tcgplayerExport.matches.filter((match) => match.line).map((match) => (
+                {tcgplayerPreparedMatches.map((match) => (
                   <li key={match.identityKey}>
                     <span>{match.quantity}× {match.cardName} · {match.setName} · {match.collectorNumber}</span>
                     <small>Printing: {match.printingHint} · Zustand: {match.conditionHint}</small>
                   </li>
                 ))}
               </ul>
-            </div>
-          ) : null}
-
-          {tcgplayerExport.matches.some((match) => !match.line) ? (
-            <div className={styles.reviewList}>
-              <strong>Nicht in die TCGplayer-Liste übernommen</strong>
-              <p className={styles.reviewExplanation}>Diese Karten bleiben unverändert in deiner Fehlkartenliste. Cardfolio überträgt sie nur nicht automatisch, solange keine eindeutige TCGplayer-Produktzuordnung vorliegt.</p>
-              <ul>
-                {tcgplayerExport.matches.filter((match) => !match.line).map((match) => (
-                  <li key={match.identityKey}>
-                    <span>{match.quantity}× {match.cardName} · {match.setName} · {match.collectorNumber}</span>
-                    <small>{match.status === "candidate" ? "Kandidat" : "Nicht zugeordnet"}: {match.reason}</small>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            </details>
           ) : null}
         </section>
       ) : null}
@@ -286,29 +341,39 @@ export function MissingCardsPanel({
         <section className={styles.marketplacePanel} aria-labelledby="cardmarket-handoff-heading">
           <div className={styles.marketplaceHeader}>
             <div>
-              <p className={styles.eyebrow}>Prüfpflichtige Marketplace-Übergabe</p>
+              <p className={styles.eyebrow}>Cardmarket-Übergabe</p>
               <h3 id="cardmarket-handoff-heading">Cardmarket Deckliste</h3>
-              <p>{cardmarketHandoff.importablePositionCount} importierbar · {cardmarketHandoff.reviewRequiredCount} Ausgaben prüfen</p>
+              <p>{cardmarketHandoff.importablePositionCount} vorbereitet · {cardmarketHandoff.excluded.length} nicht importierbar</p>
             </div>
             <a href={cardmarketHandoff.wantsHelpUrl} target="_blank" rel="noopener noreferrer">
               Offizielles Format <ExternalLink aria-hidden="true" size={15} />
             </a>
           </div>
 
-          {cardmarketPreparing ? <p className={styles.handoffSteps} role="status">Fähigkeiten und Attacken werden aus dem Kartenkatalog aktualisiert …</p> : null}
-          {cardmarketHandoff.warnings.map((warning) => <p className={styles.warning} role="note" key={warning}>{warning}</p>)}
+          <div className={styles.reviewOverview} data-has-exceptions={cardmarketHandoff.excluded.length > 0}>
+            <strong>{cardmarketHandoff.excluded.length > 0 ? cardmarketHandoff.excluded.length === 1 ? "1 Karte braucht deine Aufmerksamkeit" : `${cardmarketHandoff.excluded.length} Karten brauchen deine Aufmerksamkeit` : "Alle Karten sind für die Deckliste vorbereitet"}</strong>
+            <span>{cardmarketHandoff.importablePositionCount} vorbereitet · {cardmarketHandoff.excluded.length} nicht im Importtext</span>
+          </div>
 
-          <details className={styles.marketplaceSearches}>
-            <summary>Einzelsuchen für Teil {activeCardmarketPart.index} anzeigen ({activeCardmarketPart.searches.length})</summary>
-            <ul>
-              {activeCardmarketPart.searches.map((search) => (
-                <li key={search.identityKey}>
-                  <span><strong>{search.label}</strong><small>{search.details}</small></span>
-                  <a href={search.url} target="_blank" rel="noopener noreferrer">Karte suchen <ExternalLink aria-hidden="true" size={14} /></a>
-                </li>
-              ))}
-            </ul>
-          </details>
+          {cardmarketHandoff.excluded.length ? (
+            <div className={styles.reviewList}>
+              <strong>Vor der Übergabe prüfen</strong>
+              <p className={styles.reviewExplanation}>Für diese Karten fehlen Angaben, die Cardmarket für den Import benötigt. Sie bleiben unverändert in deiner Fehlkartenliste.</p>
+              <ul>
+                {cardmarketHandoff.excluded.map((item) => (
+                  <li key={item.identityKey}><span>{item.label}</span><small>{item.reason}</small></li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+
+          {cardmarketPreparing ? <p className={styles.handoffSteps} role="status">Fähigkeiten und Attacken werden aus dem Kartenkatalog aktualisiert …</p> : null}
+          {cardmarketHandoff.warnings.length ? (
+            <details className={styles.guidanceDisclosure}>
+              <summary>Wichtige Hinweise anzeigen ({cardmarketHandoff.warnings.length})</summary>
+              <div>{cardmarketHandoff.warnings.map((warning) => <p className={styles.warning} role="note" key={warning}>{warning}</p>)}</div>
+            </details>
+          ) : null}
 
           <div className={styles.partControls}>
             <label htmlFor="cardmarket-part">Listenteil</label>
@@ -345,16 +410,17 @@ export function MissingCardsPanel({
           </div>
 
           {cardmarketCopyState === "error" ? <p className={styles.error} role="status">Kopieren wurde nicht erlaubt. Der Text bleibt oben markierbar oder kann als TXT geladen werden.</p> : null}
-          {cardmarketHandoff.excluded.length ? (
-            <div className={styles.reviewList}>
-              <strong>Nicht im Importtext enthalten</strong>
-              <ul>
-                {cardmarketHandoff.excluded.map((item) => (
-                  <li key={item.identityKey}><span>{item.label}</span><small>{item.reason}</small></li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
+          <details className={styles.marketplaceSearches}>
+            <summary>Vorbereitete Karten und Einzelsuchen anzeigen ({activeCardmarketPart.searches.length})</summary>
+            <ul>
+              {activeCardmarketPart.searches.map((search) => (
+                <li key={search.identityKey}>
+                  <span><strong>{search.label}</strong><small>{search.details}</small></span>
+                  <a href={search.url} target="_blank" rel="noopener noreferrer">Karte suchen <ExternalLink aria-hidden="true" size={14} /></a>
+                </li>
+              ))}
+            </ul>
+          </details>
         </section>
       ) : null}
 
@@ -362,33 +428,24 @@ export function MissingCardsPanel({
         <CardTraderPanel items={visibleItems} status={cardtraderStatus} quote={cardtraderQuote} />
       ) : null}
 
-      {visibleItems.length ? (
-        <div className={styles.groupList}>
-          {visibleGroups.map((group) => (
-            <section className={styles.missingGroup} key={group.key} aria-labelledby={`missing-set-${group.key}`}>
-              <div className={styles.groupHeader}><h3 id={`missing-set-${group.key}`}>{group.setName} · {group.language.toUpperCase()}</h3><span>{group.positionCount} Positionen · {group.quantity} Exemplare</span></div>
-              <ul className={styles.list}>
-                {group.items.map((item) => (
-                  <li className={styles.item} key={item.identityKey}>
-                    <span className={styles.quantity} aria-label={`${item.quantity} Exemplare`}>{item.quantity}×</span>
-                    <div className={styles.cardInfo}>
-                      <strong>{item.card.name}</strong>
-                      <span>Nr. {formatCollectorNumber(item.card.collectorNumber, item.card.collectorTotal)}</span>
-                    </div>
-                    <div className={styles.metadata}>
-                      <span>{item.card.ref.language.toUpperCase()}</span>
-                      <span>{item.variant.label || finishLabels[item.variant.finish]}</span>
-                      <span>{editionLabels[item.variant.edition]}</span>
-                      <span>{printingLabels[selectedPrinting(item.variant)]}</span>
-                      <span>{minimumConditionLabels[item.preferences.minimumCondition]}</span>
-                      <span>{missingItemReviewNote(item).startsWith("Manuell") ? "Manuell prüfen" : "Prüfen"}</span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
+      <div className={styles.advancedExports} aria-label="Weitere Exportmöglichkeiten">
+        <div><strong>Weitere Exportmöglichkeiten</strong><span>Für Tabellen oder ein eigenes Backup der gefilterten Liste.</span></div>
+        <div className={styles.exportActions}>
+          <button type="button" className={styles.secondaryButton} onClick={() => onCopy(visibleItems)} disabled={!visibleItems.length}>
+            <Clipboard size={16} /> {copyState === "copied" ? "Kopiert" : "Liste kopieren"}
+          </button>
+          <button type="button" className={styles.secondaryButton} onClick={() => onTextExport(visibleItems)} disabled={!visibleItems.length}><Download size={16} /> TXT</button>
+          <button type="button" className={styles.secondaryButton} onClick={() => onCsvExport(visibleItems)} disabled={!visibleItems.length}><FileDown size={16} /> CSV</button>
         </div>
+      </div>
+
+      {visibleItems.length ? (
+        marketplaceChoice ? (
+          <details className={styles.completeListDisclosure}>
+            <summary>Vollständige Fehlkartenliste anzeigen ({visibleItems.length})</summary>
+            <MissingItemGroups groups={visibleGroups} onConditionsChange={onConditionsChange} />
+          </details>
+        ) : <MissingItemGroups groups={visibleGroups} onConditionsChange={onConditionsChange} />
       ) : (
         <div className={styles.empty}>
           <strong>{items.length ? "Keine Treffer für diesen Filter" : "Keine fehlenden Karten"}</strong>
@@ -396,6 +453,54 @@ export function MissingCardsPanel({
         </div>
       )}
     </section>
+  );
+}
+
+function MissingItemGroups({
+  groups,
+  onConditionsChange,
+}: {
+  groups: ReturnType<typeof groupMissingItemsBySet>;
+  onConditionsChange?: MissingCardsPanelProps["onConditionsChange"];
+}) {
+  return (
+    <div className={styles.groupList}>
+      {groups.map((group) => (
+        <section className={styles.missingGroup} key={group.key} aria-labelledby={`missing-set-${group.key}`}>
+          <div className={styles.groupHeader}><h3 id={`missing-set-${group.key}`}>{group.setName} · {group.language.toUpperCase()}</h3><span>{group.positionCount} Positionen · {group.quantity} Exemplare</span></div>
+          <ul className={styles.list}>
+            {group.items.map((item) => (
+              <li className={styles.item} key={item.identityKey}>
+                <span className={styles.quantity} aria-label={`${item.quantity} Exemplare`}>{item.quantity}×</span>
+                <div className={styles.cardInfo}>
+                  <strong>{item.card.name}</strong>
+                  <span>Nr. {formatCollectorNumber(item.card.collectorNumber, item.card.collectorTotal)}</span>
+                </div>
+                <div className={styles.metadata}>
+                  <span>{item.card.ref.language.toUpperCase()}</span>
+                  <span>{item.variant.label || finishLabels[item.variant.finish]}</span>
+                  <span>{editionLabels[item.variant.edition]}</span>
+                  <span>{printingLabels[selectedPrinting(item.variant)]}</span>
+                  {onConditionsChange ? (
+                    <label className={styles.itemCondition}>
+                      <span className={styles.srOnly}>Zustand für {item.card.name} aus {item.card.setName}</span>
+                      <select
+                        aria-label={`Zustand für ${item.card.name} aus ${item.card.setName}`}
+                        value={item.preferences.minimumCondition}
+                        onChange={(event) => onConditionsChange([item], event.target.value as PurchasePreferences["minimumCondition"])}
+                      >
+                        {conditionProfiles.map((profile) => <option value={profile.value} key={profile.value}>{profile.shortLabel}</option>)}
+                      </select>
+                    </label>
+                  ) : <span>{conditionProfile(item.preferences.minimumCondition).label}</span>}
+                  <span>{missingItemReviewNote(item).startsWith("Manuell") ? "Manuell prüfen" : "Prüfen"}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
   );
 }
 
@@ -498,7 +603,7 @@ function CardTraderPanel({
                 <em>{item.card.ref.language.toUpperCase()}</em>
                 <em>{finishLabels[item.variant.finish]}</em>
                 <em>{editionLabels[item.variant.edition]}</em>
-                <em>{minimumConditionLabels[item.preferences.minimumCondition]}</em>
+                <em>{conditionProfile(item.preferences.minimumCondition).label}</em>
                 <em>{item.card.imageBaseUrl ? "Bild: Cardfolio" : item.card.imageFallbackBaseUrl ? "Bild: Fallback" : "Bild fehlt"}</em>
               </span>
             </li>

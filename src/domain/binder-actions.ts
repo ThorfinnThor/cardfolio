@@ -338,6 +338,26 @@ export function setCardPreferences(binder: Binder, entryId: UUID, preferences: P
   return withUpdatedPages(binder, pages);
 }
 
+export function setCardPreferencesForEntries(
+  binder: Binder,
+  entryIds: readonly UUID[],
+  preferences: PurchasePreferences,
+): Binder {
+  const targetIds = new Set(entryIds);
+  if (!targetIds.size) return binder;
+  let updatedCount = 0;
+  const pages = binder.pages.map((page) => ({
+    ...page,
+    slots: page.slots.map((entry) => {
+      if (!entry || !targetIds.has(entry.id)) return entry;
+      updatedCount += 1;
+      return { ...entry, preferences: { ...preferences } };
+    }),
+  }));
+  if (updatedCount !== targetIds.size) throw new Error("At least one planned card does not exist.");
+  return withUpdatedPages(binder, pages);
+}
+
 export function addPage(binder: Binder): Binder {
   if (binder.pages.length >= MAX_BINDER_PAGES) throw new Error(`A binder can contain at most ${MAX_BINDER_PAGES} pages.`);
   return withUpdatedPages(binder, [...binder.pages, emptyPage(slotCount(binder))]);

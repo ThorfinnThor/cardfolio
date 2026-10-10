@@ -217,3 +217,30 @@
 - The current documented TCGdex Card contract does not expose the corresponding per-variant provider IDs. TCGdex also documents known marketplace-mapping errors and an in-development `variants_detailed` field intended to carry explicit Cardmarket/TCGplayer identifiers. Therefore price presence or a set/number/name similarity must not be used as a substitute for a direct reviewed card mapping.
 - All sampled blueprint records exposed an image URL, but URL presence grants neither artwork rights nor a language/quality guarantee. CardTrader images remain disabled.
 - `.env.example` contains only an empty server-side placeholder. A release check rejects a populated example or any `NEXT_PUBLIC_CARDTRADER_API_TOKEN` declaration.
+
+## 2026-10-09 — Ordering preferences use beginner guidance without changing export contracts
+
+- Card selection uses plain-language finish and condition profiles. The recommended default is “Sehr gut – kleine Spuren okay”, represented by the existing `excellent` value; existing backups and provider adapters therefore remain compatible.
+- The interface always shows how the selected condition is interpreted by Cardmarket and TCGplayer. The labels are guidance, not a claim that the marketplaces use identical grading standards.
+- Edition, printing and custom variant labels are progressively disclosed as advanced details. They open automatically for non-standard or incomplete stored selections, while First Edition and Shadowless remain explicit opt-ins.
+- A Gift proposal treats a finish as confirmed automatically only when the catalog provides one unambiguous verified finish. Missing or provider-fallback metadata may show a clearly labelled preliminary Normal choice, but review and export stay blocked until the collector confirms or changes it.
+- Gift proposals expose one condition choice for all cards and retain per-card overrides. Every card shows whether its ordering details are complete before review and marketplace handoff.
+- Generic TXT/CSV exports keep their established technical condition labels. Marketplace exporters continue to derive exact provider hints from stored enum values rather than from the beginner-facing copy.
+
+## 2026-10-09 — Marketplace review is exception-first
+
+- TCGplayer and Cardmarket show unresolved mappings or incomplete import data before any prepared-card details. These exceptions stay visible until corrected; no card is silently removed from the local missing list.
+- Successfully prepared rows, provider-specific filter hints and individual searches remain available in collapsed sections. The complete missing-card list is also collapsed while a marketplace is selected, avoiding a second full review of the same cards.
+- This is presentation-only progressive disclosure. Mass Entry lines, Cardmarket decklist text, provider URLs, stored variants and export contracts are unchanged.
+
+## 2026-10-09 — Gift budgets guide estimates; conditions remain explicit
+
+- When dated TCGdex marketplace estimates exist in the requested currency, the Gift selector now uses them to keep the proposed cards within the selected budget and tolerance where possible. Approximate estimates still never become a checkout, availability or final-price guarantee.
+- If even the cheapest complete estimated selection exceeds the ceiling, Cardfolio shows the cheapest complete proposal together with an explicit over-budget warning. Missing prices keep the budget status unknown.
+- The missing-card view exposes one condition selector for all currently filtered cards plus per-position overrides. Changes are persisted on the planned cards and immediately feed the existing TCGplayer, Cardmarket and CardTrader condition mappings; provider formats that cannot encode condition still require the documented provider-side selection.
+
+## 2026-10-09 — Cardmarket keeps legacy Pokémon levels and explains condition choices
+
+- TCGdex's optional Pokémon `level` is retained in local card snapshots and their English marketplace identity. Cardmarket decklist names and individual searches append it as `Lv.<level>` when it is not already part of the name. This keeps legacy products such as Treecko Lv.14, Lv.7 and Lv.11 distinguishable without changing newer cards. A `levelChecked` marker refreshes legacy local snapshots once while preventing repeated fetches for modern cards that legitimately have no level.
+- Cardmarket's Pokémon decklist format still cannot encode the requested condition. The missing-card workflow therefore keeps the selection visible, explains that it must be applied after import and provides plain-language guidance before a marketplace is opened.
+- The same beginner guide appears in the Gift preferences and in the normal binder's version-and-condition dialog. It recommends “Sehr gut” as the default balance while warning that “Zustand egal” can include damaged cards and that valuable-card photos must still be checked.

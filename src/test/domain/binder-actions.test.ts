@@ -20,6 +20,7 @@ import {
   PAGE_NOTE_MAX_LENGTH,
   setBinderDescription,
   setCardPreferences,
+  setCardPreferencesForEntries,
   setCardVariant,
   setOwned,
   setPageNote,
@@ -126,6 +127,19 @@ describe("binder domain", () => {
 
     expect(placed.pages[0].slots[0]?.preferences).toEqual({ minimumCondition: "any" });
     expect(updated.pages[0].slots[0]?.preferences).toEqual({ minimumCondition: "near-mint" });
+  });
+
+  it("updates the condition for several planned cards in one immutable change", () => {
+    const binder = createBinder("Conditions");
+    const first = createPlannedCard(card.key);
+    const second = createPlannedCard(card.key);
+    const withFirst = placeCard(binder, { pageId: binder.pages[0].id, slotIndex: 0 }, first);
+    const placed = placeCard(withFirst, { pageId: binder.pages[0].id, slotIndex: 1 }, second);
+
+    const updated = setCardPreferencesForEntries(placed, [first.id, second.id], { minimumCondition: "played" });
+
+    expect(placed.pages[0].slots[0]?.preferences.minimumCondition).toBe("any");
+    expect(updated.pages[0].slots.slice(0, 2).map((entry) => entry?.preferences.minimumCondition)).toEqual(["played", "played"]);
   });
 
   it("reflows into 2x2 pages without losing card identity, ownership, variants or notes", () => {

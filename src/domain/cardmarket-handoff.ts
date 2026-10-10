@@ -1,5 +1,6 @@
 import type { MissingItem } from "./types";
 import { formatCollectorNumber } from "./catalog-search";
+import { conditionProfile } from "./purchase-preferences";
 import { variantAvailabilityForCard, variantSelectionIssue } from "./variant-selection";
 
 export const CARDMARKET_POKEMON_SINGLES_URL = "https://www.cardmarket.com/en/Pokemon/Products/Singles";
@@ -46,10 +47,13 @@ function inline(value: string): string {
   return normalized || "Nicht angegeben";
 }
 
-function cardmarketCardName(value: string): string {
-  return inline(value)
+function cardmarketCardName(value: string, level?: string): string {
+  const name = inline(value)
     .replace(/\s*δ$/u, " δ Delta Species")
     .replace(/\s*☆$/u, " Gold Star");
+  if (!level || /\b(?:lv\.?|level)\s*[a-z0-9.-]+/iu.test(name)) return name;
+  const normalizedLevel = inline(level).replace(/^lv\.?\s*/iu, "");
+  return `${name} Lv.${normalizedLevel}`;
 }
 
 function createDecklistLine(item: MissingItem): { line?: string; reason?: string } {
@@ -57,6 +61,7 @@ function createDecklistLine(item: MissingItem): { line?: string; reason?: string
   if (variantIssue) return { reason: `Variantenangaben prüfen: ${variantIssue}` };
   const identity = item.card.ref.language === "de" ? item.card.englishIdentity : undefined;
   const name = identity?.name ?? item.card.name;
+  const level = identity?.level ?? item.card.level;
   const category = identity?.category ?? item.card.category;
   const abilities = identity?.abilities ?? item.card.abilities;
   const attacks = identity?.attacks ?? item.card.attacks;
@@ -65,7 +70,7 @@ function createDecklistLine(item: MissingItem): { line?: string; reason?: string
   }
 
   if (category !== "pokemon") {
-    return { line: `${item.quantity}x ${cardmarketCardName(name)}` };
+    return { line: `${item.quantity}x ${cardmarketCardName(name, level)}` };
   }
 
   const identifyingDetails = [...abilities, ...attacks].map(inline).filter(Boolean);
@@ -73,14 +78,14 @@ function createDecklistLine(item: MissingItem): { line?: string; reason?: string
     return { reason: "Cardmarket benötigt bei Pokémon mindestens eine Fähigkeit oder Attacke zur eindeutigen Suche." };
   }
 
-  return { line: `${item.quantity}x ${[cardmarketCardName(name), ...identifyingDetails].join(" ")}` };
+  return { line: `${item.quantity}x ${[cardmarketCardName(name, level), ...identifyingDetails].join(" ")}` };
 }
 
 export function createCardmarketSearchUrl(item: MissingItem): string {
   const identity = item.card.ref.language === "de" ? item.card.englishIdentity : undefined;
   const url = new URL(CARDMARKET_POKEMON_SEARCH_URL);
   url.searchParams.set("searchString", [
-    cardmarketCardName(identity?.name ?? item.card.name),
+    cardmarketCardName(identity?.name ?? item.card.name, identity?.level ?? item.card.level),
     inline(identity?.setName ?? item.card.setName),
     inline(formatCollectorNumber(item.card.collectorNumber, item.card.collectorTotal)),
   ].join(" "));
@@ -91,7 +96,7 @@ function createSearchTarget(item: MissingItem): CardmarketSearchTarget {
   return {
     identityKey: item.identityKey,
     label: `${item.quantity}× ${inline(item.card.name)}`,
-    details: `${inline(item.card.setName)} · Nr. ${inline(formatCollectorNumber(item.card.collectorNumber, item.card.collectorTotal))} · ${item.card.ref.language.toUpperCase()}`,
+    details: `${inline(item.card.setName)} · Nr. ${inline(formatCollectorNumber(item.card.collectorNumber, item.card.collectorTotal))} · ${item.card.ref.language.toUpperCase()} · Zustand: ${conditionProfile(item.preferences.minimumCondition).shortLabel}`,
     url: createCardmarketSearchUrl(item),
   };
 }
@@ -124,6 +129,7 @@ export function createCardmarketHandoff(items: readonly MissingItem[]): Cardmark
     ? [
         "Offizielles Pokémon-Decklistenformat: Menge, vollständiger Kartenname, Fähigkeiten und Attacken – eine Karte pro Zeile.",
         "Das Decklistenformat legt Set, Kartennummer, Sprache und Druckvariante nicht fest.",
+        "Der in Cardfolio gewählte Zustand wird gespeichert, aber vom Decklistenformat nicht übertragen. Wähle ihn nach dem Import in Cardmarket aus.",
         "Vor dem Kauf jede Position anhand von Set, Kartennummer, Sprache, Finish, Edition, Druckvariante und Zustand prüfen.",
       ]
     : [];

@@ -5,17 +5,20 @@
 .intro { max-width: 650px; margin: 9px 0 0; color: var(--cf-muted); font-size: 14px; line-height: 1.5; }
 .closeButton { display: inline-grid; width: 44px; height: 44px; flex: 0 0 auto; place-items: center; border: 1px solid var(--cf-line2); border-radius: 7px; background: var(--cf-field); color: var(--cf-text2); cursor: pointer; }
 .closeButton:hover { border-color: var(--cf-accent); color: var(--cf-accent-text); }
-.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 0; padding: 0; list-style: none; }
-.steps li { display: flex; align-items: center; gap: 8px; color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 10px; letter-spacing: .05em; text-transform: uppercase; }
-.steps li span { display: grid; width: 24px; height: 24px; place-items: center; border: 1px solid var(--cf-line2); border-radius: 50%; background: var(--cf-surface2); font-size: 10px; }
-.steps li[data-active="true"] { color: var(--cf-accent-text); font-weight: 700; }
-.steps li[data-active="true"] span, .steps li[data-done="true"] span { border-color: var(--cf-accent); background: var(--cf-accent); color: var(--cf-on-accent); }
+.flowWrapper { --flow-columns: 4; }
+.stepLead { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px; border: 1px solid var(--cf-accent); border-radius: 11px; background: var(--cf-accent-soft); padding: 14px 16px; }
+.stepLead > span { border-radius: 999px; background: var(--cf-accent); color: var(--cf-on-accent); padding: 6px 9px; font-family: var(--cf-font-mono); font-size: 10px; font-weight: 750; white-space: nowrap; }
+.stepLead > div { display: grid; gap: 3px; }
+.stepLead strong { color: var(--cf-text); font-size: 15px; }
+.stepLead p { margin: 0; color: var(--cf-text2); font-size: 12px; line-height: 1.45; }
+.stepLead > svg { color: var(--cf-accent-text); }
 .form, .resultsStep, .reviewStep { display: grid; gap: 18px; }
 .formGrid, .budgetGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .form label, .budgetGrid label { display: grid; gap: 7px; color: var(--cf-text2); font-size: 12px; font-weight: 650; }
 .form label > span { color: var(--cf-muted); font-size: 10px; font-weight: 500; }
 .form input, .form select { width: 100%; min-height: 40px; border: 1px solid var(--cf-line2); border-radius: 7px; background: var(--cf-field); color: var(--cf-text); padding: 0 11px; font: inherit; font-size: 13px; }
 .form input:focus, .form select:focus { border-color: var(--cf-accent); outline: 3px solid var(--cf-accent-soft); }
+.orderConditionField { border: 1px solid var(--cf-line); border-radius: 8px; background: var(--cf-surface2); padding: 12px; }
 .subjectField { gap: 8px !important; }
 .discoveryMode, .themePicker { min-width: 0; margin: 0; border: 0; padding: 0; }
 .discoveryMode legend, .themePicker legend { margin-bottom: 8px; color: var(--cf-text2); font-size: 12px; font-weight: 650; }
@@ -40,7 +43,7 @@
 .moneyInput { display: grid; grid-template-columns: 1fr 92px; gap: 7px; }
 .localHint, .reviewNotice { margin: 0; border: 1px dashed var(--cf-line2); border-radius: 7px; background: var(--cf-surface2); color: var(--cf-muted); padding: 10px 12px; font-size: 12px; line-height: 1.5; }
 .actions { display: flex; justify-content: space-between; gap: 9px; border-top: 1px solid var(--cf-line); padding-top: 16px; }
-.primaryButton, .secondaryButton { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid transparent; border-radius: 8px; padding: 0 14px; font-size: 13px; font-weight: 650; cursor: pointer; }
+.primaryButton, .secondaryButton { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid transparent; border-radius: 8px; padding: 0 17px; font-size: 14px; font-weight: 700; cursor: pointer; }
 .primaryButton { border-color: var(--cf-accent); background: var(--cf-accent); color: var(--cf-on-accent); }
 .primaryButton:disabled, .secondaryButton:disabled { cursor: not-allowed; opacity: .45; }
 .secondaryButton { border-color: var(--cf-line2); background: var(--cf-surface); color: var(--cf-text); }
@@ -55,6 +58,13 @@
 .summaryBar strong { color: var(--cf-accent-text); font-family: var(--cf-font-display); font-size: 21px; font-weight: 600; }
 .summaryBar span { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 9px; letter-spacing: .05em; text-transform: uppercase; }
 .summaryBar[data-status="over"] strong { color: var(--cf-miss-text); }
+.orderSetup { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, .75fr); align-items: center; gap: 16px; border: 1px solid var(--cf-line); border-left: 3px solid var(--cf-ok); border-radius: 8px; background: var(--cf-ok-soft); padding: 13px 14px; }
+.orderSetup > div { display: grid; gap: 4px; }
+.orderSetup strong { color: var(--cf-text); font-size: 14px; }
+.orderSetup span, .orderSetup small { color: var(--cf-muted); font-size: 10.5px; line-height: 1.45; }
+.orderSetup label { display: grid; gap: 5px; color: var(--cf-text2); font-size: 11px; font-weight: 650; }
+.orderSetup select { width: 100%; min-height: 42px; border: 1px solid var(--cf-line2); border-radius: 7px; background: var(--cf-field); color: var(--cf-text); padding: 8px 10px; font: inherit; font-size: 12px; }
+.orderSetup select:focus { border-color: var(--cf-accent); outline: 3px solid var(--cf-accent-soft); }
 .cardGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .candidateCard { position: relative; display: grid; align-content: start; gap: 8px; min-width: 0; border: 1px solid var(--cf-line); border-radius: 9px; background: var(--cf-surface); padding: 9px; }
 .cardImage { min-height: 210px; display: grid; place-items: center; overflow: hidden; border-radius: 6px; background: var(--cf-page); }
@@ -67,6 +77,10 @@
 .priceMeta { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 8.5px; line-height: 1.35; }
 .reasonTags { display: flex; flex-wrap: wrap; gap: 4px; }
 .reasonTags span { border-radius: 999px; background: var(--cf-accent-soft); color: var(--cf-accent-text); padding: 3px 6px; font-family: var(--cf-font-mono); font-size: 8.5px; }
+.orderSummary { display: grid; gap: 2px; border-left: 3px solid var(--cf-gold); background: var(--cf-accent-soft); padding: 7px 8px; }
+.orderSummary[data-ready="true"] { border-left-color: var(--cf-ok); background: var(--cf-ok-soft); }
+.orderSummary strong { color: var(--cf-text); font-size: 10.5px; }
+.orderSummary span { overflow: hidden; color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 8.5px; line-height: 1.4; text-overflow: ellipsis; white-space: nowrap; }
 .cardActions, .selectionTools { display: flex; align-items: center; gap: 6px; }
 .cardActions { border-top: 1px solid var(--cf-line); padding-top: 6px; }
 .linkButton { min-height: 44px; flex: 1; border: 0; background: transparent; color: var(--cf-accent-text); padding: 0 2px; font-size: 11px; font-weight: 650; text-align: left; cursor: pointer; }
@@ -126,7 +140,7 @@
 .purchaseCard { display: flex; flex-direction: column; justify-content: space-between; gap: 16px; min-width: 0; border: 1px solid var(--cf-line); border-radius: 9px; background: var(--cf-surface); padding: 16px; }
 .purchaseCard > div { display: grid; align-content: start; gap: 8px; }
 .purchaseCard > div > p:not(.eyebrow) { margin: 0; color: var(--cf-muted); font-size: 12px; line-height: 1.5; }
-.purchaseCard > .primaryButton { align-self: flex-start; min-height: 44px; }
+.purchaseCard > .primaryButton { align-self: stretch; min-height: 54px; font-size: 15px; }
 .offerRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid var(--cf-line); padding-top: 10px; }
 .offerRow > div { display: grid; gap: 4px; min-width: 0; }
 .offerRow strong { color: var(--cf-text); font-size: 12px; }
@@ -145,6 +159,7 @@
   .summaryMeta > div:nth-child(-n + 2) { border-bottom: 1px solid var(--cf-line); }
 }
 @media (max-width: 760px) {
+  .orderSetup { grid-template-columns: 1fr; }
   .cardGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .purchaseOptions { grid-template-columns: 1fr; }
 }
@@ -158,8 +173,9 @@
   .cardImage img { max-height: 200px; }
   .actions { flex-direction: column-reverse; }
   .actions > * { width: 100%; }
-  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 10px; }
-  .steps li { font-size: 9px; }
+  .stepLead { grid-template-columns: 1fr auto; }
+  .stepLead > span { width: fit-content; }
+  .stepLead > div { grid-column: 1 / -1; grid-row: 2; }
   .summaryMeta { grid-template-columns: 1fr; }
   .summaryMeta > div, .summaryMeta > div:nth-child(2) { border-right: 0; border-bottom: 1px solid var(--cf-line); }
   .summaryMeta > div:last-child { border-bottom: 0; }
@@ -182,6 +198,6 @@
   .printSummary, .printSummary * { visibility: visible !important; }
   .printSummary { position: absolute; inset: 0; width: 100%; border: 0; background: #fff; color: #111; padding: 0; }
   .printSummary :global(*) { box-shadow: none !important; }
-  .greetingField, .purchaseOptions, .summaryActions, .header, .steps, .printSummary .localHint, .summaryCardImage, .summaryCardImageFallback { display: none !important; }
+  .greetingField, .purchaseOptions, .summaryActions, .header, .flowWrapper, .stepLead, .printSummary .localHint, .summaryCardImage, .summaryCardImageFallback { display: none !important; }
   .summaryCards li { grid-template-columns: 1fr; }
 }

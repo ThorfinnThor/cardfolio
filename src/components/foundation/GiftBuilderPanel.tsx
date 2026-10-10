@@ -19,11 +19,14 @@ import type { BinderAffiliateAdapter, BinderOffer } from "@/domain/binder-affili
 import type { GiftPriceRange } from "@/domain/gift-builder";
 import { createGiftPrintSummary } from "@/domain/gift-print-summary";
 import { GIFT_THEME_PRESETS, giftThemePreset } from "@/domain/gift-theme-presets";
+import { conditionProfile, conditionProfiles } from "@/domain/purchase-preferences";
+import { ConditionGuide } from "./ConditionGuide";
 import type { SmartSearchAdapter } from "@/domain/semantic-card-search";
-import type { CardSnapshot, CatalogSearchItem, VariantSelection } from "@/domain/types";
-import { isVariantSelectionValid, variantAvailabilityForCard, variantSelectionIssue } from "@/domain/variant-selection";
+import type { CardSnapshot, CatalogSearchItem, PurchasePreferences, VariantSelection } from "@/domain/types";
+import { createInitialVariantSelection, formatVariantSelection, isVariantSelectionValid, variantAvailabilityForCard, variantSelectionIssue } from "@/domain/variant-selection";
 
 import { CardArtwork } from "./CardArtwork";
+import { GuidedFlow } from "./GuidedFlow";
 import { VariantFields } from "./VariantFields";
 import styles from "./gift-builder.module.css";
 
@@ -41,6 +44,20 @@ export interface GiftBuilderPanelProps {
 type GiftStep = "details" | "candidates" | "review" | "summary";
 type GiftDiscoveryMode = "pokemon" | "theme";
 
+const GIFT_FLOW = [
+  { label: "Wünsche", description: "Pokémon, Größe und Budget" },
+  { label: "Karten auswählen", description: "Vorschläge mit Bildern ansehen" },
+  { label: "Bestellung prüfen", description: "Ausführung und Zustand bestätigen" },
+  { label: "Karten kaufen", description: "Einkaufsliste beim Anbieter öffnen" },
+] as const;
+
+const STEP_GUIDANCE: Record<GiftStep, { title: string; text: string }> = {
+  details: { title: "Beantworte ein paar kurze Fragen", text: "Pokémon-Fachwissen ist nicht nötig. Wir stellen danach einen passenden Vorschlag zusammen." },
+  candidates: { title: "Sieh dir die vorgeschlagenen Karten an", text: "Du kannst jede Karte ersetzen. Wenn alles passt, gehst du unten zur Bestellprüfung weiter." },
+  review: { title: "Letzter Check vor dem Speichern", text: "Kontrolliere Kartenanzahl, Schätzung und Bestellangaben. Gekauft wird erst im nächsten Schritt beim Anbieter." },
+  summary: { title: "Der Binder ist gespeichert", text: "Als Nächstes bereitest du die fehlenden Karten für Cardmarket, TCGplayer oder CardTrader vor." },
+};
+
 const initialPreferences: GiftPreferences = {
   recipientKind: "friend",
   subjectQuery: "Pikachu",
@@ -54,11 +71,16 @@ const initialPreferences: GiftPreferences = {
 
 function defaultVariant(card: CardSnapshot): VariantSelection {
   const availability = variantAvailabilityForCard(card);
+  const initial = createInitialVariantSelection(availability);
+  if (initial.finish !== "unspecified") return initial;
   return {
+    ...initial,
     finish: availability.normal ? "normal" : availability.holo ? "holo" : "reverse",
-    edition: "unlimited",
-    printing: "shadowed",
   };
+}
+
+function hasUnambiguousCatalogFinish(card: CardSnapshot): boolean {
+  return createInitialVariantSelection(variantAvailabilityForCard(card)).finish !== "unspecified";
 }
 
 function formatMoney(amountMinor: number | undefined, currency: GiftPreferences["currency"]): string {
@@ -101,9 +123,12 @@ function summarizeSelection(selected: GiftCardCandidate[], preferences: GiftPref
   const approximateCount = selected.filter((candidate) => candidate.price.confidence === "approximate").length;
   const allAmountsKnown = selected.every((candidate) => candidate.price.amountMinor !== undefined);
   const estimatedTotalMinor = allAmountsKnown ? selected.reduce((sum, candidate) => sum + (candidate.price.amountMinor ?? 0), 0) : undefined;
-  const allUsable = selected.length > 0 && selected.every((candidate) => candidate.price.confidence === "usable" && candidate.price.currency === preferences.currency);
+  const allPriced = selected.length > 0 && selected.every((candidate) =>
+    candidate.price.confidence !== "unknown"
+    && candidate.price.currency === preferences.currency
+    && candidate.price.amountMinor !== undefined);
   const ceiling = preferences.budgetMinor + Math.floor(preferences.budgetMinor * (preferences.budgetTolerancePercent ?? 0) / 100);
-  const budgetStatus = !allUsable || estimatedTotalMinor === undefined
+  const budgetStatus = !allPriced || estimatedTotalMinor === undefined
     ? "unknown" as const
     : estimatedTotalMinor <= preferences.budgetMinor
       ? "within" as const
@@ -136,6 +161,7 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
   const [preferences, setPreferences] = useState<GiftPreferences>(initialPreferences);
   const [pokemonQuery, setPokemonQuery] = useState(initialPreferences.subjectQuery);
   const [discoveryMode, setDiscoveryMode] = useState<GiftDiscoveryMode>("pokemon");
+  const [orderCondition, setOrderCondition] = useState<PurchasePreferences["minimumCondition"]>("excellent");
   const [selectedThemeId, setSelectedThemeId] = useState<string>();
   const [briefs, setBriefs] = useState<CatalogSearchItem[]>([]);
   const [candidates, setCandidates] = useState<GiftCardCandidate[]>([]);
@@ -144,6 +170,7 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
   const [error, setError] = useState<string>();
   const [showAll, setShowAll] = useState(false);
   const [openVariantKey, setOpenVariantKey] = useState<string>();
+  const [confirmedVariantKeys, setConfirmedVariantKeys] = useState<Set<string>>(new Set());
   const [excludedKeys, setExcludedKeys] = useState<Set<string>>(new Set());
   const [submitting, setSubmitting] = useState(false);
   const [giftProject, setGiftProject] = useState<GiftProject>();
@@ -181,6 +208,7 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
     setLoading(true);
     setError(undefined);
     setSelection(undefined);
+    setConfirmedVariantKeys(new Set());
     setExcludedKeys(new Set());
     try {
       const maximum = Math.min(80, Math.max(40, preferences.targetCardCount * 3));
@@ -212,7 +240,7 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
         currency: preferences.currency,
         variantFor: defaultVariant,
         concurrency: 4,
-        preferences: { minimumCondition: "excellent" },
+        preferences: { minimumCondition: orderCondition },
       });
       const safe = hydrated
         .map((candidate) => safeCandidate(candidate, pricingEnabled, preferences.currency))
@@ -230,6 +258,9 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
         setName: card.setName,
       })));
       setCandidates(safe);
+      setConfirmedVariantKeys(new Set(safe
+        .filter((candidate) => hasUnambiguousCatalogFinish(candidate.card))
+        .map((candidate) => candidate.card.key)));
       const selectionCandidates = budgetGuaranteeEnabled ? safe : safe.map((candidate) => candidate.price.confidence === "usable" ? {
         ...candidate,
         price: { ...candidate.price, confidence: "approximate" as const, issues: [...candidate.price.issues, "estimate-only-no-budget-guarantee"] },
@@ -247,6 +278,11 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
     if (!selection) return;
     const nextExcluded = new Set(excludedKeys).add(cardKey);
     setExcludedKeys(nextExcluded);
+    setConfirmedVariantKeys((current) => {
+      const next = new Set(current);
+      next.delete(cardKey);
+      return next;
+    });
     setSelection(summarizeSelection(selection.selected.filter((candidate) => candidate.card.key !== cardKey), preferences, selection.issues));
   }
 
@@ -254,6 +290,9 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
     if (!selection || selection.selected.length >= preferences.targetCardCount) return;
     const next = candidates.find((candidate) => !excludedKeys.has(candidate.card.key) && !selection.selected.some((selected) => selected.card.key === candidate.card.key));
     if (!next) return;
+    if (hasUnambiguousCatalogFinish(next.card)) {
+      setConfirmedVariantKeys((current) => new Set(current).add(next.card.key));
+    }
     setSelection(summarizeSelection([...selection.selected, next], preferences, selection.issues));
   }
 
@@ -261,6 +300,12 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
     if (!selection) return;
     const replacement = candidates.find((candidate) => !excludedKeys.has(candidate.card.key) && !selection.selected.some((selected) => selected.card.key === candidate.card.key));
     if (!replacement) return;
+    setConfirmedVariantKeys((current) => {
+      const next = new Set(current);
+      next.delete(cardKey);
+      if (hasUnambiguousCatalogFinish(replacement.card)) next.add(replacement.card.key);
+      return next;
+    });
     const nextExcluded = new Set(excludedKeys).add(cardKey);
     setExcludedKeys(nextExcluded);
     setSelection(summarizeSelection(selection.selected.map((candidate) => candidate.card.key === cardKey ? replacement : candidate), preferences, selection.issues));
@@ -270,6 +315,9 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
     if (!selection) return;
     const card = selection.selected.find((candidate) => candidate.card.key === cardKey);
     if (!card) return;
+    if (variant.finish !== card.variant.finish) {
+      setConfirmedVariantKeys((current) => new Set(current).add(cardKey));
+    }
     const issue = variantSelectionIssue(variant, card.card.availableVariants);
     const nextSelected = selection.selected.map((candidate) => candidate.card.key === cardKey ? {
       ...candidate,
@@ -279,8 +327,23 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
     setSelection(summarizeSelection(nextSelected, preferences, selection.issues));
   }
 
+  function confirmVariant(cardKey: string) {
+    setConfirmedVariantKeys((current) => new Set(current).add(cardKey));
+  }
+
+  function applyConditionToAll(value: PurchasePreferences["minimumCondition"]) {
+    setOrderCondition(value);
+    setSelection((current) => current ? summarizeSelection(current.selected.map((candidate) => ({
+      ...candidate,
+      preferences: { ...candidate.preferences, minimumCondition: value },
+    })), preferences, current.issues) : current);
+  }
+
   const reviewReady = Boolean(selection?.selected.length === preferences.targetCardCount
-    && selection.selected.every((candidate) => isVariantSelectionValid(candidate.variant, variantAvailabilityForCard(candidate.card))));
+    && selection.selected.every((candidate) => confirmedVariantKeys.has(candidate.card.key)
+      && isVariantSelectionValid(candidate.variant, variantAvailabilityForCard(candidate.card))));
+  const readyCardCount = selection?.selected.filter((candidate) => confirmedVariantKeys.has(candidate.card.key)
+    && isVariantSelectionValid(candidate.variant, variantAvailabilityForCard(candidate.card))).length ?? 0;
   const estimatedRange = selection ? selectionRange(selection.selected) : undefined;
   const printSummary = selection && giftProject ? createGiftPrintSummary({ project: giftProject, selection, greeting }) : undefined;
   const candidateByKey = useMemo(() => new Map(candidates.map((candidate) => [candidate.card.key, candidate])), [candidates]);
@@ -289,6 +352,9 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
     if (!selection || selection.selected.length >= preferences.targetCardCount) return;
     const candidate = candidateByKey.get(cardKey);
     if (!candidate || selection.selected.some((entry) => entry.card.key === cardKey)) return;
+    if (hasUnambiguousCatalogFinish(candidate.card)) {
+      setConfirmedVariantKeys((current) => new Set(current).add(candidate.card.key));
+    }
     setSelection(summarizeSelection([...selection.selected, candidate], preferences, selection.issues));
   }
 
@@ -335,13 +401,12 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
         <button type="button" className={styles.closeButton} onClick={onCancel} aria-label="Gift Builder schließen"><X size={18} /></button>
       </div>
 
-      <ol className={styles.steps} aria-label="Gift-Schritte">
-        {(["details", "candidates", "review", "summary"] as const).map((item, index) => (
-          <li key={item} data-active={step === item} data-done={(["details", "candidates", "review", "summary"] as const).indexOf(step) > index} aria-current={step === item ? "step" : undefined}>
-            <span>{index + 1}</span>{item === "details" ? "Wünsche" : item === "candidates" ? "Auswahl" : item === "review" ? "Prüfen" : "Zusammenfassung"}
-          </li>
-        ))}
-      </ol>
+      <div className={styles.flowWrapper}><GuidedFlow steps={GIFT_FLOW} currentStep={(["details", "candidates", "review", "summary"] as const).indexOf(step) + 1} label="Schritte zum Geschenk-Binder" /></div>
+      <div className={styles.stepLead}>
+        <span>Schritt {(["details", "candidates", "review", "summary"] as const).indexOf(step) + 1} von 4</span>
+        <div><strong>{STEP_GUIDANCE[step].title}</strong><p>{STEP_GUIDANCE[step].text}</p></div>
+        <ArrowRight aria-hidden="true" size={26} />
+      </div>
 
       {error ? <div className={styles.error} role="alert"><strong>Vorschlag konnte nicht geladen werden</strong><span>{error}</span>{FEATURES.artworkReview && discoveryMode === "theme" ? <a className={styles.secondaryButton} href="/artwork-review/">Artwork lokal prüfen</a> : null}<button type="button" className={styles.secondaryButton} onClick={() => void createProposal()}><RefreshCw size={15} /> Erneut versuchen</button></div> : null}
 
@@ -415,8 +480,15 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
               <select value={preferences.budgetTolerancePercent ?? 0} onChange={(event) => updatePreferences("budgetTolerancePercent", Number(event.target.value) as GiftPreferences["budgetTolerancePercent"])}><option value="0">Keine</option><option value="5">Bis 5 %</option><option value="10">Bis 10 %</option><option value="15">Bis 15 %</option></select>
             </label>
           </div>
+          <label className={styles.orderConditionField}>Gewünschter Kartenzustand
+            <select aria-label="Gewünschter Kartenzustand" value={orderCondition} onChange={(event) => setOrderCondition(event.target.value as PurchasePreferences["minimumCondition"])}>
+              {conditionProfiles.map((profile) => <option value={profile.value} key={profile.value}>{profile.label}</option>)}
+            </select>
+            <span>{conditionProfile(orderCondition).providerSummary}. Diese Vorgabe gilt zunächst für alle vorgeschlagenen Karten und kann später einzeln geändert werden.</span>
+          </label>
+          <ConditionGuide />
           <p className={styles.localHint}>{pricingEnabled ? `Name und Geschenkangaben werden nur in diesem Browser gespeichert. Kartenpreise sind unverbindliche Marktschätzungen; Versand und Steuern sind nicht enthalten.${budgetGuaranteeEnabled ? "" : " Das Budget dient nur zur Orientierung und wird nicht garantiert."}` : "Name und Geschenkangaben werden nur in diesem Browser gespeichert. Die Preisprüfung ist noch nicht freigegeben; Budget und Toleranz werden daher nicht zugesagt."}</p>
-          <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={onCancel}>Abbrechen</button><button type="submit" className={styles.primaryButton} disabled={loading || (discoveryMode === "theme" ? !selectedThemeId : !preferences.subjectQuery.trim())}>{loading ? <><LoaderCircle className={styles.spin} size={16} /> Karten werden gesucht…</> : <>Vorschlag erzeugen <ArrowRight size={16} /></>}</button></div>
+          <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={onCancel}>Abbrechen</button><button type="submit" className={styles.primaryButton} aria-label="Vorschlag erzeugen – passende Karten zeigen" disabled={loading || (discoveryMode === "theme" ? !selectedThemeId : !preferences.subjectQuery.trim())}>{loading ? <><LoaderCircle className={styles.spin} size={16} /> Karten werden gesucht…</> : <>Passende Karten zeigen <ArrowRight size={18} /></>}</button></div>
         </form>
       ) : null}
 
@@ -424,18 +496,35 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
         <div className={styles.resultsStep}>
           <div className={styles.summaryBar} data-status={selection.budgetStatus}><div><strong>{selection.selected.length} / {preferences.targetCardCount}</strong><span>ausgewählte Karten</span></div><div><strong>{pricingEnabled ? formatMoney(selection.estimatedTotalMinor, preferences.currency) : "Preisprüfung aus"}</strong><span>{pricingEnabled ? selection.budgetStatus === "unknown" ? "Schätzung unvollständig" : "geschätzter Kartenwert" : "noch nicht freigegeben"}</span></div><div><strong>{pricingEnabled ? selection.unpricedCount : "–"}</strong><span>{pricingEnabled ? "ohne Preis" : "keine Budgetzusage"}</span></div></div>
           {!pricingEnabled ? <p className={styles.gateNotice} role="status">Die Preisprüfung ist derzeit noch deaktiviert. Karten können trotzdem ausgewählt und als normaler Binder gespeichert werden; es gibt keine Budgetzusage.</p> : null}
-          {pricingEnabled && !budgetGuaranteeEnabled ? <p className={styles.gateNotice} role="status">Angezeigt werden unverbindliche TCGdex-Marktschätzungen. Sie steuern die Auswahl nicht und sind keine Budget-, Verfügbarkeits- oder Kaufzusage.</p> : null}
-          {selection.budgetStatus === "over" ? <p className={styles.warning} role="status">Die günstigste vollständige Auswahl liegt über deinem Budget. Karten können ersetzt oder entfernt werden.</p> : null}
-          {selection.budgetStatus === "unknown" && pricingEnabled ? <p className={styles.warning} role="status">Unbekannte oder nur angenäherte Preise verhindern eine sichere „unter Budget“-Aussage.</p> : null}
+          {pricingEnabled && !budgetGuaranteeEnabled ? <p className={styles.gateNotice} role="status">Die Auswahl orientiert sich an unverbindlichen TCGdex-Marktschätzungen und deinem Budget. Tatsächliche Preise, Verfügbarkeit, Versand und Steuern können abweichen.</p> : null}
+          {selection.budgetStatus === "over" ? <p className={styles.warning} role="status">Selbst die günstigste vollständige Auswahl wird derzeit über deinem Budget geschätzt. Reduziere die Kartenzahl, erhöhe das Budget oder ersetze einzelne Karten.</p> : null}
+          {selection.budgetStatus === "unknown" && pricingEnabled ? <p className={styles.warning} role="status">Für mindestens eine ausgewählte Karte fehlt ein Preis. Deshalb kann Cardfolio das Budget nicht vollständig berücksichtigen.</p> : null}
+          <section className={styles.orderSetup} aria-labelledby="gift-order-setup-heading">
+            <div>
+              <strong id="gift-order-setup-heading">Bestellwunsch für alle Karten</strong>
+              <span>{readyCardCount} von {selection.selected.length} Karten sind vollständig vorbereitet. Sonderfälle kannst du direkt an der Karte ändern.</span>
+            </div>
+            <label>Zustand für alle
+              <select aria-label="Zustand für alle" value={orderCondition} onChange={(event) => applyConditionToAll(event.target.value as PurchasePreferences["minimumCondition"])}>
+                {conditionProfiles.map((profile) => <option value={profile.value} key={profile.value}>{profile.label}</option>)}
+              </select>
+              <small>{conditionProfile(orderCondition).providerSummary}</small>
+            </label>
+          </section>
           <div className={styles.cardGrid}>
             {selection.selected.map((candidate, index) => {
               const issue = variantSelectionIssue(candidate.variant, variantAvailabilityForCard(candidate.card));
+              const needsFinishConfirmation = !confirmedVariantKeys.has(candidate.card.key);
+              const orderIssue = issue ?? (needsFinishConfirmation
+                ? "Die Ausführung wurde nur vorausgewählt und muss einmal bestätigt werden."
+                : undefined);
               return <article className={styles.candidateCard} key={candidate.card.key}>
                 <CardArtwork card={candidate.card} className={styles.cardImage} fallback={<div className={styles.imageFallback}>Bild nicht verfügbar</div>} />
                 <div className={styles.cardIdentity}><strong>{candidate.card.name}</strong><span>{candidate.card.setName} · Nr. {candidate.card.collectorNumber}</span><b>{pricingEnabled ? formatMoney(candidate.price.amountMinor, preferences.currency) : "Preisprüfung deaktiviert"}</b><small className={styles.priceMeta}>{pricingEnabled ? `${priceSourceLabel(candidate.price.source)} · Stand ${formatDate(candidate.price.sourceUpdatedAt ?? candidate.price.fetchedAt)}${formatRange(candidate.price.range, preferences.currency) ? ` · Spanne ${formatRange(candidate.price.range, preferences.currency)}` : ""}` : "Noch keine für diesen Ablauf freigegebene Preisquelle"}</small></div>
                 <div className={styles.reasonTags}>{candidate.reasonTags.map((tag) => <span key={tag}>{tag === "set-diversity" ? "Set-Vielfalt" : tag === "vintage" ? "Vintage" : tag === "modern" ? "Modern" : tag}</span>)}</div>
-                <div className={styles.cardActions}><button type="button" className={styles.linkButton} onClick={() => setOpenVariantKey(openVariantKey === candidate.card.key ? undefined : candidate.card.key)}>{openVariantKey === candidate.card.key ? "Version schließen" : "Version prüfen"}</button><button type="button" className={styles.iconButton} onClick={() => replaceCandidate(candidate.card.key)} disabled={!candidates.some((item) => !selection.selected.some((selected) => selected.card.key === item.card.key) && !excludedKeys.has(item.card.key))} aria-label={`${candidate.card.name} ersetzen`}><RefreshCw size={15} /></button><button type="button" className={styles.iconButton} onClick={() => removeCandidate(candidate.card.key)} aria-label={`${candidate.card.name} entfernen`}><X size={15} /></button></div>
-                {openVariantKey === candidate.card.key ? <div className={styles.variantBox}><VariantFields variant={candidate.variant} preferences={candidate.preferences} availability={variantAvailabilityForCard(candidate.card)} onVariantChange={(variant) => updateVariant(candidate.card.key, variant)} onPreferencesChange={(next) => setSelection((current) => current ? summarizeSelection(current.selected.map((item) => item.card.key === candidate.card.key ? { ...item, preferences: next } : item), preferences, current.issues) : current)} />{issue ? <p className={styles.warning}>{issue}</p> : null}</div> : null}
+                <div className={styles.orderSummary} data-ready={!orderIssue}><strong>{orderIssue ? "Bestellangaben offen" : "Bestellbereit"}</strong><span>{formatVariantSelection(candidate.variant)} · {conditionProfile(candidate.preferences.minimumCondition).shortLabel}</span></div>
+                <div className={styles.cardActions}><button type="button" className={styles.linkButton} onClick={() => setOpenVariantKey(openVariantKey === candidate.card.key ? undefined : candidate.card.key)}>{openVariantKey === candidate.card.key ? "Bestellangaben schließen" : "Bestellangaben ändern"}</button><button type="button" className={styles.iconButton} onClick={() => replaceCandidate(candidate.card.key)} disabled={!candidates.some((item) => !selection.selected.some((selected) => selected.card.key === item.card.key) && !excludedKeys.has(item.card.key))} aria-label={`${candidate.card.name} ersetzen`}><RefreshCw size={15} /></button><button type="button" className={styles.iconButton} onClick={() => removeCandidate(candidate.card.key)} aria-label={`${candidate.card.name} entfernen`}><X size={15} /></button></div>
+                {openVariantKey === candidate.card.key ? <div className={styles.variantBox}><VariantFields variant={candidate.variant} preferences={candidate.preferences} availability={variantAvailabilityForCard(candidate.card)} onVariantChange={(variant) => updateVariant(candidate.card.key, variant)} onPreferencesChange={(next) => setSelection((current) => current ? summarizeSelection(current.selected.map((item) => item.card.key === candidate.card.key ? { ...item, preferences: next } : item), preferences, current.issues) : current)} />{issue ? <p className={styles.warning}>{issue}</p> : needsFinishConfirmation ? <><p className={styles.warning}>Der Katalog bestätigt die Ausführung nicht eindeutig. Vergleiche das Kartenbild und bestätige die Vorauswahl oder wähle eine andere Ausführung.</p><button type="button" className={styles.secondaryButton} onClick={() => confirmVariant(candidate.card.key)}>Vorauswahl bestätigen</button></> : null}</div> : null}
                 <span className={styles.cardIndex}>{index + 1}</span>
               </article>;
             })}
@@ -458,7 +547,7 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
               </li>;
             })}</ul>
           </div> : null}
-          <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={() => setStep("details")}><ArrowLeft size={16} /> Wünsche ändern</button><button type="button" className={styles.primaryButton} disabled={!reviewReady} onClick={() => setStep("review")}>Auswahl prüfen <ArrowRight size={16} /></button></div>
+          <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={() => setStep("details")}><ArrowLeft size={16} /> Wünsche ändern</button><button type="button" className={styles.primaryButton} aria-label="Auswahl prüfen" disabled={!reviewReady} onClick={() => setStep("review")}>Weiter: Bestellung prüfen <ArrowRight size={18} /></button></div>
         </div>
       ) : null}
 
@@ -467,7 +556,7 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
           <div className={styles.reviewHero}><span className={styles.reviewIcon}><Check size={22} /></span><div><h2>Dein Vorschlag ist bereit</h2><p>{preferences.subjectQuery} · {preferences.targetCardCount} Karten · {preferences.currency}</p></div></div>
           <dl className={styles.reviewMeta}><div><dt>{pricingEnabled ? "Geschätzter Kartenwert" : "Preisprüfung"}</dt><dd>{pricingEnabled ? formatMoney(selection.estimatedTotalMinor, preferences.currency) : "Deaktiviert"}</dd></div><div><dt>Preisspanne</dt><dd>{pricingEnabled && estimatedRange ? formatRange(estimatedRange, preferences.currency) : pricingEnabled ? "Nicht vollständig verfügbar" : "Nicht berechnet"}</dd></div><div><dt>Preissicherheit</dt><dd>{pricingEnabled ? selection.unpricedCount ? `${selection.unpricedCount} unbekannt` : selection.approximateCount ? `${selection.approximateCount} angenähert` : "brauchbare Marktwerte" : "Keine Budgetzusage"}</dd></div><div><dt>Binder</dt><dd>Normale Cardfolio-Seiten · editierbar</dd></div></dl>
           <p className={styles.reviewNotice}>Der Binder wird lokal angelegt. Karten und physischer Binder sind getrennte Käufe; Preisangaben sind unverbindliche Markt-Schätzwerte, Versand und Steuern sind nicht enthalten. „Karten besorgen“ folgt danach über die bestehende Fehlkarten-Übergabe.</p>
-          <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={() => setStep("candidates")}><ArrowLeft size={16} /> Auswahl bearbeiten</button><button type="button" className={styles.primaryButton} disabled={submitting} onClick={async () => { setSubmitting(true); setError(undefined); try { const project = await onCreateBinder(selection, preferences); setGiftProject(project); setStep("summary"); } catch (cause) { setError(cause instanceof Error ? cause.message : "Der Geschenk-Binder konnte nicht angelegt werden."); } finally { setSubmitting(false); } }}>{submitting ? "Binder wird angelegt…" : "Als Binder anlegen"}</button></div>
+          <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={() => setStep("candidates")}><ArrowLeft size={16} /> Auswahl bearbeiten</button><button type="button" className={styles.primaryButton} aria-label="Als Binder anlegen" disabled={submitting} onClick={async () => { setSubmitting(true); setError(undefined); try { const project = await onCreateBinder(selection, preferences); setGiftProject(project); setStep("summary"); } catch (cause) { setError(cause instanceof Error ? cause.message : "Der Geschenk-Binder konnte nicht angelegt werden."); } finally { setSubmitting(false); } }}>{submitting ? "Binder wird gespeichert…" : <>Binder speichern & weiter <ArrowRight size={18} /></>}</button></div>
         </div>
       ) : null}
 
@@ -507,7 +596,7 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
           <section className={styles.purchaseOptions} aria-label="Getrennte nächste Schritte">
             <article className={styles.purchaseCard}>
               <div><p className={styles.eyebrow}>KARTENKAUF</p><h3>Karten besorgen</h3><p>Öffnet die vorhandene Fehlkarten-Übergabe mit den bekannten TCGplayer- und Cardmarket-Prüfschritten.</p></div>
-              <button type="button" className={styles.primaryButton} onClick={onCardsPurchase}><ShoppingBag aria-hidden="true" size={16} /> Karten besorgen</button>
+              <button type="button" className={styles.primaryButton} aria-label="Karten besorgen" onClick={onCardsPurchase}><ShoppingBag aria-hidden="true" size={18} /> Karten jetzt kaufen <ArrowRight aria-hidden="true" size={18} /></button>
             </article>
             <article className={styles.purchaseCard}>
               <div><p className={styles.eyebrow}>BINDERKAUF</p><h3>Binder personalisieren</h3>
@@ -529,7 +618,7 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
           <div className={styles.summaryActions}>
             <button type="button" className={styles.secondaryButton} onClick={() => window.print()}><Printer aria-hidden="true" size={16} /> Drucken / als PDF speichern</button>
             <button type="button" className={styles.secondaryButton} onClick={downloadPrintSummary}><Download aria-hidden="true" size={16} /> Textzusammenfassung herunterladen</button>
-            <button type="button" className={styles.primaryButton} onClick={onOpenBinder}>Binder bearbeiten <ArrowRight aria-hidden="true" size={16} /></button>
+            <button type="button" className={styles.secondaryButton} onClick={onOpenBinder}>Binder bearbeiten</button>
           </div>
         </div>
       ) : null}

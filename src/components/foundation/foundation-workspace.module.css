@@ -449,8 +449,17 @@
 .dialogField small { justify-self: end; color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 9.5px; font-weight: 500; font-variant-numeric: tabular-nums; }
 .variantForm { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin-top: 18px; }
 .variantForm label { display: grid; min-width: 0; gap: 5px; color: var(--cf-text2); font-size: 12.5px; font-weight: 650; }
+.variantForm label small { color: var(--cf-muted); font-size: 10.5px; font-weight: 500; line-height: 1.45; }
 .variantForm select, .variantForm input { width: 100%; min-width: 0; min-height: 42px; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-field); color: var(--cf-text); padding: 8px 10px; }
 .variantForm select:focus, .variantForm input:focus { border-color: var(--cf-accent); outline: none; box-shadow: 0 0 0 3px var(--cf-accent-soft); }
+.variantStatus { display: grid; gap: 3px; margin-top: 18px; border-left: 3px solid var(--cf-gold); border-radius: 0 7px 7px 0; background: var(--cf-accent-soft); color: var(--cf-gold-text); padding: 9px 11px; }
+.variantStatus[data-complete="true"] { border-left-color: var(--cf-ok); background: var(--cf-ok-soft); color: var(--cf-ok-text); }
+.variantStatus strong { font-size: 12px; }
+.variantStatus span { font-size: 10.5px; line-height: 1.45; }
+.variantAdvanced { border: 1px solid var(--cf-line); border-radius: 8px; background: var(--cf-surface2); }
+.variantAdvanced summary { cursor: pointer; color: var(--cf-text2); padding: 11px 12px; font-size: 12px; font-weight: 650; }
+.variantAdvanced > p { margin: 0; border-top: 1px solid var(--cf-line); color: var(--cf-muted); padding: 9px 12px 0; font-size: 10.5px; line-height: 1.45; }
+.variantAdvanced > div { display: grid; gap: 12px; padding: 12px; }
 .variantHint { margin-top: 14px !important; border-left: 3px solid var(--cf-accent); border-radius: 0 6px 6px 0; background: var(--cf-accent-soft); color: var(--cf-text2); padding: 9px 11px; }
 .dialogActions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 22px; }
 .layoutPreview { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 16px; overflow: hidden; border: 1px solid var(--cf-line); border-radius: 8px; }

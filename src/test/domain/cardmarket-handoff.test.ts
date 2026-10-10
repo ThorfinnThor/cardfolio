@@ -39,10 +39,11 @@ describe("Cardmarket handoff", () => {
     expect(exported.parts[0].searches).toHaveLength(1);
     expect(exported.parts[0].searches[0]).toMatchObject({
       label: "2× Bulbasaur",
-      details: "Base Set · Nr. 001 · EN",
+      details: "Base Set · Nr. 001 · EN · Zustand: Wie neu",
     });
     expect(exported.warnings.join(" ")).toMatch(/vollständiger Kartenname, Fähigkeiten und Attacken/);
     expect(exported.warnings.join(" ")).toMatch(/Set, Kartennummer, Sprache und Druckvariante nicht fest/);
+    expect(exported.warnings.join(" ")).toMatch(/gewählte Zustand wird gespeichert.*nicht übertragen/);
   });
 
   it("splits by positions rather than card quantity at the official 150-entry limit", () => {
@@ -112,6 +113,29 @@ describe("Cardmarket handoff", () => {
     expect(exported.parts[0].text).toBe(
       "2x Typhlosion δ Delta Species Shady Move Burning Ball\n2x Umbreon Gold Star Feint Attack Dark Ray",
     );
+  });
+
+  it("includes the printed Pokemon level required by Cardmarket's full product name", () => {
+    const treecko: MissingItem = {
+      ...missingItem(),
+      identityKey: "treecko-arceus-78",
+      card: {
+        ...missingItem().card,
+        name: "Treecko",
+        level: "14",
+        setName: "Arceus",
+        setId: "pl4",
+        collectorNumber: "78",
+        collectorTotal: "99",
+        abilities: [],
+        attacks: ["Tail Crush"],
+      },
+    };
+
+    const exported = createCardmarketHandoff([treecko]);
+
+    expect(exported.parts[0].text).toBe("2x Treecko Lv.14 Tail Crush");
+    expect(new URL(exported.parts[0].searches[0].url).searchParams.get("searchString")).toBe("Treecko Lv.14 Arceus 78/99");
   });
 
   it("exports trainers by full name and excludes Pokemon without catalog attack data", () => {

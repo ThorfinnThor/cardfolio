@@ -245,9 +245,8 @@ async function addCard(page: Page, slot: number, query: string, cardName: string
     .click();
   const preview = page.getByRole("dialog", { name: "Karte prüfen" });
   await expect(preview).toContainText(cardName);
-  const finish = preview.getByLabel("Finish");
+  const finish = preview.getByLabel("Ausführung der Karte");
   if (await finish.inputValue() === "unspecified") await finish.selectOption("normal");
-  await preview.getByLabel("Edition").selectOption("unlimited");
   await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
   await expect(page.getByRole("article", { name: `${cardName}, Slot ${slot}` })).toBeVisible();
 }
@@ -348,7 +347,7 @@ test("reviews multiple cards and fills from the next free slot continuously", as
   await search.getByRole("button", { name: "Auswahl prüfen" }).click();
 
   const review = page.getByRole("dialog", { name: "2 Karten als Auswahl übernehmen" });
-  for (const finish of await review.getByLabel("Finish").all()) await expect(finish).toHaveValue("normal");
+  for (const finish of await review.getByLabel("Ausführung der Karte").all()) await expect(finish).toHaveValue("normal");
   await review.getByLabel("Ab nächstem freien Platz fortlaufend").check();
   const confirmSelection = review.getByRole("button", { name: "Auswahl übernehmen" });
   await expect(confirmSelection).toBeEnabled();
@@ -614,8 +613,7 @@ test("offers Smart Search recovery, language choice and no mobile overflow", asy
   await expect(preview.getByText("Kartensprache für den Binder")).toBeVisible();
   await preview.getByRole("button", { name: "Deutsch" }).click();
   await expect(preview.getByRole("button", { name: "Deutsch" })).toHaveAttribute("aria-pressed", "true");
-  await preview.getByLabel("Finish").selectOption("holo");
-  await preview.getByLabel("Edition").selectOption("unlimited");
+  await preview.getByLabel("Ausführung der Karte").selectOption("holo");
   await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
   await expect(page.getByRole("article", { name: "Glurak, Slot 1" })).toBeVisible();
 });
@@ -654,8 +652,9 @@ test("searches German and English catalogs and labels the result language", asyn
   await expect(preview).toContainText("4/102");
   await expect(preview).toContainText("Bild auf Englisch");
   await expect(preview).toContainText("Katalog bestätigt: Holo, First Edition");
+  await preview.getByText("Sonderausgaben und Druckdetails").click();
   await expect(preview.getByLabel("Druckvariante").locator('option[value="shadowless"]')).toHaveCount(0);
-  await preview.getByLabel("Finish").selectOption("holo");
+  await preview.getByLabel("Ausführung der Karte").selectOption("holo");
   await preview.getByLabel("Edition").selectOption("first-edition");
   await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
 
@@ -693,7 +692,14 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
     const id = new URL(route.request().url()).pathname.split("/").pop() ?? "swsh1-1";
     const localId = id.split("-").pop() ?? "1";
     await route.fulfill({
-      body: JSON.stringify({ id, localId, name: `Pikachu ${localId}`, category: "Pokemon", set: { cardCount: { official: 202 }, id: "swsh1", name: "Sword & Shield" } }),
+      body: JSON.stringify({
+        id,
+        localId,
+        name: `Pikachu ${localId}`,
+        category: "Pokemon",
+        variants: { firstEdition: false, holo: true, normal: false, reverse: false, wPromo: false },
+        set: { cardCount: { official: 202 }, id: "swsh1", name: "Sword & Shield" },
+      }),
       headers,
       status: 200,
     });
@@ -736,22 +742,21 @@ test("sets, edits and persists the minimum condition for marketplace handoff", a
   await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Ivysaur");
   await page.getByRole("listitem").filter({ hasText: "Ivysaur" }).getByRole("button", { name: "Prüfen" }).click();
   const preview = page.getByRole("dialog", { name: "Karte prüfen" });
-  await preview.getByLabel("Finish").selectOption("normal");
-  await preview.getByLabel("Edition").selectOption("unlimited");
-  await preview.getByLabel("Mindestzustand").selectOption("near-mint");
+  await preview.getByLabel("Ausführung der Karte").selectOption("normal");
+  await preview.getByLabel("Mindestzustand beim Kauf").selectOption("near-mint");
   await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
 
   await page.getByRole("article", { name: "Ivysaur, Slot 1" }).click();
-  await expect(page.getByRole("definition").filter({ hasText: "Near Mint" })).toBeVisible();
+  await expect(page.getByRole("definition").filter({ hasText: "Wie neu" })).toBeVisible();
   await page.getByRole("button", { name: "Version & Zustand festlegen" }).click();
   const details = page.getByRole("dialog", { name: /Version und Mindestzustand/ });
-  await details.getByLabel("Mindestzustand").selectOption("lightly-played");
+  await details.getByLabel("Mindestzustand beim Kauf").selectOption("lightly-played");
   await details.getByRole("button", { name: "Angaben speichern" }).click();
-  await expect(page.getByRole("definition").filter({ hasText: "Lightly Played" })).toBeVisible();
+  await expect(page.getByRole("definition").filter({ hasText: "Gebraucht – sichtbare Spuren okay" })).toBeVisible();
 
   await page.reload();
   await page.getByRole("article", { name: "Ivysaur, Slot 1" }).click();
-  await expect(page.getByRole("definition").filter({ hasText: "Lightly Played" })).toBeVisible();
+  await expect(page.getByRole("definition").filter({ hasText: "Gebraucht – sichtbare Spuren okay" })).toBeVisible();
   await page.getByRole("button", { name: /Fehlende Karten \(1\)/ }).click();
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   await expect(missingCards.getByRole("button", { name: "TCGplayer" })).toBeVisible();
@@ -761,7 +766,7 @@ test("sets, edits and persists the minimum condition for marketplace handoff", a
   await expect(missingCards.getByRole("button", { name: "Wishlist erstellen" })).toBeDisabled();
   await missingCards.getByRole("button", { name: "Cardmarket" }).click();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue("1x Ivysaur Vine Whip Poisonpowder");
-  await expect(missingCards.getByText("Lightly Played", { exact: true })).toBeVisible();
+  await expect(missingCards.getByText("Gebraucht – sichtbare Spuren okay", { exact: true })).toBeVisible();
 });
 
 test("filters equal card names by language and balances the combined results", async ({ page }) => {
@@ -832,8 +837,8 @@ test("finds and displays an exact full collector number", async ({ page }) => {
   await result.getByRole("button", { name: "Prüfen" }).click();
   const preview = page.getByRole("dialog", { name: "Karte prüfen" });
   await expect(preview).toContainText("4/102");
+  await preview.getByText("Sonderausgaben und Druckdetails").click();
   await expect(preview.getByLabel("Druckvariante").locator('option[value="shadowless"]')).toHaveCount(1);
-  await preview.getByLabel("Edition").selectOption("unlimited");
   await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
 
   const card = page.getByRole("article", { name: "Charizard, Slot 1" });
@@ -851,7 +856,7 @@ test("finds and displays an exact full collector number", async ({ page }) => {
   expect(tcgplayerUrl.searchParams.get("productline")).toBe("Pokemon");
 
   await missingCards.getByRole("button", { name: "Cardmarket" }).click();
-  await missingCards.getByText("Einzelsuchen für Teil 1 anzeigen (1)").click();
+  await missingCards.getByText("Vorbereitete Karten und Einzelsuchen anzeigen (1)").click();
   const cardmarketLink = missingCards.getByRole("link", { name: "Karte suchen" });
   const cardmarketUrl = new URL(await cardmarketLink.getAttribute("href") ?? "");
   expect(cardmarketUrl.searchParams.get("searchString")).toBe("Charizard Grundset 4/102");
@@ -874,6 +879,7 @@ test("exports the verified Tornupto and Blaine's Charizard identities to TCGplay
   await expect(missingCards.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue(
     "1 Blaine's Charizard [G2] 002/132\n1 Typhlosion (17) [N1] 017/111",
   );
+  await missingCards.getByText("Vollständige Fehlkartenliste anzeigen (2)").click();
   await expect(missingCards.getByRole("region", { name: "Neo Genesis · DE" }).getByText("Nr. 17/111")).toBeVisible();
   await expect(missingCards.getByRole("region", { name: "Gym Challenge · EN" }).getByText("Nr. 2/132")).toBeVisible();
 

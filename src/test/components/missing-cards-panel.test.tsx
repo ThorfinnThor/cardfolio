@@ -103,6 +103,26 @@ describe("MissingCardsPanel", () => {
     expect(screen.getByRole("button", { name: "CSV" })).toBeEnabled();
   });
 
+  it("lets the user set one condition for all cards or override a single position", () => {
+    const onConditionsChange = vi.fn();
+    const conditionItems = items.map((item) => ({
+      ...item,
+      preferences: { minimumCondition: "excellent" as const },
+    }));
+    render(<MissingCardsPanel {...props()} items={conditionItems} onConditionsChange={onConditionsChange} />);
+
+    const allConditions = screen.getByRole("combobox", { name: "Zustand für alle" });
+    expect(allConditions).toHaveValue("excellent");
+    expect(screen.getAllByText(/Cardmarket: Near Mint oder Excellent/).length).toBeGreaterThan(0);
+    expect(screen.getByText(/Unsere Empfehlung für Geschenke/)).toBeInTheDocument();
+    expect(screen.getByText("Was bedeutet der Kartenzustand?")).toBeInTheDocument();
+    fireEvent.change(allConditions, { target: { value: "near-mint" } });
+    expect(onConditionsChange).toHaveBeenCalledWith(conditionItems, "near-mint");
+
+    fireEvent.change(screen.getByRole("combobox", { name: "Zustand für Pikachu aus Wizards Black Star Promos" }), { target: { value: "played" } });
+    expect(onConditionsChange).toHaveBeenLastCalledWith([conditionItems[0]], "played");
+  });
+
   it("opens a prefilled TCGplayer handoff and keeps excluded candidates visible", () => {
     const onTcgplayerCopy = vi.fn();
     const onTcgplayerTextExport = vi.fn();
@@ -121,12 +141,15 @@ describe("MissingCardsPanel", () => {
     expect(screen.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue("1 Bulbasaur [BS] 044/102");
     expect(screen.getByText(/2× Pikachu · Wizards Black Star Promos · 001/)).toBeInTheDocument();
     expect(screen.getByText(/Kandidat: Für diese Karte wurde im aktuellen TCGplayer-Katalog/)).toBeInTheDocument();
-    expect(screen.getByText("Nicht in die TCGplayer-Liste übernommen")).toBeInTheDocument();
-    expect(screen.getByText(/bleiben unverändert in deiner Fehlkartenliste/)).toBeInTheDocument();
+    expect(screen.getByText("1 Karte braucht deine Aufmerksamkeit")).toBeInTheDocument();
+    expect(screen.getByText("Vor der Übergabe prüfen")).toBeInTheDocument();
+    expect(screen.getByText(/bleiben in deiner Fehlkartenliste/)).toBeInTheDocument();
     const handoffLink = screen.getByRole("link", { name: /Liste bei TCGplayer öffnen/ });
     expect(handoffLink).toHaveAttribute("rel", "noopener noreferrer");
     expect(new URL(handoffLink.getAttribute("href") ?? "").searchParams.get("c")).toBe("1 Bulbasaur [BS] 044/102");
     expect(screen.getByText(/Printing: Unlimited · Zustand: alle Zustände einschließlich Damaged/)).toBeInTheDocument();
+    expect(screen.getByText("Bereits vorbereitete Karten anzeigen (1)").closest("details")).not.toHaveAttribute("open");
+    expect(screen.getByText("Vollständige Fehlkartenliste anzeigen (2)").closest("details")).not.toHaveAttribute("open");
 
     fireEvent.click(screen.getByRole("button", { name: "TCGplayer kopieren" }));
     fireEvent.click(screen.getByRole("button", { name: "TCGplayer TXT" }));
@@ -158,7 +181,9 @@ describe("MissingCardsPanel", () => {
     );
     expect(screen.getByRole("link", { name: "Offizielles Format" })).toHaveAttribute("rel", "noopener noreferrer");
     expect(screen.getByRole("link", { name: "Ausgaben auf Cardmarket prüfen" })).toHaveAttribute("rel", "noopener noreferrer");
-    fireEvent.click(screen.getByText("Einzelsuchen für Teil 1 anzeigen (2)"));
+    expect(screen.getByText("Alle Karten sind für die Deckliste vorbereitet")).toBeInTheDocument();
+    expect(screen.getByText("Vollständige Fehlkartenliste anzeigen (2)").closest("details")).not.toHaveAttribute("open");
+    fireEvent.click(screen.getByText("Vorbereitete Karten und Einzelsuchen anzeigen (2)"));
     const searchLinks = screen.getAllByRole("link", { name: /Karte suchen/ });
     expect(searchLinks).toHaveLength(2);
     expect(new URL(searchLinks[0].getAttribute("href") ?? "").searchParams.get("searchString")).toBe("Pikachu Wizards Black Star Promos 001");
@@ -168,6 +193,22 @@ describe("MissingCardsPanel", () => {
 
     expect(onCardmarketCopy).toHaveBeenCalledWith(expect.objectContaining({ index: 1, positionCount: 2 }));
     expect(onCardmarketTextExport).toHaveBeenCalledWith(expect.objectContaining({ index: 1, positionCount: 2 }));
+  });
+
+  it("keeps Cardmarket exceptions open while prepared details stay collapsed", () => {
+    const unresolvedItem: MissingItem = {
+      ...items[0],
+      identityKey: "unresolved-pikachu",
+      variant: { ...items[0].variant, finish: "unspecified" },
+    };
+    render(<MissingCardsPanel {...props()} items={[unresolvedItem]} cardmarketEnabled />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Cardmarket" }));
+
+    expect(screen.getByText("1 Karte braucht deine Aufmerksamkeit")).toBeInTheDocument();
+    expect(screen.getByText("Vor der Übergabe prüfen")).toBeInTheDocument();
+    expect(screen.getByText(/Variantenangaben prüfen/)).toBeInTheDocument();
+    expect(screen.getByText("Vorbereitete Karten und Einzelsuchen anzeigen (1)").closest("details")).not.toHaveAttribute("open");
   });
 
   it("shows only the marketplace selected by the user", () => {

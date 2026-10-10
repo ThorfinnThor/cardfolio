@@ -160,6 +160,23 @@ describe("deterministic Gift selection", () => {
     expect(result.selected.map((item) => item.card.key)).not.toContain(unpriced.card.key);
   });
 
+  it("uses approximate estimates to keep the proposal near the requested budget", () => {
+    const affordable = Array.from({ length: 9 }, (_, index) => candidate(index + 1, {
+      price: { ...candidate(index + 1).price, amountMinor: 400, confidence: "approximate" },
+    }));
+    const expensive = Array.from({ length: 9 }, (_, index) => candidate(index + 10, {
+      price: { ...candidate(index + 10).price, amountMinor: 4_000, confidence: "approximate" },
+    }));
+
+    const result = engine.select({ candidates: [...expensive, ...affordable], preferences: preferences({ budgetMinor: 5_000 }) });
+
+    expect(result.selected).toHaveLength(9);
+    expect(result.estimatedTotalMinor).toBe(3_600);
+    expect(result.budgetStatus).toBe("within");
+    expect(result.approximateCount).toBe(9);
+    expect(result.selected.every((item) => (item.price.amountMinor ?? 0) <= 400)).toBe(true);
+  });
+
   it("removes duplicates and incomplete variants and reports a too-small pool", () => {
     const first = candidate(1);
     const incomplete = candidate(2, {

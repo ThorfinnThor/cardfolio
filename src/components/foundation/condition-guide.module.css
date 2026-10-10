@@ -1,0 +1,57 @@
+.guide {
+  display: grid;
+  gap: 0.65rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--cf-line2);
+  border-radius: 12px;
+  background: var(--cf-surface2);
+  color: var(--cf-text2);
+}
+
+.guide p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.guide strong,
+.guide summary {
+  color: var(--cf-text);
+}
+
+.guide summary {
+  width: fit-content;
+  cursor: pointer;
+  font-weight: 750;
+}
+
+.guide details[open] summary {
+  margin-bottom: 0.75rem;
+}
+
+.guide ul {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0.8rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.guide li {
+  display: grid;
+  gap: 0.15rem;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--cf-accent);
+}
+
+.guide li span,
+.guide li small {
+  line-height: 1.45;
+}
+
+.guide li small {
+  color: var(--cf-muted);
+}
+
+.caution {
+  font-weight: 650;
+}

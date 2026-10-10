@@ -26,6 +26,7 @@ import {
   PAGE_NOTE_MAX_LENGTH,
   setBinderDescription,
   setCardPreferences,
+  setCardPreferencesForEntries,
   setCardVariant,
   setOwned,
   setPageNote,
@@ -50,7 +51,7 @@ import { catalogSetAssetUrl, type CatalogSetIndexEntry } from "@/domain/catalog-
 import { setBinderPlanTarget, setBinderPlanToDraft, type SetBinderPlan } from "@/domain/set-binder-plan";
 import { FEATURES } from "@/config/feature-flags";
 import { PRODUCT_DESIGN } from "@/config/product";
-import { minimumConditionLabels } from "@/domain/purchase-preferences";
+import { conditionProfile } from "@/domain/purchase-preferences";
 import { validateBackup } from "@/domain/validation";
 import { createInitialVariantSelection, formatVariantSelection, isVariantSelectionValid, selectedPrinting, variantAvailabilityForCard, variantSelectionIssue, type CardVariantOptions } from "@/domain/variant-selection";
 import { catalogQueryKey, detailQueryKey, TCGdexCatalogAdapter } from "@/data/catalog/tcgdex";
@@ -1110,7 +1111,7 @@ export function FoundationWorkspace() {
       item,
       status: "loading",
       variant: createInitialVariantSelection(),
-      preferences: { minimumCondition: "any" },
+      preferences: { minimumCondition: "excellent" },
     });
     try {
       const snapshot = await queryClient.fetchQuery({
@@ -1191,7 +1192,7 @@ export function FoundationWorkspace() {
         return previous ? { ...previous, card: snapshot } : {
           card: snapshot,
           variant: createInitialVariantSelection(variantAvailabilityForCard(snapshot)),
-          preferences: { minimumCondition: "any" },
+          preferences: { minimumCondition: "excellent" },
         };
       } catch {
         if (language !== "de") {
@@ -1211,7 +1212,7 @@ export function FoundationWorkspace() {
           return previous ? { ...previous, card: snapshot } : {
             card: snapshot,
             variant: createInitialVariantSelection(variantAvailabilityForCard(snapshot)),
-            preferences: { minimumCondition: "any" },
+            preferences: { minimumCondition: "excellent" },
           };
         } catch {
           failedNames.push(item.name);
@@ -1556,6 +1557,28 @@ export function FoundationWorkspace() {
     }
   }
 
+  async function changeMissingConditions(
+    items: readonly MissingItem[],
+    minimumCondition: PurchasePreferences["minimumCondition"],
+  ) {
+    if (!activeBinder || !items.length) return;
+    const entryIds = [...new Set(items.flatMap((item) => item.entryIds))];
+    try {
+      setStorageStatus("saving");
+      await persistBinderChange(activeBinder.id, (binder) => setCardPreferencesForEntries(
+        binder,
+        entryIds,
+        { minimumCondition },
+      ));
+      setStorageStatus("saved");
+      setMessage(entryIds.length === 1
+        ? `Der gewünschte Zustand wurde auf „${conditionProfile(minimumCondition).shortLabel}“ gesetzt.`
+        : `Der gewünschte Zustand wurde für ${entryIds.length} Karten auf „${conditionProfile(minimumCondition).shortLabel}“ gesetzt.`);
+    } catch (error) {
+      handleStorageError(error, "Der gewünschte Kartenzustand konnte nicht gespeichert werden.");
+    }
+  }
+
   async function refreshCardSnapshot(card: CardSnapshot) {
     if (!activeBinder) return;
     try {
@@ -1698,6 +1721,7 @@ export function FoundationWorkspace() {
     const cardsToRefresh = [...new Map(
       items
         .filter((item) => !item.card.category
+          || !item.card.levelChecked
           || item.card.abilities === undefined
           || item.card.attacks === undefined
           || (item.card.ref.language === "de" && !item.card.englishIdentity))
@@ -1768,8 +1792,8 @@ export function FoundationWorkspace() {
           <button type="button" className={!binderManagerOpen && !missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(false); }} disabled={!activeBinder}>
             <Archive size={18} /> <span>Binder</span>
           </button>
-          <button type="button" className={missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(true); setSearchOpen(false); }} disabled={!activeBinder}>
-            <ListFilter size={18} /> <span>Fehlende Karten</span>{stats ? <span className={styles.navBadge}>{stats.missing}</span> : null}
+          <button type="button" aria-label={stats ? `Fehlende Karten (${stats.missing})` : "Fehlende Karten"} className={missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(true); setSearchOpen(false); }} disabled={!activeBinder}>
+            <ListFilter size={18} /> <span>Karten kaufen</span>{stats ? <span className={styles.navBadge}>{stats.missing}</span> : null}
           </button>
         </nav>
         {binders.length ? (
@@ -1986,6 +2010,7 @@ export function FoundationWorkspace() {
               variant={variantEdit.variant}
               preferences={variantEdit.preferences}
               availability={variantEdit.availableVariants}
+              explainCondition
               onVariantChange={(variant) => setVariantEdit((current) => current ? { ...current, variant } : current)}
               onPreferencesChange={(preferences) => setVariantEdit((current) => current ? { ...current, preferences } : current)}
             />
@@ -2043,8 +2068,8 @@ export function FoundationWorkspace() {
             <div className={styles.binderHeaderActions}>
               <button type="button" className={styles.secondaryButton} onClick={() => setBinderRename({ binderId: activeBinder.id, name: activeBinder.name })}><Pencil size={16} /> Binder umbenennen</button>
               <button type="button" className={styles.secondaryButton} onClick={() => openSearchForSlot()}><Search size={17} /> Karte hinzufügen</button>
-              <button type="button" className={styles.primaryButton} onClick={() => { setMissingOpen((open) => !open); setSearchOpen(false); setCopyState("idle"); setTcgplayerCopyState("idle"); setCardmarketCopyState("idle"); }} disabled={Boolean(missingResult.error) || cardsBinderId !== activeId}>
-                <ListFilter size={17} /> {missingOpen ? "Zurück zum Binder" : `Fehlende Karten (${stats.missing})`}
+              <button type="button" aria-label={missingOpen ? "Zurück zum Binder" : `Fehlende Karten (${stats.missing})`} className={styles.primaryButton} onClick={() => { setMissingOpen((open) => !open); setSearchOpen(false); setCopyState("idle"); setTcgplayerCopyState("idle"); setCardmarketCopyState("idle"); }} disabled={Boolean(missingResult.error) || cardsBinderId !== activeId}>
+                <ListFilter size={17} /> {missingOpen ? "Zurück zum Binder" : `Karten kaufen (${stats.missing})`}
               </button>
             </div>
           </section>
@@ -2070,6 +2095,7 @@ export function FoundationWorkspace() {
               onCopy={copyMissingItems}
               onTextExport={(items) => downloadMissingExport(items, "text")}
               onCsvExport={(items) => downloadMissingExport(items, "csv")}
+              onConditionsChange={(items, condition) => void changeMissingConditions(items, condition)}
               onClose={() => setMissingOpen(false)}
               tcgplayerEnabled={FEATURES.tcgplayerTextExport}
               tcgplayerCopyState={tcgplayerCopyState}
@@ -2509,7 +2535,7 @@ export function FoundationWorkspace() {
                         {contextCard ? <span>{contextCard.setName} · Nr. {formatCollectorNumber(contextCard.collectorNumber, contextCard.collectorTotal)}</span> : null}
                         <em>{contextEntry.owned ? "✓ Vorhanden" : "✕ Fehlt"} · {contextCard?.ref.language.toUpperCase() ?? "–"}</em>
                       </div>
-                      <div className={styles.slabGrade} title={`Mindestzustand: ${minimumConditionLabels[contextEntry.preferences.minimumCondition]}`}>
+                      <div className={styles.slabGrade} title={`Mindestzustand: ${conditionProfile(contextEntry.preferences.minimumCondition).label}`}>
                         <strong>{conditionGrade[contextEntry.preferences.minimumCondition]}</strong>
                         <small>min.</small>
                       </div>
@@ -2522,7 +2548,7 @@ export function FoundationWorkspace() {
                     <dl className={styles.contextDetails}>
                       <div><dt>Sprache</dt><dd>{contextCard?.ref.language.toUpperCase() ?? "–"}</dd></div>
                       <div><dt>Version</dt><dd>{formatVariantSelection(contextEntry.variant)}</dd></div>
-                      <div><dt>Zustand</dt><dd>{minimumConditionLabels[contextEntry.preferences.minimumCondition]}</dd></div>
+                      <div><dt>Zustand</dt><dd>{conditionProfile(contextEntry.preferences.minimumCondition).label}</dd></div>
                       <div><dt>Status</dt><dd data-tone={contextEntry.owned ? "ok" : "miss"}>{contextEntry.owned ? "Vorhanden" : "Fehlt"}</dd></div>
                     </dl>
                     <div className={styles.contextActions}>
