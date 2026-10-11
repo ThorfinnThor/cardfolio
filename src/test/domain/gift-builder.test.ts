@@ -160,6 +160,33 @@ describe("deterministic Gift selection", () => {
     expect(result.selected.map((item) => item.card.key)).not.toContain(unpriced.card.key);
   });
 
+  it("prefers a catalog-verified finish over an ambiguous recommendation", () => {
+    const ambiguous = Array.from({ length: 9 }, (_, index) => candidate(index + 1, {
+      card: {
+        ...candidate(index + 1).card,
+        imageBaseUrl: `https://assets.tcgdex.net/en/set/card-${index + 1}`,
+      },
+    }));
+    const verified = candidate(10, {
+      card: {
+        ...candidate(10).card,
+        imageBaseUrl: "https://assets.tcgdex.net/en/set/card-10",
+        availableVariants: {
+          normal: false,
+          holo: true,
+          reverse: false,
+          firstEdition: false,
+        },
+      },
+      variant: { finish: "holo", edition: "unlimited", printing: "shadowed" },
+    });
+
+    const result = engine.select({ candidates: [...ambiguous, verified], preferences: preferences() });
+
+    expect(result.selected).toHaveLength(9);
+    expect(result.selected.map((item) => item.card.key)).toContain(verified.card.key);
+  });
+
   it("uses approximate estimates to keep the proposal near the requested budget", () => {
     const affordable = Array.from({ length: 9 }, (_, index) => candidate(index + 1, {
       price: { ...candidate(index + 1).price, amountMinor: 400, confidence: "approximate" },

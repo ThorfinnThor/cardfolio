@@ -138,7 +138,7 @@ describe("GiftBuilderPanel", () => {
     expect(screen.getByText("9 / 9")).toBeInTheDocument();
   });
 
-  it("keeps an unverified finish open instead of silently choosing Normal", async () => {
+  it("lets beginners accept unverified finish recommendations together instead of checking every card", async () => {
     const briefs: CatalogSearchItem[] = Array.from({ length: 9 }, (_, index) => ({
       ref: { provider: "tcgdex", id: `gift-ui-${index + 1}`, language: "en" },
       name: `Pikachu ${index + 1}`,
@@ -158,17 +158,15 @@ describe("GiftBuilderPanel", () => {
     render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
 
     fireEvent.click(screen.getByRole("button", { name: /Vorschlag erzeugen/i }));
-    await screen.findByText("0 von 9 Karten sind vollständig vorbereitet. Sonderfälle kannst du direkt an der Karte ändern.");
-    expect(screen.getByRole("heading", { name: "Noch 9 Karten prüfen" })).toBeInTheDocument();
-    expect(screen.getByText(/Normal, Holo oder Reverse Holo nicht eindeutig/)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Jetzt 9 Karten prüfen" })).toBeEnabled();
+    await screen.findByText("Cardfolio hat für alle 9 Karten eine passende Bestellempfehlung vorbereitet. Du übernimmst sie gleich mit einem Klick.");
+    expect(screen.getByRole("heading", { name: "Empfehlungen für 9 Karten übernehmen" })).toBeInTheDocument();
+    expect(screen.getByText(/musst Normal, Holo oder Reverse Holo nicht selbst erkennen/)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Jetzt Ausführung prüfen/i })).not.toBeInTheDocument();
+    expect(screen.getAllByText("Empfehlung vorbereitet")).toHaveLength(9);
 
-    fireEvent.click(screen.getByRole("button", { name: "Erste offene Karte prüfen" }));
-    expect(screen.getByRole("combobox", { name: "Ausführung der Karte" })).toHaveValue("normal");
-    expect(screen.getByText("So prüfst du diese Karte:")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Diese Ausführung bestätigen" }));
-    expect(screen.getByText("1 von 9 Karten sind vollständig vorbereitet. Sonderfälle kannst du direkt an der Karte ändern.")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Noch 8 Karten prüfen" })).toBeInTheDocument();
+    fireEvent.click(screen.getAllByRole("button", { name: "Alle Empfehlungen übernehmen" })[0]);
+    expect(screen.getByText("Alle Karten sind bestellbereit. Du kannst jetzt zur Bestellprüfung weitergehen.")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Auswahl prüfen" })).toBeEnabled();
   });
 
   it("builds a proposal from one of ten semantic artwork themes", async () => {

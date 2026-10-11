@@ -6,7 +6,11 @@ import type {
   UUID,
   VariantSelection,
 } from "./types";
-import { variantSelectionIssue } from "./variant-selection";
+import {
+  createInitialVariantSelection,
+  variantAvailabilityForCard,
+  variantSelectionIssue,
+} from "./variant-selection";
 
 export type GiftRecipientKind = "partner" | "child" | "friend" | "other";
 export type GiftOccasion = "birthday" | "christmas" | "anniversary" | "other";
@@ -130,6 +134,10 @@ export function giftCandidateHasPrice(candidate: GiftCardCandidate): boolean {
   return candidate.price.amountMinor !== undefined;
 }
 
+export function giftCandidateHasVerifiedFinish(candidate: GiftCardCandidate): boolean {
+  return createInitialVariantSelection(variantAvailabilityForCard(candidate.card)).finish !== "unspecified";
+}
+
 function stableCandidateOrder(left: GiftCardCandidate, right: GiftCardCandidate): number {
   const leftPrice = left.price.amountMinor ?? Number.MAX_SAFE_INTEGER;
   const rightPrice = right.price.amountMinor ?? Number.MAX_SAFE_INTEGER;
@@ -149,6 +157,7 @@ function diverseOrder(candidates: GiftCardCandidate[]): GiftCardCandidate[] {
     remaining.sort((left, right) =>
       Number(!giftCandidateHasArtwork(left)) - Number(!giftCandidateHasArtwork(right))
       || Number(!giftCandidateHasPrice(left)) - Number(!giftCandidateHasPrice(right))
+      || Number(!giftCandidateHasVerifiedFinish(left)) - Number(!giftCandidateHasVerifiedFinish(right))
       || (setCounts.get(left.card.setId) ?? 0) - (setCounts.get(right.card.setId) ?? 0)
       || (left.releaseYear === undefined ? 1 : yearCounts.get(left.releaseYear) ?? 0)
         - (right.releaseYear === undefined ? 1 : yearCounts.get(right.releaseYear) ?? 0)
@@ -178,6 +187,7 @@ function diverseSelectionWithinBudget(
     const ranked = [...remaining].sort((left, right) =>
       Number(!giftCandidateHasArtwork(left)) - Number(!giftCandidateHasArtwork(right))
       || Number(!giftCandidateHasPrice(left)) - Number(!giftCandidateHasPrice(right))
+      || Number(!giftCandidateHasVerifiedFinish(left)) - Number(!giftCandidateHasVerifiedFinish(right))
       || (setCounts.get(left.card.setId) ?? 0) - (setCounts.get(right.card.setId) ?? 0)
       || (left.releaseYear === undefined ? 1 : yearCounts.get(left.releaseYear) ?? 0)
         - (right.releaseYear === undefined ? 1 : yearCounts.get(right.releaseYear) ?? 0)
