@@ -45,9 +45,11 @@
 .actions { display: flex; justify-content: space-between; gap: 9px; border-top: 1px solid var(--cf-line); padding-top: 16px; }
 .primaryButton, .secondaryButton { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid transparent; border-radius: 8px; padding: 0 17px; font-size: 14px; font-weight: 700; cursor: pointer; }
 .primaryButton { border-color: var(--cf-accent); background: var(--cf-accent); color: var(--cf-on-accent); }
+.guidanceButton { min-height: 52px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 2px solid var(--cf-gold); border-radius: 8px; background: var(--cf-gold-soft); color: var(--cf-gold-text); padding: 0 18px; font-size: 14px; font-weight: 750; cursor: pointer; }
+.guidanceButton:hover { box-shadow: inset 0 0 0 1px var(--cf-gold); }
 .primaryButton:disabled, .secondaryButton:disabled { cursor: not-allowed; opacity: .45; }
 .secondaryButton { border-color: var(--cf-line2); background: var(--cf-surface); color: var(--cf-text); }
-.secondaryButton:hover:not(:disabled), .iconButton:hover:not(:disabled) { border-color: var(--cf-accent); color: var(--cf-accent-text); }
+.secondaryButton:hover:not(:disabled), .iconButton:hover:not(:disabled), .replaceButton:hover:not(:disabled) { border-color: var(--cf-accent); color: var(--cf-accent-text); }
 .error, .warning, .gateNotice { display: grid; gap: 6px; margin: 0; border-radius: 8px; padding: 11px 13px; font-size: 12px; line-height: 1.45; }
 .error { border: 1px solid var(--cf-miss); background: var(--cf-miss-soft); color: var(--cf-miss-text); }
 .warning { border: 1px solid var(--cf-gold); background: var(--cf-gold-soft); color: var(--cf-gold-text); }
@@ -65,8 +67,22 @@
 .orderSetup label { display: grid; gap: 5px; color: var(--cf-text2); font-size: 11px; font-weight: 650; }
 .orderSetup select { width: 100%; min-height: 42px; border: 1px solid var(--cf-line2); border-radius: 7px; background: var(--cf-field); color: var(--cf-text); padding: 8px 10px; font: inherit; font-size: 12px; }
 .orderSetup select:focus { border-color: var(--cf-accent); outline: 3px solid var(--cf-accent-soft); }
+.requirementGuide { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px; border: 2px solid var(--cf-gold); border-radius: 10px; background: var(--cf-gold-soft); color: var(--cf-gold-text); padding: 15px 16px; }
+.requirementGuide > svg { align-self: start; margin-top: 2px; }
+.requirementGuide > div { display: grid; gap: 4px; }
+.requirementGuide span { font-family: var(--cf-font-mono); font-size: 9px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+.requirementGuide h2 { margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: 19px; font-weight: 650; line-height: 1.25; }
+.requirementGuide p { max-width: 760px; margin: 0; color: var(--cf-text2); font-size: 12px; line-height: 1.5; }
+.requirementButton { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--cf-gold); border-radius: 8px; background: var(--cf-surface); color: var(--cf-gold-text); padding: 0 15px; font-size: 12px; font-weight: 750; cursor: pointer; white-space: nowrap; }
+.requirementButton:hover { background: var(--cf-field); box-shadow: inset 0 0 0 1px var(--cf-gold); }
+.requirementGuide[data-kind="review"] { border-color: var(--cf-miss); background: var(--cf-miss-soft); color: var(--cf-miss-text); }
+.requirementGuide[data-kind="review"] .requirementButton { border-color: var(--cf-miss); color: var(--cf-miss-text); }
+.requirementGuide[data-kind="review"] .requirementButton:hover { box-shadow: inset 0 0 0 1px var(--cf-miss); }
+.readyNotice { display: flex; align-items: center; gap: 9px; margin: 0; border: 1px solid var(--cf-ok); border-radius: 8px; background: var(--cf-ok-soft); color: var(--cf-text); padding: 12px 14px; font-size: 12px; font-weight: 650; }
+.readyNotice svg { flex: 0 0 auto; color: var(--cf-ok); }
 .cardGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .candidateCard { position: relative; display: grid; align-content: start; gap: 8px; min-width: 0; border: 1px solid var(--cf-line); border-radius: 9px; background: var(--cf-surface); padding: 9px; }
+.candidateCard[data-requires-review="true"] { border: 2px solid var(--cf-miss); box-shadow: 0 0 0 4px color-mix(in srgb, var(--cf-miss) 14%, transparent); }
 .cardImage { min-height: 210px; display: grid; place-items: center; overflow: hidden; border-radius: 6px; background: var(--cf-page); }
 .cardImage img { display: block; width: 100%; max-height: 260px; object-fit: contain; }
 .imageFallback { display: grid; min-height: 190px; place-items: center; color: var(--cf-muted); font-size: 11px; text-align: center; }
@@ -77,17 +93,32 @@
 .priceMeta { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 8.5px; line-height: 1.35; }
 .reasonTags { display: flex; flex-wrap: wrap; gap: 4px; }
 .reasonTags span { border-radius: 999px; background: var(--cf-accent-soft); color: var(--cf-accent-text); padding: 3px 6px; font-family: var(--cf-font-mono); font-size: 8.5px; }
-.orderSummary { display: grid; gap: 2px; border-left: 3px solid var(--cf-gold); background: var(--cf-accent-soft); padding: 7px 8px; }
+.orderSummary { display: grid; gap: 2px; border-left: 3px solid var(--cf-miss); background: var(--cf-miss-soft); padding: 7px 8px; }
 .orderSummary[data-ready="true"] { border-left-color: var(--cf-ok); background: var(--cf-ok-soft); }
 .orderSummary strong { color: var(--cf-text); font-size: 10.5px; }
-.orderSummary span { overflow: hidden; color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 8.5px; line-height: 1.4; text-overflow: ellipsis; white-space: nowrap; }
+.orderSummary span { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 8.5px; line-height: 1.45; }
 .cardActions, .selectionTools { display: flex; align-items: center; gap: 6px; }
-.cardActions { border-top: 1px solid var(--cf-line); padding-top: 6px; }
+.cardActions { display: grid; grid-template-columns: minmax(0, 1fr) 44px; border-top: 1px solid var(--cf-line); padding-top: 6px; }
 .linkButton { min-height: 44px; flex: 1; border: 0; background: transparent; color: var(--cf-accent-text); padding: 0 2px; font-size: 11px; font-weight: 650; text-align: left; cursor: pointer; }
+.linkButton { grid-column: 1 / -1; }
+.linkButton[data-urgent="true"] { border: 2px solid var(--cf-miss); border-radius: 7px; background: var(--cf-miss-soft); color: var(--cf-miss-text); padding: 8px 10px; font-size: 12px; font-weight: 800; text-align: center; }
+.replaceButton { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--cf-line2); border-radius: 6px; background: var(--cf-surface2); color: var(--cf-text2); padding: 0 10px; font-size: 10px; font-weight: 700; cursor: pointer; }
+.replaceButton:disabled { opacity: .55; cursor: not-allowed; }
 .iconButton { display: inline-grid; width: 44px; height: 44px; place-items: center; border: 1px solid var(--cf-line2); border-radius: 6px; background: var(--cf-surface2); color: var(--cf-text2); cursor: pointer; }
 .iconButton:disabled { opacity: .35; cursor: not-allowed; }
 .variantBox { border-top: 1px dashed var(--cf-line2); padding-top: 8px; }
+.reviewInstructions { display: grid; gap: 9px; border: 1px solid var(--cf-gold); border-radius: 8px; background: var(--cf-gold-soft); color: var(--cf-text2); padding: 11px; }
+.reviewInstructions strong { color: var(--cf-text); font-size: 12px; }
+.reviewInstructions ol { display: grid; gap: 4px; margin: 0; padding-left: 20px; font-size: 10px; line-height: 1.45; }
+.reviewInstructions button { width: 100%; min-height: 44px; background: var(--cf-surface); }
 .cardIndex { position: absolute; top: 14px; left: 14px; display: grid; width: 23px; height: 23px; place-items: center; border-radius: 50%; background: rgb(20 24 32 / 82%); color: #fff; font-family: var(--cf-font-mono); font-size: 9px; font-weight: 700; }
+.reviewBadge { position: absolute; top: 14px; right: 14px; border: 1px solid var(--cf-miss); border-radius: 999px; background: var(--cf-miss-soft); color: var(--cf-miss-text); padding: 5px 8px; font-size: 9px; font-weight: 800; box-shadow: 0 1px 4px rgb(0 0 0 / 20%); }
+.candidateLimitNotice { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px; border: 1px solid var(--cf-line2); border-radius: 9px; background: var(--cf-surface2); color: var(--cf-muted); padding: 12px 14px; }
+.candidateLimitNotice > svg { color: var(--cf-accent-text); }
+.candidateLimitNotice > div { display: grid; gap: 3px; }
+.candidateLimitNotice strong { color: var(--cf-text); font-size: 12px; }
+.candidateLimitNotice span { font-size: 10.5px; line-height: 1.45; }
+.candidateLimitNotice button { min-height: 42px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid var(--cf-line2); border-radius: 7px; background: var(--cf-surface); color: var(--cf-accent-text); padding: 0 12px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
 .allResults { display: grid; gap: 8px; border-top: 1px solid var(--cf-line); padding-top: 13px; }
 .allResults p { margin: 0; color: var(--cf-muted); font-size: 11px; }
 .allResults ul { display: grid; max-height: 240px; overflow: auto; margin: 0; border: 1px solid var(--cf-line); border-radius: 8px; padding: 0; list-style: none; }
@@ -160,6 +191,10 @@
 }
 @media (max-width: 760px) {
   .orderSetup { grid-template-columns: 1fr; }
+  .requirementGuide { grid-template-columns: auto minmax(0, 1fr); }
+  .requirementButton { grid-column: 1 / -1; width: 100%; }
+  .candidateLimitNotice { grid-template-columns: auto minmax(0, 1fr); }
+  .candidateLimitNotice button { grid-column: 1 / -1; width: 100%; }
   .cardGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .purchaseOptions { grid-template-columns: 1fr; }
 }

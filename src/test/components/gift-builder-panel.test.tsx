@@ -79,7 +79,7 @@ describe("GiftBuilderPanel", () => {
     expect(screen.getByText("Was bedeutet der Kartenzustand?")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /Vorschlag erzeugen/i }));
     expect(await screen.findAllByText("9 / 9")).not.toHaveLength(0);
-    expect(screen.getByRole("status")).toHaveTextContent("Preisprüfung");
+    expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("Preisprüfung"))).toBe(true);
     expect(screen.getByText("9 von 9 Karten sind vollständig vorbereitet. Sonderfälle kannst du direkt an der Karte ändern.")).toBeInTheDocument();
     const orderCondition = screen.getByRole("combobox", { name: "Zustand für alle" });
     expect(orderCondition).toHaveValue("excellent");
@@ -159,12 +159,16 @@ describe("GiftBuilderPanel", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /Vorschlag erzeugen/i }));
     await screen.findByText("0 von 9 Karten sind vollständig vorbereitet. Sonderfälle kannst du direkt an der Karte ändern.");
-    expect(screen.getByRole("button", { name: "Auswahl prüfen" })).toBeDisabled();
+    expect(screen.getByRole("heading", { name: "Noch 9 Karten prüfen" })).toBeInTheDocument();
+    expect(screen.getByText(/Normal, Holo oder Reverse Holo nicht eindeutig/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Jetzt 9 Karten prüfen" })).toBeEnabled();
 
-    fireEvent.click(screen.getAllByRole("button", { name: "Bestellangaben ändern" })[0]);
+    fireEvent.click(screen.getByRole("button", { name: "Erste offene Karte prüfen" }));
     expect(screen.getByRole("combobox", { name: "Ausführung der Karte" })).toHaveValue("normal");
-    fireEvent.click(screen.getByRole("button", { name: "Vorauswahl bestätigen" }));
+    expect(screen.getByText("So prüfst du diese Karte:")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Diese Ausführung bestätigen" }));
     expect(screen.getByText("1 von 9 Karten sind vollständig vorbereitet. Sonderfälle kannst du direkt an der Karte ändern.")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Noch 8 Karten prüfen" })).toBeInTheDocument();
   });
 
   it("builds a proposal from one of ten semantic artwork themes", async () => {
@@ -195,8 +199,16 @@ describe("GiftBuilderPanel", () => {
       language: "en",
       matchQuality: "dominant",
     }));
+    expect(screen.getByText("Keine weitere passende Karte verfügbar")).toBeInTheDocument();
+    expect(screen.getByText(/Alle 9 bestätigten Treffer für „Meer & Wasser“ sind bereits ausgewählt/)).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: /Keine alternative Karte für/ })).toHaveLength(9);
+
+    fireEvent.click(screen.getByRole("button", { name: "Pikachu 1 entfernen" }));
+    expect(screen.getByRole("button", { name: "+ Karte hinzufügen" })).toBeDisabled();
     fireEvent.click(screen.getByRole("button", { name: /Alle passenden Karten ansehen/i }));
     expect(screen.getByText(/Artwork-Treffer zum Motiv „Meer & Wasser“/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Erneut hinzufügen" }));
+    expect(screen.getByText("9 / 9")).toBeInTheDocument();
   });
 
   it("shows price estimates without claiming that the gift is under budget", async () => {
