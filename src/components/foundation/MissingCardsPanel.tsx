@@ -4,6 +4,7 @@ import { ArrowRight, Clipboard, Download, ExternalLink, FileDown, Search, X } fr
 import { useEffect, useMemo, useState } from "react";
 
 import { loadCardmarketProductMappingCatalog } from "@/data/marketplace/cardmarket-product-mappings";
+import { loadCardmarketDecklistIdentityCatalog, type CardmarketDecklistIdentityCatalog } from "@/data/marketplace/cardmarket-decklist-identities";
 import { loadTcgplayerCardMappings } from "@/data/marketplace/tcgplayer-card-mappings";
 import { TCGPLAYER_SET_MAPPINGS, TCGPLAYER_UNAVAILABLE_SETS } from "@/data/marketplace/tcgplayer-set-mappings";
 import { TCGPLAYER_PRINTING_MAPPINGS } from "@/data/marketplace/tcgplayer-printing-mappings";
@@ -57,6 +58,7 @@ interface MissingCardsPanelProps {
   onTcgplayerTextExport?: (exported: TcgplayerMassEntryExport) => void;
   cardmarketEnabled?: boolean;
   cardmarketProductMappings?: readonly MarketplaceProductIdentityMapping[];
+  cardmarketDecklistIdentities?: Readonly<Record<string, string>>;
   cardmarketPreparing?: boolean;
   cardmarketCopyState?: "idle" | "copied" | "error";
   onCardmarketPrepare?: (items: readonly MissingItem[]) => void;
@@ -84,6 +86,7 @@ export function MissingCardsPanel({
   onTcgplayerTextExport,
   cardmarketEnabled = false,
   cardmarketProductMappings,
+  cardmarketDecklistIdentities,
   cardmarketPreparing = false,
   cardmarketCopyState = "idle",
   onCardmarketPrepare,
@@ -102,6 +105,8 @@ export function MissingCardsPanel({
   const [tcgplayerMappingsError, setTcgplayerMappingsError] = useState<string>();
   const [loadedCardmarketMappings, setLoadedCardmarketMappings] = useState<readonly MarketplaceProductIdentityMapping[]>();
   const [cardmarketMappingsError, setCardmarketMappingsError] = useState<string>();
+  const [cardmarketDecklistCatalog, setCardmarketDecklistCatalog] = useState<CardmarketDecklistIdentityCatalog>();
+  const [cardmarketDecklistError, setCardmarketDecklistError] = useState<string>();
   const tcgplayerMappings = tcgplayerCardMappings ?? loadedTcgplayerMappings;
   const cardmarketMappings = cardmarketProductMappings ?? loadedCardmarketMappings;
   useEffect(() => {
@@ -128,6 +133,18 @@ export function MissingCardsPanel({
       });
     return () => controller.abort();
   }, [cardmarketProductMappings, loadedCardmarketMappings, marketplaceChoice]);
+  useEffect(() => {
+    if (marketplaceChoice !== "cardmarket" || cardmarketDecklistIdentities || cardmarketDecklistCatalog) return;
+    const controller = new AbortController();
+    loadCardmarketDecklistIdentityCatalog(controller.signal)
+      .then(setCardmarketDecklistCatalog)
+      .catch((error: unknown) => {
+        if (!controller.signal.aborted) {
+          setCardmarketDecklistError(error instanceof Error ? error.message : "Cardmarket-Decklistenprüfung konnte nicht geladen werden.");
+        }
+      });
+    return () => controller.abort();
+  }, [cardmarketDecklistCatalog, cardmarketDecklistIdentities, marketplaceChoice]);
   const visibleItems = useMemo(() => {
     const normalizedQuery = query.trim().toLocaleLowerCase("de-DE");
     if (!normalizedQuery) return items;
@@ -148,9 +165,12 @@ export function MissingCardsPanel({
     [tcgplayerEnabled, tcgplayerMappings, visibleItems],
   );
   const cardmarketHandoff = useMemo(
-    () => cardmarketEnabled ? createCardmarketHandoff(visibleItems, cardmarketMappings) : undefined,
-    [cardmarketEnabled, cardmarketMappings, visibleItems],
+    () => cardmarketEnabled
+      ? createCardmarketHandoff(visibleItems, cardmarketMappings, cardmarketDecklistIdentities ?? cardmarketDecklistCatalog?.identities ?? {})
+      : undefined,
+    [cardmarketDecklistCatalog, cardmarketDecklistIdentities, cardmarketEnabled, cardmarketMappings, visibleItems],
   );
+  const cardmarketDecklistReady = Boolean(cardmarketDecklistIdentities || cardmarketDecklistCatalog);
   const activeCardmarketPartIndex = cardmarketHandoff?.parts.length
     ? Math.min(cardmarketPartIndex, cardmarketHandoff.parts.length - 1)
     : 0;
@@ -246,6 +266,7 @@ export function MissingCardsPanel({
                 aria-pressed={marketplaceChoice === "cardmarket"}
                 onClick={() => {
                   setCardmarketMappingsError(undefined);
+                  setCardmarketDecklistError(undefined);
                   setMarketplaceChoice("cardmarket");
                   onCardmarketPrepare?.(visibleItems);
                 }}
@@ -389,7 +410,7 @@ export function MissingCardsPanel({
                 </select>
               </label>
             ) : null}
-            {activeCardmarketPart.text && !cardmarketPreparing ? (
+            {activeCardmarketPart.text && !cardmarketPreparing && cardmarketDecklistReady ? (
               <a
                 className={styles.cardmarketBulkAction}
                 href={cardmarketHandoff.wantsUrl}
@@ -406,7 +427,7 @@ export function MissingCardsPanel({
             ) : (
               <button type="button" className={styles.cardmarketBulkAction} disabled>
                 <Clipboard aria-hidden="true" size={19} />
-                {cardmarketPreparing ? "Kartenliste wird vorbereitet …" : "Keine Sammelliste verfügbar"}
+                {cardmarketPreparing || !cardmarketDecklistReady ? "Kartenliste wird sicher geprüft …" : "Keine verifizierte Sammelliste verfügbar"}
               </button>
             )}
             <small>Kein Kauf wird automatisch ausgelöst. Preise, Versand und die endgültige Kartenauswahl bestätigst du erst bei Cardmarket.</small>
@@ -420,6 +441,8 @@ export function MissingCardsPanel({
 
           {cardmarketMappingsError ? <p className={styles.error} role="status">{cardmarketMappingsError} Die sicheren Suchlinks bleiben verfügbar.</p> : null}
           {!cardmarketProductMappings && !loadedCardmarketMappings && !cardmarketMappingsError ? <p className={styles.handoffSteps} role="status">Optionale Cardmarket-Produktlinks werden geladen …</p> : null}
+          {cardmarketDecklistError ? <p className={styles.error} role="alert">{cardmarketDecklistError} Aus Sicherheitsgründen wird keine ungeprüfte Sammelliste erzeugt.</p> : null}
+          {!cardmarketDecklistReady && !cardmarketDecklistError ? <p className={styles.handoffSteps} role="status">Der vollständige Cardmarket-Produktabgleich wird geladen …</p> : null}
 
           <details className={styles.advancedCardmarket}>
             <summary>Importliste ansehen oder als Datei speichern</summary>

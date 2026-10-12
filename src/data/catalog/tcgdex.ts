@@ -246,6 +246,8 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
       category: category(card.category),
       level: card.level ?? undefined,
       levelChecked: true,
+      suffix: card.suffix ?? undefined,
+      cardmarketIdentityV2Checked: true,
       abilities: card.abilities?.map((ability) => ability.name) ?? [],
       attacks: card.attacks?.map((attack) => attack.name) ?? [],
       englishIdentity: englishCard ? {
@@ -253,6 +255,7 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
         setName: englishCard.set.name,
         category: category(englishCard.category),
         level: englishCard.level ?? undefined,
+        suffix: englishCard.suffix ?? undefined,
         abilities: englishCard.abilities?.map((ability) => ability.name) ?? [],
         attacks: englishCard.attacks?.map((attack) => attack.name) ?? [],
       } : undefined,

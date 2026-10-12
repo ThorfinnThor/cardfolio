@@ -17,6 +17,7 @@
     "data:sync:sets": "node scripts/sync-public-data.mjs --sets-only",
     "catalog:audit": "node scripts/catalog-audit.mjs",
     "catalog:audit:summary": "node scripts/catalog-audit.mjs --summary",
+    "cardmarket:decklist-audit": "node scripts/cardmarket-decklist-audit.mjs",
     "cardtrader:discover": "node scripts/cardtrader-discovery.mjs",
     "cardtrader:audit": "node scripts/cardtrader-mapping-audit.mjs",
     "cardtrader:blueprint-id-audit": "node scripts/cardtrader-blueprint-id-audit.mjs",

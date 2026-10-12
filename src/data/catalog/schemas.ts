@@ -21,6 +21,7 @@ export const tcgdexCardSchema = z.object({
   image: imageBaseUrl.nullish(),
   category: z.string().nullish(),
   level: z.string().nullish(),
+  suffix: z.string().nullish(),
   abilities: z.array(z.object({ name: z.string().min(1) })).nullish(),
   attacks: z.array(z.object({ name: z.string().min(1) })).nullish(),
   pricing: z.unknown().optional(),

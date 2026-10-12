@@ -19,6 +19,7 @@ export const CARDMARKET_MAX_WANTS_POSITIONS = 150;
 // identity. Keep these overrides keyed by the stable set/collector identity;
 // do not modify the shared CardSnapshot just to satisfy one provider.
 const CARDMARKET_LEVEL_OVERRIDES: Record<string, string> = {
+  "dp2:16": "46",
   "pl1:99": "12",
 };
 
@@ -84,12 +85,29 @@ function cardmarketLevel(item: MissingItem): string | undefined {
   return item.card.level ?? CARDMARKET_LEVEL_OVERRIDES[`${item.card.setId}:${item.card.collectorNumber}`];
 }
 
-function createDecklistLine(item: MissingItem): { line?: string; reason?: string } {
+function cardmarketSuffix(value?: string): string | undefined {
+  if (!value) return undefined;
+  const normalized = inline(value);
+  return normalized === "Nicht angegeben" ? undefined : normalized;
+}
+
+function createDecklistLine(
+  item: MissingItem,
+  verifiedIdentities?: Readonly<Record<string, string>>,
+): { line?: string; reason?: string } {
   const variantIssue = variantSelectionIssue(item.variant, variantAvailabilityForCard(item.card));
   if (variantIssue) return { reason: `Variantenangaben prüfen: ${variantIssue}` };
+  if (verifiedIdentities) {
+    const verifiedIdentity = verifiedIdentities[item.card.ref.id];
+    if (!verifiedIdentity) {
+      return { reason: "Diese Karte ist noch nicht eindeutig gegen den offiziellen Cardmarket-Produktkatalog geprüft und wurde sicherheitshalber nicht importiert." };
+    }
+    return { line: `${item.quantity}x ${inline(verifiedIdentity)}` };
+  }
   const identity = item.card.ref.language === "de" ? item.card.englishIdentity : undefined;
   const name = identity?.name ?? item.card.name;
   const level = identity?.level ?? cardmarketLevel(item);
+  const suffix = cardmarketSuffix(identity?.suffix ?? item.card.suffix);
   const category = identity?.category ?? item.card.category;
   const abilities = identity?.abilities ?? item.card.abilities;
   const attacks = identity?.attacks ?? item.card.attacks;
@@ -106,7 +124,11 @@ function createDecklistLine(item: MissingItem): { line?: string; reason?: string
     return { reason: "Cardmarket benötigt bei Pokémon mindestens eine Fähigkeit oder Attacke zur eindeutigen Suche." };
   }
 
-  return { line: `${item.quantity}x ${[cardmarketCardName(name, level), ...identifyingDetails].join(" ")}` };
+  const fullName = cardmarketCardName(name, level);
+  const providerSuffix = suffix && !fullName.toLocaleLowerCase("en").includes(suffix.toLocaleLowerCase("en"))
+    ? suffix
+    : undefined;
+  return { line: `${item.quantity}x ${[fullName, ...identifyingDetails, providerSuffix].filter(Boolean).join(" ")}` };
 }
 
 export function createCardmarketSearchUrl(item: MissingItem): string {
@@ -146,9 +168,10 @@ function createProductTarget(
 export function createCardmarketHandoff(
   items: readonly MissingItem[],
   productMappings: readonly MarketplaceProductIdentityMapping[] = [],
+  verifiedIdentities?: Readonly<Record<string, string>>,
 ): CardmarketHandoff {
   const parts: CardmarketHandoffPart[] = [];
-  const matches = items.map((item) => ({ item, ...createDecklistLine(item) }));
+  const matches = items.map((item) => ({ item, ...createDecklistLine(item, verifiedIdentities) }));
   const products = items.map((item) => createProductTarget(item, productMappings));
   const excluded = matches
     .filter((match) => !match.line)
@@ -175,6 +198,7 @@ export function createCardmarketHandoff(
   const warnings = items.length
     ? [
         "Offizielles Pokémon-Decklistenformat: Menge, vollständiger Kartenname, Fähigkeiten und Attacken – eine Karte pro Zeile.",
+        ...(verifiedIdentities ? ["Der Importtext enthält ausschließlich Kartenidentitäten, die mit dem offiziellen Cardmarket-Produktkatalog abgeglichen wurden."] : []),
         "Das Decklistenformat legt Set, Kartennummer, Sprache und Druckvariante nicht fest.",
         "Der in Cardfolio gewählte Zustand wird gespeichert, aber vom Decklistenformat nicht übertragen. Wähle ihn nach dem Import in Cardmarket aus.",
         "Vor dem Kauf jede Position anhand von Set, Kartennummer, Sprache, Finish, Edition, Druckvariante und Zustand prüfen.",

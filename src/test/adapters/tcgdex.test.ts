@@ -14,6 +14,7 @@ describe("TCGdexCatalogAdapter", () => {
         name: "Bulbasaur",
         category: "Pokemon",
         level: "13",
+        suffix: "Prime",
         abilities: null,
         attacks: [{ name: "Leech Seed" }],
         set: { id: "base1", name: "Base Set" },
@@ -30,7 +31,17 @@ describe("TCGdexCatalogAdapter", () => {
     expect(search.items[0]).toMatchObject({ setId: "base1", setName: "Base Set" });
 
     const card = await adapter.getCard(search.items[0].ref);
-    expect(card).toMatchObject({ setId: "base1", physicalStatus: "physical", category: "pokemon", level: "13", levelChecked: true, abilities: [], attacks: ["Leech Seed"] });
+    expect(card).toMatchObject({
+      setId: "base1",
+      physicalStatus: "physical",
+      category: "pokemon",
+      level: "13",
+      levelChecked: true,
+      suffix: "Prime",
+      cardmarketIdentityV2Checked: true,
+      abilities: [],
+      attacks: ["Leech Seed"],
+    });
   });
 
   it("passes set browsing and pagination to TCGdex", async () => {

@@ -1722,6 +1722,7 @@ export function FoundationWorkspace() {
       items
         .filter((item) => !item.card.category
           || !item.card.levelChecked
+          || !item.card.cardmarketIdentityV2Checked
           || item.card.abilities === undefined
           || item.card.attacks === undefined
           || (item.card.ref.language === "de" && !item.card.englishIdentity))

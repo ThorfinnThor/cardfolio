@@ -23,6 +23,8 @@ export interface CardSnapshot {
   category?: "pokemon" | "trainer" | "energy" | "other";
   level?: string;
   levelChecked?: true;
+  suffix?: string;
+  cardmarketIdentityV2Checked?: true;
   abilities?: string[];
   attacks?: string[];
   englishIdentity?: {
@@ -30,6 +32,7 @@ export interface CardSnapshot {
     setName: string;
     category?: "pokemon" | "trainer" | "energy" | "other";
     level?: string;
+    suffix?: string;
     abilities: string[];
     attacks: string[];
   };

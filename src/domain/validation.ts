@@ -49,6 +49,8 @@ export const cardSnapshotSchema = z.object({
   category: z.enum(["pokemon", "trainer", "energy", "other"]).optional(),
   level: z.string().min(1).max(50).optional(),
   levelChecked: z.literal(true).optional(),
+  suffix: z.string().min(1).max(50).optional(),
+  cardmarketIdentityV2Checked: z.literal(true).optional(),
   abilities: z.array(z.string().min(1).max(300)).max(10).optional(),
   attacks: z.array(z.string().min(1).max(300)).max(10).optional(),
   englishIdentity: z.object({
@@ -56,6 +58,7 @@ export const cardSnapshotSchema = z.object({
     setName: z.string().min(1).max(300),
     category: z.enum(["pokemon", "trainer", "energy", "other"]).optional(),
     level: z.string().min(1).max(50).optional(),
+    suffix: z.string().min(1).max(50).optional(),
     abilities: z.array(z.string().min(1).max(300)).max(10),
     attacks: z.array(z.string().min(1).max(300)).max(10),
   }).optional(),

@@ -258,3 +258,18 @@
 - This link is not an affiliate link: it contains no referral parameter, produces no recorded commission and is labelled accordingly. Stock, colour, shipping and final price remain provider-side checks.
 - Affiliate applications and personalized-binder programs are separate release gates. An advertised application form is not approval, so Cardfolio does not enable tracking or claim a partnership.
 - Active binder offers now declare whether they are standard or personalized, plus card capacity and pocket layout. Contradictory personalized offers, invalid capacity data and non-affiliate tracking parameters fail closed.
+
+## 2026-10-12 — Cardmarket identity retains suffixes and audited legacy levels
+
+- TCGdex card details can expose provider-relevant suffixes such as `Prime`; Cardfolio now retains them on both the selected card and its English marketplace identity instead of discarding them during schema validation.
+- Existing locally stored cards are refreshed once through a versioned Cardmarket-identity marker so previously saved binders also receive the new suffix metadata.
+- Cardmarket's reviewed product identity for Mysterious Treasures Typhlosion 16/123 requires `Lv.46`, while the current TCGdex detail omits the printed level. The provider-specific compatibility layer therefore supplies that audited level without changing the shared card name.
+- These corrections improve the documented decklist fallback but do not turn it into an exact set, language, finish, printing, condition or purchase integration.
+
+## 2026-10-12 — Cardmarket bulk import is guarded by a full-catalog identity audit
+
+- The weekly data job compares every physical English TCGdex card with Cardmarket's official Pokémon Singles product catalog before it may enter the bulk decklist.
+- Exact product identities are accepted. A missing level or provider suffix is corrected only when the card name plus the ordered ability/attack identity resolves to exactly one official Cardmarket product name.
+- Ambiguous, incomplete or absent matches fail closed and stay visible as excluded positions; Cardfolio never sends a guessed line merely to keep the bulk list complete.
+- The initial audit covers all 21,290 card records currently addressable through TCGdex: 20,429 verified identities, including 1,534 systematic corrections, and 861 deliberately excluded identities. TCGdex's set metadata declares another 228 positions without card records (primarily Jumbo, Sample and legacy side collections); those cannot be exported or silently counted as verified. The versioned runtime file is loaded only after Cardmarket is selected.
+- This check guarantees that emitted names exist in the official product catalog. It cannot make Cardmarket's lossy decklist format carry set, collector number, language, finish, printing or condition, so those attributes remain provider-side checks.

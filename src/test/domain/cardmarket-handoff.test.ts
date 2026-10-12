@@ -140,6 +140,48 @@ describe("Cardmarket handoff", () => {
     expect(new URL(exported.parts[0].searches[0].url).searchParams.get("searchString")).toBe("Treecko Lv.14 Arceus 78/99");
   });
 
+  it("adds Cardmarket's missing Lv.46 identity for Mysterious Treasures Typhlosion", () => {
+    const typhlosion = missingItem(16, {
+      card: {
+        ...missingItem().card,
+        key: "tcgdex:dp2-16:en",
+        ref: { provider: "tcgdex", id: "dp2-16", language: "en" },
+        name: "Typhlosion",
+        setId: "dp2",
+        setName: "Mysterious Treasures",
+        collectorNumber: "16",
+        collectorTotal: "123",
+        level: undefined,
+        abilities: ["Firestarter"],
+        attacks: ["Evaporating Heat"],
+      },
+    });
+
+    expect(createCardmarketHandoff([typhlosion]).parts[0].text)
+      .toBe("2x Typhlosion Lv.46 Firestarter Evaporating Heat");
+  });
+
+  it("keeps the TCGdex suffix required by Cardmarket for Prime cards", () => {
+    const typhlosionPrime = missingItem(110, {
+      card: {
+        ...missingItem().card,
+        key: "tcgdex:hgss1-110:en",
+        ref: { provider: "tcgdex", id: "hgss1-110", language: "en" },
+        name: "Typhlosion",
+        setId: "hgss1",
+        setName: "HeartGold SoulSilver",
+        collectorNumber: "110",
+        collectorTotal: "123",
+        suffix: "Prime",
+        abilities: ["Afterburner"],
+        attacks: ["Flare Destroy"],
+      },
+    });
+
+    expect(createCardmarketHandoff([typhlosionPrime]).parts[0].text)
+      .toBe("2x Typhlosion Afterburner Flare Destroy Prime");
+  });
+
   it("adds the Cardmarket level for Platinum Torchic when TCGdex omits it", () => {
     const torchic = missingItem(99, {
       identityKey: "torchic-pl1-99",
@@ -179,6 +221,36 @@ describe("Cardmarket handoff", () => {
       status: "verified",
       productUrl: mapping.productUrl,
     });
+  });
+
+  it("uses only full-catalog identities that were verified against Cardmarket", () => {
+    const item = missingItem(16, {
+      card: {
+        ...missingItem().card,
+        ref: { provider: "tcgdex", id: "dp2-16", language: "en" },
+        name: "Typhlosion",
+        setId: "dp2",
+        collectorNumber: "16",
+        abilities: ["Firestarter"],
+        attacks: ["Evaporating Heat"],
+      },
+    });
+
+    const exported = createCardmarketHandoff([item], [], {
+      "dp2-16": "Typhlosion Lv.46 Firestarter Evaporating Heat",
+    });
+
+    expect(exported.parts[0].text).toBe("2x Typhlosion Lv.46 Firestarter Evaporating Heat");
+    expect(exported.excluded).toEqual([]);
+    expect(exported.warnings.join(" ")).toMatch(/offiziellen Cardmarket-Produktkatalog abgeglichen/);
+  });
+
+  it("fails closed instead of exporting a card absent from the full-catalog audit", () => {
+    const exported = createCardmarketHandoff([missingItem()], [], {});
+
+    expect(exported.parts[0].text).toBe("");
+    expect(exported.importablePositionCount).toBe(0);
+    expect(exported.excluded[0].reason).toMatch(/nicht eindeutig.*offiziellen Cardmarket-Produktkatalog/);
   });
 
   it("exports trainers by full name and excludes Pokemon without catalog attack data", () => {

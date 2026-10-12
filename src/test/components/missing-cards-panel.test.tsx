@@ -181,6 +181,10 @@ describe("MissingCardsPanel", () => {
         {...props()}
         cardmarketEnabled
         cardmarketProductMappings={cardmarketProductMappings}
+        cardmarketDecklistIdentities={{
+          "basep-1": "Pikachu Static Growl Thundershock",
+          "base1-44": "Bulbasaur Leech Seed",
+        }}
         onCardmarketPrepare={onCardmarketPrepare}
         onCardmarketCopy={onCardmarketCopy}
         onCardmarketTextExport={onCardmarketTextExport}
