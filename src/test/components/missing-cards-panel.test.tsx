@@ -195,6 +195,8 @@ describe("MissingCardsPanel", () => {
     expect(onCardmarketPrepare).toHaveBeenCalledWith(items);
     expect(screen.getByRole("heading", { name: "Komplette Liste zu Cardmarket" })).toBeInTheDocument();
     expect(screen.getByText("Nur einmal klicken – nicht jede Karte einzeln suchen")).toBeInTheDocument();
+    expect(screen.getByText(/Cardmarket übernimmt den Zustand nicht automatisch/)).toBeInTheDocument();
+    expect(screen.getByText(/Die Karten haben unterschiedliche Zustandswünsche/)).toBeInTheDocument();
     const bulkHandoff = screen.getByRole("link", { name: "2 Karten kopieren & Cardmarket öffnen" });
     expect(bulkHandoff).toHaveAttribute("href", "https://www.cardmarket.com/de/Pokemon/Wants");
     expect(bulkHandoff).toHaveAttribute("rel", "noopener noreferrer");
@@ -226,6 +228,32 @@ describe("MissingCardsPanel", () => {
 
     expect(onCardmarketCopy).toHaveBeenCalledTimes(2);
     expect(onCardmarketTextExport).toHaveBeenCalledWith(expect.objectContaining({ index: 1, positionCount: 2 }));
+  });
+
+  it("translates Cardfolio's shared condition into Cardmarket's minimum-condition code", () => {
+    const excellentItems = items.map((item) => ({
+      ...item,
+      preferences: { minimumCondition: "excellent" as const },
+    }));
+    render(
+      <MissingCardsPanel
+        {...props()}
+        items={excellentItems}
+        cardmarketEnabled
+        cardmarketDecklistIdentities={{
+          "basep-1": "Pikachu Static Growl Thundershock",
+          "base1-44": "Bulbasaur Leech Seed",
+        }}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Cardmarket" }));
+
+    expect(screen.getByText("Sehr gut")).toBeInTheDocument();
+    expect(screen.getByText("≥ EX · Excellent")).toBeInTheDocument();
+    expect(screen.getByText(/Massenveränderung.*Mindestzustand/)).toHaveTextContent("Mindestzustand auf ≥ EX setzen");
+    expect(screen.getByText("Zustand einmal korrigieren")).toBeInTheDocument();
+    expect(screen.getByText(/mindestens EX/)).toBeInTheDocument();
   });
 
   it("keeps Cardmarket exceptions open while prepared details stay collapsed", () => {

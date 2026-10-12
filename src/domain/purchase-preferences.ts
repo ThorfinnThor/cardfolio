@@ -8,6 +8,11 @@ export interface ConditionProfile {
   explanation: string;
 }
 
+export interface CardmarketMinimumCondition {
+  code: "NM" | "EX" | "LP" | "PL" | "PO";
+  label: string;
+}
+
 export const conditionProfiles: readonly ConditionProfile[] = [
   {
     value: "near-mint",
@@ -54,8 +59,22 @@ export const minimumConditionLabels: Record<PurchasePreferences["minimumConditio
   any: "Beliebig",
 };
 
+const cardmarketMinimumConditions: Record<PurchasePreferences["minimumCondition"], CardmarketMinimumCondition> = {
+  "near-mint": { code: "NM", label: "Near Mint" },
+  excellent: { code: "EX", label: "Excellent" },
+  "lightly-played": { code: "LP", label: "Light Played" },
+  played: { code: "PL", label: "Played" },
+  any: { code: "PO", label: "Poor" },
+};
+
 export function conditionProfile(
   value: PurchasePreferences["minimumCondition"],
 ): ConditionProfile {
   return conditionProfiles.find((profile) => profile.value === value) ?? conditionProfiles[4];
+}
+
+export function cardmarketMinimumCondition(
+  value: PurchasePreferences["minimumCondition"],
+): CardmarketMinimumCondition {
+  return cardmarketMinimumConditions[value];
 }

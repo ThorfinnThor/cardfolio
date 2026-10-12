@@ -12,7 +12,7 @@ import { createCardmarketHandoff, type CardmarketHandoffPart } from "@/domain/ca
 import { formatCollectorNumber } from "@/domain/catalog-search";
 import { groupMissingItemsBySet } from "@/domain/missing-items";
 import { missingItemReviewNote } from "@/domain/missing-items-export";
-import { conditionProfile, conditionProfiles } from "@/domain/purchase-preferences";
+import { cardmarketMinimumCondition, conditionProfile, conditionProfiles } from "@/domain/purchase-preferences";
 import type { MarketplaceProductIdentityMapping } from "@/domain/marketplace-product-identity";
 import { ConditionGuide } from "./ConditionGuide";
 import { GuidedFlow } from "./GuidedFlow";
@@ -184,6 +184,7 @@ export function MissingCardsPanel({
   const tcgplayerExceptions = tcgplayerExport?.matches.filter((match) => !match.line) ?? [];
   const visibleConditions = new Set(visibleItems.map((item) => item.preferences.minimumCondition));
   const sharedCondition = visibleConditions.size === 1 ? [...visibleConditions][0] : undefined;
+  const sharedCardmarketCondition = sharedCondition ? cardmarketMinimumCondition(sharedCondition) : undefined;
 
   return (
     <section className={styles.panel} aria-labelledby="missing-cards-heading">
@@ -400,7 +401,7 @@ export function MissingCardsPanel({
             <div>
               <span className={styles.stepTag}>Empfohlen</span>
               <h4 id="cardmarket-bulk-heading">Nur einmal klicken – nicht jede Karte einzeln suchen</h4>
-              <p>Cardfolio kopiert alle vorbereiteten Karten und öffnet Cardmarkets Wants-Bereich. Dort legst du einmal eine Liste an, fügst den kopierten Text ein und startest anschließend den Shopping Wizard.</p>
+              <p>Cardfolio kopiert alle vorbereiteten Karten und öffnet Cardmarkets Wants-Bereich. Dort legst du einmal eine Liste an, fügst den kopierten Text ein und stellst anschließend einmal den Mindestzustand für alle Karten ein.</p>
             </div>
             {cardmarketHandoff.parts.length > 1 ? (
               <label className={styles.cardmarketBulkPart} htmlFor="cardmarket-bulk-part">
@@ -410,6 +411,22 @@ export function MissingCardsPanel({
                 </select>
               </label>
             ) : null}
+            <div className={styles.cardmarketConditionWarning} role="alert">
+              <div>
+                <strong>Wichtig: Cardmarket übernimmt den Zustand nicht automatisch</strong>
+                <p>Nach dem Import zeigt Cardmarket zunächst <b>≥ PO</b>. Das heißt „Poor oder besser“ und ist nur Cardmarkets Standard – nicht der in Cardfolio gewählte Zustand.</p>
+              </div>
+              {sharedCondition && sharedCardmarketCondition ? (
+                <div className={styles.cardmarketConditionTranslation}>
+                  <span><small>In Cardfolio gewählt</small><b>{conditionProfile(sharedCondition).shortLabel}</b></span>
+                  <ArrowRight aria-hidden="true" size={20} />
+                  <span><small>Bei Cardmarket einstellen</small><b>≥ {sharedCardmarketCondition.code} · {sharedCardmarketCondition.label}</b></span>
+                </div>
+              ) : (
+                <p><b>Die Karten haben unterschiedliche Zustandswünsche.</b> Stelle sie bei Cardmarket gruppenweise gemäß den Cardfolio-Angaben ein.</p>
+              )}
+              <p><b>So geht es für alle auf einmal:</b> Nach dem Import alle Karten markieren → „Massenveränderung“ öffnen → Mindestzustand {sharedCardmarketCondition ? <>auf <b>≥ {sharedCardmarketCondition.code}</b> setzen</> : "passend zu den Cardfolio-Angaben setzen"}.</p>
+            </div>
             {activeCardmarketPart.text && !cardmarketPreparing && cardmarketDecklistReady ? (
               <a
                 className={styles.cardmarketBulkAction}
@@ -436,6 +453,7 @@ export function MissingCardsPanel({
           <ol className={styles.cardmarketSteps} aria-label="Cardmarket-Kaufschritte">
             <li><strong>Oben einmal klicken</strong><span>Die komplette Liste wird kopiert und Cardmarket geöffnet.</span></li>
             <li><strong>Einmal einfügen</strong><span>Neue Wants-Liste anlegen, „Deckliste hinzufügen“ öffnen und den kopierten Text einfügen.</span></li>
+            <li data-important="true"><strong>Zustand einmal korrigieren</strong><span>Alle markieren → „Massenveränderung“ → {sharedCardmarketCondition ? `mindestens ${sharedCardmarketCondition.code}` : "gewünschte Mindestzustände"}.</span></li>
             <li><strong>Gemeinsam kaufen</strong><span>Ergebnis kurz prüfen und anschließend den Shopping Wizard starten.</span></li>
           </ol>
 
