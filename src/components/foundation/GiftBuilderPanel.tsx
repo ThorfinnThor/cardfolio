@@ -693,22 +693,29 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
             <textarea value={greeting} maxLength={500} rows={3} onChange={(event) => setGreeting(event.target.value)} placeholder="Viel Freude mit deinem Binder!" />
           </label>
 
-          <section className={styles.purchaseOptions} aria-label="Getrennte nächste Schritte">
+          <div className={styles.purchaseFlowIntro} aria-labelledby="purchase-flow-heading">
+            <p className={styles.eyebrow}>DIE NÄCHSTEN SCHRITTE</p>
+            <h3 id="purchase-flow-heading">Fast geschafft – jetzt noch Karten und Binder besorgen</h3>
+            <p>Du kannst beides nacheinander erledigen. Erst die Karten prüfen und kaufen, danach den passenden Binder auswählen.</p>
+          </div>
+          <section className={styles.purchaseOptions} aria-label="Nächste Schritte: Karten und Binder kaufen">
             <article className={styles.purchaseCard}>
-              <div><p className={styles.eyebrow}>KARTENKAUF</p><h3>Karten besorgen</h3><p>Öffnet die vorhandene Fehlkarten-Übergabe mit den bekannten TCGplayer- und Cardmarket-Prüfschritten.</p></div>
+              <div><p className={styles.purchaseStep}>1 · KARTEN KAUFEN</p><h3>Karten besorgen</h3><p>Prüfe die vorbereiteten Angaben und öffne danach den passenden Marktplatz. Cardfolio führt dich durch die nächsten Schritte.</p></div>
               <button type="button" className={styles.primaryButton} aria-label="Karten besorgen" onClick={onCardsPurchase}><ShoppingBag aria-hidden="true" size={18} /> Karten jetzt kaufen <ArrowRight aria-hidden="true" size={18} /></button>
             </article>
             <article className={styles.purchaseCard}>
-              <div><p className={styles.eyebrow}>BINDERKAUF</p><h3>Binder personalisieren</h3>
+              <div><p className={styles.purchaseStep}>2 · BINDER KAUFEN</p><h3>Passenden Binder auswählen</h3>
                 {partnerLoadError ? <p role="status">Angebote sind momentan nicht erreichbar. Du kannst den lokalen Binder weiter bearbeiten.</p> : null}
                 {!partnerLoadError && !binderOffers ? <p role="status">Binder-Angebote werden geprüft…</p> : null}
-                {!partnerLoadError && binderOffers?.length === 0 ? <p role="status">Zurzeit ist kein geprüfter Personalisierungsanbieter verfügbar. Der Anbieterstatus wird vor jeder Aktivierung geprüft.</p> : null}
+                {!partnerLoadError && binderOffers?.length === 0 ? <p role="status">Zurzeit ist kein geprüfter Binder-Shop verfügbar. Du kannst den lokalen Binder trotzdem weiter bearbeiten.</p> : null}
                 {binderOffers?.map((offer) => <div className={styles.offerRow} key={offer.id}>
                   <div><strong>{offer.displayName}</strong><small>{offer.price ? `${offer.price.qualifier === "from" ? "ab " : ""}${formatMoney(offer.price.amountMinor, offer.price.currency)} · Stand ${formatDate(offer.price.sourceUpdatedAt)}` : "Kein bestätigter Binderpreis"}</small>
+                    {offer.capacityCards ? <small>{offer.pocketsPerPage ? `${offer.pocketsPerPage}-Pocket · ` : ""}Platz für bis zu {offer.capacityCards} Karten</small> : null}
                     {offer.affiliateDisclosure ? <small>{offer.affiliateDisclosure}</small> : null}
+                    {offer.status === "available" ? <small>Externer Shop · Verfügbarkeit und Versand dort prüfen · kein Affiliate-Link</small> : null}
                     {offer.status !== "available" ? <small>{offer.statusReason ?? "Angebot nicht verfügbar."}</small> : null}
                   </div>
-                  <button type="button" className={styles.secondaryButton} disabled={offer.status !== "available"} onClick={() => openBinderPartner(offer.id)}>{offer.status === "available" ? <>Binder personalisieren <ExternalLink aria-hidden="true" size={14} /></> : "Derzeit nicht verfügbar"}</button>
+                  <button type="button" className={styles.secondaryButton} disabled={offer.status !== "available"} onClick={() => openBinderPartner(offer.id)}>{offer.status === "available" ? <>{offer.kind === "personalized" ? "Binder personalisieren" : "Binder im Shop ansehen"} <ExternalLink aria-hidden="true" size={14} /></> : "Derzeit nicht verfügbar"}</button>
                 </div>)}
                 {externalNavigationBlocked ? <p className={styles.warning} role="alert">Der Browser hat den externen Anbieteraufruf blockiert. Erlaube Pop-ups oder öffne den Link nach erneuter Auswahl.</p> : null}
               </div>

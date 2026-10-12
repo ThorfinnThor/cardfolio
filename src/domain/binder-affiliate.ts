@@ -1,5 +1,6 @@
 export type BinderOfferCurrency = "EUR" | "USD";
 export type BinderOfferStatus = "available" | "disabled" | "stale" | "invalid";
+export type BinderOfferKind = "standard" | "personalized";
 
 export interface BinderOfferPrice {
   amountMinor: number;
@@ -22,6 +23,7 @@ export interface BinderPartnerCapabilities {
 export interface BinderPartnerConfig {
   id: string;
   displayName: string;
+  kind: BinderOfferKind;
   enabled: boolean;
   verifiedAt: string;
   reviewAfter: string;
@@ -29,6 +31,8 @@ export interface BinderPartnerConfig {
   disabledReason?: string;
   affiliate: BinderAffiliateDisclosure;
   capabilities: BinderPartnerCapabilities;
+  capacityCards?: number;
+  pocketsPerPage?: number;
   price?: BinderOfferPrice;
   evidenceUrls: readonly string[];
 }
@@ -44,6 +48,7 @@ export interface BinderPartnerCatalog {
 export interface BinderOffer {
   id: string;
   displayName: string;
+  kind: BinderOfferKind;
   status: BinderOfferStatus;
   statusReason?: string;
   verifiedAt: string;
@@ -52,6 +57,8 @@ export interface BinderOffer {
   affiliate: boolean;
   affiliateDisclosure?: string;
   capabilities: BinderPartnerCapabilities;
+  capacityCards?: number;
+  pocketsPerPage?: number;
   price?: BinderOfferPrice;
   evidenceUrls: readonly string[];
 }

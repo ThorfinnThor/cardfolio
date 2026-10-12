@@ -243,4 +243,18 @@
 
 - TCGdex's optional Pokémon `level` is retained in local card snapshots and their English marketplace identity. Cardmarket decklist names and individual searches append it as `Lv.<level>` when it is not already part of the name. This keeps legacy products such as Treecko Lv.14, Lv.7 and Lv.11 distinguishable without changing newer cards. A `levelChecked` marker refreshes legacy local snapshots once while preventing repeated fetches for modern cards that legitimately have no level.
 - Cardmarket's Pokémon decklist format still cannot encode the requested condition. The missing-card workflow therefore keeps the selection visible, explains that it must be applied after import and provides plain-language guidance before a marketplace is opened.
+
+## 2026-10-12 — Order-ready marketplace identity is separate from catalog matching
+
+- Cardfolio now defines a provider-neutral product-identity contract with `verified`, `probable` and `missing` outcomes. The contract records the stable TCGdex card ID, provider product identity, language/variant scope, source evidence, check date and verification date.
+- Only one valid, unambiguous `verified` mapping may unlock an order-ready product action. Text matches, search URLs and legacy name/level overrides remain candidates and never become verified implicitly.
+- Invalid mappings and equally specific ambiguous mappings fail closed. A versioned reviewed Cardmarket mapping catalog now supplies direct product pages; its initial verified scope contains Platinum Torchic 99/127. Every unmapped card remains an explicitly labelled provider search rather than being presented as an exact product.
+- The Cardmarket purchase view puts reviewed product pages first, search-required cards second and the lossy decklist import behind an advanced disclosure. The decklist remains a manual-review fallback because it cannot encode set, collector number, language, finish, printing or condition reliably.
 - The same beginner guide appears in the Gift preferences and in the normal binder's version-and-condition dialog. It recommends “Sehr gut” as the default balance while warning that “Zustand egal” can include damaged cards and that valuable-card photos must still be checked.
+
+## 2026-10-12 — Standard binder purchase is separate from affiliate personalization
+
+- The Gift summary may show the reviewed Vault X EU 9-Pocket Zip Binder as a normal external shop link. Its 9-pocket layout and 360-card capacity fit Cardfolio's 3×3 gift pages.
+- This link is not an affiliate link: it contains no referral parameter, produces no recorded commission and is labelled accordingly. Stock, colour, shipping and final price remain provider-side checks.
+- Affiliate applications and personalized-binder programs are separate release gates. An advertised application form is not approval, so Cardfolio does not enable tracking or claim a partnership.
+- Active binder offers now declare whether they are standard or personalized, plus card capacity and pocket layout. Contradictory personalized offers, invalid capacity data and non-affiliate tracking parameters fail closed.

@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "enabled": false,
-  "reviewedAt": "2026-10-01",
-  "disabledReason": "Es ist noch kein Anbieter für personalisierte Binder vertraglich und technisch freigegeben.",
+  "enabled": true,
+  "reviewedAt": "2026-10-12",
   "partners": [
     {
-      "id": "personalization-partner-pending",
-      "displayName": "Personalisierter Binder",
-      "enabled": false,
-      "verifiedAt": "2026-10-01",
-      "reviewAfter": "2026-10-31",
-      "disabledReason": "Anbieter, Produktkompatibilität, Preis, Affiliate-Vertrag und Datenschutz müssen vor der Aktivierung erneut geprüft werden.",
+      "id": "vaultx-eu-9-pocket-zip",
+      "displayName": "Vault X 9-Pocket Zip Binder",
+      "kind": "standard",
+      "enabled": true,
+      "verifiedAt": "2026-10-12",
+      "reviewAfter": "2026-10-26",
+      "destinationUrl": "https://eu.vaultx.com/collections/card-binders/products/9-pocket-exo-tec-zip-binder",
       "affiliate": {
         "enabled": false
       },
@@ -18,8 +18,19 @@
         "personalization": false,
         "photoUpload": false
       },
+      "capacityCards": 360,
+      "pocketsPerPage": 9,
+      "price": {
+        "amountMinor": 2699,
+        "currency": "EUR",
+        "qualifier": "from",
+        "sourceUpdatedAt": "2026-10-12"
+      },
       "evidenceUrls": [
-        "https://www.pokemon.com/uk/legal/terms-of-use"
+        "https://eu.vaultx.com/collections/card-binders/products/9-pocket-exo-tec-zip-binder",
+        "https://eu.vaultx.com/policies/shipping-policy",
+        "https://eu.vaultx.com/policies/privacy-policy",
+        "https://www.vaultx.com/become-an-affiliate"
       ]
     }
   ]

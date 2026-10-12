@@ -107,6 +107,33 @@
 .reviewList li { display: grid; gap: 2px; border: 1px solid var(--cf-line); border-left: 3px solid var(--cf-miss); border-radius: 6px; background: var(--cf-surface); padding: 8px 11px; }
 .reviewList span { color: var(--cf-text); font-size: .8rem; font-weight: 650; }
 .reviewList small { color: var(--cf-text2); font-size: .72rem; line-height: 1.45; }
+.cardmarketSteps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 14px 0 0; padding: 0; counter-reset: cardmarket-step; list-style: none; }
+.cardmarketSteps li { position: relative; display: grid; align-content: start; gap: 3px; min-height: 76px; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-surface); padding: 11px 11px 11px 42px; counter-increment: cardmarket-step; }
+.cardmarketSteps li::before { position: absolute; top: 11px; left: 11px; display: grid; width: 23px; height: 23px; place-items: center; border-radius: 50%; background: var(--cf-accent); color: var(--cf-on-accent); content: counter(cardmarket-step); font-family: var(--cf-font-mono); font-size: .68rem; font-weight: 750; }
+.cardmarketSteps strong { color: var(--cf-text); font-size: .79rem; }
+.cardmarketSteps span { color: var(--cf-text2); font-size: .7rem; line-height: 1.45; }
+.cardmarketProductSection { margin-top: 14px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--cf-ok) 40%, var(--cf-line2)); border-left: 3px solid var(--cf-ok); border-radius: 9px; background: var(--cf-surface); }
+.cardmarketProductSection[data-status="search"] { border-color: color-mix(in srgb, var(--cf-accent) 42%, var(--cf-line2)); border-left-color: var(--cf-accent); }
+.cardmarketProductHeading { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 12px; }
+.cardmarketProductHeading > div { display: flex; align-items: center; gap: 8px; }
+.cardmarketProductHeading h4 { margin: 0; color: var(--cf-text); font-size: .86rem; }
+.cardmarketProductHeading small { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: .68rem; }
+.cardmarketNumber { display: inline-grid; width: 24px; height: 24px; place-items: center; border-radius: 50%; background: var(--cf-ok); color: #fff; font-family: var(--cf-font-mono); font-size: .68rem; font-weight: 750; }
+.cardmarketProductSection[data-status="search"] .cardmarketNumber { background: var(--cf-accent); color: var(--cf-on-accent); }
+.cardmarketSectionIntro, .cardmarketEmptyState { margin: 0; border-top: 1px solid var(--cf-line); color: var(--cf-text2); padding: 10px 12px; font-size: .74rem; line-height: 1.5; }
+.cardmarketProductSection ul { display: grid; gap: 0; margin: 0; border-top: 1px solid var(--cf-line); padding: 0; list-style: none; }
+.cardmarketProductSection li { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--cf-line); padding: 10px 12px; }
+.cardmarketProductSection li:last-child { border-bottom: 0; }
+.cardmarketProductSection li > span { display: grid; min-width: 0; gap: 2px; }
+.cardmarketProductSection li strong { overflow: hidden; color: var(--cf-text); font-size: .8rem; text-overflow: ellipsis; white-space: nowrap; }
+.cardmarketProductSection li small { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: .68rem; }
+.cardmarketProductSection li a { min-height: 38px; display: inline-flex; flex: 0 0 auto; align-items: center; gap: 6px; border: 1px solid var(--cf-ok); border-radius: 7px; background: color-mix(in srgb, var(--cf-ok) 9%, var(--cf-surface)); color: var(--cf-ok-text); padding: 7px 10px; font-size: .75rem; font-weight: 700; text-decoration: none; }
+.cardmarketProductSection[data-status="search"] li a { border-color: var(--cf-accent); background: var(--cf-accent-soft); color: var(--cf-accent-text); }
+.cardmarketProductSection li a:hover { filter: brightness(.97); }
+.advancedCardmarket { margin-top: 14px; border: 1px dashed var(--cf-line2); border-radius: 9px; background: var(--cf-surface); }
+.advancedCardmarket > summary { cursor: pointer; color: var(--cf-text2); padding: 12px 14px; font-size: .78rem; font-weight: 650; }
+.advancedCardmarket[open] > summary { border-bottom: 1px solid var(--cf-line); }
+.advancedCardmarketBody { padding: 0 13px 13px; }
 .marketplaceSearches { margin-top: 14px; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-surface); }
 .marketplaceSearches summary { cursor: pointer; color: var(--cf-accent-text); padding: 11px 12px; font-size: .8rem; font-weight: 650; }
 .marketplaceSearches ul { display: grid; gap: 0; margin: 0; border-top: 1px solid var(--cf-line); padding: 0; list-style: none; }
@@ -174,6 +201,9 @@
   .reviewOverview { align-items: flex-start; flex-direction: column; }
   .reviewOverview span { text-align: left; }
   .marketplaceChoiceActions { grid-template-columns: 1fr; }
+  .cardmarketSteps { grid-template-columns: 1fr; }
+  .cardmarketProductSection li { align-items: stretch; flex-direction: column; }
+  .cardmarketProductSection li a { justify-content: center; }
   .advancedExports { align-items: stretch; flex-direction: column; }
   .continueButton { width: 100%; justify-self: stretch; }
 }

@@ -11,6 +11,7 @@ function catalog(overrides: Partial<BinderPartnerCatalog> = {}): BinderPartnerCa
     partners: [{
       id: "example-binder",
       displayName: "Example Binder",
+      kind: "personalized",
       enabled: true,
       verifiedAt: "2026-10-01",
       reviewAfter: "2026-11-01",
@@ -21,6 +22,8 @@ function catalog(overrides: Partial<BinderPartnerCatalog> = {}): BinderPartnerCa
         staticQuery: { ref: "cardfolio", campaign: "gift" },
       },
       capabilities: { personalization: true, photoUpload: false },
+      capacityCards: 360,
+      pocketsPerPage: 9,
       evidenceUrls: ["https://partner.example/terms"],
     }],
     ...overrides,
@@ -59,7 +62,23 @@ describe("reviewed binder affiliate adapter", () => {
       status: "available",
       price: undefined,
       affiliateDisclosure: "Affiliate-Link: Cardfolio kann eine Provision erhalten.",
+      capacityCards: 360,
+      pocketsPerPage: 9,
     });
+  });
+
+  it("rejects contradictory personalized offers and invalid capacity metadata", () => {
+    const withoutPersonalization = catalog({
+      partners: [{ ...catalog().partners[0], capabilities: { personalization: false, photoUpload: false } }],
+    });
+    expect(new ReviewedBinderAffiliateAdapter(withoutPersonalization).getOffer("example-binder", new Date("2026-10-15T00:00:00Z")))
+      .toMatchObject({ status: "invalid", statusReason: expect.stringContaining("Personalisierung") });
+
+    const invalidCapacity = catalog({
+      partners: [{ ...catalog().partners[0], capacityCards: 0 }],
+    });
+    expect(new ReviewedBinderAffiliateAdapter(invalidCapacity).getOffer("example-binder", new Date("2026-10-15T00:00:00Z")))
+      .toMatchObject({ status: "invalid", statusReason: expect.stringContaining("Kapazität") });
   });
 
   it("invalidates affiliate offers without a disclosure and rejects malformed catalogs", () => {

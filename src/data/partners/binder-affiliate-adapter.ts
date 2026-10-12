@@ -20,6 +20,9 @@ function invalidReason(partner: BinderPartnerConfig): string | undefined {
   if (partner.enabled && !partner.evidenceUrls.length) return "Aktivierter Partner hat keine Prüfquellen.";
   if (partner.evidenceUrls.some((url) => !isHttpsUrl(url))) return "Prüfquellen müssen HTTPS verwenden.";
   if (partner.affiliate.enabled && !partner.affiliate.text?.trim()) return "Affiliate-Angebote benötigen eine sichtbare Kennzeichnung.";
+  if (partner.kind === "personalized" && !partner.capabilities.personalization) return "Personalisierte Angebote müssen Personalisierung ausdrücklich unterstützen.";
+  if (partner.capacityCards !== undefined && (!Number.isInteger(partner.capacityCards) || partner.capacityCards <= 0)) return "Die Binder-Kapazität ist ungültig.";
+  if (partner.pocketsPerPage !== undefined && (!Number.isInteger(partner.pocketsPerPage) || partner.pocketsPerPage <= 0)) return "Das Binder-Seitenformat ist ungültig.";
   if (partner.price && (!Number.isInteger(partner.price.amountMinor) || partner.price.amountMinor <= 0 || !validDate(partner.price.sourceUpdatedAt))) {
     return "Preis oder Preisstand ist ungültig.";
   }
@@ -44,6 +47,7 @@ function toOffer(catalog: BinderPartnerCatalog, partner: BinderPartnerConfig, no
   return {
     id: partner.id,
     displayName: partner.displayName,
+    kind: partner.kind,
     status,
     statusReason,
     verifiedAt: partner.verifiedAt,
@@ -52,6 +56,8 @@ function toOffer(catalog: BinderPartnerCatalog, partner: BinderPartnerConfig, no
     affiliate: partner.affiliate.enabled,
     affiliateDisclosure: partner.affiliate.enabled ? partner.affiliate.text : undefined,
     capabilities: { ...partner.capabilities },
+    capacityCards: partner.capacityCards,
+    pocketsPerPage: partner.pocketsPerPage,
     price: partner.price ? { ...partner.price } : undefined,
     evidenceUrls: [...partner.evidenceUrls],
   };
@@ -93,6 +99,7 @@ export function parseBinderPartnerCatalog(value: unknown): BinderPartnerCatalog 
       !isRecord(entry)
       || typeof entry.id !== "string"
       || typeof entry.displayName !== "string"
+      || (entry.kind !== "standard" && entry.kind !== "personalized")
       || typeof entry.enabled !== "boolean"
       || typeof entry.verifiedAt !== "string"
       || typeof entry.reviewAfter !== "string"
@@ -101,6 +108,8 @@ export function parseBinderPartnerCatalog(value: unknown): BinderPartnerCatalog 
       || !isRecord(entry.capabilities)
       || typeof entry.capabilities.personalization !== "boolean"
       || typeof entry.capabilities.photoUpload !== "boolean"
+      || (entry.capacityCards !== undefined && typeof entry.capacityCards !== "number")
+      || (entry.pocketsPerPage !== undefined && typeof entry.pocketsPerPage !== "number")
       || !Array.isArray(entry.evidenceUrls)
       || !entry.evidenceUrls.every((url) => typeof url === "string")
       || (entry.destinationUrl !== undefined && typeof entry.destinationUrl !== "string")
@@ -118,6 +127,7 @@ export function parseBinderPartnerCatalog(value: unknown): BinderPartnerCatalog 
     return {
       id: entry.id,
       displayName: entry.displayName,
+      kind: entry.kind,
       enabled: entry.enabled,
       verifiedAt: entry.verifiedAt,
       reviewAfter: entry.reviewAfter,
@@ -132,6 +142,8 @@ export function parseBinderPartnerCatalog(value: unknown): BinderPartnerCatalog 
         personalization: entry.capabilities.personalization,
         photoUpload: entry.capabilities.photoUpload,
       },
+      capacityCards: entry.capacityCards as number | undefined,
+      pocketsPerPage: entry.pocketsPerPage as number | undefined,
       price: entry.price as BinderPartnerConfig["price"],
       evidenceUrls: entry.evidenceUrls,
     } satisfies BinderPartnerConfig;

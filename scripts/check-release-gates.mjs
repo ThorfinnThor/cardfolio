@@ -146,10 +146,15 @@ if (existsSync(binderPartnerCatalogPath)) {
       const active = catalog.partners.filter((partner) => partner.enabled);
       if (!active.length) failures.push("Enabled binder partner catalog has no enabled offer.");
       for (const partner of active) {
+        if (partner.kind !== "standard" && partner.kind !== "personalized") failures.push(`Binder partner ${partner.id ?? "unknown"} has no valid offer kind.`);
         if (!partner.destinationUrl?.startsWith("https://")) failures.push(`Binder partner ${partner.id ?? "unknown"} has no HTTPS destination.`);
         if (!partner.reviewAfter || Date.parse(partner.reviewAfter) < Date.now()) failures.push(`Binder partner ${partner.id ?? "unknown"} is stale.`);
         if (!Array.isArray(partner.evidenceUrls) || !partner.evidenceUrls.length) failures.push(`Binder partner ${partner.id ?? "unknown"} has no evidence URLs.`);
         if (partner.affiliate?.enabled && !partner.affiliate.text?.trim()) failures.push(`Binder partner ${partner.id ?? "unknown"} has no affiliate disclosure.`);
+        if (!partner.affiliate?.enabled && Object.keys(partner.affiliate?.staticQuery ?? {}).length) failures.push(`Non-affiliate binder partner ${partner.id ?? "unknown"} contains tracking parameters.`);
+        if (partner.kind === "personalized" && !partner.capabilities?.personalization) failures.push(`Personalized binder partner ${partner.id ?? "unknown"} lacks personalization capability.`);
+        if (!Number.isInteger(partner.capacityCards) || partner.capacityCards <= 0) failures.push(`Binder partner ${partner.id ?? "unknown"} has no valid card capacity.`);
+        if (!Number.isInteger(partner.pocketsPerPage) || partner.pocketsPerPage <= 0) failures.push(`Binder partner ${partner.id ?? "unknown"} has no valid pocket layout.`);
       }
     }
   } catch {

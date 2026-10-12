@@ -5,20 +5,23 @@ import { GiftBuilderPanel } from "@/components/foundation/GiftBuilderPanel";
 import { createGiftProject, type GiftCardCandidate } from "@/domain/gift-builder";
 import type { CardSnapshot, CatalogSearchItem, VariantSelection } from "@/domain/types";
 
-const disabledPartners = {
+const availableStandardPartner = {
   schemaVersion: 1,
-  enabled: false,
-  reviewedAt: "2026-10-01",
-  disabledReason: "Kein freigegebener Anbieter.",
+  enabled: true,
+  reviewedAt: "2026-10-12",
   partners: [{
-    id: "partner-disabled",
-    displayName: "Personalisierter Binder",
-    enabled: false,
-    verifiedAt: "2026-10-01",
+    id: "standard-binder",
+    displayName: "9-Pocket Test-Binder",
+    kind: "standard",
+    enabled: true,
+    verifiedAt: "2026-10-12",
     reviewAfter: "2026-10-31",
-    disabledReason: "Kein freigegebener Anbieter.",
+    destinationUrl: "https://partner.example/9-pocket-binder",
     affiliate: { enabled: false },
     capabilities: { personalization: false, photoUpload: false },
+    capacityCards: 360,
+    pocketsPerPage: 9,
+    price: { amountMinor: 2699, currency: "EUR", qualifier: "from", sourceUpdatedAt: "2026-10-12" },
     evidenceUrls: ["https://example.com/terms"],
   }],
 };
@@ -69,10 +72,11 @@ describe("GiftBuilderPanel", () => {
       loadCandidatePool: vi.fn(async () => briefs),
       hydrateCandidates: vi.fn(async () => Array.from({ length: 9 }, (_, index) => candidateWithArtwork(index + 1))),
     };
-    vi.stubGlobal("fetch", vi.fn(async () => ({ ok: true, json: async () => disabledPartners })));
+    vi.stubGlobal("fetch", vi.fn(async () => ({ ok: true, json: async () => availableStandardPartner })));
     const onCreateBinder = vi.fn(async (_selection, preferences) => createGiftProject("Geschenk · Pikachu", preferences));
     const onCardsPurchase = vi.fn();
     const print = vi.spyOn(window, "print").mockImplementation(() => undefined);
+    const open = vi.spyOn(window, "open").mockImplementation(() => window);
     render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={onCreateBinder} onOpenBinder={vi.fn()} onCardsPurchase={onCardsPurchase} />);
 
     expect(screen.getByText(/Unsere Empfehlung für Geschenke/)).toBeInTheDocument();
@@ -96,8 +100,11 @@ describe("GiftBuilderPanel", () => {
     await screen.findByRole("heading", { name: "Geschenk · Pikachu" });
     expect(screen.getAllByRole("img", { name: /Pikachu 1, Set 1 1/i }).length).toBeGreaterThan(0);
     expect(screen.getByText("Keine Budgetzusage")).toBeInTheDocument();
-    expect(await screen.findByText(/Kein freigegebener Anbieter/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Derzeit nicht verfügbar/i })).toBeDisabled();
+    expect(await screen.findByText("9-Pocket Test-Binder")).toBeInTheDocument();
+    expect(screen.getByText(/9-Pocket · Platz für bis zu 360 Karten/i)).toBeInTheDocument();
+    expect(screen.getByText(/kein Affiliate-Link/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /Binder im Shop ansehen/i }));
+    expect(open).toHaveBeenCalledWith("https://partner.example/9-pocket-binder", "_blank", "noopener,noreferrer");
     fireEvent.change(screen.getByLabelText(/Grußtext für die lokale Druckansicht/i), { target: { value: "Viel Freude!" } });
     expect(screen.getByText("Viel Freude!", { selector: "blockquote" })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /Drucken \/ als PDF speichern/i }));

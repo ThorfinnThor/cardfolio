@@ -588,6 +588,93 @@ Handoff:
 
 - No merge or deployment was performed. The next release-quality block is a final visual/accessibility check of the changed Gift result list at the required viewports, followed by GitHub CI review and an explicit merge/deploy decision. Gift pricing remains a separate NO-GO until its provider-rights and measured coverage gates pass.
 
+## 2026-10-12 — Reviewed standard-binder purchase path
+
+Completed:
+
+- Split physical binder offers into `standard` and `personalized` kinds and added validated capacity and pocket-layout metadata.
+- Enabled one reviewed, direct, non-affiliate offer for the Vault X EU 9-Pocket Zip Binder. The destination contains no referral parameters; the UI explicitly leaves stock, variant and shipping checks to the external shop.
+- Kept affiliate tracking and personalized-binder offers blocked. An advertised affiliate or creative-partner application is recorded as a lead, not treated as approval.
+- Added release failures for non-affiliate tracking parameters, contradictory personalization capability and missing capacity/layout data.
+- Recorded dated product, shipping, privacy and affiliate evidence in `docs/binder-provider-review-2026-10-12.md`. The offer becomes stale after 2026-10-26 unless reviewed again.
+
+Verification:
+
+- All 47 Vitest files / 275 tests, TypeScript, ESLint, the static Next.js production build, release checks and `git diff --check` pass locally.
+
+Handoff:
+
+- No commit, push or deployment was performed. The next Luna pass should visually verify the active binder offer at the required viewports and refine the beginner-facing separation between “Karten kaufen” and “Binder kaufen” without changing the provider gate.
+
+## 2026-10-12 — Luna: Kauf-Schritte für Einsteiger klarer geführt
+
+Completed:
+
+- Die Geschenk-Zusammenfassung erklärt nun sichtbar die Reihenfolge „1. Karten kaufen, 2. Binder kaufen“.
+- Beide Kaufbereiche haben nummerierte, alltagssprachliche Überschriften und eindeutig benannte Aktionen. Marketplace- und Affiliate-Begriffe bleiben aus dem primären Einstieg heraus.
+- Der Binderbereich beschreibt Kapazität, externen Shop, Preisstand sowie den fehlenden Affiliate-Link direkt am Angebot. Ein leerer Anbieterzustand spricht jetzt allgemein von einem Binder-Shop statt nur von Personalisierung.
+- Die manuelle Accessibility-/Eltern-Usability-Checkliste enthält eine eigene Aufgabe für diese Kaufstrecke und prüft die Reihenfolge auch ohne Farberkennung.
+
+Verification:
+
+- 47 Vitest-Dateien / 275 Tests, TypeScript, ESLint, statischer Produktionsbuild, Release-Gates und `git diff --check` bestanden.
+
+Handoff:
+
+- Keine Merge-, Push- oder Deployment-Aktion. Der nächste Sol-Schritt kann die Marketplace-Ausgabe und den Anbieter-Status end-to-end prüfen.
+
+## 2026-10-12 — Luna: Lokale visuelle Abnahme der Kaufstrecke
+
+Completed:
+
+- Im lokalen Produktionsbuild wurde die Geschenk-Zusammenfassung mit echten Katalogbildern, Kartenwert/Preisspanne und dem geprüften Vault-X-Angebot geöffnet.
+- Die zwei Aktionen sind visuell getrennt: „1 · KARTEN KAUFEN“ mit „Karten jetzt kaufen“ und „2 · BINDER KAUFEN“ mit „Binder im Shop ansehen“.
+- Die Kartenkauf-Ansicht zeigt die Einsteigerführung „Zustand wählen → Anbieter wählen → Liste öffnen“ sowie die verständliche globale und individuelle Zustandsauswahl.
+- Bei der verfügbaren schmalen lokalen Ansicht (705 px) bleibt die Seite ohne horizontale Überbreite; die Kaufaktionen und Zustandslabels sind zugänglich benannt.
+
+Remaining manual gate:
+
+- Die vier verbindlichen Breiten 375, 768, 1024 und 1440 px müssen noch durch eine Person ohne Pokémon-Fachwissen im Browser bestätigt werden. Der lokale Chromium-Test ist auf diesem Mac weiterhin durch die Betriebssystem-Sandbox blockiert; GitHub/Linux-CI bleibt für den automatischen Browserlauf maßgeblich.
+
+Handoff:
+
+- Keine Merge-, Push- oder Deployment-Aktion. Der nächste Sol-Schritt kann nach der manuellen Freigabe die verbleibenden Browser-/CI-Befunde und den Merge-Entscheid zusammenführen.
+
+## 2026-10-12 — Sol: Technische Kaufstrecke end-to-end abgesichert
+
+Completed:
+
+- Der bestehende Gift-Browserfall prüft jetzt den vollständigen Übergang von der lokal gespeicherten Geschenk-Zusammenfassung zur Fehlkarten-/Marketplace-Ansicht, einschließlich aller neun fehlenden Positionen und der sichtbaren TCGplayer- und Cardmarket-Wege.
+- Derselbe Fall kontrolliert den zweiten Kaufweg zum geprüften Standard-Binder. Die erzeugte Vault-X-URL muss exakt der freigegebenen Produktseite entsprechen und darf keine Query-Parameter enthalten.
+- Ein eigener Produktionskatalog-Test validiert den tatsächlich ausgelieferten Binder-Eintrag, dessen Preis-, Kapazitäts- und Pocket-Angaben sowie die automatische Sperre nach Ablauf des dokumentierten Prüfdatums.
+
+Verification:
+
+- Fokussierte Komponenten-, Domain- und Katalogtests, TypeScript, ESLint und der statische Produktionsbuild bestehen lokal.
+- Der lokale Playwright-Aufruf erreicht den statischen Server, Chromium wird auf diesem macOS-Host jedoch durch die Betriebssystem-Sandbox mit einem Mach-Port-Fehler beendet. Der aktualisierte Browserfall bleibt deshalb zusätzlich über GitHub/Linux-CI freizugeben.
+
+Handoff:
+
+- Keine Merge-, Push- oder Deployment-Aktion. Der nächste Luna-Schritt ist die manuelle Eltern-/Einsteiger-Abnahme der beiden nummerierten Kaufwege bei 375, 768, 1024 und 1440 Pixeln.
+
+## 2026-10-12 — Sol: Pre-release audit and CI handoff
+
+Completed:
+
+- Confirmed that GitHub CI executes typecheck, lint, all unit/component tests, the static build, release gates, release evidence and the complete Playwright Chromium suite on every push to `main` and on pull requests.
+- Recorded the current worktree as locally ready for a commit while keeping push/deployment and public production as separate decisions.
+- Documented the mandatory post-push checks, the automatic Cloudflare consequence of a `main` push and every remaining human, rights/privacy and exact-commit release gate in `docs/pre-release-audit-2026-10-12.md`.
+
+Decision:
+
+- Local commit candidate: GO.
+- Push to `main`: requires an explicit owner request because it triggers CI and Cloudflare Pages.
+- Public production/commercial launch: NO-GO until the documented human and legal/operator gates are closed.
+
+Handoff:
+
+- No commit, push or deployment was performed. The next Luna step may prepare the human beginner test sheet or, if the owner explicitly requests it, the next Sol step may create the reviewed local commit.
+
 ## 2026-10-02 — Human Gift-theme quality gate and estimate-only pricing
 
 Completed:

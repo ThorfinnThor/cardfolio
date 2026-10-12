@@ -1,0 +1,39 @@
+{
+  "format": "cardfolio-cardmarket-product-mappings",
+  "version": 1,
+  "source": "manuelle Cardmarket-Produktprüfung",
+  "generatedAt": "2026-10-12T00:00:00.000Z",
+  "reviewedScopeCardCount": 1,
+  "mappings": [
+    {
+      "schemaVersion": 1,
+      "provider": "cardmarket",
+      "tcgdexCardId": "pl1-99",
+      "cardName": "Torchic Lv.12",
+      "scope": {
+        "language": "any",
+        "finish": "any",
+        "edition": "any",
+        "printing": "any"
+      },
+      "status": "verified",
+      "productUrl": "https://www.cardmarket.com/en/Pokemon/Cards/Torchic-Lv12-Focus-Energy-Fire-Shard",
+      "source": {
+        "kind": "manual-product-review",
+        "label": "Cardmarket-Produktseite mit Platinum und Kartennummer 99/127 geprüft",
+        "evidenceUrl": "https://www.cardmarket.com/en/Pokemon/Cards/Torchic-Lv12-Focus-Energy-Fire-Shard"
+      },
+      "checkedAt": "2026-10-12T00:00:00.000Z",
+      "verifiedAt": "2026-10-12T00:00:00.000Z"
+    }
+  ],
+  "audit": {
+    "reviewedScopeCardCount": 1,
+    "mappingCount": 1,
+    "verifiedCount": 1,
+    "probableCount": 0,
+    "missingCount": 0,
+    "invalidCount": 0,
+    "unmappedReviewedCardCount": 0
+  }
+}

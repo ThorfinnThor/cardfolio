@@ -10,7 +10,7 @@ Diese Checkliste ergänzt die automatisierte Release-Prüfung. Sie ist eine mens
 - sichtbares erstes Tastaturziel innerhalb des Viewports;
 - sichtbare Fokuskennzeichnung.
 
-Die bestehenden E2E-Fälle prüfen zusätzlich Dialog-Fokusfalle, Escape, Fokus-Rückgabe, Suche, Kartenprüfung, Undo, Reload und Fehlermeldungen. Der lokale Chromium-Lauf kann auf macOS durch die Betriebssystem-Sandbox blockiert sein; CI bleibt dann die autoritative Browserausführung.
+Die bestehenden E2E-Fälle prüfen zusätzlich Dialog-Fokusfalle, Escape, Fokus-Rückgabe, Suche, Kartenprüfung, Undo, Reload und Fehlermeldungen. Für die Geschenkstrecke wird außerdem der Übergang von der Zusammenfassung zur vollständigen Fehlkartenliste sowie der exakte, parameterfreie Link zum geprüften Binder-Shop kontrolliert. Der lokale Chromium-Lauf kann auf macOS durch die Betriebssystem-Sandbox blockiert sein; CI bleibt dann die autoritative Browserausführung.
 
 ## Manuelle Abnahme
 
@@ -22,7 +22,15 @@ Durchführung mit mindestens drei Personen ohne aktives Pokémon-TCG-Fachwissen.
 | Eine Karte einsetzen | leeren Slot öffnen, Karte über Namen oder Nummer finden, Variante prüfen, einsetzen | |
 | Ein Set planen | „Mit einem Set starten“ finden, Sprache/Umfang verstehen, Vorschau bestätigen | |
 | Geschenk-Binder erstellen | Motiv wählen, Vorschläge verstehen, ohne Preisversprechen speichern | |
+| Geschenk-Käufe abschließen | Die nummerierten Schritte „1. Karten kaufen“ und „2. Binder kaufen“ verstehen und die beiden Wege richtig unterscheiden | |
 | Fehlkarte bearbeiten | fehlende Karte finden, Variante/Zustand setzen, zu einer Übergabe wechseln | |
+
+Für die Cardmarket-Strecke zusätzlich prüfen:
+
+- Die Überschrift „Cardmarket vorbereiten“ und die drei nummerierten Schritte werden vor den Links verstanden.
+- Ein grüner „Produktseite öffnen“-Link wird als geprüfte Produktseite verstanden; ein goldener „Karte suchen“-Link wird nicht mit einer exakten Zuordnung verwechselt.
+- Der Abschnitt „Erweiterte Option: Decklistenimport“ bleibt für Einsteiger geschlossen und wird nur auf Nachfrage geöffnet.
+- Wiederholte Links werden mit Kartenname im zugänglichen Namen vorgelesen, nicht nur als „Produktseite öffnen“ oder „Karte suchen“.
 
 ## Bedien- und Fehlerszenarien
 
@@ -31,6 +39,7 @@ Durchführung mit mindestens drei Personen ohne aktives Pokémon-TCG-Fachwissen.
 - `prefers-reduced-motion` aktivieren und prüfen, dass keine wichtige Information nur durch Bewegung vermittelt wird.
 - Bildfehler, Offline-/Timeout-Suche, Nulltreffer, veraltete Preisdaten und deaktivierte CardTrader-Funktionen prüfen.
 - Bei 375 Pixeln darf keine Hauptaktion außerhalb des sichtbaren Inhalts oder unter der fixierten Aktionsleiste verborgen sein.
+- In der Geschenk-Zusammenfassung muss die Kaufreihenfolge auch ohne Farberkennung verständlich sein; die Buttons müssen ihren Zweck aus dem zugänglichen Namen erkennen lassen.
 
 ## Freigabeentscheidung
 

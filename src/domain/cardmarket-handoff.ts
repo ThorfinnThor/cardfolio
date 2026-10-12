@@ -1,12 +1,25 @@
 import type { MissingItem } from "./types";
 import { formatCollectorNumber } from "./catalog-search";
 import { conditionProfile } from "./purchase-preferences";
+import {
+  resolveMarketplaceProductIdentity,
+  type MarketplaceProductIdentityMapping,
+  type MarketplaceProductIdentityStatus,
+} from "./marketplace-product-identity";
 import { variantAvailabilityForCard, variantSelectionIssue } from "./variant-selection";
 
 export const CARDMARKET_POKEMON_SINGLES_URL = "https://www.cardmarket.com/en/Pokemon/Products/Singles";
 export const CARDMARKET_POKEMON_SEARCH_URL = "https://www.cardmarket.com/en/Pokemon/Products/Search";
 export const CARDMARKET_POKEMON_WANTS_HELP_URL = "https://help.cardmarket.com/en/how-to-add-a-pkmn-decklist-to-wants";
 export const CARDMARKET_MAX_WANTS_POSITIONS = 150;
+
+// A small provider-specific compatibility layer for cards whose printed level
+// is missing from the upstream catalog but is part of Cardmarket's product
+// identity. Keep these overrides keyed by the stable set/collector identity;
+// do not modify the shared CardSnapshot just to satisfy one provider.
+const CARDMARKET_LEVEL_OVERRIDES: Record<string, string> = {
+  "pl1:99": "12",
+};
 
 export interface CardmarketHandoffPart {
   index: number;
@@ -15,6 +28,7 @@ export interface CardmarketHandoffPart {
   text: string;
   items: readonly MissingItem[];
   searches: CardmarketSearchTarget[];
+  products: CardmarketProductTarget[];
 }
 
 export interface CardmarketSearchTarget {
@@ -24,6 +38,12 @@ export interface CardmarketSearchTarget {
   url: string;
 }
 
+export interface CardmarketProductTarget extends CardmarketSearchTarget {
+  status: MarketplaceProductIdentityStatus;
+  reason: string;
+  productUrl?: string;
+}
+
 export interface CardmarketHandoff {
   parts: CardmarketHandoffPart[];
   positionCount: number;
@@ -31,6 +51,8 @@ export interface CardmarketHandoff {
   excluded: CardmarketExcludedItem[];
   totalQuantity: number;
   reviewRequiredCount: number;
+  verifiedProductCount: number;
+  searchRequiredCount: number;
   warnings: string[];
   singlesUrl: typeof CARDMARKET_POKEMON_SINGLES_URL;
   wantsHelpUrl: typeof CARDMARKET_POKEMON_WANTS_HELP_URL;
@@ -56,12 +78,16 @@ function cardmarketCardName(value: string, level?: string): string {
   return `${name} Lv.${normalizedLevel}`;
 }
 
+function cardmarketLevel(item: MissingItem): string | undefined {
+  return item.card.level ?? CARDMARKET_LEVEL_OVERRIDES[`${item.card.setId}:${item.card.collectorNumber}`];
+}
+
 function createDecklistLine(item: MissingItem): { line?: string; reason?: string } {
   const variantIssue = variantSelectionIssue(item.variant, variantAvailabilityForCard(item.card));
   if (variantIssue) return { reason: `Variantenangaben prüfen: ${variantIssue}` };
   const identity = item.card.ref.language === "de" ? item.card.englishIdentity : undefined;
   const name = identity?.name ?? item.card.name;
-  const level = identity?.level ?? item.card.level;
+  const level = identity?.level ?? cardmarketLevel(item);
   const category = identity?.category ?? item.card.category;
   const abilities = identity?.abilities ?? item.card.abilities;
   const attacks = identity?.attacks ?? item.card.attacks;
@@ -85,7 +111,7 @@ export function createCardmarketSearchUrl(item: MissingItem): string {
   const identity = item.card.ref.language === "de" ? item.card.englishIdentity : undefined;
   const url = new URL(CARDMARKET_POKEMON_SEARCH_URL);
   url.searchParams.set("searchString", [
-    cardmarketCardName(identity?.name ?? item.card.name, identity?.level ?? item.card.level),
+    cardmarketCardName(identity?.name ?? item.card.name, identity?.level ?? cardmarketLevel(item)),
     inline(identity?.setName ?? item.card.setName),
     inline(formatCollectorNumber(item.card.collectorNumber, item.card.collectorTotal)),
   ].join(" "));
@@ -101,9 +127,27 @@ function createSearchTarget(item: MissingItem): CardmarketSearchTarget {
   };
 }
 
-export function createCardmarketHandoff(items: readonly MissingItem[]): CardmarketHandoff {
+function createProductTarget(
+  item: MissingItem,
+  mappings: readonly MarketplaceProductIdentityMapping[],
+): CardmarketProductTarget {
+  const search = createSearchTarget(item);
+  const resolution = resolveMarketplaceProductIdentity("cardmarket", item, mappings);
+  return {
+    ...search,
+    status: resolution.status,
+    reason: resolution.reason,
+    productUrl: resolution.status === "verified" ? resolution.mapping?.productUrl : undefined,
+  };
+}
+
+export function createCardmarketHandoff(
+  items: readonly MissingItem[],
+  productMappings: readonly MarketplaceProductIdentityMapping[] = [],
+): CardmarketHandoff {
   const parts: CardmarketHandoffPart[] = [];
   const matches = items.map((item) => ({ item, ...createDecklistLine(item) }));
+  const products = items.map((item) => createProductTarget(item, productMappings));
   const excluded = matches
     .filter((match) => !match.line)
     .map((match) => ({
@@ -122,6 +166,7 @@ export function createCardmarketHandoff(items: readonly MissingItem[]): Cardmark
       text: partMatches.flatMap((match) => match.line ? [match.line] : []).join("\n"),
       items: partItems,
       searches: partItems.map(createSearchTarget),
+      products: products.slice(start, start + CARDMARKET_MAX_WANTS_POSITIONS),
     });
   }
 
@@ -149,6 +194,8 @@ export function createCardmarketHandoff(items: readonly MissingItem[]): Cardmark
     excluded,
     totalQuantity: items.reduce((total, item) => total + item.quantity, 0),
     reviewRequiredCount: items.length,
+    verifiedProductCount: products.filter((product) => product.productUrl).length,
+    searchRequiredCount: products.filter((product) => !product.productUrl).length,
     warnings,
     singlesUrl: CARDMARKET_POKEMON_SINGLES_URL,
     wantsHelpUrl: CARDMARKET_POKEMON_WANTS_HELP_URL,

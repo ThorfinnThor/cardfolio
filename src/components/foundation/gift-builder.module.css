@@ -174,10 +174,14 @@
 .greetingField { display: grid; gap: 7px; color: var(--cf-text2); font-size: 12px; font-weight: 650; }
 .greetingField span { color: var(--cf-muted); font-size: 10px; font-weight: 500; }
 .greetingField textarea { width: 100%; resize: vertical; border: 1px solid var(--cf-line2); border-radius: 7px; background: var(--cf-field); color: var(--cf-text); padding: 10px; font: inherit; font-size: 13px; }
+.purchaseFlowIntro { display: grid; gap: 5px; border-left: 3px solid var(--cf-accent); background: var(--cf-accent-soft); padding: 13px 15px; }
+.purchaseFlowIntro h3 { margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: 18px; font-weight: 650; }
+.purchaseFlowIntro > p:last-child { max-width: 760px; margin: 0; color: var(--cf-text2); font-size: 12px; line-height: 1.5; }
 .purchaseOptions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .purchaseCard { display: flex; flex-direction: column; justify-content: space-between; gap: 16px; min-width: 0; border: 1px solid var(--cf-line); border-radius: 9px; background: var(--cf-surface); padding: 16px; }
 .purchaseCard > div { display: grid; align-content: start; gap: 8px; }
 .purchaseCard > div > p:not(.eyebrow) { margin: 0; color: var(--cf-muted); font-size: 12px; line-height: 1.5; }
+.purchaseStep { margin: 0; color: var(--cf-accent-text); font-family: var(--cf-font-mono); font-size: 10px; font-weight: 750; letter-spacing: .11em; }
 .purchaseCard > .primaryButton { align-self: stretch; min-height: 54px; font-size: 15px; }
 .offerRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid var(--cf-line); padding-top: 10px; }
 .offerRow > div { display: grid; gap: 4px; min-width: 0; }
@@ -240,6 +244,6 @@
   .printSummary, .printSummary * { visibility: visible !important; }
   .printSummary { position: absolute; inset: 0; width: 100%; border: 0; background: #fff; color: #111; padding: 0; }
   .printSummary :global(*) { box-shadow: none !important; }
-  .greetingField, .purchaseOptions, .summaryActions, .header, .flowWrapper, .stepLead, .printSummary .localHint, .summaryCardImage, .summaryCardImageFallback { display: none !important; }
+  .greetingField, .purchaseFlowIntro, .purchaseOptions, .summaryActions, .header, .flowWrapper, .stepLead, .printSummary .localHint, .summaryCardImage, .summaryCardImageFallback { display: none !important; }
   .summaryCards li { grid-template-columns: 1fr; }
 }

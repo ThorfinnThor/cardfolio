@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { CARDMARKET_MAX_WANTS_POSITIONS, CARDMARKET_POKEMON_SEARCH_URL, createCardmarketHandoff, createCardmarketSearchUrl } from "@/domain/cardmarket-handoff";
+import type { MarketplaceProductIdentityMapping } from "@/domain/marketplace-product-identity";
 import type { MissingItem } from "@/domain/types";
 
 function missingItem(index = 1, overrides: Partial<MissingItem> = {}): MissingItem {
@@ -136,6 +137,47 @@ describe("Cardmarket handoff", () => {
 
     expect(exported.parts[0].text).toBe("2x Treecko Lv.14 Tail Crush");
     expect(new URL(exported.parts[0].searches[0].url).searchParams.get("searchString")).toBe("Treecko Lv.14 Arceus 78/99");
+  });
+
+  it("adds the Cardmarket level for Platinum Torchic when TCGdex omits it", () => {
+    const torchic = missingItem(99, {
+      identityKey: "torchic-pl1-99",
+      card: {
+        ...missingItem().card,
+        key: "tcgdex:pl1-99:en",
+        ref: { provider: "tcgdex", id: "pl1-99", language: "en" },
+        name: "Torchic",
+        setId: "pl1",
+        setName: "Platinum",
+        collectorNumber: "99",
+        collectorTotal: "127",
+        level: undefined,
+        attacks: ["Focus Energy", "Fire Shard"],
+      },
+    });
+
+    const mapping: MarketplaceProductIdentityMapping = {
+      schemaVersion: 1,
+      provider: "cardmarket",
+      tcgdexCardId: "pl1-99",
+      cardName: "Torchic Lv.12",
+      scope: { language: "any", finish: "any", edition: "any", printing: "any" },
+      status: "verified",
+      productUrl: "https://www.cardmarket.com/en/Pokemon/Cards/Torchic-Lv12-Focus-Energy-Fire-Shard",
+      source: { kind: "manual-product-review", label: "Manuell geprüft" },
+      checkedAt: "2026-10-12T00:00:00.000Z",
+      verifiedAt: "2026-10-12T00:00:00.000Z",
+    };
+    const exported = createCardmarketHandoff([torchic], [mapping]);
+
+    expect(exported.parts[0].text).toBe("2x Torchic Lv.12 Focus Energy Fire Shard");
+    expect(new URL(exported.parts[0].searches[0].url).searchParams.get("searchString")).toBe("Torchic Lv.12 Platinum 99/127");
+    expect(exported.verifiedProductCount).toBe(1);
+    expect(exported.searchRequiredCount).toBe(0);
+    expect(exported.parts[0].products[0]).toMatchObject({
+      status: "verified",
+      productUrl: mapping.productUrl,
+    });
   });
 
   it("exports trainers by full name and excludes Pokemon without catalog attack data", () => {

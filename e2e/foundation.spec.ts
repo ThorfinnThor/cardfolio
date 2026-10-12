@@ -724,9 +724,27 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await expect(page.getByRole("heading", { name: /Geschenk · Pikachu/ })).toBeVisible();
   await expect(page.getByText(/Die Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten/i)).toBeVisible();
   await expect(page.getByText("Kein bestätigter Preis", { exact: true })).toBeVisible();
-  await expect(page.getByText(/Es ist noch kein Anbieter.*vertraglich und technisch freigegeben/i)).toBeVisible();
-  await expect(page.getByRole("button", { name: /Derzeit nicht verfügbar/i })).toBeDisabled();
-  await page.getByRole("button", { name: /Binder bearbeiten/i }).click();
+  await expect(page.getByText("Vault X 9-Pocket Zip Binder", { exact: true })).toBeVisible();
+  await expect(page.getByText(/9-Pocket · Platz für bis zu 360 Karten/i)).toBeVisible();
+
+  await page.evaluate(() => {
+    window.open = ((url?: string | URL) => {
+      document.documentElement.dataset.openedBinderUrl = String(url ?? "");
+      return window;
+    }) as typeof window.open;
+  });
+  await page.getByRole("button", { name: /Binder im Shop ansehen/i }).click();
+  const openedBinderUrl = await page.locator("html").getAttribute("data-opened-binder-url");
+  expect(openedBinderUrl).toBe("https://eu.vaultx.com/collections/card-binders/products/9-pocket-exo-tec-zip-binder");
+  expect(new URL(openedBinderUrl ?? "").search).toBe("");
+
+  await page.getByRole("button", { name: "Karten besorgen" }).click();
+  const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
+  await expect(missingCards).toBeVisible();
+  await expect(missingCards.getByText(/9 Positionen · 9 Exemplare · aus diesem Binder/i)).toBeVisible();
+  await expect(missingCards.getByRole("button", { name: "TCGplayer" })).toBeVisible();
+  await expect(missingCards.getByRole("button", { name: "Cardmarket" })).toBeVisible();
+  await missingCards.getByRole("button", { name: "Schließen" }).click();
   await expect(page.getByRole("article", { name: "Pikachu 1, Slot 1" })).toBeVisible();
   await page.reload();
   await expect(page.getByRole("article", { name: "Pikachu 1, Slot 1" })).toBeVisible();

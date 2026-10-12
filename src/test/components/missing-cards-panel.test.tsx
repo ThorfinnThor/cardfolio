@@ -2,6 +2,7 @@ import { fireEvent, render, screen, cleanup } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { MissingCardsPanel } from "@/components/foundation/MissingCardsPanel";
+import type { MarketplaceProductIdentityMapping } from "@/domain/marketplace-product-identity";
 import type { TcgplayerCardMapping } from "@/domain/tcgplayer-export";
 import type { MissingItem } from "@/domain/types";
 
@@ -64,6 +65,19 @@ const tcgplayerCardMappings: TcgplayerCardMapping[] = [
     }],
   },
 ];
+
+const cardmarketProductMappings: MarketplaceProductIdentityMapping[] = [{
+  schemaVersion: 1,
+  provider: "cardmarket",
+  tcgdexCardId: "basep-1",
+  cardName: "Pikachu",
+  scope: { language: "any", finish: "any", edition: "any", printing: "any" },
+  status: "verified",
+  productUrl: "https://www.cardmarket.com/en/Pokemon/Cards/Pikachu",
+  source: { kind: "manual-product-review", label: "Testzuordnung" },
+  checkedAt: "2026-10-12T00:00:00.000Z",
+  verifiedAt: "2026-10-12T00:00:00.000Z",
+}];
 
 function props() {
   return {
@@ -158,7 +172,7 @@ describe("MissingCardsPanel", () => {
     expect(onTcgplayerTextExport).toHaveBeenCalledWith(expect.objectContaining({ text: "1 Bulbasaur [BS] 044/102", reviewRequiredCount: 1 }));
   });
 
-  it("shows the exact Cardmarket decklist format and keeps review links separate", () => {
+  it("puts verified Cardmarket product pages first and keeps the decklist import advanced", () => {
     const onCardmarketPrepare = vi.fn();
     const onCardmarketCopy = vi.fn();
     const onCardmarketTextExport = vi.fn();
@@ -166,6 +180,7 @@ describe("MissingCardsPanel", () => {
       <MissingCardsPanel
         {...props()}
         cardmarketEnabled
+        cardmarketProductMappings={cardmarketProductMappings}
         onCardmarketPrepare={onCardmarketPrepare}
         onCardmarketCopy={onCardmarketCopy}
         onCardmarketTextExport={onCardmarketTextExport}
@@ -174,19 +189,23 @@ describe("MissingCardsPanel", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Cardmarket" }));
     expect(onCardmarketPrepare).toHaveBeenCalledWith(items);
-    expect(screen.getByRole("heading", { name: "Cardmarket Deckliste" })).toBeInTheDocument();
-    expect(screen.getByText(/vollständiger Kartenname, Fähigkeiten und Attacken/)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Cardmarket vorbereiten" })).toBeInTheDocument();
+    expect(screen.getByText("Geprüfte Produktseiten")).toBeInTheDocument();
+    expect(screen.getByText("Noch nicht eindeutig zugeordnet")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Produktseite öffnen/ })).toHaveAttribute("href", "https://www.cardmarket.com/en/Pokemon/Cards/Pikachu");
+    const searchLinks = screen.getAllByRole("link", { name: /Karte suchen/ });
+    expect(searchLinks).toHaveLength(1);
+    expect(new URL(searchLinks[0].getAttribute("href") ?? "").searchParams.get("searchString")).toBe("Bulbasaur Base Set 044");
+    expect(screen.getByText("Erweiterte Option: Decklistenimport").closest("details")).not.toHaveAttribute("open");
+
+    fireEvent.click(screen.getByText("Erweiterte Option: Decklistenimport"));
     expect(screen.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue(
       "2x Pikachu Static Growl Thundershock\n1x Bulbasaur Leech Seed",
     );
-    expect(screen.getByRole("link", { name: "Offizielles Format" })).toHaveAttribute("rel", "noopener noreferrer");
-    expect(screen.getByRole("link", { name: "Ausgaben auf Cardmarket prüfen" })).toHaveAttribute("rel", "noopener noreferrer");
-    expect(screen.getByText("Alle Karten sind für die Deckliste vorbereitet")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Cardmarket-Hilfe" })).toHaveAttribute("rel", "noopener noreferrer");
+    expect(screen.getByRole("link", { name: "Cardmarket-Kartenübersicht öffnen" })).toHaveAttribute("rel", "noopener noreferrer");
+    expect(screen.getByText("Alle Karten sind für den Decklistenimport vorbereitet")).toBeInTheDocument();
     expect(screen.getByText("Vollständige Fehlkartenliste anzeigen (2)").closest("details")).not.toHaveAttribute("open");
-    fireEvent.click(screen.getByText("Vorbereitete Karten und Einzelsuchen anzeigen (2)"));
-    const searchLinks = screen.getAllByRole("link", { name: /Karte suchen/ });
-    expect(searchLinks).toHaveLength(2);
-    expect(new URL(searchLinks[0].getAttribute("href") ?? "").searchParams.get("searchString")).toBe("Pikachu Wizards Black Star Promos 001");
 
     fireEvent.click(screen.getByRole("button", { name: "Deckliste kopieren" }));
     fireEvent.click(screen.getByRole("button", { name: "Deckliste TXT" }));
@@ -205,25 +224,25 @@ describe("MissingCardsPanel", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Cardmarket" }));
 
-    expect(screen.getByText("1 Karte braucht deine Aufmerksamkeit")).toBeInTheDocument();
-    expect(screen.getByText("Vor der Übergabe prüfen")).toBeInTheDocument();
+    fireEvent.click(screen.getByText("Erweiterte Option: Decklistenimport"));
+    expect(screen.getByText("1 Karte fehlt im Importtext")).toBeInTheDocument();
+    expect(screen.getByText("Vor dem Import prüfen")).toBeInTheDocument();
     expect(screen.getByText(/Variantenangaben prüfen/)).toBeInTheDocument();
-    expect(screen.getByText("Vorbereitete Karten und Einzelsuchen anzeigen (1)").closest("details")).not.toHaveAttribute("open");
   });
 
   it("shows only the marketplace selected by the user", () => {
     render(<MissingCardsPanel {...props()} tcgplayerEnabled tcgplayerCardMappings={tcgplayerCardMappings} cardmarketEnabled />);
 
     expect(screen.queryByRole("heading", { name: "TCGplayer Mass Entry" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "Cardmarket Deckliste" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Cardmarket vorbereiten" })).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "TCGplayer" }));
     expect(screen.getByRole("heading", { name: "TCGplayer Mass Entry" })).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "Cardmarket Deckliste" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Cardmarket vorbereiten" })).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Cardmarket" }));
     expect(screen.queryByRole("heading", { name: "TCGplayer Mass Entry" })).not.toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Cardmarket Deckliste" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Cardmarket vorbereiten" })).toBeInTheDocument();
   });
 
   it("keeps CardTrader progressive and shows one clear, non-purchase preview", () => {
