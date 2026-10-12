@@ -25,13 +25,13 @@ function props(overrides: Partial<ComponentProps<typeof BinderOverview>> = {}) {
 }
 
 describe("BinderOverview", () => {
-  it("explains the local empty state and exposes the create action", () => {
+  it("starts with the gift action and shows the short creation path", () => {
     render(<BinderOverview {...props()} />);
 
-    expect(screen.getByRole("heading", { name: "Noch kein Binder" })).toBeInTheDocument();
-    expect(screen.getByText("Lege deinen ersten lokalen Binder an. Deine Daten werden nur in diesem Browser gespeichert.")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Ersten Binder erstellen" })).toBeInTheDocument();
-    expect(screen.getByRole("list", { name: "So entsteht dein Binder" }).children).toHaveLength(4);
+    expect(screen.getByRole("heading", { name: /Pokémon-Binder als persönliches Geschenk/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Geschenk-Binder gestalten" })).toBeInTheDocument();
+    expect(screen.getByRole("list", { name: "So entsteht dein Geschenk-Binder" }).children).toHaveLength(3);
+    expect(screen.queryByText("Gesamtsammlung")).not.toBeInTheDocument();
   });
 
   it("offers clear beginner starts for gifts and complete sets", () => {
@@ -39,11 +39,21 @@ describe("BinderOverview", () => {
     const onSetStart = vi.fn();
     render(<BinderOverview {...props({ onGiftStart, onSetStart })} />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Geschenk erstellen" }));
+    fireEvent.click(screen.getByRole("button", { name: "Geschenk-Binder gestalten" }));
     fireEvent.click(screen.getByRole("button", { name: "Mit einem Set starten" }));
 
     expect(onGiftStart).toHaveBeenCalledOnce();
     expect(onSetStart).toHaveBeenCalledOnce();
+  });
+
+  it("keeps manual planning optional and reveals it on request", () => {
+    render(<BinderOverview {...props()} />);
+
+    const manualStart = screen.getByText("Leer starten").closest("details");
+    expect(manualStart).not.toHaveAttribute("open");
+    fireEvent.click(screen.getByText("Leer starten"));
+    expect(manualStart).toHaveAttribute("open");
+    expect(screen.getByRole("textbox", { name: "Bindername" })).toBeInTheDocument();
   });
 
   it("offers persistent binder ordering and duplication controls", () => {

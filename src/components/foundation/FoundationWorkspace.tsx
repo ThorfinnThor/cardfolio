@@ -1787,10 +1787,10 @@ export function FoundationWorkspace() {
           <span className={styles.brandText}>Cardfolio<small>Wunschbinder · lokal</small></span>
         </button>
         <nav className={styles.primaryNav} aria-label="Hauptnavigation">
-          <button type="button" className={binderManagerOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }}>
+          <button type="button" className={binderManagerOpen || !activeBinder ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }}>
             <BookOpen size={18} /> <span>Meine Binder</span>
           </button>
-          <button type="button" className={!binderManagerOpen && !missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(false); }} disabled={!activeBinder}>
+          <button type="button" className={activeBinder && !binderManagerOpen && !missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(false); }} disabled={!activeBinder}>
             <Archive size={18} /> <span>Binder</span>
           </button>
           <button type="button" aria-label={stats ? `Fehlende Karten (${stats.missing})` : "Fehlende Karten"} className={missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(true); setSearchOpen(false); }} disabled={!activeBinder}>

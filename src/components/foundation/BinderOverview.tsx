@@ -8,15 +8,7 @@ import { MAX_BINDERS } from "@/domain/binder-actions";
 import type { Binder } from "@/domain/types";
 
 import { catalogLabel, coverLeather } from "./binder-cover";
-import { GuidedFlow } from "./GuidedFlow";
 import styles from "./binder-overview.module.css";
-
-const BEGINNER_FLOW = [
-  { label: "Start wählen", description: "Geschenk, Set oder eigene Liste" },
-  { label: "Karten auswählen", description: "Mit Bildern und einfachen Vorschlägen" },
-  { label: "Bestellung prüfen", description: "Ausführung und Zustand verständlich festlegen" },
-  { label: "Karten kaufen", description: "Liste für den gewählten Anbieter öffnen" },
-] as const;
 
 interface BinderOverviewProps {
   binders: Binder[];
@@ -57,84 +49,48 @@ export function BinderOverview({
 
   return (
     <section className={styles.overview} aria-labelledby="binder-heading">
-      <div className={styles.overviewHeader}>
-        <div>
-          <span className={styles.eyebrow}>Sammlung · lokal · {binders.length} / {MAX_BINDERS} Binder</span>
-          <h1 id="binder-heading">Meine Binder</h1>
-          <p>Deine Sammlung bleibt in diesem Browser. Kein Konto, kein Upload.</p>
+      <div className={styles.giftHero} id="guided-start" data-has-binders={binders.length > 0}>
+        <div className={styles.giftHeroCopy}>
+          <span className={styles.eyebrow}>Ein Geschenk, das persönlich wird</span>
+          <h1 id="binder-heading">Ein Pokémon-Binder als persönliches Geschenk.</h1>
+          <p>Wähle ein Lieblings-Pokémon oder Bildmotiv. Wir schlagen passende Karten vor und führen dich bis zur Einkaufsliste.</p>
+          <button type="button" className={styles.heroButton} onClick={() => onGiftStart?.()} disabled={binders.length >= MAX_BINDERS}>
+            <Gift aria-hidden="true" size={22} /> Geschenk-Binder gestalten <ArrowRight aria-hidden="true" size={21} />
+          </button>
+          <span className={styles.heroReassurance}>Ohne Konto starten · Karten später austauschen · lokal gespeichert</span>
         </div>
-        <div className={styles.headerActions}>
-          <span className={styles.storageStatus} data-status={storageStatus}>
-            <span className={styles.statusDot} /> {storageStatus === "ready" || storageStatus === "saved" ? "Lokal gespeichert" : storageStatus}
-          </span>
-          <button type="button" className={styles.secondaryButton} onClick={onExport} disabled={!binders.length}>
-            <Archive aria-hidden="true" size={16} /> Backup exportieren
-          </button>
-          <label className={styles.secondaryButton} htmlFor="backup-import">
-            Backup importieren
-          </label>
-          <input id="backup-import" className={styles.srOnly} type="file" accept="application/json,.json" onChange={onImport} />
-          <button type="button" className={styles.primaryButton} onClick={() => document.getElementById("guided-start")?.scrollIntoView({ behavior: "smooth", block: "start" })} disabled={binders.length >= MAX_BINDERS}>
-            Binder starten <ArrowRight aria-hidden="true" size={17} />
-          </button>
+        <div className={styles.giftHeroVisual} aria-hidden="true">
+          <span className={styles.pageCaption}>So könnte deine erste Seite aussehen</span>
+          <div className={styles.samplePage}>{Array.from({ length: 9 }, (_, index) => <span className={styles.sampleCard} key={index}><i /><b /></span>)}</div>
         </div>
       </div>
 
-      <div className={styles.metricStrip} aria-label="Sammlungsübersicht">
-        <div className={styles.metricIntro}>
-          <small className={styles.slabLabel}>Gesamtsammlung</small>
-          <strong>{totalPercent}%</strong>
-          <span className={styles.metricTrack} aria-hidden="true"><span style={{ width: `${totalPercent}%` }} /></span>
-        </div>
-        <div><small className={styles.slabLabel}>Ordner</small><strong>{binders.length}</strong><span>Binder</span></div>
-        <div><small className={styles.slabLabel}>Plan</small><strong>{totalPlanned}</strong><span>Geplant</span></div>
-        <div data-tone="ok"><small className={styles.slabLabel}>Im Binder</small><strong>{totalOwned}</strong><span>Vorhanden</span></div>
-        <div data-tone="miss"><small className={styles.slabLabel}>Offen</small><strong>{Math.max(totalPlanned - totalOwned, 0)}</strong><span>Fehlt noch</span></div>
-      </div>
+      <ol className={styles.simpleSteps} aria-label="So entsteht dein Geschenk-Binder">
+        <li><strong>1</strong><span>Pokémon oder Motiv wählen</span></li>
+        <li><strong>2</strong><span>Karten und Seite ansehen</span></li>
+        <li><strong>3</strong><span>Binder und Karten besorgen</span></li>
+      </ol>
 
-      <GuidedFlow steps={BEGINNER_FLOW} currentStep={1} label="So entsteht dein Binder" />
-
-      <div className={styles.entryChoices} id="guided-start" aria-label="Startpunkt auswählen">
-        <div>
-          <span className={styles.sectionKicker}>Schritt 1 · Wie möchtest du starten?</span>
-          <h2>Wähle einfach, was du vorhast</h2>
-          <p>Du brauchst kein Pokémon-Wissen. Cardfolio führt dich danach Schritt für Schritt weiter.</p>
-        </div>
-        <div className={styles.entryChoiceGrid}>
-          <button type="button" className={`${styles.entryChoice} ${styles.entryChoiceRecommended}`} onClick={() => onGiftStart?.()} aria-label="Geschenk erstellen">
-            <Gift aria-hidden="true" size={18} />
-            <span><em>Empfohlen für Einsteiger</em><strong>Geschenk erstellen</strong><small>Lieblings-Pokémon und Budget nennen – wir schlagen einen Binder mit passenden Karten vor.</small></span>
-            <ArrowRight aria-hidden="true" size={22} />
-          </button>
-          <button type="button" className={styles.entryChoice} onClick={() => onSetStart?.()} aria-label="Mit einem Set starten">
-            <BookOpen aria-hidden="true" size={18} />
-            <span><strong>Mit einem Set starten</strong><small>Ein Set auswählen – alle Karten und Seiten werden automatisch vorbereitet.</small></span>
-            <ArrowRight aria-hidden="true" size={22} />
-          </button>
-          <button type="button" className={styles.entryChoice} onClick={() => document.getElementById("new-binder-name")?.focus()} aria-label="Eigene Kartenliste planen">
-            <Archive aria-hidden="true" size={18} />
-            <span><strong>Eigene Kartenliste planen</strong><small>Für alle, die Karten und Seiten selbst zusammenstellen möchten.</small></span>
-            <ArrowRight aria-hidden="true" size={22} />
-          </button>
-        </div>
-      </div>
-
-      <div className={styles.createPanel}>
-        <div>
-          <span className={styles.sectionKicker}>Eigene Kartenliste</span>
-          <p>Gib deinem leeren Binder zuerst einen Namen.</p>
-        </div>
-        <form className={styles.createForm} onSubmit={onCreate}>
-          <label className={styles.srOnly} htmlFor="new-binder-name">Bindername</label>
-          <input id="new-binder-name" value={name} maxLength={100} onChange={onNameChange} placeholder="Zum Beispiel Mein erster Binder" />
-          <button type="submit" className={styles.primaryButton} aria-label="Erstellen" disabled={!name.trim() || binders.length >= MAX_BINDERS}><Plus size={16} /> Binder anlegen</button>
-        </form>
+      <div className={styles.alternativeStarts} aria-label="Weitere Startmöglichkeiten">
+        <span>Du sammelst lieber gezielt?</span>
+        <button type="button" onClick={() => onSetStart?.()} disabled={binders.length >= MAX_BINDERS} aria-label="Mit einem Set starten"><BookOpen aria-hidden="true" size={19} /> Mit einem Set starten <ArrowRight aria-hidden="true" size={17} /></button>
+        <details className={styles.manualStart} id="manual-start">
+          <summary>Leer starten</summary>
+          <div className={styles.createPanel}>
+            <p>Gib deinem Binder einen Namen. Danach kannst du jede Karte selbst auswählen.</p>
+            <form className={styles.createForm} onSubmit={onCreate}>
+              <label className={styles.srOnly} htmlFor="new-binder-name">Bindername</label>
+              <input id="new-binder-name" value={name} maxLength={100} onChange={onNameChange} placeholder="Name für deinen Binder" />
+              <button type="submit" className={styles.secondaryButton} disabled={!name.trim() || binders.length >= MAX_BINDERS}><Plus aria-hidden="true" size={16} /> Anlegen</button>
+            </form>
+          </div>
+        </details>
       </div>
 
       {binders.length ? (
         <div>
           <div className={styles.shelfHeader}>
-            <span className={styles.sectionKicker}>Regal</span>
+            <div><span className={styles.sectionKicker}>Deine Sammlung</span><h2>Hier kannst du weitergestalten</h2></div>
             <p className={styles.orderHint}>Eigene Reihenfolge · mit den Pfeilen anpassen</p>
           </div>
           <div className={styles.binderGrid} aria-label="Binder auswählen">
@@ -179,21 +135,15 @@ export function BinderOverview({
             })}
           </div>
         </div>
-      ) : (
-        <div className={styles.emptyState}>
-          <span className={styles.emptyCover} aria-hidden="true">
-            <span className={styles.coverStitch} />
-            <span className={styles.emptyCoverWindow}><i /><i /><i /><i /><i /><i /><i /><i /><i /></span>
-            <span className={styles.emptyCoverLabel}>CF-01</span>
-          </span>
-          <h2>Noch kein Binder</h2>
-          <p>Lege deinen ersten lokalen Binder an. Deine Daten werden nur in diesem Browser gespeichert.</p>
-          <button type="button" className={styles.primaryButton} onClick={() => document.getElementById("guided-start")?.scrollIntoView({ behavior: "smooth", block: "start" })}>
-            Ersten Binder erstellen <ArrowRight aria-hidden="true" size={17} />
-          </button>
-          <span className={styles.emptyHint}>Tipp: Ein vorhandenes JSON-Backup kannst du oben über „Backup importieren“ laden.</span>
-        </div>
-      )}
+      ) : null}
+
+      {binders.length ? <div className={styles.collectionFooter}>
+        <span>{binders.length} von {MAX_BINDERS} Bindern · {totalPercent}% deiner geplanten Karten vorhanden ({totalOwned} von {totalPlanned})</span>
+        <span className={styles.storageStatus} data-status={storageStatus}><span className={styles.statusDot} /> {storageStatus === "ready" || storageStatus === "saved" ? "Lokal gespeichert" : storageStatus}</span>
+        <button type="button" onClick={onExport}><Archive aria-hidden="true" size={16} /> Backup exportieren</button>
+      </div> : null}
+      <label className={styles.backupImport} htmlFor="backup-import">Vorhandenen Binder aus Backup laden</label>
+      <input id="backup-import" className={styles.srOnly} type="file" accept="application/json,.json" onChange={onImport} />
     </section>
   );
 }

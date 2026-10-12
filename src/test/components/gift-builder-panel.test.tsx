@@ -81,7 +81,7 @@ describe("GiftBuilderPanel", () => {
 
     expect(screen.getByText(/Unsere Empfehlung für Geschenke/)).toBeInTheDocument();
     expect(screen.getByText("Was bedeutet der Kartenzustand?")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: /Vorschlag erzeugen/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
     expect(await screen.findAllByText("9 / 9")).not.toHaveLength(0);
     expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("Preisprüfung"))).toBe(true);
     expect(screen.getByText("9 von 9 Karten sind vollständig vorbereitet. Sonderfälle kannst du direkt an der Karte ändern.")).toBeInTheDocument();
@@ -129,7 +129,7 @@ describe("GiftBuilderPanel", () => {
     };
     render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
 
-    fireEvent.click(screen.getByRole("button", { name: /Vorschlag erzeugen/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
     await screen.findByText("9 / 9");
     expect(screen.getAllByText("Preisprüfung aus").length).toBeGreaterThan(0);
     fireEvent.click(screen.getByRole("button", { name: /Alle passenden Karten ansehen/i }));
@@ -164,8 +164,8 @@ describe("GiftBuilderPanel", () => {
     };
     render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
 
-    fireEvent.click(screen.getByRole("button", { name: /Vorschlag erzeugen/i }));
-    await screen.findByText("Cardfolio hat für alle 9 Karten eine passende Bestellempfehlung vorbereitet. Du übernimmst sie gleich mit einem Klick.");
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await screen.findByText("Für alle 9 Karten gibt es eine vorausgewählte Bestellvariante. Ein Klick übernimmt sie gemeinsam.");
     expect(screen.getByRole("heading", { name: "Empfehlungen für 9 Karten übernehmen" })).toBeInTheDocument();
     expect(screen.getByText(/musst Normal, Holo oder Reverse Holo nicht selbst erkennen/)).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Jetzt Ausführung prüfen/i })).not.toBeInTheDocument();
@@ -191,11 +191,11 @@ describe("GiftBuilderPanel", () => {
 
     render(<GiftBuilderPanel loader={loader} smartSearch={smartSearch} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
 
-    expect(screen.getAllByRole("radio", { name: /Nach Artwork-Motiv/i })).toHaveLength(1);
-    fireEvent.click(screen.getByRole("radio", { name: /Nach Artwork-Motiv/i }));
+    expect(screen.getAllByRole("radio", { name: /Ein Bildmotiv/i })).toHaveLength(1);
+    fireEvent.click(screen.getByRole("radio", { name: /Ein Bildmotiv/i }));
     expect(screen.getAllByRole("radio", { name: /Meer & Wasser/i })).toHaveLength(1);
     fireEvent.click(screen.getByRole("radio", { name: /Meer & Wasser/i }));
-    fireEvent.click(screen.getByRole("button", { name: /Vorschlag erzeugen/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
 
     await screen.findByText("9 / 9");
     expect(loader.loadCandidatePool).not.toHaveBeenCalled();
@@ -240,11 +240,11 @@ describe("GiftBuilderPanel", () => {
     };
     render(<GiftBuilderPanel loader={loader} pricingEnabled budgetGuaranteeEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
 
-    fireEvent.click(screen.getByRole("button", { name: /Vorschlag erzeugen/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
     expect(await screen.findAllByText("9 / 9")).not.toHaveLength(0);
     expect(screen.getAllByText((_, element) => element?.tagName === "B" && element.textContent?.includes("1,00") === true)).toHaveLength(9);
     expect(screen.getByText(/9,00/)).toBeInTheDocument();
-    expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("orientiert sich an unverbindlichen TCGdex-Marktschätzungen"))).toBe(true);
+    expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("Preise sind Schätzungen ohne Versand und Steuern"))).toBe(true);
     expect(screen.queryByText(/Budget nicht vollständig berücksichtigen/i)).not.toBeInTheDocument();
   });
 
@@ -272,11 +272,11 @@ describe("GiftBuilderPanel", () => {
     };
     render(<GiftBuilderPanel loader={loader} pricingEnabled budgetGuaranteeEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
 
-    fireEvent.change(screen.getByRole("spinbutton", { name: /Maximales Budget/i }), { target: { value: "50" } });
-    fireEvent.click(screen.getByRole("button", { name: /Vorschlag erzeugen/i }));
+    fireEvent.change(screen.getByRole("spinbutton", { name: /Budget für die Karten/i }), { target: { value: "50" } });
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
 
     expect(await screen.findByText(/36,00/)).toBeInTheDocument();
     expect(screen.queryByText("Pikachu 10")).not.toBeInTheDocument();
-    expect(screen.queryByText(/günstigste vollständige Auswahl.*über deinem Budget/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/günstigste vollständige Auswahl liegt derzeit darüber/i)).not.toBeInTheDocument();
   });
 });

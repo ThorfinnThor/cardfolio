@@ -27,7 +27,6 @@ import type { CardSnapshot, CatalogSearchItem, PurchasePreferences, VariantSelec
 import { createInitialVariantSelection, formatVariantSelection, isVariantSelectionValid, variantAvailabilityForCard, variantSelectionIssue } from "@/domain/variant-selection";
 
 import { CardArtwork } from "./CardArtwork";
-import { GuidedFlow } from "./GuidedFlow";
 import { VariantFields } from "./VariantFields";
 import styles from "./gift-builder.module.css";
 
@@ -49,14 +48,14 @@ const GIFT_FLOW = [
   { label: "Wünsche", description: "Pokémon, Größe und Budget" },
   { label: "Karten auswählen", description: "Vorschläge mit Bildern ansehen" },
   { label: "Bestellung prüfen", description: "Ausführung und Zustand bestätigen" },
-  { label: "Karten kaufen", description: "Einkaufsliste beim Anbieter öffnen" },
+  { label: "Karten & Binder", description: "Beides zum Kauf vorbereiten" },
 ] as const;
 
 const STEP_GUIDANCE: Record<GiftStep, { title: string; text: string }> = {
-  details: { title: "Beantworte ein paar kurze Fragen", text: "Pokémon-Fachwissen ist nicht nötig. Wir stellen danach einen passenden Vorschlag zusammen." },
-  candidates: { title: "Sieh dir die vorgeschlagenen Karten an", text: "Du kannst jede Karte ersetzen. Wenn alles passt, gehst du unten zur Bestellprüfung weiter." },
-  review: { title: "Letzter Check vor dem Speichern", text: "Kontrolliere Kartenanzahl, Schätzung und Bestellangaben. Gekauft wird erst im nächsten Schritt beim Anbieter." },
-  summary: { title: "Der Binder ist gespeichert", text: "Als Nächstes bereitest du die fehlenden Karten für Cardmarket, TCGplayer oder CardTrader vor." },
+  details: { title: "Dein Geschenk-Binder beginnt hier", text: "Wähle ein Lieblings-Pokémon oder Bildmotiv. Wir zeigen dir sofort einen passenden Vorschlag." },
+  candidates: { title: "Deine erste Binder-Seite", text: "So könnte sie aussehen. Du kannst Karten austauschen und danach alle mit einem Klick für die Bestellung vorbereiten." },
+  review: { title: "Dein Geschenk-Binder ist fast fertig", text: "Prüfe die Auswahl und speichere den Binder. Danach helfen wir dir, Karten und Binder zu besorgen." },
+  summary: { title: "Dein Geschenk-Binder ist gespeichert", text: "Als Nächstes kannst du die Karten besorgen und einen passenden physischen Binder auswählen." },
 };
 
 const initialPreferences: GiftPreferences = {
@@ -455,52 +454,27 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
     <section className={styles.panel} aria-labelledby="gift-builder-heading">
       <div className={styles.header}>
         <div>
-          <p className={styles.eyebrow}><Gift aria-hidden="true" size={15} /> Geschenk erstellen</p>
-          <h1 id="gift-builder-heading">Ein persönlicher Kartenbinder</h1>
-          <p className={styles.intro}>Wähle Thema, Budget und Umfang. Das Ergebnis bleibt ein normaler, editierbarer Binder.</p>
+          <p className={styles.eyebrow}><Gift aria-hidden="true" size={15} /> Persönliches Pokémon-Geschenk</p>
+          <h1 id="gift-builder-heading">{STEP_GUIDANCE[step].title}</h1>
+          <p className={styles.intro}>{STEP_GUIDANCE[step].text}</p>
         </div>
-        <button type="button" className={styles.closeButton} onClick={onCancel} aria-label="Gift Builder schließen"><X size={18} /></button>
+        <button type="button" className={styles.closeButton} onClick={onCancel} aria-label="Geschenk-Gestaltung schließen"><X size={18} /></button>
       </div>
 
-      <div className={styles.flowWrapper}><GuidedFlow steps={GIFT_FLOW} currentStep={(["details", "candidates", "review", "summary"] as const).indexOf(step) + 1} label="Schritte zum Geschenk-Binder" /></div>
-      <div className={styles.stepLead}>
-        <span>Schritt {(["details", "candidates", "review", "summary"] as const).indexOf(step) + 1} von 4</span>
-        <div><strong>{STEP_GUIDANCE[step].title}</strong><p>{STEP_GUIDANCE[step].text}</p></div>
-        <ArrowRight aria-hidden="true" size={26} />
-      </div>
+      <ol className={styles.progressLine} aria-label="Schritte zum Geschenk-Binder">{GIFT_FLOW.map((item, index) => <li key={item.label} aria-current={index === (["details", "candidates", "review", "summary"] as const).indexOf(step) ? "step" : undefined}><span>{index + 1}</span>{item.label}</li>)}</ol>
 
       {error ? <div className={styles.error} role="alert"><strong>Vorschlag konnte nicht geladen werden</strong><span>{error}</span>{FEATURES.artworkReview && discoveryMode === "theme" ? <a className={styles.secondaryButton} href="/artwork-review/">Artwork lokal prüfen</a> : null}<button type="button" className={styles.secondaryButton} onClick={() => void createProposal()}><RefreshCw size={15} /> Erneut versuchen</button></div> : null}
 
       {step === "details" ? (
         <form className={styles.form} onSubmit={(event) => { event.preventDefault(); void createProposal(); }}>
-          <div className={styles.formGrid}>
-            <label>Für wen?
-              <select value={preferences.recipientKind} onChange={(event) => updatePreferences("recipientKind", event.target.value as GiftPreferences["recipientKind"]) }>
-                <option value="partner">Partner/in</option><option value="child">Kind</option><option value="friend">Freund/in</option><option value="other">Andere Person</option>
-              </select>
-            </label>
-            <label>Name <span>(nur lokal)</span>
-              <input value={preferences.recipientName ?? ""} maxLength={100} onChange={(event) => updatePreferences("recipientName", event.target.value || undefined)} placeholder="Optional" />
-            </label>
-            <label>Anlass
-              <select value={preferences.occasion ?? "other"} onChange={(event) => updatePreferences("occasion", event.target.value as GiftPreferences["occasion"]) }>
-                <option value="birthday">Geburtstag</option><option value="christmas">Weihnachten</option><option value="anniversary">Jubiläum</option><option value="other">Andere Gelegenheit</option>
-              </select>
-            </label>
-            <label>Sprache
-              <select disabled={discoveryMode === "theme"} value={discoveryMode === "theme" ? "en" : preferences.preferredLanguage ?? "en"} onChange={(event) => updatePreferences("preferredLanguage", event.target.value as "de" | "en") }>
-                <option value="de">Deutsch</option><option value="en">English</option>
-              </select>
-            </label>
-          </div>
           {smartSearch ? <fieldset className={styles.discoveryMode}>
-            <legend>Wie sollen wir Karten finden?</legend>
+            <legend>Was mag die beschenkte Person?</legend>
             <div className={styles.choiceRow}>
               <label className={styles.choice}><input type="radio" name="gift-discovery" checked={discoveryMode === "pokemon"} onChange={() => {
                 setDiscoveryMode("pokemon");
                 updatePreferences("subjectQuery", pokemonQuery);
-              }} />Nach Pokémonname</label>
-              <label className={styles.choice}><input type="radio" name="gift-discovery" checked={discoveryMode === "theme"} onChange={() => setDiscoveryMode("theme")} />Nach Artwork-Motiv</label>
+              }} />Ein Lieblings-Pokémon</label>
+              <label className={styles.choice}><input type="radio" name="gift-discovery" checked={discoveryMode === "theme"} onChange={() => setDiscoveryMode("theme")} />Ein Bildmotiv</label>
             </div>
           </fieldset> : null}
           {discoveryMode === "pokemon" ? <label className={styles.subjectField}>Lieblings-Pokémon
@@ -509,8 +483,8 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
               updatePreferences("subjectQuery", event.target.value);
             }} placeholder="Zum Beispiel Pikachu" /></span>
           </label> : <fieldset className={styles.themePicker}>
-            <legend>Motiv für den Geschenk-Binder</legend>
-            <p>Wähle eine von zehn kuratierten Ideen. Die lokale Motivsuche bevorzugt Karten mit vorhandenem Artwork.</p>
+            <legend>Wähle ein Motiv für die Seite</legend>
+            <p>Zum Beispiel Meer, Wald oder Schnee. Wir zeigen Karten, auf denen das Motiv im Bild zu sehen ist.</p>
             <div className={styles.themeGrid}>
               {GIFT_THEME_PRESETS.map((theme) => <label className={styles.themeChoice} key={theme.id}>
                 <input
@@ -527,29 +501,54 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
                 <span>{theme.description}</span>
               </label>)}
             </div>
-            <small>Die Motivsuche nutzt derzeit den geprüften englischen Artwork-Katalog. Der fertige Binder bleibt vollständig editierbar.</small>
+            <small>Motivseiten nutzen derzeit englische Kartenbilder. Du kannst später jede Karte austauschen.</small>
           </fieldset>}
-          <div className={styles.choiceGroup}>
-            <fieldset><legend>Umfang</legend><div className={styles.choiceRow}>{([9, 18, 36] as const).map((count) => <label key={count} className={styles.choice}><input type="radio" name="gift-count" checked={preferences.targetCardCount === count} onChange={() => updatePreferences("targetCardCount", count)} />{count} Karten</label>)}</div></fieldset>
-            <fieldset><legend>Stil</legend><div className={styles.choiceRow}>{(["mixed", "vintage", "modern", "curated"] as const).map((style) => <label key={style} className={styles.choice}><input type="radio" name="gift-style" checked={preferences.style === style} onChange={() => updatePreferences("style", style)} />{style === "mixed" ? "Mix" : style === "vintage" ? "Vintage" : style === "modern" ? "Modern" : "Kuratiert"}</label>)}</div></fieldset>
-          </div>
-          <div className={styles.budgetGrid}>
-            <label>Maximales Budget
+          <div className={styles.quickChoices}>
+            <fieldset><legend>Wie viele Karten?</legend><div className={styles.choiceRow}>{([9, 18, 36] as const).map((count) => <label key={count} className={styles.choice}><input type="radio" name="gift-count" checked={preferences.targetCardCount === count} onChange={() => updatePreferences("targetCardCount", count)} />{count === 9 ? "1 Seite · 9 Karten" : count === 18 ? "2 Seiten · 18 Karten" : "4 Seiten · 36 Karten"}</label>)}</div></fieldset>
+            <label>Budget für die Karten
               <span className={styles.moneyInput}><input type="number" min="1" step="1" required value={preferences.budgetMinor / 100} onChange={(event) => updatePreferences("budgetMinor", Math.max(1, Math.round(Number(event.target.value || 0) * 100)))} /><select value={preferences.currency} onChange={(event) => updatePreferences("currency", event.target.value as GiftPreferences["currency"])} aria-label="Währung"><option value="EUR">EUR</option><option value="USD">USD</option></select></span>
+              <small>Unverbindliche Schätzung. Tatsächliche Preise können abweichen.</small>
             </label>
+          </div>
+          <label className={styles.languageChoice}>Kartensprache
+            <select disabled={discoveryMode === "theme"} value={discoveryMode === "theme" ? "en" : preferences.preferredLanguage ?? "en"} onChange={(event) => updatePreferences("preferredLanguage", event.target.value as "de" | "en") }>
+              <option value="de">Deutsch</option><option value="en">English</option>
+            </select>
+            {discoveryMode === "theme" ? <small>Für Bildmotive gibt es derzeit nur geprüfte englische Karten.</small> : null}
+          </label>
+          <details className={styles.extraOptions}>
+            <summary>Weitere Wünsche für das Geschenk <span>optional</span></summary>
+            <div className={styles.formGrid}>
+              <label>Für wen?
+                <select value={preferences.recipientKind} onChange={(event) => updatePreferences("recipientKind", event.target.value as GiftPreferences["recipientKind"]) }>
+                  <option value="partner">Partner/in</option><option value="child">Kind</option><option value="friend">Freund/in</option><option value="other">Andere Person</option>
+                </select>
+              </label>
+              <label>Name <span>(nur lokal)</span>
+                <input value={preferences.recipientName ?? ""} maxLength={100} onChange={(event) => updatePreferences("recipientName", event.target.value || undefined)} placeholder="Optional" />
+              </label>
+              <label>Anlass
+                <select value={preferences.occasion ?? "other"} onChange={(event) => updatePreferences("occasion", event.target.value as GiftPreferences["occasion"]) }>
+                  <option value="birthday">Geburtstag</option><option value="christmas">Weihnachten</option><option value="anniversary">Jubiläum</option><option value="other">Andere Gelegenheit</option>
+                </select>
+              </label>
+              <label>Stil
+                <select value={preferences.style} onChange={(event) => updatePreferences("style", event.target.value as GiftPreferences["style"])}><option value="mixed">Mix</option><option value="vintage">Vintage</option><option value="modern">Modern</option><option value="curated">Kuratiert</option></select>
+              </label>
+            </div>
             <label>Budgettoleranz
               <select value={preferences.budgetTolerancePercent ?? 0} onChange={(event) => updatePreferences("budgetTolerancePercent", Number(event.target.value) as GiftPreferences["budgetTolerancePercent"])}><option value="0">Keine</option><option value="5">Bis 5 %</option><option value="10">Bis 10 %</option><option value="15">Bis 15 %</option></select>
             </label>
-          </div>
-          <label className={styles.orderConditionField}>Gewünschter Kartenzustand
-            <select aria-label="Gewünschter Kartenzustand" value={orderCondition} onChange={(event) => setOrderCondition(event.target.value as PurchasePreferences["minimumCondition"])}>
-              {conditionProfiles.map((profile) => <option value={profile.value} key={profile.value}>{profile.label}</option>)}
-            </select>
-            <span>{conditionProfile(orderCondition).providerSummary}. Diese Vorgabe gilt zunächst für alle vorgeschlagenen Karten und kann später einzeln geändert werden.</span>
-          </label>
-          <ConditionGuide />
-          <p className={styles.localHint}>{pricingEnabled ? `Name und Geschenkangaben werden nur in diesem Browser gespeichert. Kartenpreise sind unverbindliche Marktschätzungen; Versand und Steuern sind nicht enthalten.${budgetGuaranteeEnabled ? "" : " Das Budget dient nur zur Orientierung und wird nicht garantiert."}` : "Name und Geschenkangaben werden nur in diesem Browser gespeichert. Die Preisprüfung ist noch nicht freigegeben; Budget und Toleranz werden daher nicht zugesagt."}</p>
-          <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={onCancel}>Abbrechen</button><button type="submit" className={styles.primaryButton} aria-label="Vorschlag erzeugen – passende Karten zeigen" disabled={loading || (discoveryMode === "theme" ? !selectedThemeId : !preferences.subjectQuery.trim())}>{loading ? <><LoaderCircle className={styles.spin} size={16} /> Karten werden gesucht…</> : <>Passende Karten zeigen <ArrowRight size={18} /></>}</button></div>
+            <label className={styles.orderConditionField}>Gewünschter Kartenzustand
+              <select aria-label="Gewünschter Kartenzustand" value={orderCondition} onChange={(event) => setOrderCondition(event.target.value as PurchasePreferences["minimumCondition"])}>
+                {conditionProfiles.map((profile) => <option value={profile.value} key={profile.value}>{profile.label}</option>)}
+              </select>
+              <span>{conditionProfile(orderCondition).providerSummary}. Diese Vorgabe gilt zunächst für alle vorgeschlagenen Karten und kann später einzeln geändert werden.</span>
+            </label>
+            <ConditionGuide />
+          </details>
+          <p className={styles.localHint}>{pricingEnabled ? `Geschenkangaben bleiben in diesem Browser. Kartenpreise sind unverbindliche Schätzungen ohne Versand und Steuern.${budgetGuaranteeEnabled ? "" : " Das Budget ist eine Orientierung."}` : "Geschenkangaben bleiben in diesem Browser. Die Preisprüfung ist derzeit deaktiviert; das Budget kann noch nicht zugesagt werden."}</p>
+          <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={onCancel}>Zurück</button><button type="submit" className={styles.primaryButton} disabled={loading || (discoveryMode === "theme" ? !selectedThemeId : !preferences.subjectQuery.trim())}>{loading ? <><LoaderCircle className={styles.spin} aria-hidden="true" size={16} /> Karten werden gesucht…</> : <>Binder-Seite ansehen <ArrowRight aria-hidden="true" size={18} /></>}</button></div>
         </form>
       ) : null}
 
@@ -557,8 +556,8 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
         <div className={styles.resultsStep}>
           <div className={styles.summaryBar} data-status={selection.budgetStatus}><div><strong>{selection.selected.length} / {preferences.targetCardCount}</strong><span>ausgewählte Karten</span></div><div><strong>{pricingEnabled ? formatMoney(selection.estimatedTotalMinor, preferences.currency) : "Preisprüfung aus"}</strong><span>{pricingEnabled ? selection.budgetStatus === "unknown" ? "Schätzung unvollständig" : "geschätzter Kartenwert" : "noch nicht freigegeben"}</span></div><div><strong>{pricingEnabled ? selection.unpricedCount : "–"}</strong><span>{pricingEnabled ? "ohne Preis" : "keine Budgetzusage"}</span></div></div>
           {!pricingEnabled ? <p className={styles.gateNotice} role="status">Die Preisprüfung ist derzeit noch deaktiviert. Karten können trotzdem ausgewählt und als normaler Binder gespeichert werden; es gibt keine Budgetzusage.</p> : null}
-          {pricingEnabled && !budgetGuaranteeEnabled ? <p className={styles.gateNotice} role="status">Die Auswahl orientiert sich an unverbindlichen TCGdex-Marktschätzungen und deinem Budget. Tatsächliche Preise, Verfügbarkeit, Versand und Steuern können abweichen.</p> : null}
-          {selection.budgetStatus === "over" ? <p className={styles.warning} role="status">Selbst die günstigste vollständige Auswahl wird derzeit über deinem Budget geschätzt. Reduziere die Kartenzahl, erhöhe das Budget oder ersetze einzelne Karten.</p> : null}
+          {pricingEnabled && !budgetGuaranteeEnabled ? <p className={styles.gateNotice} role="status">Preise sind Schätzungen ohne Versand und Steuern. Das Budget ist keine Kaufzusage.</p> : null}
+          {selection.budgetStatus === "over" ? <p className={styles.warning} role="status">Die geschätzten {formatMoney(selection.estimatedTotalMinor, preferences.currency)} liegen über deinem Budget von {formatMoney(preferences.budgetMinor, preferences.currency)}. Auch die günstigste vollständige Auswahl liegt derzeit darüber. Du kannst Wünsche oder Karten ändern.</p> : null}
           {selection.budgetStatus === "unknown" && pricingEnabled ? <p className={styles.warning} role="status">Für mindestens eine ausgewählte Karte fehlt ein Preis. Deshalb kann Cardfolio das Budget nicht vollständig berücksichtigen.</p> : null}
           <section className={styles.orderSetup} aria-labelledby="gift-order-setup-heading">
             <div>
@@ -566,7 +565,7 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
               <span>{invalidOrderCandidates.length > 0
                 ? `${readyCardCount} von ${selection.selected.length} Karten sind vorbereitet. Nur ${invalidOrderCandidates.length} echte ${invalidOrderCandidates.length === 1 ? "Datenangabe muss" : "Datenangaben müssen"} noch korrigiert werden.`
                 : recommendedOrderCandidates.length > 0
-                  ? `Cardfolio hat für alle ${selection.selected.length} Karten eine passende Bestellempfehlung vorbereitet. Du übernimmst sie gleich mit einem Klick.`
+                  ? `Für alle ${selection.selected.length} Karten gibt es eine vorausgewählte Bestellvariante. Ein Klick übernimmt sie gemeinsam.`
                   : `${selection.selected.length} von ${selection.selected.length} Karten sind vollständig vorbereitet. Sonderfälle kannst du direkt an der Karte ändern.`}</span>
             </div>
             <label>Zustand für alle
@@ -615,7 +614,6 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
                 <CardArtwork card={candidate.card} className={styles.cardImage} fallback={<div className={styles.imageFallback}>Bild nicht verfügbar</div>} />
                 {issue ? <span className={styles.reviewBadge}>Bitte korrigieren</span> : hasRecommendation ? <span className={styles.recommendationBadge}>Empfohlen</span> : null}
                 <div className={styles.cardIdentity}><strong>{candidate.card.name}</strong><span>{candidate.card.setName} · Nr. {candidate.card.collectorNumber}</span><b>{pricingEnabled ? formatMoney(candidate.price.amountMinor, preferences.currency) : "Preisprüfung deaktiviert"}</b><small className={styles.priceMeta}>{pricingEnabled ? `${priceSourceLabel(candidate.price.source)} · Stand ${formatDate(candidate.price.sourceUpdatedAt ?? candidate.price.fetchedAt)}${formatRange(candidate.price.range, preferences.currency) ? ` · Spanne ${formatRange(candidate.price.range, preferences.currency)}` : ""}` : "Noch keine für diesen Ablauf freigegebene Preisquelle"}</small></div>
-                <div className={styles.reasonTags}>{candidate.reasonTags.map((tag) => <span key={tag}>{tag === "set-diversity" ? "Set-Vielfalt" : tag === "vintage" ? "Vintage" : tag === "modern" ? "Modern" : tag}</span>)}</div>
                 <div className={styles.orderSummary} data-status={orderStatus}><strong>{issue ? "Angabe korrigieren" : hasRecommendation ? "Empfehlung vorbereitet" : "Bestellbereit"}</strong><span>{issue ?? `${formatVariantSelection(candidate.variant)} · ${conditionProfile(candidate.preferences.minimumCondition).shortLabel}`}</span></div>
                 <div className={styles.cardActions}><button type="button" className={styles.linkButton} data-urgent={Boolean(issue)} onClick={() => setOpenVariantKey(openVariantKey === candidate.card.key ? undefined : candidate.card.key)}>{openVariantKey === candidate.card.key ? "Details schließen" : issue ? "Angaben korrigieren" : "Optional: Bestellangaben ändern"}</button><button type="button" className={styles.replaceButton} onClick={() => replaceCandidate(candidate.card.key)} disabled={availableCandidates.length === 0} aria-label={availableCandidates.length > 0 ? `${candidate.card.name} austauschen` : `Keine alternative Karte für ${candidate.card.name} verfügbar`} title={availableCandidates.length > 0 ? "Gegen die nächste passende Karte austauschen" : "Alle passenden Karten sind bereits ausgewählt"}><RefreshCw aria-hidden="true" size={15} /><span>{availableCandidates.length > 0 ? "Austauschen" : "Keine Alternative"}</span></button><button type="button" className={styles.iconButton} onClick={() => removeCandidate(candidate.card.key)} aria-label={`${candidate.card.name} entfernen`}><X size={15} /></button></div>
                 {openVariantKey === candidate.card.key ? <div className={styles.variantBox}><VariantFields variant={candidate.variant} preferences={candidate.preferences} availability={variantAvailabilityForCard(candidate.card)} onVariantChange={(variant) => updateVariant(candidate.card.key, variant)} onPreferencesChange={(next) => setSelection((current) => current ? summarizeSelection(current.selected.map((item) => item.card.key === candidate.card.key ? { ...item, preferences: next } : item), preferences, current.issues) : current)} />{issue ? <p className={styles.warning}>{issue}</p> : hasRecommendation ? <div className={styles.reviewInstructions}><strong>Cardfolio-Empfehlung</strong><p>Diese Bestellangaben sind bereits sinnvoll vorausgewählt. Du musst die Kartenart nicht selbst erkennen. Ändere sie nur, wenn du ausdrücklich eine andere Ausführung möchtest.</p><button type="button" className={styles.secondaryButton} onClick={() => confirmVariant(candidate.card.key)}>Nur diese Empfehlung übernehmen</button></div> : null}</div> : null}
