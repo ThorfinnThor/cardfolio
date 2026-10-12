@@ -10,6 +10,7 @@ import { variantAvailabilityForCard, variantSelectionIssue } from "./variant-sel
 
 export const CARDMARKET_POKEMON_SINGLES_URL = "https://www.cardmarket.com/en/Pokemon/Products/Singles";
 export const CARDMARKET_POKEMON_SEARCH_URL = "https://www.cardmarket.com/en/Pokemon/Products/Search";
+export const CARDMARKET_POKEMON_WANTS_URL = "https://www.cardmarket.com/de/Pokemon/Wants";
 export const CARDMARKET_POKEMON_WANTS_HELP_URL = "https://help.cardmarket.com/en/how-to-add-a-pkmn-decklist-to-wants";
 export const CARDMARKET_MAX_WANTS_POSITIONS = 150;
 
@@ -55,6 +56,7 @@ export interface CardmarketHandoff {
   searchRequiredCount: number;
   warnings: string[];
   singlesUrl: typeof CARDMARKET_POKEMON_SINGLES_URL;
+  wantsUrl: typeof CARDMARKET_POKEMON_WANTS_URL;
   wantsHelpUrl: typeof CARDMARKET_POKEMON_WANTS_HELP_URL;
 }
 
@@ -198,6 +200,7 @@ export function createCardmarketHandoff(
     searchRequiredCount: products.filter((product) => !product.productUrl).length,
     warnings,
     singlesUrl: CARDMARKET_POKEMON_SINGLES_URL,
+    wantsUrl: CARDMARKET_POKEMON_WANTS_URL,
     wantsHelpUrl: CARDMARKET_POKEMON_WANTS_HELP_URL,
   };
 }

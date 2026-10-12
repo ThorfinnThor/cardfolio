@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { CARDMARKET_MAX_WANTS_POSITIONS, CARDMARKET_POKEMON_SEARCH_URL, createCardmarketHandoff, createCardmarketSearchUrl } from "@/domain/cardmarket-handoff";
+import { CARDMARKET_MAX_WANTS_POSITIONS, CARDMARKET_POKEMON_SEARCH_URL, CARDMARKET_POKEMON_WANTS_URL, createCardmarketHandoff, createCardmarketSearchUrl } from "@/domain/cardmarket-handoff";
 import type { MarketplaceProductIdentityMapping } from "@/domain/marketplace-product-identity";
 import type { MissingItem } from "@/domain/types";
 
@@ -42,6 +42,7 @@ describe("Cardmarket handoff", () => {
       label: "2× Bulbasaur",
       details: "Base Set · Nr. 001 · EN · Zustand: Wie neu",
     });
+    expect(exported.wantsUrl).toBe(CARDMARKET_POKEMON_WANTS_URL);
     expect(exported.warnings.join(" ")).toMatch(/vollständiger Kartenname, Fähigkeiten und Attacken/);
     expect(exported.warnings.join(" ")).toMatch(/Set, Kartennummer, Sprache und Druckvariante nicht fest/);
     expect(exported.warnings.join(" ")).toMatch(/gewählte Zustand wird gespeichert.*nicht übertragen/);

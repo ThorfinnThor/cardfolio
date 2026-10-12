@@ -157,6 +157,9 @@ export function MissingCardsPanel({
   const activeCardmarketPart = cardmarketHandoff?.parts[activeCardmarketPartIndex];
   const verifiedCardmarketProducts = activeCardmarketPart?.products.filter((product) => product.productUrl) ?? [];
   const unresolvedCardmarketProducts = activeCardmarketPart?.products.filter((product) => !product.productUrl) ?? [];
+  const cardmarketBulkLabel = activeCardmarketPart?.importablePositionCount === 1
+    ? "1 Karte"
+    : `${activeCardmarketPart?.importablePositionCount ?? 0} Karten`;
   const tcgplayerPreparedMatches = tcgplayerExport?.matches.filter((match) => match.line) ?? [];
   const tcgplayerExceptions = tcgplayerExport?.matches.filter((match) => !match.line) ?? [];
   const visibleConditions = new Set(visibleItems.map((item) => item.preferences.minimumCondition));
@@ -363,63 +366,65 @@ export function MissingCardsPanel({
         <section className={styles.marketplacePanel} aria-labelledby="cardmarket-handoff-heading">
           <div className={styles.marketplaceHeader}>
             <div>
-              <p className={styles.eyebrow}>Schritt 3 · Karten bei Cardmarket öffnen</p>
-              <h3 id="cardmarket-handoff-heading">Cardmarket vorbereiten</h3>
-              <p>{cardmarketHandoff.verifiedProductCount} geprüft zugeordnet · {cardmarketHandoff.searchRequiredCount} müssen noch gesucht werden</p>
+              <p className={styles.eyebrow}>Schritt 3 · Alle Karten gemeinsam übertragen</p>
+              <h3 id="cardmarket-handoff-heading">Komplette Liste zu Cardmarket</h3>
+              <p>{activeCardmarketPart.importablePositionCount} von {activeCardmarketPart.positionCount} Karten sind für den Sammelimport vorbereitet.</p>
             </div>
             <a href={cardmarketHandoff.wantsHelpUrl} target="_blank" rel="noopener noreferrer">
               Cardmarket-Hilfe <ExternalLink aria-hidden="true" size={15} />
             </a>
           </div>
 
+          <section className={styles.cardmarketBulkHero} aria-labelledby="cardmarket-bulk-heading">
+            <div>
+              <span className={styles.stepTag}>Empfohlen</span>
+              <h4 id="cardmarket-bulk-heading">Nur einmal klicken – nicht jede Karte einzeln suchen</h4>
+              <p>Cardfolio kopiert alle vorbereiteten Karten und öffnet Cardmarkets Wants-Bereich. Dort legst du einmal eine Liste an, fügst den kopierten Text ein und startest anschließend den Shopping Wizard.</p>
+            </div>
+            {cardmarketHandoff.parts.length > 1 ? (
+              <label className={styles.cardmarketBulkPart} htmlFor="cardmarket-bulk-part">
+                <span>Cardmarket erlaubt höchstens 150 Positionen pro Wants-Liste. Wähle den zu übertragenden Teil:</span>
+                <select id="cardmarket-bulk-part" value={activeCardmarketPartIndex} onChange={(event) => setCardmarketPartIndex(Number(event.target.value))}>
+                  {cardmarketHandoff.parts.map((part, index) => <option value={index} key={part.index}>Teil {part.index} von {cardmarketHandoff.parts.length} · {part.positionCount} Positionen</option>)}
+                </select>
+              </label>
+            ) : null}
+            {activeCardmarketPart.text && !cardmarketPreparing ? (
+              <a
+                className={styles.cardmarketBulkAction}
+                href={cardmarketHandoff.wantsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => onCardmarketCopy?.(activeCardmarketPart)}
+              >
+                <Clipboard aria-hidden="true" size={19} />
+                {cardmarketCopyState === "copied"
+                  ? "Liste kopiert – Cardmarket öffnen"
+                  : `${cardmarketBulkLabel} kopieren & Cardmarket öffnen`}
+                <ExternalLink aria-hidden="true" size={18} />
+              </a>
+            ) : (
+              <button type="button" className={styles.cardmarketBulkAction} disabled>
+                <Clipboard aria-hidden="true" size={19} />
+                {cardmarketPreparing ? "Kartenliste wird vorbereitet …" : "Keine Sammelliste verfügbar"}
+              </button>
+            )}
+            <small>Kein Kauf wird automatisch ausgelöst. Preise, Versand und die endgültige Kartenauswahl bestätigst du erst bei Cardmarket.</small>
+          </section>
+
           <ol className={styles.cardmarketSteps} aria-label="Cardmarket-Kaufschritte">
-            <li><strong>Produktseiten öffnen</strong><span>Nutze zuerst die grün markierten, geprüften Links.</span></li>
-            <li><strong>Ausführung und Zustand wählen</strong><span>Vergleiche Set und Nummer und füge die Karte deiner Wants-Liste hinzu.</span></li>
-            <li><strong>Shopping Wizard starten</strong><span>Preis und Versand prüfst du abschließend bei Cardmarket.</span></li>
+            <li><strong>Oben einmal klicken</strong><span>Die komplette Liste wird kopiert und Cardmarket geöffnet.</span></li>
+            <li><strong>Einmal einfügen</strong><span>Neue Wants-Liste anlegen, „Deckliste hinzufügen“ öffnen und den kopierten Text einfügen.</span></li>
+            <li><strong>Gemeinsam kaufen</strong><span>Ergebnis kurz prüfen und anschließend den Shopping Wizard starten.</span></li>
           </ol>
 
           {cardmarketMappingsError ? <p className={styles.error} role="status">{cardmarketMappingsError} Die sicheren Suchlinks bleiben verfügbar.</p> : null}
-          {!cardmarketProductMappings && !loadedCardmarketMappings && !cardmarketMappingsError ? <p className={styles.handoffSteps} role="status">Geprüfte Cardmarket-Produktlinks werden geladen …</p> : null}
-
-          <section className={styles.cardmarketProductSection} aria-labelledby="cardmarket-verified-heading">
-            <div className={styles.cardmarketProductHeading}>
-              <div><span className={styles.cardmarketNumber}>1</span><h4 id="cardmarket-verified-heading">Geprüfte Produktseiten</h4></div>
-              <small>{verifiedCardmarketProducts.length} von {activeCardmarketPart.products.length}</small>
-            </div>
-            {verifiedCardmarketProducts.length ? (
-              <ul>
-                {verifiedCardmarketProducts.map((product) => (
-                  <li key={product.identityKey}>
-                    <span><strong>{product.label}</strong><small>{product.details}</small></span>
-                    <a aria-label={`Produktseite öffnen: ${product.label}`} href={product.productUrl} target="_blank" rel="noopener noreferrer">Produktseite öffnen <ExternalLink aria-hidden="true" size={14} /></a>
-                  </li>
-                ))}
-              </ul>
-            ) : <p className={styles.cardmarketEmptyState}>Für diese Auswahl gibt es noch keine manuell geprüfte Produktseite. Nutze die sicheren Suchlinks im nächsten Abschnitt.</p>}
-          </section>
-
-          {unresolvedCardmarketProducts.length ? (
-            <section className={styles.cardmarketProductSection} data-status="search" aria-labelledby="cardmarket-search-heading">
-              <div className={styles.cardmarketProductHeading}>
-                <div><span className={styles.cardmarketNumber}>2</span><h4 id="cardmarket-search-heading">Noch nicht eindeutig zugeordnet</h4></div>
-                <small>{unresolvedCardmarketProducts.length} Karten</small>
-              </div>
-              <p className={styles.cardmarketSectionIntro}>Der Link öffnet eine vorausgefüllte Suche. Vergleiche dort Kartenname, Set und Nummer mit den Angaben hier.</p>
-              <ul>
-                {unresolvedCardmarketProducts.map((product) => (
-                  <li key={product.identityKey}>
-                    <span><strong>{product.label}</strong><small>{product.details}</small></span>
-                    <a aria-label={`Karte suchen: ${product.label}`} href={product.url} target="_blank" rel="noopener noreferrer">Karte suchen <ExternalLink aria-hidden="true" size={14} /></a>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ) : null}
+          {!cardmarketProductMappings && !loadedCardmarketMappings && !cardmarketMappingsError ? <p className={styles.handoffSteps} role="status">Optionale Cardmarket-Produktlinks werden geladen …</p> : null}
 
           <details className={styles.advancedCardmarket}>
-            <summary>Erweiterte Option: Decklistenimport</summary>
+            <summary>Importliste ansehen oder als Datei speichern</summary>
             <div className={styles.advancedCardmarketBody}>
-              <p className={styles.reviewExplanation}>Der Import kann Zeit sparen, legt aber Set, Kartennummer, Sprache, Ausführung und Zustand nicht sicher fest. Nutze ihn nur, wenn du die Ergebnisse bei Cardmarket anschließend kontrollierst.</p>
+              <p className={styles.reviewExplanation}>Cardmarket erkennt Pokémon über den vollständigen Namen sowie Fähigkeiten und Attacken. Set, Sprache, Ausführung und Zustand werden vom Decklistenformat nicht automatisch übertragen und müssen im Ergebnis kurz kontrolliert werden.</p>
 
               <div className={styles.reviewOverview} data-has-exceptions={cardmarketHandoff.excluded.length > 0}>
                 <strong>{cardmarketHandoff.excluded.length > 0 ? cardmarketHandoff.excluded.length === 1 ? "1 Karte fehlt im Importtext" : `${cardmarketHandoff.excluded.length} Karten fehlen im Importtext` : "Alle Karten sind für den Decklistenimport vorbereitet"}</strong>
@@ -465,6 +470,50 @@ export function MissingCardsPanel({
               {cardmarketCopyState === "error" ? <p className={styles.error} role="status">Kopieren wurde nicht erlaubt. Der Text bleibt oben markierbar oder kann als TXT geladen werden.</p> : null}
             </div>
           </details>
+
+          {verifiedCardmarketProducts.length || unresolvedCardmarketProducts.length ? (
+            <details className={styles.advancedCardmarket}>
+              <summary>Nur falls Cardmarket eine Karte nicht erkennt: Einzelsuchen ({activeCardmarketPart.products.length})</summary>
+              <div className={styles.advancedCardmarketBody}>
+                <p className={styles.reviewExplanation}>Diese Links sind nur eine Rückfallebene. Öffne sie nicht vorsorglich, sondern nur für Karten, die Cardmarket nach dem Sammelimport ausdrücklich nicht gefunden hat.</p>
+
+                {verifiedCardmarketProducts.length ? (
+                  <section className={styles.cardmarketProductSection} aria-labelledby="cardmarket-verified-heading">
+                    <div className={styles.cardmarketProductHeading}>
+                      <div><span className={styles.cardmarketNumber}>1</span><h4 id="cardmarket-verified-heading">Geprüfte Produktseiten</h4></div>
+                      <small>{verifiedCardmarketProducts.length} Karten</small>
+                    </div>
+                    <ul>
+                      {verifiedCardmarketProducts.map((product) => (
+                        <li key={product.identityKey}>
+                          <span><strong>{product.label}</strong><small>{product.details}</small></span>
+                          <a aria-label={`Produktseite öffnen: ${product.label}`} href={product.productUrl} target="_blank" rel="noopener noreferrer">Produktseite öffnen <ExternalLink aria-hidden="true" size={14} /></a>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                ) : null}
+
+                {unresolvedCardmarketProducts.length ? (
+                  <section className={styles.cardmarketProductSection} data-status="search" aria-labelledby="cardmarket-search-heading">
+                    <div className={styles.cardmarketProductHeading}>
+                      <div><span className={styles.cardmarketNumber}>2</span><h4 id="cardmarket-search-heading">Vorausgefüllte Suchlinks</h4></div>
+                      <small>{unresolvedCardmarketProducts.length} Karten</small>
+                    </div>
+                    <p className={styles.cardmarketSectionIntro}>Vergleiche auf Cardmarket Kartenname, Set und Nummer mit den Angaben hier.</p>
+                    <ul>
+                      {unresolvedCardmarketProducts.map((product) => (
+                        <li key={product.identityKey}>
+                          <span><strong>{product.label}</strong><small>{product.details}</small></span>
+                          <a aria-label={`Karte suchen: ${product.label}`} href={product.url} target="_blank" rel="noopener noreferrer">Karte suchen <ExternalLink aria-hidden="true" size={14} /></a>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                ) : null}
+              </div>
+            </details>
+          ) : null}
 
         </section>
       ) : null}

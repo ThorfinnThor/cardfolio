@@ -279,7 +279,10 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   await expect(missingCards.getByText("Ivysaur", { exact: true })).toBeVisible();
   await missingCards.getByRole("button", { name: "Cardmarket" }).click();
-  await expect(missingCards.getByRole("heading", { name: "Cardmarket Deckliste" })).toBeVisible();
+  await expect(missingCards.getByRole("heading", { name: "Komplette Liste zu Cardmarket" })).toBeVisible();
+  const bulkHandoff = missingCards.getByRole("link", { name: "1 Karte kopieren & Cardmarket öffnen" });
+  await expect(bulkHandoff).toHaveAttribute("href", "https://www.cardmarket.com/de/Pokemon/Wants");
+  await missingCards.getByText("Importliste ansehen oder als Datei speichern").click();
   await expect(missingCards.getByText(/vollständiger Kartenname, Fähigkeiten und Attacken/)).toBeVisible();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue("1x Ivysaur Vine Whip Poisonpowder");
   const cardmarketDownloadPromise = page.waitForEvent("download");
@@ -874,8 +877,12 @@ test("finds and displays an exact full collector number", async ({ page }) => {
   expect(tcgplayerUrl.searchParams.get("productline")).toBe("Pokemon");
 
   await missingCards.getByRole("button", { name: "Cardmarket" }).click();
-  await missingCards.getByText("Vorbereitete Karten und Einzelsuchen anzeigen (1)").click();
-  const cardmarketLink = missingCards.getByRole("link", { name: "Karte suchen" });
+  await expect(missingCards.getByRole("link", { name: "1 Karte kopieren & Cardmarket öffnen" })).toHaveAttribute(
+    "href",
+    "https://www.cardmarket.com/de/Pokemon/Wants",
+  );
+  await missingCards.getByText("Nur falls Cardmarket eine Karte nicht erkennt: Einzelsuchen (1)").click();
+  const cardmarketLink = missingCards.getByRole("link", { name: /Karte suchen/ });
   const cardmarketUrl = new URL(await cardmarketLink.getAttribute("href") ?? "");
   expect(cardmarketUrl.searchParams.get("searchString")).toBe("Charizard Grundset 4/102");
 });
@@ -902,6 +909,7 @@ test("exports the verified Tornupto and Blaine's Charizard identities to TCGplay
   await expect(missingCards.getByRole("region", { name: "Gym Challenge · EN" }).getByText("Nr. 2/132")).toBeVisible();
 
   await missingCards.getByRole("button", { name: "Cardmarket" }).click();
+  await missingCards.getByText("Importliste ansehen oder als Datei speichern").click();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue(
     "1x Blaine's Charizard Roaring Flames Flame Jet\n1x Typhlosion Fire Recharge Flame Burst",
   );
