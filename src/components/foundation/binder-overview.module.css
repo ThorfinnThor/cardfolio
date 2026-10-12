@@ -1,5 +1,13 @@
 /* Synthese 2 · Übersicht: Holo-Struktur, Kabinett-Cover, Slab-Kennzahlen */
 .overview { display: grid; gap: 22px; }
+.startTabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); overflow: hidden; border: 1px solid var(--cf-line2); border-radius: 12px; background: var(--cf-surface); padding: 5px; }
+.startTabs button { min-height: 62px; display: flex; align-items: center; justify-content: center; gap: 9px; border: 0; border-radius: 8px; background: transparent; color: var(--cf-text2); padding: 9px 12px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.startTabs button + button { border-left: 1px solid var(--cf-line); }
+.startTabs button:hover { background: var(--cf-surface2); color: var(--cf-text); }
+.startTabs button[aria-selected="true"] { background: var(--cf-accent); color: var(--cf-on-accent); box-shadow: 0 8px 18px -14px var(--cf-sh-deep); }
+.startTabs button[aria-selected="true"] + button { border-left-color: transparent; }
+.startTabs button span { display: inline-flex; align-items: center; gap: 7px; }
+.startTabs em { border-radius: 999px; background: rgb(255 255 255 / 20%); padding: 3px 6px; font-family: var(--cf-font-mono); font-size: 8px; font-style: normal; letter-spacing: .05em; text-transform: uppercase; }
 .giftHero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr); align-items: center; gap: clamp(20px, 4vw, 64px); min-height: 430px; overflow: hidden; border: 1px solid var(--cf-line); border-radius: 18px; background: radial-gradient(circle at 78% 25%, var(--cf-accent-soft), transparent 42%), var(--cf-surface); padding: clamp(24px, 4vw, 48px); }
 .giftHero[data-has-binders="true"] { min-height: 330px; }
 .giftHero[data-has-binders="true"] .giftHeroCopy h1 { font-size: clamp(1.9rem, 3.2vw, 3.1rem); }
@@ -22,6 +30,14 @@
 .simpleSteps li { display: inline-flex; align-items: center; gap: 10px; color: var(--cf-text2); font-size: 14px; font-weight: 600; }
 .simpleSteps li + li::before { margin-right: 12px; color: var(--cf-accent-text); content: "→"; font-size: 19px; }
 .simpleSteps strong { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: var(--cf-accent-soft); color: var(--cf-accent-text); font-family: var(--cf-font-mono); font-size: 12px; }
+.startPanel { display: grid; justify-items: start; gap: 18px; min-height: 330px; align-content: center; border: 1px solid var(--cf-line); border-radius: 18px; background: radial-gradient(circle at 88% 22%, var(--cf-accent-soft), transparent 38%), var(--cf-surface); padding: clamp(28px, 5vw, 60px); }
+.startPanel h1 { max-width: 780px; margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(2rem, 3.55vw, 3.4rem); font-weight: 600; letter-spacing: -.045em; line-height: 1.08; text-wrap: balance; }
+.startPanel > p { max-width: 62ch; margin: 0; color: var(--cf-text2); font-size: clamp(1rem, 1.3vw, 1.15rem); line-height: 1.55; }
+.createFormLarge { display: grid; width: min(100%, 760px); gap: 8px; }
+.createFormLarge > label { color: var(--cf-text); font-size: 13px; font-weight: 700; }
+.createFormLarge > div { display: grid; grid-template-columns: minmax(220px, 1fr) auto; gap: 10px; }
+.createFormLarge input { min-width: 0; min-height: 58px; border: 1px solid var(--cf-line2); border-radius: 10px; background: var(--cf-field); color: var(--cf-text); padding: 0 16px; font: inherit; font-size: 15px; }
+.createFormLarge input:focus { border-color: var(--cf-accent); outline: 3px solid var(--cf-accent-soft); }
 .alternativeStarts { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 18px; border-top: 1px solid var(--cf-line); padding-top: 19px; }
 .alternativeStarts > span { color: var(--cf-muted); font-size: 13px; }
 .alternativeStarts button { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; border: 0; background: transparent; color: var(--cf-accent-text); padding: 4px 7px; font-size: 13px; font-weight: 700; cursor: pointer; }
@@ -155,6 +171,9 @@
 }
 
 @media (max-width: 900px) {
+  .startTabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .startTabs button:nth-child(3) { border-top: 1px solid var(--cf-line); border-left: 0; }
+  .startTabs button:nth-child(4) { border-top: 1px solid var(--cf-line); }
   .giftHero { grid-template-columns: 1fr; }
   .giftHeroVisual { display: none; }
   .overviewHeader { align-items: flex-start; flex-direction: column; }
@@ -165,6 +184,12 @@
   .overview { gap: 16px; }
   .giftHero { min-height: 0; padding: 24px 20px; }
   .giftHeroCopy { gap: 15px; }
+  .startTabs { grid-template-columns: 1fr; }
+  .startTabs button { min-height: 52px; justify-content: flex-start; }
+  .startTabs button + button, .startTabs button:nth-child(3), .startTabs button:nth-child(4) { border-top: 1px solid var(--cf-line); border-left: 0; }
+  .startPanel { min-height: 0; padding: 28px 20px; }
+  .createFormLarge > div { grid-template-columns: 1fr; }
+  .createFormLarge .heroButton { width: 100%; }
   .heroButton { width: 100%; min-height: 60px; font-size: 15px; }
   .simpleSteps { align-items: flex-start; flex-direction: column; gap: 10px; padding: 8px 4px; }
   .simpleSteps li + li::before { display: none; }

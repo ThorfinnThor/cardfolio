@@ -203,6 +203,7 @@
 .purchaseFlowIntro > p:last-child { max-width: 760px; margin: 0; color: var(--cf-text2); font-size: 12px; line-height: 1.5; }
 .purchaseOptions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .purchaseCard { display: flex; flex-direction: column; justify-content: space-between; gap: 16px; min-width: 0; border: 1px solid var(--cf-line); border-radius: 9px; background: var(--cf-surface); padding: 16px; }
+.purchaseCardFeatured { border: 2px solid var(--cf-accent); background: var(--cf-accent-soft); box-shadow: 0 12px 26px -22px var(--cf-sh-deep); }
 .purchaseCard > div { display: grid; align-content: start; gap: 8px; }
 .purchaseCard > div > p:not(.eyebrow) { margin: 0; color: var(--cf-muted); font-size: 12px; line-height: 1.5; }
 .purchaseStep { margin: 0; color: var(--cf-accent-text); font-family: var(--cf-font-mono); font-size: 10px; font-weight: 750; letter-spacing: .11em; }
@@ -212,6 +213,9 @@
 .offerRow strong { color: var(--cf-text); font-size: 12px; }
 .offerRow small { color: var(--cf-muted); font-size: 10px; line-height: 1.4; }
 .offerRow button { flex: 0 0 auto; min-height: 40px; }
+.offerAction { min-height: 52px !important; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--cf-accent); border-radius: 8px; background: var(--cf-accent); color: var(--cf-on-accent); padding: 10px 15px; font-size: 13px; font-weight: 800; cursor: pointer; }
+.offerAction:hover:not(:disabled) { background: color-mix(in srgb, var(--cf-accent) 88%, #fff); }
+.offerAction:disabled { cursor: not-allowed; opacity: .5; }
 .summaryActions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; border-top: 1px solid var(--cf-line); padding-top: 14px; }
 .summaryActions > button { min-height: 44px; }
 .panel :focus-visible { outline: 3px solid var(--cf-accent); outline-offset: 3px; }

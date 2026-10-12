@@ -118,6 +118,26 @@ type BinderSyncMessage =
   | { type: "binder-changed"; binderId: string; revision: number; deleted?: boolean }
   | { type: "binder-order-changed" };
 type LayoutChangeRequest = { binderId: string; layout: SupportedBinderLayout; preview: BinderLayoutPreview };
+type WorkspaceHistoryView = "overview" | "gift" | "set" | "binder" | "missing";
+type WorkspaceHistoryEntry = { view: WorkspaceHistoryView; binderId?: string };
+
+const WORKSPACE_HISTORY_KEY = "cardfolioWorkspace";
+
+function readWorkspaceHistoryEntry(value: unknown): WorkspaceHistoryEntry | undefined {
+  if (!value || typeof value !== "object") return undefined;
+  const candidate = (value as Record<string, unknown>)[WORKSPACE_HISTORY_KEY];
+  if (!candidate || typeof candidate !== "object") return undefined;
+  const view = (candidate as Record<string, unknown>).view;
+  const binderId = (candidate as Record<string, unknown>).binderId;
+  if (view !== "overview" && view !== "gift" && view !== "set" && view !== "binder" && view !== "missing") return undefined;
+  return { view, binderId: typeof binderId === "string" ? binderId : undefined };
+}
+
+function workspaceHistoryState(view: WorkspaceHistoryView, binderId?: string): Record<string, unknown> {
+  const current = window.history.state;
+  const base = current && typeof current === "object" ? current as Record<string, unknown> : {};
+  return { ...base, [WORKSPACE_HISTORY_KEY]: { view, binderId } };
+}
 type BinderRenameRequest = { binderId: string; name: string };
 type PageRenameRequest = { binderId: string; pageId: string; pageIndex: number; title: string };
 type PageDeleteRequest = {
@@ -404,6 +424,7 @@ export function FoundationWorkspace() {
   const searchDrawerRef = useRef<HTMLElement | null>(null);
   const modalReturnFocusRef = useRef<HTMLElement | null>(null);
   const previousModalOpenRef = useRef(false);
+  const workspaceHistoryReadyRef = useRef(false);
   const searchScrollTopRef = useRef(0);
   const pageSelectionTokenRef = useRef(0);
   const bindersRef = useRef<Binder[]>([]);
@@ -451,11 +472,21 @@ export function FoundationWorkspace() {
   const [storageConflict, setStorageConflict] = useState(false);
   const [binderManagerOpen, setBinderManagerOpen] = useState(false);
   const [giftBuilderOpen, setGiftBuilderOpen] = useState(false);
+  const [giftDiscoveryMode, setGiftDiscoveryMode] = useState<"pokemon" | "theme">("pokemon");
   const [setBinderWizardOpen, setSetBinderWizardOpen] = useState(false);
   const [catalogSelection, setCatalogSelection] = useState<CatalogSearchItem[]>([]);
   const [celebratedEntryId, setCelebratedEntryId] = useState<string>();
 
   const activeBinder = binders.find((binder) => binder.id === activeId);
+  const workspaceView: WorkspaceHistoryView = !activeBinder || binderManagerOpen
+    ? setBinderWizardOpen
+      ? "set"
+      : giftBuilderOpen
+        ? "gift"
+        : "overview"
+    : missingOpen
+      ? "missing"
+      : "binder";
   const activePage = activeBinder?.pages[Math.min(activePageIndex, Math.max(activeBinder.pages.length - 1, 0))];
   const visiblePageIndex = activeBinder && activePage ? activeBinder.pages.indexOf(activePage) : 0;
   const activePageTitle = activePage?.title || `Seite ${visiblePageIndex + 1}`;
@@ -505,6 +536,54 @@ export function FoundationWorkspace() {
         setMessage(error instanceof Error ? error.message : "Lokaler Speicher konnte nicht geöffnet werden.");
       });
   }, [repository]);
+
+  useEffect(() => {
+    const restoreWorkspaceView = (event: PopStateEvent) => {
+      const requested = readWorkspaceHistoryEntry(event.state);
+      if (!requested) return;
+
+      const requestedBinder = requested.binderId
+        ? bindersRef.current.find((binder) => binder.id === requested.binderId)
+        : undefined;
+      const needsBinder = requested.view === "binder" || requested.view === "missing";
+      const view = needsBinder && !requestedBinder ? "overview" : requested.view;
+
+      if (requestedBinder) {
+        setActiveId(requestedBinder.id);
+        setActivePageIndex(0);
+      }
+      setGiftBuilderOpen(view === "gift");
+      setSetBinderWizardOpen(view === "set");
+      setBinderManagerOpen(view === "overview" || view === "gift" || view === "set");
+      setMissingOpen(view === "missing");
+      setSearchOpen(false);
+      setSearchPreview(undefined);
+
+      if (view !== requested.view) {
+        window.history.replaceState(workspaceHistoryState(view, requestedBinder?.id), "", window.location.href);
+      }
+    };
+
+    window.addEventListener("popstate", restoreWorkspaceView);
+    return () => window.removeEventListener("popstate", restoreWorkspaceView);
+  }, []);
+
+  useEffect(() => {
+    if (storageStatus === "initializing") return;
+
+    const nextEntry: WorkspaceHistoryEntry = { view: workspaceView, binderId: activeId };
+    const currentEntry = readWorkspaceHistoryEntry(window.history.state);
+    const sameEntry = currentEntry?.view === nextEntry.view && currentEntry.binderId === nextEntry.binderId;
+
+    if (!workspaceHistoryReadyRef.current) {
+      window.history.replaceState(workspaceHistoryState(nextEntry.view, nextEntry.binderId), "", window.location.href);
+      workspaceHistoryReadyRef.current = true;
+      return;
+    }
+    if (!sameEntry) {
+      window.history.pushState(workspaceHistoryState(nextEntry.view, nextEntry.binderId), "", window.location.href);
+    }
+  }, [activeId, storageStatus, workspaceView]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setDebouncedSearch(searchText.trim()), 350);
@@ -1862,6 +1941,7 @@ export function FoundationWorkspace() {
           <GiftBuilderPanel
             loader={giftLoader}
             smartSearch={giftSmartSearch}
+            initialDiscoveryMode={giftDiscoveryMode}
             pricingEnabled={FEATURES.giftPriceEstimates}
             budgetGuaranteeEnabled={FEATURES.giftBudgetGuarantee}
             onCancel={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }}
@@ -1883,7 +1963,8 @@ export function FoundationWorkspace() {
             onRequestDelete={setBinderToDelete}
             onExport={exportBackup}
             onImport={importBackup}
-            onGiftStart={() => { setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
+            onGiftStart={() => { setGiftDiscoveryMode("pokemon"); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
+            onThemeStart={() => { setGiftDiscoveryMode("theme"); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
             onSetStart={() => { setSetBinderWizardOpen(true); setGiftBuilderOpen(false); setBinderManagerOpen(true); setMissingOpen(false); }}
           />
         )

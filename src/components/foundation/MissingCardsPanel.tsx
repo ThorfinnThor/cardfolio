@@ -200,15 +200,6 @@ export function MissingCardsPanel({
 
       <div className={styles.flowWrapper}><GuidedFlow steps={PURCHASE_FLOW} currentStep={marketplaceChoice ? 3 : purchaseStep} label="Schritte zum Kartenkauf" /></div>
 
-      <div className={styles.toolbar}>
-        <label className={styles.searchLabel} htmlFor="missing-card-filter">
-          <Search aria-hidden="true" size={17} />
-          <span className={styles.srOnly}>Fehlkarten filtern</span>
-          <input id="missing-card-filter" placeholder="Name, Set oder Nummer" onChange={(event) => setQuery(event.target.value)} />
-        </label>
-        <span className={styles.searchHint}>{visibleItems.length} Kartenpositionen werden vorbereitet</span>
-      </div>
-
       {copyState === "error" ? <p className={styles.error} role="status">Kopieren wurde vom Browser nicht erlaubt. Nutze stattdessen TXT oder CSV.</p> : null}
       {warnings.map((warning) => <p className={styles.warning} role="note" key={warning}>{warning}</p>)}
 
@@ -563,30 +554,30 @@ export function MissingCardsPanel({
         <CardTraderPanel items={visibleItems} status={cardtraderStatus} quote={cardtraderQuote} />
       ) : null}
 
-      <div className={styles.advancedExports} aria-label="Weitere Exportmöglichkeiten">
-        <div><strong>Weitere Exportmöglichkeiten</strong><span>Für Tabellen oder ein eigenes Backup der gefilterten Liste.</span></div>
-        <div className={styles.exportActions}>
-          <button type="button" className={styles.secondaryButton} onClick={() => onCopy(visibleItems)} disabled={!visibleItems.length}>
-            <Clipboard size={16} /> {copyState === "copied" ? "Kopiert" : "Liste kopieren"}
-          </button>
-          <button type="button" className={styles.secondaryButton} onClick={() => onTextExport(visibleItems)} disabled={!visibleItems.length}><Download size={16} /> TXT</button>
-          <button type="button" className={styles.secondaryButton} onClick={() => onCsvExport(visibleItems)} disabled={!visibleItems.length}><FileDown size={16} /> CSV</button>
+      {items.length ? <details className={styles.completeListDisclosure}>
+        <summary>Vollständige Fehlkartenliste anzeigen ({visibleItems.length})</summary>
+        <div className={styles.listTools}>
+          <div className={styles.toolbar}>
+            <label className={styles.searchLabel} htmlFor="missing-card-filter">
+              <Search aria-hidden="true" size={17} />
+              <span className={styles.srOnly}>Fehlkarten filtern</span>
+              <input id="missing-card-filter" placeholder="Name, Set oder Nummer" onChange={(event) => setQuery(event.target.value)} />
+            </label>
+            <span className={styles.searchHint}>{visibleItems.length} Kartenpositionen</span>
+          </div>
+          <div className={styles.advancedExports} aria-label="Weitere Exportmöglichkeiten">
+            <div><strong>Export nur bei Bedarf</strong><span>Für Tabellen oder ein eigenes Backup der gefilterten Liste.</span></div>
+            <div className={styles.exportActions}>
+              <button type="button" className={styles.secondaryButton} onClick={() => onCopy(visibleItems)} disabled={!visibleItems.length}>
+                <Clipboard size={16} /> {copyState === "copied" ? "Kopiert" : "Liste kopieren"}
+              </button>
+              <button type="button" className={styles.secondaryButton} onClick={() => onTextExport(visibleItems)} disabled={!visibleItems.length}><Download size={16} /> TXT</button>
+              <button type="button" className={styles.secondaryButton} onClick={() => onCsvExport(visibleItems)} disabled={!visibleItems.length}><FileDown size={16} /> CSV</button>
+            </div>
+          </div>
+          {visibleItems.length ? <MissingItemGroups groups={visibleGroups} onConditionsChange={onConditionsChange} /> : <div className={styles.empty}><strong>Keine Treffer für diesen Filter</strong><p>Passe den Suchbegriff an oder lösche den Filter.</p></div>}
         </div>
-      </div>
-
-      {visibleItems.length ? (
-        marketplaceChoice ? (
-          <details className={styles.completeListDisclosure}>
-            <summary>Vollständige Fehlkartenliste anzeigen ({visibleItems.length})</summary>
-            <MissingItemGroups groups={visibleGroups} onConditionsChange={onConditionsChange} />
-          </details>
-        ) : <MissingItemGroups groups={visibleGroups} onConditionsChange={onConditionsChange} />
-      ) : (
-        <div className={styles.empty}>
-          <strong>{items.length ? "Keine Treffer für diesen Filter" : "Keine fehlenden Karten"}</strong>
-          <p>{items.length ? "Passe den Suchbegriff an oder lösche den Filter." : "Leere Slots und vorhandene Karten werden nicht als Bedarf gezählt."}</p>
-        </div>
-      )}
+      </details> : <div className={styles.empty}><strong>Keine fehlenden Karten</strong><p>Leere Slots und vorhandene Karten werden nicht als Bedarf gezählt.</p></div>}
     </section>
   );
 }

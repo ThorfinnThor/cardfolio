@@ -364,6 +364,7 @@ test("reviews multiple cards and fills from the next free slot continuously", as
 test("creates a reviewed set binder through the guided start", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/");
+  await page.getByRole("tab", { name: "Komplettes Set" }).click();
   await page.getByRole("button", { name: "Mit einem Set starten" }).click();
 
   const wizard = page.getByRole("region", { name: "Binder mit einem Set erstellen" });
@@ -380,6 +381,20 @@ test("creates a reviewed set binder through the guided start", async ({ page }) 
   await expect(page.getByRole("heading", { name: "Geführtes Base Set", exact: true })).toBeVisible();
   await expect(page.getByRole("article", { name: "Bulbasaur, Slot 1" })).toBeVisible();
   await expect(page.getByText(/1 Karten aus Grundset wurden eingeplant/)).toBeVisible();
+});
+
+test("keeps Cardfolio views in the browser back and forward history", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/");
+
+  await page.getByRole("button", { name: "Geschenk-Binder gestalten" }).click();
+  await expect(page.getByRole("heading", { name: "Dein Geschenk-Binder beginnt hier" })).toBeVisible();
+
+  await page.goBack();
+  await expect(page.getByRole("heading", { name: "Ein Pokémon-Binder als persönliches Geschenk." })).toBeVisible();
+
+  await page.goForward();
+  await expect(page.getByRole("heading", { name: "Dein Geschenk-Binder beginnt hier" })).toBeVisible();
 });
 
 test("autosaves the binder description and each page note across reloads", async ({ page }) => {

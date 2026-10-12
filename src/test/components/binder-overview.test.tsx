@@ -36,24 +36,27 @@ describe("BinderOverview", () => {
 
   it("offers clear beginner starts for gifts and complete sets", () => {
     const onGiftStart = vi.fn();
+    const onThemeStart = vi.fn();
     const onSetStart = vi.fn();
-    render(<BinderOverview {...props({ onGiftStart, onSetStart })} />);
+    render(<BinderOverview {...props({ onGiftStart, onThemeStart, onSetStart })} />);
 
     fireEvent.click(screen.getByRole("button", { name: "Geschenk-Binder gestalten" }));
+    fireEvent.click(screen.getByRole("tab", { name: "Nach Bildmotiv" }));
+    fireEvent.click(screen.getByRole("button", { name: "Bildmotiv auswählen" }));
+    fireEvent.click(screen.getByRole("tab", { name: "Komplettes Set" }));
     fireEvent.click(screen.getByRole("button", { name: "Mit einem Set starten" }));
 
     expect(onGiftStart).toHaveBeenCalledOnce();
+    expect(onThemeStart).toHaveBeenCalledOnce();
     expect(onSetStart).toHaveBeenCalledOnce();
   });
 
-  it("keeps manual planning optional and reveals it on request", () => {
+  it("keeps manual planning as a separate start tab", () => {
     render(<BinderOverview {...props()} />);
 
-    const manualStart = screen.getByText("Leer starten").closest("details");
-    expect(manualStart).not.toHaveAttribute("open");
-    fireEvent.click(screen.getByText("Leer starten"));
-    expect(manualStart).toHaveAttribute("open");
-    expect(screen.getByRole("textbox", { name: "Bindername" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("tab", { name: "Selbst gestalten" }));
+    expect(screen.getByRole("heading", { name: "Binder selbst gestalten." })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Wie soll dein Binder heißen?" })).toBeInTheDocument();
   });
 
   it("offers persistent binder ordering and duplication controls", () => {

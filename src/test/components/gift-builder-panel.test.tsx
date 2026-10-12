@@ -79,6 +79,8 @@ describe("GiftBuilderPanel", () => {
     const open = vi.spyOn(window, "open").mockImplementation(() => window);
     render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={onCreateBinder} onOpenBinder={vi.fn()} onCardsPurchase={onCardsPurchase} />);
 
+    expect(screen.getByRole("combobox", { name: /Kartensprache/i })).toHaveValue("de");
+    fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
     expect(screen.getByText(/Unsere Empfehlung für Geschenke/)).toBeInTheDocument();
     expect(screen.getByText("Was bedeutet der Kartenzustand?")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
@@ -103,7 +105,7 @@ describe("GiftBuilderPanel", () => {
     expect(await screen.findByText("9-Pocket Test-Binder")).toBeInTheDocument();
     expect(screen.getByText(/9-Pocket · Platz für bis zu 360 Karten/i)).toBeInTheDocument();
     expect(screen.getByText(/kein Affiliate-Link/i)).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: /Binder im Shop ansehen/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Diesen Binder bestellen/i }));
     expect(open).toHaveBeenCalledWith("https://partner.example/9-pocket-binder", "_blank", "noopener,noreferrer");
     fireEvent.change(screen.getByLabelText(/Grußtext für die lokale Druckansicht/i), { target: { value: "Viel Freude!" } });
     expect(screen.getByText("Viel Freude!", { selector: "blockquote" })).toBeInTheDocument();
@@ -129,6 +131,7 @@ describe("GiftBuilderPanel", () => {
     };
     render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
 
+    fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
     fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
     await screen.findByText("9 / 9");
     expect(screen.getAllByText("Preisprüfung aus").length).toBeGreaterThan(0);
@@ -164,6 +167,7 @@ describe("GiftBuilderPanel", () => {
     };
     render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
 
+    fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
     fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
     await screen.findByText("Für alle 9 Karten gibt es eine vorausgewählte Bestellvariante. Ein Klick übernimmt sie gemeinsam.");
     expect(screen.getByRole("heading", { name: "Empfehlungen für 9 Karten übernehmen" })).toBeInTheDocument();
@@ -189,10 +193,10 @@ describe("GiftBuilderPanel", () => {
       }))),
     };
 
-    render(<GiftBuilderPanel loader={loader} smartSearch={smartSearch} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+    render(<GiftBuilderPanel initialDiscoveryMode="theme" loader={loader} smartSearch={smartSearch} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
 
     expect(screen.getAllByRole("radio", { name: /Ein Bildmotiv/i })).toHaveLength(1);
-    fireEvent.click(screen.getByRole("radio", { name: /Ein Bildmotiv/i }));
+    expect(screen.getByRole("radio", { name: /Ein Bildmotiv/i })).toBeChecked();
     expect(screen.getAllByRole("radio", { name: /Meer & Wasser/i })).toHaveLength(1);
     fireEvent.click(screen.getByRole("radio", { name: /Meer & Wasser/i }));
     fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
@@ -240,6 +244,7 @@ describe("GiftBuilderPanel", () => {
     };
     render(<GiftBuilderPanel loader={loader} pricingEnabled budgetGuaranteeEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
 
+    fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
     fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
     expect(await screen.findAllByText("9 / 9")).not.toHaveLength(0);
     expect(screen.getAllByText((_, element) => element?.tagName === "B" && element.textContent?.includes("1,00") === true)).toHaveLength(9);
@@ -272,6 +277,7 @@ describe("GiftBuilderPanel", () => {
     };
     render(<GiftBuilderPanel loader={loader} pricingEnabled budgetGuaranteeEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
 
+    fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
     fireEvent.change(screen.getByRole("spinbutton", { name: /Budget für die Karten/i }), { target: { value: "50" } });
     fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
 

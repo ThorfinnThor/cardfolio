@@ -33,6 +33,7 @@ import styles from "./gift-builder.module.css";
 export interface GiftBuilderPanelProps {
   loader: Pick<GiftCandidateLoader, "loadCandidatePool" | "hydrateCandidates">;
   smartSearch?: Pick<SmartSearchAdapter, "search">;
+  initialDiscoveryMode?: "pokemon" | "theme";
   pricingEnabled: boolean;
   budgetGuaranteeEnabled?: boolean;
   onCancel: () => void;
@@ -65,7 +66,7 @@ const initialPreferences: GiftPreferences = {
   budgetMinor: 10000,
   currency: "EUR",
   budgetTolerancePercent: 5,
-  preferredLanguage: "en",
+  preferredLanguage: "de",
   style: "mixed",
 };
 
@@ -155,12 +156,12 @@ function safeCandidate(candidate: GiftCardCandidate, pricingEnabled: boolean, cu
   };
 }
 
-export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGuaranteeEnabled = false, onCancel, onCreateBinder, onOpenBinder, onCardsPurchase }: GiftBuilderPanelProps) {
+export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "pokemon", pricingEnabled, budgetGuaranteeEnabled = false, onCancel, onCreateBinder, onOpenBinder, onCardsPurchase }: GiftBuilderPanelProps) {
   const engine = useMemo(() => new DeterministicGiftSelectionEngine(), []);
   const [step, setStep] = useState<GiftStep>("details");
   const [preferences, setPreferences] = useState<GiftPreferences>(initialPreferences);
   const [pokemonQuery, setPokemonQuery] = useState(initialPreferences.subjectQuery);
-  const [discoveryMode, setDiscoveryMode] = useState<GiftDiscoveryMode>("pokemon");
+  const [discoveryMode, setDiscoveryMode] = useState<GiftDiscoveryMode>(initialDiscoveryMode);
   const [orderCondition, setOrderCondition] = useState<PurchasePreferences["minimumCondition"]>("excellent");
   const [selectedThemeId, setSelectedThemeId] = useState<string>();
   const [briefs, setBriefs] = useState<CatalogSearchItem[]>([]);
@@ -477,6 +478,12 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
               <label className={styles.choice}><input type="radio" name="gift-discovery" checked={discoveryMode === "theme"} onChange={() => setDiscoveryMode("theme")} />Ein Bildmotiv</label>
             </div>
           </fieldset> : null}
+          <label className={styles.languageChoice}>Kartensprache
+            <select disabled={discoveryMode === "theme"} value={discoveryMode === "theme" ? "en" : preferences.preferredLanguage ?? "de"} onChange={(event) => updatePreferences("preferredLanguage", event.target.value as "de" | "en") }>
+              <option value="de">Deutsch</option><option value="en">English</option>
+            </select>
+            {discoveryMode === "theme" ? <small>Für Bildmotive gibt es derzeit nur geprüfte englische Karten.</small> : <small>{preferences.preferredLanguage === "de" ? "Suche mit deutschen Namen, zum Beispiel Glurak." : "Search with English names, for example Charizard."}</small>}
+          </label>
           {discoveryMode === "pokemon" ? <label className={styles.subjectField}>Lieblings-Pokémon
             <span className={styles.inputWithIcon}><Search aria-hidden="true" size={17} /><input required value={pokemonQuery} onChange={(event) => {
               setPokemonQuery(event.target.value);
@@ -510,12 +517,6 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
               <small>Unverbindliche Schätzung. Tatsächliche Preise können abweichen.</small>
             </label>
           </div>
-          <label className={styles.languageChoice}>Kartensprache
-            <select disabled={discoveryMode === "theme"} value={discoveryMode === "theme" ? "en" : preferences.preferredLanguage ?? "en"} onChange={(event) => updatePreferences("preferredLanguage", event.target.value as "de" | "en") }>
-              <option value="de">Deutsch</option><option value="en">English</option>
-            </select>
-            {discoveryMode === "theme" ? <small>Für Bildmotive gibt es derzeit nur geprüfte englische Karten.</small> : null}
-          </label>
           <details className={styles.extraOptions}>
             <summary>Weitere Wünsche für das Geschenk <span>optional</span></summary>
             <div className={styles.formGrid}>
@@ -692,17 +693,13 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
           </label>
 
           <div className={styles.purchaseFlowIntro} aria-labelledby="purchase-flow-heading">
-            <p className={styles.eyebrow}>DIE NÄCHSTEN SCHRITTE</p>
-            <h3 id="purchase-flow-heading">Fast geschafft – jetzt noch Karten und Binder besorgen</h3>
-            <p>Du kannst beides nacheinander erledigen. Erst die Karten prüfen und kaufen, danach den passenden Binder auswählen.</p>
+            <p className={styles.eyebrow}>ZUM FERTIGEN GESCHENK FEHLEN NOCH 2 KÄUFE</p>
+            <h3 id="purchase-flow-heading">1. Den physischen Binder bestellen · 2. Die Karten besorgen</h3>
+            <p>Der digitale Plan ist gespeichert. Kaufe jetzt den passenden leeren Binder und öffne danach die vorbereitete Kartenliste.</p>
           </div>
           <section className={styles.purchaseOptions} aria-label="Nächste Schritte: Karten und Binder kaufen">
-            <article className={styles.purchaseCard}>
-              <div><p className={styles.purchaseStep}>1 · KARTEN KAUFEN</p><h3>Karten besorgen</h3><p>Prüfe die vorbereiteten Angaben und öffne danach den passenden Marktplatz. Cardfolio führt dich durch die nächsten Schritte.</p></div>
-              <button type="button" className={styles.primaryButton} aria-label="Karten besorgen" onClick={onCardsPurchase}><ShoppingBag aria-hidden="true" size={18} /> Karten jetzt kaufen <ArrowRight aria-hidden="true" size={18} /></button>
-            </article>
-            <article className={styles.purchaseCard}>
-              <div><p className={styles.purchaseStep}>2 · BINDER KAUFEN</p><h3>Passenden Binder auswählen</h3>
+            <article className={`${styles.purchaseCard} ${styles.purchaseCardFeatured}`}>
+              <div><p className={styles.purchaseStep}>1 · PHYSISCHEN BINDER KAUFEN</p><h3>Der Binder für deine Karten</h3><p>Für deinen Seitenplan empfehlen wir einen geschlossenen 9-Pocket-Binder. Er schützt die Karten und ist das eigentliche Geschenk.</p>
                 {partnerLoadError ? <p role="status">Angebote sind momentan nicht erreichbar. Du kannst den lokalen Binder weiter bearbeiten.</p> : null}
                 {!partnerLoadError && !binderOffers ? <p role="status">Binder-Angebote werden geprüft…</p> : null}
                 {!partnerLoadError && binderOffers?.length === 0 ? <p role="status">Zurzeit ist kein geprüfter Binder-Shop verfügbar. Du kannst den lokalen Binder trotzdem weiter bearbeiten.</p> : null}
@@ -713,10 +710,14 @@ export function GiftBuilderPanel({ loader, smartSearch, pricingEnabled, budgetGu
                     {offer.status === "available" ? <small>Externer Shop · Verfügbarkeit und Versand dort prüfen · kein Affiliate-Link</small> : null}
                     {offer.status !== "available" ? <small>{offer.statusReason ?? "Angebot nicht verfügbar."}</small> : null}
                   </div>
-                  <button type="button" className={styles.secondaryButton} disabled={offer.status !== "available"} onClick={() => openBinderPartner(offer.id)}>{offer.status === "available" ? <>{offer.kind === "personalized" ? "Binder personalisieren" : "Binder im Shop ansehen"} <ExternalLink aria-hidden="true" size={14} /></> : "Derzeit nicht verfügbar"}</button>
+                  <button type="button" className={styles.offerAction} disabled={offer.status !== "available"} onClick={() => openBinderPartner(offer.id)}>{offer.status === "available" ? <>{offer.kind === "personalized" ? "Binder personalisieren" : "Diesen Binder bestellen"} <ExternalLink aria-hidden="true" size={15} /></> : "Derzeit nicht verfügbar"}</button>
                 </div>)}
                 {externalNavigationBlocked ? <p className={styles.warning} role="alert">Der Browser hat den externen Anbieteraufruf blockiert. Erlaube Pop-ups oder öffne den Link nach erneuter Auswahl.</p> : null}
               </div>
+            </article>
+            <article className={styles.purchaseCard}>
+              <div><p className={styles.purchaseStep}>2 · KARTEN KAUFEN</p><h3>Vorbereitete Kartenliste öffnen</h3><p>Zustand und Ausführung sind vorbereitet. Wähle einen Kartenanbieter und folge dort der gemeinsamen Einkaufsliste.</p></div>
+              <button type="button" className={styles.primaryButton} aria-label="Karten besorgen" onClick={onCardsPurchase}><ShoppingBag aria-hidden="true" size={18} /> Karten jetzt kaufen <ArrowRight aria-hidden="true" size={18} /></button>
             </article>
           </section>
 
