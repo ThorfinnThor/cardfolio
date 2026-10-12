@@ -14,7 +14,7 @@ const sets: CatalogSetIndexEntry[] = [{
   series: { de: { id: "base", name: "Basis" }, en: { id: "base", name: "Base" } },
   releaseDate: "1999-01-09",
   cardCount: { official: 102, total: 102 },
-  assets: {},
+  assets: { de: { symbol: { kind: "symbol", baseUrl: "https://assets.tcgdex.net/univ/base/base1/symbol" } } },
 }, {
   provider: "tcgdex",
   id: "english-only",
@@ -29,7 +29,7 @@ const sets: CatalogSetIndexEntry[] = [{
   series: { de: { id: "sv", name: "Karmesin & Purpur" }, en: { id: "sv", name: "Scarlet & Violet" } },
   releaseDate: "2025-01-17",
   cardCount: { official: 131, total: 180 },
-  assets: {},
+  assets: { de: { logo: { kind: "logo", baseUrl: "https://assets.tcgdex.net/de/sv/sv08.5/logo" } } },
 }];
 
 function card(id: string, setId = "base1"): CardSnapshot {
@@ -55,6 +55,8 @@ describe("SetBinderWizard", () => {
     expect(screen.getByRole("button", { name: /Grundset.*Serie: Basis.*Veröffentlicht: 09.01.1999.*102 Karten/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Prismatische Entwicklungen.*180 Karten insgesamt \(131 regulär \+ 49 Secret Rares\)/ })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /English-only Set/ })).not.toBeInTheDocument();
+    expect(document.querySelector('img[src="https://assets.tcgdex.net/univ/base/base1/symbol.webp"]')).toBeInTheDocument();
+    expect(document.querySelector('img[src="https://assets.tcgdex.net/de/sv/sv08.5/logo.webp"]')).toBeInTheDocument();
   });
 
   it("keeps German UI names while exposing the English set name for English cards", () => {

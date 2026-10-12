@@ -7,12 +7,16 @@
 .setWizardControls label, .setWizardPreview label { display: grid; gap: 6px; color: var(--cf-muted); font-size: 11px; font-weight: 650; }
 .setWizardControls select, .setWizardControls input, .setWizardPreview input { width: 100%; height: 40px; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-field); color: var(--cf-text); padding: 0 11px; font-size: 13px; }
 .setWizardSetList { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; max-height: 430px; overflow: auto; padding: 2px; }
-.setWizardSet { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 62px; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-surface2); color: var(--cf-text); padding: 10px 12px; text-align: left; cursor: pointer; }
+.setWizardSet { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 10px; min-height: 66px; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-surface2); color: var(--cf-text); padding: 9px 11px; text-align: left; cursor: pointer; }
 .setWizardSet:hover, .setWizardSetActive { border-color: var(--cf-accent); background: var(--cf-accent-soft); }
-.setWizardSet span { display: grid; gap: 4px; min-width: 0; }
+.setWizardSetCopy { display: grid; gap: 4px; min-width: 0; }
 .setWizardSet strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
 .setWizardSet small { color: var(--cf-muted); font-size: 10px; }
-.setWizardSet svg { flex: 0 0 auto; color: var(--cf-accent-text); }
+.setWizardSet svg { color: var(--cf-accent-text); }
+.setWizardSetArtwork, .setWizardSetArtworkFallback { width: 44px; height: 44px; display: grid; place-items: center; overflow: hidden; border: 1px solid var(--cf-line); border-radius: 7px; background: var(--cf-page); }
+.setWizardSetArtwork img { display: block; width: 100%; height: 100%; object-fit: contain; padding: 7px; }
+.setWizardSetArtwork[data-asset-kind="logo"] img { padding: 5px; }
+.setWizardSetArtworkFallback { border-style: dashed; color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 8px; text-align: center; text-transform: uppercase; }
 .setWizardPreview { display: grid; gap: 14px; }
 .setWizardSummary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 18px; padding: 12px 14px; border-radius: 8px; background: var(--cf-accent-soft); color: var(--cf-accent-text); }
 .setWizardSummary strong { font-family: var(--cf-font-mono); font-size: 14px; }

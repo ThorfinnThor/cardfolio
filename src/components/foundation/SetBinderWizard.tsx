@@ -3,7 +3,7 @@
 import { ArrowLeft, Check, LoaderCircle, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 
-import type { CatalogSetIndexEntry } from "@/domain/catalog-set";
+import { catalogSetAssetUrl, type CatalogSetAsset, type CatalogSetIndexEntry } from "@/domain/catalog-set";
 import { createSetBinderPlan, type SetBinderPlan } from "@/domain/set-binder-plan";
 import type { CatalogAdapter, CardLanguage, CardSnapshot } from "@/domain/types";
 
@@ -29,6 +29,32 @@ function formatCardCount(cardCount: CatalogSetIndexEntry["cardCount"]): string {
   const secretCount = cardCount.total - cardCount.official;
   if (secretCount <= 0) return `${cardCount.total} Karten`;
   return `${cardCount.total} Karten insgesamt (${cardCount.official} regulär + ${secretCount} Secret Rares)`;
+}
+
+function SetArtwork({ entry, language }: { entry: CatalogSetIndexEntry; language: CardLanguage }) {
+  const candidates = useMemo(() => {
+    const fallbackLanguage: CardLanguage = language === "de" ? "en" : "de";
+    return [
+      entry.assets[language]?.symbol,
+      entry.assets[fallbackLanguage]?.symbol,
+      entry.assets[language]?.logo,
+      entry.assets[fallbackLanguage]?.logo,
+    ]
+      .filter((asset): asset is CatalogSetAsset => Boolean(asset))
+      .filter((asset, index, assets) => assets.findIndex((candidate) => candidate.baseUrl === asset.baseUrl) === index);
+  }, [entry, language]);
+  const [failedIndex, setFailedIndex] = useState(0);
+
+  const asset = candidates[failedIndex];
+  if (!asset) return <span className={styles.setWizardSetArtworkFallback} aria-hidden="true">{entry.id}</span>;
+
+  return (
+    <span className={styles.setWizardSetArtwork} data-asset-kind={asset.kind} aria-hidden="true">
+      {/* Set assets use the same allow-listed TCGdex CDN as the card artwork. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={catalogSetAssetUrl(asset)} alt="" loading="lazy" onError={() => setFailedIndex((current) => current + 1)} />
+    </span>
+  );
 }
 
 export function SetBinderWizard({ catalog, sets, onCancel, onCreate }: SetBinderWizardProps) {
@@ -126,7 +152,7 @@ export function SetBinderWizard({ catalog, sets, onCancel, onCreate }: SetBinder
             const translatedName = language === "en" && languageName !== label ? `Englischer Setname: ${languageName} · ` : "";
             const seriesName = entry.series.de?.name ?? entry.series[language]?.name ?? "Serie unbekannt";
             const releaseDate = formatReleaseDate(entry.releaseDate);
-            return <button type="button" key={entry.id} className={`${styles.setWizardSet} ${selectedId === entry.id ? styles.setWizardSetActive : ""}`} onClick={() => { setSelectedId(entry.id); setError(undefined); }}><span><strong>{label}</strong><small>{translatedName}Serie: {seriesName}{releaseDate ? ` · Veröffentlicht: ${releaseDate}` : ""} · {formatCardCount(entry.cardCount)}</small></span>{selectedId === entry.id ? <Check size={18} /> : null}</button>;
+            return <button type="button" key={entry.id} className={`${styles.setWizardSet} ${selectedId === entry.id ? styles.setWizardSetActive : ""}`} onClick={() => { setSelectedId(entry.id); setError(undefined); }}><SetArtwork key={`${entry.id}-${language}`} entry={entry} language={language} /><span className={styles.setWizardSetCopy}><strong>{label}</strong><small>{translatedName}Serie: {seriesName}{releaseDate ? ` · Veröffentlicht: ${releaseDate}` : ""} · {formatCardCount(entry.cardCount)}</small></span>{selectedId === entry.id ? <Check size={18} /> : null}</button>;
           })}
           {!visibleSets.length ? <p className={styles.searchHint}>Keine Sets gefunden.</p> : null}
         </div>
