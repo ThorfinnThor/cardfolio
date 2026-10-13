@@ -119,7 +119,7 @@ type BinderSyncMessage =
   | { type: "binder-order-changed" };
 type LayoutChangeRequest = { binderId: string; layout: SupportedBinderLayout; preview: BinderLayoutPreview };
 type WorkspaceHistoryView = "overview" | "gift" | "set" | "binder" | "missing";
-type WorkspaceHistoryEntry = { view: WorkspaceHistoryView; binderId?: string };
+type WorkspaceHistoryEntry = { view: WorkspaceHistoryView; binderId?: string; searchOpen?: boolean };
 
 const WORKSPACE_HISTORY_KEY = "cardfolioWorkspace";
 
@@ -129,14 +129,15 @@ function readWorkspaceHistoryEntry(value: unknown): WorkspaceHistoryEntry | unde
   if (!candidate || typeof candidate !== "object") return undefined;
   const view = (candidate as Record<string, unknown>).view;
   const binderId = (candidate as Record<string, unknown>).binderId;
+  const searchOpen = (candidate as Record<string, unknown>).searchOpen;
   if (view !== "overview" && view !== "gift" && view !== "set" && view !== "binder" && view !== "missing") return undefined;
-  return { view, binderId: typeof binderId === "string" ? binderId : undefined };
+  return { view, binderId: typeof binderId === "string" ? binderId : undefined, searchOpen: searchOpen === true };
 }
 
-function workspaceHistoryState(view: WorkspaceHistoryView, binderId?: string): Record<string, unknown> {
+function workspaceHistoryState(view: WorkspaceHistoryView, binderId?: string, searchOpen = false): Record<string, unknown> {
   const current = window.history.state;
   const base = current && typeof current === "object" ? current as Record<string, unknown> : {};
-  return { ...base, [WORKSPACE_HISTORY_KEY]: { view, binderId } };
+  return { ...base, [WORKSPACE_HISTORY_KEY]: { view, binderId, searchOpen } };
 }
 type BinderRenameRequest = { binderId: string; name: string };
 type PageRenameRequest = { binderId: string; pageId: string; pageIndex: number; title: string };
@@ -473,6 +474,7 @@ export function FoundationWorkspace() {
   const [binderManagerOpen, setBinderManagerOpen] = useState(false);
   const [giftBuilderOpen, setGiftBuilderOpen] = useState(false);
   const [giftDiscoveryMode, setGiftDiscoveryMode] = useState<"pokemon" | "theme">("pokemon");
+  const [giftSubjectQuery, setGiftSubjectQuery] = useState("Pikachu");
   const [setBinderWizardOpen, setSetBinderWizardOpen] = useState(false);
   const [catalogSelection, setCatalogSelection] = useState<CatalogSearchItem[]>([]);
   const [celebratedEntryId, setCelebratedEntryId] = useState<string>();
@@ -500,7 +502,7 @@ export function FoundationWorkspace() {
     ? activeBinder.pages[insertionTargetPageIndex]
     : undefined;
   const insertionTargetPageTitle = insertionTargetPage?.title || (insertionTargetPageIndex >= 0 ? `Seite ${insertionTargetPageIndex + 1}` : undefined);
-  const modalOpen = Boolean(binderRename || pageRename || binderToDelete || pageToDelete || cardToRemove || variantEdit || layoutChange || pageSelectionReviewOpen);
+  const modalOpen = Boolean(searchOpen || binderRename || pageRename || binderToDelete || pageToDelete || cardToRemove || variantEdit || layoutChange || pageSelectionReviewOpen);
 
   useModalFocusManagement(modalOpen);
 
@@ -556,7 +558,7 @@ export function FoundationWorkspace() {
       setSetBinderWizardOpen(view === "set");
       setBinderManagerOpen(view === "overview" || view === "gift" || view === "set");
       setMissingOpen(view === "missing");
-      setSearchOpen(false);
+      setSearchOpen(requested.searchOpen === true);
       setSearchPreview(undefined);
 
       if (view !== requested.view) {
@@ -584,6 +586,18 @@ export function FoundationWorkspace() {
       window.history.pushState(workspaceHistoryState(nextEntry.view, nextEntry.binderId), "", window.location.href);
     }
   }, [activeId, storageStatus, workspaceView]);
+
+  useEffect(() => {
+    if (!workspaceHistoryReadyRef.current) return;
+    const currentEntry = readWorkspaceHistoryEntry(window.history.state);
+    if (!currentEntry || currentEntry.searchOpen === searchOpen) return;
+    const nextState = workspaceHistoryState(currentEntry.view, currentEntry.binderId, searchOpen);
+    if (searchOpen) {
+      window.history.pushState(nextState, "", window.location.href);
+    } else {
+      window.history.replaceState(nextState, "", window.location.href);
+    }
+  }, [searchOpen]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setDebouncedSearch(searchText.trim()), 350);
@@ -1942,6 +1956,7 @@ export function FoundationWorkspace() {
             loader={giftLoader}
             smartSearch={giftSmartSearch}
             initialDiscoveryMode={giftDiscoveryMode}
+            initialSubjectQuery={giftSubjectQuery}
             pricingEnabled={FEATURES.giftPriceEstimates}
             budgetGuaranteeEnabled={FEATURES.giftBudgetGuarantee}
             onCancel={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }}
@@ -1963,7 +1978,8 @@ export function FoundationWorkspace() {
             onRequestDelete={setBinderToDelete}
             onExport={exportBackup}
             onImport={importBackup}
-            onGiftStart={() => { setGiftDiscoveryMode("pokemon"); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
+            onGiftStart={() => { setGiftDiscoveryMode("pokemon"); setGiftSubjectQuery("Pikachu"); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
+            onGiftExampleStart={(subjectQuery) => { setGiftDiscoveryMode("pokemon"); setGiftSubjectQuery(subjectQuery); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
             onThemeStart={() => { setGiftDiscoveryMode("theme"); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
             onSetStart={() => { setSetBinderWizardOpen(true); setGiftBuilderOpen(false); setBinderManagerOpen(true); setMissingOpen(false); }}
           />
@@ -2325,7 +2341,9 @@ export function FoundationWorkspace() {
               ) : null}
             </section>
 
-            {searchOpen ? <aside ref={searchDrawerRef} className={styles.searchDrawer} aria-labelledby="search-heading" role="dialog" aria-modal="false">
+            {searchOpen ? <>
+              <div className={styles.searchBackdrop} aria-hidden="true" onClick={closeSearch} />
+              <aside ref={searchDrawerRef} className={styles.searchDrawer} aria-labelledby="search-heading" role="dialog" aria-modal="true" tabIndex={-1}>
               <div className={styles.drawerHeader}>
                 <div>
                   <p className={styles.eyebrow}>{searchPreview ? "Ausgabe prüfen" : "Karte einsetzen"}</p>
@@ -2599,7 +2617,8 @@ export function FoundationWorkspace() {
                   )}
                 </>
               )}
-            </aside> : (
+              </aside>
+            </> : (
               <aside className={styles.contextPanel} aria-labelledby="context-heading">
                 <div className={styles.contextHeader}>
                   <div>

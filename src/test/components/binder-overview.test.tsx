@@ -31,7 +31,21 @@ describe("BinderOverview", () => {
     expect(screen.getByRole("heading", { name: /Pokémon-Binder als persönliches Geschenk/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Geschenk-Binder gestalten" })).toBeInTheDocument();
     expect(screen.getByRole("list", { name: "So entsteht dein Geschenk-Binder" }).children).toHaveLength(3);
+    expect(screen.getByRole("heading", { name: "So kann eine fertige Binder-Seite aussehen." })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Mit Glurak starten" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Mit Pikachu starten" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Mit Evoli starten" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Nicht irgendein eBay-Treffer/ })).toBeInTheDocument();
     expect(screen.queryByText("Gesamtsammlung")).not.toBeInTheDocument();
+  });
+
+  it("starts a gift with the Pokémon from a visual example", () => {
+    const onGiftExampleStart = vi.fn();
+    render(<BinderOverview {...props({ onGiftExampleStart })} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Mit Evoli starten" }));
+
+    expect(onGiftExampleStart).toHaveBeenCalledWith("Evoli");
   });
 
   it("offers clear beginner starts for gifts and complete sets", () => {

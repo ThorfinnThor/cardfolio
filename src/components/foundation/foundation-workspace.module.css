@@ -229,6 +229,8 @@
 .contextHeader, .drawerHeader { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--cf-line); padding-bottom: 14px; }
 .drawerClose { display: inline-grid; width: 34px; height: 34px; flex: 0 0 auto; place-items: center; border: 1px solid var(--cf-line2); border-radius: 7px; background: var(--cf-field); color: var(--cf-text2); cursor: pointer; }
 .drawerClose:hover { border-color: var(--cf-accent); color: var(--cf-accent-text); }
+.searchBackdrop { position: fixed; z-index: 40; inset: 0; background: var(--cf-scrim); backdrop-filter: blur(3px); }
+.searchDrawer { position: fixed; z-index: 41; top: 50%; left: 50%; width: min(1080px, calc(100vw - 48px)); max-height: min(900px, calc(100dvh - 48px)); overflow: auto; border-color: var(--cf-line2); box-shadow: 0 30px 80px -24px var(--cf-sh-deep); padding: 24px; transform: translate(-50%, -50%); }
 .contextSummary, .cardContext { display: grid; gap: 14px; padding-top: 16px; }
 .summaryProgress { display: grid; gap: 6px; }
 .summaryProgress strong { color: var(--cf-accent-text); font-family: var(--cf-font-display); font-size: 32px; font-weight: 600; letter-spacing: -.02em; line-height: 1; }
@@ -348,10 +350,10 @@
 .filterChip:hover { border-color: var(--cf-accent); color: var(--cf-accent-text); }
 .filterReset { border-color: transparent; background: transparent; color: var(--cf-accent-text); text-decoration: underline; text-underline-offset: 3px; }
 .cardResultGrid, .setResultGrid { display: grid; gap: 10px; margin: 14px 0 0; padding: 0; list-style: none; }
-.cardResultGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.cardResultGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .cardResultTile, .setResultTile { min-width: 0; display: grid; gap: 9px; border: 1px solid var(--cf-line); border-radius: 9px; background: var(--cf-surface2); padding: 9px; }
-.cardResultTile { grid-template-columns: 68px minmax(0, 1fr); align-items: start; }
-.cardResultArtwork, .cardResultArtworkFallback { width: 68px; height: 94px; border-radius: 5px; }
+.cardResultTile { grid-template-columns: 112px minmax(0, 1fr); align-items: start; }
+.cardResultArtwork, .cardResultArtworkFallback { width: 112px; height: 156px; border-radius: 5px; }
 .cardResultArtwork { display: block; overflow: hidden; background: var(--cf-page); }
 .cardResultArtwork img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .cardResultArtworkFallback { display: grid; place-items: center; border: 1px dashed var(--cf-line2); background: var(--cf-page); color: var(--cf-muted); font-size: 9px; text-align: center; }
@@ -502,7 +504,7 @@
 
 @media (max-width: 1023px) {
   .workspace { grid-template-columns: minmax(0, 1fr); }
-  .contextPanel, .searchDrawer { position: relative; top: auto; max-height: none; }
+  .contextPanel { position: relative; top: auto; max-height: none; }
   .topbarSearch { min-width: 170px; }
 }
 
@@ -551,9 +553,10 @@
   .dragHandle { display: none; }
   .ownedBadge, .missingBadge { top: 7px; left: 7px; padding: 1px 4px; font-size: 7px; }
   .emptySlot { min-height: 130px; padding: 4px; font-size: 10px; }
-  .contextPanel:has(.cardContext), .searchDrawer { position: fixed; z-index: 20; inset: auto 8px calc(118px + env(safe-area-inset-bottom)); max-height: calc(100dvh - 186px); overflow: auto; border-color: var(--cf-line2); box-shadow: 0 24px 60px -10px var(--cf-sh-deep); }
+  .searchDrawer { top: 50%; left: 50%; width: calc(100vw - 24px); max-height: calc(100dvh - 24px); padding: 17px; transform: translate(-50%, -50%); }
+  .contextPanel:has(.cardContext) { position: fixed; z-index: 20; inset: auto 8px calc(118px + env(safe-area-inset-bottom)); max-height: calc(100dvh - 186px); overflow: auto; border-color: var(--cf-line2); box-shadow: 0 24px 60px -10px var(--cf-sh-deep); }
   .catalogFilters { grid-template-columns: 1fr; }
-  .cardResultGrid { grid-template-columns: 1fr; }
+  .cardResultGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .selectionDock { align-items: stretch; flex-direction: column; }
   .selectionDockActions { display: grid; grid-template-columns: 1fr 1fr; }
   .notice { align-items: stretch; flex-direction: column; }

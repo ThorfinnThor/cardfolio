@@ -1,6 +1,6 @@
 "use client";
 
-import { Archive, ArrowLeft, ArrowRight, BookOpen, Copy, Gift, Images, PencilRuler, Plus, Trash2 } from "lucide-react";
+import { Archive, ArrowLeft, ArrowRight, BadgeCheck, BookOpen, Copy, Gift, Images, PencilRuler, Plus, ShieldCheck, Tags, Trash2 } from "lucide-react";
 import { useState, type ChangeEvent, type CSSProperties, type FormEvent } from "react";
 
 import { deriveBinderStats } from "@/domain/binder-stats";
@@ -24,6 +24,7 @@ interface BinderOverviewProps {
   onExport: () => void;
   onImport: (event: ChangeEvent<HTMLInputElement>) => void;
   onGiftStart?: () => void;
+  onGiftExampleStart?: (subjectQuery: string) => void;
   onThemeStart?: () => void;
   onSetStart?: () => void;
 }
@@ -42,6 +43,7 @@ export function BinderOverview({
   onExport,
   onImport,
   onGiftStart,
+  onGiftExampleStart,
   onThemeStart,
   onSetStart,
 }: BinderOverviewProps) {
@@ -71,7 +73,7 @@ export function BinderOverview({
         </div>
         <div className={styles.giftHeroVisual} aria-hidden="true">
           <span className={styles.pageCaption}>So könnte deine erste Seite aussehen</span>
-          <div className={styles.samplePage}>{Array.from({ length: 9 }, (_, index) => <span className={styles.sampleCard} key={index}><i /><b /></span>)}</div>
+          <ExamplePage example={GIFT_EXAMPLES[1]} compact />
         </div>
       </div>
 
@@ -80,6 +82,42 @@ export function BinderOverview({
         <li><strong>2</strong><span>Karten und Seite ansehen</span></li>
         <li><strong>3</strong><span>Binder und Karten besorgen</span></li>
       </ol></> : null}
+
+      {startMode === "gift" ? <section className={styles.exampleSection} aria-labelledby="gift-examples-heading">
+        <div className={styles.sectionIntro}>
+          <span className={styles.eyebrow}>Drei Ideen für den Anfang</span>
+          <h2 id="gift-examples-heading">So kann eine fertige Binder-Seite aussehen.</h2>
+          <p>Wähle ein Beispiel. Im nächsten Schritt kannst du Sprache, Kartenanzahl und Budget noch ändern.</p>
+        </div>
+        <div className={styles.exampleGrid}>
+          {GIFT_EXAMPLES.map((example) => (
+            <article className={styles.exampleCard} key={example.query} data-tone={example.tone}>
+              <ExamplePage example={example} />
+              <div className={styles.exampleCopy}>
+                <div><span>{example.kicker}</span><h3>{example.title}</h3></div>
+                <p>{example.description}</p>
+                <button type="button" onClick={() => onGiftExampleStart?.(example.query)} disabled={binders.length >= MAX_BINDERS}>
+                  Mit {example.query} starten <ArrowRight aria-hidden="true" size={17} />
+                </button>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section> : null}
+
+      {startMode === "gift" ? <section className={styles.marketplacePromise} aria-labelledby="marketplace-promise-heading">
+        <div className={styles.promiseIntro}>
+          <span className={styles.eyebrow}>Gezielter einkaufen</span>
+          <h2 id="marketplace-promise-heading">Nicht irgendein eBay-Treffer: die passende Karte gezielt vergleichen.</h2>
+          <p>Cardfolio bereitet Karte, Set, Nummer, Sprache, Ausführung und Zustand vor. Cardmarket oder TCGplayer zeigen dir anschließend passende Angebote. Den Endpreis inklusive Versand bestätigst du erst dort.</p>
+        </div>
+        <ul className={styles.promiseList}>
+          <li><Tags aria-hidden="true" size={22} /><span><strong>Günstige Angebote finden</strong><small>Preise und Versand beim Marktplatz transparent prüfen.</small></span></li>
+          <li><ShieldCheck aria-hidden="true" size={22} /><span><strong>Zustand vorher festlegen</strong><small>Keine Überraschung durch unklare Zustandsangaben.</small></span></li>
+          <li><BadgeCheck aria-hidden="true" size={22} /><span><strong>Die richtige Karte bestellen</strong><small>Set, Nummer und Ausführung statt bloßer Namenssuche.</small></span></li>
+        </ul>
+        <p className={styles.promiseNote}>Cardfolio verkauft oder authentifiziert keine Karten. Verfügbarkeit, Endpreis, Käuferschutz und Echtheit prüfst du beim gewählten Marktplatz.</p>
+      </section> : null}
 
       {startMode === "theme" ? <section className={styles.startPanel} id="start-panel" role="tabpanel" aria-labelledby="start-tab-theme">
         <span className={styles.eyebrow}>Motiv-Binder</span>
@@ -170,4 +208,84 @@ function formatDate(value: string): string {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "gerade eben";
   return new Intl.DateTimeFormat("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" }).format(date);
+}
+
+interface GiftExample {
+  query: "Glurak" | "Pikachu" | "Evoli";
+  title: string;
+  kicker: string;
+  description: string;
+  tone: "fire" | "electric" | "soft";
+  cards: readonly string[];
+}
+
+const GIFT_EXAMPLES: readonly GiftExample[] = [
+  {
+    query: "Glurak",
+    title: "Eine Glurak-Seite",
+    kicker: "Kräftig & feurig",
+    description: "Eine Seite rund um Glurak – von klassischen Motiven bis zu modernen Karten.",
+    tone: "fire",
+    cards: [
+      "https://assets.tcgdex.net/en/base/base1/4/high.webp",
+      "https://assets.tcgdex.net/en/bw/bw11/19/high.webp",
+      "https://assets.tcgdex.net/en/bw/bw7/20/high.webp",
+      "https://assets.tcgdex.net/en/bw/bw8/136/high.webp",
+      "https://assets.tcgdex.net/en/sm/det1/5/high.webp",
+      "https://assets.tcgdex.net/en/dp/dp3/3/high.webp",
+      "https://assets.tcgdex.net/en/dp/dp7/103/high.webp",
+      "https://assets.tcgdex.net/en/ecard/ecard1/39/high.webp",
+      "https://assets.tcgdex.net/en/ecard/ecard3/146/high.webp",
+    ],
+  },
+  {
+    query: "Pikachu",
+    title: "Ein Pikachu-Binder",
+    kicker: "Fröhlich & ikonisch",
+    description: "Neun unterschiedliche Pikachu-Karten als sofort verständliches Geschenk.",
+    tone: "electric",
+    cards: [
+      "https://assets.tcgdex.net/en/base/base1/58/high.webp",
+      "https://assets.tcgdex.net/en/base/base2/60/high.webp",
+      "https://assets.tcgdex.net/en/base/basep/1/high.webp",
+      "https://assets.tcgdex.net/en/bw/bw1/115/high.webp",
+      "https://assets.tcgdex.net/en/bw/bw11/RC7/high.webp",
+      "https://assets.tcgdex.net/en/bw/bw4/39/high.webp",
+      "https://assets.tcgdex.net/en/dp/dp5/70/high.webp",
+      "https://assets.tcgdex.net/en/ecard/ecard3/84/high.webp",
+      "https://assets.tcgdex.net/en/swsh/cel25/5/high.webp",
+    ],
+  },
+  {
+    query: "Evoli",
+    title: "Ein Evoli-Binder",
+    kicker: "Sanft & verspielt",
+    description: "Eine abwechslungsreiche Evoli-Seite mit hellen, ruhigen und nostalgischen Artworks.",
+    tone: "soft",
+    cards: [
+      "https://assets.tcgdex.net/en/base/base2/51/high.webp",
+      "https://assets.tcgdex.net/en/base/base5/55/high.webp",
+      "https://assets.tcgdex.net/en/bw/bw11/RC14/high.webp",
+      "https://assets.tcgdex.net/en/bw/bw5/83/high.webp",
+      "https://assets.tcgdex.net/en/bw/bw5/84/high.webp",
+      "https://assets.tcgdex.net/en/bw/bw9/89/high.webp",
+      "https://assets.tcgdex.net/en/dp/dp5/62/high.webp",
+      "https://assets.tcgdex.net/en/ecard/ecard2/75/high.webp",
+      "https://assets.tcgdex.net/en/ecard/ecard3/54/high.webp",
+    ],
+  },
+] as const;
+
+function ExamplePage({ example, compact = false }: { example: GiftExample; compact?: boolean }) {
+  return (
+    <div className={compact ? styles.samplePage : styles.examplePage} aria-label={`${example.query}-Binder-Seite als Beispiel`}>
+      {example.cards.map((src, index) => (
+        <span className={styles.exampleArtwork} key={src}>
+          {/* TCGdex serves the card artwork at runtime; Cardfolio does not store the image bytes. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={src} alt={compact ? "" : `${example.query}-Kartenbeispiel ${index + 1}`} loading="lazy" />
+        </span>
+      ))}
+    </div>
+  );
 }

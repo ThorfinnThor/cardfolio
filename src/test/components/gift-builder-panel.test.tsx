@@ -62,6 +62,13 @@ function candidateWithArtwork(index: number): GiftCardCandidate {
 }
 
 describe("GiftBuilderPanel", () => {
+  it("prefills the Pokémon chosen from a homepage example", () => {
+    const loader = { loadCandidatePool: vi.fn(), hydrateCandidates: vi.fn() };
+    render(<GiftBuilderPanel loader={loader} initialSubjectQuery="Evoli" pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    expect(screen.getByRole("textbox", { name: "Lieblings-Pokémon" })).toHaveValue("Evoli");
+  });
+
   it("walks through the reference flow with unknown-price disclosure and creates a normal binder", async () => {
     const briefs: CatalogSearchItem[] = Array.from({ length: 9 }, (_, index) => ({
       ref: { provider: "tcgdex", id: `gift-ui-${index + 1}`, language: "en" },

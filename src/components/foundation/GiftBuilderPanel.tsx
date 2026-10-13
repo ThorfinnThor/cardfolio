@@ -34,6 +34,7 @@ export interface GiftBuilderPanelProps {
   loader: Pick<GiftCandidateLoader, "loadCandidatePool" | "hydrateCandidates">;
   smartSearch?: Pick<SmartSearchAdapter, "search">;
   initialDiscoveryMode?: "pokemon" | "theme";
+  initialSubjectQuery?: string;
   pricingEnabled: boolean;
   budgetGuaranteeEnabled?: boolean;
   onCancel: () => void;
@@ -156,11 +157,11 @@ function safeCandidate(candidate: GiftCardCandidate, pricingEnabled: boolean, cu
   };
 }
 
-export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "pokemon", pricingEnabled, budgetGuaranteeEnabled = false, onCancel, onCreateBinder, onOpenBinder, onCardsPurchase }: GiftBuilderPanelProps) {
+export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "pokemon", initialSubjectQuery = initialPreferences.subjectQuery, pricingEnabled, budgetGuaranteeEnabled = false, onCancel, onCreateBinder, onOpenBinder, onCardsPurchase }: GiftBuilderPanelProps) {
   const engine = useMemo(() => new DeterministicGiftSelectionEngine(), []);
   const [step, setStep] = useState<GiftStep>("details");
-  const [preferences, setPreferences] = useState<GiftPreferences>(initialPreferences);
-  const [pokemonQuery, setPokemonQuery] = useState(initialPreferences.subjectQuery);
+  const [preferences, setPreferences] = useState<GiftPreferences>(() => ({ ...initialPreferences, subjectQuery: initialSubjectQuery }));
+  const [pokemonQuery, setPokemonQuery] = useState(initialSubjectQuery);
   const [discoveryMode, setDiscoveryMode] = useState<GiftDiscoveryMode>(initialDiscoveryMode);
   const [orderCondition, setOrderCondition] = useState<PurchasePreferences["minimumCondition"]>("excellent");
   const [selectedThemeId, setSelectedThemeId] = useState<string>();

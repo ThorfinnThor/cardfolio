@@ -172,6 +172,32 @@ describe("MissingCardsPanel", () => {
     expect(onTcgplayerTextExport).toHaveBeenCalledWith(expect.objectContaining({ text: "1 Bulbasaur [BS] 044/102", reviewRequiredCount: 1 }));
   });
 
+  it("recommends a marketplace from a user-selected region without location access", () => {
+    const onCardmarketPrepare = vi.fn();
+    render(
+      <MissingCardsPanel
+        {...props()}
+        tcgplayerEnabled
+        tcgplayerCardMappings={tcgplayerCardMappings}
+        cardmarketEnabled
+        cardmarketDecklistIdentities={{
+          "basep-1": "Pikachu Static Growl Thundershock",
+          "base1-44": "Bulbasaur Leech Seed",
+        }}
+        onCardmarketPrepare={onCardmarketPrepare}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" }));
+    expect(screen.getByRole("button", { name: "Cardmarket" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByText("Für Europa und UK ist Cardmarket normalerweise der einfachste Start.")).toBeInTheDocument();
+    expect(onCardmarketPrepare).toHaveBeenCalledWith(items);
+
+    fireEvent.click(screen.getByRole("button", { name: "USA & Kanada · TCGplayer empfohlen" }));
+    expect(screen.getByRole("button", { name: "TCGplayer" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByText("Für USA und Kanada ist TCGplayer normalerweise der einfachste Start.")).toBeInTheDocument();
+  });
+
   it("makes the one-click Cardmarket bulk handoff primary and keeps single searches as fallback", () => {
     const onCardmarketPrepare = vi.fn();
     const onCardmarketCopy = vi.fn();

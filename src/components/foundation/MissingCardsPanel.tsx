@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Clipboard, Download, ExternalLink, FileDown, Search, X } from "lucide-react";
+import { ArrowRight, Check, Clipboard, Download, ExternalLink, FileDown, MapPin, Search, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { loadCardmarketProductMappingCatalog } from "@/data/marketplace/cardmarket-product-mappings";
@@ -25,6 +25,7 @@ import styles from "./missing-cards-panel.module.css";
 const finishLabels = { normal: "Non-Holo / Normal", holo: "Holo", reverse: "Reverse Holo", other: "Andere", unspecified: "Nicht angegeben" } as const;
 const editionLabels = { unlimited: "Unlimited", "first-edition": "First Edition", unspecified: "Nicht angegeben" } as const;
 type MarketplaceChoice = "tcgplayer" | "cardmarket" | "cardtrader";
+type MarketplaceRegion = "europe" | "north-america" | "other";
 type CardTraderStatus = "not-approved" | "not-connected" | "review-required" | "stale" | "ready";
 
 const PURCHASE_FLOW = [
@@ -100,6 +101,7 @@ export function MissingCardsPanel({
   const [query, setQuery] = useState("");
   const [cardmarketPartIndex, setCardmarketPartIndex] = useState(0);
   const [marketplaceChoice, setMarketplaceChoice] = useState<MarketplaceChoice>();
+  const [marketplaceRegion, setMarketplaceRegion] = useState<MarketplaceRegion>();
   const [purchaseStep, setPurchaseStep] = useState(onConditionsChange && items.length ? 1 : 2);
   const [loadedTcgplayerMappings, setLoadedTcgplayerMappings] = useState<readonly TcgplayerCardMapping[]>();
   const [tcgplayerMappingsError, setTcgplayerMappingsError] = useState<string>();
@@ -186,6 +188,22 @@ export function MissingCardsPanel({
   const sharedCondition = visibleConditions.size === 1 ? [...visibleConditions][0] : undefined;
   const sharedCardmarketCondition = sharedCondition ? cardmarketMinimumCondition(sharedCondition) : undefined;
 
+  function chooseMarketplace(choice: MarketplaceChoice) {
+    if (choice === "tcgplayer") setTcgplayerMappingsError(undefined);
+    if (choice === "cardmarket") {
+      setCardmarketMappingsError(undefined);
+      setCardmarketDecklistError(undefined);
+      onCardmarketPrepare?.(visibleItems);
+    }
+    setMarketplaceChoice(choice);
+  }
+
+  function chooseRegion(region: MarketplaceRegion) {
+    setMarketplaceRegion(region);
+    if (region === "europe" && cardmarketEnabled) chooseMarketplace("cardmarket");
+    if (region === "north-america" && tcgplayerEnabled) chooseMarketplace("tcgplayer");
+  }
+
   return (
     <section className={styles.panel} aria-labelledby="missing-cards-heading">
       <div className={styles.header}>
@@ -237,39 +255,51 @@ export function MissingCardsPanel({
           <div>
             <span className={styles.stepTag}>Schritt 2</span>
             <h3 id="marketplace-choice-heading">Wo möchtest du die Karten kaufen?</h3>
-            <p>Wähle einen Anbieter. Danach zeigt Cardfolio nur die passende Einkaufsliste und erklärt den nächsten Klick.</p>
+            <p>Wähle zuerst deine Region. Cardfolio empfiehlt dir danach den passenden Marktplatz – ohne deinen Standort abzufragen.</p>
           </div>
+          <div className={styles.regionGuide}>
+            <span className={styles.regionGuideLabel}><MapPin aria-hidden="true" size={17} /> Wo wohnst du?</span>
+            <div className={styles.regionButtons} role="group" aria-label="Region auswählen">
+              <button type="button" aria-label="Europa & UK · Cardmarket empfohlen" aria-pressed={marketplaceRegion === "europe"} onClick={() => chooseRegion("europe")}>
+                <strong>Europa & UK</strong><small>Cardmarket empfohlen</small>{marketplaceRegion === "europe" ? <Check aria-hidden="true" size={16} /> : null}
+              </button>
+              <button type="button" aria-label="USA & Kanada · TCGplayer empfohlen" aria-pressed={marketplaceRegion === "north-america"} onClick={() => chooseRegion("north-america")}>
+                <strong>USA & Kanada</strong><small>TCGplayer empfohlen</small>{marketplaceRegion === "north-america" ? <Check aria-hidden="true" size={16} /> : null}
+              </button>
+              <button type="button" aria-label="Andere Region · Versand prüfen" aria-pressed={marketplaceRegion === "other"} onClick={() => chooseRegion("other")}>
+                <strong>Andere Region</strong><small>Versand prüfen</small>{marketplaceRegion === "other" ? <Check aria-hidden="true" size={16} /> : null}
+              </button>
+            </div>
+            {marketplaceRegion ? <p className={styles.regionHint} role="status">{marketplaceRegion === "europe"
+              ? "Für Europa und UK ist Cardmarket normalerweise der einfachste Start."
+              : marketplaceRegion === "north-america"
+                ? "Für USA und Kanada ist TCGplayer normalerweise der einfachste Start."
+                : "Verfügbarkeit und Versand unterscheiden sich je nach Land. Prüfe beide Anbieter vor dem Kauf."}</p> : null}
+          </div>
+          <div className={styles.providerHeading}><strong>Anbieter</strong><span>Du kannst die Empfehlung jederzeit ändern.</span></div>
           <div className={styles.marketplaceChoiceActions} role="group" aria-label="Marketplace auswählen">
             {tcgplayerEnabled ? (
               <button
                 type="button"
                 aria-label="TCGplayer"
                 aria-pressed={marketplaceChoice === "tcgplayer"}
-                onClick={() => {
-                  setTcgplayerMappingsError(undefined);
-                  setMarketplaceChoice("tcgplayer");
-                }}
-              ><strong>TCGplayer</strong><small>Mass Entry vorbereiten</small><ArrowRight aria-hidden="true" size={17} /></button>
+                onClick={() => chooseMarketplace("tcgplayer")}
+              ><strong>TCGplayer {marketplaceRegion === "north-america" ? <em>Empfohlen</em> : null}</strong><small>Für USA & Kanada · Mass Entry vorbereiten</small><ArrowRight aria-hidden="true" size={17} /></button>
             ) : null}
             {cardmarketEnabled ? (
               <button
                 type="button"
                 aria-label="Cardmarket"
                 aria-pressed={marketplaceChoice === "cardmarket"}
-                onClick={() => {
-                  setCardmarketMappingsError(undefined);
-                  setCardmarketDecklistError(undefined);
-                  setMarketplaceChoice("cardmarket");
-                  onCardmarketPrepare?.(visibleItems);
-                }}
-              ><strong>Cardmarket</strong><small>Karten sicher öffnen</small><ArrowRight aria-hidden="true" size={17} /></button>
+                onClick={() => chooseMarketplace("cardmarket")}
+              ><strong>Cardmarket {marketplaceRegion === "europe" ? <em>Empfohlen</em> : null}</strong><small>Für Europa & UK · Kartenliste vorbereiten</small><ArrowRight aria-hidden="true" size={17} /></button>
             ) : null}
             {cardtraderEnabled || cardtraderPreviewVisible ? (
               <button
                 type="button"
                 aria-label={`CardTrader${!cardtraderEnabled ? " · Vorschau" : ""}`}
                 aria-pressed={marketplaceChoice === "cardtrader"}
-                onClick={() => setMarketplaceChoice("cardtrader")}
+                onClick={() => chooseMarketplace("cardtrader")}
               ><strong>CardTrader{!cardtraderEnabled ? " · Vorschau" : ""}</strong><small>{cardtraderEnabled ? "Wishlist vorbereiten" : "Wishlist-Freigabe ausstehend"}</small><ArrowRight aria-hidden="true" size={17} /></button>
             ) : null}
           </div>
