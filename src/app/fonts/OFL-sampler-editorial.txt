@@ -1,0 +1,8 @@
+Copyright 2018 The Fraunces Project Authors (https://github.com/undercasetype/Fraunces)
+Copyright 2018 The Manrope Project Authors (https://github.com/googlefonts/manrope)
+Copyright © 2017 IBM Corp. with Reserved Font Name "Plex"
+
+Fraunces, Manrope and IBM Plex Mono are licensed under the SIL Open Font
+License, Version 1.1. The complete SIL Open Font License 1.1 text is included
+in this directory in the existing OFL-figtree.txt file and is also available at:
+https://openfontlicense.org/open-font-license-official-text/

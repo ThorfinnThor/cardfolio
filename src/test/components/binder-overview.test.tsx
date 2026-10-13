@@ -35,7 +35,7 @@ describe("BinderOverview", () => {
     expect(screen.getByRole("button", { name: "Mit Glurak starten" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Mit Pikachu starten" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Mit Evoli starten" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /Nicht irgendein eBay-Treffer/ })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Passende Karten gezielt und transparent vergleichen/ })).toBeInTheDocument();
     expect(screen.queryByText("Gesamtsammlung")).not.toBeInTheDocument();
   });
 

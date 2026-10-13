@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Check, Clipboard, Download, ExternalLink, FileDown, MapPin, Search, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Clipboard, Download, ExternalLink, FileDown, MapPin, Search, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { loadCardmarketProductMappingCatalog } from "@/data/marketplace/cardmarket-product-mappings";
@@ -26,12 +26,20 @@ const finishLabels = { normal: "Non-Holo / Normal", holo: "Holo", reverse: "Reve
 const editionLabels = { unlimited: "Unlimited", "first-edition": "First Edition", unspecified: "Nicht angegeben" } as const;
 type MarketplaceChoice = "tcgplayer" | "cardmarket" | "cardtrader";
 type MarketplaceRegion = "europe" | "north-america" | "other";
+type CardmarketGuideStep = 1 | 2 | 3 | 4;
 type CardTraderStatus = "not-approved" | "not-connected" | "review-required" | "stale" | "ready";
 
 const PURCHASE_FLOW = [
   { label: "Zustand wählen", description: "Wir erklären, was die Begriffe bedeuten" },
   { label: "Anbieter wählen", description: "Cardmarket, TCGplayer oder CardTrader" },
   { label: "Liste öffnen", description: "Beim Anbieter prüfen und erst dort kaufen" },
+] as const;
+
+const CARDMARKET_GUIDE_STEPS = [
+  { step: 1, label: "Liste öffnen" },
+  { step: 2, label: "Karten einfügen" },
+  { step: 3, label: "Zustand setzen" },
+  { step: 4, label: "Kauf prüfen" },
 ] as const;
 
 export interface CardTraderQuotePreview {
@@ -102,6 +110,7 @@ export function MissingCardsPanel({
   const [cardmarketPartIndex, setCardmarketPartIndex] = useState(0);
   const [marketplaceChoice, setMarketplaceChoice] = useState<MarketplaceChoice>();
   const [marketplaceRegion, setMarketplaceRegion] = useState<MarketplaceRegion>();
+  const [cardmarketGuideStep, setCardmarketGuideStep] = useState<CardmarketGuideStep>(1);
   const [purchaseStep, setPurchaseStep] = useState(onConditionsChange && items.length ? 1 : 2);
   const [loadedTcgplayerMappings, setLoadedTcgplayerMappings] = useState<readonly TcgplayerCardMapping[]>();
   const [tcgplayerMappingsError, setTcgplayerMappingsError] = useState<string>();
@@ -191,6 +200,7 @@ export function MissingCardsPanel({
   function chooseMarketplace(choice: MarketplaceChoice) {
     if (choice === "tcgplayer") setTcgplayerMappingsError(undefined);
     if (choice === "cardmarket") {
+      setCardmarketGuideStep(1);
       setCardmarketMappingsError(undefined);
       setCardmarketDecklistError(undefined);
       onCardmarketPrepare?.(visibleItems);
@@ -418,65 +428,130 @@ export function MissingCardsPanel({
             </a>
           </div>
 
-          <section className={styles.cardmarketBulkHero} aria-labelledby="cardmarket-bulk-heading">
-            <div>
-              <span className={styles.stepTag}>Empfohlen</span>
-              <h4 id="cardmarket-bulk-heading">Nur einmal klicken – nicht jede Karte einzeln suchen</h4>
-              <p>Cardfolio kopiert alle vorbereiteten Karten und öffnet Cardmarkets Wants-Bereich. Dort legst du einmal eine Liste an, fügst den kopierten Text ein und stellst anschließend einmal den Mindestzustand für alle Karten ein.</p>
-            </div>
-            {cardmarketHandoff.parts.length > 1 ? (
-              <label className={styles.cardmarketBulkPart} htmlFor="cardmarket-bulk-part">
-                <span>Cardmarket erlaubt höchstens 150 Positionen pro Wants-Liste. Wähle den zu übertragenden Teil:</span>
-                <select id="cardmarket-bulk-part" value={activeCardmarketPartIndex} onChange={(event) => setCardmarketPartIndex(Number(event.target.value))}>
-                  {cardmarketHandoff.parts.map((part, index) => <option value={index} key={part.index}>Teil {part.index} von {cardmarketHandoff.parts.length} · {part.positionCount} Positionen</option>)}
-                </select>
-              </label>
-            ) : null}
-            <div className={styles.cardmarketConditionWarning} role="alert">
+          <section className={styles.cardmarketGuide} aria-labelledby="cardmarket-guide-heading">
+            <header className={styles.cardmarketGuideHeader}>
               <div>
-                <strong>Wichtig: Cardmarket übernimmt den Zustand nicht automatisch</strong>
-                <p>Nach dem Import zeigt Cardmarket zunächst <b>≥ PO</b>. Das heißt „Poor oder besser“ und ist nur Cardmarkets Standard – nicht der in Cardfolio gewählte Zustand.</p>
+                <span className={styles.stepTag}>Schritt für Schritt</span>
+                <h4 id="cardmarket-guide-heading">Wir zeigen dir immer nur den nächsten Schritt.</h4>
+                <p>Cardmarket öffnet sich in einem neuen Tab. Kehre danach zu Cardfolio zurück und bestätige den erledigten Schritt.</p>
               </div>
-              {sharedCondition && sharedCardmarketCondition ? (
-                <div className={styles.cardmarketConditionTranslation}>
-                  <span><small>In Cardfolio gewählt</small><b>{conditionProfile(sharedCondition).shortLabel}</b></span>
-                  <ArrowRight aria-hidden="true" size={20} />
-                  <span><small>Bei Cardmarket einstellen</small><b>≥ {sharedCardmarketCondition.code} · {sharedCardmarketCondition.label}</b></span>
-                </div>
-              ) : (
-                <p><b>Die Karten haben unterschiedliche Zustandswünsche.</b> Stelle sie bei Cardmarket gruppenweise gemäß den Cardfolio-Angaben ein.</p>
-              )}
-              <p><b>So geht es für alle auf einmal:</b> Nach dem Import alle Karten markieren → „Massenveränderung“ öffnen → Mindestzustand {sharedCardmarketCondition ? <>auf <b>≥ {sharedCardmarketCondition.code}</b> setzen</> : "passend zu den Cardfolio-Angaben setzen"}.</p>
-            </div>
-            {activeCardmarketPart.text && !cardmarketPreparing && cardmarketDecklistReady ? (
-              <a
-                className={styles.cardmarketBulkAction}
-                href={cardmarketHandoff.wantsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => onCardmarketCopy?.(activeCardmarketPart)}
-              >
-                <Clipboard aria-hidden="true" size={19} />
-                {cardmarketCopyState === "copied"
-                  ? "Liste kopiert – Cardmarket öffnen"
-                  : `${cardmarketBulkLabel} kopieren & Cardmarket öffnen`}
-                <ExternalLink aria-hidden="true" size={18} />
-              </a>
-            ) : (
-              <button type="button" className={styles.cardmarketBulkAction} disabled>
-                <Clipboard aria-hidden="true" size={19} />
-                {cardmarketPreparing || !cardmarketDecklistReady ? "Kartenliste wird sicher geprüft …" : "Keine verifizierte Sammelliste verfügbar"}
-              </button>
-            )}
-            <small>Kein Kauf wird automatisch ausgelöst. Preise, Versand und die endgültige Kartenauswahl bestätigst du erst bei Cardmarket.</small>
-          </section>
+              <strong aria-live="polite">Schritt {cardmarketGuideStep} von {CARDMARKET_GUIDE_STEPS.length}</strong>
+            </header>
 
-          <ol className={styles.cardmarketSteps} aria-label="Cardmarket-Kaufschritte">
-            <li><strong>Oben einmal klicken</strong><span>Die komplette Liste wird kopiert und Cardmarket geöffnet.</span></li>
-            <li><strong>Einmal einfügen</strong><span>Neue Wants-Liste anlegen, „Deckliste hinzufügen“ öffnen und den kopierten Text einfügen.</span></li>
-            <li data-important="true"><strong>Zustand einmal korrigieren</strong><span>Alle markieren → „Massenveränderung“ → {sharedCardmarketCondition ? `mindestens ${sharedCardmarketCondition.code}` : "gewünschte Mindestzustände"}.</span></li>
-            <li><strong>Gemeinsam kaufen</strong><span>Ergebnis kurz prüfen und anschließend den Shopping Wizard starten.</span></li>
-          </ol>
+            <ol className={styles.cardmarketGuideProgress} aria-label="Fortschritt der Cardmarket-Anleitung">
+              {CARDMARKET_GUIDE_STEPS.map((guideStep) => {
+                const status = guideStep.step < cardmarketGuideStep ? "done" : guideStep.step === cardmarketGuideStep ? "active" : "todo";
+                return (
+                  <li data-status={status} aria-current={status === "active" ? "step" : undefined} key={guideStep.step}>
+                    <span>{status === "done" ? <Check aria-hidden="true" size={15} /> : guideStep.step}</span>
+                    <b>{guideStep.label}</b>
+                  </li>
+                );
+              })}
+            </ol>
+
+            <div className={styles.cardmarketGuideCard} data-step={cardmarketGuideStep}>
+              {cardmarketGuideStep === 1 ? <>
+                <span className={styles.cardmarketGuideKicker}>Schritt 1</span>
+                <h5>Liste kopieren und Cardmarket öffnen</h5>
+                <p>Der große Button kopiert alle vorbereiteten Karten. Du musst keine Karte einzeln suchen.</p>
+                {cardmarketHandoff.parts.length > 1 ? (
+                  <label className={styles.cardmarketBulkPart} htmlFor="cardmarket-bulk-part">
+                    <span>Cardmarket erlaubt höchstens 150 Positionen pro Wants-Liste. Wähle den zu übertragenden Teil:</span>
+                    <select id="cardmarket-bulk-part" value={activeCardmarketPartIndex} onChange={(event) => setCardmarketPartIndex(Number(event.target.value))}>
+                      {cardmarketHandoff.parts.map((part, index) => <option value={index} key={part.index}>Teil {part.index} von {cardmarketHandoff.parts.length} · {part.positionCount} Positionen</option>)}
+                    </select>
+                  </label>
+                ) : null}
+                {activeCardmarketPart.text && !cardmarketPreparing && cardmarketDecklistReady ? (
+                  <a
+                    className={styles.cardmarketBulkAction}
+                    href={cardmarketHandoff.wantsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => {
+                      onCardmarketCopy?.(activeCardmarketPart);
+                      setCardmarketGuideStep(2);
+                    }}
+                  >
+                    <Clipboard aria-hidden="true" size={19} />
+                    {cardmarketCopyState === "copied"
+                      ? "Liste erneut kopieren & Cardmarket öffnen"
+                      : `${cardmarketBulkLabel} kopieren & Cardmarket öffnen`}
+                    <ExternalLink aria-hidden="true" size={18} />
+                  </a>
+                ) : (
+                  <button type="button" className={styles.cardmarketBulkAction} disabled>
+                    <Clipboard aria-hidden="true" size={19} />
+                    {cardmarketPreparing || !cardmarketDecklistReady ? "Kartenliste wird sicher geprüft …" : "Keine verifizierte Sammelliste verfügbar"}
+                  </button>
+                )}
+                <small>Der Kauf wird nicht automatisch ausgelöst.</small>
+              </> : null}
+
+              {cardmarketGuideStep === 2 ? <>
+                <span className={styles.cardmarketGuideKicker}>Schritt 2</span>
+                <h5>Kopierte Karten bei Cardmarket einfügen</h5>
+                <ol className={styles.cardmarketInstructionList}>
+                  <li>Lege eine <b>neue Wants-Liste</b> an oder öffne eine bestehende.</li>
+                  <li>Wähle <b>„Deckliste hinzufügen“</b>.</li>
+                  <li>Klicke in das große Textfeld, drücke <b>Strg+V</b> beziehungsweise <b>⌘V</b> und anschließend <b>„Hinzufügen“</b>.</li>
+                </ol>
+                <div className={styles.cardmarketGuideActions}>
+                  <a href={cardmarketHandoff.wantsUrl} target="_blank" rel="noopener noreferrer" onClick={() => onCardmarketCopy?.(activeCardmarketPart)}>
+                    Liste erneut kopieren & Cardmarket öffnen <ExternalLink aria-hidden="true" size={16} />
+                  </a>
+                  <button type="button" onClick={() => setCardmarketGuideStep(3)}>Karten sind eingefügt <ArrowRight aria-hidden="true" size={17} /></button>
+                </div>
+              </> : null}
+
+              {cardmarketGuideStep === 3 ? <>
+                <span className={styles.cardmarketGuideKicker}>Schritt 3</span>
+                <h5>Mindestzustand für alle Karten einstellen</h5>
+                <div className={styles.cardmarketConditionWarning} role="alert">
+                  <div>
+                    <strong>Cardmarket zeigt nach dem Import zunächst ≥ PO</strong>
+                    <p>Das bedeutet „Poor oder besser“. Ändere es jetzt einmal gesammelt auf den in Cardfolio gewählten Zustand.</p>
+                  </div>
+                  {sharedCondition && sharedCardmarketCondition ? (
+                    <div className={styles.cardmarketConditionTranslation}>
+                      <span><small>In Cardfolio gewählt</small><b>{conditionProfile(sharedCondition).shortLabel}</b></span>
+                      <ArrowRight aria-hidden="true" size={20} />
+                      <span><small>Bei Cardmarket einstellen</small><b>≥ {sharedCardmarketCondition.code} · {sharedCardmarketCondition.label}</b></span>
+                    </div>
+                  ) : (
+                    <p><b>Die Karten haben unterschiedliche Zustandswünsche.</b> Stelle sie bei Cardmarket gruppenweise gemäß den Cardfolio-Angaben ein.</p>
+                  )}
+                  <ol className={styles.cardmarketConditionSteps}>
+                    <li>Alle Karten markieren</li>
+                    <li>„Massenveränderung“ öffnen</li>
+                    <li>Mindestzustand {sharedCardmarketCondition ? <b>≥ {sharedCardmarketCondition.code}</b> : "passend zu den Cardfolio-Angaben"} wählen</li>
+                  </ol>
+                </div>
+                <div className={styles.cardmarketGuideActions}>
+                  <button type="button" className={styles.cardmarketBackButton} onClick={() => setCardmarketGuideStep(2)}><ArrowLeft aria-hidden="true" size={16} /> Zurück</button>
+                  <button type="button" onClick={() => setCardmarketGuideStep(4)}>Zustand ist eingestellt <ArrowRight aria-hidden="true" size={17} /></button>
+                </div>
+              </> : null}
+
+              {cardmarketGuideStep === 4 ? <>
+                <span className={styles.cardmarketGuideKicker}>Schritt 4</span>
+                <h5>Ergebnis prüfen und gemeinsam kaufen</h5>
+                <ol className={styles.cardmarketInstructionList}>
+                  <li>Prüfe kurz, ob alle <b>{activeCardmarketPart.positionCount} Kartenpositionen</b> in der Wants-Liste stehen.</li>
+                  <li>Kontrolliere Endpreis, Versand, Sprache und Kartenausführung.</li>
+                  <li>Starte bei Cardmarket den <b>Shopping Wizard</b>, um passende Verkäufer zu finden.</li>
+                </ol>
+                <div className={styles.cardmarketGuideActions}>
+                  <button type="button" className={styles.cardmarketBackButton} onClick={() => setCardmarketGuideStep(3)}><ArrowLeft aria-hidden="true" size={16} /> Zurück</button>
+                  <a className={styles.cardmarketFinalAction} href={cardmarketHandoff.wantsUrl} target="_blank" rel="noopener noreferrer">
+                    Cardmarket öffnen und Shopping Wizard starten <ExternalLink aria-hidden="true" size={17} />
+                  </a>
+                </div>
+                <small>Preise, Versand und die endgültige Kartenauswahl bestätigst du erst bei Cardmarket.</small>
+              </> : null}
+            </div>
+          </section>
 
           {cardmarketMappingsError ? <p className={styles.error} role="status">{cardmarketMappingsError} Die sicheren Suchlinks bleiben verfügbar.</p> : null}
           {!cardmarketProductMappings && !loadedCardmarketMappings && !cardmarketMappingsError ? <p className={styles.handoffSteps} role="status">Optionale Cardmarket-Produktlinks werden geladen …</p> : null}
@@ -537,7 +612,7 @@ export function MissingCardsPanel({
             <details className={styles.advancedCardmarket}>
               <summary>Nur falls Cardmarket eine Karte nicht erkennt: Einzelsuchen ({activeCardmarketPart.products.length})</summary>
               <div className={styles.advancedCardmarketBody}>
-                <p className={styles.reviewExplanation}>Diese Links sind nur eine Rückfallebene. Öffne sie nicht vorsorglich, sondern nur für Karten, die Cardmarket nach dem Sammelimport ausdrücklich nicht gefunden hat.</p>
+                <p className={styles.reviewExplanation}>Diese Links brauchst du nur für Karten, die Cardmarket nach dem Sammelimport ausdrücklich nicht gefunden hat.</p>
 
                 {verifiedCardmarketProducts.length ? (
                   <section className={styles.cardmarketProductSection} aria-labelledby="cardmarket-verified-heading">

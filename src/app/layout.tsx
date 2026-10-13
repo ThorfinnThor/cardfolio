@@ -4,22 +4,26 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 const displayFont = localFont({
-  src: "./fonts/unbounded-latin-wght-normal.woff2",
-  weight: "200 900",
+  src: "./fonts/fraunces-latin-variable.woff2",
+  weight: "100 900",
   variable: "--font-display",
   display: "swap",
 });
 
 const uiFont = localFont({
-  src: "./fonts/figtree-latin-wght-normal.woff2",
-  weight: "300 900",
+  src: "./fonts/manrope-latin-variable.woff2",
+  weight: "200 800",
   variable: "--font-ui",
   display: "swap",
 });
 
 const monoFont = localFont({
-  src: "./fonts/jetbrains-mono-latin-wght-normal.woff2",
-  weight: "100 800",
+  src: [
+    { path: "./fonts/ibm-plex-mono-latin-400.woff2", weight: "400" },
+    { path: "./fonts/ibm-plex-mono-latin-500.woff2", weight: "500" },
+    { path: "./fonts/ibm-plex-mono-latin-600.woff2", weight: "600" },
+    { path: "./fonts/ibm-plex-mono-latin-700.woff2", weight: "700" },
+  ],
   variable: "--font-mono",
   display: "swap",
 });

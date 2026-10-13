@@ -178,7 +178,7 @@ describe("GiftBuilderPanel", () => {
     fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
     await screen.findByText("Für alle 9 Karten gibt es eine vorausgewählte Bestellvariante. Ein Klick übernimmt sie gemeinsam.");
     expect(screen.getByRole("heading", { name: "Empfehlungen für 9 Karten übernehmen" })).toBeInTheDocument();
-    expect(screen.getByText(/musst Normal, Holo oder Reverse Holo nicht selbst erkennen/)).toBeInTheDocument();
+    expect(screen.getByText(/wählt eine günstige Standardausführung und deinen gewünschten Zustand vor/)).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Jetzt Ausführung prüfen/i })).not.toBeInTheDocument();
     expect(screen.getAllByText("Empfehlung vorbereitet")).toHaveLength(9);
 

@@ -108,13 +108,13 @@ export function BinderOverview({
       {startMode === "gift" ? <section className={styles.marketplacePromise} aria-labelledby="marketplace-promise-heading">
         <div className={styles.promiseIntro}>
           <span className={styles.eyebrow}>Gezielter einkaufen</span>
-          <h2 id="marketplace-promise-heading">Nicht irgendein eBay-Treffer: die passende Karte gezielt vergleichen.</h2>
+          <h2 id="marketplace-promise-heading">Passende Karten gezielt und transparent vergleichen.</h2>
           <p>Cardfolio bereitet Karte, Set, Nummer, Sprache, Ausführung und Zustand vor. Cardmarket oder TCGplayer zeigen dir anschließend passende Angebote. Den Endpreis inklusive Versand bestätigst du erst dort.</p>
         </div>
         <ul className={styles.promiseList}>
           <li><Tags aria-hidden="true" size={22} /><span><strong>Günstige Angebote finden</strong><small>Preise und Versand beim Marktplatz transparent prüfen.</small></span></li>
-          <li><ShieldCheck aria-hidden="true" size={22} /><span><strong>Zustand vorher festlegen</strong><small>Keine Überraschung durch unklare Zustandsangaben.</small></span></li>
-          <li><BadgeCheck aria-hidden="true" size={22} /><span><strong>Die richtige Karte bestellen</strong><small>Set, Nummer und Ausführung statt bloßer Namenssuche.</small></span></li>
+          <li><ShieldCheck aria-hidden="true" size={22} /><span><strong>Zustand vorher festlegen</strong><small>Der gewählte Mindestzustand bleibt bei jeder Karte sichtbar.</small></span></li>
+          <li><BadgeCheck aria-hidden="true" size={22} /><span><strong>Die richtige Karte bestellen</strong><small>Set, Nummer und Ausführung führen direkt zur passenden Karte.</small></span></li>
         </ul>
         <p className={styles.promiseNote}>Cardfolio verkauft oder authentifiziert keine Karten. Verfügbarkeit, Endpreis, Käuferschutz und Echtheit prüfst du beim gewählten Marktplatz.</p>
       </section> : null}
@@ -222,9 +222,9 @@ interface GiftExample {
 const GIFT_EXAMPLES: readonly GiftExample[] = [
   {
     query: "Glurak",
-    title: "Eine Glurak-Seite",
+    title: "Ein Glurak-Binder",
     kicker: "Kräftig & feurig",
-    description: "Eine Seite rund um Glurak – von klassischen Motiven bis zu modernen Karten.",
+    description: "Ein Binder rund um Glurak – von klassischen Motiven bis zu modernen Karten.",
     tone: "fire",
     cards: [
       "https://assets.tcgdex.net/en/base/base1/4/high.webp",

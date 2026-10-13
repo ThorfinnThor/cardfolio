@@ -220,14 +220,24 @@ describe("MissingCardsPanel", () => {
     fireEvent.click(screen.getByRole("button", { name: "Cardmarket" }));
     expect(onCardmarketPrepare).toHaveBeenCalledWith(items);
     expect(screen.getByRole("heading", { name: "Komplette Liste zu Cardmarket" })).toBeInTheDocument();
-    expect(screen.getByText("Nur einmal klicken – nicht jede Karte einzeln suchen")).toBeInTheDocument();
-    expect(screen.getByText(/Cardmarket übernimmt den Zustand nicht automatisch/)).toBeInTheDocument();
-    expect(screen.getByText(/Die Karten haben unterschiedliche Zustandswünsche/)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Wir zeigen dir immer nur den nächsten Schritt." })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Liste kopieren und Cardmarket öffnen" })).toBeInTheDocument();
+    expect(screen.getByText("Schritt 1 von 4")).toBeInTheDocument();
     const bulkHandoff = screen.getByRole("link", { name: "2 Karten kopieren & Cardmarket öffnen" });
     expect(bulkHandoff).toHaveAttribute("href", "https://www.cardmarket.com/de/Pokemon/Wants");
     expect(bulkHandoff).toHaveAttribute("rel", "noopener noreferrer");
     fireEvent.click(bulkHandoff);
     expect(onCardmarketCopy).toHaveBeenCalledWith(expect.objectContaining({ index: 1, positionCount: 2 }));
+    expect(screen.getByRole("heading", { name: "Kopierte Karten bei Cardmarket einfügen" })).toBeInTheDocument();
+    expect(screen.getByText("Schritt 2 von 4")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /Karten sind eingefügt/ }));
+    expect(screen.getByRole("heading", { name: "Mindestzustand für alle Karten einstellen" })).toBeInTheDocument();
+    expect(screen.getByText(/Die Karten haben unterschiedliche Zustandswünsche/)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /Zustand ist eingestellt/ }));
+    expect(screen.getByRole("heading", { name: "Ergebnis prüfen und gemeinsam kaufen" })).toBeInTheDocument();
+    expect(screen.getByText("Schritt 4 von 4")).toBeInTheDocument();
 
     const fallback = screen.getByText("Nur falls Cardmarket eine Karte nicht erkennt: Einzelsuchen (2)").closest("details");
     expect(fallback).not.toHaveAttribute("open");
@@ -275,11 +285,13 @@ describe("MissingCardsPanel", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Cardmarket" }));
 
+    fireEvent.click(screen.getByRole("link", { name: "2 Karten kopieren & Cardmarket öffnen" }));
+    fireEvent.click(screen.getByRole("button", { name: /Karten sind eingefügt/ }));
+
     expect(screen.getByText("Sehr gut")).toBeInTheDocument();
     expect(screen.getByText("≥ EX · Excellent")).toBeInTheDocument();
-    expect(screen.getByText(/Massenveränderung.*Mindestzustand/)).toHaveTextContent("Mindestzustand auf ≥ EX setzen");
-    expect(screen.getByText("Zustand einmal korrigieren")).toBeInTheDocument();
-    expect(screen.getByText(/mindestens EX/)).toBeInTheDocument();
+    expect(screen.getByText("„Massenveränderung“ öffnen")).toBeInTheDocument();
+    expect(screen.getByText("≥ EX", { exact: true }).parentElement).toHaveTextContent("Mindestzustand ≥ EX wählen");
   });
 
   it("keeps Cardmarket exceptions open while prepared details stay collapsed", () => {
