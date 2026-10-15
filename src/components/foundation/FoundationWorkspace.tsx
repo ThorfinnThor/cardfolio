@@ -2347,16 +2347,20 @@ export function FoundationWorkspace() {
               <div className={styles.drawerHeader}>
                 <div>
                   <p className={styles.eyebrow}>{searchPreview ? "Ausgabe prüfen" : "Karte einsetzen"}</p>
-                  <h2 id="search-heading">{searchPreview ? "Karte prüfen" : "Karte suchen"}</h2>
+                  <h2 id="search-heading">{searchPreview ? "Karte prüfen" : "Karte auswählen"}</h2>
+                  <p className={styles.searchIntro}>
+                    {searchPreview ? "Vergleiche Bild und Kartendaten, bevor du die Karte einsetzt." : "Suche nach einer Karte, einem Set oder einem Bildmotiv."}
+                  </p>
                 </div>
                 <button type="button" className={styles.drawerClose} onClick={closeSearch} aria-label="Suche schließen"><X size={18} /></button>
               </div>
               {insertionTarget ? (
                 <p className={styles.selectedSlotHint}>
-                  Ziel: {activeBinder?.name} · {insertionTargetPageTitle} · Slot {insertionTarget.slotIndex + 1}
+                  <span>Freier Platz</span>
+                  <strong>{activeBinder?.name} · {insertionTargetPageTitle} · Platz {insertionTarget.slotIndex + 1}</strong>
                 </p>
               ) : (
-                <p className={styles.selectedSlotHint}>Alle Binderplätze sind belegt. Lege zuerst eine neue Seite an.</p>
+                <p className={styles.selectedSlotHint}><strong>Alle Binderplätze sind belegt. Lege zuerst eine neue Seite an.</strong></p>
               )}
               {searchPreview ? (
                 <div className={styles.searchPreview}>
@@ -2425,9 +2429,27 @@ export function FoundationWorkspace() {
                 </div>
               ) : (
                 <>
-                  <div className={styles.searchModeSwitch} role="group" aria-label="Suchart">
-                    <button type="button" aria-pressed={searchMode === "catalog"} onClick={() => setSearchMode("catalog")}>Name / Nummer</button>
-                    {FEATURES.smartSearch ? <button type="button" aria-pressed={searchMode === "semantic"} onClick={() => { setSearchMode("semantic"); setSearchEntity("cards"); }}>Motiv im Artwork</button> : null}
+                  <div className={styles.searchNavigation} role="tablist" aria-label="Suchbereich">
+                    <button
+                      type="button"
+                      role="tab"
+                      aria-selected={searchMode === "catalog" && searchEntity === "cards"}
+                      onClick={() => { setSearchMode("catalog"); setSearchEntity("cards"); }}
+                    >Karte</button>
+                    <button
+                      type="button"
+                      role="tab"
+                      aria-selected={searchMode === "catalog" && searchEntity === "sets"}
+                      onClick={() => { setSearchMode("catalog"); setSearchEntity("sets"); }}
+                    >Set</button>
+                    {FEATURES.smartSearch ? (
+                      <button
+                        type="button"
+                        role="tab"
+                        aria-selected={searchMode === "semantic"}
+                        onClick={() => { setSearchMode("semantic"); setSearchEntity("cards"); }}
+                      >Bildmotiv</button>
+                    ) : null}
                   </div>
                   {searchMode === "semantic" ? (
                     <SemanticCardSearch
@@ -2439,53 +2461,54 @@ export function FoundationWorkspace() {
                     />
                   ) : (
                     <>
-                      <div className={styles.searchEntityTabs} role="tablist" aria-label="Kataloginhalt">
-                        <button type="button" role="tab" aria-selected={searchEntity === "cards"} onClick={() => setSearchEntity("cards")}>Karten</button>
-                        <button type="button" role="tab" aria-selected={searchEntity === "sets"} onClick={() => setSearchEntity("sets")}>Sets</button>
+                      <div className={styles.searchEssentials}>
+                        <label className={styles.searchLabel} htmlFor="card-search">
+                          <Search aria-hidden="true" size={18} />
+                          <input id="card-search" value={searchText} onChange={(event) => setSearchText(event.target.value)} placeholder={searchEntity === "sets" ? "Set oder Serie suchen" : "Kartenname oder Nummer suchen"} autoFocus />
+                        </label>
+                        <fieldset className={`${styles.languageFilter} ${styles.compactLanguageFilter}`}>
+                          <legend>{searchEntity === "sets" ? "Set-Sprache" : "Kartensprache"}</legend>
+                          <div>
+                            {([
+                              ["all", "Alle"],
+                              ["de", "DE"],
+                              ["en", "EN"],
+                            ] as const).map(([value, label]) => (
+                              <button
+                                type="button"
+                                key={value}
+                                aria-pressed={searchLanguage === value}
+                                onClick={() => setSearchLanguage(value)}
+                              >
+                                {label}
+                              </button>
+                            ))}
+                          </div>
+                        </fieldset>
                       </div>
-                      <fieldset className={styles.languageFilter}>
-                        <legend>{searchEntity === "sets" ? "Set-Sprache" : "Kartensprache"}</legend>
-                        <div>
-                          {([
-                            ["all", "Alle"],
-                            ["de", "Deutsch"],
-                            ["en", "English"],
-                          ] as const).map(([value, label]) => (
-                            <button
-                              type="button"
-                              key={value}
-                              aria-pressed={searchLanguage === value}
-                              onClick={() => setSearchLanguage(value)}
-                            >
-                              {label}
-                            </button>
-                          ))}
-                        </div>
-                      </fieldset>
-                      <label className={styles.searchLabel} htmlFor="card-search">
-                        <Search aria-hidden="true" size={18} />
-                        <input id="card-search" value={searchText} onChange={(event) => setSearchText(event.target.value)} placeholder={searchEntity === "sets" ? "Set, Serie oder Set-ID suchen" : "Name oder Nummer, z. B. Glurak 4/102"} autoFocus />
-                      </label>
                       {searchEntity === "sets" ? (
                         <>
-                          <div className={styles.catalogFilters}>
-                            <label htmlFor="set-series-filter">
-                              Serie
-                              <select
-                                id="set-series-filter"
-                                value={searchSeriesId}
-                                onChange={(event) => setSearchSeriesId(event.target.value)}
-                              >
-                                <option value="">Alle Serien</option>
-                                {seriesOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
-                              </select>
-                            </label>
-                          </div>
+                          <details className={styles.searchAdvanced}>
+                            <summary><span>Weitere Filter</span><small>{searchSeriesId ? "Filter aktiv" : "Serie"}</small></summary>
+                            <div className={styles.catalogFilters}>
+                              <label htmlFor="set-series-filter">
+                                Serie
+                                <select
+                                  id="set-series-filter"
+                                  value={searchSeriesId}
+                                  onChange={(event) => setSearchSeriesId(event.target.value)}
+                                >
+                                  <option value="">Alle Serien</option>
+                                  {seriesOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
+                                </select>
+                              </label>
+                            </div>
+                          </details>
                           <div className={styles.filterChipBar} aria-label="Aktive Filter">
                             {searchLanguage !== "all" ? <button type="button" className={styles.filterChip} onClick={() => setSearchLanguage("all")}>Sprache: {searchLanguage.toUpperCase()} ×</button> : null}
                             {searchSeriesId ? <button type="button" className={styles.filterChip} onClick={() => setSearchSeriesId("")}>Serie entfernen ×</button> : null}
                             {searchText.trim() ? <button type="button" className={styles.filterChip} onClick={() => setSearchText("")}>Suche löschen ×</button> : null}
-                            {(searchLanguage !== "all" || searchSeriesId || searchText.trim()) ? <button type="button" className={styles.filterReset} onClick={resetSearchFilters}>Alle Filter zurücksetzen</button> : null}
+                            {(searchLanguage !== "all" || searchSeriesId) ? <button type="button" className={styles.filterReset} onClick={resetSearchFilters}>Alle Filter zurücksetzen</button> : null}
                           </div>
                           {!searchText.trim() ? <p className={styles.searchHint}>Entdecke ein Set, öffne es und sortiere anschließend die Karten nach Kartennummer.</p> : null}
                           {setSearchResults.length ? (
@@ -2511,44 +2534,47 @@ export function FoundationWorkspace() {
                         </>
                       ) : (
                         <>
-                          <div className={styles.catalogFilters}>
-                            <label htmlFor="card-series-filter">
-                              Serie
-                              <select
-                                id="card-series-filter"
-                                value={searchSeriesId}
-                                onChange={(event) => {
-                                  setSearchSeriesId(event.target.value);
-                                  setSearchSetId("");
-                                }}
-                              >
-                                <option value="">Alle Serien</option>
-                                {seriesOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
-                              </select>
-                            </label>
-                            <label htmlFor="card-set-filter">
-                              Set
-                              <select id="card-set-filter" value={searchSetId} onChange={(event) => setSearchSetId(event.target.value)}>
-                                <option value="">Alle Sets</option>
-                                {setOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
-                              </select>
-                            </label>
-                            <label htmlFor="card-sort-filter">
-                              Sortierung
-                              <select id="card-sort-filter" value={searchSort} onChange={(event) => setSearchSort(event.target.value as CatalogResultSort)}>
-                                <option value="relevance">Relevanz</option>
-                                <option value="set-number">Set → Nummer</option>
-                                <option value="collector-number">Kartennummer</option>
-                                <option value="release-date">Erscheinungsdatum</option>
-                              </select>
-                            </label>
-                          </div>
+                          <details className={styles.searchAdvanced}>
+                            <summary><span>Weitere Filter</span><small>{searchSeriesId || searchSetId || searchSort !== "relevance" ? "Filter aktiv" : "Serie, Set und Sortierung"}</small></summary>
+                            <div className={styles.catalogFilters}>
+                              <label htmlFor="card-series-filter">
+                                Serie
+                                <select
+                                  id="card-series-filter"
+                                  value={searchSeriesId}
+                                  onChange={(event) => {
+                                    setSearchSeriesId(event.target.value);
+                                    setSearchSetId("");
+                                  }}
+                                >
+                                  <option value="">Alle Serien</option>
+                                  {seriesOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
+                                </select>
+                              </label>
+                              <label htmlFor="card-set-filter">
+                                Set
+                                <select id="card-set-filter" value={searchSetId} onChange={(event) => setSearchSetId(event.target.value)}>
+                                  <option value="">Alle Sets</option>
+                                  {setOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
+                                </select>
+                              </label>
+                              <label htmlFor="card-sort-filter">
+                                Sortierung
+                                <select id="card-sort-filter" value={searchSort} onChange={(event) => setSearchSort(event.target.value as CatalogResultSort)}>
+                                  <option value="relevance">Relevanz</option>
+                                  <option value="set-number">Set → Nummer</option>
+                                  <option value="collector-number">Kartennummer</option>
+                                  <option value="release-date">Erscheinungsdatum</option>
+                                </select>
+                              </label>
+                            </div>
+                          </details>
                           <div className={styles.filterChipBar} aria-label="Aktive Filter">
                             {searchLanguage !== "all" ? <button type="button" className={styles.filterChip} onClick={() => setSearchLanguage("all")}>Sprache: {searchLanguage.toUpperCase()} ×</button> : null}
                             {searchSeriesId ? <button type="button" className={styles.filterChip} onClick={() => { setSearchSeriesId(""); setSearchSetId(""); }}>Serie entfernen ×</button> : null}
                             {searchSetId ? <button type="button" className={styles.filterChip} onClick={() => setSearchSetId("")}>Set entfernen ×</button> : null}
                             {searchText.trim() ? <button type="button" className={styles.filterChip} onClick={() => setSearchText("")}>Suche löschen ×</button> : null}
-                            {(searchLanguage !== "all" || searchSeriesId || searchSetId || searchText.trim()) ? <button type="button" className={styles.filterReset} onClick={resetSearchFilters}>Alle Filter zurücksetzen</button> : null}
+                            {(searchLanguage !== "all" || searchSeriesId || searchSetId) ? <button type="button" className={styles.filterReset} onClick={resetSearchFilters}>Alle Filter zurücksetzen</button> : null}
                           </div>
                           {searchIsRunning && searchEnabled ? <p role="status">Karten werden geladen…</p> : null}
                           {searchError ? (
@@ -2579,6 +2605,15 @@ export function FoundationWorkspace() {
                               </div>
                             </div>
                           ) : null}
+                          {sortedSearchResults.length ? (
+                            <div className={styles.resultsHeader}>
+                              <div>
+                                <p className={styles.eyebrow}>Ergebnisse</p>
+                                <h3>{searchText.trim() ? `Treffer für „${searchText.trim()}“` : "Karten entdecken"}</h3>
+                              </div>
+                              <span>{sortedSearchResults.length}{searchHasMore ? "+" : ""} Karten</span>
+                            </div>
+                          ) : null}
                           <ul className={styles.cardResultGrid} aria-label="Kartentreffer">
                             {sortedSearchResults.map((item) => {
                               const existing = activeBinder?.pages.flatMap((page) => page.slots).find((slot) => slot?.cardKey === makeCardKey(item.ref));
@@ -2594,7 +2629,7 @@ export function FoundationWorkspace() {
                                   </div>
                                   <div className={styles.resultActions}>
                                     <button type="button" className={selected ? styles.primaryButton : styles.secondaryButton} onClick={() => toggleCatalogSelection(item)}>{selected ? "Ausgewählt" : "Auswählen"}</button>
-                                    <button type="button" className={styles.secondaryButton} onClick={() => void previewSearchResult(item)}>{existing ? "Noch einmal" : "Prüfen"}</button>
+                                    <button type="button" className={styles.secondaryButton} onClick={() => void previewSearchResult(item)}>{existing ? "Erneut ansehen" : "Details"}</button>
                                   </div>
                                 </li>
                               );

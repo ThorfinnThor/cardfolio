@@ -230,7 +230,9 @@
 .drawerClose { display: inline-grid; width: 34px; height: 34px; flex: 0 0 auto; place-items: center; border: 1px solid var(--cf-line2); border-radius: 7px; background: var(--cf-field); color: var(--cf-text2); cursor: pointer; }
 .drawerClose:hover { border-color: var(--cf-accent); color: var(--cf-accent-text); }
 .searchBackdrop { position: fixed; z-index: 40; inset: 0; background: var(--cf-scrim); backdrop-filter: blur(3px); }
-.searchDrawer { position: fixed; z-index: 41; top: 50%; left: 50%; width: min(1080px, calc(100vw - 48px)); max-height: min(900px, calc(100dvh - 48px)); overflow: auto; border-color: var(--cf-line2); box-shadow: 0 30px 80px -24px var(--cf-sh-deep); padding: 24px; transform: translate(-50%, -50%); }
+.searchDrawer { position: fixed; z-index: 41; top: 50%; left: 50%; width: min(1160px, calc(100vw - 48px)); max-height: min(900px, calc(100dvh - 48px)); overflow: auto; border-color: var(--cf-line2); border-top: 3px solid var(--cf-accent); box-shadow: 0 30px 80px -24px var(--cf-sh-deep); padding: 26px 28px 28px; transform: translate(-50%, -50%); }
+.searchDrawer h2 { margin-top: 5px; font-size: 25px; letter-spacing: -.015em; line-height: 1.1; }
+.searchIntro { max-width: 620px; margin: 7px 0 0; color: var(--cf-muted); font-size: 12.5px; line-height: 1.45; }
 .contextSummary, .cardContext { display: grid; gap: 14px; padding-top: 16px; }
 .summaryProgress { display: grid; gap: 6px; }
 .summaryProgress strong { color: var(--cf-accent-text); font-family: var(--cf-font-display); font-size: 32px; font-weight: 600; letter-spacing: -.02em; line-height: 1; }
@@ -279,17 +281,18 @@
 .contextActions { display: grid; gap: 7px; }
 .contextActions > * { width: 100%; }
 
-/* Search drawer */
-.selectedSlotHint { margin: 14px 0 0; border: 1px dashed var(--cf-accent); border-radius: 7px; background: var(--cf-accent-soft); color: var(--cf-accent-text); padding: 9px 11px; font-family: var(--cf-font-mono); font-size: 11px; line-height: 1.45; }
-.searchModeSwitch { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 3px; margin-top: 15px; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-field); padding: 3px; }
-.searchModeSwitch button { min-height: 36px; border: 0; border-radius: 6px; background: transparent; color: var(--cf-text2); padding: 6px 8px; font-size: 12px; font-weight: 650; cursor: pointer; }
-.searchModeSwitch button:hover { color: var(--cf-text); }
-.searchModeSwitch button:focus-visible, .searchEntityTabs button:focus-visible, .languageFilter button:focus-visible, .semanticTagPicker summary:focus-visible, .semanticTagPicker button:focus-visible, .clearSemanticTags:focus-visible, .results button:focus-visible, .cardResultGrid button:focus-visible, .setResultGrid button:focus-visible, .filterChip:focus-visible, .filterReset:focus-visible { outline: 2px solid var(--cf-accent); outline-offset: 2px; }
-.searchModeSwitch button[aria-pressed="true"] { background: var(--cf-accent); color: var(--cf-on-accent); }
-.searchEntityTabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3px; margin-top: 10px; border-bottom: 1px solid var(--cf-line); padding-bottom: 3px; }
-.searchEntityTabs button { min-height: 35px; border: 0; border-radius: 6px 6px 0 0; background: transparent; color: var(--cf-muted); padding: 6px 8px; font-size: 12px; font-weight: 650; cursor: pointer; }
-.searchEntityTabs button:hover { color: var(--cf-text); background: var(--cf-surface2); }
-.searchEntityTabs button[aria-selected="true"] { background: var(--cf-accent-soft); color: var(--cf-accent-text); box-shadow: inset 0 -2px 0 var(--cf-accent); }
+/* Search dialog */
+.selectedSlotHint { display: flex; align-items: baseline; gap: 8px; margin: 13px 0 0; color: var(--cf-text2); font-size: 11.5px; line-height: 1.45; }
+.selectedSlotHint span { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+.selectedSlotHint strong { color: var(--cf-accent-text); font-weight: 650; }
+.searchNavigation { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 20px; border-bottom: 1px solid var(--cf-line); }
+.searchNavigation button { position: relative; min-height: 43px; border: 0; background: transparent; color: var(--cf-muted); padding: 8px 12px 12px; font-size: 12.5px; font-weight: 650; cursor: pointer; }
+.searchNavigation button::after { position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; background: transparent; content: ""; }
+.searchNavigation button:hover { color: var(--cf-text); }
+.searchNavigation button[aria-selected="true"] { color: var(--cf-accent-text); }
+.searchNavigation button[aria-selected="true"]::after { background: var(--cf-accent); }
+.searchNavigation button:focus-visible, .languageFilter button:focus-visible, .semanticTagPicker summary:focus-visible, .semanticTagPicker button:focus-visible, .clearSemanticTags:focus-visible, .results button:focus-visible, .cardResultGrid button:focus-visible, .setResultGrid button:focus-visible, .filterChip:focus-visible, .filterReset:focus-visible, .searchAdvanced summary:focus-visible { outline: 2px solid var(--cf-accent); outline-offset: 2px; }
+.searchEssentials { display: grid; grid-template-columns: minmax(0, 1fr) 260px; align-items: end; gap: 12px; margin-top: 18px; }
 .searchPreview { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; padding-top: 14px; }
 .previewBack { justify-self: start; border: 0; background: transparent; color: var(--cf-accent-text); padding: 0; font-size: 12px; font-weight: 650; cursor: pointer; }
 .previewBack:hover { text-decoration: underline; text-underline-offset: 3px; }
@@ -317,11 +320,22 @@
 .languageFilter button { min-height: 32px; border: 0; border-radius: 6px; background: transparent; color: var(--cf-text2); padding: 5px 7px; font-size: 12px; font-weight: 600; cursor: pointer; }
 .languageFilter button:hover { color: var(--cf-text); }
 .languageFilter button[aria-pressed="true"] { background: var(--cf-accent); color: var(--cf-on-accent); }
+.compactLanguageFilter { margin: 0; }
+.compactLanguageFilter legend { margin-bottom: 6px; }
+.compactLanguageFilter div { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.searchAdvanced { margin-top: 12px; border-top: 1px solid var(--cf-line); border-bottom: 1px solid var(--cf-line); }
+.searchAdvanced summary { min-height: 39px; display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--cf-text2); padding: 8px 2px; font-size: 11.5px; font-weight: 650; cursor: pointer; list-style: none; }
+.searchAdvanced summary::-webkit-details-marker { display: none; }
+.searchAdvanced summary::before { color: var(--cf-accent-text); content: "+"; font-family: var(--cf-font-mono); font-size: 14px; }
+.searchAdvanced[open] summary::before { content: "−"; }
+.searchAdvanced summary span { margin-right: auto; }
+.searchAdvanced summary small { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 9.5px; font-weight: 500; }
+.searchAdvanced .catalogFilters { margin: 0; border-top: 1px dashed var(--cf-line); padding: 12px 0; }
 .catalogFilters { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
 .catalogFilters label { min-width: 0; display: grid; gap: 5px; color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 9.5px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; }
 .catalogFilters label:last-child { grid-column: 1 / -1; }
 .catalogFilters select { min-width: 0; min-height: 38px; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-field); color: var(--cf-text); padding: 7px 28px 7px 9px; font-family: var(--cf-font-ui); font-size: 12px; letter-spacing: 0; text-transform: none; }
-.searchLabel { display: flex; align-items: center; gap: 8px; margin-top: 12px; border: 1px solid var(--cf-line2); border-radius: 9px; background: var(--cf-field); color: var(--cf-muted); padding: 0 11px; }
+.searchLabel { display: flex; align-items: center; gap: 8px; margin: 0; border: 1px solid var(--cf-line2); border-radius: 9px; background: var(--cf-field); color: var(--cf-muted); padding: 0 12px; }
 .searchLabel:focus-within { border-color: var(--cf-accent); box-shadow: 0 0 0 3px var(--cf-accent-soft); }
 .searchLabel input { min-width: 0; min-height: 42px; flex: 1; border: 0; background: transparent; color: var(--cf-text); padding: 9px 0; outline: 0; }
 .searchLabel input::placeholder { color: var(--cf-muted); }
@@ -349,24 +363,30 @@
 .filterChip, .filterReset { min-height: 27px; border: 1px solid var(--cf-line2); border-radius: 999px; background: var(--cf-surface2); color: var(--cf-text2); padding: 4px 9px; font-family: var(--cf-font-mono); font-size: 9.5px; cursor: pointer; }
 .filterChip:hover { border-color: var(--cf-accent); color: var(--cf-accent-text); }
 .filterReset { border-color: transparent; background: transparent; color: var(--cf-accent-text); text-decoration: underline; text-underline-offset: 3px; }
-.cardResultGrid, .setResultGrid { display: grid; gap: 10px; margin: 14px 0 0; padding: 0; list-style: none; }
-.cardResultGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.cardResultTile, .setResultTile { min-width: 0; display: grid; gap: 9px; border: 1px solid var(--cf-line); border-radius: 9px; background: var(--cf-surface2); padding: 9px; }
-.cardResultTile { grid-template-columns: 112px minmax(0, 1fr); align-items: start; }
-.cardResultArtwork, .cardResultArtworkFallback { width: 112px; height: 156px; border-radius: 5px; }
+.resultsHeader { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-top: 20px; }
+.resultsHeader h3 { margin: 4px 0 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: 18px; font-weight: 600; line-height: 1.2; }
+.resultsHeader > span { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 10px; white-space: nowrap; }
+.cardResultGrid, .setResultGrid { display: grid; gap: 12px; margin: 11px 0 0; padding: 0; list-style: none; }
+.cardResultGrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.cardResultTile, .setResultTile { min-width: 0; display: grid; gap: 10px; border: 1px solid var(--cf-line); border-radius: 10px; background: var(--cf-surface); padding: 10px; transition: border-color .15s, box-shadow .15s, transform .15s; }
+.cardResultTile { grid-template-columns: minmax(0, 1fr); align-content: start; }
+.cardResultTile:hover { border-color: var(--cf-line2); box-shadow: 0 12px 24px -20px var(--cf-sh-deep); transform: translateY(-1px); }
+.cardResultArtwork, .cardResultArtworkFallback { width: 100%; height: 184px; border-radius: 6px; }
 .cardResultArtwork { display: block; overflow: hidden; background: var(--cf-page); }
 .cardResultArtwork img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .cardResultArtworkFallback { display: grid; place-items: center; border: 1px dashed var(--cf-line2); background: var(--cf-page); color: var(--cf-muted); font-size: 9px; text-align: center; }
-.cardResultTile .secondaryButton { grid-column: 1 / -1; width: 100%; min-height: 34px; }
-.resultActions { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.cardResultTile .secondaryButton { width: 100%; min-height: 34px; }
+.resultActions { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px; margin-top: auto; }
 .resultActions button { width: 100%; min-height: 34px; }
+.resultActions button:last-child { width: auto; border-color: transparent; background: transparent; color: var(--cf-accent-text); padding-inline: 9px; }
+.resultActions button:last-child:hover { border-color: var(--cf-line2); background: var(--cf-surface2); }
 .selectionDock { position: sticky; bottom: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; border: 1px solid var(--cf-accent); border-radius: 9px; background: var(--cf-accent-soft); padding: 10px 11px; box-shadow: 0 -8px 20px -16px var(--cf-sh-deep); }
 .selectionDock > div:first-child { display: grid; gap: 3px; }
 .selectionDock strong { color: var(--cf-accent-text); font-size: 12px; }
 .selectionDock span { color: var(--cf-muted); font-size: 10px; }
 .selectionDockActions { display: flex; gap: 6px; flex: 0 0 auto; }
 .cardResultDetails, .setResultDetails { min-width: 0; display: grid; align-content: start; gap: 3px; }
-.cardResultDetails strong, .setResultDetails strong { overflow: hidden; color: var(--cf-text); font-size: 12px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.cardResultDetails strong, .setResultDetails strong { overflow: hidden; color: var(--cf-text); font-size: 13px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
 .cardResultDetails span, .setResultDetails span { overflow: hidden; color: var(--cf-text2); font-size: 10.5px; line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; }
 .cardResultDetails small, .setResultDetails small { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 9px; line-height: 1.35; }
 .cardResultDetails .resultStatus { color: var(--cf-accent-text); font-weight: 650; }
@@ -506,6 +526,7 @@
   .workspace { grid-template-columns: minmax(0, 1fr); }
   .contextPanel { position: relative; top: auto; max-height: none; }
   .topbarSearch { min-width: 170px; }
+  .cardResultGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media (max-width: 767px) {
@@ -554,6 +575,8 @@
   .ownedBadge, .missingBadge { top: 7px; left: 7px; padding: 1px 4px; font-size: 7px; }
   .emptySlot { min-height: 130px; padding: 4px; font-size: 10px; }
   .searchDrawer { top: 50%; left: 50%; width: calc(100vw - 24px); max-height: calc(100dvh - 24px); padding: 17px; transform: translate(-50%, -50%); }
+  .searchDrawer h2 { font-size: 22px; }
+  .searchEssentials { grid-template-columns: minmax(0, 1fr); }
   .contextPanel:has(.cardContext) { position: fixed; z-index: 20; inset: auto 8px calc(118px + env(safe-area-inset-bottom)); max-height: calc(100dvh - 186px); overflow: auto; border-color: var(--cf-line2); box-shadow: 0 24px 60px -10px var(--cf-sh-deep); }
   .catalogFilters { grid-template-columns: 1fr; }
   .cardResultGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -571,6 +594,10 @@
 
 @media (max-width: 430px) {
   .panel { padding: 12px; }
+  .searchNavigation button { padding-inline: 6px; font-size: 11.5px; }
+  .selectedSlotHint { align-items: flex-start; flex-direction: column; gap: 2px; }
+  .cardResultGrid { grid-template-columns: minmax(0, 1fr); }
+  .cardResultArtwork, .cardResultArtworkFallback { height: 220px; }
   .layoutPreview { grid-template-columns: 1fr; }
   .layoutPreview span { border-right: 0; border-bottom: 1px solid var(--cf-line); }
   .binderHeaderActions button { padding-inline: 7px; font-size: 11.5px; }
