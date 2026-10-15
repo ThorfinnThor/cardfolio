@@ -57,25 +57,12 @@ export function VariantFields({
   return (
     <>
       <div className={styles.variantStatus} data-complete={!issue} role="status">
-        <strong>{issue ? "Noch eine Angabe offen" : "Für die Bestellung vorbereitet"}</strong>
-        <span>{issue ?? "Ausführung und gewünschter Zustand sind vollständig festgelegt."}</span>
+        <strong>{issue ? "Ausführung noch auswählen" : "Bestellwunsch vorbereitet"}</strong>
+        <span>{issue ?? `${beginnerFinishLabels[variant.finish]} · ${currentCondition.shortLabel}`}</span>
       </div>
       <div className={styles.variantForm}>
         <label>
-          Ausführung der Karte
-          <select
-            aria-label="Ausführung der Karte"
-            required
-            value={variant.finish}
-            onChange={(event) => onVariantChange({ ...variant, finish: event.target.value as VariantSelection["finish"] })}
-          >
-            {!finishValues.includes(variant.finish) ? <option value={variant.finish} disabled>{beginnerFinishLabels[variant.finish]} · nicht bestätigt</option> : null}
-            {finishValues.map((value) => <option value={value} key={value}>{beginnerFinishLabels[value]}</option>)}
-          </select>
-          <small>Wähle, welcher Teil der Karte glänzen soll. Wenn du unsicher bist, vergleiche das Kartenbild beim Anbieter.</small>
-        </label>
-        <label>
-          Mindestzustand beim Kauf
+          Gewünschter Zustand
           <select
             aria-label="Mindestzustand beim Kauf"
             value={preferences.minimumCondition}
@@ -90,9 +77,24 @@ export function VariantFields({
         </label>
         {explainCondition ? <ConditionGuide /> : null}
         <details className={styles.variantAdvanced} open={showAdvancedByDefault || undefined}>
-          <summary>Sonderausgaben und Druckdetails</summary>
-          <p>Nur ändern, wenn ausdrücklich First Edition, Shadowless oder eine besondere Druckausgabe gewünscht ist.</p>
+          <summary>{issue ? "Ausführung auswählen – erforderlich" : "Andere Ausführung wählen"}</summary>
+          <p>{issue
+            ? "Vergleiche das Kartenbild und wähle Normal, Holo oder Reverse Holo."
+            : `Vorausgewählt: ${beginnerFinishLabels[variant.finish]}. Nur ändern, wenn eine andere Ausführung gewünscht ist.`}</p>
           <div>
+            <label>
+              Glanzeffekt
+              <select
+                aria-label="Ausführung der Karte"
+                required
+                value={variant.finish}
+                onChange={(event) => onVariantChange({ ...variant, finish: event.target.value as VariantSelection["finish"] })}
+              >
+                {!finishValues.includes(variant.finish) ? <option value={variant.finish} disabled>{beginnerFinishLabels[variant.finish]} · nicht bestätigt</option> : null}
+                {finishValues.map((value) => <option value={value} key={value}>{beginnerFinishLabels[value]}</option>)}
+              </select>
+              <small>Normal glänzt nicht. Bei Holo glänzt das Bild, bei Reverse Holo der übrige Kartenbereich.</small>
+            </label>
             <label>
               Edition
               <select
@@ -142,9 +144,9 @@ export function VariantFields({
         </details>
       </div>
       <p className={styles.variantHint}>
-        {formatAvailableVariants(availability)} {areFinishesVerified(availability)
-          ? "Es werden nur bestätigte Standardoptionen angeboten."
-          : "Das Finish bleibt manuell; historische Editionen und Druckvarianten werden trotzdem begrenzt."} „Mit Schatten / Standard“ ist vorausgewählt.
+        {areFinishesVerified(availability)
+          ? "Die angezeigte Standardausführung ist im Katalog bestätigt."
+          : "Der Glanzeffekt ist im Katalog nicht eindeutig und muss einmal gewählt werden."} Verfügbar: {formatAvailableVariants(availability)}
       </p>
     </>
   );

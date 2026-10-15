@@ -191,6 +191,18 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     [candidates, excludedKeys, selectedCardKeys],
   );
   const candidateByKey = useMemo(() => new Map(candidates.map((candidate) => [candidate.card.key, candidate])), [candidates]);
+  const recommendedBinderOffers = useMemo(() => {
+    if (!binderOffers) return undefined;
+    const available = binderOffers.filter((offer) => offer.status === "available");
+    const capacityMatches = available.filter((offer) => !offer.capacityCards || offer.capacityCards >= preferences.targetCardCount);
+    const layoutMatches = capacityMatches.filter((offer) => offer.pocketsPerPage === 9);
+    const pool = layoutMatches.length ? layoutMatches : capacityMatches.length ? capacityMatches : available;
+    return pool.toSorted((left, right) =>
+      Number(right.pocketsPerPage === 9) - Number(left.pocketsPerPage === 9)
+      || (left.price?.amountMinor ?? Number.MAX_SAFE_INTEGER) - (right.price?.amountMinor ?? Number.MAX_SAFE_INTEGER)
+      || left.displayName.localeCompare(right.displayName, "de"),
+    ).slice(0, 3);
+  }, [binderOffers, preferences.targetCardCount]);
 
   useEffect(() => {
     if (step !== "summary") return;
@@ -390,6 +402,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     }
     if (invalidOrderCandidates.length === 0 && recommendedOrderCandidates.length > 0) {
       acceptRecommendedVariants();
+      setStep("review");
       return;
     }
     const nextCandidate = invalidOrderCandidates[0];
@@ -567,7 +580,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
               <span>{invalidOrderCandidates.length > 0
                 ? `${readyCardCount} von ${selection.selected.length} Karten sind vorbereitet. Nur ${invalidOrderCandidates.length} echte ${invalidOrderCandidates.length === 1 ? "Datenangabe muss" : "Datenangaben müssen"} noch korrigiert werden.`
                 : recommendedOrderCandidates.length > 0
-                  ? `Für alle ${selection.selected.length} Karten gibt es eine vorausgewählte Bestellvariante. Ein Klick übernimmt sie gemeinsam.`
+                  ? `Für alle ${selection.selected.length} Karten ist eine passende Standardausführung vorausgewählt.`
                   : `${selection.selected.length} von ${selection.selected.length} Karten sind vollständig vorbereitet. Sonderfälle kannst du direkt an der Karte ändern.`}</span>
             </div>
             <label>Zustand für alle
@@ -587,20 +600,20 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
                     ? `Noch ${missingSelectionCount} ${missingSelectionCount === 1 ? "Karte" : "Karten"} auswählen`
                     : invalidOrderCandidates.length > 0
                       ? `Noch ${invalidOrderCandidates.length} ${invalidOrderCandidates.length === 1 ? "Angabe" : "Angaben"} korrigieren`
-                      : `Empfehlungen für ${recommendedOrderCandidates.length} ${recommendedOrderCandidates.length === 1 ? "Karte" : "Karten"} übernehmen`}
+                      : "Empfehlung übernehmen und weiter"}
                 </h2>
                 <p>{missingSelectionCount > 0
                   ? "Ergänze den Binder bis zur gewählten Kartenzahl. Danach prüfen wir gemeinsam die Bestellangaben."
                   : invalidOrderCandidates.length > 0
                     ? "Nur die rot markierten Karten enthalten noch eine unvollständige oder widersprüchliche Angabe. Cardfolio führt dich zur ersten Stelle, die wirklich korrigiert werden muss."
-                    : "Cardfolio wählt eine günstige Standardausführung und deinen gewünschten Zustand vor. Die Empfehlung lässt sich später bei jeder Karte ändern."}</p>
+                    : "Ausführung und Zustand sind vorbereitet. Wenn alles passt, gehst du direkt zur Bestellprüfung. Änderungen bleiben an jeder Karte möglich."}</p>
               </div>
               <button type="button" className={styles.requirementButton} onClick={guideToNextRequirement}>
                 {missingSelectionCount > 0
                   ? "Fehlende Karte auswählen"
                   : invalidOrderCandidates.length > 0
                     ? "Erste fehlerhafte Angabe öffnen"
-                    : "Alle Empfehlungen übernehmen"}
+                    : "Empfehlung übernehmen & weiter"}
                 <ArrowRight aria-hidden="true" size={18} />
               </button>
             </section>
@@ -616,8 +629,8 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
                 <CardArtwork card={candidate.card} className={styles.cardImage} fallback={<div className={styles.imageFallback}>Bild nicht verfügbar</div>} />
                 {issue ? <span className={styles.reviewBadge}>Bitte korrigieren</span> : hasRecommendation ? <span className={styles.recommendationBadge}>Empfohlen</span> : null}
                 <div className={styles.cardIdentity}><strong>{candidate.card.name}</strong><span>{candidate.card.setName} · Nr. {candidate.card.collectorNumber}</span><b>{pricingEnabled ? formatMoney(candidate.price.amountMinor, preferences.currency) : "Preisprüfung deaktiviert"}</b><small className={styles.priceMeta}>{pricingEnabled ? `${priceSourceLabel(candidate.price.source)} · Stand ${formatDate(candidate.price.sourceUpdatedAt ?? candidate.price.fetchedAt)}${formatRange(candidate.price.range, preferences.currency) ? ` · Spanne ${formatRange(candidate.price.range, preferences.currency)}` : ""}` : "Noch keine für diesen Ablauf freigegebene Preisquelle"}</small></div>
-                <div className={styles.orderSummary} data-status={orderStatus}><strong>{issue ? "Angabe korrigieren" : hasRecommendation ? "Empfehlung vorbereitet" : "Bestellbereit"}</strong><span>{issue ?? `${formatVariantSelection(candidate.variant)} · ${conditionProfile(candidate.preferences.minimumCondition).shortLabel}`}</span></div>
-                <div className={styles.cardActions}><button type="button" className={styles.linkButton} data-urgent={Boolean(issue)} onClick={() => setOpenVariantKey(openVariantKey === candidate.card.key ? undefined : candidate.card.key)}>{openVariantKey === candidate.card.key ? "Details schließen" : issue ? "Angaben korrigieren" : "Optional: Bestellangaben ändern"}</button><button type="button" className={styles.replaceButton} onClick={() => replaceCandidate(candidate.card.key)} disabled={availableCandidates.length === 0} aria-label={availableCandidates.length > 0 ? `${candidate.card.name} austauschen` : `Keine alternative Karte für ${candidate.card.name} verfügbar`} title={availableCandidates.length > 0 ? "Gegen die nächste passende Karte austauschen" : "Alle passenden Karten sind bereits ausgewählt"}><RefreshCw aria-hidden="true" size={15} /><span>{availableCandidates.length > 0 ? "Austauschen" : "Keine Alternative"}</span></button><button type="button" className={styles.iconButton} onClick={() => removeCandidate(candidate.card.key)} aria-label={`${candidate.card.name} entfernen`}><X size={15} /></button></div>
+                <div className={styles.orderSummary} data-status={orderStatus}><strong>{issue ? "Angabe korrigieren" : hasRecommendation ? "Vorausgewählt" : "Bestellbereit"}</strong><span>{issue ?? `${formatVariantSelection(candidate.variant)} · ${conditionProfile(candidate.preferences.minimumCondition).shortLabel}`}</span></div>
+                <div className={styles.cardActions}><button type="button" className={styles.linkButton} data-urgent={Boolean(issue)} onClick={() => setOpenVariantKey(openVariantKey === candidate.card.key ? undefined : candidate.card.key)}>{openVariantKey === candidate.card.key ? "Details schließen" : issue ? "Ausführung auswählen" : "Andere Ausführung wählen"}</button><button type="button" className={styles.replaceButton} onClick={() => replaceCandidate(candidate.card.key)} disabled={availableCandidates.length === 0} aria-label={availableCandidates.length > 0 ? `${candidate.card.name} austauschen` : `Keine alternative Karte für ${candidate.card.name} verfügbar`} title={availableCandidates.length > 0 ? "Gegen die nächste passende Karte austauschen" : "Alle passenden Karten sind bereits ausgewählt"}><RefreshCw aria-hidden="true" size={15} /><span>{availableCandidates.length > 0 ? "Austauschen" : "Keine Alternative"}</span></button><button type="button" className={styles.iconButton} onClick={() => removeCandidate(candidate.card.key)} aria-label={`${candidate.card.name} entfernen`}><X size={15} /></button></div>
                 {openVariantKey === candidate.card.key ? <div className={styles.variantBox}><VariantFields variant={candidate.variant} preferences={candidate.preferences} availability={variantAvailabilityForCard(candidate.card)} onVariantChange={(variant) => updateVariant(candidate.card.key, variant)} onPreferencesChange={(next) => setSelection((current) => current ? summarizeSelection(current.selected.map((item) => item.card.key === candidate.card.key ? { ...item, preferences: next } : item), preferences, current.issues) : current)} />{issue ? <p className={styles.warning}>{issue}</p> : hasRecommendation ? <div className={styles.reviewInstructions}><strong>Cardfolio-Empfehlung</strong><p>Die Bestellangaben sind bereits sinnvoll vorausgewählt. Passe sie an, wenn du eine andere Ausführung möchtest.</p><button type="button" className={styles.secondaryButton} onClick={() => confirmVariant(candidate.card.key)}>Nur diese Empfehlung übernehmen</button></div> : null}</div> : null}
                 <span className={styles.cardIndex}>{index + 1}</span>
               </article>;
@@ -647,7 +660,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
               </li>;
             })}</ul>
           </div> : null}
-          <div className={styles.actions} id="gift-next-actions"><button type="button" className={styles.secondaryButton} onClick={() => setStep("details")}><ArrowLeft size={16} /> Wünsche ändern</button><button type="button" className={reviewReady ? styles.primaryButton : styles.guidanceButton} aria-label={reviewReady ? "Auswahl prüfen" : missingSelectionCount > 0 ? `Noch ${missingSelectionCount} ${missingSelectionCount === 1 ? "Karte" : "Karten"} auswählen` : invalidOrderCandidates.length > 0 ? `Noch ${invalidOrderCandidates.length} ${invalidOrderCandidates.length === 1 ? "Angabe" : "Angaben"} korrigieren` : "Alle Empfehlungen übernehmen"} onClick={guideToNextRequirement}>{reviewReady ? <>Weiter: Bestellung prüfen <ArrowRight size={18} /></> : missingSelectionCount > 0 ? <>Noch {missingSelectionCount} {missingSelectionCount === 1 ? "Karte" : "Karten"} auswählen <ArrowRight size={18} /></> : invalidOrderCandidates.length > 0 ? <>Angaben korrigieren <ArrowRight size={18} /></> : <>Alle Empfehlungen übernehmen <ArrowRight size={18} /></>}</button></div>
+          <div className={styles.actions} id="gift-next-actions"><button type="button" className={styles.secondaryButton} onClick={() => setStep("details")}><ArrowLeft size={16} /> Wünsche ändern</button><button type="button" className={reviewReady ? styles.primaryButton : styles.guidanceButton} aria-label={reviewReady ? "Bestellung prüfen" : missingSelectionCount > 0 ? `Noch ${missingSelectionCount} ${missingSelectionCount === 1 ? "Karte" : "Karten"} auswählen` : invalidOrderCandidates.length > 0 ? `Noch ${invalidOrderCandidates.length} ${invalidOrderCandidates.length === 1 ? "Angabe" : "Angaben"} korrigieren` : "Empfehlung übernehmen und Bestellung prüfen"} onClick={guideToNextRequirement}>{reviewReady ? <>Weiter: Bestellung prüfen <ArrowRight size={18} /></> : missingSelectionCount > 0 ? <>Noch {missingSelectionCount} {missingSelectionCount === 1 ? "Karte" : "Karten"} auswählen <ArrowRight size={18} /></> : invalidOrderCandidates.length > 0 ? <>Angaben korrigieren <ArrowRight size={18} /></> : <>Empfehlung übernehmen &amp; weiter <ArrowRight size={18} /></>}</button></div>
         </div>
       ) : null}
 
@@ -703,10 +716,11 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
               <div><p className={styles.purchaseStep}>1 · PHYSISCHEN BINDER KAUFEN</p><h3>Der Binder für deine Karten</h3><p>Für deinen Seitenplan empfehlen wir einen geschlossenen 9-Pocket-Binder. Er schützt die Karten und ist das eigentliche Geschenk.</p>
                 {partnerLoadError ? <p role="status">Angebote sind momentan nicht erreichbar. Du kannst den lokalen Binder weiter bearbeiten.</p> : null}
                 {!partnerLoadError && !binderOffers ? <p role="status">Binder-Angebote werden geprüft…</p> : null}
-                {!partnerLoadError && binderOffers?.length === 0 ? <p role="status">Zurzeit ist kein geprüfter Binder-Shop verfügbar. Du kannst den lokalen Binder trotzdem weiter bearbeiten.</p> : null}
-                {binderOffers?.map((offer) => <div className={styles.offerRow} key={offer.id}>
-                  <div><strong>{offer.displayName}</strong><small>{offer.price ? `${offer.price.qualifier === "from" ? "ab " : ""}${formatMoney(offer.price.amountMinor, offer.price.currency)} · Stand ${formatDate(offer.price.sourceUpdatedAt)}` : "Kein bestätigter Binderpreis"}</small>
-                    {offer.capacityCards ? <small>{offer.pocketsPerPage ? `${offer.pocketsPerPage}-Pocket · ` : ""}Platz für bis zu {offer.capacityCards} Karten</small> : null}
+                {!partnerLoadError && recommendedBinderOffers?.length === 0 ? <p role="status">Zurzeit ist kein geprüfter Binder-Shop verfügbar. Du kannst den lokalen Binder trotzdem weiter bearbeiten.</p> : null}
+                {recommendedBinderOffers?.length ? <p className={styles.binderMatch}><Check aria-hidden="true" size={16} /><span><strong>Automatisch passend gewählt</strong>{preferences.targetCardCount} Karten brauchen {Math.ceil(preferences.targetCardCount / 9)} {Math.ceil(preferences.targetCardCount / 9) === 1 ? "Seite" : "Seiten"}. Ein 9-Pocket-Binder übernimmt dein 3×3-Raster.</span></p> : null}
+                {recommendedBinderOffers?.map((offer, index) => <div className={styles.offerRow} data-recommended={index === 0} key={offer.id}>
+                  <div><strong>{offer.displayName}{index === 0 ? <em>Empfohlen</em> : null}</strong><small>{offer.price ? `${offer.price.qualifier === "from" ? "ab " : ""}${formatMoney(offer.price.amountMinor, offer.price.currency)} · Stand ${formatDate(offer.price.sourceUpdatedAt)}` : "Kein bestätigter Binderpreis"}</small>
+                    {offer.capacityCards ? <small>{offer.pocketsPerPage ? `${offer.pocketsPerPage}-Pocket · ` : ""}{preferences.targetCardCount} Plätze benötigt · bis zu {offer.capacityCards} Karten möglich</small> : null}
                     {offer.affiliateDisclosure ? <small>{offer.affiliateDisclosure}</small> : null}
                     {offer.status === "available" ? <small>Externer Shop · Verfügbarkeit und Versand dort prüfen · kein Affiliate-Link</small> : null}
                     {offer.status !== "available" ? <small>{offer.statusReason ?? "Angebot nicht verfügbar."}</small> : null}

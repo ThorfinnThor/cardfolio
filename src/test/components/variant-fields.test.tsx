@@ -40,7 +40,7 @@ describe("VariantFields", () => {
     expect(within(finish).queryByRole("option", { name: "Reverse Holo – übrige Karte glänzt" })).not.toBeInTheDocument();
     expect(within(screen.getByRole("combobox", { name: "Edition" })).queryByRole("option", { name: "First Edition" })).not.toBeInTheDocument();
     expect(within(screen.getByRole("combobox", { name: "Druckvariante" })).queryByRole("option", { name: "Shadowless" })).not.toBeInTheDocument();
-    expect(screen.getByRole("status")).toHaveTextContent("vollständig festgelegt");
+    expect(screen.getByRole("status")).toHaveTextContent("Ausführung noch auswählen");
   });
 
   it("offers First Edition and Shadowless for a confirmed English Base Set variant", () => {
@@ -56,7 +56,7 @@ describe("VariantFields", () => {
 
     expect(within(screen.getByRole("combobox", { name: "Edition" })).getByRole("option", { name: "First Edition" })).toBeInTheDocument();
     expect(within(screen.getByRole("combobox", { name: "Druckvariante" })).getByRole("option", { name: "Shadowless" })).toBeInTheDocument();
-    expect(screen.getByRole("status")).toHaveTextContent("Für die Bestellung vorbereitet");
+    expect(screen.getByRole("status")).toHaveTextContent("Bestellwunsch vorbereitet");
   });
 
   it("keeps unknown finishes manual while hiding impossible modern printings", () => {
@@ -80,7 +80,7 @@ describe("VariantFields", () => {
     expect(within(screen.getByRole("combobox", { name: "Ausführung der Karte" })).getByRole("option", { name: "Holo – Bildbereich glänzt" })).toBeInTheDocument();
     expect(within(screen.getByRole("combobox", { name: "Edition" })).queryByRole("option", { name: "First Edition" })).not.toBeInTheDocument();
     expect(within(screen.getByRole("combobox", { name: "Druckvariante" })).queryByRole("option", { name: "Shadowless" })).not.toBeInTheDocument();
-    expect(screen.getByText(/Finish bleibt manuell/)).toBeInTheDocument();
+    expect(screen.getByText(/Glanzeffekt ist im Katalog nicht eindeutig/)).toBeInTheDocument();
   });
 
   it("automatically switches an English Base Set card to Shadowless for First Edition", async () => {

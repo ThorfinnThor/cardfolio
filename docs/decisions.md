@@ -273,3 +273,11 @@
 - Ambiguous, incomplete or absent matches fail closed and stay visible as excluded positions; Cardfolio never sends a guessed line merely to keep the bulk list complete.
 - The initial audit covers all 21,290 card records currently addressable through TCGdex: 20,429 verified identities, including 1,534 systematic corrections, and 861 deliberately excluded identities. TCGdex's set metadata declares another 228 positions without card records (primarily Jumbo, Sample and legacy side collections); those cannot be exported or silently counted as verified. The versioned runtime file is loaded only after Cardmarket is selected.
 - This check guarantees that emitted names exist in the official product catalog. It cannot make Cardmarket's lossy decklist format carry set, collector number, language, finish, printing or condition, so those attributes remain provider-side checks.
+
+## 2026-10-15 — The Gift purchase funnel accepts safe defaults before showing exceptions
+
+- A Gift proposal may prepare one standard finish and the chosen minimum condition for all cards. When no card has a real variant conflict, one action accepts these recommendations and moves directly to the order review; individual changes remain available.
+- Condition stays visible as the beginner-facing purchase choice. Finish, edition and printing live behind “Andere Ausführung wählen” and open automatically only when catalog data is missing, contradictory or non-standard.
+- The purchase view asks for the buyer's region instead of requesting location access. Europe and the UK select Cardmarket, USA and Canada select TCGplayer, and other regions expose the provider comparison.
+- Provider selection remains reversible. CardTrader stays a labelled preview until its independent approval gates pass.
+- The Gift summary recommends only reviewed, currently available binder offers that fit the requested card count. A 9-pocket product is preferred because Cardfolio Gift pages use a 3×3 layout; capacity, current price evidence and external availability remain provider-side facts.

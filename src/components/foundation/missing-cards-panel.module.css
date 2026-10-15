@@ -51,6 +51,13 @@
 .regionButtons button[aria-pressed="true"] { border-color: var(--cf-accent); background: var(--cf-accent); color: var(--cf-on-accent); }
 .regionButtons button[aria-pressed="true"] small { color: var(--cf-on-accent); opacity: .82; }
 .marketplaceChoice .regionHint { margin: 0; border-left: 3px solid var(--cf-accent); background: var(--cf-accent-soft); color: var(--cf-text2); padding: 8px 10px; line-height: 1.45; }
+.providerRecommendation { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 11px; border: 1px solid color-mix(in srgb, var(--cf-ok) 40%, var(--cf-line2)); border-radius: 9px; background: var(--cf-ok-soft); padding: 11px 12px; }
+.providerRecommendation > svg { color: var(--cf-ok); }
+.providerRecommendation > span { display: grid; gap: 2px; }
+.providerRecommendation strong { color: var(--cf-text); font-size: .82rem; }
+.providerRecommendation small { color: var(--cf-text2); font-size: .7rem; }
+.providerRecommendation button { min-height: 38px; border: 1px solid var(--cf-line2); border-radius: 7px; background: var(--cf-surface); color: var(--cf-accent-text); padding: 7px 10px; font-size: .72rem; font-weight: 700; cursor: pointer; }
+.providerRecommendation button:hover { border-color: var(--cf-accent); }
 .providerHeading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .providerHeading strong { color: var(--cf-text); font-size: .82rem; }
 .providerHeading span { color: var(--cf-muted); font-size: .7rem; }
@@ -258,6 +265,8 @@
   .marketplaceChoice { grid-template-columns: 1fr; align-items: stretch; }
   .regionButtons { grid-template-columns: 1fr; }
   .providerHeading { align-items: flex-start; flex-direction: column; gap: 3px; }
+  .providerRecommendation { grid-template-columns: auto minmax(0, 1fr); }
+  .providerRecommendation button { grid-column: 1 / -1; width: 100%; }
   .conditionSetup { grid-template-columns: 1fr; }
   .reviewOverview { align-items: flex-start; flex-direction: column; }
   .reviewOverview span { text-align: left; }

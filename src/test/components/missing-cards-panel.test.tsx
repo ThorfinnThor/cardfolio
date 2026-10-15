@@ -150,6 +150,7 @@ describe("MissingCardsPanel", () => {
       />,
     );
 
+    fireEvent.click(screen.getByRole("button", { name: "Andere Region · Versand prüfen" }));
     fireEvent.click(screen.getByRole("button", { name: "TCGplayer" }));
     expect(screen.getByRole("heading", { name: "TCGplayer Mass Entry" })).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue("1 Bulbasaur [BS] 044/102");
@@ -189,12 +190,12 @@ describe("MissingCardsPanel", () => {
     );
 
     fireEvent.click(screen.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" }));
-    expect(screen.getByRole("button", { name: "Cardmarket" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByText("Cardmarket ausgewählt")).toBeInTheDocument();
     expect(screen.getByText("Für Europa und UK ist Cardmarket normalerweise der einfachste Start.")).toBeInTheDocument();
     expect(onCardmarketPrepare).toHaveBeenCalledWith(items);
 
     fireEvent.click(screen.getByRole("button", { name: "USA & Kanada · TCGplayer empfohlen" }));
-    expect(screen.getByRole("button", { name: "TCGplayer" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByText("TCGplayer ausgewählt")).toBeInTheDocument();
     expect(screen.getByText("Für USA und Kanada ist TCGplayer normalerweise der einfachste Start.")).toBeInTheDocument();
   });
 
@@ -217,7 +218,7 @@ describe("MissingCardsPanel", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Cardmarket" }));
+    fireEvent.click(screen.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" }));
     expect(onCardmarketPrepare).toHaveBeenCalledWith(items);
     expect(screen.getByRole("heading", { name: "Komplette Liste zu Cardmarket" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Wir zeigen dir immer nur den nächsten Schritt." })).toBeInTheDocument();
@@ -283,7 +284,7 @@ describe("MissingCardsPanel", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Cardmarket" }));
+    fireEvent.click(screen.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" }));
 
     fireEvent.click(screen.getByRole("link", { name: "2 Karten kopieren & Cardmarket öffnen" }));
     fireEvent.click(screen.getByRole("button", { name: /Karten sind eingefügt/ }));
@@ -302,7 +303,7 @@ describe("MissingCardsPanel", () => {
     };
     render(<MissingCardsPanel {...props()} items={[unresolvedItem]} cardmarketEnabled />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Cardmarket" }));
+    fireEvent.click(screen.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" }));
 
     fireEvent.click(screen.getByText("Importliste ansehen oder als Datei speichern"));
     expect(screen.getByText("1 Karte fehlt im Importtext")).toBeInTheDocument();
@@ -316,10 +317,12 @@ describe("MissingCardsPanel", () => {
     expect(screen.queryByRole("heading", { name: "TCGplayer Mass Entry" })).not.toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Komplette Liste zu Cardmarket" })).not.toBeInTheDocument();
 
+    fireEvent.click(screen.getByRole("button", { name: "Andere Region · Versand prüfen" }));
     fireEvent.click(screen.getByRole("button", { name: "TCGplayer" }));
     expect(screen.getByRole("heading", { name: "TCGplayer Mass Entry" })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Komplette Liste zu Cardmarket" })).not.toBeInTheDocument();
 
+    fireEvent.click(screen.getByRole("button", { name: "Anderen Anbieter wählen" }));
     fireEvent.click(screen.getByRole("button", { name: "Cardmarket" }));
     expect(screen.queryByRole("heading", { name: "TCGplayer Mass Entry" })).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Komplette Liste zu Cardmarket" })).toBeInTheDocument();
@@ -332,9 +335,10 @@ describe("MissingCardsPanel", () => {
     cleanup();
 
     render(<MissingCardsPanel {...props()} cardtraderPreviewVisible cardtraderStatus="not-approved" />);
+    fireEvent.click(screen.getByRole("button", { name: "Andere Region · Versand prüfen" }));
     fireEvent.click(screen.getByRole("button", { name: "CardTrader · Vorschau" }));
     expect(screen.getByRole("heading", { name: "CardTrader" })).toBeInTheDocument();
-    expect(screen.getByRole("status")).toHaveTextContent("noch nicht freigegeben");
+    expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("noch nicht freigegeben"))).toBe(true);
     expect(screen.getByText("Preis unbekannt")).toBeInTheDocument();
     expect(screen.getByText("Versand & Steuer")).toBeInTheDocument();
     expect(screen.getByText("1× Bulbasaur")).toBeInTheDocument();

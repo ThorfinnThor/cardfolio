@@ -110,8 +110,8 @@ export function MissingCardsPanel({
   const [cardmarketPartIndex, setCardmarketPartIndex] = useState(0);
   const [marketplaceChoice, setMarketplaceChoice] = useState<MarketplaceChoice>();
   const [marketplaceRegion, setMarketplaceRegion] = useState<MarketplaceRegion>();
+  const [showProviderChoices, setShowProviderChoices] = useState(false);
   const [cardmarketGuideStep, setCardmarketGuideStep] = useState<CardmarketGuideStep>(1);
-  const [purchaseStep, setPurchaseStep] = useState(onConditionsChange && items.length ? 1 : 2);
   const [loadedTcgplayerMappings, setLoadedTcgplayerMappings] = useState<readonly TcgplayerCardMapping[]>();
   const [tcgplayerMappingsError, setTcgplayerMappingsError] = useState<string>();
   const [loadedCardmarketMappings, setLoadedCardmarketMappings] = useState<readonly MarketplaceProductIdentityMapping[]>();
@@ -206,12 +206,21 @@ export function MissingCardsPanel({
       onCardmarketPrepare?.(visibleItems);
     }
     setMarketplaceChoice(choice);
+    setShowProviderChoices(false);
   }
 
   function chooseRegion(region: MarketplaceRegion) {
     setMarketplaceRegion(region);
-    if (region === "europe" && cardmarketEnabled) chooseMarketplace("cardmarket");
-    if (region === "north-america" && tcgplayerEnabled) chooseMarketplace("tcgplayer");
+    if (region === "europe" && cardmarketEnabled) {
+      chooseMarketplace("cardmarket");
+      return;
+    }
+    if (region === "north-america" && tcgplayerEnabled) {
+      chooseMarketplace("tcgplayer");
+      return;
+    }
+    setMarketplaceChoice(undefined);
+    setShowProviderChoices(true);
   }
 
   return (
@@ -226,7 +235,7 @@ export function MissingCardsPanel({
         <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Fehlkartenansicht schließen"><X size={18} /></button>
       </div>
 
-      <div className={styles.flowWrapper}><GuidedFlow steps={PURCHASE_FLOW} currentStep={marketplaceChoice ? 3 : purchaseStep} label="Schritte zum Kartenkauf" /></div>
+      <div className={styles.flowWrapper}><GuidedFlow steps={PURCHASE_FLOW} currentStep={marketplaceChoice ? 3 : 2} label="Schritte zum Kartenkauf" /></div>
 
       {copyState === "error" ? <p className={styles.error} role="status">Kopieren wurde vom Browser nicht erlaubt. Nutze stattdessen TXT oder CSV.</p> : null}
       {warnings.map((warning) => <p className={styles.warning} role="note" key={warning}>{warning}</p>)}
@@ -254,9 +263,6 @@ export function MissingCardsPanel({
             </label>
           </section>
           <ConditionGuide />
-          <button type="button" className={styles.continueButton} onClick={() => { setPurchaseStep(2); document.getElementById("marketplace-choice")?.scrollIntoView({ behavior: "smooth", block: "center" }); }}>
-            Zustand übernehmen & Anbieter wählen <ArrowRight aria-hidden="true" size={19} />
-          </button>
         </div>
       ) : null}
 
@@ -286,7 +292,12 @@ export function MissingCardsPanel({
                 ? "Für USA und Kanada ist TCGplayer normalerweise der einfachste Start."
                 : "Verfügbarkeit und Versand unterscheiden sich je nach Land. Prüfe beide Anbieter vor dem Kauf."}</p> : null}
           </div>
-          <div className={styles.providerHeading}><strong>Anbieter</strong><span>Du kannst die Empfehlung jederzeit ändern.</span></div>
+          {marketplaceChoice && !showProviderChoices ? <div className={styles.providerRecommendation} role="status">
+            <Check aria-hidden="true" size={19} />
+            <span><strong>{marketplaceChoice === "cardmarket" ? "Cardmarket ausgewählt" : marketplaceChoice === "tcgplayer" ? "TCGplayer ausgewählt" : "CardTrader ausgewählt"}</strong><small>Die passende Einkaufshilfe steht direkt unter diesem Abschnitt.</small></span>
+            <button type="button" onClick={() => setShowProviderChoices(true)}>Anderen Anbieter wählen</button>
+          </div> : null}
+          {showProviderChoices ? <><div className={styles.providerHeading}><strong>Anbieter selbst wählen</strong><span>Verfügbarkeit und Versand unterscheiden sich je nach Region.</span></div>
           <div className={styles.marketplaceChoiceActions} role="group" aria-label="Marketplace auswählen">
             {tcgplayerEnabled ? (
               <button
@@ -312,7 +323,7 @@ export function MissingCardsPanel({
                 onClick={() => chooseMarketplace("cardtrader")}
               ><strong>CardTrader{!cardtraderEnabled ? " · Vorschau" : ""}</strong><small>{cardtraderEnabled ? "Wishlist vorbereiten" : "Wishlist-Freigabe ausstehend"}</small><ArrowRight aria-hidden="true" size={17} /></button>
             ) : null}
-          </div>
+          </div></> : null}
         </section>
       ) : null}
 

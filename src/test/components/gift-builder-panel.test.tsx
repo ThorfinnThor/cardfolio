@@ -98,7 +98,7 @@ describe("GiftBuilderPanel", () => {
     expect(orderCondition).toHaveValue("excellent");
     fireEvent.change(orderCondition, { target: { value: "near-mint" } });
     expect(screen.getAllByText(/Wie neu/).length).toBeGreaterThan(0);
-    fireEvent.click(screen.getByRole("button", { name: /Auswahl prüfen/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Bestellung prüfen/i }));
     await screen.findByRole("heading", { name: /Vorschlag ist bereit/i });
     fireEvent.click(screen.getByRole("button", { name: /Als Binder anlegen/i }));
     await waitFor(() => expect(onCreateBinder).toHaveBeenCalledTimes(1));
@@ -110,7 +110,8 @@ describe("GiftBuilderPanel", () => {
     expect(screen.getAllByRole("img", { name: /Pikachu 1, Set 1 1/i }).length).toBeGreaterThan(0);
     expect(screen.getByText("Keine Budgetzusage")).toBeInTheDocument();
     expect(await screen.findByText("9-Pocket Test-Binder")).toBeInTheDocument();
-    expect(screen.getByText(/9-Pocket · Platz für bis zu 360 Karten/i)).toBeInTheDocument();
+    expect(screen.getByText(/9-Pocket · 9 Plätze benötigt · bis zu 360 Karten möglich/i)).toBeInTheDocument();
+    expect(screen.getByText("Automatisch passend gewählt")).toBeInTheDocument();
     expect(screen.getByText(/kein Affiliate-Link/i)).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /Diesen Binder bestellen/i }));
     expect(open).toHaveBeenCalledWith("https://partner.example/9-pocket-binder", "_blank", "noopener,noreferrer");
@@ -176,15 +177,14 @@ describe("GiftBuilderPanel", () => {
 
     fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
     fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
-    await screen.findByText("Für alle 9 Karten gibt es eine vorausgewählte Bestellvariante. Ein Klick übernimmt sie gemeinsam.");
-    expect(screen.getByRole("heading", { name: "Empfehlungen für 9 Karten übernehmen" })).toBeInTheDocument();
-    expect(screen.getByText(/wählt eine günstige Standardausführung und deinen gewünschten Zustand vor/)).toBeInTheDocument();
+    await screen.findByText("Für alle 9 Karten ist eine passende Standardausführung vorausgewählt.");
+    expect(screen.getByRole("heading", { name: "Empfehlung übernehmen und weiter" })).toBeInTheDocument();
+    expect(screen.getByText(/Ausführung und Zustand sind vorbereitet/)).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Jetzt Ausführung prüfen/i })).not.toBeInTheDocument();
-    expect(screen.getAllByText("Empfehlung vorbereitet")).toHaveLength(9);
+    expect(screen.getAllByText("Vorausgewählt")).toHaveLength(9);
 
-    fireEvent.click(screen.getAllByRole("button", { name: "Alle Empfehlungen übernehmen" })[0]);
-    expect(screen.getByText("Alle Karten sind bestellbereit. Du kannst jetzt zur Bestellprüfung weitergehen.")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Auswahl prüfen" })).toBeEnabled();
+    fireEvent.click(screen.getByRole("button", { name: "Empfehlung übernehmen und Bestellung prüfen" }));
+    expect(await screen.findByRole("heading", { name: "Dein Vorschlag ist bereit" })).toBeInTheDocument();
   });
 
   it("builds a proposal from one of ten semantic artwork themes", async () => {

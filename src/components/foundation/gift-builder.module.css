@@ -208,9 +208,15 @@
 .purchaseCard > div > p:not(.eyebrow) { margin: 0; color: var(--cf-muted); font-size: 12px; line-height: 1.5; }
 .purchaseStep { margin: 0; color: var(--cf-accent-text); font-family: var(--cf-font-mono); font-size: 10px; font-weight: 750; letter-spacing: .11em; }
 .purchaseCard > .primaryButton { align-self: stretch; min-height: 54px; font-size: 15px; }
+.binderMatch { display: flex; align-items: flex-start; gap: 9px; margin: 2px 0 !important; border: 1px solid color-mix(in srgb, var(--cf-ok) 36%, var(--cf-line)); border-radius: 8px; background: var(--cf-ok-soft); color: var(--cf-text2) !important; padding: 10px 11px; }
+.binderMatch > svg { flex: 0 0 auto; margin-top: 2px; color: var(--cf-ok); }
+.binderMatch > span { display: grid; gap: 2px; }
+.binderMatch strong { color: var(--cf-text); font-size: 11px; }
 .offerRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid var(--cf-line); padding-top: 10px; }
+.offerRow[data-recommended="true"] { margin-top: 2px; border: 1px solid color-mix(in srgb, var(--cf-accent) 50%, var(--cf-line)); border-radius: 8px; background: var(--cf-surface); padding: 12px; }
 .offerRow > div { display: grid; gap: 4px; min-width: 0; }
-.offerRow strong { color: var(--cf-text); font-size: 12px; }
+.offerRow strong { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; color: var(--cf-text); font-size: 12px; }
+.offerRow strong em { border-radius: 999px; background: var(--cf-accent); color: var(--cf-on-accent); padding: 3px 7px; font-family: var(--cf-font-mono); font-size: 8px; font-style: normal; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .offerRow small { color: var(--cf-muted); font-size: 10px; line-height: 1.4; }
 .offerRow button { flex: 0 0 auto; min-height: 40px; }
 .offerAction { min-height: 52px !important; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--cf-accent); border-radius: 8px; background: var(--cf-accent); color: var(--cf-on-accent); padding: 10px 15px; font-size: 13px; font-weight: 800; cursor: pointer; }

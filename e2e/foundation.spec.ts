@@ -278,7 +278,7 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   await page.getByRole("button", { name: /Fehlende Karten \(\d+\)/ }).click();
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   await expect(missingCards.getByText("Ivysaur", { exact: true })).toBeVisible();
-  await missingCards.getByRole("button", { name: "Cardmarket" }).click();
+  await missingCards.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" }).click();
   await expect(missingCards.getByRole("heading", { name: "Komplette Liste zu Cardmarket" })).toBeVisible();
   const bulkHandoff = missingCards.getByRole("link", { name: "1 Karte kopieren & Cardmarket öffnen" });
   await expect(bulkHandoff).toHaveAttribute("href", "https://www.cardmarket.com/de/Pokemon/Wants");
@@ -670,7 +670,7 @@ test("searches German and English catalogs and labels the result language", asyn
   await expect(preview).toContainText("4/102");
   await expect(preview).toContainText("Bild auf Englisch");
   await expect(preview).toContainText("Katalog bestätigt: Holo, First Edition");
-  await preview.getByText("Sonderausgaben und Druckdetails").click();
+  await preview.getByText("Andere Ausführung wählen").click();
   await expect(preview.getByLabel("Druckvariante").locator('option[value="shadowless"]')).toHaveCount(0);
   await preview.getByLabel("Ausführung der Karte").selectOption("holo");
   await preview.getByLabel("Edition").selectOption("first-edition");
@@ -731,19 +731,21 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   });
   await page.setViewportSize({ height: 900, width: 375 });
   await page.goto("/");
-  await page.getByRole("button", { name: "Geschenk erstellen" }).click();
-  await expect(page.getByRole("heading", { name: "Ein persönlicher Kartenbinder" })).toBeVisible();
-  await page.getByRole("button", { name: /Vorschlag erzeugen/ }).click();
+  await page.getByRole("button", { name: "Geschenk-Binder gestalten" }).click();
+  await expect(page.getByRole("heading", { name: "Dein Geschenk-Binder beginnt hier" })).toBeVisible();
+  await page.getByLabel("Kartensprache").selectOption("en");
+  await page.getByRole("button", { name: /Binder-Seite ansehen/ }).click();
   await expect(page.getByText("9 / 9")).toBeVisible();
-  await expect(page.getByText(/Angezeigt werden unverbindliche TCGdex-Marktschätzungen/i)).toBeVisible();
+  await expect(page.getByText(/Preise sind Schätzungen ohne Versand und Steuern/i)).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(375);
-  await page.getByRole("button", { name: "Auswahl prüfen" }).click();
+  await page.getByRole("button", { name: /Bestellung prüfen/ }).click();
   await page.getByRole("button", { name: "Als Binder anlegen" }).click();
   await expect(page.getByRole("heading", { name: /Geschenk · Pikachu/ })).toBeVisible();
   await expect(page.getByText(/Die Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten/i)).toBeVisible();
   await expect(page.getByText("Kein bestätigter Preis", { exact: true })).toBeVisible();
   await expect(page.getByText("Vault X 9-Pocket Zip Binder", { exact: true })).toBeVisible();
-  await expect(page.getByText(/9-Pocket · Platz für bis zu 360 Karten/i)).toBeVisible();
+  await expect(page.getByText(/9-Pocket · 9 Plätze benötigt · bis zu 360 Karten möglich/i)).toBeVisible();
+  await expect(page.getByText("Automatisch passend gewählt")).toBeVisible();
 
   await page.evaluate(() => {
     window.open = ((url?: string | URL) => {
@@ -751,7 +753,7 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
       return window;
     }) as typeof window.open;
   });
-  await page.getByRole("button", { name: /Binder im Shop ansehen/i }).click();
+  await page.getByRole("button", { name: /Diesen Binder bestellen/i }).click();
   const openedBinderUrl = await page.locator("html").getAttribute("data-opened-binder-url");
   expect(openedBinderUrl).toBe("https://eu.vaultx.com/collections/card-binders/products/9-pocket-exo-tec-zip-binder");
   expect(new URL(openedBinderUrl ?? "").search).toBe("");
@@ -760,9 +762,9 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   await expect(missingCards).toBeVisible();
   await expect(missingCards.getByText(/9 Positionen · 9 Exemplare · aus diesem Binder/i)).toBeVisible();
-  await expect(missingCards.getByRole("button", { name: "TCGplayer" })).toBeVisible();
-  await expect(missingCards.getByRole("button", { name: "Cardmarket" })).toBeVisible();
-  await missingCards.getByRole("button", { name: "Schließen" }).click();
+  await expect(missingCards.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" })).toBeVisible();
+  await expect(missingCards.getByRole("button", { name: "USA & Kanada · TCGplayer empfohlen" })).toBeVisible();
+  await missingCards.getByRole("button", { name: "Fehlkartenansicht schließen" }).click();
   await expect(page.getByRole("article", { name: "Pikachu 1, Slot 1" })).toBeVisible();
   await page.reload();
   await expect(page.getByRole("article", { name: "Pikachu 1, Slot 1" })).toBeVisible();
@@ -795,11 +797,11 @@ test("sets, edits and persists the minimum condition for marketplace handoff", a
   await expect(page.getByRole("definition").filter({ hasText: "Gebraucht – sichtbare Spuren okay" })).toBeVisible();
   await page.getByRole("button", { name: /Fehlende Karten \(1\)/ }).click();
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
-  await expect(missingCards.getByRole("button", { name: "TCGplayer" })).toBeVisible();
-  await expect(missingCards.getByRole("button", { name: "Cardmarket" })).toBeVisible();
+  await missingCards.getByRole("button", { name: "Andere Region · Versand prüfen" }).click();
   await missingCards.getByRole("button", { name: "CardTrader · Vorschau" }).click();
-  await expect(missingCards.getByRole("status")).toContainText("noch nicht freigegeben");
+  await expect(missingCards.getByText(/CardTrader ist vorbereitet, aber noch nicht freigegeben/)).toBeVisible();
   await expect(missingCards.getByRole("button", { name: "Wishlist erstellen" })).toBeDisabled();
+  await missingCards.getByRole("button", { name: "Anderen Anbieter wählen" }).click();
   await missingCards.getByRole("button", { name: "Cardmarket" }).click();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue("1x Ivysaur Vine Whip Poisonpowder");
   await expect(missingCards.getByText("Gebraucht – sichtbare Spuren okay", { exact: true })).toBeVisible();
@@ -873,7 +875,7 @@ test("finds and displays an exact full collector number", async ({ page }) => {
   await result.getByRole("button", { name: "Prüfen" }).click();
   const preview = page.getByRole("dialog", { name: "Karte prüfen" });
   await expect(preview).toContainText("4/102");
-  await preview.getByText("Sonderausgaben und Druckdetails").click();
+  await preview.getByText("Andere Ausführung wählen").click();
   await expect(preview.getByLabel("Druckvariante").locator('option[value="shadowless"]')).toHaveCount(1);
   await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
 
@@ -882,6 +884,7 @@ test("finds and displays an exact full collector number", async ({ page }) => {
 
   await page.getByRole("button", { name: /Fehlende Karten \(1\)/ }).click();
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
+  await missingCards.getByRole("button", { name: "Andere Region · Versand prüfen" }).click();
   await missingCards.getByRole("button", { name: "TCGplayer" }).click();
   await expect(missingCards.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue(
     "1 Charizard [BS] 004/102",
@@ -891,6 +894,7 @@ test("finds and displays an exact full collector number", async ({ page }) => {
   expect(tcgplayerUrl.searchParams.get("c")).toBe("1 Charizard [BS] 004/102");
   expect(tcgplayerUrl.searchParams.get("productline")).toBe("Pokemon");
 
+  await missingCards.getByRole("button", { name: "Anderen Anbieter wählen" }).click();
   await missingCards.getByRole("button", { name: "Cardmarket" }).click();
   await expect(missingCards.getByRole("link", { name: "1 Karte kopieren & Cardmarket öffnen" })).toHaveAttribute(
     "href",
@@ -913,6 +917,7 @@ test("exports the verified Tornupto and Blaine's Charizard identities to TCGplay
 
   await page.getByRole("button", { name: /Fehlende Karten \(2\)/ }).click();
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
+  await missingCards.getByRole("button", { name: "Andere Region · Versand prüfen" }).click();
   await missingCards.getByRole("button", { name: "TCGplayer" }).click();
 
   await expect(missingCards.getByText("2 übergabebereit · 2 Produktzuordnungen · 0 prüfen")).toBeVisible();
@@ -923,6 +928,7 @@ test("exports the verified Tornupto and Blaine's Charizard identities to TCGplay
   await expect(missingCards.getByRole("region", { name: "Neo Genesis · DE" }).getByText("Nr. 17/111")).toBeVisible();
   await expect(missingCards.getByRole("region", { name: "Gym Challenge · EN" }).getByText("Nr. 2/132")).toBeVisible();
 
+  await missingCards.getByRole("button", { name: "Anderen Anbieter wählen" }).click();
   await missingCards.getByRole("button", { name: "Cardmarket" }).click();
   await missingCards.getByText("Importliste ansehen oder als Datei speichern").click();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue(
