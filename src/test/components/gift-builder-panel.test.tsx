@@ -83,7 +83,6 @@ describe("GiftBuilderPanel", () => {
     const onCreateBinder = vi.fn(async (_selection, preferences) => createGiftProject("Geschenk · Pikachu", preferences));
     const onCardsPurchase = vi.fn();
     const print = vi.spyOn(window, "print").mockImplementation(() => undefined);
-    const open = vi.spyOn(window, "open").mockImplementation(() => window);
     render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={onCreateBinder} onOpenBinder={vi.fn()} onCardsPurchase={onCardsPurchase} />);
 
     expect(screen.getByRole("combobox", { name: /Kartensprache/i })).toHaveValue("de");
@@ -113,8 +112,10 @@ describe("GiftBuilderPanel", () => {
     expect(screen.getByText(/9-Pocket · 9 Plätze benötigt · bis zu 360 Karten möglich/i)).toBeInTheDocument();
     expect(screen.getByText("Automatisch passend gewählt")).toBeInTheDocument();
     expect(screen.getByText(/kein Affiliate-Link/i)).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: /Diesen Binder bestellen/i }));
-    expect(open).toHaveBeenCalledWith("https://partner.example/9-pocket-binder", "_blank", "noopener,noreferrer");
+    const binderLink = screen.getByRole("link", { name: /Diesen Binder bestellen/i });
+    expect(binderLink).toHaveAttribute("href", "https://partner.example/9-pocket-binder");
+    expect(binderLink).toHaveAttribute("target", "_blank");
+    expect(binderLink).toHaveAttribute("rel", "noopener noreferrer");
     fireEvent.change(screen.getByLabelText(/Grußtext für die lokale Druckansicht/i), { target: { value: "Viel Freude!" } });
     expect(screen.getByText("Viel Freude!", { selector: "blockquote" })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /Drucken \/ als PDF speichern/i }));

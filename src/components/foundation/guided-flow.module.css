@@ -13,7 +13,7 @@
   grid-template-columns: 42px minmax(0, 1fr) auto;
   align-items: center;
   gap: 11px;
-  min-height: 82px;
+  min-height: 90px;
   border: 1px solid var(--cf-line);
   border-radius: 11px;
   background: var(--cf-surface2);
@@ -55,8 +55,8 @@
 }
 
 .copy { display: grid; min-width: 0; gap: 4px; }
-.copy strong { color: var(--cf-text); font-size: 14px; line-height: 1.2; }
-.copy small { color: var(--cf-muted); font-size: 11px; line-height: 1.35; }
+.copy strong { color: var(--cf-text); font-size: 15px; line-height: 1.2; }
+.copy small { color: var(--cf-muted); font-size: 12.5px; line-height: 1.4; }
 .arrow { color: var(--cf-accent-text); }
 
 @media (max-width: 900px) {

@@ -1,15 +1,15 @@
 /* Synthese 2 · Fehlende Karten + Marketplace-Übergabe */
-.panel { margin: 20px 0; border: 1px solid var(--cf-line); border-radius: 12px; background: var(--cf-surface); padding: 22px; box-shadow: 0 12px 30px -24px var(--cf-sh-soft); }
+.panel { margin: 20px 0; border: 1px solid var(--cf-line); border-radius: 12px; background: var(--cf-surface); padding: clamp(22px, 3vw, 34px); box-shadow: 0 12px 30px -24px var(--cf-sh-soft); }
 .header, .toolbar, .exportActions, .item { display: flex; align-items: center; }
 .header { justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--cf-line); padding-bottom: 16px; }
 .eyebrow { margin: 0; color: var(--cf-accent-text); font-family: var(--cf-font-mono); font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
-.header h2 { margin: 6px 0 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(1.55rem, 2.5vw, 2.05rem); font-weight: 600; letter-spacing: -.01em; }
-.subline { margin: 6px 0 0; color: var(--cf-miss-text); font-family: var(--cf-font-mono); font-size: .78rem; }
-.intro { max-width: 760px; margin: 8px 0 0; color: var(--cf-text2); font-size: .85rem; line-height: 1.5; }
+.header h2 { margin: 7px 0 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(1.85rem, 3.2vw, 2.65rem); font-weight: 650; letter-spacing: -.02em; line-height: 1.08; }
+.subline { margin: 9px 0 0; color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: .82rem; }
+.intro { max-width: 760px; margin: 10px 0 0; color: var(--cf-text2); font-size: 1rem; line-height: 1.55; }
 .closeButton { display: inline-grid; width: 36px; height: 36px; place-items: center; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-field); color: var(--cf-text2); cursor: pointer; }
 .closeButton:hover { border-color: var(--cf-accent); color: var(--cf-accent-text); }
 .toolbar { justify-content: space-between; gap: 12px; }
-.flowWrapper { --flow-columns: 3; margin-top: 18px; }
+.flowWrapper { --flow-columns: 3; margin-top: 24px; }
 .searchHint { color: var(--cf-muted); font-size: .75rem; }
 .searchLabel { display: flex; min-width: min(360px, 100%); align-items: center; gap: 8px; border: 1px solid var(--cf-line2); border-radius: 9px; background: var(--cf-field); padding: 0 12px; color: var(--cf-muted); }
 .searchLabel:focus-within { border-color: var(--cf-accent); box-shadow: 0 0 0 3px var(--cf-accent-soft); }
@@ -25,7 +25,16 @@
 .warning, .error { margin: 14px 0 0; border-radius: 7px; padding: 9px 12px; font-size: .8rem; line-height: 1.45; }
 .warning { border-left: 3px solid var(--cf-accent); background: var(--cf-accent-soft); color: var(--cf-text2); }
 .error { border-left: 3px solid var(--cf-miss); background: var(--cf-miss-soft); color: var(--cf-miss-text); }
-.conditionBlock { display: grid; gap: 10px; margin-top: 18px; }
+.conditionBlock { margin-top: 16px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--cf-ok) 38%, var(--cf-line2)); border-radius: 11px; background: color-mix(in srgb, var(--cf-ok) 5%, var(--cf-surface)); }
+.conditionSummary { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; align-items: center; gap: 11px; min-height: 64px; padding: 10px 15px; cursor: pointer; list-style: none; }
+.conditionSummary::-webkit-details-marker { display: none; }
+.conditionSummary > span:first-child { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 50%; background: var(--cf-ok); color: #fff; }
+.conditionSummary > span:nth-child(2) { display: grid; gap: 2px; }
+.conditionSummary strong { color: var(--cf-text); font-size: .96rem; }
+.conditionSummary small { color: var(--cf-text2); font-size: .78rem; }
+.conditionSummary b { color: var(--cf-accent-text); font-size: .82rem; }
+.conditionBlock[open] .conditionSummary { border-bottom: 1px solid var(--cf-line); }
+.conditionBody { display: grid; gap: 10px; padding: 12px; }
 .conditionSetup { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 420px); align-items: center; gap: 18px; border: 1px solid var(--cf-line2); border-radius: 10px; background: var(--cf-surface2); padding: 14px 16px; }
 .conditionSetup h3 { margin: 5px 0 0; color: var(--cf-text); font-size: 1.05rem; font-weight: 700; }
 .conditionSetup p { margin: 4px 0 0; color: var(--cf-muted); font-size: .78rem; line-height: 1.45; }
@@ -36,16 +45,16 @@
 .continueButton { min-height: 52px; display: inline-flex; align-items: center; justify-content: center; justify-self: end; gap: 8px; border: 1px solid var(--cf-accent); border-radius: 9px; background: var(--cf-accent); color: var(--cf-on-accent); padding: 10px 18px; font-size: .9rem; font-weight: 750; cursor: pointer; }
 .continueButton:hover { background: color-mix(in srgb, var(--cf-accent) 88%, #fff); }
 
-.marketplaceChoice { display: grid; gap: 16px; margin-top: 18px; scroll-margin-top: 20px; border: 1px solid var(--cf-line2); border-radius: 11px; background: var(--cf-surface2); padding: 18px; }
-.marketplaceChoice h3 { margin: 6px 0 0; color: var(--cf-text); font-size: 1.1rem; font-weight: 700; }
-.marketplaceChoice p { margin: 4px 0 0; color: var(--cf-muted); font-size: .78rem; }
-.regionGuide { display: grid; gap: 9px; border: 1px solid var(--cf-line); border-radius: 10px; background: var(--cf-surface); padding: 13px; }
-.regionGuideLabel { display: inline-flex; align-items: center; gap: 7px; color: var(--cf-text); font-size: .82rem; font-weight: 750; }
+.marketplaceChoice { display: grid; gap: 20px; margin-top: 20px; scroll-margin-top: 20px; border: 2px solid var(--cf-accent); border-radius: 13px; background: var(--cf-surface); padding: clamp(18px, 2.5vw, 28px); box-shadow: 0 14px 30px -26px var(--cf-sh-deep); }
+.marketplaceChoice h3 { margin: 8px 0 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(1.35rem, 2.2vw, 1.75rem); font-weight: 650; }
+.marketplaceChoice p { margin: 7px 0 0; color: var(--cf-text2); font-size: .92rem; line-height: 1.5; }
+.regionGuide { display: grid; gap: 12px; }
+.regionGuideLabel { display: inline-flex; align-items: center; gap: 8px; color: var(--cf-text); font-size: 1rem; font-weight: 750; }
 .regionGuideLabel svg { color: var(--cf-accent-text); }
 .regionButtons { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-.regionButtons button { position: relative; min-height: 58px; display: grid; gap: 3px; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-surface2); color: var(--cf-text2); padding: 9px 34px 9px 11px; text-align: left; cursor: pointer; }
-.regionButtons strong { font-size: .8rem; }
-.regionButtons small { color: var(--cf-muted); font-size: .68rem; }
+.regionButtons button { position: relative; min-height: 82px; display: grid; align-content: center; gap: 5px; border: 1px solid var(--cf-line2); border-radius: 10px; background: var(--cf-surface2); color: var(--cf-text2); padding: 13px 40px 13px 15px; text-align: left; cursor: pointer; }
+.regionButtons strong { font-size: .98rem; }
+.regionButtons small { color: var(--cf-muted); font-size: .78rem; }
 .regionButtons svg { position: absolute; top: 50%; right: 11px; color: var(--cf-on-accent); transform: translateY(-50%); }
 .regionButtons button:hover { border-color: var(--cf-accent); }
 .regionButtons button[aria-pressed="true"] { border-color: var(--cf-accent); background: var(--cf-accent); color: var(--cf-on-accent); }
@@ -131,32 +140,32 @@
 .reviewList li { display: grid; gap: 2px; border: 1px solid var(--cf-line); border-left: 3px solid var(--cf-miss); border-radius: 6px; background: var(--cf-surface); padding: 8px 11px; }
 .reviewList span { color: var(--cf-text); font-size: .8rem; font-weight: 650; }
 .reviewList small { color: var(--cf-text2); font-size: .72rem; line-height: 1.45; }
-.cardmarketGuide { display: grid; gap: 14px; margin-top: 16px; border: 2px solid var(--cf-accent); border-radius: 12px; background: var(--cf-surface); padding: clamp(15px, 2vw, 22px); }
+.cardmarketGuide { display: grid; gap: 22px; margin-top: 20px; border: 3px solid var(--cf-accent); border-radius: 14px; background: var(--cf-surface); padding: clamp(20px, 3vw, 34px); box-shadow: 0 18px 36px -28px var(--cf-sh-deep); }
 .cardmarketGuideHeader { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
-.cardmarketGuideHeader > div { display: grid; gap: 7px; }
-.cardmarketGuideHeader h4 { margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(1.12rem, 2vw, 1.4rem); font-weight: 650; }
-.cardmarketGuideHeader p { max-width: 72ch; margin: 0; color: var(--cf-text2); font-size: .8rem; line-height: 1.5; }
-.cardmarketGuideHeader > strong { flex: 0 0 auto; border-radius: 999px; background: var(--cf-accent-soft); color: var(--cf-accent-text); padding: 7px 10px; font-family: var(--cf-font-mono); font-size: .7rem; }
+.cardmarketGuideHeader > div { display: grid; gap: 10px; }
+.cardmarketGuideHeader h4 { margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(1.7rem, 3vw, 2.35rem); font-weight: 650; line-height: 1.05; }
+.cardmarketGuideHeader p { max-width: 65ch; margin: 0; color: var(--cf-text2); font-size: 1rem; line-height: 1.55; }
+.cardmarketGuideHeader > strong { flex: 0 0 auto; border-radius: 999px; background: var(--cf-accent-soft); color: var(--cf-accent-text); padding: 9px 13px; font-family: var(--cf-font-mono); font-size: .78rem; }
 .cardmarketGuideProgress { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin: 2px 0 0; padding: 0; list-style: none; }
-.cardmarketGuideProgress li { position: relative; display: grid; justify-items: center; gap: 6px; color: var(--cf-muted); font-size: .68rem; text-align: center; }
-.cardmarketGuideProgress li:not(:last-child)::after { position: absolute; top: 13px; right: -50%; width: 100%; height: 2px; background: var(--cf-line2); content: ""; }
+.cardmarketGuideProgress li { position: relative; display: grid; justify-items: center; gap: 8px; color: var(--cf-muted); font-size: .82rem; text-align: center; }
+.cardmarketGuideProgress li:not(:last-child)::after { position: absolute; top: 16px; right: -50%; width: 100%; height: 2px; background: var(--cf-line2); content: ""; }
 .cardmarketGuideProgress li[data-status="done"]:not(:last-child)::after { background: var(--cf-ok); }
-.cardmarketGuideProgress li > span { position: relative; z-index: 1; width: 28px; height: 28px; display: grid; place-items: center; border: 2px solid var(--cf-line2); border-radius: 50%; background: var(--cf-surface); color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: .67rem; font-weight: 750; }
+.cardmarketGuideProgress li > span { position: relative; z-index: 1; width: 34px; height: 34px; display: grid; place-items: center; border: 2px solid var(--cf-line2); border-radius: 50%; background: var(--cf-surface); color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: .78rem; font-weight: 750; }
 .cardmarketGuideProgress li[data-status="active"] { color: var(--cf-accent-text); }
 .cardmarketGuideProgress li[data-status="active"] > span { border-color: var(--cf-accent); background: var(--cf-accent); color: var(--cf-on-accent); box-shadow: 0 0 0 4px var(--cf-accent-soft); }
 .cardmarketGuideProgress li[data-status="done"] { color: var(--cf-ok-text); }
 .cardmarketGuideProgress li[data-status="done"] > span { border-color: var(--cf-ok); background: var(--cf-ok); color: #fff; }
 .cardmarketGuideProgress b { font-weight: 700; }
-.cardmarketGuideCard { display: grid; gap: 13px; min-height: 250px; align-content: start; border-radius: 10px; background: var(--cf-accent-soft); padding: clamp(16px, 2.5vw, 26px); }
-.cardmarketGuideKicker { color: var(--cf-accent-text); font-family: var(--cf-font-mono); font-size: .68rem; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
-.cardmarketGuideCard h5 { margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(1.15rem, 2.1vw, 1.55rem); font-weight: 650; }
-.cardmarketGuideCard > p { max-width: 70ch; margin: 0; color: var(--cf-text2); font-size: .84rem; line-height: 1.55; }
-.cardmarketGuideCard > small { color: var(--cf-text2); font-size: .7rem; line-height: 1.45; }
+.cardmarketGuideCard { display: grid; gap: 16px; min-height: 280px; align-content: start; border: 1px solid var(--cf-line2); border-left: 6px solid var(--cf-accent); border-radius: 11px; background: var(--cf-surface2); padding: clamp(22px, 3vw, 34px); }
+.cardmarketGuideKicker { color: var(--cf-accent-text); font-family: var(--cf-font-mono); font-size: .8rem; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+.cardmarketGuideCard h5 { margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(1.55rem, 2.8vw, 2.1rem); font-weight: 650; line-height: 1.12; }
+.cardmarketGuideCard > p { max-width: 65ch; margin: 0; color: var(--cf-text2); font-size: 1rem; line-height: 1.6; }
+.cardmarketGuideCard > small { color: var(--cf-text2); font-size: .82rem; line-height: 1.5; }
 .cardmarketInstructionList, .cardmarketConditionSteps { display: grid; gap: 9px; margin: 0; padding: 0; counter-reset: instruction-step; list-style: none; }
-.cardmarketInstructionList li, .cardmarketConditionSteps li { position: relative; min-height: 30px; display: flex; align-items: center; color: var(--cf-text2); padding-left: 40px; font-size: .82rem; line-height: 1.45; counter-increment: instruction-step; }
-.cardmarketInstructionList li::before, .cardmarketConditionSteps li::before { position: absolute; left: 0; display: grid; width: 28px; height: 28px; place-items: center; border-radius: 50%; background: var(--cf-surface); color: var(--cf-accent-text); content: counter(instruction-step); font-family: var(--cf-font-mono); font-size: .68rem; font-weight: 750; box-shadow: inset 0 0 0 1px var(--cf-line2); }
+.cardmarketInstructionList li, .cardmarketConditionSteps li { position: relative; min-height: 38px; display: flex; align-items: center; color: var(--cf-text2); padding-left: 48px; font-size: 1rem; line-height: 1.55; counter-increment: instruction-step; }
+.cardmarketInstructionList li::before, .cardmarketConditionSteps li::before { position: absolute; left: 0; display: grid; width: 34px; height: 34px; place-items: center; border-radius: 50%; background: var(--cf-surface); color: var(--cf-accent-text); content: counter(instruction-step); font-family: var(--cf-font-mono); font-size: .78rem; font-weight: 750; box-shadow: inset 0 0 0 1px var(--cf-line2); }
 .cardmarketGuideActions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 9px; margin-top: auto; padding-top: 4px; }
-.cardmarketGuideActions > button, .cardmarketGuideActions > a { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--cf-accent); border-radius: 8px; background: var(--cf-accent); color: var(--cf-on-accent); padding: 10px 15px; font-size: .8rem; font-weight: 750; text-align: center; text-decoration: none; cursor: pointer; }
+.cardmarketGuideActions > button, .cardmarketGuideActions > a { min-height: 54px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--cf-accent); border-radius: 9px; background: var(--cf-accent); color: var(--cf-on-accent); padding: 12px 18px; font-size: .95rem; font-weight: 750; text-align: center; text-decoration: none; cursor: pointer; }
 .cardmarketGuideActions > a:first-child:not(.cardmarketFinalAction) { margin-right: auto; border-color: transparent; background: transparent; color: var(--cf-accent-text); }
 .cardmarketGuideActions > .cardmarketBackButton { margin-right: auto; border-color: var(--cf-line2); background: var(--cf-surface); color: var(--cf-text2); }
 .cardmarketGuideActions > button:hover, .cardmarketGuideActions > a:hover { filter: brightness(.97); }

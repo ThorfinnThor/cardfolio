@@ -398,6 +398,10 @@
 .emptyActions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 9px; }
 .emptyActions .secondaryButton { min-height: 32px; font-size: 11px; }
 .searchHint { margin: 12px 0 0; color: var(--cf-muted); font-size: 12px; line-height: 1.45; }
+.searchStart { display: flex; max-width: 680px; align-items: flex-start; gap: 14px; margin: 22px auto 0; border: 1px solid var(--cf-line); border-radius: 10px; background: var(--cf-surface2); padding: 20px 22px; }
+.searchStart > svg { flex: 0 0 auto; color: var(--cf-accent-text); }
+.searchStart h3 { margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: 18px; font-weight: 650; }
+.searchStart p { max-width: 58ch; margin: 6px 0 0; color: var(--cf-text2); font-size: 13px; line-height: 1.55; }
 .searchError { display: grid; gap: 8px; margin-top: 12px; border: 1px solid var(--cf-miss); border-radius: 8px; background: var(--cf-miss-soft); padding: 10px; }
 .searchError .error { margin: 0; }
 .searchError .secondaryButton { justify-self: start; min-height: 32px; }

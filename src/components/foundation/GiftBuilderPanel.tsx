@@ -180,7 +180,6 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
   const [partnerAdapter, setPartnerAdapter] = useState<BinderAffiliateAdapter>();
   const [partnerLoadError, setPartnerLoadError] = useState<string>();
   const [greeting, setGreeting] = useState("");
-  const [externalNavigationBlocked, setExternalNavigationBlocked] = useState(false);
 
   const selectedCardKeys = useMemo(
     () => new Set(selection?.selected.map((candidate) => candidate.card.key) ?? []),
@@ -458,13 +457,6 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     URL.revokeObjectURL(url);
   }
 
-  function openBinderPartner(offerId: string) {
-    const url = partnerAdapter?.buildExternalUrl(offerId);
-    if (!url) return;
-    const opened = window.open(url, "_blank", "noopener,noreferrer");
-    if (!opened) setExternalNavigationBlocked(true);
-  }
-
   return (
     <section className={styles.panel} aria-labelledby="gift-builder-heading">
       <div className={styles.header}>
@@ -718,16 +710,18 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
                 {!partnerLoadError && !binderOffers ? <p role="status">Binder-Angebote werden geprüft…</p> : null}
                 {!partnerLoadError && recommendedBinderOffers?.length === 0 ? <p role="status">Zurzeit ist kein geprüfter Binder-Shop verfügbar. Du kannst den lokalen Binder trotzdem weiter bearbeiten.</p> : null}
                 {recommendedBinderOffers?.length ? <p className={styles.binderMatch}><Check aria-hidden="true" size={16} /><span><strong>Automatisch passend gewählt</strong>{preferences.targetCardCount} Karten brauchen {Math.ceil(preferences.targetCardCount / 9)} {Math.ceil(preferences.targetCardCount / 9) === 1 ? "Seite" : "Seiten"}. Ein 9-Pocket-Binder übernimmt dein 3×3-Raster.</span></p> : null}
-                {recommendedBinderOffers?.map((offer, index) => <div className={styles.offerRow} data-recommended={index === 0} key={offer.id}>
-                  <div><strong>{offer.displayName}{index === 0 ? <em>Empfohlen</em> : null}</strong><small>{offer.price ? `${offer.price.qualifier === "from" ? "ab " : ""}${formatMoney(offer.price.amountMinor, offer.price.currency)} · Stand ${formatDate(offer.price.sourceUpdatedAt)}` : "Kein bestätigter Binderpreis"}</small>
-                    {offer.capacityCards ? <small>{offer.pocketsPerPage ? `${offer.pocketsPerPage}-Pocket · ` : ""}{preferences.targetCardCount} Plätze benötigt · bis zu {offer.capacityCards} Karten möglich</small> : null}
-                    {offer.affiliateDisclosure ? <small>{offer.affiliateDisclosure}</small> : null}
-                    {offer.status === "available" ? <small>Externer Shop · Verfügbarkeit und Versand dort prüfen · kein Affiliate-Link</small> : null}
-                    {offer.status !== "available" ? <small>{offer.statusReason ?? "Angebot nicht verfügbar."}</small> : null}
-                  </div>
-                  <button type="button" className={styles.offerAction} disabled={offer.status !== "available"} onClick={() => openBinderPartner(offer.id)}>{offer.status === "available" ? <>{offer.kind === "personalized" ? "Binder personalisieren" : "Diesen Binder bestellen"} <ExternalLink aria-hidden="true" size={15} /></> : "Derzeit nicht verfügbar"}</button>
-                </div>)}
-                {externalNavigationBlocked ? <p className={styles.warning} role="alert">Der Browser hat den externen Anbieteraufruf blockiert. Erlaube Pop-ups oder öffne den Link nach erneuter Auswahl.</p> : null}
+                {recommendedBinderOffers?.map((offer, index) => {
+                  const destinationUrl = offer.status === "available" ? partnerAdapter?.buildExternalUrl(offer.id) : undefined;
+                  return <div className={styles.offerRow} data-recommended={index === 0} key={offer.id}>
+                    <div><strong>{offer.displayName}{index === 0 ? <em>Empfohlen</em> : null}</strong><small>{offer.price ? `${offer.price.qualifier === "from" ? "ab " : ""}${formatMoney(offer.price.amountMinor, offer.price.currency)} · Stand ${formatDate(offer.price.sourceUpdatedAt)}` : "Kein bestätigter Binderpreis"}</small>
+                      {offer.capacityCards ? <small>{offer.pocketsPerPage ? `${offer.pocketsPerPage}-Pocket · ` : ""}{preferences.targetCardCount} Plätze benötigt · bis zu {offer.capacityCards} Karten möglich</small> : null}
+                      {offer.affiliateDisclosure ? <small>{offer.affiliateDisclosure}</small> : null}
+                      {destinationUrl ? <small>Externer Shop · Verfügbarkeit und Versand dort prüfen · kein Affiliate-Link</small> : null}
+                      {offer.status !== "available" ? <small>{offer.statusReason ?? "Angebot nicht verfügbar."}</small> : null}
+                    </div>
+                    {destinationUrl ? <a className={styles.offerAction} href={destinationUrl} target="_blank" rel="noopener noreferrer">{offer.kind === "personalized" ? "Binder personalisieren" : "Diesen Binder bestellen"} <ExternalLink aria-hidden="true" size={15} /></a> : <button type="button" className={styles.offerAction} disabled>Derzeit nicht verfügbar</button>}
+                  </div>;
+                })}
               </div>
             </article>
             <article className={styles.purchaseCard}>

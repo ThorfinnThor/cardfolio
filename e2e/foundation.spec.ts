@@ -279,7 +279,7 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   await expect(missingCards.getByText("Ivysaur", { exact: true })).toBeVisible();
   await missingCards.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" }).click();
-  await expect(missingCards.getByRole("heading", { name: "Komplette Liste zu Cardmarket" })).toBeVisible();
+  await expect(missingCards.getByRole("heading", { name: /Karten gemeinsam übertragen/ })).toBeVisible();
   const bulkHandoff = missingCards.getByRole("link", { name: "1 Karte kopieren & Cardmarket öffnen" });
   await expect(bulkHandoff).toHaveAttribute("href", "https://www.cardmarket.com/de/Pokemon/Wants");
   await missingCards.getByText("Importliste ansehen oder als Datei speichern").click();

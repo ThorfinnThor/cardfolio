@@ -96,7 +96,7 @@ describe("MissingCardsPanel", () => {
     const panelProps = props();
     render(<MissingCardsPanel {...panelProps} />);
 
-    expect(screen.getByRole("heading", { name: "Fehlende Karten" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "3 Karten gemeinsam kaufen" })).toBeInTheDocument();
     expect(screen.getByText("Pikachu")).toBeInTheDocument();
     expect(screen.getByText("Bulbasaur")).toBeInTheDocument();
 
@@ -125,6 +125,7 @@ describe("MissingCardsPanel", () => {
     }));
     render(<MissingCardsPanel {...props()} items={conditionItems} onConditionsChange={onConditionsChange} />);
 
+    fireEvent.click(screen.getByText("Zustand: Sehr gut"));
     const allConditions = screen.getByRole("combobox", { name: "Zustand für alle" });
     expect(allConditions).toHaveValue("excellent");
     expect(screen.getAllByText(/Cardmarket: Near Mint oder Excellent/).length).toBeGreaterThan(0);
@@ -220,8 +221,8 @@ describe("MissingCardsPanel", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" }));
     expect(onCardmarketPrepare).toHaveBeenCalledWith(items);
-    expect(screen.getByRole("heading", { name: "Komplette Liste zu Cardmarket" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Wir zeigen dir immer nur den nächsten Schritt." })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "2 Karten gemeinsam übertragen" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Cardmarket-Anleitung" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Liste kopieren und Cardmarket öffnen" })).toBeInTheDocument();
     expect(screen.getByText("Schritt 1 von 4")).toBeInTheDocument();
     const bulkHandoff = screen.getByRole("link", { name: "2 Karten kopieren & Cardmarket öffnen" });
@@ -315,17 +316,17 @@ describe("MissingCardsPanel", () => {
     render(<MissingCardsPanel {...props()} tcgplayerEnabled tcgplayerCardMappings={tcgplayerCardMappings} cardmarketEnabled />);
 
     expect(screen.queryByRole("heading", { name: "TCGplayer Mass Entry" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "Komplette Liste zu Cardmarket" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /Karten gemeinsam übertragen/ })).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Andere Region · Versand prüfen" }));
     fireEvent.click(screen.getByRole("button", { name: "TCGplayer" }));
     expect(screen.getByRole("heading", { name: "TCGplayer Mass Entry" })).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "Komplette Liste zu Cardmarket" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /Karten gemeinsam übertragen/ })).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Anderen Anbieter wählen" }));
     fireEvent.click(screen.getByRole("button", { name: "Cardmarket" }));
     expect(screen.queryByRole("heading", { name: "TCGplayer Mass Entry" })).not.toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Komplette Liste zu Cardmarket" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "2 Karten gemeinsam übertragen" })).toBeInTheDocument();
   });
 
   it("keeps CardTrader progressive and shows one clear, non-purchase preview", () => {

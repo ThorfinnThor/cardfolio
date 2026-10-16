@@ -680,10 +680,10 @@ export function FoundationWorkspace() {
     if (searchSetId && !setOptions.some((option) => option.id === searchSetId)) setSearchSetId("");
   }, [searchSetId, setOptions]);
 
-  // Opening the browser is also a useful discovery action. TCGdex supports a
-  // paginated catalogue request without a name filter, so an empty query can
-  // show real cards immediately instead of presenting an empty drawer.
-  const searchEnabled = searchOpen && searchMode === "catalog" && searchEntity === "cards";
+  // The card picker should not look like it made an arbitrary recommendation.
+  // Start the catalogue request only after the user names a card or chooses a set.
+  const hasCatalogSearchIntent = Boolean(debouncedSearch || searchSetId);
+  const searchEnabled = searchOpen && searchMode === "catalog" && searchEntity === "cards" && hasCatalogSearchIntent;
   const searchPageSize = searchLanguage === "all" ? 20 : 40;
   const germanCatalogQuery = { language: "de" as const, ...parsedSearch, setId: searchSetId || undefined, page: 0, pageSize: searchPageSize };
   const englishCatalogQuery = { language: "en" as const, ...parsedSearch, setId: searchSetId || undefined, page: 0, pageSize: searchPageSize };
@@ -708,13 +708,16 @@ export function FoundationWorkspace() {
     getNextPageParam: (lastPage, pages) => lastPage.hasMore ? pages.length + 1 : undefined,
   });
 
-  const germanSearchResults = germanSearchQuery.data?.pages.flatMap((page) => page.items) ?? [];
-  const englishSearchResults = englishSearchQuery.data?.pages.flatMap((page) => page.items) ?? [];
-  const searchResults = searchLanguage === "de"
-    ? germanSearchResults
-    : searchLanguage === "en"
-      ? englishSearchResults
-      : interleaveSearchResults(germanSearchResults, englishSearchResults);
+  const searchResults = useMemo(() => {
+    if (!hasCatalogSearchIntent) return [];
+    const germanResults = germanSearchQuery.data?.pages.flatMap((page) => page.items) ?? [];
+    const englishResults = englishSearchQuery.data?.pages.flatMap((page) => page.items) ?? [];
+    return searchLanguage === "de"
+      ? germanResults
+      : searchLanguage === "en"
+        ? englishResults
+        : interleaveSearchResults(germanResults, englishResults);
+  }, [englishSearchQuery.data, germanSearchQuery.data, hasCatalogSearchIntent, searchLanguage]);
   const sortedSearchResults = useMemo(() => sortCatalogSearchItems(
     searchResults,
     searchSort,
@@ -2576,15 +2579,23 @@ export function FoundationWorkspace() {
                             {searchText.trim() ? <button type="button" className={styles.filterChip} onClick={() => setSearchText("")}>Suche löschen ×</button> : null}
                             {(searchLanguage !== "all" || searchSeriesId || searchSetId) ? <button type="button" className={styles.filterReset} onClick={resetSearchFilters}>Alle Filter zurücksetzen</button> : null}
                           </div>
+                          {!hasCatalogSearchIntent ? (
+                            <div className={styles.searchStart}>
+                              <Search aria-hidden="true" size={24} />
+                              <div>
+                                <h3>Welche Karte suchst du?</h3>
+                                <p>Gib einen Pokémon-Namen oder eine Kartennummer ein. Für andere Wege kannst du oben zu „Set“ oder „Bildmotiv“ wechseln.</p>
+                              </div>
+                            </div>
+                          ) : null}
                           {searchIsRunning && searchEnabled ? <p role="status">Karten werden geladen…</p> : null}
-                          {searchError ? (
+                          {hasCatalogSearchIntent && searchError ? (
                             <div className={styles.searchError} role="alert">
                               <p className={styles.error}>Der Kartenkatalog konnte nicht geladen werden: {searchError.message}</p>
                               <button type="button" className={styles.secondaryButton} onClick={() => void retryCatalogSearch()}>Erneut versuchen</button>
                             </div>
                           ) : null}
-                          {!searchText.trim() && !searchSetId ? <p className={styles.searchHint}>Entdecken: erste Karten aus dem Katalog. Suche oder filtere weiter, wenn du eine bestimmte Karte suchst.</p> : null}
-                          {searchIsRunning && !searchResults.length ? (
+                          {hasCatalogSearchIntent && searchIsRunning && !searchResults.length ? (
                             <ul className={styles.results} aria-label="Kartentreffer werden geladen" aria-busy="true">
                               {Array.from({ length: 5 }, (_, index) => (
                                 <li key={`search-skeleton-${index}`} className={styles.resultSkeleton} aria-hidden="true">
@@ -2595,7 +2606,7 @@ export function FoundationWorkspace() {
                               ))}
                             </ul>
                           ) : null}
-                          {searchHasCompleted && !searchResults.length ? (
+                          {hasCatalogSearchIntent && searchHasCompleted && !searchResults.length ? (
                             <div className={styles.noResults}>
                               <p>Keine Karten mit diesen Filtern gefunden. Prüfe Name, Sprache, Serie oder Set.</p>
                               <div className={styles.emptyActions}>
@@ -2609,7 +2620,7 @@ export function FoundationWorkspace() {
                             <div className={styles.resultsHeader}>
                               <div>
                                 <p className={styles.eyebrow}>Ergebnisse</p>
-                                <h3>{searchText.trim() ? `Treffer für „${searchText.trim()}“` : "Karten entdecken"}</h3>
+                                <h3>{searchText.trim() ? `Treffer für „${searchText.trim()}“` : "Karten aus dem gewählten Set"}</h3>
                               </div>
                               <span>{sortedSearchResults.length}{searchHasMore ? "+" : ""} Karten</span>
                             </div>
@@ -2641,7 +2652,7 @@ export function FoundationWorkspace() {
                               <div className={styles.selectionDockActions}><button type="button" className={styles.secondaryButton} onClick={() => setCatalogSelection([])}>Auswahl leeren</button><button type="button" className={styles.primaryButton} onClick={reviewCatalogSelection}>Auswahl prüfen</button></div>
                             </div>
                           ) : null}
-                          {searchHasMore ? (
+                          {hasCatalogSearchIntent && searchHasMore ? (
                             <button type="button" className={styles.loadMoreButton} disabled={searchIsLoadingMore} onClick={() => void loadMoreSearchResults()}>
                               {searchIsLoadingMore ? "Weitere Treffer werden geladen…" : "Mehr laden"}
                             </button>

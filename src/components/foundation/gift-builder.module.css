@@ -218,8 +218,8 @@
 .offerRow strong { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; color: var(--cf-text); font-size: 12px; }
 .offerRow strong em { border-radius: 999px; background: var(--cf-accent); color: var(--cf-on-accent); padding: 3px 7px; font-family: var(--cf-font-mono); font-size: 8px; font-style: normal; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .offerRow small { color: var(--cf-muted); font-size: 10px; line-height: 1.4; }
-.offerRow button { flex: 0 0 auto; min-height: 40px; }
-.offerAction { min-height: 52px !important; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--cf-accent); border-radius: 8px; background: var(--cf-accent); color: var(--cf-on-accent); padding: 10px 15px; font-size: 13px; font-weight: 800; cursor: pointer; }
+.offerRow button, .offerRow a { flex: 0 0 auto; min-height: 40px; }
+.offerAction { min-height: 52px !important; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--cf-accent); border-radius: 8px; background: var(--cf-accent); color: var(--cf-on-accent); padding: 10px 15px; font-size: 13px; font-weight: 800; text-align: center; text-decoration: none; cursor: pointer; }
 .offerAction:hover:not(:disabled) { background: color-mix(in srgb, var(--cf-accent) 88%, #fff); }
 .offerAction:disabled { cursor: not-allowed; opacity: .5; }
 .summaryActions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; border-top: 1px solid var(--cf-line); padding-top: 14px; }

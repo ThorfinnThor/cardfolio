@@ -30,9 +30,9 @@ type CardmarketGuideStep = 1 | 2 | 3 | 4;
 type CardTraderStatus = "not-approved" | "not-connected" | "review-required" | "stale" | "ready";
 
 const PURCHASE_FLOW = [
-  { label: "Zustand wählen", description: "Wir erklären, was die Begriffe bedeuten" },
-  { label: "Anbieter wählen", description: "Cardmarket, TCGplayer oder CardTrader" },
-  { label: "Liste öffnen", description: "Beim Anbieter prüfen und erst dort kaufen" },
+  { label: "Region wählen", description: "Wir empfehlen den passenden Anbieter" },
+  { label: "Liste übertragen", description: "Alle Karten gemeinsam vorbereiten" },
+  { label: "Kauf prüfen", description: "Preis und Versand beim Anbieter prüfen" },
 ] as const;
 
 const CARDMARKET_GUIDE_STEPS = [
@@ -224,54 +224,60 @@ export function MissingCardsPanel({
   }
 
   return (
-    <section className={styles.panel} aria-labelledby="missing-cards-heading">
+    <section className={styles.panel} aria-label="Fehlende Karten">
       <div className={styles.header}>
         <div>
-          <p className={styles.eyebrow}>Einkaufsliste · lokal</p>
-          <h2 id="missing-cards-heading">Fehlende Karten</h2>
-          <p className={styles.subline}>{visibleItems.length} Positionen · {visibleQuantity} Exemplare · aus diesem Binder</p>
-          <p className={styles.intro}>Cardfolio verkauft keine Karten. Wir bereiten deine Liste verständlich vor; gekauft wird erst beim gewählten Anbieter.</p>
+          <p className={styles.eyebrow}>Kartenkauf</p>
+          <h2 id="missing-cards-heading">{visibleQuantity} Karten gemeinsam kaufen</h2>
+          <p className={styles.intro}>Wähle deine Region. Cardfolio bereitet danach die komplette Liste für den passenden Anbieter vor.</p>
+          <p className={styles.subline}>{visibleItems.length} Positionen · gekauft wird erst beim Anbieter</p>
         </div>
         <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Fehlkartenansicht schließen"><X size={18} /></button>
       </div>
 
-      <div className={styles.flowWrapper}><GuidedFlow steps={PURCHASE_FLOW} currentStep={marketplaceChoice ? 3 : 2} label="Schritte zum Kartenkauf" /></div>
+      <div className={styles.flowWrapper}><GuidedFlow steps={PURCHASE_FLOW} currentStep={marketplaceChoice ? 2 : 1} label="Schritte zum Kartenkauf" /></div>
 
       {copyState === "error" ? <p className={styles.error} role="status">Kopieren wurde vom Browser nicht erlaubt. Nutze stattdessen TXT oder CSV.</p> : null}
       {warnings.map((warning) => <p className={styles.warning} role="note" key={warning}>{warning}</p>)}
 
       {onConditionsChange && visibleItems.length ? (
-        <div className={styles.conditionBlock}>
-          <section className={styles.conditionSetup} aria-labelledby="missing-condition-heading">
-            <div>
-              <span className={styles.stepTag}>Schritt 1</span>
-              <h3 id="missing-condition-heading">Gewünschter Kartenzustand</h3>
-              <p>Gilt für alle aktuell angezeigten Karten. Einzelne Karten kannst du unten abweichend einstellen.</p>
-            </div>
-            <label htmlFor="missing-condition-all">
-              <span>Zustand für alle</span>
-              <select
-                id="missing-condition-all"
-                aria-label="Zustand für alle"
-                value={sharedCondition ?? "mixed"}
-                onChange={(event) => onConditionsChange(visibleItems, event.target.value as PurchasePreferences["minimumCondition"])}
-              >
-                {sharedCondition ? null : <option value="mixed" disabled>Unterschiedliche Zustände</option>}
-                {conditionProfiles.map((profile) => <option value={profile.value} key={profile.value}>{profile.label}</option>)}
-              </select>
-              <small>{sharedCondition ? conditionProfile(sharedCondition).providerSummary : "Die Karten haben unterschiedliche Zustandswünsche."}</small>
-            </label>
-          </section>
-          <ConditionGuide />
-        </div>
+        <details className={styles.conditionBlock}>
+          <summary className={styles.conditionSummary}>
+            <span><Check aria-hidden="true" size={18} /></span>
+            <span><strong>Zustand: {sharedCondition ? conditionProfile(sharedCondition).shortLabel : "unterschiedlich"}</strong><small>Für Geschenke vorbereitet</small></span>
+            <b>Ändern</b>
+          </summary>
+          <div className={styles.conditionBody}>
+            <section className={styles.conditionSetup} aria-labelledby="missing-condition-heading">
+              <div>
+                <h3 id="missing-condition-heading">Kartenzustand anpassen</h3>
+                <p>Die Auswahl gilt für alle Karten. Einzelne Ausnahmen kannst du weiter unten ändern.</p>
+              </div>
+              <label htmlFor="missing-condition-all">
+                <span>Zustand für alle</span>
+                <select
+                  id="missing-condition-all"
+                  aria-label="Zustand für alle"
+                  value={sharedCondition ?? "mixed"}
+                  onChange={(event) => onConditionsChange(visibleItems, event.target.value as PurchasePreferences["minimumCondition"])}
+                >
+                  {sharedCondition ? null : <option value="mixed" disabled>Unterschiedliche Zustände</option>}
+                  {conditionProfiles.map((profile) => <option value={profile.value} key={profile.value}>{profile.label}</option>)}
+                </select>
+                <small>{sharedCondition ? conditionProfile(sharedCondition).providerSummary : "Die Karten haben unterschiedliche Zustandswünsche."}</small>
+              </label>
+            </section>
+            <ConditionGuide />
+          </div>
+        </details>
       ) : null}
 
       {tcgplayerEnabled || cardmarketEnabled || cardtraderEnabled || cardtraderPreviewVisible ? (
         <section className={styles.marketplaceChoice} id="marketplace-choice" aria-labelledby="marketplace-choice-heading">
           <div>
-            <span className={styles.stepTag}>Schritt 2</span>
+            <span className={styles.stepTag}>Schritt 1</span>
             <h3 id="marketplace-choice-heading">Wo möchtest du die Karten kaufen?</h3>
-            <p>Wähle zuerst deine Region. Cardfolio empfiehlt dir danach den passenden Marktplatz – ohne deinen Standort abzufragen.</p>
+            <p>Ein Klick genügt. Wir empfehlen den passenden Marktplatz, ohne deinen Standort abzufragen.</p>
           </div>
           <div className={styles.regionGuide}>
             <span className={styles.regionGuideLabel}><MapPin aria-hidden="true" size={17} /> Wo wohnst du?</span>
@@ -430,9 +436,9 @@ export function MissingCardsPanel({
         <section className={styles.marketplacePanel} aria-labelledby="cardmarket-handoff-heading">
           <div className={styles.marketplaceHeader}>
             <div>
-              <p className={styles.eyebrow}>Schritt 3 · Alle Karten gemeinsam übertragen</p>
-              <h3 id="cardmarket-handoff-heading">Komplette Liste zu Cardmarket</h3>
-              <p>{activeCardmarketPart.importablePositionCount} von {activeCardmarketPart.positionCount} Karten sind für den Sammelimport vorbereitet.</p>
+              <p className={styles.eyebrow}>Cardmarket</p>
+              <h3 id="cardmarket-handoff-heading">{activeCardmarketPart.positionCount} Karten gemeinsam übertragen</h3>
+              <p>Die Liste ist vorbereitet. Folge jetzt der Anleitung.</p>
             </div>
             <a href={cardmarketHandoff.wantsHelpUrl} target="_blank" rel="noopener noreferrer">
               Cardmarket-Hilfe <ExternalLink aria-hidden="true" size={15} />
@@ -442,9 +448,9 @@ export function MissingCardsPanel({
           <section className={styles.cardmarketGuide} aria-labelledby="cardmarket-guide-heading">
             <header className={styles.cardmarketGuideHeader}>
               <div>
-                <span className={styles.stepTag}>Schritt für Schritt</span>
-                <h4 id="cardmarket-guide-heading">Wir zeigen dir immer nur den nächsten Schritt.</h4>
-                <p>Cardmarket öffnet sich in einem neuen Tab. Kehre danach zu Cardfolio zurück und bestätige den erledigten Schritt.</p>
+                <span className={styles.stepTag}>Anleitung · 4 Schritte</span>
+                <h4 id="cardmarket-guide-heading">Cardmarket-Anleitung</h4>
+                <p>Erledige nur die groß angezeigte Aufgabe. Danach kommst du zu Cardfolio zurück und klickst auf „Weiter“.</p>
               </div>
               <strong aria-live="polite">Schritt {cardmarketGuideStep} von {CARDMARKET_GUIDE_STEPS.length}</strong>
             </header>
