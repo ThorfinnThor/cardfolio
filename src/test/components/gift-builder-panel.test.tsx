@@ -581,4 +581,57 @@ describe("GiftBuilderPanel", () => {
     expect(screen.getByText("für 8 von 9 Karten")).toBeInTheDocument();
     expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("Für 1 Karte gibt es keinen Marktpreis"))).toBe(true);
   });
+
+  function briefsOf(count: number, name = "Schiggy"): CatalogSearchItem[] {
+    return Array.from({ length: count }, (_, index) => ({
+      ref: { provider: "tcgdex", id: `de-ui-${index + 1}`, language: "de" },
+      name,
+      collectorNumber: String(index + 1),
+    }));
+  }
+
+  it("shows how many cards exist for the chosen Pokémon and only offers sizes that can be filled", async () => {
+    const loader = { loadCandidatePool: vi.fn(async () => [...briefsOf(25), ...briefsOf(2, "Schiggy-Ballon-Trainer").map((item) => ({ ...item, name: "Schiggys Wagen" }))]), hydrateCandidates: vi.fn() };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    fireEvent.click(screen.getByRole("radio", { name: "Schiggy" }));
+    expect(await screen.findByText(/Für „Schiggy“ gibt es 25 Karten auf Deutsch/)).toBeInTheDocument();
+    expect(screen.getByText(/Auf Englisch gibt es oft mehr/)).toBeInTheDocument();
+    expect(loader.loadCandidatePool).toHaveBeenCalledWith(expect.objectContaining({ subjectQuery: "Schiggy", language: "de" }), expect.anything());
+    expect(screen.getByRole("radio", { name: /4 Seiten · 36 Karten/ })).toBeDisabled();
+    expect(screen.getByText("(nur 25 verfügbar)")).toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: /2 Seiten · 18 Karten/ })).toBeEnabled();
+    expect(screen.getByRole("radio", { name: /1 Seite · 9 Karten/ })).toBeEnabled();
+  });
+
+  it("lowers a size the catalogue cannot fill to the largest one it can", async () => {
+    const loader = { loadCandidatePool: vi.fn(async () => briefsOf(12)), hydrateCandidates: vi.fn() };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    fireEvent.click(screen.getByRole("radio", { name: "Schiggy" }));
+    fireEvent.click(screen.getByRole("radio", { name: /4 Seiten · 36 Karten/ }));
+    expect(screen.getByRole("radio", { name: /4 Seiten · 36 Karten/ })).toBeChecked();
+
+    await screen.findByText(/gibt es 12 Karten/);
+    expect(screen.getByRole("radio", { name: /1 Seite · 9 Karten/ })).toBeChecked();
+    expect(screen.getByRole("radio", { name: /2 Seiten · 18 Karten/ })).toBeDisabled();
+  });
+
+  it("keeps every size for a Pokémon with many cards", async () => {
+    const loader = { loadCandidatePool: vi.fn(async () => briefsOf(80, "Pikachu")), hydrateCandidates: vi.fn() };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    expect(await screen.findByText(/Für „Pikachu“ gibt es viele Karten/)).toBeInTheDocument();
+    for (const name of [/1 Seite/, /2 Seiten/, /4 Seiten/]) expect(screen.getByRole("radio", { name })).toBeEnabled();
+  });
+
+  it("does not block the form when the count cannot be loaded", async () => {
+    const loader = { loadCandidatePool: vi.fn(async () => { throw new Error("offline"); }), hydrateCandidates: vi.fn() };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    fireEvent.click(screen.getByRole("radio", { name: "Schiggy" }));
+    await waitFor(() => expect(loader.loadCandidatePool).toHaveBeenCalled());
+    expect(screen.queryByText(/gibt es .* Karten/)).not.toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: /4 Seiten · 36 Karten/ })).toBeEnabled();
+  });
 });

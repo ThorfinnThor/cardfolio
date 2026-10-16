@@ -161,6 +161,9 @@
 .popularPicks { display: grid; min-width: 0; gap: 10px; margin: 0; border: 0; padding: 0; }
 .popularPicks legend { margin-bottom: 4px; color: var(--cf-text); font-size: 16px; font-weight: 750; }
 .popularPicks > p { margin: 0; color: var(--cf-muted); font-size: 14px; line-height: 1.5; }
+.availability { margin: 0; color: var(--cf-text2); font-size: 14px; line-height: 1.5; }
+.choice[data-unavailable="true"] { opacity: .5; cursor: not-allowed; }
+.choice small { color: var(--cf-muted); font-size: 12px; font-weight: 500; }
 .pickGrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
 .pickChoice { position: relative; display: grid !important; place-items: center; min-height: 52px; border: 1px solid var(--cf-line2); border-radius: 9px; background: var(--cf-surface2); padding: 8px 6px; color: var(--cf-text) !important; font-size: 15px !important; font-weight: 700 !important; text-align: center; cursor: pointer; }
 .pickChoice:has(input:checked) { border-color: var(--cf-accent); background: var(--cf-accent-soft); color: var(--cf-accent-text) !important; box-shadow: inset 0 0 0 1px var(--cf-accent); }

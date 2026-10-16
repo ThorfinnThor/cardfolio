@@ -58,6 +58,13 @@ export interface GiftBuilderPanelProps {
 type GiftStep = "details" | "candidates" | "summary";
 type GiftDiscoveryMode = "pokemon" | "theme";
 
+const AVAILABILITY_CAP = 80;
+
+/** The largest binder size (9, 18 or 36 cards) that `count` cards can fill; one page is always possible. */
+function largestPlanSize(count: number): 9 | 18 | 36 {
+  return count >= 36 ? 36 : count >= 18 ? 18 : 9;
+}
+
 const GIFT_STEPS: readonly GiftStep[] = ["details", "candidates", "summary"];
 const GIFT_FLOW = [{ label: "Motiv wählen" }, { label: "Seite ansehen" }, { label: "Besorgen" }] as const;
 
@@ -183,6 +190,9 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
   const [partnerLoadError, setPartnerLoadError] = useState<string>();
   const [greeting, setGreeting] = useState("");
   const stepMounted = useRef(false);
+  // How many cards exist for the chosen Pokémon, so a size that cannot be met is not offered.
+  const [availability, setAvailability] = useState<{ key: string; count: number; capped: boolean }>();
+  const availabilityKey = `${preferences.preferredLanguage ?? "de"}:${pokemonQuery.trim().toLocaleLowerCase("de")}`;
 
   const language: GiftLanguage = preferences.preferredLanguage ?? "de";
   const selectedCardKeys = useMemo(
@@ -207,6 +217,33 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
       || left.displayName.localeCompare(right.displayName, "de"),
     ).slice(0, 3);
   }, [binderOffers, planSize]);
+
+  useEffect(() => {
+    const subject = pokemonQuery.trim();
+    if (step !== "details" || discoveryMode !== "pokemon" || subject.length < 2) return;
+    const searchLanguage = preferences.preferredLanguage ?? "de";
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => {
+      void (async () => {
+        try {
+          const items = await loader.loadCandidatePool({ subjectQuery: subject, language: searchLanguage, maximum: AVAILABILITY_CAP, pageSize: 24 }, controller.signal);
+          if (controller.signal.aborted || !Array.isArray(items)) return;
+          const count = items.filter((item) => matchesGiftSubject({ name: item.name }, subject)).length;
+          setAvailability({ key: `${searchLanguage}:${subject.toLocaleLowerCase("de")}`, count, capped: items.length >= AVAILABILITY_CAP });
+          // A size the catalogue cannot fill is lowered to the largest one that it can.
+          setPreferences((current) => current.targetCardCount > largestPlanSize(count) && items.length < AVAILABILITY_CAP
+            ? { ...current, targetCardCount: largestPlanSize(count) }
+            : current);
+        } catch {
+          // The count is only a hint; without it every size stays selectable.
+        }
+      })();
+    }, 400);
+    return () => {
+      window.clearTimeout(timer);
+      controller.abort();
+    };
+  }, [discoveryMode, loader, pokemonQuery, preferences.preferredLanguage, step]);
 
   useEffect(() => {
     if (!stepMounted.current) {
@@ -582,6 +619,16 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
   }
 
   const pages = selection ? chunkIntoPages(selection.selected) : [];
+  const currentAvailability = availability?.key === availabilityKey ? availability : undefined;
+  const planLimit = currentAvailability && !currentAvailability.capped ? currentAvailability.count : undefined;
+  const availabilitySubject = pokemonQuery.trim();
+  const availabilityText = !currentAvailability
+    ? undefined
+    : currentAvailability.capped
+      ? `Für „${availabilitySubject}“ gibt es viele Karten – genug für jede Größe.`
+      : currentAvailability.count === 0
+        ? `Zu „${availabilitySubject}“ haben wir keine Karten gefunden. Prüfe die Schreibweise.`
+        : `Für „${availabilitySubject}“ gibt es ${currentAvailability.count} ${currentAvailability.count === 1 ? "Karte" : "Karten"} auf ${language === "de" ? "Deutsch" : "Englisch"}.${currentAvailability.count < 36 && language === "de" ? " Auf Englisch gibt es oft mehr." : ""}`;
   const totals = knownTotal(selection?.selected ?? []);
   const spreadPages: SpreadPocket[][] = pages.map((pageCards) => pageCards.map((candidate) => {
     const issue = variantSelectionIssue(candidate.variant, variantAvailabilityForCard(candidate.card));
@@ -652,6 +699,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
                 </label>;
               })}
             </div>
+            {availabilityText ? <p className={styles.availability} role="status">{availabilityText}</p> : null}
           </fieldset> : <fieldset className={styles.themePicker}>
             <legend>Wähle ein Motiv für die Seite</legend>
             <p>Zum Beispiel Meer, Wald oder Schnee. Wir zeigen Karten, auf denen das Motiv im Bild zu sehen ist.</p>
@@ -674,7 +722,10 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
             <small>Motivseiten nutzen derzeit englische Kartenbilder. Du kannst später jede Karte austauschen.</small>
           </fieldset>}
           <div className={styles.quickChoices}>
-            <fieldset><legend>Wie viele Karten?</legend><div className={styles.choiceRow}>{([9, 18, 36] as const).map((count) => <label key={count} className={styles.choice}><input type="radio" name="gift-count" checked={preferences.targetCardCount === count} onChange={() => updatePreferences("targetCardCount", count)} />{count === 9 ? "1 Seite · 9 Karten" : count === 18 ? "2 Seiten · 18 Karten" : "4 Seiten · 36 Karten"}</label>)}</div></fieldset>
+            <fieldset><legend>Wie viele Karten?</legend><div className={styles.choiceRow}>{([9, 18, 36] as const).map((count) => {
+              const unavailable = planLimit !== undefined && count > 9 && count > planLimit;
+              return <label key={count} className={styles.choice} data-unavailable={unavailable || undefined}><input type="radio" name="gift-count" checked={preferences.targetCardCount === count} disabled={unavailable} onChange={() => updatePreferences("targetCardCount", count)} />{count === 9 ? "1 Seite · 9 Karten" : count === 18 ? "2 Seiten · 18 Karten" : "4 Seiten · 36 Karten"}{unavailable ? <small> (nur {planLimit} verfügbar)</small> : null}</label>;
+            })}</div></fieldset>
             <label>Budget für die Karten
               <span className={styles.moneyInput}><input type="number" min="1" step="1" required value={preferences.budgetMinor / 100} onChange={(event) => updatePreferences("budgetMinor", Math.max(1, Math.round(Number(event.target.value || 0) * 100)))} /><span className={styles.currencySuffix} aria-hidden="true">{preferences.currency === "EUR" ? "€" : "$"}</span></span>
               <small>Die Karten kosten zusammen etwa so viel, aber nie mehr (ohne Versand).</small>
