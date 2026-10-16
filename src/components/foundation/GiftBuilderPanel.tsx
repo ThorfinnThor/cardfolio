@@ -108,6 +108,18 @@ function formatRange(range: Pick<GiftPriceRange, "lowMinor" | "highMinor"> | und
   return `${formatMoney(range.lowMinor, currency)}–${formatMoney(range.highMinor, currency)}`;
 }
 
+/** Sum of the cards that have a price; a missing price on one card must not hide the total of the others. */
+function knownTotal(selected: readonly GiftCardCandidate[]): { totalMinor: number; priced: number; unpriced: number } {
+  let totalMinor = 0;
+  let priced = 0;
+  for (const candidate of selected) {
+    if (candidate.price.amountMinor === undefined) continue;
+    totalMinor += candidate.price.amountMinor;
+    priced += 1;
+  }
+  return { totalMinor, priced, unpriced: selected.length - priced };
+}
+
 function summarizeSelection(selected: GiftCardCandidate[], preferences: GiftPreferences, issues: GiftSelectionResult["issues"] = []): GiftSelectionResult {
   const unpricedCount = selected.filter((candidate) => candidate.price.amountMinor === undefined).length;
   const approximateCount = selected.filter((candidate) => candidate.price.confidence === "approximate").length;
@@ -146,7 +158,7 @@ function safeCandidate(candidate: GiftCardCandidate, pricingEnabled: boolean, cu
 }
 
 export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "pokemon", initialSubjectQuery = initialPreferences.subjectQuery, pricingEnabled, budgetGuaranteeEnabled = false, onCancel, onCreateBinder, onOpenBinder, onCardsPurchase }: GiftBuilderPanelProps) {
-  const engine = useMemo(() => new DeterministicGiftSelectionEngine(), []);
+  const engine = useMemo(() => new DeterministicGiftSelectionEngine({ spendBudget: true }), []);
   const [step, setStep] = useState<GiftStep>("details");
   const [preferences, setPreferences] = useState<GiftPreferences>(() => ({ ...initialPreferences, subjectQuery: initialSubjectQuery }));
   const [pokemonQuery, setPokemonQuery] = useState(initialSubjectQuery);
@@ -182,10 +194,11 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     [candidates, excludedKeys, selectedCardKeys],
   );
   const candidateByKey = useMemo(() => new Map(candidates.map((candidate) => [candidate.card.key, candidate])), [candidates]);
+  const planSize = selection?.selected.length || preferences.targetCardCount;
   const recommendedBinderOffers = useMemo(() => {
     if (!binderOffers) return undefined;
     const available = binderOffers.filter((offer) => offer.status === "available");
-    const capacityMatches = available.filter((offer) => !offer.capacityCards || offer.capacityCards >= preferences.targetCardCount);
+    const capacityMatches = available.filter((offer) => !offer.capacityCards || offer.capacityCards >= planSize);
     const layoutMatches = capacityMatches.filter((offer) => offer.pocketsPerPage === 9);
     const pool = layoutMatches.length ? layoutMatches : capacityMatches.length ? capacityMatches : available;
     return pool.toSorted((left, right) =>
@@ -193,7 +206,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
       || (left.price?.amountMinor ?? Number.MAX_SAFE_INTEGER) - (right.price?.amountMinor ?? Number.MAX_SAFE_INTEGER)
       || left.displayName.localeCompare(right.displayName, "de"),
     ).slice(0, 3);
-  }, [binderOffers, preferences.targetCardCount]);
+  }, [binderOffers, planSize]);
 
   useEffect(() => {
     if (!stepMounted.current) {
@@ -238,7 +251,8 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     if (translated !== pokemonQuery) choosePokemon(translated);
   }
 
-  async function createProposal() {
+  async function createProposal(override?: GiftPreferences) {
+    const wanted = override ?? preferences;
     setLoading(true);
     setError(undefined);
     setSelection(undefined);
@@ -247,7 +261,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     setConfirmedVariantKeys(new Set());
     setExcludedKeys(new Set());
     try {
-      const maximum = Math.min(80, Math.max(40, preferences.targetCardCount * 3));
+      const maximum = Math.min(80, Math.max(40, wanted.targetCardCount * 3));
       const theme = discoveryMode === "theme" ? giftThemePreset(selectedThemeId) : undefined;
       const pool = theme && smartSearch
         ? (await smartSearch.search({
@@ -257,8 +271,8 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
           matchQuality: "dominant",
         })).map((hit): CatalogSearchItem => ({ ref: hit.ref, name: theme.label, collectorNumber: "" }))
         : await loader.loadCandidatePool({
-          subjectQuery: preferences.subjectQuery,
-          language: preferences.preferredLanguage ?? "en",
+          subjectQuery: wanted.subjectQuery,
+          language: wanted.preferredLanguage ?? "en",
           maximum,
           pageSize: 24,
         });
@@ -268,18 +282,18 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
           : "Keine Karten mit diesem Namen gefunden. Prüfe Schreibweise oder Sprache.");
         return;
       }
-      if (theme && pool.length < preferences.targetCardCount) {
-        setError(`Für „${theme.label}“ sind erst ${pool.length} dominante Artwork-Treffer geprüft. Für diesen Binder werden ${preferences.targetCardCount} benötigt; unbestätigte Treffer werden nicht mehr automatisch ergänzt.`);
+      if (theme && pool.length < wanted.targetCardCount) {
+        setError(`Für „${theme.label}“ sind erst ${pool.length} dominante Artwork-Treffer geprüft. Für diesen Binder werden ${wanted.targetCardCount} benötigt; unbestätigte Treffer werden nicht mehr automatisch ergänzt.`);
         return;
       }
       const hydrated = await loader.hydrateCandidates(pool, {
-        currency: preferences.currency,
+        currency: wanted.currency,
         variantFor: defaultVariant,
         concurrency: 4,
         preferences: { minimumCondition: orderCondition },
       });
       const safe = hydrated
-        .map((candidate) => safeCandidate(candidate, pricingEnabled, preferences.currency))
+        .map((candidate) => safeCandidate(candidate, pricingEnabled, wanted.currency))
         .toSorted((left, right) =>
           Number(!giftCandidateHasArtwork(left)) - Number(!giftCandidateHasArtwork(right))
           || Number(!giftCandidateHasVerifiedFinish(left)) - Number(!giftCandidateHasVerifiedFinish(right))
@@ -288,10 +302,10 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
           || left.card.key.localeCompare(right.card.key));
       // Only the Pokémon itself (not "Evolith" for "Evoli"), and cards that look different first: reprints with
       // the same attacks come last and are only used when too few different cards exist.
-      const relevant = theme ? safe : safe.filter((candidate) => matchesGiftSubject(candidate.card, preferences.subjectQuery));
-      const subjectPool = relevant.length >= preferences.targetCardCount ? relevant : safe;
+      const relevant = theme ? safe : safe.filter((candidate) => matchesGiftSubject(candidate.card, wanted.subjectQuery));
+      const subjectPool = relevant.length >= wanted.targetCardCount ? relevant : safe;
       const { distinct, ordered } = separateRepeatedCards(subjectPool);
-      const selectionPool = distinct.length >= preferences.targetCardCount ? distinct : ordered;
+      const selectionPool = distinct.length >= wanted.targetCardCount ? distinct : ordered;
       setBriefs(ordered.map(({ card }) => ({
         ref: card.ref,
         name: card.name,
@@ -308,13 +322,22 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
         ...candidate,
         price: { ...candidate.price, confidence: "approximate" as const, issues: [...candidate.price.issues, "estimate-only-no-budget-guarantee"] },
       } : candidate);
-      setSelection(engine.select({ candidates: selectionCandidates, preferences }));
+      setSelection(engine.select({ candidates: selectionCandidates, preferences: wanted }));
       setStep("candidates");
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Karten konnten nicht geladen werden. Prüfe die Verbindung und versuche es erneut.");
     } finally {
       setLoading(false);
     }
+  }
+
+  /** The German catalogue is smaller: offer the same Pokémon in English in one step. */
+  function searchInEnglish() {
+    const subject = translatePopularPokemon(preferences.subjectQuery, "en");
+    const next: GiftPreferences = { ...preferences, preferredLanguage: "en", subjectQuery: subject };
+    setPreferences(next);
+    setPokemonQuery(subject);
+    void createProposal(next);
   }
 
   function closeInspector(cardKey: string) {
@@ -427,7 +450,9 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     isVariantSelectionValid(candidate.variant, variantAvailabilityForCard(candidate.card))
     && !confirmedVariantKeys.has(candidate.card.key)) ?? [];
   const missingSelectionCount = Math.max(preferences.targetCardCount - (selection?.selected.length ?? 0), 0);
-  const canContinue = Boolean(selection) && missingSelectionCount === 0 && invalidOrderCandidates.length === 0;
+  // No further card exists (the catalogue is the limit): continue with what there is instead of a dead end.
+  const shortfall = Boolean(selection?.selected.length) && missingSelectionCount > 0 && availableCandidates.length === 0;
+  const canContinue = Boolean(selection) && (missingSelectionCount === 0 || shortfall) && invalidOrderCandidates.length === 0;
   const printSummary = selection && giftProject ? createGiftPrintSummary({ project: giftProject, selection, greeting }) : undefined;
   const inspected = selection?.selected.find((candidate) => candidate.card.key === inspectedKey);
 
@@ -557,6 +582,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
   }
 
   const pages = selection ? chunkIntoPages(selection.selected) : [];
+  const totals = knownTotal(selection?.selected ?? []);
   const spreadPages: SpreadPocket[][] = pages.map((pageCards) => pageCards.map((candidate) => {
     const issue = variantSelectionIssue(candidate.variant, variantAvailabilityForCard(candidate.card));
     const note = plainVariantNote(candidate.variant);
@@ -568,7 +594,9 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     };
   }));
   const startChoice = discoveryMode === "theme" ? "theme" : pokemonHelp ? "help" : "known";
-  const continueLabel = missingSelectionCount > 0
+  const continueLabel = shortfall
+    ? `Mit ${selection?.selected.length} Karten weiter`
+    : missingSelectionCount > 0
     ? `Noch ${missingSelectionCount} ${missingSelectionCount === 1 ? "Karte" : "Karten"} auswählen`
     : invalidOrderCandidates.length > 0
       ? `Noch ${invalidOrderCandidates.length} ${invalidOrderCandidates.length === 1 ? "Angabe" : "Angaben"} korrigieren`
@@ -649,7 +677,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
             <fieldset><legend>Wie viele Karten?</legend><div className={styles.choiceRow}>{([9, 18, 36] as const).map((count) => <label key={count} className={styles.choice}><input type="radio" name="gift-count" checked={preferences.targetCardCount === count} onChange={() => updatePreferences("targetCardCount", count)} />{count === 9 ? "1 Seite · 9 Karten" : count === 18 ? "2 Seiten · 18 Karten" : "4 Seiten · 36 Karten"}</label>)}</div></fieldset>
             <label>Budget für die Karten
               <span className={styles.moneyInput}><input type="number" min="1" step="1" required value={preferences.budgetMinor / 100} onChange={(event) => updatePreferences("budgetMinor", Math.max(1, Math.round(Number(event.target.value || 0) * 100)))} /><span className={styles.currencySuffix} aria-hidden="true">{preferences.currency === "EUR" ? "€" : "$"}</span></span>
-              <small>Das ist die Obergrenze für die Karten, ohne Versand.</small>
+              <small>Die Karten kosten zusammen etwa so viel, aber nie mehr (ohne Versand).</small>
             </label>
           </div>
           <details className={styles.extraOptions}>
@@ -670,15 +698,15 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
         <div className={styles.resultsStep}>
           <div className={styles.pageSummary} data-status={selection.budgetStatus}>
             <div><strong>{selection.selected.length} / {preferences.targetCardCount}</strong><span>Karten</span></div>
-            <div><strong>{pricingEnabled ? formatMoney(selection.estimatedTotalMinor, preferences.currency) : "Preisprüfung aus"}</strong><span>{pricingEnabled ? selection.budgetStatus === "unknown" ? "Schätzung unvollständig" : "geschätzter Wert" : "keine Budgetzusage"}</span></div>
+            <div><strong>{pricingEnabled ? `${totals.unpriced > 0 ? "mind. " : ""}${formatMoney(totals.totalMinor, preferences.currency)}` : "Preisprüfung aus"}</strong><span>{pricingEnabled ? totals.unpriced > 0 ? `für ${totals.priced} von ${selection.selected.length} Karten` : "geschätzter Wert" : "keine Budgetzusage"}</span></div>
           </div>
           <GiftBinderSpread pages={spreadPages} inspectedKey={inspectedKey} onInspect={inspectCandidate} onSwap={swapCandidates} />
           {inspected ? renderInspector(inspected) : null}
           {!pricingEnabled ? <p className={styles.gateNotice} role="status">Die Preisprüfung ist derzeit noch deaktiviert. Karten können trotzdem ausgewählt und als normaler Binder gespeichert werden; es gibt keine Budgetzusage.</p> : null}
           {pricingEnabled && !budgetGuaranteeEnabled ? <p className={styles.gateNotice} role="status">Schätzwert – den endgültigen Preis siehst du beim Kartenanbieter.</p> : null}
-          {pricingEnabled && hasBudgetSlack(selection.estimatedTotalMinor, preferences.budgetMinor) ? <p className={styles.gateNotice} role="status">Das liegt deutlich unter deinem Budget von {formatMoney(preferences.budgetMinor, preferences.currency)}. Das Budget ist nur die Obergrenze – du kannst Karten austauschen oder unter „Wünsche ändern“ mehr Karten wählen.</p> : null}
+          {pricingEnabled && hasBudgetSlack(selection.estimatedTotalMinor, preferences.budgetMinor) ? <p className={styles.gateNotice} role="status">Das liegt deutlich unter deinem Budget von {formatMoney(preferences.budgetMinor, preferences.currency)}: Für dieses Motiv gibt es nicht genug teurere Karten. Das Budget ist nur die Obergrenze – du kannst unter „Wünsche ändern“ mehr Karten wählen.</p> : null}
           {selection.budgetStatus === "over" ? <p className={styles.warning} role="status">Die geschätzten {formatMoney(selection.estimatedTotalMinor, preferences.currency)} liegen über deinem Budget von {formatMoney(preferences.budgetMinor, preferences.currency)}. Auch die günstigste vollständige Auswahl liegt derzeit darüber. Du kannst Wünsche oder Karten ändern.</p> : null}
-          {selection.budgetStatus === "unknown" && pricingEnabled ? <p className={styles.warning} role="status">Für mindestens eine ausgewählte Karte fehlt ein Preis. Deshalb kann Cardfolio das Budget nicht vollständig berücksichtigen.</p> : null}
+          {pricingEnabled && totals.unpriced > 0 ? <p className={styles.gateNotice} role="status">Für {totals.unpriced} {totals.unpriced === 1 ? "Karte" : "Karten"} gibt es keinen Marktpreis. Die Summe zählt nur Karten mit Preis.</p> : null}
           <details className={styles.conditionBox}>
             <summary>Kartenzustand: <strong>{conditionProfile(orderCondition).shortLabel}</strong> <span>ändern</span></summary>
             <label>Zustand für alle Karten
@@ -691,8 +719,8 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
           </details>
           {availableCandidates.length === 0 ? <section className={styles.candidateLimitNotice} role="status">
             <CircleAlert aria-hidden="true" size={21} />
-            <div><strong>Keine weitere passende Karte verfügbar</strong><span>{discoveryMode === "theme" ? `Alle ${briefs.length} bestätigten Treffer für „${preferences.subjectQuery}“ sind bereits ausgewählt oder wurden entfernt.` : `Alle ${briefs.length} passenden Karten sind bereits ausgewählt oder wurden entfernt.`} {excludedKeys.size > 0 ? "Eine entfernte Karte kannst du unten erneut hinzufügen." : "Für einen anderen Vorschlag kannst du die Wünsche ändern."}</span></div>
-            <button type="button" onClick={() => setStep("details")}>{discoveryMode === "theme" ? "Motiv ändern" : "Wünsche ändern"}<ArrowRight aria-hidden="true" size={16} /></button>
+            <div><strong>{shortfall ? `Mehr als ${selection.selected.length} Karten gibt es dafür nicht` : "Keine weitere passende Karte verfügbar"}</strong><span>{discoveryMode === "theme" ? `Alle ${briefs.length} bestätigten Treffer für „${preferences.subjectQuery}“ sind bereits ausgewählt oder wurden entfernt.` : `Alle ${briefs.length} passenden Karten sind bereits ausgewählt oder wurden entfernt.`} {excludedKeys.size > 0 ? "Eine entfernte Karte kannst du unten erneut hinzufügen." : "Für einen anderen Vorschlag kannst du die Wünsche ändern."}</span></div>
+            {shortfall && language === "de" && discoveryMode === "pokemon" ? <button type="button" onClick={searchInEnglish}>Auch englische Karten suchen<ArrowRight aria-hidden="true" size={16} /></button> : <button type="button" onClick={() => setStep("details")}>{discoveryMode === "theme" ? "Motiv ändern" : "Wünsche ändern"}<ArrowRight aria-hidden="true" size={16} /></button>}
           </section> : null}
           <div className={styles.selectionTools} id="gift-selection-tools"><button type="button" className={styles.secondaryButton} onClick={addCandidate} disabled={selection.selected.length >= preferences.targetCardCount || availableCandidates.length === 0}>+ Karte hinzufügen</button><button type="button" className={styles.secondaryButton} onClick={() => setShowAll((current) => !current)}>{showAll ? "Trefferliste schließen" : `Alle passenden Karten ansehen (${briefs.length})`}</button></div>
           {showAll ? <div className={styles.allResults}>
@@ -721,7 +749,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
         <div className={styles.summaryStep}>
           <div className={styles.purchaseFlowIntro} aria-labelledby="purchase-flow-heading">
             <p className={styles.eyebrow}>NOCH ZWEI SCHRITTE</p>
-            <h3 id="purchase-flow-heading">Binder bestellen, dann Karten kaufen</h3>
+            <h3 id="purchase-flow-heading">Bestelle einen Binder und die Karten.</h3>
             <p>Dein Plan ist gespeichert. Erledige beide Käufe nacheinander.</p>
           </div>
           <section className={styles.purchaseOptions} aria-label="Nächste Schritte: Karten und Binder kaufen">
@@ -730,7 +758,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
                 {partnerLoadError ? <p role="status">Angebote sind momentan nicht erreichbar. Du kannst den lokalen Binder weiter bearbeiten.</p> : null}
                 {!partnerLoadError && !binderOffers ? <p role="status">Binder-Angebote werden geprüft…</p> : null}
                 {!partnerLoadError && recommendedBinderOffers?.length === 0 ? <p role="status">Zurzeit ist kein geprüfter Binder-Shop verfügbar. Du kannst den lokalen Binder trotzdem weiter bearbeiten.</p> : null}
-                {recommendedBinderOffers?.length ? <p className={styles.binderMatch}><Check aria-hidden="true" size={20} /><span><strong>Passt zu deinem Plan</strong>{preferences.targetCardCount} Karten = {Math.ceil(preferences.targetCardCount / 9)} {Math.ceil(preferences.targetCardCount / 9) === 1 ? "Binder-Seite" : "Binder-Seiten"}.</span></p> : null}
+                {recommendedBinderOffers?.length ? <p className={styles.binderMatch}><Check aria-hidden="true" size={20} /><span><strong>Passt zu deinem Plan</strong>{planSize} Karten = {Math.ceil(planSize / 9)} {Math.ceil(planSize / 9) === 1 ? "Binder-Seite" : "Binder-Seiten"}.</span></p> : null}
                 {recommendedBinderOffers?.map((offer, index) => {
                   const destinationUrl = offer.status === "available" ? partnerAdapter?.buildExternalUrl(offer.id) : undefined;
                   return <div className={styles.offerRow} data-recommended={index === 0} key={offer.id}>
@@ -759,7 +787,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
             </header>
             {printSummary.greeting ? <blockquote className={styles.greetingPreview}>{printSummary.greeting}</blockquote> : null}
             <dl className={styles.summaryMeta}>
-              <div><dt>{pricingEnabled ? "Geschätzter Kartenwert" : "Preisprüfung"}</dt><dd>{pricingEnabled ? formatMoney(printSummary.cardPurchase.estimatedValueMinor, printSummary.cardPurchase.currency) : "Deaktiviert"}</dd></div>
+              <div><dt>{pricingEnabled ? "Geschätzter Kartenwert" : "Preisprüfung"}</dt><dd>{pricingEnabled ? `${totals.unpriced > 0 ? "mind. " : ""}${formatMoney(totals.totalMinor, printSummary.cardPurchase.currency)}` : "Deaktiviert"}</dd></div>
               {pricingEnabled ? <div><dt>Geschätzte Preisspanne</dt><dd>{formatRange(printSummary.cardPurchase.estimatedRange, printSummary.cardPurchase.currency) ?? "Nicht vollständig verfügbar"}</dd></div> : <div><dt>Budget</dt><dd>Keine Budgetzusage</dd></div>}
               {pricingEnabled && printSummary.cardPurchase.unknownPriceCount > 0 ? <div><dt>Ohne Preis</dt><dd>{printSummary.cardPurchase.unknownPriceCount} {printSummary.cardPurchase.unknownPriceCount === 1 ? "Karte" : "Karten"}</dd></div> : null}
             </dl>

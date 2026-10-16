@@ -1,10 +1,16 @@
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { MissingCardsPanel } from "@/components/foundation/MissingCardsPanel";
 import type { MissingItem } from "@/domain/types";
 
-afterEach(() => cleanup());
+beforeEach(() => {
+  vi.spyOn(window.navigator, "languages", "get").mockReturnValue(["de-DE", "de"]);
+});
+afterEach(() => {
+  cleanup();
+  vi.restoreAllMocks();
+});
 
 function item(id: string, name: string, quantity: number, minimumCondition: MissingItem["preferences"]["minimumCondition"]): MissingItem {
   return {
@@ -150,5 +156,22 @@ describe("gift purchase guide", () => {
     expect(screen.getByRole("heading", { name: "3 Karten gemeinsam kaufen" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "So bekommst du die Karten" })).not.toBeInTheDocument();
+  });
+
+  it("starts with TCGplayer for a browser set to US English and keeps Cardmarket one click away", () => {
+    vi.spyOn(window.navigator, "languages", "get").mockReturnValue(["en-US", "en"]);
+    render(panel({ tcgplayerCardMappings: [] }));
+
+    expect(screen.queryByRole("heading", { name: "So bekommst du die Karten" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "USA & Kanada · TCGplayer empfohlen" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("heading", { name: "TCGplayer Mass Entry" })).toBeInTheDocument();
+  });
+
+  it("offers the provider choice without a recommendation for other regions", () => {
+    vi.spyOn(window.navigator, "languages", "get").mockReturnValue(["en-AU", "en"]);
+    render(panel());
+
+    expect(screen.queryByRole("heading", { name: "So bekommst du die Karten" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Andere Region · Versand prüfen" })).toBeInTheDocument();
   });
 });

@@ -204,6 +204,36 @@ describe("deterministic Gift selection", () => {
     expect(result.selected.every((item) => (item.price.amountMinor ?? 0) <= 400)).toBe(true);
   });
 
+  describe("spending the budget", () => {
+    const spread = Array.from({ length: 60 }, (_, index) => candidate(index + 1, {
+      price: { ...candidate(index + 1).price, amountMinor: (index + 1) * 50 },
+    }));
+
+    it("keeps the default proposal on cheap diverse cards", () => {
+      const result = engine.select({ candidates: spread, preferences: preferences({ budgetMinor: 10_000 }) });
+      expect(result.estimatedTotalMinor).toBeLessThan(4_000);
+    });
+
+    it("aims at the budget without exceeding it and without letting one card eat it", () => {
+      const spending = new DeterministicGiftSelectionEngine({ spendBudget: true });
+      const result = spending.select({ candidates: spread, preferences: preferences({ budgetMinor: 10_000 }) });
+      expect(result.selected).toHaveLength(9);
+      expect(result.estimatedTotalMinor).toBeLessThanOrEqual(10_000);
+      expect(result.estimatedTotalMinor).toBeGreaterThanOrEqual(7_000);
+      expect(Math.max(...result.selected.map((item) => item.price.amountMinor ?? 0))).toBeLessThanOrEqual(2_500);
+      expect(result.budgetStatus).toBe("within");
+      expect(new Set(result.selected.map((item) => item.card.key)).size).toBe(9);
+    });
+
+    it("falls back to what exists when no card is expensive enough", () => {
+      const spending = new DeterministicGiftSelectionEngine({ spendBudget: true });
+      const cheap = Array.from({ length: 20 }, (_, index) => candidate(index + 1, { price: { ...candidate(index + 1).price, amountMinor: 20 } }));
+      const result = spending.select({ candidates: cheap, preferences: preferences({ budgetMinor: 10_000 }) });
+      expect(result.selected).toHaveLength(9);
+      expect(result.estimatedTotalMinor).toBe(180);
+    });
+  });
+
   it("removes duplicates and incomplete variants and reports a too-small pool", () => {
     const first = candidate(1);
     const incomplete = candidate(2, {

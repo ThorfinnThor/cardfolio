@@ -257,7 +257,7 @@ describe("GiftBuilderPanel", () => {
     const loader = { loadCandidatePool: vi.fn(), hydrateCandidates: vi.fn() };
     render(<GiftBuilderPanel loader={loader} pricingEnabled onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
 
-    expect(screen.getByText("Das ist die Obergrenze für die Karten, ohne Versand.")).toBeInTheDocument();
+    expect(screen.getByText("Die Karten kosten zusammen etwa so viel, aber nie mehr (ohne Versand).")).toBeInTheDocument();
     for (const gone of ["Weitere Wünsche für das Geschenk", "Für wen?", "Anlass", "Stil", "Budgettoleranz", "Währung"]) {
       expect(screen.queryByText(gone, { exact: false })).not.toBeInTheDocument();
     }
@@ -509,5 +509,76 @@ describe("GiftBuilderPanel", () => {
     expect(screen.getAllByRole("region", { name: /^Seite \d$/ })).toHaveLength(1);
     expect(screen.queryByRole("navigation", { name: "Binderseiten blättern" })).not.toBeInTheDocument();
     vi.unstubAllGlobals();
+  });
+
+  function germanCandidate(index: number, price?: number): GiftCardCandidate {
+    const base = candidateWith(index, { name: "Schiggy" });
+    const id = `de-ui-${index}`;
+    return {
+      ...base,
+      card: { ...base.card, key: `tcgdex:${id}:de`, ref: { provider: "tcgdex", id, language: "de" }, setName: `Set ${index}` },
+      price: price === undefined
+        ? base.price
+        : { source: "tcgdex-cardmarket", currency: "EUR", amountMinor: price, fetchedAt: "2026-10-01T10:00:00.000Z", sourceUpdatedAt: "2026-10-01T09:00:00.000Z", confidence: "usable", issues: [] },
+    };
+  }
+
+  it("does not leave the buyer in a dead end when the catalogue has fewer cards than wished", async () => {
+    const pool = Array.from({ length: 12 }, (_, index) => germanCandidate(index + 1));
+    const loader = {
+      loadCandidatePool: vi.fn(async () => pool.map((candidate) => ({ ref: candidate.card.ref, name: candidate.card.name, collectorNumber: candidate.card.collectorNumber }))),
+      hydrateCandidates: vi.fn(async () => pool),
+    };
+    vi.stubGlobal("fetch", vi.fn(async () => ({ ok: true, json: async () => availableStandardPartner })));
+    const onCreateBinder = vi.fn(async (_selection, preferences) => createGiftProject("Geschenk · Schiggy", preferences));
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={onCreateBinder} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    fireEvent.click(screen.getByRole("radio", { name: "Schiggy" }));
+    fireEvent.click(screen.getByRole("radio", { name: /4 Seiten · 36 Karten/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await screen.findByText("12 / 36");
+
+    expect(screen.getByText("Mehr als 12 Karten gibt es dafür nicht")).toBeInTheDocument();
+    const next = screen.getByRole("button", { name: "Mit 12 Karten weiter" });
+    expect(next).toBeEnabled();
+    fireEvent.click(next);
+    await waitFor(() => expect(onCreateBinder).toHaveBeenCalledTimes(1));
+    expect(onCreateBinder.mock.calls[0][0].selected).toHaveLength(12);
+    expect(await screen.findByText(/12 Karten = 2 Binder-Seiten/)).toBeInTheDocument();
+    vi.unstubAllGlobals();
+  });
+
+  it("offers the same Pokémon in English in one step when German has too few cards", async () => {
+    const pool = Array.from({ length: 12 }, (_, index) => germanCandidate(index + 1));
+    const loader = {
+      loadCandidatePool: vi.fn(async () => pool.map((candidate) => ({ ref: candidate.card.ref, name: candidate.card.name, collectorNumber: candidate.card.collectorNumber }))),
+      hydrateCandidates: vi.fn(async () => pool),
+    };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    fireEvent.click(screen.getByRole("radio", { name: "Schiggy" }));
+    fireEvent.click(screen.getByRole("radio", { name: /4 Seiten · 36 Karten/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await screen.findByText("12 / 36");
+    fireEvent.click(screen.getByRole("button", { name: /Auch englische Karten suchen/ }));
+
+    await waitFor(() => expect(loader.loadCandidatePool).toHaveBeenLastCalledWith(expect.objectContaining({ subjectQuery: "Squirtle", language: "en" })));
+  });
+
+  it("still shows the total of the cards that have a price when one card has none", async () => {
+    const pool = Array.from({ length: 9 }, (_, index) => germanCandidate(index + 1, index === 0 ? undefined : 100));
+    const loader = {
+      loadCandidatePool: vi.fn(async () => pool.map((candidate) => ({ ref: candidate.card.ref, name: candidate.card.name, collectorNumber: candidate.card.collectorNumber }))),
+      hydrateCandidates: vi.fn(async () => pool),
+    };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    fireEvent.click(screen.getByRole("radio", { name: "Schiggy" }));
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await screen.findByText("9 / 9");
+
+    expect(screen.getByText(/mind\. 8,00/)).toBeInTheDocument();
+    expect(screen.getByText("für 8 von 9 Karten")).toBeInTheDocument();
+    expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("Für 1 Karte gibt es keinen Marktpreis"))).toBe(true);
   });
 });

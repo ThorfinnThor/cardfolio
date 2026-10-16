@@ -243,7 +243,7 @@
 .summaryMeta > div { display: grid; align-content: start; gap: 6px; min-width: 0; background: var(--cf-surface); padding: 12px; }
 .summaryMeta dt { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 10px; text-transform: uppercase; }
 .summaryMeta dd { margin: 0; color: var(--cf-text); font-size: 15px; font-weight: 650; overflow-wrap: anywhere; }
-.summaryCards ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 12px; margin: 0; padding: 0; list-style: none; }
+.summaryCards ol { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 150px)); gap: 14px 12px; margin: 0; padding: 0; list-style: none; }
 .summaryCards li { display: grid; align-content: start; gap: 6px; min-width: 0; }
 .summaryCardImage, .summaryCardImageFallback { display: grid; width: 100%; aspect-ratio: 5 / 7; place-items: center; overflow: hidden; border-radius: 6px; background: var(--cf-field); color: var(--cf-muted); font-size: 10px; text-align: center; }
 .summaryCardImage img { width: 100%; height: 100%; object-fit: contain; }

@@ -217,10 +217,19 @@ async function mockCatalog(page: Page) {
 }
 
 /** Creates an empty binder through the manual start, which sits behind "Ich sammle selbst" for first-time visitors. */
-async function createBinderFromStart(page: Page, name: string) {
+/** Opens the collector start modes. The page is static HTML first, so a click before hydration is lost: retry until the tabs appear. */
+async function openCollectorStarts(page: Page) {
   await page.getByRole("button", { name: "Geschenk-Binder gestalten" }).waitFor();
-  const collectorLink = page.getByRole("button", { name: "Ich sammle selbst" });
-  if (await collectorLink.isVisible()) await collectorLink.click();
+  const link = page.getByRole("button", { name: "Ich sammle selbst" });
+  const tabs = page.getByRole("tablist", { name: "Binder erstellen" });
+  await expect(async () => {
+    if (await link.isVisible()) await link.click();
+    await expect(tabs).toBeVisible({ timeout: 1_000 });
+  }).toPass({ timeout: 15_000 });
+}
+
+async function createBinderFromStart(page: Page, name: string) {
+  await openCollectorStarts(page);
   await page.getByRole("tab", { name: "Selbst gestalten" }).click();
   await page.getByRole("textbox", { name: "Wie soll dein Binder heißen?" }).fill(name);
   await page.getByRole("button", { name: "Binder anlegen" }).click();
@@ -402,7 +411,7 @@ test("reviews multiple cards and fills from the next free slot continuously", as
 test("creates a reviewed set binder through the guided start", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/");
-  await page.getByRole("button", { name: "Ich sammle selbst" }).click();
+  await openCollectorStarts(page);
   await page.getByRole("tab", { name: "Komplettes Set" }).click();
   await page.getByRole("button", { name: "Mit einem Set starten" }).click();
 
