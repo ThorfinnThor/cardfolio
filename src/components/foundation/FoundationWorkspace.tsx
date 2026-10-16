@@ -487,6 +487,9 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
   const [catalogSelection, setCatalogSelection] = useState<CatalogSearchItem[]>([]);
   const [celebratedEntryId, setCelebratedEntryId] = useState<string>();
 
+  // While a gift is being planned or bought the sidebar and collector toolbar are out of the way, so the
+  // binder gets the full width. Collectors keep the normal layout everywhere else.
+  const giftChrome = giftShell || giftBuilderOpen || (missingOpen && missingBeginner);
   const activeBinder = binders.find((binder) => binder.id === activeId);
   const workspaceView: WorkspaceHistoryView = !activeBinder || binderManagerOpen
     ? setBinderWizardOpen
@@ -1884,8 +1887,8 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
     .map((entry) => ({ entry, card: cards.get(entry.cardKey) }));
 
   return (
-    <div className={styles.appShell} data-design={PRODUCT_DESIGN} data-shell={shell}>
-      {giftShell ? null : <aside className={styles.sidebar} aria-label="Cardfolio Navigation">
+    <div className={styles.appShell} data-design={PRODUCT_DESIGN} data-shell={giftChrome ? "gift" : "full"}>
+      {giftChrome ? null : <aside className={styles.sidebar} aria-label="Cardfolio Navigation">
         <button type="button" className={styles.brand} onClick={() => setBinderManagerOpen(true)}>
           <span className={styles.brandMark} aria-hidden="true"><i /><i /></span>
           <span className={styles.brandText}>Cardfolio<small>Wunschbinder · lokal</small></span>
@@ -1920,14 +1923,16 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
       </aside>}
 
       <div className={styles.mainColumn}>
-        {giftShell ? <header className={styles.giftBar}>
+        {giftChrome ? <header className={styles.giftBar}>
           <button type="button" className={styles.giftBrand} onClick={() => { setSetBinderWizardOpen(false); setMissingOpen(false); setGiftBuilderOpen(false); setBinderManagerOpen(true); }} aria-label="Cardfolio – zur Geschenk-Startseite">
             <span className={styles.brandMark} aria-hidden="true"><i /><i /></span>
             <span>Cardfolio</span>
           </button>
           <div className={styles.giftBarActions}>
             <ThemeToggle className={styles.themeToggle} />
-            <Link className={styles.giftBarLink} href="/">Ich sammle selbst</Link>
+            {giftShell
+              ? <Link className={styles.giftBarLink} href="/">Ich sammle selbst</Link>
+              : <button type="button" className={styles.giftBarLink} onClick={() => { setSetBinderWizardOpen(false); setMissingOpen(false); setMissingBeginner(false); setGiftBuilderOpen(false); setBinderManagerOpen(true); }}>Meine Binder</button>}
           </div>
         </header> : <header className={styles.topbar}>
           <button type="button" className={styles.mobileMenu} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }} aria-label="Binderverwaltung öffnen"><Menu size={19} /></button>

@@ -87,10 +87,11 @@ describe("GiftBuilderPanel", () => {
 
     expect(screen.getByRole("combobox", { name: /Kartensprache/i })).toHaveValue("de");
     fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
-    expect(screen.getByText(/Unsere Empfehlung für Geschenke/)).toBeInTheDocument();
-    expect(screen.getByText("Was bedeutet der Kartenzustand?")).toBeInTheDocument();
+    expect(screen.queryByText("Für wen?")).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
     expect(await screen.findAllByText("9 / 9")).not.toHaveLength(0);
+    expect(screen.getByText(/Unsere Empfehlung für Geschenke/)).toBeInTheDocument();
+    expect(screen.getByText("Was bedeutet der Kartenzustand?")).toBeInTheDocument();
     expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("Preisprüfung"))).toBe(true);
     expect(screen.getByRole("list", { name: "Schritte zum Geschenk-Binder" }).children).toHaveLength(3);
     expect(screen.queryByText(/Unlimited/)).not.toBeInTheDocument();
@@ -155,6 +156,7 @@ describe("GiftBuilderPanel", () => {
     expect(unavailableRow).not.toBeNull();
     expect(within(unavailableRow as HTMLLIElement).getByRole("button", { name: "Zuerst Karte entfernen" })).toBeDisabled();
 
+    fireEvent.click(screen.getByRole("button", { name: "Pikachu 1, Set 1: Details ansehen" }));
     fireEvent.click(screen.getByRole("button", { name: "Pikachu 1 entfernen" }));
     fireEvent.click(within(unavailableRow as HTMLLIElement).getByRole("button", { name: "Hinzufügen" }));
     expect(screen.getByText("9 / 9")).toBeInTheDocument();
@@ -251,15 +253,17 @@ describe("GiftBuilderPanel", () => {
     await waitFor(() => expect(loader.loadCandidatePool).toHaveBeenCalledWith(expect.objectContaining({ subjectQuery: "Eevee", language: "en" })));
   });
 
-  it("keeps the currency choice out of the main form and explains the budget as an upper limit", () => {
+  it("asks only what changes the proposal: the optional wishes without effect are gone and the card language sits behind one control", () => {
     const loader = { loadCandidatePool: vi.fn(), hydrateCandidates: vi.fn() };
     render(<GiftBuilderPanel loader={loader} pricingEnabled onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
 
     expect(screen.getByText("Das ist die Obergrenze für die Karten, ohne Versand.")).toBeInTheDocument();
-    const extras = screen.getByText("Weitere Wünsche für das Geschenk").closest("details");
-    expect(extras).not.toBeNull();
-    expect(within(extras as HTMLElement).getByRole("combobox", { name: "Währung" })).toBeInTheDocument();
-    expect(within(extras as HTMLElement).getByRole("combobox", { name: /Kartensprache/i })).toBeInTheDocument();
+    for (const gone of ["Weitere Wünsche für das Geschenk", "Für wen?", "Anlass", "Stil", "Budgettoleranz", "Währung"]) {
+      expect(screen.queryByText(gone, { exact: false })).not.toBeInTheDocument();
+    }
+    const language = screen.getByText("Kartensprache ändern").closest("details");
+    expect(language).not.toBeNull();
+    expect(within(language as HTMLElement).getByRole("combobox", { name: /Kartensprache/i })).toHaveValue("de");
   });
 
   it("tells the buyer when the proposal stays far below the budget instead of looking broken", async () => {
@@ -322,8 +326,10 @@ describe("GiftBuilderPanel", () => {
     }));
     expect(screen.getByText("Keine weitere passende Karte verfügbar")).toBeInTheDocument();
     expect(screen.getByText(/Alle 9 bestätigten Treffer für „Meer & Wasser“ sind bereits ausgewählt/)).toBeInTheDocument();
-    expect(screen.getAllByRole("button", { name: /Keine alternative Karte für/ })).toHaveLength(9);
+    fireEvent.click(screen.getByRole("button", { name: "Pikachu 2, Set 2: Details ansehen" }));
+    expect(screen.getAllByRole("button", { name: /Keine alternative Karte für/ })).toHaveLength(1);
 
+    fireEvent.click(screen.getByRole("button", { name: "Pikachu 1, Set 1: Details ansehen" }));
     fireEvent.click(screen.getByRole("button", { name: "Pikachu 1 entfernen" }));
     expect(screen.getByRole("button", { name: "+ Karte hinzufügen" })).toBeDisabled();
     fireEvent.click(screen.getByRole("button", { name: /Alle passenden Karten ansehen/i }));
@@ -359,7 +365,7 @@ describe("GiftBuilderPanel", () => {
     fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
     fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
     expect(await screen.findAllByText("9 / 9")).not.toHaveLength(0);
-    expect(screen.getAllByText((_, element) => element?.tagName === "B" && element.textContent?.includes("1,00") === true)).toHaveLength(9);
+    expect(screen.getAllByText((_, element) => element?.tagName === "SPAN" && /^ca\.\s1,00/.test(element.textContent ?? ""))).toHaveLength(9);
     expect(screen.getByText(/9,00/)).toBeInTheDocument();
     expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("den endgültigen Preis siehst du beim Kartenanbieter"))).toBe(true);
     expect(screen.queryByText(/Budget nicht vollständig berücksichtigen/i)).not.toBeInTheDocument();
@@ -396,5 +402,112 @@ describe("GiftBuilderPanel", () => {
     expect(await screen.findByText(/36,00/)).toBeInTheDocument();
     expect(screen.queryByText("Pikachu 10")).not.toBeInTheDocument();
     expect(screen.queryByText(/günstigste vollständige Auswahl liegt derzeit darüber/i)).not.toBeInTheDocument();
+  });
+
+  function candidateWith(index: number, overrides: { name?: string; attacks?: string[]; category?: "pokemon" | "trainer"; setId?: string } = {}): GiftCardCandidate {
+    const base = candidateWithArtwork(index);
+    return {
+      ...base,
+      card: {
+        ...base.card,
+        name: overrides.name ?? "Pikachu",
+        setId: overrides.setId ?? base.card.setId,
+        attacks: overrides.attacks ?? [`Attack ${index}`],
+        abilities: [],
+        category: overrides.category ?? "pokemon",
+      },
+    };
+  }
+
+  it("keeps cards that are not the chosen Pokémon and reprints with the same attacks out of the first proposal", async () => {
+    const pool = [
+      ...Array.from({ length: 9 }, (_, index) => candidateWith(index + 1)),
+      candidateWith(90, { name: "Pikachulith", category: "trainer", attacks: [] }),
+      candidateWith(91, { attacks: ["Attack 1"], setId: "reprint-1" }),
+      candidateWith(92, { attacks: ["Attack 2"], setId: "reprint-2" }),
+    ];
+    const loader = {
+      loadCandidatePool: vi.fn(async () => pool.map((candidate) => ({ ref: candidate.card.ref, name: candidate.card.name, collectorNumber: candidate.card.collectorNumber }))),
+      hydrateCandidates: vi.fn(async () => pool),
+    };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await screen.findByText("9 / 9");
+
+    expect(screen.getAllByRole("button", { name: /: Details ansehen$/ })).toHaveLength(9);
+    for (const setName of ["Set 90", "Set 91", "Set 92"]) {
+      expect(screen.queryByRole("button", { name: new RegExp(`${setName}: Details`) })).not.toBeInTheDocument();
+    }
+    // The Trainer card is not offered at all; the two reprints stay available as swap candidates of last resort.
+    fireEvent.click(screen.getByRole("button", { name: /Alle passenden Karten ansehen \(11\)/ }));
+    expect(screen.queryByText("Pikachulith")).not.toBeInTheDocument();
+  });
+
+  it("moves a card one position at a time as the keyboard-friendly alternative to dragging", async () => {
+    const pool = Array.from({ length: 9 }, (_, index) => candidateWith(index + 1, { name: `Pikachu ${index + 1}` }));
+    const loader = {
+      loadCandidatePool: vi.fn(async () => pool.map((candidate) => ({ ref: candidate.card.ref, name: candidate.card.name, collectorNumber: candidate.card.collectorNumber }))),
+      hydrateCandidates: vi.fn(async () => pool),
+    };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+    fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await screen.findByText("9 / 9");
+
+    const order = () => screen.getAllByRole("button", { name: /: Details (ansehen|schließen)$/ }).map((button) => button.getAttribute("aria-label")?.split(",")[0]);
+    expect(order().slice(0, 3)).toEqual(["Pikachu 1", "Pikachu 2", "Pikachu 3"]);
+
+    fireEvent.click(screen.getByRole("button", { name: "Pikachu 1, Set 1: Details ansehen" }));
+    expect(screen.getByRole("button", { name: "Pikachu 1 eine Position nach vorn" })).toBeDisabled();
+    fireEvent.click(screen.getByRole("button", { name: "Pikachu 1 eine Position nach hinten" }));
+    expect(order().slice(0, 3)).toEqual(["Pikachu 2", "Pikachu 1", "Pikachu 3"]);
+    fireEvent.click(screen.getByRole("button", { name: "Pikachu 1 eine Position nach vorn" }));
+    expect(order().slice(0, 3)).toEqual(["Pikachu 1", "Pikachu 2", "Pikachu 3"]);
+  });
+
+  it("shows an open binder with two pages side by side on wide screens and lets the buyer turn the pages", async () => {
+    vi.stubGlobal("matchMedia", vi.fn(() => ({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() })));
+    const pool = Array.from({ length: 40 }, (_, index) => candidateWith(index + 1, { name: `Pikachu ${index + 1}` }));
+    const loader = {
+      loadCandidatePool: vi.fn(async () => pool.map((candidate) => ({ ref: candidate.card.ref, name: candidate.card.name, collectorNumber: candidate.card.collectorNumber }))),
+      hydrateCandidates: vi.fn(async () => pool),
+    };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+    fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
+    fireEvent.click(screen.getByRole("radio", { name: /4 Seiten · 36 Karten/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await screen.findByText("36 / 36");
+
+    expect(screen.getByRole("region", { name: "Seite 1" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Seite 2" })).toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: "Seite 3" })).not.toBeInTheDocument();
+    expect(screen.getByText("Seite 1–2 von 4")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Zurück blättern/ })).toBeDisabled();
+
+    fireEvent.click(screen.getByRole("button", { name: /Weiter blättern/ }));
+    expect(screen.getByRole("region", { name: "Seite 3" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Seite 4" })).toBeInTheDocument();
+    expect(screen.getByText("Seite 3–4 von 4")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Weiter blättern/ })).toBeDisabled();
+    vi.unstubAllGlobals();
+  });
+
+  it("shows a single page with the inside of the cover next to it when the plan has only one page", async () => {
+    vi.stubGlobal("matchMedia", vi.fn(() => ({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() })));
+    const pool = Array.from({ length: 9 }, (_, index) => candidateWith(index + 1, { name: `Pikachu ${index + 1}` }));
+    const loader = {
+      loadCandidatePool: vi.fn(async () => pool.map((candidate) => ({ ref: candidate.card.ref, name: candidate.card.name, collectorNumber: candidate.card.collectorNumber }))),
+      hydrateCandidates: vi.fn(async () => pool),
+    };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+    fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await screen.findByText("9 / 9");
+
+    expect(screen.getAllByRole("region", { name: /^Seite \d$/ })).toHaveLength(1);
+    expect(screen.queryByRole("navigation", { name: "Binderseiten blättern" })).not.toBeInTheDocument();
+    vi.unstubAllGlobals();
   });
 });

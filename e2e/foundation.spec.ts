@@ -764,7 +764,7 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await page.goto("/");
   await page.getByRole("button", { name: "Geschenk-Binder gestalten" }).click();
   await expect(page.getByRole("heading", { name: "Dein Geschenk-Binder beginnt hier" })).toBeVisible();
-  await page.getByText("Weitere Wünsche für das Geschenk").click();
+  await page.getByText("Kartensprache ändern").click();
   await page.getByLabel("Kartensprache").selectOption("en");
   await page.getByRole("button", { name: /Binder-Seite ansehen/ }).click();
   await expect(page.getByText("9 / 9")).toBeVisible();

@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowLeft, ArrowRight, Check, CircleAlert, Download, ExternalLink, Gift, LoaderCircle, Printer, RefreshCw, Search, ShoppingBag, X } from "lucide-react";
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import type { GiftCandidateLoader } from "@/data/gift/gift-candidate-loader";
 import { loadBinderPartnerCatalog, ReviewedBinderAffiliateAdapter } from "@/data/partners/binder-affiliate-adapter";
@@ -22,11 +22,13 @@ import { createGiftPrintSummary } from "@/domain/gift-print-summary";
 import { GIFT_THEME_PRESETS, giftThemePreset } from "@/domain/gift-theme-presets";
 import { conditionProfile, conditionProfiles } from "@/domain/purchase-preferences";
 import { ConditionGuide } from "./ConditionGuide";
+import { matchesGiftSubject, separateRepeatedCards } from "@/domain/gift-subject";
 import type { SmartSearchAdapter } from "@/domain/semantic-card-search";
 import type { CardSnapshot, CatalogSearchItem, PurchasePreferences, VariantSelection } from "@/domain/types";
 import { createInitialVariantSelection, isVariantSelectionValid, variantAvailabilityForCard, variantSelectionIssue } from "@/domain/variant-selection";
 
 import { CardArtwork } from "./CardArtwork";
+import { GiftBinderSpread, type SpreadPocket } from "./GiftBinderSpread";
 import { VariantFields } from "./VariantFields";
 import {
   POPULAR_POKEMON,
@@ -284,7 +286,13 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
           || Number(!giftCandidateHasPrice(left)) - Number(!giftCandidateHasPrice(right))
           || (left.price.amountMinor ?? Number.MAX_SAFE_INTEGER) - (right.price.amountMinor ?? Number.MAX_SAFE_INTEGER)
           || left.card.key.localeCompare(right.card.key));
-      setBriefs(safe.map(({ card }) => ({
+      // Only the Pokémon itself (not "Evolith" for "Evoli"), and cards that look different first: reprints with
+      // the same attacks come last and are only used when too few different cards exist.
+      const relevant = theme ? safe : safe.filter((candidate) => matchesGiftSubject(candidate.card, preferences.subjectQuery));
+      const subjectPool = relevant.length >= preferences.targetCardCount ? relevant : safe;
+      const { distinct, ordered } = separateRepeatedCards(subjectPool);
+      const selectionPool = distinct.length >= preferences.targetCardCount ? distinct : ordered;
+      setBriefs(ordered.map(({ card }) => ({
         ref: card.ref,
         name: card.name,
         collectorNumber: card.collectorNumber,
@@ -292,11 +300,11 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
         setId: card.setId,
         setName: card.setName,
       })));
-      setCandidates(safe);
-      setConfirmedVariantKeys(new Set(safe
+      setCandidates(ordered);
+      setConfirmedVariantKeys(new Set(ordered
         .filter(giftCandidateHasVerifiedFinish)
         .map((candidate) => candidate.card.key)));
-      const selectionCandidates = budgetGuaranteeEnabled ? safe : safe.map((candidate) => candidate.price.confidence === "usable" ? {
+      const selectionCandidates = budgetGuaranteeEnabled ? selectionPool : selectionPool.map((candidate) => candidate.price.confidence === "usable" ? {
         ...candidate,
         price: { ...candidate.price, confidence: "approximate" as const, issues: [...candidate.price.issues, "estimate-only-no-budget-guarantee"] },
       } : candidate);
@@ -351,6 +359,24 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     const nextExcluded = new Set(excludedKeys).add(cardKey);
     setExcludedKeys(nextExcluded);
     setSelection(summarizeSelection(selection.selected.map((candidate) => candidate.card.key === cardKey ? replacement : candidate), preferences, selection.issues));
+  }
+
+  function swapCandidates(fromKey: string, toKey: string) {
+    if (!selection || fromKey === toKey) return;
+    const from = selection.selected.findIndex((candidate) => candidate.card.key === fromKey);
+    const to = selection.selected.findIndex((candidate) => candidate.card.key === toKey);
+    if (from < 0 || to < 0) return;
+    const next = [...selection.selected];
+    [next[from], next[to]] = [next[to], next[from]];
+    setSelection(summarizeSelection(next, preferences, selection.issues));
+  }
+
+  function moveCandidate(cardKey: string, offset: -1 | 1) {
+    if (!selection) return;
+    const index = selection.selected.findIndex((candidate) => candidate.card.key === cardKey);
+    const target = selection.selected[index + offset];
+    if (index < 0 || !target) return;
+    swapCandidates(cardKey, target.card.key);
   }
 
   function updateVariant(cardKey: string, variant: VariantSelection) {
@@ -497,28 +523,6 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     URL.revokeObjectURL(url);
   }
 
-  function renderTile(candidate: GiftCardCandidate, index: number) {
-    const key = candidate.card.key;
-    const issue = variantSelectionIssue(candidate.variant, variantAvailabilityForCard(candidate.card));
-    const note = plainVariantNote(candidate.variant);
-    const open = inspectedKey === key;
-    return <article className={styles.tile} id={candidateElementId(key)} data-requires-review={Boolean(issue)} data-open={open}>
-      <button type="button" className={styles.tileImageButton} aria-expanded={open} aria-controls={open ? `${candidateElementId(key)}-details` : undefined} aria-label={`${candidate.card.name}, ${candidate.card.setName}: Details ${open ? "schließen" : "ansehen"}`} onClick={() => inspectCandidate(key)}>
-        <CardArtwork card={candidate.card} className={styles.cardImage} fallback={<span className={styles.imageFallback}>Bild nicht verfügbar</span>} />
-      </button>
-      <span className={styles.tileIndex} aria-hidden="true">{index + 1}</span>
-      {issue ? <span className={styles.tileFlag} data-kind="invalid">Prüfen</span> : note ? <span className={styles.tileFlag}>{note}</span> : null}
-      <div className={styles.tileText}>
-        <strong>{candidate.card.name}</strong>
-        {pricingEnabled ? <b>{candidate.price.amountMinor === undefined ? "Preis offen" : `ca. ${formatMoney(candidate.price.amountMinor, preferences.currency)}`}</b> : null}
-      </div>
-      <div className={styles.tileActions}>
-        <button type="button" className={styles.replaceButton} onClick={() => replaceCandidate(key)} disabled={availableCandidates.length === 0} aria-label={availableCandidates.length > 0 ? `${candidate.card.name} austauschen` : `Keine alternative Karte für ${candidate.card.name} verfügbar`} title={availableCandidates.length > 0 ? "Gegen die nächste passende Karte austauschen" : "Alle passenden Karten sind bereits ausgewählt"}><RefreshCw aria-hidden="true" size={15} /><span>{availableCandidates.length > 0 ? "Austauschen" : "Keine Alternative"}</span></button>
-        <button type="button" className={styles.iconButton} onClick={() => removeCandidate(key)} aria-label={`${candidate.card.name} entfernen`}><X size={15} /></button>
-      </div>
-    </article>;
-  }
-
   function renderInspector(candidate: GiftCardCandidate) {
     const key = candidate.card.key;
     const availability = variantAvailabilityForCard(candidate.card);
@@ -541,12 +545,28 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
         </div>
         <button type="button" className={styles.iconButton} onClick={() => closeInspector(key)} aria-label="Detailansicht schließen"><X size={15} /></button>
       </div>
+      <div className={styles.inspectorActions}>
+        <button type="button" className={styles.replaceButton} onClick={() => replaceCandidate(key)} disabled={availableCandidates.length === 0} aria-label={availableCandidates.length > 0 ? `${candidate.card.name} austauschen` : `Keine alternative Karte für ${candidate.card.name} verfügbar`} title={availableCandidates.length > 0 ? "Gegen die nächste passende Karte austauschen" : "Alle passenden Karten sind bereits ausgewählt"}><RefreshCw aria-hidden="true" size={15} /><span>{availableCandidates.length > 0 ? "Austauschen" : "Keine Alternative"}</span></button>
+        <button type="button" className={styles.replaceButton} onClick={() => removeCandidate(key)} aria-label={`${candidate.card.name} entfernen`}><X aria-hidden="true" size={15} /><span>Entfernen</span></button>
+        <button type="button" className={styles.replaceButton} onClick={() => moveCandidate(key, -1)} disabled={(selection?.selected.findIndex((entry) => entry.card.key === key) ?? 0) <= 0} aria-label={`${candidate.card.name} eine Position nach vorn`}><ArrowLeft aria-hidden="true" size={15} /><span>Nach vorn</span></button>
+        <button type="button" className={styles.replaceButton} onClick={() => moveCandidate(key, 1)} disabled={(selection?.selected.findIndex((entry) => entry.card.key === key) ?? 0) >= (selection?.selected.length ?? 0) - 1} aria-label={`${candidate.card.name} eine Position nach hinten`}><span>Nach hinten</span><ArrowRight aria-hidden="true" size={15} /></button>
+      </div>
       <button type="button" className={styles.linkButton} data-urgent={Boolean(issue)} aria-expanded={variantOpen} onClick={() => setVariantBoxKey(variantOpen ? undefined : key)}>{variantOpen ? "Auswahl einklappen" : issue ? "Ausführung auswählen" : "Andere Ausführung wählen"}</button>
       {variantOpen ? <div className={styles.variantBox}><VariantFields variant={candidate.variant} preferences={candidate.preferences} availability={availability} onVariantChange={(variant) => updateVariant(key, variant)} onPreferencesChange={(next) => setSelection((current) => current ? summarizeSelection(current.selected.map((item) => item.card.key === key ? { ...item, preferences: next } : item), preferences, current.issues) : current)} />{issue ? <p className={styles.warning}>{issue}</p> : hasRecommendation ? <div className={styles.reviewInstructions}><strong>Cardfolio-Empfehlung</strong><p>Die Bestellangaben sind bereits sinnvoll vorausgewählt. Passe sie an, wenn du eine andere Ausführung möchtest.</p><button type="button" className={styles.secondaryButton} onClick={() => confirmVariant(key)}>Nur diese Empfehlung übernehmen</button></div> : null}</div> : null}
     </section>;
   }
 
   const pages = selection ? chunkIntoPages(selection.selected) : [];
+  const spreadPages: SpreadPocket[][] = pages.map((pageCards) => pageCards.map((candidate) => {
+    const issue = variantSelectionIssue(candidate.variant, variantAvailabilityForCard(candidate.card));
+    const note = plainVariantNote(candidate.variant);
+    return {
+      key: candidate.card.key,
+      card: candidate.card,
+      flag: issue ? { text: "Prüfen", invalid: true } : note ? { text: note, invalid: false } : undefined,
+      price: pricingEnabled ? (candidate.price.amountMinor === undefined ? "Preis offen" : `ca. ${formatMoney(candidate.price.amountMinor, preferences.currency)}`) : undefined,
+    };
+  }));
   const startChoice = discoveryMode === "theme" ? "theme" : pokemonHelp ? "help" : "known";
   const continueLabel = missingSelectionCount > 0
     ? `Noch ${missingSelectionCount} ${missingSelectionCount === 1 ? "Karte" : "Karten"} auswählen`
@@ -633,44 +653,13 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
             </label>
           </div>
           <details className={styles.extraOptions}>
-            <summary>Weitere Wünsche für das Geschenk <span>optional</span></summary>
-            <div className={styles.formGrid}>
-              <label>Für wen?
-                <select value={preferences.recipientKind} onChange={(event) => updatePreferences("recipientKind", event.target.value as GiftPreferences["recipientKind"]) }>
-                  <option value="partner">Partner/in</option><option value="child">Kind</option><option value="friend">Freund/in</option><option value="other">Andere Person</option>
-                </select>
-              </label>
-              <label>Name <span>(nur lokal)</span>
-                <input value={preferences.recipientName ?? ""} maxLength={100} onChange={(event) => updatePreferences("recipientName", event.target.value || undefined)} placeholder="Optional" />
-              </label>
-              <label>Anlass
-                <select value={preferences.occasion ?? "other"} onChange={(event) => updatePreferences("occasion", event.target.value as GiftPreferences["occasion"]) }>
-                  <option value="birthday">Geburtstag</option><option value="christmas">Weihnachten</option><option value="anniversary">Jubiläum</option><option value="other">Andere Gelegenheit</option>
-                </select>
-              </label>
-              <label>Stil
-                <select value={preferences.style} onChange={(event) => updatePreferences("style", event.target.value as GiftPreferences["style"])}><option value="mixed">Mix</option><option value="vintage">Vintage</option><option value="modern">Modern</option><option value="curated">Kuratiert</option></select>
-              </label>
-              <label className={styles.languageChoice}>Kartensprache
-                <select disabled={discoveryMode === "theme"} value={discoveryMode === "theme" ? "en" : language} onChange={(event) => changeLanguage(event.target.value as GiftLanguage)}>
-                  <option value="de">Deutsch</option><option value="en">English</option>
-                </select>
-                {discoveryMode === "theme" ? <small>Für Bildmotive gibt es derzeit nur geprüfte englische Karten.</small> : <small>{language === "de" ? "Deutsche Karten sind für Käufer in Deutschland meist die richtige Wahl." : "Englische Karten sind oft günstiger und besser verfügbar."}</small>}
-              </label>
-              <label>Währung
-                <select value={preferences.currency} onChange={(event) => updatePreferences("currency", event.target.value as GiftPreferences["currency"])} aria-label="Währung"><option value="EUR">Euro (EUR)</option><option value="USD">US-Dollar (USD)</option></select>
-              </label>
-            </div>
-            <label>Budgettoleranz
-              <select value={preferences.budgetTolerancePercent ?? 0} onChange={(event) => updatePreferences("budgetTolerancePercent", Number(event.target.value) as GiftPreferences["budgetTolerancePercent"])}><option value="0">Keine</option><option value="5">Bis 5 %</option><option value="10">Bis 10 %</option><option value="15">Bis 15 %</option></select>
-            </label>
-            <label className={styles.orderConditionField}>Gewünschter Kartenzustand
-              <select aria-label="Gewünschter Kartenzustand" value={orderCondition} onChange={(event) => setOrderCondition(event.target.value as PurchasePreferences["minimumCondition"])}>
-                {conditionProfiles.map((profile) => <option value={profile.value} key={profile.value}>{profile.label}</option>)}
+            <summary>Kartensprache ändern <span>aktuell: {language === "de" ? "Deutsch" : "English"}</span></summary>
+            <label className={styles.languageChoice}>Kartensprache
+              <select disabled={discoveryMode === "theme"} value={discoveryMode === "theme" ? "en" : language} onChange={(event) => changeLanguage(event.target.value as GiftLanguage)}>
+                <option value="de">Deutsch</option><option value="en">English</option>
               </select>
-              <span>{conditionProfile(orderCondition).providerSummary}. Diese Vorgabe gilt zunächst für alle vorgeschlagenen Karten und kann später einzeln geändert werden.</span>
+              {discoveryMode === "theme" ? <small>Für Bildmotive gibt es derzeit nur geprüfte englische Karten.</small> : <small>{language === "de" ? "Deutsche Karten sind für Käufer in Deutschland meist die richtige Wahl." : "Englische Karten sind oft günstiger und besser verfügbar."}</small>}
             </label>
-            <ConditionGuide />
           </details>
           <p className={styles.localHint}>{pricingEnabled ? `Alles bleibt in diesem Browser. Kartenpreise sind unverbindliche Schätzungen ohne Versand und Steuern.${budgetGuaranteeEnabled ? "" : " Das Budget ist eine Orientierung."}` : "Alles bleibt in diesem Browser. Die Preisprüfung ist derzeit deaktiviert; das Budget kann noch nicht zugesagt werden."}</p>
           <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={onCancel}>Zurück</button><button type="submit" className={styles.primaryButton} disabled={loading || (discoveryMode === "theme" ? !selectedThemeId : !preferences.subjectQuery.trim())}>{loading ? <><LoaderCircle className={styles.spin} aria-hidden="true" size={16} /> Karten werden gesucht…</> : <>Binder-Seite ansehen <ArrowRight aria-hidden="true" size={18} /></>}</button></div>
@@ -683,27 +672,13 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
             <div><strong>{selection.selected.length} / {preferences.targetCardCount}</strong><span>Karten</span></div>
             <div><strong>{pricingEnabled ? formatMoney(selection.estimatedTotalMinor, preferences.currency) : "Preisprüfung aus"}</strong><span>{pricingEnabled ? selection.budgetStatus === "unknown" ? "Schätzung unvollständig" : "geschätzter Wert" : "keine Budgetzusage"}</span></div>
           </div>
+          <GiftBinderSpread pages={spreadPages} inspectedKey={inspectedKey} onInspect={inspectCandidate} onSwap={swapCandidates} />
+          {inspected ? renderInspector(inspected) : null}
           {!pricingEnabled ? <p className={styles.gateNotice} role="status">Die Preisprüfung ist derzeit noch deaktiviert. Karten können trotzdem ausgewählt und als normaler Binder gespeichert werden; es gibt keine Budgetzusage.</p> : null}
           {pricingEnabled && !budgetGuaranteeEnabled ? <p className={styles.gateNotice} role="status">Schätzwert – den endgültigen Preis siehst du beim Kartenanbieter.</p> : null}
           {pricingEnabled && hasBudgetSlack(selection.estimatedTotalMinor, preferences.budgetMinor) ? <p className={styles.gateNotice} role="status">Das liegt deutlich unter deinem Budget von {formatMoney(preferences.budgetMinor, preferences.currency)}. Das Budget ist nur die Obergrenze – du kannst Karten austauschen oder unter „Wünsche ändern“ mehr Karten wählen.</p> : null}
           {selection.budgetStatus === "over" ? <p className={styles.warning} role="status">Die geschätzten {formatMoney(selection.estimatedTotalMinor, preferences.currency)} liegen über deinem Budget von {formatMoney(preferences.budgetMinor, preferences.currency)}. Auch die günstigste vollständige Auswahl liegt derzeit darüber. Du kannst Wünsche oder Karten ändern.</p> : null}
           {selection.budgetStatus === "unknown" && pricingEnabled ? <p className={styles.warning} role="status">Für mindestens eine ausgewählte Karte fehlt ein Preis. Deshalb kann Cardfolio das Budget nicht vollständig berücksichtigen.</p> : null}
-          {pages.map((pageCards, pageIndex) => {
-            const inspectedPosition = pageCards.findIndex((candidate) => candidate.card.key === inspected?.card.key);
-            return <div className={styles.pageBlock} key={pageCards[0]?.card.key ?? pageIndex}>
-              {pages.length > 1 ? <h2 className={styles.pageLabel}>Seite {pageIndex + 1}</h2> : null}
-              <div className={styles.cardGrid}>
-                {pageCards.map((candidate, indexInPage) => {
-                  const rowEnd = indexInPage % 3 === 2 || indexInPage === pageCards.length - 1;
-                  const inspectedInRow = inspected !== undefined && inspectedPosition >= 0 && Math.floor(inspectedPosition / 3) === Math.floor(indexInPage / 3);
-                  return <Fragment key={candidate.card.key}>
-                    {renderTile(candidate, pageIndex * 9 + indexInPage)}
-                    {rowEnd && inspectedInRow && inspected ? renderInspector(inspected) : null}
-                  </Fragment>;
-                })}
-              </div>
-            </div>;
-          })}
           <details className={styles.conditionBox}>
             <summary>Kartenzustand: <strong>{conditionProfile(orderCondition).shortLabel}</strong> <span>ändern</span></summary>
             <label>Zustand für alle Karten
@@ -712,6 +687,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
               </select>
               <small>{conditionProfile(orderCondition).providerSummary}</small>
             </label>
+            <ConditionGuide />
           </details>
           {availableCandidates.length === 0 ? <section className={styles.candidateLimitNotice} role="status">
             <CircleAlert aria-hidden="true" size={21} />
