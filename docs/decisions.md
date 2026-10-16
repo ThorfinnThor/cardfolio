@@ -281,3 +281,21 @@
 - The purchase view asks for the buyer's region instead of requesting location access. Europe and the UK select Cardmarket, USA and Canada select TCGplayer, and other regions expose the provider comparison.
 - Provider selection remains reversible. CardTrader stays a labelled preview until its independent approval gates pass.
 - The Gift summary recommends only reviewed, currently available binder offers that fit the requested card count. A 9-pocket product is preferred because Cardfolio Gift pages use a 3×3 layout; capacity, current price evidence and external availability remain provider-side facts.
+
+## 2026-10-16 — The Gift flow is three steps, free of jargon and shown on a compact binder page
+
+- The wizard has three steps (Motiv wählen → Seite ansehen → Besorgen), matching the three steps promised on the start page. The former review step is merged: one primary action accepts the recommended finish and condition for every card (the 2026-10-15 safe-defaults rule) and saves the plan locally. A real variant conflict still blocks that action and opens the affected card.
+- The proposal is a compact 3×3 binder page on every viewport; multi-page plans show one page per block. Tapping a card opens its details in place (artwork, set, number, estimate with marketplace and date, completeness status, “Andere Ausführung wählen”). Swap and remove stay on the tile. A card that needs attention carries a visible marker; otherwise its completeness is stated in the detail view.
+- Finish, edition, printing and provider-data labels appear on screen only when they differ from the default. The printable summary and the text export keep the full technical line.
+- The budget is presented as an upper limit. The selection engine is unchanged: diversity first, no price-led ranking, no budget guarantee. A note explains this when the proposal stays below 40 % of the budget. A “nicer cards” ranking would need rarity data and its own release decision.
+- Card language and currency moved into the optional wishes. “Ich kenne mich nicht aus” offers popular Pokémon whose names follow the selected card language.
+- First-time visitors see only the gift start on `/`; the other start modes sit behind “Ich sammle selbst”. People who already have binders keep all four starts. `/geschenk/` is a lean entry without sidebar or collector chrome; it shares workspace, storage and purchase handoff with `/`.
+- The footer's backup reminder is shown only when a binder exists outside the Gift flow.
+- Known gap: opening the marketplace view from the Gift summary unmounts the Gift wizard, so returning restarts it. The marketplace handoff itself is unchanged.
+
+## 2026-10-16 — Gift buyers get a plain-language Cardmarket guide with Europe preselected
+
+- Opened from the Gift summary, the purchase view runs in beginner mode: Cardmarket is preselected (the interface is German-only and no location is requested), the region/provider choice sits behind “Anderer Wohnort oder Anbieter?”, and the binder header, statistics and expert sections (import list, single searches, complete list, TXT/CSV) are hidden. Collectors who open the view from the sidebar or the binder keep the detailed view unchanged. This narrows the 2026-10-15 region question to a default that stays one click from being changed.
+- The four-step guide states what Cardmarket documents in its help centre (Shopping Wizard and Wants-list articles, read 2026-10-16): the Shopping Wizard needs a logged-in account; its strategies are “Reduce Price” and “Reduce Shipments”; “Add All to Cart” requires six completed purchases, so newcomers add offers one by one; the Wizard does not search every offer. “Reduce Shipments” is offered as a hint for many cheap cards, not as a guarantee.
+- The condition step (“≥ PO” after import, then a mass change) is unchanged from the detailed guide. Cardfolio still buys nothing and makes no price or shipping claims.
+- These are third-party statements and can change. Re-check them when Cardmarket changes its interface or help pages.

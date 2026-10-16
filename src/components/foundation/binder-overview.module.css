@@ -18,6 +18,8 @@
 .heroButton:hover:not(:disabled) { background: var(--cf-accent-deep); }
 .heroButton:disabled { opacity: .5; cursor: not-allowed; }
 .heroReassurance { color: var(--cf-muted); font-size: 12px; line-height: 1.5; }
+.collectorLink { min-height: 44px; display: inline-flex; align-items: center; border: 0; background: transparent; color: var(--cf-accent-text); padding: 0; font: inherit; font-size: 14px; font-weight: 650; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+.collectorLink:hover { color: var(--cf-accent-deep); }
 .giftHeroVisual { display: grid; justify-items: center; gap: 13px; transform: rotate(4deg); }
 .pageCaption { color: var(--cf-accent-text); font-family: var(--cf-font-mono); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .samplePage { width: min(100%, 350px); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; border: 12px solid color-mix(in srgb, var(--cf-text) 80%, #000); border-radius: 15px; background: color-mix(in srgb, var(--cf-text) 82%, #000); padding: 11px; box-shadow: 0 23px 36px -21px var(--cf-sh-deep); }

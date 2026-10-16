@@ -92,22 +92,25 @@ describe("GiftBuilderPanel", () => {
     fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
     expect(await screen.findAllByText("9 / 9")).not.toHaveLength(0);
     expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("Preisprüfung"))).toBe(true);
-    expect(screen.getByText("Alle 9 Karten sind vorbereitet.")).toBeInTheDocument();
+    expect(screen.getByRole("list", { name: "Schritte zum Geschenk-Binder" }).children).toHaveLength(3);
+    expect(screen.queryByText(/Unlimited/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/TCGdex/)).not.toBeInTheDocument();
     const orderCondition = screen.getByRole("combobox", { name: "Zustand für alle" });
     expect(orderCondition).toHaveValue("excellent");
     fireEvent.change(orderCondition, { target: { value: "near-mint" } });
     expect(screen.getAllByText(/Wie neu/).length).toBeGreaterThan(0);
-    fireEvent.click(screen.getByRole("button", { name: /Bestellung prüfen/i }));
-    await screen.findByRole("heading", { name: /Vorschlag ist bereit/i });
-    fireEvent.click(screen.getByRole("button", { name: /Als Binder anlegen/i }));
+    fireEvent.click(screen.getByRole("button", { name: "Weiter zum Einkauf" }));
     await waitFor(() => expect(onCreateBinder).toHaveBeenCalledTimes(1));
     expect(onCreateBinder).toHaveBeenCalledWith(
       expect.objectContaining({ selected: expect.arrayContaining([expect.any(Object)]) }),
       expect.objectContaining({ subjectQuery: "Pikachu", targetCardCount: 9 }),
     );
     await screen.findByRole("heading", { name: "Geschenk · Pikachu" });
+    expect(screen.getByRole("heading", { name: "Dein Geschenk-Binder ist fertig geplant" })).toBeInTheDocument();
     expect(screen.getAllByRole("img", { name: /Pikachu 1, Set 1 1/i }).length).toBeGreaterThan(0);
     expect(screen.getByText("Keine Budgetzusage")).toBeInTheDocument();
+    expect(screen.queryByText(/Preissicherheit/)).not.toBeInTheDocument();
+    expect(screen.queryByText("Kein bestätigter Preis")).not.toBeInTheDocument();
     expect(await screen.findByText("9-Pocket Test-Binder")).toBeInTheDocument();
     expect(screen.getByText(/9-Pocket · Platz für bis zu 360 Karten/i)).toBeInTheDocument();
     expect(screen.getByText("Passt zu deinem Plan")).toBeInTheDocument();
@@ -157,7 +160,7 @@ describe("GiftBuilderPanel", () => {
     expect(screen.getByText("9 / 9")).toBeInTheDocument();
   });
 
-  it("lets beginners accept unverified finish recommendations together instead of checking every card", async () => {
+  it("lets beginners accept unverified finish recommendations and continue with a single tap", async () => {
     const briefs: CatalogSearchItem[] = Array.from({ length: 9 }, (_, index) => ({
       ref: { provider: "tcgdex", id: `gift-ui-${index + 1}`, language: "en" },
       name: `Pikachu ${index + 1}`,
@@ -174,18 +177,119 @@ describe("GiftBuilderPanel", () => {
         return { ...value, card, variant: options.variantFor(card) };
       })),
     };
-    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+    const onCreateBinder = vi.fn(async (_selection, preferences) => createGiftProject("Geschenk · Pikachu", preferences));
+    vi.stubGlobal("fetch", vi.fn(async () => ({ ok: true, json: async () => availableStandardPartner })));
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={onCreateBinder} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
 
     fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
     fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
-    await screen.findByText("Ausführung und Zustand sind für alle 9 Karten vorausgewählt.");
-    expect(screen.getByRole("heading", { name: "Auswahl bestätigen" })).toBeInTheDocument();
-    expect(screen.getByText(/Alles ist vorbereitet/)).toBeInTheDocument();
+    await screen.findByText("9 / 9");
+    // No per-card jargon and no second confirmation: the primary action is the only next step.
+    expect(screen.queryByText("Vorausgewählt")).not.toBeInTheDocument();
+    expect(screen.queryByText(/Non-Holo/)).not.toBeInTheDocument();
+    expect(screen.queryByText("Prüfen")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Jetzt Ausführung prüfen/i })).not.toBeInTheDocument();
-    expect(screen.getAllByText("Vorausgewählt")).toHaveLength(9);
 
-    fireEvent.click(screen.getByRole("button", { name: "Empfehlung übernehmen und Bestellung prüfen" }));
-    expect(await screen.findByRole("heading", { name: "Dein Vorschlag ist bereit" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Weiter zum Einkauf" }));
+    expect(await screen.findByRole("heading", { name: "Dein Geschenk-Binder ist fertig geplant" })).toBeInTheDocument();
+    expect(onCreateBinder).toHaveBeenCalledTimes(1);
+  });
+
+  it("opens a card in place with plain-language details and the confirmation status", async () => {
+    const briefs: CatalogSearchItem[] = Array.from({ length: 9 }, (_, index) => ({
+      ref: { provider: "tcgdex", id: `gift-ui-${index + 1}`, language: "en" },
+      name: `Pikachu ${index + 1}`,
+      collectorNumber: String(index + 1),
+    }));
+    const loader = {
+      loadCandidatePool: vi.fn(async () => briefs),
+      hydrateCandidates: vi.fn(async () => Array.from({ length: 9 }, (_, index) => ({
+        ...candidateWithArtwork(index + 1),
+        price: {
+          source: "tcgdex-cardmarket" as const,
+          currency: "EUR" as const,
+          amountMinor: 250,
+          range: { lowMinor: 100, highMinor: 400, lowMetric: "low", highMetric: "avg" },
+          fetchedAt: "2026-10-01T10:00:00.000Z",
+          sourceUpdatedAt: "2026-10-01T09:00:00.000Z",
+          confidence: "usable" as const,
+          issues: [],
+        },
+      }))),
+    };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await screen.findByText("9 / 9");
+    expect(screen.queryByRole("region", { name: /Details zu/ })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Pikachu 4, Set 4: Details ansehen" }));
+    const details = screen.getByRole("region", { name: "Details zu Pikachu 4" });
+    expect(within(details).getByText(/Bestellangaben vollständig · Zustand: Sehr gut/)).toBeInTheDocument();
+    expect(within(details).getByText(/laut Cardmarket, Stand/)).toBeInTheDocument();
+    expect(within(details).queryByText(/TCGdex/)).not.toBeInTheDocument();
+
+    fireEvent.click(within(details).getByRole("button", { name: "Detailansicht schließen" }));
+    expect(screen.queryByRole("region", { name: "Details zu Pikachu 4" })).not.toBeInTheDocument();
+  });
+
+  it("offers popular Pokémon for gift buyers who do not know the franchise and follows the card language", async () => {
+    const loader = { loadCandidatePool: vi.fn(async () => []), hydrateCandidates: vi.fn() };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    fireEvent.click(screen.getByRole("radio", { name: "Glurak" }));
+    expect(screen.getByRole("textbox", { name: "Lieblings-Pokémon" })).toHaveValue("Glurak");
+    fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
+    expect(screen.getByRole("textbox", { name: "Lieblings-Pokémon" })).toHaveValue("Charizard");
+
+    fireEvent.click(screen.getByRole("radio", { name: "Ich kenne mich nicht aus" }));
+    expect(screen.queryByRole("textbox", { name: "Lieblings-Pokémon" })).not.toBeInTheDocument();
+    expect(screen.getByText(/Kein Problem/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("radio", { name: "Eevee" }));
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await waitFor(() => expect(loader.loadCandidatePool).toHaveBeenCalledWith(expect.objectContaining({ subjectQuery: "Eevee", language: "en" })));
+  });
+
+  it("keeps the currency choice out of the main form and explains the budget as an upper limit", () => {
+    const loader = { loadCandidatePool: vi.fn(), hydrateCandidates: vi.fn() };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    expect(screen.getByText("Das ist die Obergrenze für die Karten, ohne Versand.")).toBeInTheDocument();
+    const extras = screen.getByText("Weitere Wünsche für das Geschenk").closest("details");
+    expect(extras).not.toBeNull();
+    expect(within(extras as HTMLElement).getByRole("combobox", { name: "Währung" })).toBeInTheDocument();
+    expect(within(extras as HTMLElement).getByRole("combobox", { name: /Kartensprache/i })).toBeInTheDocument();
+  });
+
+  it("tells the buyer when the proposal stays far below the budget instead of looking broken", async () => {
+    const briefs: CatalogSearchItem[] = Array.from({ length: 9 }, (_, index) => ({
+      ref: { provider: "tcgdex", id: `gift-ui-${index + 1}`, language: "en" },
+      name: `Pikachu ${index + 1}`,
+      collectorNumber: String(index + 1),
+    }));
+    const loader = {
+      loadCandidatePool: vi.fn(async () => briefs),
+      hydrateCandidates: vi.fn(async () => Array.from({ length: 9 }, (_, index) => ({
+        ...candidateWithArtwork(index + 1),
+        price: {
+          source: "tcgdex-cardmarket" as const,
+          currency: "EUR" as const,
+          amountMinor: 100,
+          range: { lowMinor: 80, highMinor: 120, lowMetric: "low", highMetric: "avg" },
+          fetchedAt: "2026-10-01T10:00:00.000Z",
+          sourceUpdatedAt: "2026-10-01T09:00:00.000Z",
+          confidence: "usable" as const,
+          issues: [],
+        },
+      }))),
+    };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await screen.findByText("9 / 9");
+    expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("deutlich unter deinem Budget") && status.textContent.includes("Obergrenze"))).toBe(true);
   });
 
   it("builds a proposal from one of ten semantic artwork themes", async () => {

@@ -414,7 +414,13 @@ function CatalogSetArtwork({ entry, language }: { entry: CatalogSetIndexEntry; l
   );
 }
 
-export function FoundationWorkspace() {
+export interface FoundationWorkspaceProps {
+  /** "gift" is the lean /geschenk/ entry: no sidebar or collector chrome, gift start first. */
+  shell?: "full" | "gift";
+}
+
+export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps = {}) {
+  const giftShell = shell === "gift";
   const repository = useMemo(() => new IndexedDBBinderRepository(), []);
   const giftProjects = useMemo(() => new IndexedDBGiftProjectRepository(), []);
   const catalog = useMemo(() => new TCGdexCatalogAdapter(), []);
@@ -465,13 +471,15 @@ export function FoundationWorkspace() {
   const [layoutChange, setLayoutChange] = useState<LayoutChangeRequest>();
   const [variantEdit, setVariantEdit] = useState<VariantEditRequest>();
   const [missingOpen, setMissingOpen] = useState(false);
+  // The plain-language purchase guide is for the gift flow; collectors keep the detailed view.
+  const [missingBeginner, setMissingBeginner] = useState(false);
   const [copyState, setCopyState] = useState<CopyState>("idle");
   const [tcgplayerCopyState, setTcgplayerCopyState] = useState<CopyState>("idle");
   const [cardmarketCopyState, setCardmarketCopyState] = useState<CopyState>("idle");
   const [cardmarketPreparing, setCardmarketPreparing] = useState(false);
   const [importReport, setImportReport] = useState<ImportReport>();
   const [storageConflict, setStorageConflict] = useState(false);
-  const [binderManagerOpen, setBinderManagerOpen] = useState(false);
+  const [binderManagerOpen, setBinderManagerOpen] = useState(giftShell);
   const [giftBuilderOpen, setGiftBuilderOpen] = useState(false);
   const [giftDiscoveryMode, setGiftDiscoveryMode] = useState<"pokemon" | "theme">("pokemon");
   const [giftSubjectQuery, setGiftSubjectQuery] = useState("Pikachu");
@@ -1876,8 +1884,8 @@ export function FoundationWorkspace() {
     .map((entry) => ({ entry, card: cards.get(entry.cardKey) }));
 
   return (
-    <div className={styles.appShell} data-design={PRODUCT_DESIGN}>
-      <aside className={styles.sidebar} aria-label="Cardfolio Navigation">
+    <div className={styles.appShell} data-design={PRODUCT_DESIGN} data-shell={shell}>
+      {giftShell ? null : <aside className={styles.sidebar} aria-label="Cardfolio Navigation">
         <button type="button" className={styles.brand} onClick={() => setBinderManagerOpen(true)}>
           <span className={styles.brandMark} aria-hidden="true"><i /><i /></span>
           <span className={styles.brandText}>Cardfolio<small>Wunschbinder · lokal</small></span>
@@ -1889,7 +1897,7 @@ export function FoundationWorkspace() {
           <button type="button" className={activeBinder && !binderManagerOpen && !missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(false); }} disabled={!activeBinder}>
             <Archive size={18} /> <span>Binder</span>
           </button>
-          <button type="button" aria-label={stats ? `Fehlende Karten (${stats.missing})` : "Fehlende Karten"} className={missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(true); setSearchOpen(false); }} disabled={!activeBinder}>
+          <button type="button" aria-label={stats ? `Fehlende Karten (${stats.missing})` : "Fehlende Karten"} className={missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingBeginner(false); setMissingOpen(true); setSearchOpen(false); }} disabled={!activeBinder}>
             <ListFilter size={18} /> <span>Karten kaufen</span>{stats ? <span className={styles.navBadge}>{stats.missing}</span> : null}
           </button>
         </nav>
@@ -1909,10 +1917,19 @@ export function FoundationWorkspace() {
           <Link className={styles.navItem} href="/help/"><CircleHelp size={18} /> <span>Hilfe</span></Link>
           <span className={styles.navItemMuted}><Settings2 size={18} /> <span>Einstellungen</span></span>
         </div>
-      </aside>
+      </aside>}
 
       <div className={styles.mainColumn}>
-        <header className={styles.topbar}>
+        {giftShell ? <header className={styles.giftBar}>
+          <button type="button" className={styles.giftBrand} onClick={() => { setSetBinderWizardOpen(false); setMissingOpen(false); setGiftBuilderOpen(false); setBinderManagerOpen(true); }} aria-label="Cardfolio – zur Geschenk-Startseite">
+            <span className={styles.brandMark} aria-hidden="true"><i /><i /></span>
+            <span>Cardfolio</span>
+          </button>
+          <div className={styles.giftBarActions}>
+            <ThemeToggle className={styles.themeToggle} />
+            <Link className={styles.giftBarLink} href="/">Ich sammle selbst</Link>
+          </div>
+        </header> : <header className={styles.topbar}>
           <button type="button" className={styles.mobileMenu} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }} aria-label="Binderverwaltung öffnen"><Menu size={19} /></button>
           <div className={styles.breadcrumb}>
             <button type="button" onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }}>Meine Binder</button>
@@ -1926,7 +1943,7 @@ export function FoundationWorkspace() {
             <ThemeToggle className={styles.themeToggle} />
             <span className={styles.status} data-status={storageStatus}><span />{storageStatus === "ready" || storageStatus === "saved" ? "Lokal gespeichert" : storageStatus}</span>
           </div>
-        </header>
+        </header>}
 
         <main className={styles.page}>
 
@@ -1965,7 +1982,7 @@ export function FoundationWorkspace() {
             onCancel={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }}
             onCreateBinder={createGiftBinder}
             onOpenBinder={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(false); }}
-            onCardsPurchase={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(true); setSearchOpen(false); }}
+            onCardsPurchase={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingBeginner(true); setMissingOpen(true); setSearchOpen(false); }}
           />
         ) : (
           <BinderOverview
@@ -1985,6 +2002,7 @@ export function FoundationWorkspace() {
             onGiftExampleStart={(subjectQuery) => { setGiftDiscoveryMode("pokemon"); setGiftSubjectQuery(subjectQuery); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
             onThemeStart={() => { setGiftDiscoveryMode("theme"); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
             onSetStart={() => { setSetBinderWizardOpen(true); setGiftBuilderOpen(false); setBinderManagerOpen(true); setMissingOpen(false); }}
+            giftOnly={giftShell}
           />
         )
       ) : null}
@@ -2147,7 +2165,7 @@ export function FoundationWorkspace() {
 
       {activeBinder && stats && !binderManagerOpen ? (
         <>
-          <section className={styles.binderHeader}>
+          {missingOpen && missingBeginner ? null : <section className={styles.binderHeader}>
             <div>
               <p className={styles.binderBreadcrumb}><span className={styles.catalogTag}>{catalogLabel(Math.max(binders.findIndex((binder) => binder.id === activeBinder.id), 0))}</span> Meine Binder / {activeBinder.name}</p>
               <h1>{activeBinder.name}</h1>
@@ -2169,13 +2187,13 @@ export function FoundationWorkspace() {
             <div className={styles.binderHeaderActions}>
               <button type="button" className={styles.secondaryButton} onClick={() => setBinderRename({ binderId: activeBinder.id, name: activeBinder.name })}><Pencil size={16} /> Binder umbenennen</button>
               <button type="button" className={styles.secondaryButton} onClick={() => openSearchForSlot()}><Search size={17} /> Karte hinzufügen</button>
-              <button type="button" aria-label={missingOpen ? "Zurück zum Binder" : `Fehlende Karten (${stats.missing})`} className={styles.primaryButton} onClick={() => { setMissingOpen((open) => !open); setSearchOpen(false); setCopyState("idle"); setTcgplayerCopyState("idle"); setCardmarketCopyState("idle"); }} disabled={Boolean(missingResult.error) || cardsBinderId !== activeId}>
+              <button type="button" aria-label={missingOpen ? "Zurück zum Binder" : `Fehlende Karten (${stats.missing})`} className={styles.primaryButton} onClick={() => { setMissingBeginner(giftShell); setMissingOpen((open) => !open); setSearchOpen(false); setCopyState("idle"); setTcgplayerCopyState("idle"); setCardmarketCopyState("idle"); }} disabled={Boolean(missingResult.error) || cardsBinderId !== activeId}>
                 <ListFilter size={17} /> {missingOpen ? "Zurück zum Binder" : `Karten kaufen (${stats.missing})`}
               </button>
             </div>
-          </section>
+          </section>}
 
-          <section className={styles.stats} aria-label="Binderfortschritt">
+          {missingOpen && missingBeginner ? null : <section className={styles.stats} aria-label="Binderfortschritt">
             <div className={styles.statsHero} data-complete={stats.planned > 0 && stats.owned === stats.planned}>
               <small>Fortschritt</small>
               <strong>{stats.completionPercent}%</strong>
@@ -2186,7 +2204,7 @@ export function FoundationWorkspace() {
             <div data-tone="miss"><strong>{stats.missing}</strong><span>Fehlend</span><small>geplante Karten</small></div>
             <div><strong>{Math.max(stats.capacity - stats.planned, 0)}</strong><span>Freie Plätze</span><small>auf {activeBinder.pages.length} {activeBinder.pages.length === 1 ? "Seite" : "Seiten"}</small></div>
             <div><strong>{stats.planned}</strong><span>Geplant</span><small>von {stats.capacity} Slots</small></div>
-          </section>
+          </section>}
 
           {missingOpen ? (
             <MissingCardsPanel
@@ -2210,6 +2228,7 @@ export function FoundationWorkspace() {
               onCardmarketTextExport={downloadCardmarketHandoff}
               cardtraderPreviewVisible={FEATURES.cardtraderPreview}
               cardtraderEnabled={FEATURES.cardtraderCatalog}
+              beginner={missingBeginner}
             />
           ) : (
           <div className={styles.workspace}>
@@ -2724,7 +2743,7 @@ export function FoundationWorkspace() {
                       ) : <p>Keine geplante Karte dieser Seite ist noch offen.</p>}
                     </section>
                     <button type="button" className={styles.primaryButton} onClick={() => openSearchForSlot()}><Search size={16} /> Karte hinzufügen</button>
-                    <button type="button" className={styles.secondaryButton} onClick={() => setMissingOpen(true)}><ListFilter size={16} /> Gesamte Fehlkartenliste</button>
+                    <button type="button" className={styles.secondaryButton} onClick={() => { setMissingBeginner(giftShell); setMissingOpen(true); }}><ListFilter size={16} /> Gesamte Fehlkartenliste</button>
                   </div>
                 )}
               </aside>
@@ -2754,7 +2773,7 @@ export function FoundationWorkspace() {
       ) : null}
 
       <footer className={styles.footer}>
-        <p>Keine Cloud-Synchronisierung. Sichere wichtige Binder regelmäßig als JSON-Datei.</p>
+        <p>{binders.length > 0 && !giftBuilderOpen && !giftShell ? "Keine Cloud-Synchronisierung. Sichere wichtige Binder regelmäßig als JSON-Datei." : "Alles bleibt in deinem Browser – kein Konto, keine Cloud."}</p>
         <Link href="/help/">Hilfe, Datenflüsse und Hinweise</Link>
       </footer>
         </main>

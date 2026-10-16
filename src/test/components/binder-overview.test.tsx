@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, cleanup } from "@testing-library/react";
+import { fireEvent, render, screen, cleanup, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { ComponentProps } from "react";
 
@@ -39,6 +39,34 @@ describe("BinderOverview", () => {
     expect(screen.queryByText("Gesamtsammlung")).not.toBeInTheDocument();
   });
 
+  it("keeps collector start modes behind a small link for first-time visitors", () => {
+    render(<BinderOverview {...props()} />);
+
+    expect(screen.queryByRole("tablist", { name: "Binder erstellen" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Ich sammle selbst" }));
+
+    const tabs = within(screen.getByRole("tablist", { name: "Binder erstellen" })).getAllByRole("tab");
+    expect(tabs.map((tab) => tab.textContent?.replace(/Empfohlen/, "").trim())).toEqual(["Als Geschenk", "Nach Bildmotiv", "Komplettes Set", "Selbst gestalten"]);
+    expect(screen.queryByRole("button", { name: "Ich sammle selbst" })).not.toBeInTheDocument();
+  });
+
+  it("shows every start mode right away to people who already have binders", () => {
+    render(<BinderOverview {...props({ binders: [createBinder("Base Set")] })} />);
+
+    expect(screen.getByRole("tablist", { name: "Binder erstellen" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Ich sammle selbst" })).not.toBeInTheDocument();
+  });
+
+  it("offers only the gift start in the lean gift entry", () => {
+    render(<BinderOverview {...props({ binders: [createBinder("Base Set")], giftOnly: true })} />);
+
+    expect(screen.getByRole("button", { name: "Geschenk-Binder gestalten" })).toBeInTheDocument();
+    expect(screen.queryByRole("tablist")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Ich sammle selbst" })).not.toBeInTheDocument();
+    expect(screen.queryByText("Hier kannst du weitergestalten")).not.toBeInTheDocument();
+    expect(screen.queryByText("Vorhandenen Binder aus Backup laden")).not.toBeInTheDocument();
+  });
+
   it("starts a gift with the Pokémon from a visual example", () => {
     const onGiftExampleStart = vi.fn();
     render(<BinderOverview {...props({ onGiftExampleStart })} />);
@@ -55,6 +83,7 @@ describe("BinderOverview", () => {
     render(<BinderOverview {...props({ onGiftStart, onThemeStart, onSetStart })} />);
 
     fireEvent.click(screen.getByRole("button", { name: "Geschenk-Binder gestalten" }));
+    fireEvent.click(screen.getByRole("button", { name: "Ich sammle selbst" }));
     fireEvent.click(screen.getByRole("tab", { name: "Nach Bildmotiv" }));
     fireEvent.click(screen.getByRole("button", { name: "Bildmotiv auswählen" }));
     fireEvent.click(screen.getByRole("tab", { name: "Komplettes Set" }));
@@ -68,6 +97,7 @@ describe("BinderOverview", () => {
   it("keeps manual planning as a separate start tab", () => {
     render(<BinderOverview {...props()} />);
 
+    fireEvent.click(screen.getByRole("button", { name: "Ich sammle selbst" }));
     fireEvent.click(screen.getByRole("tab", { name: "Selbst gestalten" }));
     expect(screen.getByRole("heading", { name: "Binder selbst gestalten." })).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: "Wie soll dein Binder heißen?" })).toBeInTheDocument();

@@ -1,11 +1,17 @@
 import { readFile } from "node:fs/promises";
 
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Locator, type Page, test } from "@playwright/test";
 
 const headers = {
   "access-control-allow-origin": "*",
   "content-type": "application/json",
 };
+
+/**
+ * The Cardmarket decklist is written from the bundled, verified card identities (keyed by card ID), not from the mocked
+ * catalog response. The fixture therefore has to use Ivysaur's real ID: base1-2 is Blastoise in the real Base Set.
+ */
+const IVYSAUR_ID = "base1-30";
 
 async function mockCatalog(page: Page) {
   await page.route("https://api.tcgdex.net/**", async (route) => {
@@ -61,7 +67,7 @@ async function mockCatalog(page: Page) {
               { id: "sm9-14", localId: "14", name: "Charizard" },
             ]
           : query?.includes("ivysaur")
-            ? [{ id: "base1-2", localId: "2", name: "Ivysaur" }]
+            ? [{ id: IVYSAUR_ID, localId: "30", name: "Ivysaur" }]
             : query?.includes("pikachu")
               ? [{ id: "base1-58", localId: "58", name: "Pikachu" }]
             : [{ id: "base1-1", localId: "1", name: "Bulbasaur" }];
@@ -87,11 +93,11 @@ async function mockCatalog(page: Page) {
       return;
     }
 
-    if (url.pathname.endsWith("/cards/base1-2")) {
+    if (url.pathname.endsWith(`/cards/${IVYSAUR_ID}`)) {
       await route.fulfill({
         body: JSON.stringify({
-          id: "base1-2",
-          localId: "2",
+          id: IVYSAUR_ID,
+          localId: "30",
           name: "Ivysaur",
           category: "Pokemon",
           attacks: [{ name: "Vine Whip" }, { name: "Poisonpowder" }],
@@ -210,6 +216,16 @@ async function mockCatalog(page: Page) {
   });
 }
 
+/** Creates an empty binder through the manual start, which sits behind "Ich sammle selbst" for first-time visitors. */
+async function createBinderFromStart(page: Page, name: string) {
+  await page.getByRole("button", { name: "Geschenk-Binder gestalten" }).waitFor();
+  const collectorLink = page.getByRole("button", { name: "Ich sammle selbst" });
+  if (await collectorLink.isVisible()) await collectorLink.click();
+  await page.getByRole("tab", { name: "Selbst gestalten" }).click();
+  await page.getByRole("textbox", { name: "Wie soll dein Binder heißen?" }).fill(name);
+  await page.getByRole("button", { name: "Binder anlegen" }).click();
+}
+
 async function mockSemanticIndex(page: Page, status = 200) {
   await page.route("**/data/semantic/card-artwork-search-v1.json", async (route) => {
     if (status !== 200) {
@@ -235,18 +251,39 @@ async function mockSemanticIndex(page: Page, status = 200) {
   });
 }
 
+const SEARCH_PLACEHOLDER = "Kartenname oder Nummer suchen";
+
+/** The search drawer is ONE dialog whose name follows its state: "Karte auswählen" (results) or "Karte prüfen" (preview). */
+const searchDialogOf = (page: Page) => page.getByRole("dialog", { name: "Karte auswählen" });
+const resultTilesOf = (page: Page) => page.getByRole("list", { name: "Kartentreffer", exact: true }).getByRole("listitem");
+const languageFilterOf = (page: Page) => page.getByRole("group", { name: "Kartensprache", exact: true });
+
+/**
+ * Finish, edition and printing sit behind "Andere Ausführung wählen" and stay collapsed while the catalog already
+ * pre-selects a finish. Opens the section if needed so the selects can be driven.
+ */
+async function openVariantOptions(preview: Locator) {
+  const summary = preview.locator("summary").filter({ hasText: "Ausführung" });
+  const details = summary.locator("xpath=..");
+  if (!(await details.evaluate((element) => (element as HTMLDetailsElement).open))) await summary.click();
+}
+
+/** The binder header and the sidebar both offer "Fehlende Karten (n)"; the header button is the one inside <main>. */
+async function openMissingCards(page: Page, count: number) {
+  await page.getByRole("main").getByRole("button", { name: `Fehlende Karten (${count})` }).click();
+}
+
 async function addCard(page: Page, slot: number, query: string, cardName: string) {
   await page.getByRole("button", { name: `Freier Platz ${slot}, Karte einsetzen` }).click();
-  await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill(query);
-  await page
-    .getByRole("listitem")
-    .filter({ hasText: cardName })
-    .getByRole("button", { name: "Prüfen" })
-    .click();
+  await page.getByPlaceholder(SEARCH_PLACEHOLDER).fill(query);
+  await resultTilesOf(page).filter({ hasText: cardName }).getByRole("button", { name: "Details" }).click();
   const preview = page.getByRole("dialog", { name: "Karte prüfen" });
   await expect(preview).toContainText(cardName);
   const finish = preview.getByLabel("Ausführung der Karte");
-  if (await finish.inputValue() === "unspecified") await finish.selectOption("normal");
+  if (await finish.inputValue() === "unspecified") {
+    await openVariantOptions(preview);
+    await finish.selectOption("normal");
+  }
   await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
   await expect(page.getByRole("article", { name: `${cardName}, Slot ${slot}` })).toBeVisible();
 }
@@ -258,8 +295,7 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   await mockCatalog(page);
   await page.goto("/");
 
-  await page.getByLabel("Bindername").fill("E2E Binder");
-  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await createBinderFromStart(page, "E2E Binder");
 
   await addCard(page, 1, "Bulbasaur", "Bulbasaur");
   await addCard(page, 2, "Ivysaur", "Ivysaur");
@@ -275,14 +311,17 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   await page.getByRole("article", { name: "Bulbasaur, Slot 2" }).click();
   await expect(page.getByRole("button", { name: "Als fehlend markieren" })).toBeVisible();
 
-  await page.getByRole("button", { name: /Fehlende Karten \(\d+\)/ }).click();
+  await openMissingCards(page, 1);
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
+  // The full list is a disclosure below the region chooser.
+  await missingCards.getByText("Vollständige Fehlkartenliste anzeigen (1)").click();
   await expect(missingCards.getByText("Ivysaur", { exact: true })).toBeVisible();
   await missingCards.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" }).click();
   await expect(missingCards.getByRole("heading", { name: /Karten gemeinsam übertragen/ })).toBeVisible();
   const bulkHandoff = missingCards.getByRole("link", { name: "1 Karte kopieren & Cardmarket öffnen" });
   await expect(bulkHandoff).toHaveAttribute("href", "https://www.cardmarket.com/de/Pokemon/Wants");
   await missingCards.getByText("Importliste ansehen oder als Datei speichern").click();
+  await missingCards.getByText(/Wichtige Hinweise anzeigen/).click();
   await expect(missingCards.getByText(/vollständiger Kartenname, Fähigkeiten und Attacken/)).toBeVisible();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue("1x Ivysaur Vine Whip Poisonpowder");
   const cardmarketDownloadPromise = page.waitForEvent("download");
@@ -302,7 +341,8 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   const cleanPage = await cleanContext.newPage();
   await mockCatalog(cleanPage);
   await cleanPage.goto("/");
-  await expect(cleanPage.getByRole("heading", { name: "Noch kein Binder" })).toBeVisible();
+  // A first-time visitor lands on the gift-first start screen, without any binder.
+  await expect(cleanPage.getByRole("heading", { name: "Ein Pokémon-Binder als persönliches Geschenk." })).toBeVisible();
   await cleanPage.locator("#backup-import").setInputFiles({
     buffer: backup,
     mimeType: "application/json",
@@ -319,8 +359,7 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
 test("inserts one card and safely undoes the exact saved mutation", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/");
-  await page.getByLabel("Bindername").fill("Undo Binder");
-  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await createBinderFromStart(page, "Undo Binder");
 
   await addCard(page, 1, "Bulbasaur", "Bulbasaur");
   await expect(page.getByRole("article", { name: "Bulbasaur, Slot 1" })).toBeVisible();
@@ -335,17 +374,16 @@ test("inserts one card and safely undoes the exact saved mutation", async ({ pag
 test("reviews multiple cards and fills from the next free slot continuously", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/");
-  await page.getByLabel("Bindername").fill("Mehrfachauswahl");
-  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await createBinderFromStart(page, "Mehrfachauswahl");
   await addCard(page, 1, "Bulbasaur", "Bulbasaur");
 
   await page.getByRole("button", { name: "Freier Platz 2, Karte einsetzen" }).click();
-  const search = page.getByRole("dialog", { name: "Karte suchen" });
-  const query = search.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102");
+  const search = searchDialogOf(page);
+  const query = search.getByPlaceholder(SEARCH_PLACEHOLDER);
   await query.fill("Bulbasaur");
-  await search.getByRole("listitem").filter({ hasText: "Bulbasaur" }).getByRole("button", { name: "Auswählen" }).click();
+  await resultTilesOf(page).filter({ hasText: "Bulbasaur" }).getByRole("button", { name: "Auswählen" }).click();
   await query.fill("Ivysaur");
-  await search.getByRole("listitem").filter({ hasText: "Ivysaur" }).getByRole("button", { name: "Auswählen" }).click();
+  await resultTilesOf(page).filter({ hasText: "Ivysaur" }).getByRole("button", { name: "Auswählen" }).click();
   await expect(search.getByText("2 Karten ausgewählt")).toBeVisible();
   await search.getByRole("button", { name: "Auswahl prüfen" }).click();
 
@@ -364,6 +402,7 @@ test("reviews multiple cards and fills from the next free slot continuously", as
 test("creates a reviewed set binder through the guided start", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/");
+  await page.getByRole("button", { name: "Ich sammle selbst" }).click();
   await page.getByRole("tab", { name: "Komplettes Set" }).click();
   await page.getByRole("button", { name: "Mit einem Set starten" }).click();
 
@@ -399,8 +438,7 @@ test("keeps Cardfolio views in the browser back and forward history", async ({ p
 
 test("autosaves the binder description and each page note across reloads", async ({ page }) => {
   await page.goto("/");
-  await page.getByLabel("Bindername").fill("Notizen Binder");
-  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await createBinderFromStart(page, "Notizen Binder");
 
   const descriptionEditor = page.getByRole("group", { name: "Binderbeschreibung" });
   const pageNoteEditor = page.getByRole("group", { name: "Seitennotiz · Seite 1" });
@@ -423,8 +461,7 @@ test("autosaves the binder description and each page note across reloads", async
 test("renames binders and safely duplicates and deletes pages", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/");
-  await page.getByLabel("Bindername").fill("Verwaltung Alt");
-  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await createBinderFromStart(page, "Verwaltung Alt");
 
   await page.getByRole("button", { name: "Binder umbenennen" }).click();
   const renameDialog = page.getByRole("dialog", { name: "Binder umbenennen" });
@@ -473,8 +510,7 @@ test("renames binders and safely duplicates and deletes pages", async ({ page })
 
 test("names and reorders pages, then duplicates and sorts binders", async ({ page }) => {
   await page.goto("/");
-  await page.getByLabel("Bindername").fill("Sortierbasis");
-  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await createBinderFromStart(page, "Sortierbasis");
 
   await page.getByRole("button", { name: "+ Seite" }).click();
   await page.getByRole("button", { name: "Seite 2 benennen" }).click();
@@ -491,17 +527,17 @@ test("names and reorders pages, then duplicates and sorts binders", async ({ pag
   await page.reload();
   await expect(page.getByRole("heading", { name: "Showcase", exact: true }).first()).toBeVisible();
 
+  // The start screen also shows three example articles; only the shelf labelled "Binder auswählen" holds binders.
+  const binderCards = page.locator('[aria-label="Binder auswählen"]').getByRole("article");
   await page.getByRole("button", { name: "Meine Binder", exact: true }).first().click();
   await page.getByRole("button", { name: "Sortierbasis duplizieren" }).click();
-  await expect(page.getByRole("article").filter({ hasText: "Sortierbasis (Kopie)" })).toHaveCount(1);
+  await expect(binderCards.filter({ hasText: "Sortierbasis (Kopie)" })).toHaveCount(1);
   await page.getByRole("button", { name: "Sortierbasis (Kopie) nach hinten verschieben" }).click();
-  const reorderedCards = page.getByRole("article");
-  await expect(reorderedCards.nth(0)).toContainText("Sortierbasis");
-  await expect(reorderedCards.nth(1)).toContainText("Sortierbasis (Kopie)");
+  await expect(binderCards.nth(0)).toContainText("Sortierbasis");
+  await expect(binderCards.nth(1)).toContainText("Sortierbasis (Kopie)");
 
   await page.reload();
   await page.getByRole("button", { name: "Meine Binder", exact: true }).first().click();
-  const binderCards = page.getByRole("article");
   await expect(binderCards).toHaveCount(2);
   await expect(binderCards.nth(0)).toContainText("Sortierbasis");
   await expect(binderCards.nth(1)).toContainText("Sortierbasis (Kopie)");
@@ -516,8 +552,7 @@ test("detects a binder update from another tab and reloads the current revision"
   page,
 }) => {
   await page.goto("/");
-  await page.getByLabel("Bindername").fill("Multi-Tab Binder");
-  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await createBinderFromStart(page, "Multi-Tab Binder");
 
   const secondTab = await context.newPage();
   await secondTab.goto("/");
@@ -532,8 +567,7 @@ test("detects a binder update from another tab and reloads the current revision"
 test("confirms a lossless layout change and keeps mouse drag optional", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/");
-  await page.getByLabel("Bindername").fill("Layout Binder");
-  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await createBinderFromStart(page, "Layout Binder");
   await addCard(page, 1, "Bulbasaur", "Bulbasaur");
   await addCard(page, 2, "Ivysaur", "Ivysaur");
 
@@ -592,22 +626,22 @@ test("keeps the 3 x 3 grid usable on mobile and supports drawer focus and Escape
   await mockCatalog(page);
   await page.setViewportSize({ height: 812, width: 375 });
   await page.goto("/");
-  await page.getByLabel("Bindername").fill("Mobile Binder");
-  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await createBinderFromStart(page, "Mobile Binder");
 
   await expect(page.getByRole("button", { name: /Freier Platz \d+, Karte einsetzen/ })).toHaveCount(9);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(375);
 
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
-  const search = page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102");
+  const search = page.getByPlaceholder(SEARCH_PLACEHOLDER);
   await expect(search).toBeFocused();
   await search.fill("Bulbasaur");
-  await page.getByRole("button", { name: "Prüfen" }).click();
+  await resultTilesOf(page).getByRole("button", { name: "Details" }).click();
   await expect(page.getByRole("dialog", { name: "Karte prüfen" })).toBeVisible();
+  // Escape steps back from the preview to the results, a second Escape closes the drawer.
   await page.keyboard.press("Escape");
-  await expect(page.getByRole("dialog", { name: "Karte suchen" })).toBeVisible();
+  await expect(searchDialogOf(page)).toBeVisible();
   await page.keyboard.press("Escape");
-  await expect(page.getByRole("dialog", { name: "Karte suchen" })).toBeHidden();
+  await expect(searchDialogOf(page)).toBeHidden();
   await expect(page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" })).toBeFocused();
 });
 
@@ -616,11 +650,10 @@ test("offers Smart Search recovery, language choice and no mobile overflow", asy
   await mockSemanticIndex(page);
   await page.setViewportSize({ height: 812, width: 375 });
   await page.goto("/");
-  await page.getByLabel("Bindername").fill("Smart Search");
-  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await createBinderFromStart(page, "Smart Search");
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
-  const dialog = page.getByRole("dialog", { name: "Karte suchen" });
-  await dialog.getByRole("button", { name: "Motiv im Artwork" }).click();
+  const dialog = searchDialogOf(page);
+  await dialog.getByRole("tab", { name: "Bildmotiv" }).click();
   const semanticInput = dialog.getByPlaceholder("Motiv beschreiben, z. B. Pokémon am Strand");
   await expect(semanticInput).toBeFocused();
   await semanticInput.fill("forest");
@@ -631,6 +664,7 @@ test("offers Smart Search recovery, language choice and no mobile overflow", asy
   await expect(preview.getByText("Kartensprache für den Binder")).toBeVisible();
   await preview.getByRole("button", { name: "Deutsch" }).click();
   await expect(preview.getByRole("button", { name: "Deutsch" })).toHaveAttribute("aria-pressed", "true");
+  await openVariantOptions(preview);
   await preview.getByLabel("Ausführung der Karte").selectOption("holo");
   await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
   await expect(page.getByRole("article", { name: "Glurak, Slot 1" })).toBeVisible();
@@ -640,28 +674,26 @@ test("offers a direct normal-search fallback when the Smart Search index fails",
   await mockCatalog(page);
   await mockSemanticIndex(page, 503);
   await page.goto("/");
-  await page.getByLabel("Bindername").fill("Smart Search Fehler");
-  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await createBinderFromStart(page, "Smart Search Fehler");
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
-  const dialog = page.getByRole("dialog", { name: "Karte suchen" });
-  await dialog.getByRole("button", { name: "Motiv im Artwork" }).click();
+  const dialog = searchDialogOf(page);
+  await dialog.getByRole("tab", { name: "Bildmotiv" }).click();
   await expect(dialog.getByRole("alert")).toContainText("Motivindex konnte nicht geladen werden");
   await dialog.getByRole("button", { name: "Mit Name/Nummer suchen" }).click();
-  await expect(dialog.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102")).toBeVisible();
+  await expect(dialog.getByPlaceholder(SEARCH_PLACEHOLDER)).toBeVisible();
 });
 
 test("searches German and English catalogs and labels the result language", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/");
-  await page.getByLabel("Bindername").fill("Sprachsuche");
-  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await createBinderFromStart(page, "Sprachsuche");
 
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
-  await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Glurak");
-  const germanResult = page.getByRole("listitem").filter({ hasText: "Glurak" });
+  await page.getByPlaceholder(SEARCH_PLACEHOLDER).fill("Glurak");
+  const germanResult = resultTilesOf(page).filter({ hasText: "Glurak" });
   await expect(germanResult).toContainText("Grundset");
   await expect(germanResult).toContainText("DE · Nr. 4/102");
-  await germanResult.getByRole("button", { name: "Prüfen" }).click();
+  await germanResult.getByRole("button", { name: "Details" }).click();
 
   const preview = page.getByRole("dialog", { name: "Karte prüfen" });
   await expect(page.getByRole("article", { name: "Glurak, Slot 1" })).toHaveCount(0);
@@ -670,7 +702,7 @@ test("searches German and English catalogs and labels the result language", asyn
   await expect(preview).toContainText("4/102");
   await expect(preview).toContainText("Bild auf Englisch");
   await expect(preview).toContainText("Katalog bestätigt: Holo, First Edition");
-  await preview.getByText("Andere Ausführung wählen").click();
+  await openVariantOptions(preview);
   await expect(preview.getByLabel("Druckvariante").locator('option[value="shadowless"]')).toHaveCount(0);
   await preview.getByLabel("Ausführung der Karte").selectOption("holo");
   await preview.getByLabel("Edition").selectOption("first-edition");
@@ -684,15 +716,14 @@ test("searches German and English catalogs and labels the result language", asyn
 test("keeps Pocket cards out of the physical binder search", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/");
-  await page.getByLabel("Bindername").fill("Physische Suche");
-  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await createBinderFromStart(page, "Physische Suche");
 
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
-  await page.getByRole("button", { name: "English" }).click();
-  await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Mixed");
+  await languageFilterOf(page).getByRole("button", { name: "EN", exact: true }).click();
+  await page.getByPlaceholder(SEARCH_PLACEHOLDER).fill("Mixed");
 
-  const searchDialog = page.getByRole("dialog", { name: "Karte suchen" });
-  await expect(searchDialog.getByRole("listitem")).toHaveCount(1);
+  const searchDialog = searchDialogOf(page);
+  await expect(resultTilesOf(page)).toHaveCount(1);
   await expect(searchDialog.getByText("Bulbasaur", { exact: true })).toBeVisible();
   await expect(searchDialog.getByText("Pocket card", { exact: true })).toHaveCount(0);
   await expect(searchDialog.getByText(/Pocket-Karten können nicht/)).toHaveCount(0);
@@ -733,17 +764,16 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await page.goto("/");
   await page.getByRole("button", { name: "Geschenk-Binder gestalten" }).click();
   await expect(page.getByRole("heading", { name: "Dein Geschenk-Binder beginnt hier" })).toBeVisible();
+  await page.getByText("Weitere Wünsche für das Geschenk").click();
   await page.getByLabel("Kartensprache").selectOption("en");
   await page.getByRole("button", { name: /Binder-Seite ansehen/ }).click();
   await expect(page.getByText("9 / 9")).toBeVisible();
   await expect(page.getByText(/den endgültigen Preis siehst du beim Kartenanbieter/i)).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(375);
-  await page.getByRole("button", { name: /Bestellung prüfen/ }).click();
-  await page.getByRole("button", { name: "Als Binder anlegen" }).click();
+  await page.getByRole("button", { name: "Weiter zum Einkauf" }).click();
   await expect(page.getByRole("heading", { name: /Geschenk · Pikachu/ })).toBeVisible();
   await expect(page.getByText(/Die Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten/i)).toBeVisible();
-  await expect(page.getByText("Kein bestätigter Preis", { exact: true })).toBeVisible();
-  await expect(page.getByText("Vault X 9-Pocket Zip Binder", { exact: true })).toBeVisible();
+  await expect(page.getByText("Vault X 9-Pocket Zip Binder")).toBeVisible();
   await expect(page.getByText(/9-Pocket · Platz für bis zu 360 Karten/i)).toBeVisible();
   await expect(page.getByText("Passt zu deinem Plan")).toBeVisible();
 
@@ -755,7 +785,12 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await page.getByRole("button", { name: "Karten besorgen" }).click();
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   await expect(missingCards).toBeVisible();
-  await expect(missingCards.getByText(/9 Positionen · 9 Exemplare · aus diesem Binder/i)).toBeVisible();
+  await expect(missingCards.getByText(/9 Positionen · gekauft wird erst beim Anbieter/i)).toBeVisible();
+  // Gift buyers get the plain-language Cardmarket guide; the region question is one click away.
+  await expect(missingCards.getByRole("heading", { name: "So bekommst du die Karten" })).toBeVisible();
+  await expect(missingCards.getByText("Du kaufst bei Cardmarket")).toBeVisible();
+  await expect(missingCards.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" })).toHaveCount(0);
+  await missingCards.getByRole("button", { name: "Anderer Wohnort oder Anbieter?" }).click();
   await expect(missingCards.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" })).toBeVisible();
   await expect(missingCards.getByRole("button", { name: "USA & Kanada · TCGplayer empfohlen" })).toBeVisible();
   await missingCards.getByRole("button", { name: "Fehlkartenansicht schließen" }).click();
@@ -764,16 +799,34 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await expect(page.getByRole("article", { name: "Pikachu 1, Slot 1" })).toBeVisible();
 });
 
+test("offers a lean gift entry without collector navigation", async ({ page }) => {
+  await mockCatalog(page);
+  await page.setViewportSize({ height: 812, width: 375 });
+  await page.goto("/geschenk/");
+
+  await expect(page.getByRole("heading", { name: "Ein Pokémon-Binder als persönliches Geschenk." })).toBeVisible();
+  await expect(page.getByRole("complementary", { name: "Cardfolio Navigation" })).toHaveCount(0);
+  await expect(page.getByRole("tab")).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Ich sammle selbst" })).toHaveAttribute("href", "/");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(375);
+
+  await page.getByRole("button", { name: "Geschenk-Binder gestalten" }).click();
+  await expect(page.getByRole("heading", { name: "Dein Geschenk-Binder beginnt hier" })).toBeVisible();
+  await page.getByRole("radio", { name: "Ich kenne mich nicht aus" }).check();
+  await expect(page.getByRole("radio", { name: "Evoli" })).toBeVisible();
+  await expect(page.getByRole("textbox", { name: "Lieblings-Pokémon" })).toHaveCount(0);
+});
+
 test("sets, edits and persists the minimum condition for marketplace handoff", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/");
-  await page.getByLabel("Bindername").fill("Zustandswunsch");
-  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await createBinderFromStart(page, "Zustandswunsch");
 
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
-  await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Ivysaur");
-  await page.getByRole("listitem").filter({ hasText: "Ivysaur" }).getByRole("button", { name: "Prüfen" }).click();
+  await page.getByPlaceholder(SEARCH_PLACEHOLDER).fill("Ivysaur");
+  await resultTilesOf(page).filter({ hasText: "Ivysaur" }).getByRole("button", { name: "Details" }).click();
   const preview = page.getByRole("dialog", { name: "Karte prüfen" });
+  await openVariantOptions(preview);
   await preview.getByLabel("Ausführung der Karte").selectOption("normal");
   await preview.getByLabel("Mindestzustand beim Kauf").selectOption("near-mint");
   await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
@@ -789,40 +842,40 @@ test("sets, edits and persists the minimum condition for marketplace handoff", a
   await page.reload();
   await page.getByRole("article", { name: "Ivysaur, Slot 1" }).click();
   await expect(page.getByRole("definition").filter({ hasText: "Gebraucht – sichtbare Spuren okay" })).toBeVisible();
-  await page.getByRole("button", { name: /Fehlende Karten \(1\)/ }).click();
+  await openMissingCards(page, 1);
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   await missingCards.getByRole("button", { name: "Andere Region · Versand prüfen" }).click();
   await missingCards.getByRole("button", { name: "CardTrader · Vorschau" }).click();
   await expect(missingCards.getByText(/CardTrader ist vorbereitet, aber noch nicht freigegeben/)).toBeVisible();
   await expect(missingCards.getByRole("button", { name: "Wishlist erstellen" })).toBeDisabled();
   await missingCards.getByRole("button", { name: "Anderen Anbieter wählen" }).click();
-  await missingCards.getByRole("button", { name: "Cardmarket" }).click();
+  await missingCards.getByRole("button", { name: "Cardmarket", exact: true }).click();
+  await missingCards.getByText("Importliste ansehen oder als Datei speichern").click();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue("1x Ivysaur Vine Whip Poisonpowder");
-  await expect(missingCards.getByText("Gebraucht – sichtbare Spuren okay", { exact: true })).toBeVisible();
+  await expect(missingCards.getByText("Zustand: Gebraucht", { exact: true })).toBeVisible();
 });
 
 test("filters equal card names by language and balances the combined results", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/");
-  await page.getByLabel("Bindername").fill("Sprachfilter");
-  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await createBinderFromStart(page, "Sprachfilter");
 
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
-  await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Pikachu");
-  const results = page.getByRole("listitem").filter({ hasText: "Pikachu" });
+  await page.getByPlaceholder(SEARCH_PLACEHOLDER).fill("Pikachu");
+  const results = resultTilesOf(page).filter({ hasText: "Pikachu" });
   await expect(results).toHaveCount(2);
   await expect(results.nth(0)).toContainText("Grundset");
   await expect(results.nth(0)).toContainText("DE · Nr. 58/102");
   await expect(results.nth(1)).toContainText("Base Set");
   await expect(results.nth(1)).toContainText("EN · Nr. 58/102");
 
-  await page.getByRole("button", { name: "English" }).click();
+  await languageFilterOf(page).getByRole("button", { name: "EN", exact: true }).click();
   await expect(results).toHaveCount(1);
   await expect(results).toContainText("Base Set");
   await expect(results).toContainText("EN · Nr. 58/102");
   await expect(results).not.toContainText("DE · Nr. 58/102");
 
-  await page.getByRole("button", { name: "Deutsch" }).click();
+  await languageFilterOf(page).getByRole("button", { name: "DE", exact: true }).click();
   await expect(results).toHaveCount(1);
   await expect(results).toContainText("Grundset");
   await expect(results).toContainText("DE · Nr. 58/102");
@@ -832,24 +885,25 @@ test("filters equal card names by language and balances the combined results", a
 test("browses a selected set and loads catalog results page by page", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/");
-  await page.getByLabel("Bindername").fill("Setfilter");
-  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await createBinderFromStart(page, "Setfilter");
 
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
-  await page.getByRole("button", { name: "English" }).click();
+  await languageFilterOf(page).getByRole("button", { name: "EN", exact: true }).click();
+  const searchDialog = searchDialogOf(page);
+  // Series, set and sorting sit behind "Weitere Filter".
+  await searchDialog.getByText("Weitere Filter", { exact: true }).click();
   await page.locator("#card-series-filter").selectOption("base");
   await page.locator("#card-set-filter").selectOption("base1");
 
-  const searchDialog = page.getByRole("dialog", { name: "Karte suchen" });
-  await expect(searchDialog.getByRole("listitem")).toHaveCount(1);
-  await expect(searchDialog.getByRole("listitem")).toContainText("Base Set");
-  await expect(searchDialog.getByRole("listitem")).toContainText("EN · Nr. 1/102");
+  await expect(resultTilesOf(page)).toHaveCount(1);
+  await expect(resultTilesOf(page)).toContainText("Base Set");
+  await expect(resultTilesOf(page)).toContainText("EN · Nr. 1/102");
 
-  await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Bulk");
-  await expect(searchDialog.getByRole("listitem")).toHaveCount(40);
+  await page.getByPlaceholder(SEARCH_PLACEHOLDER).fill("Bulk");
+  await expect(resultTilesOf(page)).toHaveCount(40);
   await expect(searchDialog.getByRole("button", { name: "Mehr laden" })).toBeVisible();
   await searchDialog.getByRole("button", { name: "Mehr laden" }).click();
-  await expect(searchDialog.getByRole("listitem")).toHaveCount(41);
+  await expect(resultTilesOf(page)).toHaveCount(41);
   await expect(searchDialog.getByText("Set card 41", { exact: true })).toBeVisible();
   await expect(searchDialog.getByRole("button", { name: "Mehr laden" })).toBeHidden();
 });
@@ -857,29 +911,28 @@ test("browses a selected set and loads catalog results page by page", async ({ p
 test("finds and displays an exact full collector number", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/");
-  await page.getByLabel("Bindername").fill("Nummernsuche");
-  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await createBinderFromStart(page, "Nummernsuche");
 
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
-  await page.getByPlaceholder("Name oder Nummer, z. B. Glurak 4/102").fill("Charizard 04/102");
-  const result = page.getByRole("listitem").filter({ hasText: "Charizard" });
+  await page.getByPlaceholder(SEARCH_PLACEHOLDER).fill("Charizard 04/102");
+  const result = resultTilesOf(page).filter({ hasText: "Charizard" });
   await expect(result).toHaveCount(1);
   await expect(result).toContainText("Grundset");
   await expect(result).toContainText("EN · Nr. 4/102");
-  await result.getByRole("button", { name: "Prüfen" }).click();
+  await result.getByRole("button", { name: "Details" }).click();
   const preview = page.getByRole("dialog", { name: "Karte prüfen" });
   await expect(preview).toContainText("4/102");
-  await preview.getByText("Andere Ausführung wählen").click();
+  await openVariantOptions(preview);
   await expect(preview.getByLabel("Druckvariante").locator('option[value="shadowless"]')).toHaveCount(1);
   await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
 
   const card = page.getByRole("article", { name: "Charizard, Slot 1" });
   await expect(card).toContainText("Grundset · 4/102");
 
-  await page.getByRole("button", { name: /Fehlende Karten \(1\)/ }).click();
+  await openMissingCards(page, 1);
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   await missingCards.getByRole("button", { name: "Andere Region · Versand prüfen" }).click();
-  await missingCards.getByRole("button", { name: "TCGplayer" }).click();
+  await missingCards.getByRole("button", { name: "TCGplayer", exact: true }).click();
   await expect(missingCards.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue(
     "1 Charizard [BS] 004/102",
   );
@@ -889,7 +942,7 @@ test("finds and displays an exact full collector number", async ({ page }) => {
   expect(tcgplayerUrl.searchParams.get("productline")).toBe("Pokemon");
 
   await missingCards.getByRole("button", { name: "Anderen Anbieter wählen" }).click();
-  await missingCards.getByRole("button", { name: "Cardmarket" }).click();
+  await missingCards.getByRole("button", { name: "Cardmarket", exact: true }).click();
   await expect(missingCards.getByRole("link", { name: "1 Karte kopieren & Cardmarket öffnen" })).toHaveAttribute(
     "href",
     "https://www.cardmarket.com/de/Pokemon/Wants",
@@ -903,16 +956,15 @@ test("finds and displays an exact full collector number", async ({ page }) => {
 test("exports the verified Tornupto and Blaine's Charizard identities to TCGplayer", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/");
-  await page.getByLabel("Bindername").fill("TCGplayer Mapping");
-  await page.getByRole("button", { name: "Erstellen", exact: true }).click();
+  await createBinderFromStart(page, "TCGplayer Mapping");
 
   await addCard(page, 1, "Tornupto", "Tornupto");
   await addCard(page, 2, "Blaine's Charizard", "Blaine's Charizard");
 
-  await page.getByRole("button", { name: /Fehlende Karten \(2\)/ }).click();
+  await openMissingCards(page, 2);
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   await missingCards.getByRole("button", { name: "Andere Region · Versand prüfen" }).click();
-  await missingCards.getByRole("button", { name: "TCGplayer" }).click();
+  await missingCards.getByRole("button", { name: "TCGplayer", exact: true }).click();
 
   await expect(missingCards.getByText("2 übergabebereit · 2 Produktzuordnungen · 0 prüfen")).toBeVisible();
   await expect(missingCards.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue(
@@ -923,7 +975,7 @@ test("exports the verified Tornupto and Blaine's Charizard identities to TCGplay
   await expect(missingCards.getByRole("region", { name: "Gym Challenge · EN" }).getByText("Nr. 2/132")).toBeVisible();
 
   await missingCards.getByRole("button", { name: "Anderen Anbieter wählen" }).click();
-  await missingCards.getByRole("button", { name: "Cardmarket" }).click();
+  await missingCards.getByRole("button", { name: "Cardmarket", exact: true }).click();
   await missingCards.getByText("Importliste ansehen oder als Datei speichern").click();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue(
     "1x Blaine's Charizard Roaring Flames Flame Jet\n1x Typhlosion Fire Recharge Flame Burst",
