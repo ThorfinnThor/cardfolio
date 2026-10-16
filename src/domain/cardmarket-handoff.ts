@@ -12,6 +12,7 @@ export const CARDMARKET_POKEMON_SINGLES_URL = "https://www.cardmarket.com/en/Pok
 export const CARDMARKET_POKEMON_SEARCH_URL = "https://www.cardmarket.com/en/Pokemon/Products/Search";
 export const CARDMARKET_POKEMON_WANTS_URL = "https://www.cardmarket.com/de/Pokemon/Wants";
 export const CARDMARKET_POKEMON_WANTS_HELP_URL = "https://help.cardmarket.com/en/how-to-add-a-pkmn-decklist-to-wants";
+export const CARDMARKET_SHOPPING_WIZARD_HELP_URL = "https://help.cardmarket.com/en/ShoppingWizard";
 export const CARDMARKET_MAX_WANTS_POSITIONS = 150;
 
 // A small provider-specific compatibility layer for cards whose printed level

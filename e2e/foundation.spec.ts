@@ -753,6 +753,11 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   await expect(missingCards).toBeVisible();
   await expect(missingCards.getByText(/9 Positionen · gekauft wird erst beim Anbieter/i)).toBeVisible();
+  // Gift buyers get the plain-language Cardmarket guide; the region question is one click away.
+  await expect(missingCards.getByRole("heading", { name: "So bekommst du die Karten" })).toBeVisible();
+  await expect(missingCards.getByText("Du kaufst bei Cardmarket")).toBeVisible();
+  await expect(missingCards.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" })).toHaveCount(0);
+  await missingCards.getByRole("button", { name: "Anderer Wohnort oder Anbieter?" }).click();
   await expect(missingCards.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" })).toBeVisible();
   await expect(missingCards.getByRole("button", { name: "USA & Kanada · TCGplayer empfohlen" })).toBeVisible();
   await missingCards.getByRole("button", { name: "Fehlkartenansicht schließen" }).click();

@@ -471,6 +471,8 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
   const [layoutChange, setLayoutChange] = useState<LayoutChangeRequest>();
   const [variantEdit, setVariantEdit] = useState<VariantEditRequest>();
   const [missingOpen, setMissingOpen] = useState(false);
+  // The plain-language purchase guide is for the gift flow; collectors keep the detailed view.
+  const [missingBeginner, setMissingBeginner] = useState(false);
   const [copyState, setCopyState] = useState<CopyState>("idle");
   const [tcgplayerCopyState, setTcgplayerCopyState] = useState<CopyState>("idle");
   const [cardmarketCopyState, setCardmarketCopyState] = useState<CopyState>("idle");
@@ -1895,7 +1897,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
           <button type="button" className={activeBinder && !binderManagerOpen && !missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(false); }} disabled={!activeBinder}>
             <Archive size={18} /> <span>Binder</span>
           </button>
-          <button type="button" aria-label={stats ? `Fehlende Karten (${stats.missing})` : "Fehlende Karten"} className={missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(true); setSearchOpen(false); }} disabled={!activeBinder}>
+          <button type="button" aria-label={stats ? `Fehlende Karten (${stats.missing})` : "Fehlende Karten"} className={missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingBeginner(false); setMissingOpen(true); setSearchOpen(false); }} disabled={!activeBinder}>
             <ListFilter size={18} /> <span>Karten kaufen</span>{stats ? <span className={styles.navBadge}>{stats.missing}</span> : null}
           </button>
         </nav>
@@ -1980,7 +1982,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
             onCancel={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }}
             onCreateBinder={createGiftBinder}
             onOpenBinder={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(false); }}
-            onCardsPurchase={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(true); setSearchOpen(false); }}
+            onCardsPurchase={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingBeginner(true); setMissingOpen(true); setSearchOpen(false); }}
           />
         ) : (
           <BinderOverview
@@ -2163,7 +2165,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
 
       {activeBinder && stats && !binderManagerOpen ? (
         <>
-          <section className={styles.binderHeader}>
+          {missingOpen && missingBeginner ? null : <section className={styles.binderHeader}>
             <div>
               <p className={styles.binderBreadcrumb}><span className={styles.catalogTag}>{catalogLabel(Math.max(binders.findIndex((binder) => binder.id === activeBinder.id), 0))}</span> Meine Binder / {activeBinder.name}</p>
               <h1>{activeBinder.name}</h1>
@@ -2185,13 +2187,13 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
             <div className={styles.binderHeaderActions}>
               <button type="button" className={styles.secondaryButton} onClick={() => setBinderRename({ binderId: activeBinder.id, name: activeBinder.name })}><Pencil size={16} /> Binder umbenennen</button>
               <button type="button" className={styles.secondaryButton} onClick={() => openSearchForSlot()}><Search size={17} /> Karte hinzufügen</button>
-              <button type="button" aria-label={missingOpen ? "Zurück zum Binder" : `Fehlende Karten (${stats.missing})`} className={styles.primaryButton} onClick={() => { setMissingOpen((open) => !open); setSearchOpen(false); setCopyState("idle"); setTcgplayerCopyState("idle"); setCardmarketCopyState("idle"); }} disabled={Boolean(missingResult.error) || cardsBinderId !== activeId}>
+              <button type="button" aria-label={missingOpen ? "Zurück zum Binder" : `Fehlende Karten (${stats.missing})`} className={styles.primaryButton} onClick={() => { setMissingBeginner(giftShell); setMissingOpen((open) => !open); setSearchOpen(false); setCopyState("idle"); setTcgplayerCopyState("idle"); setCardmarketCopyState("idle"); }} disabled={Boolean(missingResult.error) || cardsBinderId !== activeId}>
                 <ListFilter size={17} /> {missingOpen ? "Zurück zum Binder" : `Karten kaufen (${stats.missing})`}
               </button>
             </div>
-          </section>
+          </section>}
 
-          <section className={styles.stats} aria-label="Binderfortschritt">
+          {missingOpen && missingBeginner ? null : <section className={styles.stats} aria-label="Binderfortschritt">
             <div className={styles.statsHero} data-complete={stats.planned > 0 && stats.owned === stats.planned}>
               <small>Fortschritt</small>
               <strong>{stats.completionPercent}%</strong>
@@ -2202,7 +2204,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
             <div data-tone="miss"><strong>{stats.missing}</strong><span>Fehlend</span><small>geplante Karten</small></div>
             <div><strong>{Math.max(stats.capacity - stats.planned, 0)}</strong><span>Freie Plätze</span><small>auf {activeBinder.pages.length} {activeBinder.pages.length === 1 ? "Seite" : "Seiten"}</small></div>
             <div><strong>{stats.planned}</strong><span>Geplant</span><small>von {stats.capacity} Slots</small></div>
-          </section>
+          </section>}
 
           {missingOpen ? (
             <MissingCardsPanel
@@ -2226,6 +2228,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
               onCardmarketTextExport={downloadCardmarketHandoff}
               cardtraderPreviewVisible={FEATURES.cardtraderPreview}
               cardtraderEnabled={FEATURES.cardtraderCatalog}
+              beginner={missingBeginner}
             />
           ) : (
           <div className={styles.workspace}>
@@ -2740,7 +2743,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
                       ) : <p>Keine geplante Karte dieser Seite ist noch offen.</p>}
                     </section>
                     <button type="button" className={styles.primaryButton} onClick={() => openSearchForSlot()}><Search size={16} /> Karte hinzufügen</button>
-                    <button type="button" className={styles.secondaryButton} onClick={() => setMissingOpen(true)}><ListFilter size={16} /> Gesamte Fehlkartenliste</button>
+                    <button type="button" className={styles.secondaryButton} onClick={() => { setMissingBeginner(giftShell); setMissingOpen(true); }}><ListFilter size={16} /> Gesamte Fehlkartenliste</button>
                   </div>
                 )}
               </aside>

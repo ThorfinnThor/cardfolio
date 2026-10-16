@@ -1,20 +1,21 @@
 "use client";
 
 import { ArrowLeft, ArrowRight, Check, Clipboard, Download, ExternalLink, FileDown, MapPin, Search, X } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { loadCardmarketProductMappingCatalog } from "@/data/marketplace/cardmarket-product-mappings";
 import { loadCardmarketDecklistIdentityCatalog, type CardmarketDecklistIdentityCatalog } from "@/data/marketplace/cardmarket-decklist-identities";
 import { loadTcgplayerCardMappings } from "@/data/marketplace/tcgplayer-card-mappings";
 import { TCGPLAYER_SET_MAPPINGS, TCGPLAYER_UNAVAILABLE_SETS } from "@/data/marketplace/tcgplayer-set-mappings";
 import { TCGPLAYER_PRINTING_MAPPINGS } from "@/data/marketplace/tcgplayer-printing-mappings";
-import { createCardmarketHandoff, type CardmarketHandoffPart } from "@/domain/cardmarket-handoff";
+import { CARDMARKET_SHOPPING_WIZARD_HELP_URL, createCardmarketHandoff, type CardmarketHandoffPart } from "@/domain/cardmarket-handoff";
 import { formatCollectorNumber } from "@/domain/catalog-search";
 import { groupMissingItemsBySet } from "@/domain/missing-items";
 import { missingItemReviewNote } from "@/domain/missing-items-export";
 import { cardmarketMinimumCondition, conditionProfile, conditionProfiles } from "@/domain/purchase-preferences";
 import type { MarketplaceProductIdentityMapping } from "@/domain/marketplace-product-identity";
 import { ConditionGuide } from "./ConditionGuide";
+import { GiftPurchaseGuide } from "./GiftPurchaseGuide";
 import { GuidedFlow } from "./GuidedFlow";
 import { createTcgplayerMassEntryExport, type TcgplayerCardMapping, type TcgplayerMassEntryExport } from "@/domain/tcgplayer-export";
 import type { MissingItem, PurchasePreferences } from "@/domain/types";
@@ -77,6 +78,8 @@ interface MissingCardsPanelProps {
   cardtraderPreviewVisible?: boolean;
   cardtraderStatus?: CardTraderStatus;
   cardtraderQuote?: CardTraderQuotePreview;
+  /** Plain-language purchase guide for gift buyers: Cardmarket preselected, expert sections collapsed. */
+  beginner?: boolean;
 }
 
 export function MissingCardsPanel({
@@ -105,11 +108,16 @@ export function MissingCardsPanel({
   cardtraderPreviewVisible = false,
   cardtraderStatus = "not-approved",
   cardtraderQuote = { status: "unknown" },
+  beginner = false,
 }: MissingCardsPanelProps) {
   const [query, setQuery] = useState("");
   const [cardmarketPartIndex, setCardmarketPartIndex] = useState(0);
-  const [marketplaceChoice, setMarketplaceChoice] = useState<MarketplaceChoice>();
-  const [marketplaceRegion, setMarketplaceRegion] = useState<MarketplaceRegion>();
+  // The beginner guide assumes the German-language audience buys in Europe; the region stays changeable.
+  const beginnerCardmarket = beginner && cardmarketEnabled;
+  const [marketplaceChoice, setMarketplaceChoice] = useState<MarketplaceChoice | undefined>(() => (beginnerCardmarket ? "cardmarket" : undefined));
+  const [marketplaceRegion, setMarketplaceRegion] = useState<MarketplaceRegion | undefined>(() => (beginnerCardmarket ? "europe" : undefined));
+  const [expertOpen, setExpertOpen] = useState(() => beginner && !cardmarketEnabled);
+  const beginnerPrepared = useRef(false);
   const [showProviderChoices, setShowProviderChoices] = useState(false);
   const [cardmarketGuideStep, setCardmarketGuideStep] = useState<CardmarketGuideStep>(1);
   const [loadedTcgplayerMappings, setLoadedTcgplayerMappings] = useState<readonly TcgplayerCardMapping[]>();
@@ -197,6 +205,15 @@ export function MissingCardsPanel({
   const sharedCondition = visibleConditions.size === 1 ? [...visibleConditions][0] : undefined;
   const sharedCardmarketCondition = sharedCondition ? cardmarketMinimumCondition(sharedCondition) : undefined;
 
+  useEffect(() => {
+    if (!beginnerCardmarket || beginnerPrepared.current) return;
+    beginnerPrepared.current = true;
+    onCardmarketPrepare?.(visibleItems);
+  }, [beginnerCardmarket, onCardmarketPrepare, visibleItems]);
+
+  const showStandardLayout = !beginner || expertOpen;
+  const showBeginnerGuide = beginner && !expertOpen && marketplaceChoice === "cardmarket";
+
   function chooseMarketplace(choice: MarketplaceChoice) {
     if (choice === "tcgplayer") setTcgplayerMappingsError(undefined);
     if (choice === "cardmarket") {
@@ -227,20 +244,20 @@ export function MissingCardsPanel({
     <section className={styles.panel} aria-label="Fehlende Karten">
       <div className={styles.header}>
         <div>
-          <p className={styles.eyebrow}>Kartenkauf</p>
-          <h2 id="missing-cards-heading">{visibleQuantity} Karten gemeinsam kaufen</h2>
-          <p className={styles.intro}>Wähle deine Region. Cardfolio bereitet danach die komplette Liste für den passenden Anbieter vor.</p>
+          <p className={styles.eyebrow}>{beginner ? "Karten besorgen" : "Kartenkauf"}</p>
+          <h2 id="missing-cards-heading">{beginner && marketplaceChoice === "cardmarket" ? `${visibleQuantity} Karten bei Cardmarket kaufen` : `${visibleQuantity} Karten gemeinsam kaufen`}</h2>
+          <p className={styles.intro}>{beginner ? "Cardfolio hat die Liste für dich vorbereitet. In vier kurzen Schritten kommst du zu den Karten." : "Wähle deine Region. Cardfolio bereitet danach die komplette Liste für den passenden Anbieter vor."}</p>
           <p className={styles.subline}>{visibleItems.length} Positionen · gekauft wird erst beim Anbieter</p>
         </div>
         <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Fehlkartenansicht schließen"><X size={18} /></button>
       </div>
 
-      <div className={styles.flowWrapper}><GuidedFlow steps={PURCHASE_FLOW} currentStep={marketplaceChoice ? 2 : 1} label="Schritte zum Kartenkauf" /></div>
+      {showStandardLayout ? <div className={styles.flowWrapper}><GuidedFlow steps={PURCHASE_FLOW} currentStep={marketplaceChoice ? 2 : 1} label="Schritte zum Kartenkauf" /></div> : null}
 
       {copyState === "error" ? <p className={styles.error} role="status">Kopieren wurde vom Browser nicht erlaubt. Nutze stattdessen TXT oder CSV.</p> : null}
       {warnings.map((warning) => <p className={styles.warning} role="note" key={warning}>{warning}</p>)}
 
-      {onConditionsChange && visibleItems.length ? (
+      {showStandardLayout && onConditionsChange && visibleItems.length ? (
         <details className={styles.conditionBlock}>
           <summary className={styles.conditionSummary}>
             <span><Check aria-hidden="true" size={18} /></span>
@@ -272,7 +289,15 @@ export function MissingCardsPanel({
         </details>
       ) : null}
 
-      {tcgplayerEnabled || cardmarketEnabled || cardtraderEnabled || cardtraderPreviewVisible ? (
+      {beginner && !expertOpen && marketplaceChoice === "cardmarket" ? (
+        <div className={styles.providerRecommendation} role="status">
+          <Check aria-hidden="true" size={19} />
+          <span><strong>Du kaufst bei Cardmarket</strong><small>Für Europa und UK ist das normalerweise der einfachste Start.</small></span>
+          <button type="button" onClick={() => setExpertOpen(true)}>Anderer Wohnort oder Anbieter?</button>
+        </div>
+      ) : null}
+
+      {showStandardLayout && (tcgplayerEnabled || cardmarketEnabled || cardtraderEnabled || cardtraderPreviewVisible) ? (
         <section className={styles.marketplaceChoice} id="marketplace-choice" aria-labelledby="marketplace-choice-heading">
           <div>
             <span className={styles.stepTag}>Schritt 1</span>
@@ -432,7 +457,28 @@ export function MissingCardsPanel({
         </section>
       ) : null}
 
-      {marketplaceChoice === "cardmarket" && cardmarketHandoff && activeCardmarketPart ? (
+      {showBeginnerGuide && cardmarketHandoff && activeCardmarketPart ? (
+        <>
+          <GiftPurchaseGuide
+            positionCount={activeCardmarketPart.positionCount}
+            partCount={cardmarketHandoff.parts.length}
+            partIndex={activeCardmarketPartIndex}
+            partLabels={cardmarketHandoff.parts.map((part) => `Teil ${part.index} von ${cardmarketHandoff.parts.length} · ${part.positionCount} Positionen`)}
+            onPartChange={setCardmarketPartIndex}
+            wantsUrl={cardmarketHandoff.wantsUrl}
+            wizardHelpUrl={CARDMARKET_SHOPPING_WIZARD_HELP_URL}
+            ready={Boolean(activeCardmarketPart.text && !cardmarketPreparing && cardmarketDecklistReady)}
+            busyLabel={cardmarketPreparing || !cardmarketDecklistReady ? "Kartenliste wird sicher geprüft …" : "Keine verifizierte Sammelliste verfügbar"}
+            copyState={cardmarketCopyState}
+            onCopyAndOpen={() => onCardmarketCopy?.(activeCardmarketPart)}
+            condition={sharedCondition && sharedCardmarketCondition ? { cardfolio: conditionProfile(sharedCondition).shortLabel, code: sharedCardmarketCondition.code, label: sharedCardmarketCondition.label } : undefined}
+          />
+          {cardmarketDecklistError ? <p className={styles.error} role="alert">{cardmarketDecklistError} Aus Sicherheitsgründen wird keine ungeprüfte Sammelliste erzeugt.</p> : null}
+          {cardmarketHandoff.excluded.length ? <p className={styles.warning} role="note">{cardmarketHandoff.excluded.length === 1 ? "1 Karte" : `${cardmarketHandoff.excluded.length} Karten`} können nicht automatisch übertragen werden. Du findest sie unter „Anderer Wohnort oder Anbieter?“ → „Importliste ansehen“ und kannst sie bei Cardmarket einzeln suchen.</p> : null}
+        </>
+      ) : null}
+
+      {marketplaceChoice === "cardmarket" && showStandardLayout && cardmarketHandoff && activeCardmarketPart ? (
         <section className={styles.marketplacePanel} aria-labelledby="cardmarket-handoff-heading">
           <div className={styles.marketplaceHeader}>
             <div>
@@ -676,7 +722,7 @@ export function MissingCardsPanel({
         <CardTraderPanel items={visibleItems} status={cardtraderStatus} quote={cardtraderQuote} />
       ) : null}
 
-      {items.length ? <details className={styles.completeListDisclosure}>
+      {!showStandardLayout ? (items.length ? null : <div className={styles.empty}><strong>Keine fehlenden Karten</strong><p>Leere Slots und vorhandene Karten werden nicht als Bedarf gezählt.</p></div>) : items.length ? <details className={styles.completeListDisclosure}>
         <summary>Vollständige Fehlkartenliste anzeigen ({visibleItems.length})</summary>
         <div className={styles.listTools}>
           <div className={styles.toolbar}>

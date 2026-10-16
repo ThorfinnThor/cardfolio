@@ -292,3 +292,10 @@
 - First-time visitors see only the gift start on `/`; the other start modes sit behind “Ich sammle selbst”. People who already have binders keep all four starts. `/geschenk/` is a lean entry without sidebar or collector chrome; it shares workspace, storage and purchase handoff with `/`.
 - The footer's backup reminder is shown only when a binder exists outside the Gift flow.
 - Known gap: opening the marketplace view from the Gift summary unmounts the Gift wizard, so returning restarts it. The marketplace handoff itself is unchanged.
+
+## 2026-10-16 — Gift buyers get a plain-language Cardmarket guide with Europe preselected
+
+- Opened from the Gift summary, the purchase view runs in beginner mode: Cardmarket is preselected (the interface is German-only and no location is requested), the region/provider choice sits behind “Anderer Wohnort oder Anbieter?”, and the binder header, statistics and expert sections (import list, single searches, complete list, TXT/CSV) are hidden. Collectors who open the view from the sidebar or the binder keep the detailed view unchanged. This narrows the 2026-10-15 region question to a default that stays one click from being changed.
+- The four-step guide states what Cardmarket documents in its help centre (Shopping Wizard and Wants-list articles, read 2026-10-16): the Shopping Wizard needs a logged-in account; its strategies are “Reduce Price” and “Reduce Shipments”; “Add All to Cart” requires six completed purchases, so newcomers add offers one by one; the Wizard does not search every offer. “Reduce Shipments” is offered as a hint for many cheap cards, not as a guarantee.
+- The condition step (“≥ PO” after import, then a mass change) is unchanged from the detailed guide. Cardfolio still buys nothing and makes no price or shipping claims.
+- These are third-party statements and can change. Re-check them when Cardmarket changes its interface or help pages.
