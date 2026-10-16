@@ -1,7 +1,7 @@
 .panel { display: grid; gap: 28px; }
 .header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
 .eyebrow { display: flex; align-items: center; gap: 7px; margin: 0; color: var(--cf-accent-text); font-family: var(--cf-font-mono); font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-.header h1 { max-width: 850px; margin: 12px 0 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(2rem, 3.4vw, 3rem); font-weight: 600; letter-spacing: -.035em; line-height: 1.08; text-wrap: balance; }
+.header h1 { scroll-margin-top: 112px; max-width: 850px; margin: 12px 0 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(2rem, 3.4vw, 3rem); font-weight: 600; letter-spacing: -.035em; line-height: 1.08; text-wrap: balance; }
 .intro { max-width: 720px; margin: 14px 0 0; color: var(--cf-text2); font-size: clamp(1rem, 1.3vw, 1.15rem); line-height: 1.5; }
 .closeButton { display: inline-grid; width: 44px; height: 44px; flex: 0 0 auto; place-items: center; border: 1px solid var(--cf-line2); border-radius: 7px; background: var(--cf-field); color: var(--cf-text2); cursor: pointer; }
 .closeButton:hover { border-color: var(--cf-accent); color: var(--cf-accent-text); }
@@ -120,8 +120,8 @@
 .summaryCards { display: grid; gap: 8px; }
 .summaryCards h3, .purchaseCard h3 { margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: 16px; font-weight: 600; }
 .summaryCardIdentity { display: grid; gap: 3px; min-width: 0; }
-.summaryCardIdentity strong { color: var(--cf-text); font-size: 12px; font-weight: 650; }
-.summaryCardIdentity small { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 9px; overflow-wrap: anywhere; }
+.summaryCardIdentity strong { color: var(--cf-text); font-size: 13px; font-weight: 650; }
+.summaryCardIdentity small { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 11px; line-height: 1.35; overflow-wrap: anywhere; }
 .greetingField { display: grid; gap: 9px; color: var(--cf-text2); font-size: 16px; font-weight: 700; }
 .greetingField span { color: var(--cf-muted); font-size: 13px; font-weight: 500; }
 .greetingField textarea { width: 100%; resize: vertical; border: 1px solid var(--cf-line2); border-radius: 7px; background: var(--cf-field); color: var(--cf-text); padding: 13px; font: inherit; font-size: 16px; }
@@ -179,7 +179,7 @@
 .conditionBox label { display: grid; max-width: 420px; gap: 7px; margin-top: 8px; color: var(--cf-text2); font-size: 14px; font-weight: 700; }
 .conditionBox select { width: 100%; min-height: 48px; border: 1px solid var(--cf-line2); border-radius: 7px; background: var(--cf-field); color: var(--cf-text); padding: 0 12px; font: inherit; font-size: 15px; }
 .conditionBox small { color: var(--cf-muted); font-size: 13px; font-weight: 500; line-height: 1.45; }
-.pageBlock { display: grid; gap: 10px; }
+.pageBlock { display: grid; gap: 10px; max-width: 780px; }
 .pageLabel { margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: 20px; font-weight: 600; }
 .cardGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(6px, 1.6vw, 14px); border: clamp(4px, 1vw, 9px) solid color-mix(in srgb, var(--cf-text) 82%, #000); border-radius: 15px; background: color-mix(in srgb, var(--cf-text) 82%, #000); padding: clamp(3px, 1vw, 8px); }
 .tile { position: relative; display: grid; align-content: start; gap: 6px; min-width: 0; border: 1px solid var(--cf-line); border-radius: 9px; background: var(--cf-surface); padding: clamp(5px, 1.2vw, 12px); }
@@ -209,13 +209,13 @@
 .reviewInstructions strong { color: var(--cf-text); font-size: 13px; }
 .reviewInstructions p { margin: 0; font-size: 12px; line-height: 1.5; }
 .reviewInstructions button { width: 100%; min-height: 44px; background: var(--cf-surface); }
-.inspector { grid-column: 1 / -1; display: grid; gap: 10px; border: 2px solid var(--cf-accent); border-radius: 11px; background: var(--cf-surface); padding: 14px; }
+.inspector { grid-column: 1 / -1; scroll-margin-block: 80px 130px; display: grid; gap: 10px; border: 2px solid var(--cf-accent); border-radius: 11px; background: var(--cf-surface); padding: 14px; }
 .inspector[data-requires-review="true"] { border-color: var(--cf-miss); }
 .inspectorHead { display: grid; grid-template-columns: minmax(96px, 150px) minmax(0, 1fr) auto; align-items: start; gap: 14px; }
 .inspectorText { display: grid; gap: 6px; min-width: 0; }
 .inspectorText h3 { margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: 22px; font-weight: 600; line-height: 1.2; overflow-wrap: anywhere; }
 .inspectorText p { margin: 0; color: var(--cf-text2); font-size: 14px; line-height: 1.45; }
-.inspectorText small { color: var(--cf-muted); font-size: 12px; }
+.inspectorText small { display: block; margin-top: 2px; color: var(--cf-muted); font-size: 12px; line-height: 1.4; }
 .inspectorStatus { display: flex; align-items: flex-start; gap: 7px; color: var(--cf-ok-text) !important; font-weight: 650; }
 .inspectorStatus[data-status="invalid"] { color: var(--cf-miss-text) !important; }
 .inspectorStatus svg { flex: 0 0 auto; margin-top: 2px; }
@@ -253,7 +253,8 @@
   .quickChoices .choice { width: 100%; }
   .discoveryMode .choiceRow { display: grid; grid-template-columns: 1fr; }
   .discoveryMode .choice { width: 100%; }
-  .pickGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pickGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .pickChoice { padding: 8px 2px; font-size: 14px !important; }
   .themeGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .formGrid, .budgetGrid, .choiceGroup { grid-template-columns: 1fr; }
   .pageSummary strong { font-size: 22px; }
