@@ -364,6 +364,7 @@ test("reviews multiple cards and fills from the next free slot continuously", as
 test("creates a reviewed set binder through the guided start", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/");
+  await page.getByRole("button", { name: "Ich sammle selbst" }).click();
   await page.getByRole("tab", { name: "Komplettes Set" }).click();
   await page.getByRole("button", { name: "Mit einem Set starten" }).click();
 
@@ -733,16 +734,15 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await page.goto("/");
   await page.getByRole("button", { name: "Geschenk-Binder gestalten" }).click();
   await expect(page.getByRole("heading", { name: "Dein Geschenk-Binder beginnt hier" })).toBeVisible();
+  await page.getByText("Weitere Wünsche für das Geschenk").click();
   await page.getByLabel("Kartensprache").selectOption("en");
   await page.getByRole("button", { name: /Binder-Seite ansehen/ }).click();
   await expect(page.getByText("9 / 9")).toBeVisible();
   await expect(page.getByText(/den endgültigen Preis siehst du beim Kartenanbieter/i)).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(375);
-  await page.getByRole("button", { name: /Bestellung prüfen/ }).click();
-  await page.getByRole("button", { name: "Als Binder anlegen" }).click();
+  await page.getByRole("button", { name: "Weiter zum Einkauf" }).click();
   await expect(page.getByRole("heading", { name: /Geschenk · Pikachu/ })).toBeVisible();
   await expect(page.getByText(/Die Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten/i)).toBeVisible();
-  await expect(page.getByText("Kein bestätigter Preis", { exact: true })).toBeVisible();
   await expect(page.getByText("Vault X 9-Pocket Zip Binder", { exact: true })).toBeVisible();
   await expect(page.getByText(/9-Pocket · Platz für bis zu 360 Karten/i)).toBeVisible();
   await expect(page.getByText("Passt zu deinem Plan")).toBeVisible();
@@ -762,6 +762,24 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await expect(page.getByRole("article", { name: "Pikachu 1, Slot 1" })).toBeVisible();
   await page.reload();
   await expect(page.getByRole("article", { name: "Pikachu 1, Slot 1" })).toBeVisible();
+});
+
+test("offers a lean gift entry without collector navigation", async ({ page }) => {
+  await mockCatalog(page);
+  await page.setViewportSize({ height: 812, width: 375 });
+  await page.goto("/geschenk/");
+
+  await expect(page.getByRole("heading", { name: "Ein Pokémon-Binder als persönliches Geschenk." })).toBeVisible();
+  await expect(page.getByRole("complementary", { name: "Cardfolio Navigation" })).toHaveCount(0);
+  await expect(page.getByRole("tab")).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Ich sammle selbst" })).toHaveAttribute("href", "/");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(375);
+
+  await page.getByRole("button", { name: "Geschenk-Binder gestalten" }).click();
+  await expect(page.getByRole("heading", { name: "Dein Geschenk-Binder beginnt hier" })).toBeVisible();
+  await page.getByRole("radio", { name: "Ich kenne mich nicht aus" }).check();
+  await expect(page.getByRole("radio", { name: "Evoli" })).toBeVisible();
+  await expect(page.getByRole("textbox", { name: "Lieblings-Pokémon" })).toHaveCount(0);
 });
 
 test("sets, edits and persists the minimum condition for marketplace handoff", async ({ page }) => {
