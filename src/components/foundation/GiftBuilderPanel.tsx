@@ -825,7 +825,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
               </div>
             </article>
             <article className={styles.purchaseCard}>
-              <div><p className={styles.purchaseStep}>SCHRITT 2</p><h3>Kartenliste öffnen</h3><p>Wähle einen Anbieter und übernimm die vorbereitete Einkaufsliste.</p></div>
+              <div><p className={styles.purchaseStep}>SCHRITT 2</p><h3>Kartenliste öffnen</h3><p>Wähle einen Anbieter und übernimm die vorbereitete Einkaufsliste.</p><a className={styles.howtoLink} href="/anleitung/cardmarket/" target="_blank" rel="noopener noreferrer">Anleitung mit Bildern <ExternalLink aria-hidden="true" size={14} /></a></div>
               <button type="button" className={styles.primaryButton} aria-label="Karten besorgen" onClick={onCardsPurchase}><ShoppingBag aria-hidden="true" size={18} /> Karten jetzt kaufen <ArrowRight aria-hidden="true" size={18} /></button>
             </article>
           </section>

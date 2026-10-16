@@ -180,6 +180,7 @@
 .cardmarketConditionTranslation b { color: var(--cf-text); font-size: .82rem; }
 .cardmarketConditionTranslation svg { color: var(--cf-miss-text); }
 .cardmarketGuide, .cardmarketGuideCard { min-width: 0; }
+.illustratedLink { display: inline-flex; align-items: center; gap: 6px; width: fit-content; min-height: 44px; color: var(--cf-accent-text); font-size: .95rem; font-weight: 700; text-underline-offset: 3px; }
 .beginnerPrelude { min-width: 0; display: grid; gap: 8px; border: 1px solid var(--cf-line2); border-radius: 11px; background: var(--cf-surface2); padding: 14px 16px; }
 .beginnerPrelude > strong { color: var(--cf-text); font-size: 1rem; }
 .beginnerPrelude ul { display: grid; gap: 7px; margin: 0; padding-left: 20px; color: var(--cf-text2); font-size: .95rem; line-height: 1.5; }

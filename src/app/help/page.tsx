@@ -44,6 +44,11 @@ export default function HelpPage() {
       </section>
 
       <section className={styles.section}>
+        <h2>Anleitung zum Kauf</h2>
+        <p>Wie du von der fertigen Liste zu den Karten bei Cardmarket kommst, steht Schritt für Schritt mit Abbildungen in der <Link href="/anleitung/cardmarket/">Anleitung zum Kauf bei Cardmarket</Link>.</p>
+      </section>
+
+      <section className={styles.section}>
         <h2>Marken, Bilder und Anbieter</h2>
         <p>Cardfolio ist ein unabhängiger Arbeitstitel und kein offizielles Produkt von Nintendo, The Pokémon Company, TCGdex, TCGplayer oder Cardmarket. Marken und Kartenabbildungen gehören ihren jeweiligen Rechteinhabern.</p>
         <p>Die Betreiber- und Datenschutzangaben für den konkreten öffentlichen Host werden vor einer öffentlichen Freigabe ergänzt und geprüft. Diese Seite ist keine Zusage vollständiger Rechtskonformität.</p>

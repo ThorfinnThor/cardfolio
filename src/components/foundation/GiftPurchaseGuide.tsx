@@ -37,6 +37,12 @@ export interface GiftPurchaseGuideProps {
  * Cardmarket (account needed for the Shopping Wizard, the two strategies, "Add All to Cart" needing six
  * completed purchases) come from Cardmarket's own help centre (help.cardmarket.com, Shopping Wizard).
  */
+const HOWTO_URL = "/anleitung/cardmarket/";
+
+function Illustrated({ step }: { step: number }) {
+  return <a className={styles.illustratedLink} href={`${HOWTO_URL}#schritt-${step}`} target="_blank" rel="noopener noreferrer">Mit Bildern erklärt ansehen <ExternalLink aria-hidden="true" size={14} /></a>;
+}
+
 export function GiftPurchaseGuide({
   positionCount,
   partCount,
@@ -112,6 +118,7 @@ export function GiftPurchaseGuide({
             </button>
           )}
           <small>Der Kauf wird nicht automatisch ausgelöst.</small>
+          <Illustrated step={2} />
           <aside className={styles.beginnerPrelude} aria-label="Das solltest du vorab wissen">
             <strong>Das solltest du vorab wissen</strong>
             <ul>
@@ -128,7 +135,7 @@ export function GiftPurchaseGuide({
           <ol className={styles.cardmarketInstructionList}>
             <li>Melde dich bei Cardmarket an – oder lege dort ein Konto an.</li>
             <li>Lege eine neue <b>Wants-Liste</b> an (so nennt Cardmarket die Wunschliste) oder öffne eine vorhandene.</li>
-            <li>Wähle <b>„Deckliste hinzufügen“</b>, klicke in das große Textfeld und füge die Liste mit <b>Strg+V</b> beziehungsweise <b>⌘V</b> ein.</li>
+            <li>Wähle <b>„Deck-Liste hinzufügen“</b>, klicke in das große Textfeld und füge die Liste mit <b>Strg+V</b> beziehungsweise <b>⌘V</b> ein.</li>
             <li>Klicke auf <b>„Hinzufügen“</b>. Ein grünes Häkchen heißt: Karten hinzugefügt. Ein rotes Kreuz heißt: Karte nicht hinzugefügt.</li>
           </ol>
           <div className={styles.cardmarketGuideActions}>
@@ -137,6 +144,7 @@ export function GiftPurchaseGuide({
             </a>
             <button type="button" onClick={() => setStep(3)}>Karten sind eingefügt <ArrowRight aria-hidden="true" size={17} /></button>
           </div>
+          <Illustrated step={3} />
         </> : null}
 
         {step === 3 ? <>
@@ -157,15 +165,16 @@ export function GiftPurchaseGuide({
               <p><b>Die Karten haben unterschiedliche Zustandswünsche.</b> Stelle sie bei Cardmarket gruppenweise gemäß den Cardfolio-Angaben ein.</p>
             )}
             <ol className={styles.cardmarketConditionSteps}>
-              <li>Alle Karten markieren</li>
+              <li>Alle Karten markieren (Kästchen in der Titelzeile der Tabelle)</li>
               <li>„Massenveränderung“ öffnen</li>
-              <li>Mindestzustand {condition ? <b>≥ {condition.code}</b> : "passend zu den Cardfolio-Angaben"} wählen</li>
+              <li>Bei „Mindest-Zustand“ {condition ? <b>{condition.code}</b> : "den passenden Wert"} wählen und „Ausgewählte ändern“ klicken</li>
             </ol>
           </div>
           <div className={styles.cardmarketGuideActions}>
             <button type="button" className={styles.cardmarketBackButton} onClick={() => setStep(2)}><ArrowLeft aria-hidden="true" size={16} /> Zurück</button>
             <button type="button" onClick={() => setStep(4)}>Zustand ist eingestellt <ArrowRight aria-hidden="true" size={17} /></button>
           </div>
+          <Illustrated step={5} />
         </> : null}
 
         {step === 4 ? <>
@@ -183,6 +192,7 @@ export function GiftPurchaseGuide({
               Cardmarket öffnen <ExternalLink aria-hidden="true" size={17} />
             </a>
           </div>
+          <Illustrated step={6} />
           <small>
             Der Wizard durchsucht nicht alle Angebote. Wirkt das Ergebnis zu teuer, schau selbst nach oder wähle andere Karten. Preise, Versand und die endgültige Auswahl bestätigst du erst bei Cardmarket.{" "}
             <a href={wizardHelpUrl} target="_blank" rel="noopener noreferrer">Hilfe von Cardmarket zum Shopping Wizard <ExternalLink aria-hidden="true" size={13} /></a>

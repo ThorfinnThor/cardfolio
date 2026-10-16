@@ -826,6 +826,18 @@ test("offers a lean gift entry without collector navigation", async ({ page }) =
   await expect(page.getByRole("textbox", { name: "Lieblings-Pokémon" })).toHaveCount(0);
 });
 
+test("shows the illustrated Cardmarket instructions without horizontal overflow on a phone", async ({ page }) => {
+  await page.setViewportSize({ height: 812, width: 375 });
+  await page.goto("/anleitung/cardmarket/");
+
+  await expect(page.getByRole("heading", { level: 1, name: /Karten bei Cardmarket kaufen/ })).toBeVisible();
+  await page.getByRole("link", { name: "Den Kartenzustand für alle Karten einstellen" }).click();
+  await expect(page.getByRole("heading", { name: /Den Kartenzustand für alle Karten einstellen/ })).toBeInViewport();
+  await expect(page.getByRole("table", { name: "Welchen Wert du bei Cardmarket einstellst" })).toBeVisible();
+  const wide = await page.evaluate(() => [...document.querySelectorAll("body *")].filter((element) => element.getBoundingClientRect().right > 376).length);
+  expect(wide).toBe(0);
+});
+
 test("sets, edits and persists the minimum condition for marketplace handoff", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/");

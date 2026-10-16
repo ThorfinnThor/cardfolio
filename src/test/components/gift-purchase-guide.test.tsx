@@ -174,4 +174,19 @@ describe("gift purchase guide", () => {
     expect(screen.queryByRole("heading", { name: "So bekommst du die Karten" })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Andere Region · Versand prüfen" })).toBeInTheDocument();
   });
+
+  it("points every step that needs it to the illustrated instructions", () => {
+    render(panel());
+
+    const open = () => screen.getByRole("link", { name: /Mit Bildern erklärt ansehen/ }).getAttribute("href");
+    expect(open()).toBe("/anleitung/cardmarket/#schritt-2");
+    expect(screen.getByRole("link", { name: /Mit Bildern erklärt ansehen/ })).toHaveAttribute("target", "_blank");
+    fireEvent.click(screen.getByRole("link", { name: /kopieren & Cardmarket öffnen/ }));
+    expect(open()).toBe("/anleitung/cardmarket/#schritt-3");
+    fireEvent.click(screen.getByRole("button", { name: /Karten sind eingefügt/ }));
+    expect(open()).toBe("/anleitung/cardmarket/#schritt-5");
+    expect(screen.getByText(/Mindest-Zustand/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /Zustand ist eingestellt/ }));
+    expect(open()).toBe("/anleitung/cardmarket/#schritt-6");
+  });
 });

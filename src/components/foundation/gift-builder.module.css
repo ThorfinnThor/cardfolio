@@ -134,6 +134,7 @@
 .purchaseCard > div { display: grid; align-content: start; gap: 8px; }
 .purchaseCard h3 { font-size: 24px; line-height: 1.2; }
 .purchaseCard > div > p:not(.eyebrow) { margin: 0; color: var(--cf-text2); font-size: 16px; line-height: 1.5; }
+.howtoLink { display: inline-flex; align-items: center; gap: 6px; width: fit-content; min-height: 44px; color: var(--cf-accent-text); font-weight: 700; text-underline-offset: 3px; }
 .purchaseStep { margin: 0; color: var(--cf-accent-text); font-family: var(--cf-font-mono); font-size: 12px; font-weight: 800; letter-spacing: .11em; }
 .purchaseCard > .primaryButton { align-self: stretch; min-height: 62px; font-size: 17px; }
 .binderMatch { display: flex; align-items: flex-start; gap: 9px; margin: 2px 0 !important; border: 1px solid color-mix(in srgb, var(--cf-ok) 36%, var(--cf-line)); border-radius: 8px; background: var(--cf-ok-soft); color: var(--cf-text2) !important; padding: 10px 11px; }
