@@ -414,7 +414,13 @@ function CatalogSetArtwork({ entry, language }: { entry: CatalogSetIndexEntry; l
   );
 }
 
-export function FoundationWorkspace() {
+export interface FoundationWorkspaceProps {
+  /** "gift" is the lean /geschenk/ entry: no sidebar or collector chrome, gift start first. */
+  shell?: "full" | "gift";
+}
+
+export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps = {}) {
+  const giftShell = shell === "gift";
   const repository = useMemo(() => new IndexedDBBinderRepository(), []);
   const giftProjects = useMemo(() => new IndexedDBGiftProjectRepository(), []);
   const catalog = useMemo(() => new TCGdexCatalogAdapter(), []);
@@ -471,7 +477,7 @@ export function FoundationWorkspace() {
   const [cardmarketPreparing, setCardmarketPreparing] = useState(false);
   const [importReport, setImportReport] = useState<ImportReport>();
   const [storageConflict, setStorageConflict] = useState(false);
-  const [binderManagerOpen, setBinderManagerOpen] = useState(false);
+  const [binderManagerOpen, setBinderManagerOpen] = useState(giftShell);
   const [giftBuilderOpen, setGiftBuilderOpen] = useState(false);
   const [giftDiscoveryMode, setGiftDiscoveryMode] = useState<"pokemon" | "theme">("pokemon");
   const [giftSubjectQuery, setGiftSubjectQuery] = useState("Pikachu");
@@ -1876,8 +1882,8 @@ export function FoundationWorkspace() {
     .map((entry) => ({ entry, card: cards.get(entry.cardKey) }));
 
   return (
-    <div className={styles.appShell} data-design={PRODUCT_DESIGN}>
-      <aside className={styles.sidebar} aria-label="Cardfolio Navigation">
+    <div className={styles.appShell} data-design={PRODUCT_DESIGN} data-shell={shell}>
+      {giftShell ? null : <aside className={styles.sidebar} aria-label="Cardfolio Navigation">
         <button type="button" className={styles.brand} onClick={() => setBinderManagerOpen(true)}>
           <span className={styles.brandMark} aria-hidden="true"><i /><i /></span>
           <span className={styles.brandText}>Cardfolio<small>Wunschbinder · lokal</small></span>
@@ -1909,10 +1915,19 @@ export function FoundationWorkspace() {
           <Link className={styles.navItem} href="/help/"><CircleHelp size={18} /> <span>Hilfe</span></Link>
           <span className={styles.navItemMuted}><Settings2 size={18} /> <span>Einstellungen</span></span>
         </div>
-      </aside>
+      </aside>}
 
       <div className={styles.mainColumn}>
-        <header className={styles.topbar}>
+        {giftShell ? <header className={styles.giftBar}>
+          <button type="button" className={styles.giftBrand} onClick={() => { setSetBinderWizardOpen(false); setMissingOpen(false); setGiftBuilderOpen(false); setBinderManagerOpen(true); }} aria-label="Cardfolio – zur Geschenk-Startseite">
+            <span className={styles.brandMark} aria-hidden="true"><i /><i /></span>
+            <span>Cardfolio</span>
+          </button>
+          <div className={styles.giftBarActions}>
+            <ThemeToggle className={styles.themeToggle} />
+            <Link className={styles.giftBarLink} href="/">Ich sammle selbst</Link>
+          </div>
+        </header> : <header className={styles.topbar}>
           <button type="button" className={styles.mobileMenu} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }} aria-label="Binderverwaltung öffnen"><Menu size={19} /></button>
           <div className={styles.breadcrumb}>
             <button type="button" onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }}>Meine Binder</button>
@@ -1926,7 +1941,7 @@ export function FoundationWorkspace() {
             <ThemeToggle className={styles.themeToggle} />
             <span className={styles.status} data-status={storageStatus}><span />{storageStatus === "ready" || storageStatus === "saved" ? "Lokal gespeichert" : storageStatus}</span>
           </div>
-        </header>
+        </header>}
 
         <main className={styles.page}>
 
@@ -1985,6 +2000,7 @@ export function FoundationWorkspace() {
             onGiftExampleStart={(subjectQuery) => { setGiftDiscoveryMode("pokemon"); setGiftSubjectQuery(subjectQuery); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
             onThemeStart={() => { setGiftDiscoveryMode("theme"); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
             onSetStart={() => { setSetBinderWizardOpen(true); setGiftBuilderOpen(false); setBinderManagerOpen(true); setMissingOpen(false); }}
+            giftOnly={giftShell}
           />
         )
       ) : null}
@@ -2754,7 +2770,7 @@ export function FoundationWorkspace() {
       ) : null}
 
       <footer className={styles.footer}>
-        <p>Keine Cloud-Synchronisierung. Sichere wichtige Binder regelmäßig als JSON-Datei.</p>
+        <p>{binders.length > 0 && !giftBuilderOpen && !giftShell ? "Keine Cloud-Synchronisierung. Sichere wichtige Binder regelmäßig als JSON-Datei." : "Alles bleibt in deinem Browser – kein Konto, keine Cloud."}</p>
         <Link href="/help/">Hilfe, Datenflüsse und Hinweise</Link>
       </footer>
         </main>

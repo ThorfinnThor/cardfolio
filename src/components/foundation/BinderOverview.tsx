@@ -27,6 +27,8 @@ interface BinderOverviewProps {
   onGiftExampleStart?: (subjectQuery: string) => void;
   onThemeStart?: () => void;
   onSetStart?: () => void;
+  /** Lean variant for the /geschenk/ entry: gift start only, no collector tools. */
+  giftOnly?: boolean;
 }
 
 export function BinderOverview({
@@ -46,22 +48,26 @@ export function BinderOverview({
   onGiftExampleStart,
   onThemeStart,
   onSetStart,
+  giftOnly = false,
 }: BinderOverviewProps) {
   const [startMode, setStartMode] = useState<"gift" | "theme" | "set" | "manual">("gift");
+  const [collectorModes, setCollectorModes] = useState(false);
+  // A first-time visitor sees only the gift start; collectors (or anyone who asks) get all four starts.
+  const showStartTabs = !giftOnly && (collectorModes || binders.length > 0);
   const totalPlanned = binders.reduce((total, binder) => total + deriveBinderStats(binder).planned, 0);
   const totalOwned = binders.reduce((total, binder) => total + deriveBinderStats(binder).owned, 0);
   const totalPercent = totalPlanned ? Math.round((totalOwned / totalPlanned) * 100) : 0;
 
   return (
     <section className={styles.overview} aria-labelledby="binder-heading">
-      <div className={styles.startTabs} role="tablist" aria-label="Binder erstellen">
+      {showStartTabs ? <div className={styles.startTabs} role="tablist" aria-label="Binder erstellen">
         <button id="start-tab-gift" type="button" role="tab" aria-selected={startMode === "gift"} aria-controls="start-panel" onClick={() => setStartMode("gift")}><Gift aria-hidden="true" size={18} /><span>Als Geschenk <em>Empfohlen</em></span></button>
         <button id="start-tab-theme" type="button" role="tab" aria-selected={startMode === "theme"} aria-controls="start-panel" onClick={() => setStartMode("theme")}><Images aria-hidden="true" size={18} /><span>Nach Bildmotiv</span></button>
         <button id="start-tab-set" type="button" role="tab" aria-selected={startMode === "set"} aria-controls="start-panel" onClick={() => setStartMode("set")}><BookOpen aria-hidden="true" size={18} /><span>Komplettes Set</span></button>
         <button id="start-tab-manual" type="button" role="tab" aria-selected={startMode === "manual"} aria-controls="start-panel" onClick={() => setStartMode("manual")}><PencilRuler aria-hidden="true" size={18} /><span>Selbst gestalten</span></button>
-      </div>
+      </div> : null}
 
-      {startMode === "gift" ? <><div className={styles.giftHero} id="start-panel" role="tabpanel" aria-labelledby="start-tab-gift" data-has-binders={binders.length > 0}>
+      {startMode === "gift" ? <><div className={styles.giftHero} id="start-panel" role={showStartTabs ? "tabpanel" : undefined} aria-labelledby={showStartTabs ? "start-tab-gift" : undefined} data-has-binders={binders.length > 0}>
         <div className={styles.giftHeroCopy}>
           <span className={styles.eyebrow}>Ein Geschenk, das persönlich wird</span>
           <h1 id="binder-heading">Ein Pokémon-Binder als persönliches Geschenk.</h1>
@@ -70,6 +76,7 @@ export function BinderOverview({
             <Gift aria-hidden="true" size={22} /> Geschenk-Binder gestalten <ArrowRight aria-hidden="true" size={21} />
           </button>
           <span className={styles.heroReassurance}>Ohne Konto starten · Karten später austauschen · lokal gespeichert</span>
+          {!giftOnly && !showStartTabs ? <button type="button" className={styles.collectorLink} onClick={() => setCollectorModes(true)}>Ich sammle selbst</button> : null}
         </div>
         <div className={styles.giftHeroVisual} aria-hidden="true">
           <span className={styles.pageCaption}>So könnte deine erste Seite aussehen</span>
@@ -143,7 +150,7 @@ export function BinderOverview({
         </form>
       </section> : null}
 
-      {binders.length ? (
+      {binders.length && !giftOnly ? (
         <div>
           <div className={styles.shelfHeader}>
             <div><span className={styles.sectionKicker}>Deine Sammlung</span><h2>Hier kannst du weitergestalten</h2></div>
@@ -193,13 +200,15 @@ export function BinderOverview({
         </div>
       ) : null}
 
-      {binders.length ? <div className={styles.collectionFooter}>
+      {binders.length && !giftOnly ? <div className={styles.collectionFooter}>
         <span>{binders.length} von {MAX_BINDERS} Bindern · {totalPercent}% deiner geplanten Karten vorhanden ({totalOwned} von {totalPlanned})</span>
         <span className={styles.storageStatus} data-status={storageStatus}><span className={styles.statusDot} /> {storageStatus === "ready" || storageStatus === "saved" ? "Lokal gespeichert" : storageStatus}</span>
         <button type="button" onClick={onExport}><Archive aria-hidden="true" size={16} /> Backup exportieren</button>
       </div> : null}
-      <label className={styles.backupImport} htmlFor="backup-import">Vorhandenen Binder aus Backup laden</label>
-      <input id="backup-import" className={styles.srOnly} type="file" accept="application/json,.json" onChange={onImport} />
+      {giftOnly ? null : <>
+        <label className={styles.backupImport} htmlFor="backup-import">Vorhandenen Binder aus Backup laden</label>
+        <input id="backup-import" className={styles.srOnly} type="file" accept="application/json,.json" onChange={onImport} />
+      </>}
     </section>
   );
 }

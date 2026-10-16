@@ -30,6 +30,12 @@
 
 .appShell { min-height: 100vh; display: grid; grid-template-columns: 240px minmax(0, 1fr); background: var(--cf-bg); color: var(--cf-text); }
 .mainColumn { min-width: 0; }
+.appShell[data-shell="gift"] { display: block; }
+.giftBar { position: sticky; z-index: 7; top: 0; min-height: 60px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--cf-line); background: var(--cf-glass); padding: 0 clamp(13px, 3vw, 32px); backdrop-filter: blur(12px); }
+.giftBrand { min-height: 44px; display: inline-flex; align-items: center; gap: 11px; border: 0; background: transparent; color: var(--cf-text); padding: 0; font-family: var(--cf-font-display); font-size: 20px; font-weight: 650; letter-spacing: -.01em; cursor: pointer; }
+.giftBarActions { display: flex; align-items: center; gap: 12px; }
+.giftBarLink { min-height: 44px; display: inline-flex; align-items: center; color: var(--cf-accent-text); font-size: 14px; font-weight: 650; text-decoration: underline; text-underline-offset: 4px; }
+.giftBarLink:hover { color: var(--cf-accent-deep); }
 .page { width: min(1480px, 100%); margin: 0 auto; padding: 26px 32px 56px; }
 
 /* Sidebar */
