@@ -736,7 +736,7 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await page.getByLabel("Kartensprache").selectOption("en");
   await page.getByRole("button", { name: /Binder-Seite ansehen/ }).click();
   await expect(page.getByText("9 / 9")).toBeVisible();
-  await expect(page.getByText(/Preise sind Schätzungen ohne Versand und Steuern/i)).toBeVisible();
+  await expect(page.getByText(/den endgültigen Preis siehst du beim Kartenanbieter/i)).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(375);
   await page.getByRole("button", { name: /Bestellung prüfen/ }).click();
   await page.getByRole("button", { name: "Als Binder anlegen" }).click();
@@ -744,17 +744,11 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await expect(page.getByText(/Die Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten/i)).toBeVisible();
   await expect(page.getByText("Kein bestätigter Preis", { exact: true })).toBeVisible();
   await expect(page.getByText("Vault X 9-Pocket Zip Binder", { exact: true })).toBeVisible();
-  await expect(page.getByText(/9-Pocket · 9 Plätze benötigt · bis zu 360 Karten möglich/i)).toBeVisible();
-  await expect(page.getByText("Automatisch passend gewählt")).toBeVisible();
+  await expect(page.getByText(/9-Pocket · Platz für bis zu 360 Karten/i)).toBeVisible();
+  await expect(page.getByText("Passt zu deinem Plan")).toBeVisible();
 
-  await page.evaluate(() => {
-    window.open = ((url?: string | URL) => {
-      document.documentElement.dataset.openedBinderUrl = String(url ?? "");
-      return window;
-    }) as typeof window.open;
-  });
-  await page.getByRole("button", { name: /Diesen Binder bestellen/i }).click();
-  const openedBinderUrl = await page.locator("html").getAttribute("data-opened-binder-url");
+  const binderLink = page.getByRole("link", { name: /Diesen Binder bestellen/i });
+  const openedBinderUrl = await binderLink.getAttribute("href");
   expect(openedBinderUrl).toBe("https://eu.vaultx.com/collections/card-binders/products/9-pocket-exo-tec-zip-binder");
   expect(new URL(openedBinderUrl ?? "").search).toBe("");
 

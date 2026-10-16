@@ -92,7 +92,7 @@ describe("GiftBuilderPanel", () => {
     fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
     expect(await screen.findAllByText("9 / 9")).not.toHaveLength(0);
     expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("Preisprüfung"))).toBe(true);
-    expect(screen.getByText("9 von 9 Karten sind vollständig vorbereitet. Sonderfälle kannst du direkt an der Karte ändern.")).toBeInTheDocument();
+    expect(screen.getByText("Alle 9 Karten sind vorbereitet.")).toBeInTheDocument();
     const orderCondition = screen.getByRole("combobox", { name: "Zustand für alle" });
     expect(orderCondition).toHaveValue("excellent");
     fireEvent.change(orderCondition, { target: { value: "near-mint" } });
@@ -109,9 +109,9 @@ describe("GiftBuilderPanel", () => {
     expect(screen.getAllByRole("img", { name: /Pikachu 1, Set 1 1/i }).length).toBeGreaterThan(0);
     expect(screen.getByText("Keine Budgetzusage")).toBeInTheDocument();
     expect(await screen.findByText("9-Pocket Test-Binder")).toBeInTheDocument();
-    expect(screen.getByText(/9-Pocket · 9 Plätze benötigt · bis zu 360 Karten möglich/i)).toBeInTheDocument();
-    expect(screen.getByText("Automatisch passend gewählt")).toBeInTheDocument();
-    expect(screen.getByText(/kein Affiliate-Link/i)).toBeInTheDocument();
+    expect(screen.getByText(/9-Pocket · Platz für bis zu 360 Karten/i)).toBeInTheDocument();
+    expect(screen.getByText("Passt zu deinem Plan")).toBeInTheDocument();
+    expect(screen.queryByText(/kein Affiliate-Link/i)).not.toBeInTheDocument();
     const binderLink = screen.getByRole("link", { name: /Diesen Binder bestellen/i });
     expect(binderLink).toHaveAttribute("href", "https://partner.example/9-pocket-binder");
     expect(binderLink).toHaveAttribute("target", "_blank");
@@ -178,9 +178,9 @@ describe("GiftBuilderPanel", () => {
 
     fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
     fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
-    await screen.findByText("Für alle 9 Karten ist eine passende Standardausführung vorausgewählt.");
-    expect(screen.getByRole("heading", { name: "Empfehlung übernehmen und weiter" })).toBeInTheDocument();
-    expect(screen.getByText(/Ausführung und Zustand sind vorbereitet/)).toBeInTheDocument();
+    await screen.findByText("Ausführung und Zustand sind für alle 9 Karten vorausgewählt.");
+    expect(screen.getByRole("heading", { name: "Auswahl bestätigen" })).toBeInTheDocument();
+    expect(screen.getByText(/Alles ist vorbereitet/)).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Jetzt Ausführung prüfen/i })).not.toBeInTheDocument();
     expect(screen.getAllByText("Vorausgewählt")).toHaveLength(9);
 
@@ -257,7 +257,7 @@ describe("GiftBuilderPanel", () => {
     expect(await screen.findAllByText("9 / 9")).not.toHaveLength(0);
     expect(screen.getAllByText((_, element) => element?.tagName === "B" && element.textContent?.includes("1,00") === true)).toHaveLength(9);
     expect(screen.getByText(/9,00/)).toBeInTheDocument();
-    expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("Preise sind Schätzungen ohne Versand und Steuern"))).toBe(true);
+    expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("den endgültigen Preis siehst du beim Kartenanbieter"))).toBe(true);
     expect(screen.queryByText(/Budget nicht vollständig berücksichtigen/i)).not.toBeInTheDocument();
   });
 
