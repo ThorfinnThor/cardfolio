@@ -77,13 +77,16 @@ const STEP_GUIDANCE: Record<GiftStep, { title: string; text: string }> = {
   summary: { title: "Dein Geschenk-Binder ist fertig geplant", text: "Jetzt fehlen nur noch der Binder und die Karten. Beides bestellst du in zwei Schritten bei Shops." },
 };
 
+/** Sample size for the second, wider look when the first sample cannot be bought within the budget. */
+const WIDE_SAMPLE = 80;
+
 const initialPreferences: GiftPreferences = {
   recipientKind: "friend",
   subjectQuery: "Pikachu",
   targetCardCount: 9,
   budgetMinor: 10000,
   currency: "EUR",
-  budgetTolerancePercent: 5,
+  budgetTolerancePercent: 0,
   preferredLanguage: "de",
   style: "mixed",
 };
@@ -137,6 +140,34 @@ function knownTotal(selected: readonly GiftCardCandidate[]): { totalMinor: numbe
   return { totalMinor, priced, unpriced: selected.length - priced };
 }
 
+/**
+ * The first candidate that still fits into what is left of the budget; if none does, the first (cheapest) one.
+ * Candidates without a known price are never preferred over one that fits.
+ */
+function pickWithinBudget(available: readonly GiftCardCandidate[], room: number): GiftCardCandidate | undefined {
+  return available.find((candidate) => candidate.price.amountMinor !== undefined && candidate.price.amountMinor <= room) ?? available[0];
+}
+
+/** Fills a short selection from other candidates without going over the budget. */
+function topUpWithinBudget(base: readonly GiftCardCandidate[], others: readonly GiftCardCandidate[], target: number, budget: number): GiftCardCandidate[] {
+  const result = [...base];
+  const taken = new Set(result.map((candidate) => candidate.card.key));
+  const pool = others.filter((candidate) => !taken.has(candidate.card.key));
+  let total = result.reduce((sum, candidate) => sum + (candidate.price.amountMinor ?? 0), 0);
+  while (result.length < target) {
+    const slotsAfter = target - result.length - 1;
+    const next = pool.find((candidate) => {
+      const reserve = pool.filter((item) => item !== candidate).map((item) => item.price.amountMinor ?? 0).sort((a, b) => a - b).slice(0, slotsAfter).reduce((sum, value) => sum + value, 0);
+      return total + (candidate.price.amountMinor ?? 0) + reserve <= budget;
+    }) ?? pool.find((candidate) => total + (candidate.price.amountMinor ?? 0) <= budget);
+    if (!next) break;
+    result.push(next);
+    total += next.price.amountMinor ?? 0;
+    pool.splice(pool.indexOf(next), 1);
+  }
+  return result;
+}
+
 function summarizeSelection(selected: GiftCardCandidate[], preferences: GiftPreferences, issues: GiftSelectionResult["issues"] = []): GiftSelectionResult {
   const unpricedCount = selected.filter((candidate) => candidate.price.amountMinor === undefined).length;
   const approximateCount = selected.filter((candidate) => candidate.price.confidence === "approximate").length;
@@ -146,14 +177,9 @@ function summarizeSelection(selected: GiftCardCandidate[], preferences: GiftPref
     candidate.price.confidence !== "unknown"
     && candidate.price.currency === preferences.currency
     && candidate.price.amountMinor !== undefined);
-  const ceiling = preferences.budgetMinor + Math.floor(preferences.budgetMinor * (preferences.budgetTolerancePercent ?? 0) / 100);
   const budgetStatus = !allPriced || estimatedTotalMinor === undefined
     ? "unknown" as const
-    : estimatedTotalMinor <= preferences.budgetMinor
-      ? "within" as const
-      : estimatedTotalMinor <= ceiling
-        ? "near" as const
-        : "over" as const;
+    : estimatedTotalMinor <= preferences.budgetMinor ? "within" as const : "over" as const;
   const nextIssues = new Set(issues);
   if (selected.length < preferences.targetCardCount) nextIssues.add("too-few-candidates");
   if (unpricedCount) nextIssues.add("unknown-prices");
@@ -324,7 +350,8 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
   }
 
   async function createProposal(override?: GiftPreferences) {
-    const wanted = override ?? preferences;
+    // The budget the buyer typed is the limit; the hidden 5 % tolerance of older versions is not applied.
+    const wanted: GiftPreferences = { ...(override ?? preferences), budgetTolerancePercent: 0 };
     setLoading(true);
     setError(undefined);
     setSelection(undefined);
@@ -334,7 +361,9 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     setConfirmedVariantKeys(new Set());
     setExcludedKeys(new Set());
     try {
-      const maximum = Math.min(80, Math.max(40, wanted.targetCardCount * 3));
+      // If even the cheapest complete selection of the first sample is over budget, look at more cards once.
+      const firstSample = Math.min(80, Math.max(40, wanted.targetCardCount * 3));
+      for (const maximum of [firstSample, WIDE_SAMPLE]) {
       const theme = discoveryMode === "theme" ? giftThemePreset(selectedThemeId) : undefined;
       const pool = theme && smartSearch
         ? (await smartSearch.search({
@@ -402,14 +431,16 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
       if ((wanted.style === "vintage" || wanted.style === "modern") && result.selected.length < wanted.targetCardCount) {
         // Too few cards of the wished era: top up with the best of the others instead of showing a half page.
         const mixed = engine.select({ candidates: selectionCandidates, preferences: { ...wanted, style: "mixed" } });
-        const have = new Set(result.selected.map((candidate) => candidate.card.key));
-        const filled = [...result.selected, ...mixed.selected.filter((candidate) => !have.has(candidate.card.key))].slice(0, wanted.targetCardCount);
+        const filled = topUpWithinBudget(result.selected, [...mixed.selected, ...selectionCandidates], wanted.targetCardCount, wanted.budgetMinor);
         note = `Es gibt nicht genug ${wanted.style === "vintage" ? "alte" : "moderne"} Karten. Den Rest haben wir mit ${wanted.style === "vintage" ? "neueren" : "älteren"} Karten aufgefüllt.`;
         result = summarizeSelection(filled, wanted, result.issues);
       }
+      if (result.budgetStatus === "over" && !theme && maximum < WIDE_SAMPLE && pool.length >= maximum) continue;
       setEraNote(note);
       setSelection(result);
       setStep("candidates");
+      break;
+      }
     } catch (cause) {
       setError(friendlyError(cause, "Karten konnten nicht geladen werden. Prüfe die Verbindung und versuche es erneut."));
     } finally {
@@ -446,7 +477,8 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
 
   function addCandidate() {
     if (!selection || selection.selected.length >= preferences.targetCardCount) return;
-    const next = availableCandidates[0];
+    const spent = selection.selected.reduce((sum, candidate) => sum + (candidate.price.amountMinor ?? 0), 0);
+    const next = pickWithinBudget(availableCandidates, preferences.budgetMinor - spent);
     if (!next) return;
     if (giftCandidateHasVerifiedFinish(next)) {
       setConfirmedVariantKeys((current) => new Set(current).add(next.card.key));
@@ -456,7 +488,9 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
 
   function replaceCandidate(cardKey: string) {
     if (!selection) return;
-    const replacement = availableCandidates[0];
+    const spent = selection.selected.reduce((sum, candidate) => sum + (candidate.price.amountMinor ?? 0), 0);
+    const replaced = selection.selected.find((candidate) => candidate.card.key === cardKey);
+    const replacement = pickWithinBudget(availableCandidates, preferences.budgetMinor - spent + (replaced?.price.amountMinor ?? 0));
     if (!replacement) return;
     closeInspector(cardKey);
     setConfirmedVariantKeys((current) => {

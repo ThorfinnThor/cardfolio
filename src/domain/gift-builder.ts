@@ -281,7 +281,18 @@ export class DeterministicGiftSelectionEngine implements GiftSelectionEngine {
       selectedPool = diverseOrder(cheapestTarget);
       issues.add("budget-impossible");
     } else {
-      selectedPool = diverseOrder([...priced, ...uncertain]).slice(0, target);
+      // Too few cards with a price: keep to the budget with the priced ones, unpriced cards fill the rest.
+      let spent = 0;
+      selectedPool = [];
+      for (const candidate of diverseOrder([...priced, ...uncertain])) {
+        if (selectedPool.length >= target) break;
+        const amount = candidate.price.amountMinor;
+        if (amount !== undefined && candidate.price.confidence !== "unknown" && candidate.price.currency === preferences.currency) {
+          if (spent + amount > ceiling) continue;
+          spent += amount;
+        }
+        selectedPool.push(candidate);
+      }
     }
 
     const selected: GiftCardCandidate[] = [];

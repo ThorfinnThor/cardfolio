@@ -319,3 +319,8 @@
 - `.npm-cache/` (1,557 files, 493 MB, ignored but once committed) is removed from the repository tree. Git history still contains it; shrinking clones would need a history rewrite and a forced push, which is the owner's decision.
 - Not done: running a usability test with real people (a ready test sheet is in `docs/usability-test-gift-flow.md`) and the CardTrader request (draft in `docs/cardtrader-permission-request.md`, not sent).
 - The purchase guide starts with the provider that fits the browser language (`en-US`, `en-CA`, `fr-CA` → TCGplayer, European regions and plain languages → Cardmarket, other regions → provider choice). This is a guess from the language setting; no location is requested or read, and it can be changed.
+
+## 2026-10-17 — The typed budget is a hard limit
+
+- Cause of "the budget is ignored": the default `budgetTolerancePercent` was 5 and the control had been removed from the UI, so the engine (which spends up to the ceiling) silently aimed 5 % above the typed budget. The era top-up added the era's cards on top of a full-budget mixed selection, and the engine's "too few priced cards" branch did not look at the budget at all.
+- Now: tolerance 0 by default and forced to 0 in `createProposal`/`summarizeSelection` (stored 5 % from older sessions is ignored); the era top-up, "Austauschen" and "+ Karte hinzufügen" pick cards that still fit the remaining budget; the engine's few-priced branch keeps priced cards within the ceiling. If the first sample (40–80 cards) cannot be bought within the budget, one wider look (80 cards) is taken before saying "über Budget". Remaining honest case: a Pokémon whose cheapest cards cost more than the budget (Glurak 100 € → ~160 €, with the over-budget message).
