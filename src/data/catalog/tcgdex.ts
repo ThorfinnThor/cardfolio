@@ -65,6 +65,11 @@ async function wait(ms: number, signal: AbortSignal): Promise<void> {
   });
 }
 
+/** Names of abilities or attacks; entries the catalogue lists without a name are left out. */
+function namesOf(items: ReadonlyArray<{ name?: string | null }> | null | undefined): string[] {
+  return (items ?? []).flatMap((item) => (item.name ? [item.name] : []));
+}
+
 async function fetchJson(url: URL, externalSignal?: AbortSignal): Promise<unknown> {
   const request = combineWithTimeout(externalSignal);
   try {
@@ -248,16 +253,16 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
       levelChecked: true,
       suffix: card.suffix ?? undefined,
       cardmarketIdentityV2Checked: true,
-      abilities: card.abilities?.map((ability) => ability.name) ?? [],
-      attacks: card.attacks?.map((attack) => attack.name) ?? [],
+      abilities: namesOf(card.abilities),
+      attacks: namesOf(card.attacks),
       englishIdentity: englishCard ? {
         name: englishCard.name,
         setName: englishCard.set.name,
         category: category(englishCard.category),
         level: englishCard.level ?? undefined,
         suffix: englishCard.suffix ?? undefined,
-        abilities: englishCard.abilities?.map((ability) => ability.name) ?? [],
-        attacks: englishCard.attacks?.map((attack) => attack.name) ?? [],
+        abilities: namesOf(englishCard.abilities),
+        attacks: namesOf(englishCard.attacks),
       } : undefined,
       physicalStatus: set.serie?.id === "tcgp" ? "digital" : set.serie ? "physical" : "unknown",
       fetchedAt: new Date().toISOString(),

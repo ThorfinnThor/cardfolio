@@ -67,6 +67,7 @@ import { persistPageSelection, persistPageSelectionUndo, persistReversiblePageSe
 import { catalogLabel, coverLeather } from "./binder-cover";
 import { BinderOverview } from "./BinderOverview";
 import { GiftBuilderPanel } from "./GiftBuilderPanel";
+import { clearGiftResume, readGiftResume } from "./gift-resume";
 import { SetBinderWizard } from "./SetBinderWizard";
 import { BinderGrid } from "./BinderGrid";
 import { CardArtwork } from "./CardArtwork";
@@ -2003,9 +2004,9 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
             onRequestDelete={setBinderToDelete}
             onExport={exportBackup}
             onImport={importBackup}
-            onGiftStart={() => { setGiftDiscoveryMode("pokemon"); setGiftSubjectQuery("Pikachu"); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
-            onGiftExampleStart={(subjectQuery) => { setGiftDiscoveryMode("pokemon"); setGiftSubjectQuery(subjectQuery); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
-            onThemeStart={() => { setGiftDiscoveryMode("theme"); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
+            onGiftStart={() => { clearGiftResume(); setGiftDiscoveryMode("pokemon"); setGiftSubjectQuery("Pikachu"); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
+            onGiftExampleStart={(subjectQuery) => { clearGiftResume(); setGiftDiscoveryMode("pokemon"); setGiftSubjectQuery(subjectQuery); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
+            onThemeStart={() => { clearGiftResume(); setGiftDiscoveryMode("theme"); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
             onSetStart={() => { setSetBinderWizardOpen(true); setGiftBuilderOpen(false); setBinderManagerOpen(true); setMissingOpen(false); }}
             giftOnly={giftShell}
           />
@@ -2220,7 +2221,15 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
               onTextExport={(items) => downloadMissingExport(items, "text")}
               onCsvExport={(items) => downloadMissingExport(items, "csv")}
               onConditionsChange={(items, condition) => void changeMissingConditions(items, condition)}
-              onClose={() => setMissingOpen(false)}
+              onClose={() => {
+                setMissingOpen(false);
+                // Back from the purchase view to the finished plan instead of to the binder editor.
+                if (missingBeginner && readGiftResume()) {
+                  setMissingBeginner(false);
+                  setGiftBuilderOpen(true);
+                  setBinderManagerOpen(true);
+                }
+              }}
               tcgplayerEnabled={FEATURES.tcgplayerTextExport}
               tcgplayerCopyState={tcgplayerCopyState}
               onTcgplayerCopy={copyTcgplayerExport}

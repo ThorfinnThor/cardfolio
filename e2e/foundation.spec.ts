@@ -803,6 +803,10 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await expect(missingCards.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" })).toBeVisible();
   await expect(missingCards.getByRole("button", { name: "USA & Kanada · TCGplayer empfohlen" })).toBeVisible();
   await missingCards.getByRole("button", { name: "Fehlkartenansicht schließen" }).click();
+  // Closing the purchase view returns to the finished plan, not to the binder editor.
+  await expect(page.getByRole("heading", { name: "Dein Geschenk-Binder ist fertig geplant" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Geschenk · Pikachu/ })).toBeVisible();
+  await page.getByRole("button", { name: "Binder bearbeiten" }).click();
   await expect(page.getByRole("article", { name: "Pikachu 1, Slot 1" })).toBeVisible();
   await page.reload();
   await expect(page.getByRole("article", { name: "Pikachu 1, Slot 1" })).toBeVisible();

@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { GiftBuilderPanel } from "@/components/foundation/GiftBuilderPanel";
 import { createGiftProject, type GiftCardCandidate } from "@/domain/gift-builder";
@@ -26,6 +26,7 @@ const availableStandardPartner = {
   }],
 };
 
+beforeEach(() => window.sessionStorage.clear());
 afterEach(() => cleanup());
 
 function candidate(index: number): GiftCardCandidate {
@@ -633,5 +634,107 @@ describe("GiftBuilderPanel", () => {
     await waitFor(() => expect(loader.loadCandidatePool).toHaveBeenCalled());
     expect(screen.queryByText(/gibt es .* Karten/)).not.toBeInTheDocument();
     expect(screen.getByRole("radio", { name: /4 Seiten · 36 Karten/ })).toBeEnabled();
+  });
+
+  it("offers an era choice and passes it on to the selection", async () => {
+    const pool = Array.from({ length: 9 }, (_, index) => ({ ...germanCandidate(index + 1), releaseYear: 2001 }));
+    const loader = {
+      loadCandidatePool: vi.fn(async () => pool.map((candidate) => ({ ref: candidate.card.ref, name: candidate.card.name, collectorNumber: candidate.card.collectorNumber }))),
+      hydrateCandidates: vi.fn(async () => pool),
+    };
+    const onCreateBinder = vi.fn(async (_selection, preferences) => createGiftProject("Geschenk · Schiggy", preferences));
+    vi.stubGlobal("fetch", vi.fn(async () => ({ ok: true, json: async () => availableStandardPartner })));
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={onCreateBinder} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    expect(screen.getByRole("radio", { name: "Alt und neu gemischt" })).toBeChecked();
+    fireEvent.click(screen.getByRole("radio", { name: "Schiggy" }));
+    fireEvent.click(screen.getByRole("radio", { name: "Eher alte Karten (bis 2009)" }));
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await screen.findByText("9 / 9");
+    fireEvent.click(screen.getByRole("button", { name: "Weiter zum Einkauf" }));
+    await waitFor(() => expect(onCreateBinder).toHaveBeenCalledTimes(1));
+    expect(onCreateBinder.mock.calls[0][1]).toEqual(expect.objectContaining({ style: "vintage" }));
+    vi.unstubAllGlobals();
+  });
+
+  it("comes back to the finished plan after a trip to the purchase view and forgets it when a gift is left on purpose", async () => {
+    const pool = Array.from({ length: 9 }, (_, index) => germanCandidate(index + 1));
+    const loader = {
+      loadCandidatePool: vi.fn(async () => pool.map((candidate) => ({ ref: candidate.card.ref, name: candidate.card.name, collectorNumber: candidate.card.collectorNumber }))),
+      hydrateCandidates: vi.fn(async () => pool),
+    };
+    vi.stubGlobal("fetch", vi.fn(async () => ({ ok: true, json: async () => availableStandardPartner })));
+    const onCreateBinder = vi.fn(async (_selection, preferences) => createGiftProject("Geschenk · Schiggy", preferences));
+    const onCardsPurchase = vi.fn();
+    const first = render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={onCreateBinder} onOpenBinder={vi.fn()} onCardsPurchase={onCardsPurchase} />);
+    fireEvent.click(screen.getByRole("radio", { name: "Schiggy" }));
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await screen.findByText("9 / 9");
+    fireEvent.click(screen.getByRole("button", { name: "Weiter zum Einkauf" }));
+    await screen.findByRole("heading", { name: "Dein Geschenk-Binder ist fertig geplant" });
+    fireEvent.change(screen.getByLabelText(/Grußtext für die lokale Druckansicht/i), { target: { value: "Viel Freude!" } });
+    fireEvent.click(screen.getByRole("button", { name: "Karten besorgen" }));
+    expect(onCardsPurchase).toHaveBeenCalledOnce();
+    first.unmount();
+
+    // The panel is mounted again (the buyer came back): the finished plan is there, with greeting, without a second save.
+    const onCancel = vi.fn();
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={onCancel} onCreateBinder={onCreateBinder} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+    expect(await screen.findByRole("heading", { name: "Dein Geschenk-Binder ist fertig geplant" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Geschenk · Schiggy" })).toBeInTheDocument();
+    expect(screen.getByLabelText(/Grußtext für die lokale Druckansicht/i)).toHaveValue("Viel Freude!");
+    expect(onCreateBinder).toHaveBeenCalledTimes(1);
+
+    fireEvent.click(screen.getByRole("button", { name: "Geschenk-Gestaltung schließen" }));
+    expect(onCancel).toHaveBeenCalledOnce();
+    expect(window.sessionStorage.getItem("cardfolio-gift-summary")).toBeNull();
+    vi.unstubAllGlobals();
+  });
+
+  it("warns that shipping can cost more than the cards when they are very cheap", async () => {
+    const pool = Array.from({ length: 9 }, (_, index) => germanCandidate(index + 1, 40));
+    const loader = {
+      loadCandidatePool: vi.fn(async () => pool.map((candidate) => ({ ref: candidate.card.ref, name: candidate.card.name, collectorNumber: candidate.card.collectorNumber }))),
+      hydrateCandidates: vi.fn(async () => pool),
+    };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+    fireEvent.click(screen.getByRole("radio", { name: "Schiggy" }));
+    fireEvent.change(screen.getByRole("spinbutton", { name: /Budget/ }), { target: { value: "4" } });
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await screen.findByText("9 / 9");
+
+    expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("Der Versand bei Cardmarket kostet oft mehr als eine einzelne Karte"))).toBe(true);
+  });
+
+  it("shows a plain message instead of raw validation output when card data cannot be read", async () => {
+    const technical = Object.assign(new Error(JSON.stringify([{ expected: "string", code: "invalid_type", path: ["attacks", 0, "name"] }])), { name: "ZodError" });
+    const loader = {
+      loadCandidatePool: vi.fn(async () => briefsOf(9)),
+      hydrateCandidates: vi.fn(async () => { throw technical; }),
+    };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+    fireEvent.click(screen.getByRole("radio", { name: "Schiggy" }));
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+
+    const alert = await screen.findByRole("alert");
+    expect(alert).toHaveTextContent("Einige Kartendaten konnten gerade nicht gelesen werden");
+    expect(alert).not.toHaveTextContent("invalid_type");
+  });
+
+  it("tops up with other eras when there are too few cards of the wished one", async () => {
+    const pool = Array.from({ length: 12 }, (_, index) => ({ ...germanCandidate(index + 1), releaseYear: index < 4 ? 2001 : 2018 }));
+    const loader = {
+      loadCandidatePool: vi.fn(async () => pool.map((candidate) => ({ ref: candidate.card.ref, name: candidate.card.name, collectorNumber: candidate.card.collectorNumber }))),
+      hydrateCandidates: vi.fn(async () => pool),
+    };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    fireEvent.click(screen.getByRole("radio", { name: "Schiggy" }));
+    fireEvent.click(screen.getByRole("radio", { name: "Eher alte Karten (bis 2009)" }));
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await screen.findByText("9 / 9");
+
+    expect(loader.loadCandidatePool).toHaveBeenLastCalledWith(expect.objectContaining({ era: "vintage" }));
+    expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("Es gibt nicht genug alte Karten. Den Rest haben wir mit neueren Karten aufgefüllt."))).toBe(true);
   });
 });

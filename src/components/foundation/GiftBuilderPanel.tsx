@@ -29,6 +29,7 @@ import { createInitialVariantSelection, isVariantSelectionValid, variantAvailabi
 
 import { CardArtwork } from "./CardArtwork";
 import { GiftBinderSpread, type SpreadPocket } from "./GiftBinderSpread";
+import { clearGiftResume, readGiftResume, saveGiftResume } from "./gift-resume";
 import { VariantFields } from "./VariantFields";
 import {
   POPULAR_POKEMON,
@@ -43,7 +44,7 @@ import {
 import styles from "./gift-builder.module.css";
 
 export interface GiftBuilderPanelProps {
-  loader: Pick<GiftCandidateLoader, "loadCandidatePool" | "hydrateCandidates">;
+  loader: Pick<GiftCandidateLoader, "loadCandidatePool" | "hydrateCandidates"> & Partial<Pick<GiftCandidateLoader, "countSubjectCards">>;
   smartSearch?: Pick<SmartSearchAdapter, "search">;
   initialDiscoveryMode?: "pokemon" | "theme";
   initialSubjectQuery?: string;
@@ -59,6 +60,8 @@ type GiftStep = "details" | "candidates" | "summary";
 type GiftDiscoveryMode = "pokemon" | "theme";
 
 const AVAILABILITY_CAP = 80;
+/** Average price per card below which the shipping cost is likely to exceed what a single card costs. */
+const CHEAP_CARD_MINOR = 150;
 
 /** The largest binder size (9, 18 or 36 cards) that `count` cards can fill; one page is always possible. */
 function largestPlanSize(count: number): 9 | 18 | 36 {
@@ -84,6 +87,13 @@ const initialPreferences: GiftPreferences = {
   preferredLanguage: "de",
   style: "mixed",
 };
+
+/** Technical error texts (for example a list of data-validation problems) mean nothing to a gift buyer. */
+function friendlyError(cause: unknown, fallback: string): string {
+  if (!(cause instanceof Error)) return fallback;
+  const technical = cause.name === "ZodError" || cause.message.length > 180 || /^\s*[[{]/.test(cause.message);
+  return technical ? "Einige Kartendaten konnten gerade nicht gelesen werden. Bitte versuche es noch einmal." : cause.message;
+}
 
 function defaultVariant(card: CardSnapshot): VariantSelection {
   const availability = variantAvailabilityForCard(card);
@@ -166,29 +176,32 @@ function safeCandidate(candidate: GiftCardCandidate, pricingEnabled: boolean, cu
 
 export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "pokemon", initialSubjectQuery = initialPreferences.subjectQuery, pricingEnabled, budgetGuaranteeEnabled = false, onCancel, onCreateBinder, onOpenBinder, onCardsPurchase }: GiftBuilderPanelProps) {
   const engine = useMemo(() => new DeterministicGiftSelectionEngine({ spendBudget: true }), []);
-  const [step, setStep] = useState<GiftStep>("details");
-  const [preferences, setPreferences] = useState<GiftPreferences>(() => ({ ...initialPreferences, subjectQuery: initialSubjectQuery }));
-  const [pokemonQuery, setPokemonQuery] = useState(initialSubjectQuery);
+  // A finished plan comes back after a detour to the purchase view or the browser's back button.
+  const [resumed] = useState(() => readGiftResume());
+  const [step, setStep] = useState<GiftStep>(resumed ? "summary" : "details");
+  const [preferences, setPreferences] = useState<GiftPreferences>(() => resumed?.preferences ?? { ...initialPreferences, subjectQuery: initialSubjectQuery });
+  const [pokemonQuery, setPokemonQuery] = useState(resumed?.preferences.subjectQuery ?? initialSubjectQuery);
   const [discoveryMode, setDiscoveryMode] = useState<GiftDiscoveryMode>(initialDiscoveryMode);
   const [pokemonHelp, setPokemonHelp] = useState(false);
   const [orderCondition, setOrderCondition] = useState<PurchasePreferences["minimumCondition"]>("excellent");
   const [selectedThemeId, setSelectedThemeId] = useState<string>();
   const [briefs, setBriefs] = useState<CatalogSearchItem[]>([]);
   const [candidates, setCandidates] = useState<GiftCardCandidate[]>([]);
-  const [selection, setSelection] = useState<GiftSelectionResult>();
+  const [selection, setSelection] = useState<GiftSelectionResult | undefined>(resumed?.selection);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
   const [showAll, setShowAll] = useState(false);
+  const [eraNote, setEraNote] = useState<string>();
   const [inspectedKey, setInspectedKey] = useState<string>();
   const [variantBoxKey, setVariantBoxKey] = useState<string>();
   const [confirmedVariantKeys, setConfirmedVariantKeys] = useState<Set<string>>(new Set());
   const [excludedKeys, setExcludedKeys] = useState<Set<string>>(new Set());
   const [submitting, setSubmitting] = useState(false);
-  const [giftProject, setGiftProject] = useState<GiftProject>();
+  const [giftProject, setGiftProject] = useState<GiftProject | undefined>(resumed?.project);
   const [binderOffers, setBinderOffers] = useState<BinderOffer[]>();
   const [partnerAdapter, setPartnerAdapter] = useState<BinderAffiliateAdapter>();
   const [partnerLoadError, setPartnerLoadError] = useState<string>();
-  const [greeting, setGreeting] = useState("");
+  const [greeting, setGreeting] = useState(resumed?.greeting ?? "");
   const stepMounted = useRef(false);
   // How many cards exist for the chosen Pokémon, so a size that cannot be met is not offered.
   const [availability, setAvailability] = useState<{ key: string; count: number; capped: boolean }>();
@@ -226,12 +239,20 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     const timer = window.setTimeout(() => {
       void (async () => {
         try {
-          const items = await loader.loadCandidatePool({ subjectQuery: subject, language: searchLanguage, maximum: AVAILABILITY_CAP, pageSize: 24 }, controller.signal);
-          if (controller.signal.aborted || !Array.isArray(items)) return;
-          const count = items.filter((item) => matchesGiftSubject({ name: item.name }, subject)).length;
-          setAvailability({ key: `${searchLanguage}:${subject.toLocaleLowerCase("de")}`, count, capped: items.length >= AVAILABILITY_CAP });
+          let count: number;
+          let capped: boolean;
+          if (typeof loader.countSubjectCards === "function") {
+            ({ count, capped } = await loader.countSubjectCards({ subjectQuery: subject, language: searchLanguage }, controller.signal));
+          } else {
+            const items = await loader.loadCandidatePool({ subjectQuery: subject, language: searchLanguage, maximum: AVAILABILITY_CAP, pageSize: 24 }, controller.signal);
+            if (!Array.isArray(items)) return;
+            count = items.filter((item) => matchesGiftSubject({ name: item.name }, subject)).length;
+            capped = items.length >= AVAILABILITY_CAP;
+          }
+          if (controller.signal.aborted) return;
+          setAvailability({ key: `${searchLanguage}:${subject.toLocaleLowerCase("de")}`, count, capped });
           // A size the catalogue cannot fill is lowered to the largest one that it can.
-          setPreferences((current) => current.targetCardCount > largestPlanSize(count) && items.length < AVAILABILITY_CAP
+          setPreferences((current) => current.targetCardCount > largestPlanSize(count) && !capped
             ? { ...current, targetCardCount: largestPlanSize(count) }
             : current);
         } catch {
@@ -252,6 +273,10 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     }
     document.getElementById("gift-builder-heading")?.scrollIntoView?.({ block: "start" });
   }, [step]);
+
+  useEffect(() => {
+    if (step === "summary" && selection && giftProject) saveGiftResume({ selection, preferences, project: giftProject, greeting });
+  }, [step, selection, giftProject, preferences, greeting]);
 
   useEffect(() => {
     if (step !== "summary") return;
@@ -277,6 +302,16 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     setPreferences((current) => ({ ...current, [key]: value }));
   };
 
+  function leaveFlow() {
+    clearGiftResume();
+    onCancel();
+  }
+
+  function openBinder() {
+    clearGiftResume();
+    onOpenBinder();
+  }
+
   function choosePokemon(name: string) {
     setPokemonQuery(name);
     updatePreferences("subjectQuery", name);
@@ -295,6 +330,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     setSelection(undefined);
     setInspectedKey(undefined);
     setVariantBoxKey(undefined);
+    setEraNote(undefined);
     setConfirmedVariantKeys(new Set());
     setExcludedKeys(new Set());
     try {
@@ -312,6 +348,8 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
           language: wanted.preferredLanguage ?? "en",
           maximum,
           pageSize: 24,
+          scan: 480,
+          era: wanted.style === "vintage" || wanted.style === "modern" ? wanted.style : undefined,
         });
       if (!pool.length) {
         setError(theme
@@ -359,10 +397,21 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
         ...candidate,
         price: { ...candidate.price, confidence: "approximate" as const, issues: [...candidate.price.issues, "estimate-only-no-budget-guarantee"] },
       } : candidate);
-      setSelection(engine.select({ candidates: selectionCandidates, preferences: wanted }));
+      let result = engine.select({ candidates: selectionCandidates, preferences: wanted });
+      let note: string | undefined;
+      if ((wanted.style === "vintage" || wanted.style === "modern") && result.selected.length < wanted.targetCardCount) {
+        // Too few cards of the wished era: top up with the best of the others instead of showing a half page.
+        const mixed = engine.select({ candidates: selectionCandidates, preferences: { ...wanted, style: "mixed" } });
+        const have = new Set(result.selected.map((candidate) => candidate.card.key));
+        const filled = [...result.selected, ...mixed.selected.filter((candidate) => !have.has(candidate.card.key))].slice(0, wanted.targetCardCount);
+        note = `Es gibt nicht genug ${wanted.style === "vintage" ? "alte" : "moderne"} Karten. Den Rest haben wir mit ${wanted.style === "vintage" ? "neueren" : "älteren"} Karten aufgefüllt.`;
+        result = summarizeSelection(filled, wanted, result.issues);
+      }
+      setEraNote(note);
+      setSelection(result);
       setStep("candidates");
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Karten konnten nicht geladen werden. Prüfe die Verbindung und versuche es erneut.");
+      setError(friendlyError(cause, "Karten konnten nicht geladen werden. Prüfe die Verbindung und versuche es erneut."));
     } finally {
       setLoading(false);
     }
@@ -630,6 +679,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
         ? `Zu „${availabilitySubject}“ haben wir keine Karten gefunden. Prüfe die Schreibweise.`
         : `Für „${availabilitySubject}“ gibt es ${currentAvailability.count} ${currentAvailability.count === 1 ? "Karte" : "Karten"} auf ${language === "de" ? "Deutsch" : "Englisch"}.${currentAvailability.count < 36 && language === "de" ? " Auf Englisch gibt es oft mehr." : ""}`;
   const totals = knownTotal(selection?.selected ?? []);
+  const cheapCards = totals.priced > 0 && totals.priced * 2 >= (selection?.selected.length ?? 0) && totals.totalMinor / totals.priced < CHEAP_CARD_MINOR;
   const spreadPages: SpreadPocket[][] = pages.map((pageCards) => pageCards.map((candidate) => {
     const issue = variantSelectionIssue(candidate.variant, variantAvailabilityForCard(candidate.card));
     const note = plainVariantNote(candidate.variant);
@@ -657,7 +707,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
           <h1 id="gift-builder-heading">{STEP_GUIDANCE[step].title}</h1>
           <p className={styles.intro}>{STEP_GUIDANCE[step].text}</p>
         </div>
-        <button type="button" className={styles.closeButton} onClick={onCancel} aria-label="Geschenk-Gestaltung schließen"><X size={18} /></button>
+        <button type="button" className={styles.closeButton} onClick={leaveFlow} aria-label="Geschenk-Gestaltung schließen"><X size={18} /></button>
       </div>
 
       <ol className={styles.progressLine} aria-label="Schritte zum Geschenk-Binder">{GIFT_FLOW.map((item, index) => <li key={item.label} aria-current={index === GIFT_STEPS.indexOf(step) ? "step" : undefined}><span>{index + 1}</span>{item.label}</li>)}</ol>
@@ -721,6 +771,14 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
             </div>
             <small>Motivseiten nutzen derzeit englische Kartenbilder. Du kannst später jede Karte austauschen.</small>
           </fieldset>}
+          {discoveryMode === "pokemon" ? <fieldset className={styles.discoveryMode}>
+            <legend>Welche Karten?</legend>
+            <div className={styles.choiceRow}>
+              {([["mixed", "Alt und neu gemischt"], ["vintage", "Eher alte Karten (bis 2009)"], ["modern", "Eher moderne Karten (ab 2010)"]] as const).map(([value, label]) => (
+                <label key={value} className={styles.choice}><input type="radio" name="gift-style" checked={preferences.style === value} onChange={() => updatePreferences("style", value)} />{label}</label>
+              ))}
+            </div>
+          </fieldset> : null}
           <div className={styles.quickChoices}>
             <fieldset><legend>Wie viele Karten?</legend><div className={styles.choiceRow}>{([9, 18, 36] as const).map((count) => {
               const unavailable = planLimit !== undefined && count > 9 && count > planLimit;
@@ -741,7 +799,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
             </label>
           </details>
           <p className={styles.localHint}>{pricingEnabled ? `Alles bleibt in diesem Browser. Kartenpreise sind unverbindliche Schätzungen ohne Versand und Steuern.${budgetGuaranteeEnabled ? "" : " Das Budget ist eine Orientierung."}` : "Alles bleibt in diesem Browser. Die Preisprüfung ist derzeit deaktiviert; das Budget kann noch nicht zugesagt werden."}</p>
-          <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={onCancel}>Zurück</button><button type="submit" className={styles.primaryButton} disabled={loading || (discoveryMode === "theme" ? !selectedThemeId : !preferences.subjectQuery.trim())}>{loading ? <><LoaderCircle className={styles.spin} aria-hidden="true" size={16} /> Karten werden gesucht…</> : <>Binder-Seite ansehen <ArrowRight aria-hidden="true" size={18} /></>}</button></div>
+          <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={leaveFlow}>Zurück</button><button type="submit" className={styles.primaryButton} disabled={loading || (discoveryMode === "theme" ? !selectedThemeId : !preferences.subjectQuery.trim())}>{loading ? <><LoaderCircle className={styles.spin} aria-hidden="true" size={16} /> Karten werden gesucht…</> : <>Binder-Seite ansehen <ArrowRight aria-hidden="true" size={18} /></>}</button></div>
         </form>
       ) : null}
 
@@ -756,7 +814,9 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
           {!pricingEnabled ? <p className={styles.gateNotice} role="status">Die Preisprüfung ist derzeit noch deaktiviert. Karten können trotzdem ausgewählt und als normaler Binder gespeichert werden; es gibt keine Budgetzusage.</p> : null}
           {pricingEnabled && !budgetGuaranteeEnabled ? <p className={styles.gateNotice} role="status">Schätzwert – den endgültigen Preis siehst du beim Kartenanbieter.</p> : null}
           {pricingEnabled && hasBudgetSlack(selection.estimatedTotalMinor, preferences.budgetMinor) ? <p className={styles.gateNotice} role="status">Das liegt deutlich unter deinem Budget von {formatMoney(preferences.budgetMinor, preferences.currency)}: Für dieses Motiv gibt es nicht genug teurere Karten. Das Budget ist nur die Obergrenze – du kannst unter „Wünsche ändern“ mehr Karten wählen.</p> : null}
+          {pricingEnabled && !hasBudgetSlack(selection.estimatedTotalMinor, preferences.budgetMinor) && cheapCards ? <p className={styles.gateNotice} role="status">Die Karten kosten im Schnitt nur etwa {formatMoney(Math.round(totals.totalMinor / totals.priced), preferences.currency)}. Der Versand bei Cardmarket kostet oft mehr als eine einzelne Karte. Tipp: Wähle weniger Karten oder ein höheres Budget, dann schlagen wir schönere Karten vor.</p> : null}
           {selection.budgetStatus === "over" ? <p className={styles.warning} role="status">Die geschätzten {formatMoney(selection.estimatedTotalMinor, preferences.currency)} liegen über deinem Budget von {formatMoney(preferences.budgetMinor, preferences.currency)}. Auch die günstigste vollständige Auswahl liegt derzeit darüber. Du kannst Wünsche oder Karten ändern.</p> : null}
+          {eraNote ? <p className={styles.gateNotice} role="status">{eraNote}</p> : null}
           {pricingEnabled && totals.unpriced > 0 ? <p className={styles.gateNotice} role="status">Für {totals.unpriced} {totals.unpriced === 1 ? "Karte" : "Karten"} gibt es keinen Marktpreis. Die Summe zählt nur Karten mit Preis.</p> : null}
           <details className={styles.conditionBox}>
             <summary>Kartenzustand: <strong>{conditionProfile(orderCondition).shortLabel}</strong> <span>ändern</span></summary>
@@ -868,7 +928,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
           <div className={styles.summaryActions}>
             <button type="button" className={styles.secondaryButton} onClick={() => window.print()}><Printer aria-hidden="true" size={16} /> Drucken / als PDF speichern</button>
             <button type="button" className={styles.secondaryButton} onClick={downloadPrintSummary}><Download aria-hidden="true" size={16} /> Textzusammenfassung herunterladen</button>
-            <button type="button" className={styles.secondaryButton} onClick={onOpenBinder}>Binder bearbeiten</button>
+            <button type="button" className={styles.secondaryButton} onClick={openBinder}>Binder bearbeiten</button>
           </div>
         </div>
       ) : null}
