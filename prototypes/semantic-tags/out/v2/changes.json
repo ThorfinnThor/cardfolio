@@ -1,0 +1,9885 @@
+[
+ {
+  "id": "base1-4",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "base1-7",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "base1-9",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "base1-11",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "base1-18",
+  "field": "place",
+  "old": "plain-background",
+  "new": "river-lake"
+ },
+ {
+  "id": "base1-18",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "base1-19",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "base1-20",
+  "field": "place",
+  "old": "abstract",
+  "new": "plain-background"
+ },
+ {
+  "id": "base1-22",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "base1-23",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "base1-24",
+  "field": "place",
+  "old": "mountain",
+  "new": "unclear"
+ },
+ {
+  "id": "base1-26",
+  "field": "place",
+  "old": "ocean",
+  "new": "river-lake"
+ },
+ {
+  "id": "base1-26",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "base1-27",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "base1-28",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "base1-29",
+  "field": "activity",
+  "old": [
+   "other"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "base1-33",
+  "field": "place",
+  "old": "forest",
+  "new": "abstract"
+ },
+ {
+  "id": "base1-33",
+  "field": "activity",
+  "old": [
+   "resting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "base1-34",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "base1-35",
+  "field": "place",
+  "old": "river-lake",
+  "new": "underwater"
+ },
+ {
+  "id": "base1-35",
+  "field": "activity",
+  "old": [
+   "other"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "base1-36",
+  "field": "place",
+  "old": "volcano",
+  "new": "abstract"
+ },
+ {
+  "id": "base1-37",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "base1-39",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "base1-40",
+  "field": "activity",
+  "old": [
+   "other"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "base1-42",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "base1-43",
+  "field": "place",
+  "old": "forest",
+  "new": "unclear"
+ },
+ {
+  "id": "base1-43",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "base1-44",
+  "field": "place",
+  "old": "garden",
+  "new": "jungle"
+ },
+ {
+  "id": "base1-44",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "base1-45",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "base1-46",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "base1-47",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "base1-49",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "base1-50",
+  "field": "place",
+  "old": "plain-background",
+  "new": "city"
+ },
+ {
+  "id": "base1-50",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "base1-51",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "base1-53",
+  "field": "place",
+  "old": "plain-background",
+  "new": "unclear"
+ },
+ {
+  "id": "base1-53",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "lightning"
+ },
+ {
+  "id": "base1-55",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "base1-56",
+  "field": "place",
+  "old": "mountain",
+  "new": "grassland"
+ },
+ {
+  "id": "base1-56",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "base1-57",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "base1-59",
+  "field": "place",
+  "old": "plain-background",
+  "new": "unclear"
+ },
+ {
+  "id": "base1-60",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "base1-60",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "base1-61",
+  "field": "place",
+  "old": "grassland",
+  "new": "unclear"
+ },
+ {
+  "id": "base1-63",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "base1-64",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "base1-64",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "base1-65",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "base1-66",
+  "field": "place",
+  "old": "plain-background",
+  "new": "jungle"
+ },
+ {
+  "id": "base1-66",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "base1-67",
+  "field": "place",
+  "old": "abstract",
+  "new": "plain-background"
+ },
+ {
+  "id": "base1-69",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "base1-70",
+  "field": "place",
+  "old": "indoors",
+  "new": "abstract"
+ },
+ {
+  "id": "base1-71",
+  "field": "place",
+  "old": "indoors",
+  "new": "abstract"
+ },
+ {
+  "id": "base1-72",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "base1-72",
+  "field": "activity",
+  "old": [
+   "other"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "base1-74",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "base1-76",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "base1-78",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "base1-79",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "base1-81",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "base1-83",
+  "field": "place",
+  "old": "indoors",
+  "new": "plain-background"
+ },
+ {
+  "id": "base1-83",
+  "field": "activity",
+  "old": [
+   "other"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "base1-85",
+  "field": "place",
+  "old": "indoors",
+  "new": "plain-background"
+ },
+ {
+  "id": "base1-91",
+  "field": "place",
+  "old": "city",
+  "new": "plain-background"
+ },
+ {
+  "id": "base1-92",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "base1-95",
+  "field": "place",
+  "old": "abstract",
+  "new": "plain-background"
+ },
+ {
+  "id": "base1-97",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "base1-98",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "base1-99",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "base1-100",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "base1-101",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "base1-102",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "ex1-2",
+  "field": "place",
+  "old": "forest",
+  "new": "abstract"
+ },
+ {
+  "id": "ex1-3",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "ex1-3",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "ex1-8",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "ex1-11",
+  "field": "place",
+  "old": "jungle",
+  "new": "forest"
+ },
+ {
+  "id": "ex1-13",
+  "field": "place",
+  "old": "plain-background",
+  "new": "unclear"
+ },
+ {
+  "id": "ex1-15",
+  "field": "place",
+  "old": "desert",
+  "new": "mountain"
+ },
+ {
+  "id": "ex1-15",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "ex1-15",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "ex1-16",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "ex1-17",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "ex1-18",
+  "field": "place",
+  "old": "cave",
+  "new": "mountain"
+ },
+ {
+  "id": "ex1-18",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "ex1-19",
+  "field": "place",
+  "old": "sky",
+  "new": "ocean"
+ },
+ {
+  "id": "ex1-19",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "ex1-20",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "ex1-22",
+  "field": "place",
+  "old": "sky",
+  "new": "unclear"
+ },
+ {
+  "id": "ex1-22",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "ex1-24",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "ex1-26",
+  "field": "activity",
+  "old": [
+   "resting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "ex1-27",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "ex1-28",
+  "field": "place",
+  "old": "mountain",
+  "new": "grassland"
+ },
+ {
+  "id": "ex1-28",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "ex1-28",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "ex1-29",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "ex1-31",
+  "field": "activity",
+  "old": [
+   "running"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "ex1-32",
+  "field": "activity",
+  "old": [
+   "running"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "ex1-33",
+  "field": "place",
+  "old": "mountain",
+  "new": "grassland"
+ },
+ {
+  "id": "ex1-33",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "ex1-34",
+  "field": "place",
+  "old": "grassland",
+  "new": "forest"
+ },
+ {
+  "id": "ex1-37",
+  "field": "place",
+  "old": "cave",
+  "new": "river-lake"
+ },
+ {
+  "id": "ex1-40",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "ex1-41",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "ex1-42",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "ex1-44",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "ex1-46",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "ex1-48",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "ex1-50",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "ex1-53",
+  "field": "weather",
+  "old": "storm",
+  "new": "lightning"
+ },
+ {
+  "id": "ex1-54",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "ex1-57",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "ex1-58",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "ex1-58",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "ex1-60",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "ex1-61",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "ex1-63",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "ex1-65",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "ex1-66",
+  "field": "place",
+  "old": "forest",
+  "new": "grassland"
+ },
+ {
+  "id": "ex1-67",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "ex1-68",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "ex1-70",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "ex1-74",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "ex1-75",
+  "field": "place",
+  "old": "forest",
+  "new": "grassland"
+ },
+ {
+  "id": "ex1-75",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "wind"
+ },
+ {
+  "id": "ex1-77",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "ex1-83",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "ex1-84",
+  "field": "place",
+  "old": "forest",
+  "new": "abstract"
+ },
+ {
+  "id": "ex1-85",
+  "field": "place",
+  "old": "forest",
+  "new": "abstract"
+ },
+ {
+  "id": "ex1-87",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "using-move",
+   "fighting"
+  ]
+ },
+ {
+  "id": "ex1-89",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "ex1-92",
+  "field": "activity",
+  "old": [
+   "other"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "ex1-93",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "ex1-94",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "ex1-98",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "ex1-99",
+  "field": "place",
+  "old": "ocean",
+  "new": "plain-background"
+ },
+ {
+  "id": "ex1-100",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "ex1-100",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "ex1-103",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "ex1-104",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "ex1-105",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "ex1-106",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "ex1-107",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "ex1-108",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "ex1-109",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "dp1-1",
+  "field": "place",
+  "old": "space",
+  "new": "plain-background"
+ },
+ {
+  "id": "dp1-4",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "dp1-6",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "dp1-8",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "dp1-9",
+  "field": "place",
+  "old": "underwater",
+  "new": "plain-background"
+ },
+ {
+  "id": "dp1-9",
+  "field": "activity",
+  "old": [
+   "swimming"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "dp1-10",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "dp1-12",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "dp1-13",
+  "field": "place",
+  "old": "forest",
+  "new": "plain-background"
+ },
+ {
+  "id": "dp1-15",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "dp1-16",
+  "field": "place",
+  "old": "sky",
+  "new": "plain-background"
+ },
+ {
+  "id": "dp1-18",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-19",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-20",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-21",
+  "field": "place",
+  "old": "mountain",
+  "new": "sky"
+ },
+ {
+  "id": "dp1-21",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-21",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "dp1-22",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-23",
+  "field": "place",
+  "old": "plain-background",
+  "new": "unclear"
+ },
+ {
+  "id": "dp1-24",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-25",
+  "field": "place",
+  "old": "sky",
+  "new": "forest"
+ },
+ {
+  "id": "dp1-25",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-29",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-29",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "dp1-30",
+  "field": "place",
+  "old": "sky",
+  "new": "garden"
+ },
+ {
+  "id": "dp1-30",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-30",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "dp1-31",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "dp1-32",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-32",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "dp1-33",
+  "field": "place",
+  "old": "forest",
+  "new": "grassland"
+ },
+ {
+  "id": "dp1-33",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-34",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-36",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-37",
+  "field": "place",
+  "old": "grassland",
+  "new": "unclear"
+ },
+ {
+  "id": "dp1-37",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-37",
+  "field": "activity",
+  "old": [
+   "resting"
+  ],
+  "new": [
+   "sleeping"
+  ]
+ },
+ {
+  "id": "dp1-38",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-38",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "dp1-39",
+  "field": "place",
+  "old": "forest",
+  "new": "unclear"
+ },
+ {
+  "id": "dp1-41",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "dp1-42",
+  "field": "place",
+  "old": "forest",
+  "new": "grassland"
+ },
+ {
+  "id": "dp1-42",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-42",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "dp1-43",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-44",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "dp1-45",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "dp1-46",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-47",
+  "field": "place",
+  "old": "plain-background",
+  "new": "unclear"
+ },
+ {
+  "id": "dp1-51",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-51",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "dp1-54",
+  "field": "place",
+  "old": "mountain",
+  "new": "unclear"
+ },
+ {
+  "id": "dp1-54",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "dp1-54",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "flying",
+   "using-move"
+  ]
+ },
+ {
+  "id": "dp1-55",
+  "field": "place",
+  "old": "sky",
+  "new": "ocean"
+ },
+ {
+  "id": "dp1-55",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "dp1-56",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-56",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "dp1-58",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-59",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-60",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-61",
+  "field": "place",
+  "old": "mountain",
+  "new": "unclear"
+ },
+ {
+  "id": "dp1-61",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "dp1-64",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-69",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-72",
+  "field": "place",
+  "old": "river-lake",
+  "new": "unclear"
+ },
+ {
+  "id": "dp1-72",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-72",
+  "field": "activity",
+  "old": [
+   "swimming"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "dp1-73",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-73",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "dp1-74",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-76",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-77",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-79",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-80",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "dp1-81",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-82",
+  "field": "place",
+  "old": "plain-background",
+  "new": "unclear"
+ },
+ {
+  "id": "dp1-82",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "dp1-83",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-86",
+  "field": "place",
+  "old": "plain-background",
+  "new": "unclear"
+ },
+ {
+  "id": "dp1-86",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "dp1-87",
+  "field": "place",
+  "old": "mountain",
+  "new": "sky"
+ },
+ {
+  "id": "dp1-87",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-88",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "dp1-90",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-90",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "dp1-91",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-91",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "dp1-92",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-94",
+  "field": "place",
+  "old": "mountain",
+  "new": "forest"
+ },
+ {
+  "id": "dp1-95",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-99",
+  "field": "place",
+  "old": "desert",
+  "new": "mountain"
+ },
+ {
+  "id": "dp1-99",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-99",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "dp1-100",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "dp1-100",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "dp1-101",
+  "field": "place",
+  "old": "grassland",
+  "new": "forest"
+ },
+ {
+  "id": "dp1-102",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "dp1-103",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-111",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "dp1-112",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "dp1-113",
+  "field": "place",
+  "old": "forest",
+  "new": "unclear"
+ },
+ {
+  "id": "dp1-115",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "dp1-116",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "dp1-119",
+  "field": "activity",
+  "old": [
+   "other"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "dp1-123",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "dp1-124",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "dp1-125",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "dp1-126",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "dp1-127",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "dp1-128",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "dp1-129",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "dp1-130",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "hgss1-2",
+  "field": "place",
+  "old": "city",
+  "new": "forest"
+ },
+ {
+  "id": "hgss1-2",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "hgss1-3",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "hgss1-4",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "hgss1-5",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "hgss1-5",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "hgss1-6",
+  "field": "place",
+  "old": "grassland",
+  "new": "forest"
+ },
+ {
+  "id": "hgss1-8",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "hgss1-11",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "hgss1-12",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "hgss1-12",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "hgss1-14",
+  "field": "place",
+  "old": "mountain",
+  "new": "unclear"
+ },
+ {
+  "id": "hgss1-14",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "hgss1-16",
+  "field": "place",
+  "old": "abstract",
+  "new": "unclear"
+ },
+ {
+  "id": "hgss1-17",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "hgss1-17",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "hgss1-18",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "hgss1-20",
+  "field": "place",
+  "old": "city",
+  "new": "unclear"
+ },
+ {
+  "id": "hgss1-20",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "hgss1-21",
+  "field": "place",
+  "old": "garden",
+  "new": "abstract"
+ },
+ {
+  "id": "hgss1-21",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "hgss1-22",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "hgss1-22",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "hgss1-23",
+  "field": "place",
+  "old": "sky",
+  "new": "unclear"
+ },
+ {
+  "id": "hgss1-23",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "hgss1-29",
+  "field": "place",
+  "old": "river-lake",
+  "new": "forest"
+ },
+ {
+  "id": "hgss1-30",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "hgss1-30",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "hgss1-32",
+  "field": "place",
+  "old": "sky",
+  "new": "unclear"
+ },
+ {
+  "id": "hgss1-33",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "hgss1-34",
+  "field": "place",
+  "old": "cave",
+  "new": "unclear"
+ },
+ {
+  "id": "hgss1-34",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "hgss1-35",
+  "field": "place",
+  "old": "city",
+  "new": "unclear"
+ },
+ {
+  "id": "hgss1-39",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "hgss1-40",
+  "field": "place",
+  "old": "cave",
+  "new": "unclear"
+ },
+ {
+  "id": "hgss1-41",
+  "field": "place",
+  "old": "plain-background",
+  "new": "unclear"
+ },
+ {
+  "id": "hgss1-41",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "hgss1-42",
+  "field": "place",
+  "old": "river-lake",
+  "new": "grassland"
+ },
+ {
+  "id": "hgss1-42",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "hgss1-43",
+  "field": "place",
+  "old": "sky",
+  "new": "abstract"
+ },
+ {
+  "id": "hgss1-46",
+  "field": "place",
+  "old": "indoors",
+  "new": "unclear"
+ },
+ {
+  "id": "hgss1-47",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "hgss1-47",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "hgss1-51",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "hgss1-56",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "hgss1-57",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "hgss1-59",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "hgss1-61",
+  "field": "place",
+  "old": "unclear",
+  "new": "abstract"
+ },
+ {
+  "id": "hgss1-62",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "hgss1-65",
+  "field": "place",
+  "old": "unclear",
+  "new": "abstract"
+ },
+ {
+  "id": "hgss1-65",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "hgss1-65",
+  "field": "activity",
+  "old": [
+   "running"
+  ],
+  "new": [
+   "running",
+   "using-move"
+  ]
+ },
+ {
+  "id": "hgss1-66",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "hgss1-68",
+  "field": "place",
+  "old": "river-lake",
+  "new": "grassland"
+ },
+ {
+  "id": "hgss1-68",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "hgss1-69",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "hgss1-70",
+  "field": "place",
+  "old": "sky",
+  "new": "abstract"
+ },
+ {
+  "id": "hgss1-70",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "hgss1-72",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "swimming",
+   "other"
+  ]
+ },
+ {
+  "id": "hgss1-75",
+  "field": "place",
+  "old": "city",
+  "new": "grassland"
+ },
+ {
+  "id": "hgss1-76",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "hgss1-77",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "hgss1-80",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "hgss1-80",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "hgss1-81",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "hgss1-82",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "hgss1-85",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "hgss1-86",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "hgss1-87",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "hgss1-88",
+  "field": "place",
+  "old": "unclear",
+  "new": "mountain"
+ },
+ {
+  "id": "hgss1-88",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "hgss1-89",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "hgss1-91",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "hgss1-92",
+  "field": "place",
+  "old": "ocean",
+  "new": "abstract"
+ },
+ {
+  "id": "hgss1-93",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "hgss1-94",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "hgss1-96",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "hgss1-98",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "hgss1-99",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "hgss1-103",
+  "field": "place",
+  "old": "abstract",
+  "new": "plain-background"
+ },
+ {
+  "id": "hgss1-106",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "hgss1-107",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "hgss1-108",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "hgss1-110",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "hgss1-112",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "hgss1-113",
+  "field": "activity",
+  "old": [
+   "swimming"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "hgss1-121",
+  "field": "place",
+  "old": "city",
+  "new": "abstract"
+ },
+ {
+  "id": "hgss1-122",
+  "field": "place",
+  "old": "city",
+  "new": "abstract"
+ },
+ {
+  "id": "hgss1-122",
+  "field": "weather",
+  "old": "rain",
+  "new": "storm"
+ },
+ {
+  "id": "hgss1-123",
+  "field": "weather",
+  "old": "storm",
+  "new": "rain"
+ },
+ {
+  "id": "hgss1-123",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "fighting",
+   "using-move"
+  ]
+ },
+ {
+  "id": "hgss1-ONE",
+  "field": "place",
+  "old": "plain-background",
+  "new": "ruins"
+ },
+ {
+  "id": "bw1-3",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-5",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-6",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "bw1-8",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-9",
+  "field": "place",
+  "old": "garden",
+  "new": "forest"
+ },
+ {
+  "id": "bw1-11",
+  "field": "place",
+  "old": "desert",
+  "new": "mountain"
+ },
+ {
+  "id": "bw1-11",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-13",
+  "field": "place",
+  "old": "grassland",
+  "new": "garden"
+ },
+ {
+  "id": "bw1-14",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-15",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-16",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "bw1-16",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "bw1-17",
+  "field": "place",
+  "old": "sky",
+  "new": "grassland"
+ },
+ {
+  "id": "bw1-17",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-17",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "bw1-19",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "fighting",
+   "using-move"
+  ]
+ },
+ {
+  "id": "bw1-21",
+  "field": "activity",
+  "old": [
+   "running"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "bw1-22",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "bw1-23",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-24",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "bw1-25",
+  "field": "place",
+  "old": "cave",
+  "new": "ruins"
+ },
+ {
+  "id": "bw1-26",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "bw1-28",
+  "field": "place",
+  "old": "ocean",
+  "new": "river-lake"
+ },
+ {
+  "id": "bw1-29",
+  "field": "place",
+  "old": "ocean",
+  "new": "beach"
+ },
+ {
+  "id": "bw1-30",
+  "field": "place",
+  "old": "ocean",
+  "new": "river-lake"
+ },
+ {
+  "id": "bw1-31",
+  "field": "place",
+  "old": "ocean",
+  "new": "mountain"
+ },
+ {
+  "id": "bw1-31",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-32",
+  "field": "place",
+  "old": "ocean",
+  "new": "abstract"
+ },
+ {
+  "id": "bw1-33",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-34",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-35",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-36",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "bw1-37",
+  "field": "place",
+  "old": "river-lake",
+  "new": "forest"
+ },
+ {
+  "id": "bw1-37",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-38",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-40",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-41",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-42",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-44",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-44",
+  "field": "activity",
+  "old": [
+   "resting"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "bw1-46",
+  "field": "place",
+  "old": "plain-background",
+  "new": "unclear"
+ },
+ {
+  "id": "bw1-47",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "bw1-48",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-51",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-52",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "bw1-53",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-56",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-58",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-59",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-60",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-61",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-62",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "bw1-63",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-65",
+  "field": "place",
+  "old": "unclear",
+  "new": "abstract"
+ },
+ {
+  "id": "bw1-66",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-67",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-68",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "bw1-69",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-69",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "bw1-70",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-70",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "bw1-71",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "bw1-72",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "bw1-73",
+  "field": "place",
+  "old": "sky",
+  "new": "mountain"
+ },
+ {
+  "id": "bw1-73",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-74",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-75",
+  "field": "place",
+  "old": "desert",
+  "new": "unclear"
+ },
+ {
+  "id": "bw1-76",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "bw1-77",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-79",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-83",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-84",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-85",
+  "field": "place",
+  "old": "sky",
+  "new": "mountain"
+ },
+ {
+  "id": "bw1-85",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-86",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-88",
+  "field": "activity",
+  "old": [
+   "running"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "bw1-89",
+  "field": "place",
+  "old": "garden",
+  "new": "forest"
+ },
+ {
+  "id": "bw1-90",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-93",
+  "field": "place",
+  "old": "indoors",
+  "new": "abstract"
+ },
+ {
+  "id": "bw1-95",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "bw1-100",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "bw1-101",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "bw1-103",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "bw1-115",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-1",
+  "field": "place",
+  "old": "jungle",
+  "new": "abstract"
+ },
+ {
+  "id": "xy1-5",
+  "field": "place",
+  "old": "sky",
+  "new": "garden"
+ },
+ {
+  "id": "xy1-6",
+  "field": "place",
+  "old": "grassland",
+  "new": "garden"
+ },
+ {
+  "id": "xy1-6",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-7",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "xy1-7",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "xy1-8",
+  "field": "weather",
+  "old": "wind",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-9",
+  "field": "place",
+  "old": "grassland",
+  "new": "garden"
+ },
+ {
+  "id": "xy1-9",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-12",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-12",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "xy1-13",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-14",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "xy1-16",
+  "field": "activity",
+  "old": [
+   "resting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "xy1-17",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-18",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "xy1-19",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-21",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "xy1-22",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "xy1-23",
+  "field": "place",
+  "old": "river-lake",
+  "new": "forest"
+ },
+ {
+  "id": "xy1-24",
+  "field": "place",
+  "old": "desert",
+  "new": "mountain"
+ },
+ {
+  "id": "xy1-25",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-27",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-28",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-32",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "xy1-37",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-38",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-38",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "xy1-39",
+  "field": "place",
+  "old": "river-lake",
+  "new": "forest"
+ },
+ {
+  "id": "xy1-39",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "xy1-40",
+  "field": "place",
+  "old": "river-lake",
+  "new": "forest"
+ },
+ {
+  "id": "xy1-41",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "xy1-42",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "xy1-43",
+  "field": "weather",
+  "old": "wind",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-44",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-44",
+  "field": "activity",
+  "old": [
+   "resting"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "xy1-45",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-47",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-48",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "xy1-49",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-49",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "xy1-50",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-50",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "xy1-52",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "xy1-52",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "xy1-53",
+  "field": "activity",
+  "old": [
+   "running"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "xy1-54",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "xy1-58",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-58",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "xy1-60",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-61",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "xy1-62",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "xy1-63",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "xy1-64",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "xy1-65",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-65",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "xy1-66",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-66",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "xy1-67",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "xy1-69",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-70",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-71",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-72",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-72",
+  "field": "activity",
+  "old": [
+   "running"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "xy1-73",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-73",
+  "field": "activity",
+  "old": [
+   "running"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "xy1-75",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-76",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-77",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-78",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "flying",
+   "using-move"
+  ]
+ },
+ {
+  "id": "xy1-79",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "xy1-81",
+  "field": "weather",
+  "old": "wind",
+  "new": "storm"
+ },
+ {
+  "id": "xy1-82",
+  "field": "place",
+  "old": "desert",
+  "new": "unclear"
+ },
+ {
+  "id": "xy1-82",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "xy1-83",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "xy1-84",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-84",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "xy1-85",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "xy1-87",
+  "field": "place",
+  "old": "forest",
+  "new": "garden"
+ },
+ {
+  "id": "xy1-88",
+  "field": "place",
+  "old": "forest",
+  "new": "garden"
+ },
+ {
+  "id": "xy1-91",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "xy1-93",
+  "field": "place",
+  "old": "grassland",
+  "new": "garden"
+ },
+ {
+  "id": "xy1-93",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-94",
+  "field": "place",
+  "old": "garden",
+  "new": "forest"
+ },
+ {
+  "id": "xy1-97",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "running",
+   "using-move"
+  ]
+ },
+ {
+  "id": "xy1-98",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-99",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-100",
+  "field": "place",
+  "old": "mountain",
+  "new": "grassland"
+ },
+ {
+  "id": "xy1-101",
+  "field": "activity",
+  "old": [
+   "resting"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "xy1-102",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-104",
+  "field": "place",
+  "old": "grassland",
+  "new": "garden"
+ },
+ {
+  "id": "xy1-104",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-104",
+  "field": "activity",
+  "old": [
+   "resting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "xy1-105",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-105",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "xy1-106",
+  "field": "place",
+  "old": "river-lake",
+  "new": "forest"
+ },
+ {
+  "id": "xy1-106",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "xy1-109",
+  "field": "place",
+  "old": "mountain",
+  "new": "grassland"
+ },
+ {
+  "id": "xy1-109",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-109",
+  "field": "activity",
+  "old": [
+   "resting"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "xy1-110",
+  "field": "weather",
+  "old": "fog",
+  "new": "clear"
+ },
+ {
+  "id": "xy1-112",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "xy1-113",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "xy1-114",
+  "field": "activity",
+  "old": [
+   "running"
+  ],
+  "new": [
+   "running",
+   "using-move"
+  ]
+ },
+ {
+  "id": "xy1-115",
+  "field": "activity",
+  "old": [
+   "resting"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "xy1-128",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "xy1-130",
+  "field": "place",
+  "old": "abstract",
+  "new": "plain-background"
+ },
+ {
+  "id": "xy1-131",
+  "field": "place",
+  "old": "abstract",
+  "new": "plain-background"
+ },
+ {
+  "id": "sm1-1",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sm1-3",
+  "field": "place",
+  "old": "grassland",
+  "new": "garden"
+ },
+ {
+  "id": "sm1-3",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-4",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "sm1-6",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "sm1-8",
+  "field": "place",
+  "old": "sky",
+  "new": "grassland"
+ },
+ {
+  "id": "sm1-8",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-11",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-13",
+  "field": "place",
+  "old": "forest",
+  "new": "jungle"
+ },
+ {
+  "id": "sm1-14",
+  "field": "place",
+  "old": "forest",
+  "new": "jungle"
+ },
+ {
+  "id": "sm1-14",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sm1-15",
+  "field": "place",
+  "old": "garden",
+  "new": "abstract"
+ },
+ {
+  "id": "sm1-16",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sm1-18",
+  "field": "place",
+  "old": "grassland",
+  "new": "garden"
+ },
+ {
+  "id": "sm1-18",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-19",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-19",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "sm1-20",
+  "field": "place",
+  "old": "forest",
+  "new": "jungle"
+ },
+ {
+  "id": "sm1-21",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-22",
+  "field": "weather",
+  "old": "wind",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-23",
+  "field": "place",
+  "old": "volcano",
+  "new": "mountain"
+ },
+ {
+  "id": "sm1-25",
+  "field": "activity",
+  "old": [
+   "running"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sm1-26",
+  "field": "place",
+  "old": "volcano",
+  "new": "mountain"
+ },
+ {
+  "id": "sm1-26",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sm1-27",
+  "field": "place",
+  "old": "volcano",
+  "new": "abstract"
+ },
+ {
+  "id": "sm1-28",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-29",
+  "field": "place",
+  "old": "ocean",
+  "new": "river-lake"
+ },
+ {
+  "id": "sm1-30",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-32",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sm1-35",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "sm1-35",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "sm1-37",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-38",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-39",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-39",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sm1-40",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-40",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "sm1-42",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "sm1-45",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-47",
+  "field": "activity",
+  "old": [
+   "resting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sm1-48",
+  "field": "place",
+  "old": "ocean",
+  "new": "underwater"
+ },
+ {
+  "id": "sm1-52",
+  "field": "weather",
+  "old": "rain",
+  "new": "none-visible"
+ },
+ {
+  "id": "sm1-52",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "flying",
+   "using-move"
+  ]
+ },
+ {
+  "id": "sm1-53",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "sm1-53",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sm1-54",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "sm1-56",
+  "field": "place",
+  "old": "sky",
+  "new": "forest"
+ },
+ {
+  "id": "sm1-57",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-58",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-59",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-60",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-60",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sm1-61",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sm1-62",
+  "field": "place",
+  "old": "underwater",
+  "new": "ocean"
+ },
+ {
+  "id": "sm1-63",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "sm1-64",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sm1-65",
+  "field": "activity",
+  "old": [
+   "resting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sm1-66",
+  "field": "place",
+  "old": "space",
+  "new": "abstract"
+ },
+ {
+  "id": "sm1-68",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sm1-69",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sm1-71",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sm1-72",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-72",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sm1-73",
+  "field": "place",
+  "old": "forest",
+  "new": "grassland"
+ },
+ {
+  "id": "sm1-73",
+  "field": "activity",
+  "old": [
+   "running",
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sm1-74",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-75",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-76",
+  "field": "place",
+  "old": "grassland",
+  "new": "mountain"
+ },
+ {
+  "id": "sm1-76",
+  "field": "activity",
+  "old": [
+   "posing",
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sm1-79",
+  "field": "weather",
+  "old": "wind",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-80",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sm1-81",
+  "field": "activity",
+  "old": [
+   "swimming",
+   "fighting"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "sm1-82",
+  "field": "activity",
+  "old": [
+   "swimming",
+   "fighting"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "sm1-83",
+  "field": "place",
+  "old": "desert",
+  "new": "abstract"
+ },
+ {
+  "id": "sm1-83",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "sm1-83",
+  "field": "activity",
+  "old": [
+   "running",
+   "using-move"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sm1-84",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sm1-85",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sm1-86",
+  "field": "place",
+  "old": "volcano",
+  "new": "mountain"
+ },
+ {
+  "id": "sm1-88",
+  "field": "place",
+  "old": "mountain",
+  "new": "sky"
+ },
+ {
+  "id": "sm1-88",
+  "field": "weather",
+  "old": "wind",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-91",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-92",
+  "field": "place",
+  "old": "garden",
+  "new": "forest"
+ },
+ {
+  "id": "sm1-93",
+  "field": "place",
+  "old": "garden",
+  "new": "sky"
+ },
+ {
+  "id": "sm1-93",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-95",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-96",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-97",
+  "field": "activity",
+  "old": [
+   "posing",
+   "flying"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sm1-98",
+  "field": "activity",
+  "old": [
+   "flying",
+   "using-move"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "sm1-99",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "sm1-99",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sm1-100",
+  "field": "place",
+  "old": "grassland",
+  "new": "abstract"
+ },
+ {
+  "id": "sm1-100",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sm1-105",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-105",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "sm1-106",
+  "field": "activity",
+  "old": [
+   "posing",
+   "other"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sm1-107",
+  "field": "place",
+  "old": "forest",
+  "new": "sky"
+ },
+ {
+  "id": "sm1-107",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-108",
+  "field": "place",
+  "old": "jungle",
+  "new": "garden"
+ },
+ {
+  "id": "sm1-109",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-109",
+  "field": "activity",
+  "old": [
+   "posing",
+   "fighting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sm1-110",
+  "field": "place",
+  "old": "grassland",
+  "new": "unclear"
+ },
+ {
+  "id": "sm1-110",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sm1-111",
+  "field": "weather",
+  "old": "wind",
+  "new": "clear"
+ },
+ {
+  "id": "sm1-111",
+  "field": "activity",
+  "old": [
+   "running",
+   "playing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "sm1-113",
+  "field": "activity",
+  "old": [
+   "resting",
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sm1-122",
+  "field": "place",
+  "old": "river-lake",
+  "new": "grassland"
+ },
+ {
+  "id": "sm1-126",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "sm1-130",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "sm1-138",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sm1-153",
+  "field": "place",
+  "old": "abstract",
+  "new": "plain-background"
+ },
+ {
+  "id": "sm1-158",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sm1-159",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sm1-159",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "sm1-160",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sm1-161",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sm1-163",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sm1-164",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sm1-165",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sm1-166",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sm1-167",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sm1-168",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sm1-169",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sm1-170",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sm1-171",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sm1-172",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "swsh1-1",
+  "field": "activity",
+  "old": [
+   "flying",
+   "posing"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "swsh1-3",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-4",
+  "field": "place",
+  "old": "garden",
+  "new": "forest"
+ },
+ {
+  "id": "swsh1-7",
+  "field": "place",
+  "old": "desert",
+  "new": "abstract"
+ },
+ {
+  "id": "swsh1-8",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "swsh1-9",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-10",
+  "field": "activity",
+  "old": [
+   "playing",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "swsh1-11",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-11",
+  "field": "activity",
+  "old": [
+   "playing",
+   "running"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "swsh1-12",
+  "field": "activity",
+  "old": [
+   "playing",
+   "fighting"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "swsh1-13",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "swsh1-14",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "using-move"
+  ],
+  "new": [
+   "using-move",
+   "fighting"
+  ]
+ },
+ {
+  "id": "swsh1-15",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-15",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-16",
+  "field": "activity",
+  "old": [
+   "flying",
+   "playing"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "swsh1-18",
+  "field": "activity",
+  "old": [
+   "resting",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "swsh1-19",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "swsh1-20",
+  "field": "place",
+  "old": "grassland",
+  "new": "garden"
+ },
+ {
+  "id": "swsh1-20",
+  "field": "activity",
+  "old": [
+   "flying",
+   "posing"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "swsh1-23",
+  "field": "activity",
+  "old": [
+   "posing",
+   "using-move"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "swsh1-24",
+  "field": "place",
+  "old": "mountain",
+  "new": "unclear"
+ },
+ {
+  "id": "swsh1-26",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-27",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "other"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "swsh1-28",
+  "field": "activity",
+  "old": [
+   "posing",
+   "using-move"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "swsh1-29",
+  "field": "place",
+  "old": "mountain",
+  "new": "abstract"
+ },
+ {
+  "id": "swsh1-30",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "playing"
+  ],
+  "new": [
+   "other",
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-31",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-31",
+  "field": "activity",
+  "old": [
+   "running",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-32",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-32",
+  "field": "activity",
+  "old": [
+   "posing",
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "swsh1-33",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-34",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "using-move"
+  ],
+  "new": [
+   "using-move",
+   "fighting"
+  ]
+ },
+ {
+  "id": "swsh1-35",
+  "field": "place",
+  "old": "grassland",
+  "new": "unclear"
+ },
+ {
+  "id": "swsh1-35",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-35",
+  "field": "activity",
+  "old": [
+   "running",
+   "fighting"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "swsh1-36",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-37",
+  "field": "activity",
+  "old": [
+   "resting",
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "swsh1-40",
+  "field": "place",
+  "old": "sky",
+  "new": "unclear"
+ },
+ {
+  "id": "swsh1-41",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "swsh1-42",
+  "field": "place",
+  "old": "underwater",
+  "new": "unclear"
+ },
+ {
+  "id": "swsh1-42",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "swsh1-44",
+  "field": "activity",
+  "old": [
+   "posing",
+   "fighting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "swsh1-51",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-53",
+  "field": "place",
+  "old": "river-lake",
+  "new": "unclear"
+ },
+ {
+  "id": "swsh1-53",
+  "field": "activity",
+  "old": [
+   "running",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-56",
+  "field": "activity",
+  "old": [
+   "posing",
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "swsh1-57",
+  "field": "activity",
+  "old": [
+   "running",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-58",
+  "field": "place",
+  "old": "jungle",
+  "new": "forest"
+ },
+ {
+  "id": "swsh1-59",
+  "field": "place",
+  "old": "forest",
+  "new": "grassland"
+ },
+ {
+  "id": "swsh1-60",
+  "field": "activity",
+  "old": [
+   "resting",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "swsh1-62",
+  "field": "activity",
+  "old": [
+   "posing",
+   "flying"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "swsh1-63",
+  "field": "activity",
+  "old": [
+   "resting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "swsh1-64",
+  "field": "place",
+  "old": "snow-ice",
+  "new": "unclear"
+ },
+ {
+  "id": "swsh1-65",
+  "field": "place",
+  "old": "grassland",
+  "new": "abstract"
+ },
+ {
+  "id": "swsh1-65",
+  "field": "activity",
+  "old": [
+   "posing",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-66",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-71",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-72",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-72",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "flying"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-73",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "swsh1-74",
+  "field": "activity",
+  "old": [
+   "playing",
+   "running"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "swsh1-75",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-75",
+  "field": "activity",
+  "old": [
+   "running",
+   "using-move"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "swsh1-79",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-80",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-81",
+  "field": "place",
+  "old": "forest",
+  "new": "garden"
+ },
+ {
+  "id": "swsh1-82",
+  "field": "place",
+  "old": "forest",
+  "new": "garden"
+ },
+ {
+  "id": "swsh1-82",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-83",
+  "field": "place",
+  "old": "ruins",
+  "new": "unclear"
+ },
+ {
+  "id": "swsh1-83",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "swsh1-84",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "flying"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "swsh1-85",
+  "field": "place",
+  "old": "ruins",
+  "new": "unclear"
+ },
+ {
+  "id": "swsh1-85",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-86",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "swsh1-86",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "swsh1-88",
+  "field": "activity",
+  "old": [
+   "resting",
+   "flying"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "swsh1-90",
+  "field": "place",
+  "old": "indoors",
+  "new": "kitchen"
+ },
+ {
+  "id": "swsh1-90",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "swsh1-91",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-93",
+  "field": "place",
+  "old": "desert",
+  "new": "unclear"
+ },
+ {
+  "id": "swsh1-94",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "using-move"
+  ],
+  "new": [
+   "fighting"
+  ]
+ },
+ {
+  "id": "swsh1-95",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "using-move"
+  ],
+  "new": [
+   "fighting"
+  ]
+ },
+ {
+  "id": "swsh1-96",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "swsh1-97",
+  "field": "place",
+  "old": "volcano",
+  "new": "mountain"
+ },
+ {
+  "id": "swsh1-97",
+  "field": "activity",
+  "old": [
+   "running",
+   "fighting"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "swsh1-98",
+  "field": "activity",
+  "old": [
+   "posing",
+   "fighting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "swsh1-99",
+  "field": "place",
+  "old": "underwater",
+  "new": "unclear"
+ },
+ {
+  "id": "swsh1-99",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-99",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-101",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-101",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "swsh1-102",
+  "field": "activity",
+  "old": [
+   "resting",
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "swsh1-103",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "swsh1-104",
+  "field": "place",
+  "old": "mountain",
+  "new": "unclear"
+ },
+ {
+  "id": "swsh1-104",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-106",
+  "field": "activity",
+  "old": [
+   "running",
+   "fighting"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "swsh1-108",
+  "field": "activity",
+  "old": [
+   "posing",
+   "using-move"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "swsh1-109",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-109",
+  "field": "activity",
+  "old": [
+   "resting",
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "swsh1-110",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-110",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-113",
+  "field": "place",
+  "old": "ocean",
+  "new": "river-lake"
+ },
+ {
+  "id": "swsh1-113",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "swsh1-114",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-114",
+  "field": "activity",
+  "old": [
+   "posing",
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "swsh1-115",
+  "field": "place",
+  "old": "mountain",
+  "new": "unclear"
+ },
+ {
+  "id": "swsh1-115",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-117",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-118",
+  "field": "place",
+  "old": "grassland",
+  "new": "unclear"
+ },
+ {
+  "id": "swsh1-118",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-118",
+  "field": "activity",
+  "old": [
+   "running",
+   "fighting"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "swsh1-120",
+  "field": "place",
+  "old": "cave",
+  "new": "abstract"
+ },
+ {
+  "id": "swsh1-120",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-122",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "swsh1-123",
+  "field": "place",
+  "old": "forest",
+  "new": "grassland"
+ },
+ {
+  "id": "swsh1-123",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-123",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-124",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "running"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "swsh1-127",
+  "field": "place",
+  "old": "beach",
+  "new": "river-lake"
+ },
+ {
+  "id": "swsh1-127",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-128",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-129",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-129",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-131",
+  "field": "activity",
+  "old": [
+   "posing",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-132",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "swsh1-133",
+  "field": "activity",
+  "old": [
+   "posing",
+   "fighting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "swsh1-134",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "running"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-137",
+  "field": "place",
+  "old": "grassland",
+  "new": "unclear"
+ },
+ {
+  "id": "swsh1-137",
+  "field": "weather",
+  "old": "fog",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-139",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "swsh1-141",
+  "field": "place",
+  "old": "forest",
+  "new": "unclear"
+ },
+ {
+  "id": "swsh1-141",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-141",
+  "field": "activity",
+  "old": [
+   "resting",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-143",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "swsh1-145",
+  "field": "activity",
+  "old": [
+   "playing",
+   "running"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "swsh1-146",
+  "field": "activity",
+  "old": [
+   "resting",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "swsh1-147",
+  "field": "place",
+  "old": "indoors",
+  "new": "garden"
+ },
+ {
+  "id": "swsh1-147",
+  "field": "activity",
+  "old": [
+   "sleeping",
+   "resting"
+  ],
+  "new": [
+   "sleeping"
+  ]
+ },
+ {
+  "id": "swsh1-148",
+  "field": "activity",
+  "old": [
+   "posing",
+   "resting"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "swsh1-149",
+  "field": "place",
+  "old": "snow-ice",
+  "new": "cave"
+ },
+ {
+  "id": "swsh1-149",
+  "field": "weather",
+  "old": "snow",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-149",
+  "field": "activity",
+  "old": [
+   "resting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "swsh1-152",
+  "field": "place",
+  "old": "garden",
+  "new": "grassland"
+ },
+ {
+  "id": "swsh1-155",
+  "field": "place",
+  "old": "plain-background",
+  "new": "unclear"
+ },
+ {
+  "id": "swsh1-155",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-157",
+  "field": "place",
+  "old": "city",
+  "new": "unclear"
+ },
+ {
+  "id": "swsh1-166",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "swsh1-173",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "swsh1-173",
+  "field": "activity",
+  "old": [
+   "running",
+   "playing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "swsh1-175",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "swsh1-177",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "swsh1-181",
+  "field": "activity",
+  "old": [
+   "running"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "swsh1-187",
+  "field": "place",
+  "old": "underwater",
+  "new": "abstract"
+ },
+ {
+  "id": "swsh1-187",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-188",
+  "field": "place",
+  "old": "volcano",
+  "new": "abstract"
+ },
+ {
+  "id": "swsh1-189",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "swsh1-189",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "swsh1-190",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "swsh1-192",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "swsh1-193",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "swsh1-194",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-197",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "swsh1-198",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "swsh1-200",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "swsh1-202",
+  "field": "place",
+  "old": "city",
+  "new": "abstract"
+ },
+ {
+  "id": "swsh1-202",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "swsh1-203",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-204",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "swsh1-206",
+  "field": "activity",
+  "old": [
+   "resting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-002",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv01-002",
+  "field": "activity",
+  "old": [
+   "posing",
+   "fighting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-004",
+  "field": "place",
+  "old": "forest",
+  "new": "grassland"
+ },
+ {
+  "id": "sv01-004",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-006",
+  "field": "place",
+  "old": "desert",
+  "new": "unclear"
+ },
+ {
+  "id": "sv01-006",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-007",
+  "field": "activity",
+  "old": [
+   "resting",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-008",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv01-013",
+  "field": "activity",
+  "old": [
+   "posing",
+   "playing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-014",
+  "field": "activity",
+  "old": [
+   "resting",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-015",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv01-015",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "flying"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv01-017",
+  "field": "place",
+  "old": "snow-ice",
+  "new": "forest"
+ },
+ {
+  "id": "sv01-018",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv01-018",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv01-019",
+  "field": "place",
+  "old": "forest",
+  "new": "abstract"
+ },
+ {
+  "id": "sv01-019",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-020",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv01-023",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv01-026",
+  "field": "place",
+  "old": "underwater",
+  "new": "unclear"
+ },
+ {
+  "id": "sv01-026",
+  "field": "activity",
+  "old": [
+   "swimming"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv01-027",
+  "field": "activity",
+  "old": [
+   "running",
+   "playing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "sv01-028",
+  "field": "place",
+  "old": "grassland",
+  "new": "garden"
+ },
+ {
+  "id": "sv01-028",
+  "field": "activity",
+  "old": [
+   "running",
+   "playing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "sv01-029",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-030",
+  "field": "activity",
+  "old": [
+   "running",
+   "playing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "sv01-031",
+  "field": "place",
+  "old": "grassland",
+  "new": "city"
+ },
+ {
+  "id": "sv01-031",
+  "field": "activity",
+  "old": [
+   "running",
+   "playing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "sv01-032",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-033",
+  "field": "place",
+  "old": "mountain",
+  "new": "grassland"
+ },
+ {
+  "id": "sv01-034",
+  "field": "place",
+  "old": "volcano",
+  "new": "abstract"
+ },
+ {
+  "id": "sv01-034",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-035",
+  "field": "place",
+  "old": "cave",
+  "new": "mountain"
+ },
+ {
+  "id": "sv01-037",
+  "field": "place",
+  "old": "desert",
+  "new": "grassland"
+ },
+ {
+  "id": "sv01-037",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-038",
+  "field": "place",
+  "old": "volcano",
+  "new": "mountain"
+ },
+ {
+  "id": "sv01-038",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-040",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-041",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-042",
+  "field": "place",
+  "old": "ocean",
+  "new": "river-lake"
+ },
+ {
+  "id": "sv01-042",
+  "field": "activity",
+  "old": [
+   "swimming",
+   "resting"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "sv01-043",
+  "field": "place",
+  "old": "grassland",
+  "new": "abstract"
+ },
+ {
+  "id": "sv01-044",
+  "field": "place",
+  "old": "underwater",
+  "new": "ocean"
+ },
+ {
+  "id": "sv01-045",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-046",
+  "field": "place",
+  "old": "city",
+  "new": "unclear"
+ },
+ {
+  "id": "sv01-046",
+  "field": "activity",
+  "old": [
+   "swimming",
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv01-053",
+  "field": "activity",
+  "old": [
+   "posing",
+   "playing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-054",
+  "field": "activity",
+  "old": [
+   "posing",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-058",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-059",
+  "field": "activity",
+  "old": [
+   "playing",
+   "eating"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-060",
+  "field": "activity",
+  "old": [
+   "swimming",
+   "using-move"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "sv01-064",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv01-064",
+  "field": "activity",
+  "old": [
+   "flying",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-065",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv01-068",
+  "field": "place",
+  "old": "grassland",
+  "new": "abstract"
+ },
+ {
+  "id": "sv01-068",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv01-068",
+  "field": "activity",
+  "old": [
+   "running",
+   "using-move"
+  ],
+  "new": [
+   "using-move",
+   "running"
+  ]
+ },
+ {
+  "id": "sv01-069",
+  "field": "place",
+  "old": "jungle",
+  "new": "forest"
+ },
+ {
+  "id": "sv01-069",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv01-070",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv01-070",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "flying"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "sv01-072",
+  "field": "place",
+  "old": "indoors",
+  "new": "ruins"
+ },
+ {
+  "id": "sv01-072",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv01-074",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv01-074",
+  "field": "activity",
+  "old": [
+   "running",
+   "playing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "sv01-075",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-075",
+  "field": "activity",
+  "old": [
+   "playing",
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-076",
+  "field": "place",
+  "old": "grassland",
+  "new": "unclear"
+ },
+ {
+  "id": "sv01-076",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-077",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-078",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv01-078",
+  "field": "activity",
+  "old": [
+   "flying",
+   "using-move"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "sv01-079",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-080",
+  "field": "weather",
+  "old": "storm",
+  "new": "lightning"
+ },
+ {
+  "id": "sv01-082",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-083",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-084",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-085",
+  "field": "activity",
+  "old": [
+   "running",
+   "using-move"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv01-088",
+  "field": "weather",
+  "old": "storm",
+  "new": "lightning"
+ },
+ {
+  "id": "sv01-089",
+  "field": "place",
+  "old": "garden",
+  "new": "grassland"
+ },
+ {
+  "id": "sv01-089",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv01-090",
+  "field": "place",
+  "old": "sky",
+  "new": "abstract"
+ },
+ {
+  "id": "sv01-091",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-092",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-093",
+  "field": "place",
+  "old": "garden",
+  "new": "forest"
+ },
+ {
+  "id": "sv01-094",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-098",
+  "field": "place",
+  "old": "grassland",
+  "new": "garden"
+ },
+ {
+  "id": "sv01-098",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-098",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "sv01-099",
+  "field": "place",
+  "old": "unclear",
+  "new": "grassland"
+ },
+ {
+  "id": "sv01-100",
+  "field": "activity",
+  "old": [
+   "flying",
+   "using-move"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv01-101",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-101",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-102",
+  "field": "weather",
+  "old": "wind",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-102",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv01-105",
+  "field": "activity",
+  "old": [
+   "running",
+   "using-move"
+  ],
+  "new": [
+   "other",
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-106",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-107",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-108",
+  "field": "activity",
+  "old": [
+   "fighting"
+  ],
+  "new": [
+   "fighting",
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-109",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-110",
+  "field": "place",
+  "old": "desert",
+  "new": "mountain"
+ },
+ {
+  "id": "sv01-110",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-112",
+  "field": "activity",
+  "old": [
+   "posing",
+   "fighting"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "sv01-113",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-114",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv01-115",
+  "field": "activity",
+  "old": [
+   "sleeping",
+   "resting"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "sv01-116",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-117",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-118",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv01-118",
+  "field": "activity",
+  "old": [
+   "flying",
+   "fighting"
+  ],
+  "new": [
+   "flying",
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-119",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-119",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv01-120",
+  "field": "place",
+  "old": "desert",
+  "new": "cave"
+ },
+ {
+  "id": "sv01-121",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-122",
+  "field": "place",
+  "old": "beach",
+  "new": "mountain"
+ },
+ {
+  "id": "sv01-122",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-123",
+  "field": "place",
+  "old": "desert",
+  "new": "unclear"
+ },
+ {
+  "id": "sv01-123",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "running"
+  ],
+  "new": [
+   "fighting",
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-124",
+  "field": "place",
+  "old": "volcano",
+  "new": "abstract"
+ },
+ {
+  "id": "sv01-124",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-126",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-131",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-132",
+  "field": "place",
+  "old": "city",
+  "new": "unclear"
+ },
+ {
+  "id": "sv01-133",
+  "field": "weather",
+  "old": "rain",
+  "new": "storm"
+ },
+ {
+  "id": "sv01-134",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv01-134",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-135",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-135",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-136",
+  "field": "activity",
+  "old": [
+   "posing",
+   "fighting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-137",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-137",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-138",
+  "field": "activity",
+  "old": [
+   "flying",
+   "fighting"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "sv01-139",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-139",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "sv01-140",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "running"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-142",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-144",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-145",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-146",
+  "field": "place",
+  "old": "beach",
+  "new": "unclear"
+ },
+ {
+  "id": "sv01-148",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-148",
+  "field": "activity",
+  "old": [
+   "resting",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-149",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-150",
+  "field": "activity",
+  "old": [
+   "flying",
+   "fighting"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "sv01-151",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-151",
+  "field": "activity",
+  "old": [
+   "eating"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-152",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-152",
+  "field": "activity",
+  "old": [
+   "eating",
+   "playing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-153",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-153",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv01-155",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-156",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-156",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv01-157",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-158",
+  "field": "place",
+  "old": "abstract",
+  "new": "unclear"
+ },
+ {
+  "id": "sv01-158",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-158",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "running"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-159",
+  "field": "activity",
+  "old": [
+   "playing",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-160",
+  "field": "activity",
+  "old": [
+   "playing",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-161",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-161",
+  "field": "activity",
+  "old": [
+   "posing",
+   "playing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-162",
+  "field": "place",
+  "old": "city",
+  "new": "sky"
+ },
+ {
+  "id": "sv01-162",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-163",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-164",
+  "field": "place",
+  "old": "forest",
+  "new": "jungle"
+ },
+ {
+  "id": "sv01-165",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-166",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-167",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-177",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-178",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-180",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-183",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-184",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv01-198",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-199",
+  "field": "place",
+  "old": "sky",
+  "new": "forest"
+ },
+ {
+  "id": "sv01-200",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-201",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv01-203",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-203",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-204",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-204",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "sv01-205",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "sv01-208",
+  "field": "activity",
+  "old": [
+   "playing",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-209",
+  "field": "place",
+  "old": "grassland",
+  "new": "forest"
+ },
+ {
+  "id": "sv01-209",
+  "field": "activity",
+  "old": [
+   "posing",
+   "resting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-210",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "sv01-211",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv01-212",
+  "field": "activity",
+  "old": [
+   "resting",
+   "posing"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "sv01-214",
+  "field": "activity",
+  "old": [
+   "resting",
+   "playing"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "sv01-215",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv01-216",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-217",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-218",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-220",
+  "field": "place",
+  "old": "city",
+  "new": "unclear"
+ },
+ {
+  "id": "sv01-221",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-221",
+  "field": "activity",
+  "old": [
+   "posing",
+   "playing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-222",
+  "field": "activity",
+  "old": [
+   "resting",
+   "sleeping"
+  ],
+  "new": [
+   "sleeping"
+  ]
+ },
+ {
+  "id": "sv01-223",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv01-224",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv01-225",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv01-225",
+  "field": "activity",
+  "old": [
+   "posing",
+   "using-move"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "sv01-226",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv01-227",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv01-228",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv01-228",
+  "field": "activity",
+  "old": [
+   "posing",
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-230",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv01-230",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "sv01-231",
+  "field": "place",
+  "old": "grassland",
+  "new": "jungle"
+ },
+ {
+  "id": "sv01-231",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-234",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv01-235",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-237",
+  "field": "place",
+  "old": "grassland",
+  "new": "garden"
+ },
+ {
+  "id": "sv01-237",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-238",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-242",
+  "field": "place",
+  "old": "city",
+  "new": "unclear"
+ },
+ {
+  "id": "sv01-248",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-249",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv01-249",
+  "field": "activity",
+  "old": [
+   "eating",
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv01-251",
+  "field": "activity",
+  "old": [
+   "running"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv01-252",
+  "field": "activity",
+  "old": [
+   "resting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv01-253",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv01-254",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv01-255",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv01-256",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv01-257",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv01-258",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-001",
+  "field": "place",
+  "old": "grassland",
+  "new": "forest"
+ },
+ {
+  "id": "sv03.5-001",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-002",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-003",
+  "field": "activity",
+  "old": [
+   "posing",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-004",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-004",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "sv03.5-005",
+  "field": "activity",
+  "old": [
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv03.5-006",
+  "field": "place",
+  "old": "unclear",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-006",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "flying"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-007",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-007",
+  "field": "activity",
+  "old": [
+   "swimming",
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv03.5-008",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-008",
+  "field": "activity",
+  "old": [
+   "swimming",
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv03.5-009",
+  "field": "place",
+  "old": "river-lake",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-010",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-012",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-016",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-016",
+  "field": "activity",
+  "old": [
+   "resting",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv03.5-017",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-018",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-020",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv03.5-022",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-022",
+  "field": "activity",
+  "old": [
+   "flying",
+   "posing"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "sv03.5-023",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-023",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "sv03.5-024",
+  "field": "place",
+  "old": "grassland",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-024",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv03.5-024",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-025",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-026",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv03.5-026",
+  "field": "activity",
+  "old": [
+   "posing",
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv03.5-027",
+  "field": "place",
+  "old": "desert",
+  "new": "mountain"
+ },
+ {
+  "id": "sv03.5-027",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-027",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "sv03.5-028",
+  "field": "place",
+  "old": "cave",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-028",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "fighting",
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-030",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-030",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "sv03.5-032",
+  "field": "place",
+  "old": "grassland",
+  "new": "forest"
+ },
+ {
+  "id": "sv03.5-032",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "sv03.5-033",
+  "field": "place",
+  "old": "unclear",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-033",
+  "field": "activity",
+  "old": [
+   "running",
+   "using-move"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "sv03.5-034",
+  "field": "place",
+  "old": "volcano",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-034",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-035",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-035",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv03.5-036",
+  "field": "activity",
+  "old": [
+   "flying",
+   "playing"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "sv03.5-037",
+  "field": "place",
+  "old": "cave",
+  "new": "forest"
+ },
+ {
+  "id": "sv03.5-038",
+  "field": "place",
+  "old": "unclear",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-038",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-039",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-042",
+  "field": "activity",
+  "old": [
+   "flying",
+   "using-move"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "sv03.5-044",
+  "field": "activity",
+  "old": [
+   "sleeping",
+   "resting"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "sv03.5-046",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "sv03.5-050",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-051",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-052",
+  "field": "place",
+  "old": "forest",
+  "new": "garden"
+ },
+ {
+  "id": "sv03.5-052",
+  "field": "activity",
+  "old": [
+   "playing",
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv03.5-054",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-055",
+  "field": "place",
+  "old": "river-lake",
+  "new": "underwater"
+ },
+ {
+  "id": "sv03.5-056",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv03.5-057",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv03.5-058",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-059",
+  "field": "place",
+  "old": "mountain",
+  "new": "volcano"
+ },
+ {
+  "id": "sv03.5-060",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-061",
+  "field": "place",
+  "old": "grassland",
+  "new": "city"
+ },
+ {
+  "id": "sv03.5-061",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-062",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "running"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-063",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-063",
+  "field": "activity",
+  "old": [
+   "sleeping",
+   "resting"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "sv03.5-064",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-066",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-067",
+  "field": "place",
+  "old": "city",
+  "new": "unclear"
+ },
+ {
+  "id": "sv03.5-068",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-074",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-074",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "posing"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "sv03.5-075",
+  "field": "activity",
+  "old": [
+   "running",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-076",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-077",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-078",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-079",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-079",
+  "field": "activity",
+  "old": [
+   "resting",
+   "swimming"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "sv03.5-080",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-083",
+  "field": "place",
+  "old": "swamp",
+  "new": "river-lake"
+ },
+ {
+  "id": "sv03.5-083",
+  "field": "activity",
+  "old": [
+   "swimming",
+   "fighting"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv03.5-084",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-085",
+  "field": "place",
+  "old": "mountain",
+  "new": "grassland"
+ },
+ {
+  "id": "sv03.5-086",
+  "field": "activity",
+  "old": [
+   "sleeping",
+   "resting"
+  ],
+  "new": [
+   "sleeping"
+  ]
+ },
+ {
+  "id": "sv03.5-088",
+  "field": "place",
+  "old": "city",
+  "new": "unclear"
+ },
+ {
+  "id": "sv03.5-089",
+  "field": "place",
+  "old": "city",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-090",
+  "field": "place",
+  "old": "ocean",
+  "new": "beach"
+ },
+ {
+  "id": "sv03.5-090",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-090",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv03.5-091",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "sv03.5-092",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "sv03.5-093",
+  "field": "activity",
+  "old": [
+   "posing",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-095",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-095",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv03.5-096",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-096",
+  "field": "activity",
+  "old": [
+   "sleeping",
+   "resting"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "sv03.5-097",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-098",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-099",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-099",
+  "field": "activity",
+  "old": [
+   "posing",
+   "fighting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv03.5-103",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-104",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "resting"
+  ]
+ },
+ {
+  "id": "sv03.5-105",
+  "field": "place",
+  "old": "desert",
+  "new": "mountain"
+ },
+ {
+  "id": "sv03.5-107",
+  "field": "place",
+  "old": "beach",
+  "new": "jungle"
+ },
+ {
+  "id": "sv03.5-107",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-107",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "using-move"
+  ],
+  "new": [
+   "fighting"
+  ]
+ },
+ {
+  "id": "sv03.5-108",
+  "field": "place",
+  "old": "jungle",
+  "new": "forest"
+ },
+ {
+  "id": "sv03.5-108",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-108",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv03.5-109",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-110",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv03.5-111",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv03.5-111",
+  "field": "activity",
+  "old": [
+   "running",
+   "fighting"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "sv03.5-112",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-112",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "running"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-113",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-115",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-122",
+  "field": "activity",
+  "old": [
+   "playing",
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv03.5-123",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-123",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "using-move"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "sv03.5-125",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv03.5-125",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-126",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-126",
+  "field": "activity",
+  "old": [
+   "posing",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-128",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-129",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-129",
+  "field": "activity",
+  "old": [
+   "swimming",
+   "using-move"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "sv03.5-130",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv03.5-130",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "fighting"
+  ],
+  "new": [
+   "swimming",
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-131",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-132",
+  "field": "activity",
+  "old": [
+   "resting",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv03.5-133",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-135",
+  "field": "place",
+  "old": "grassland",
+  "new": "unclear"
+ },
+ {
+  "id": "sv03.5-135",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv03.5-135",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-136",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "playing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv03.5-137",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-141",
+  "field": "weather",
+  "old": "wind",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv03.5-141",
+  "field": "activity",
+  "old": [
+   "fighting",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-142",
+  "field": "activity",
+  "old": [
+   "flying",
+   "fighting"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "sv03.5-143",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-143",
+  "field": "activity",
+  "old": [
+   "sleeping",
+   "resting"
+  ],
+  "new": [
+   "sleeping"
+  ]
+ },
+ {
+  "id": "sv03.5-145",
+  "field": "place",
+  "old": "abstract",
+  "new": "unclear"
+ },
+ {
+  "id": "sv03.5-145",
+  "field": "weather",
+  "old": "storm",
+  "new": "none-visible"
+ },
+ {
+  "id": "sv03.5-145",
+  "field": "activity",
+  "old": [
+   "flying",
+   "using-move"
+  ],
+  "new": [
+   "using-move",
+   "flying"
+  ]
+ },
+ {
+  "id": "sv03.5-146",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-148",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-148",
+  "field": "activity",
+  "old": [
+   "swimming",
+   "posing"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "sv03.5-149",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-150",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-151",
+  "field": "activity",
+  "old": [
+   "flying",
+   "playing"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "sv03.5-155",
+  "field": "place",
+  "old": "sky",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-155",
+  "field": "activity",
+  "old": [
+   "flying"
+  ],
+  "new": [
+   "none-visible"
+  ]
+ },
+ {
+  "id": "sv03.5-156",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv03.5-157",
+  "field": "place",
+  "old": "grassland",
+  "new": "unclear"
+ },
+ {
+  "id": "sv03.5-157",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-160",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-167",
+  "field": "activity",
+  "old": [
+   "resting"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv03.5-169",
+  "field": "activity",
+  "old": [
+   "resting",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv03.5-170",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-170",
+  "field": "activity",
+  "old": [
+   "playing"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "sv03.5-173",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-173",
+  "field": "activity",
+  "old": [
+   "posing",
+   "playing"
+  ],
+  "new": [
+   "running"
+  ]
+ },
+ {
+  "id": "sv03.5-174",
+  "field": "place",
+  "old": "forest",
+  "new": "jungle"
+ },
+ {
+  "id": "sv03.5-175",
+  "field": "activity",
+  "old": [
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv03.5-176",
+  "field": "place",
+  "old": "river-lake",
+  "new": "city"
+ },
+ {
+  "id": "sv03.5-177",
+  "field": "activity",
+  "old": [
+   "playing",
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv03.5-178",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-178",
+  "field": "activity",
+  "old": [
+   "playing",
+   "posing"
+  ],
+  "new": [
+   "other"
+  ]
+ },
+ {
+  "id": "sv03.5-179",
+  "field": "place",
+  "old": "city",
+  "new": "unclear"
+ },
+ {
+  "id": "sv03.5-179",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-182",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-183",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-183",
+  "field": "activity",
+  "old": [
+   "posing",
+   "flying"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv03.5-184",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-185",
+  "field": "activity",
+  "old": [
+   "posing",
+   "using-move"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv03.5-186",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-187",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-188",
+  "field": "activity",
+  "old": [
+   "posing",
+   "using-move"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-189",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-190",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-191",
+  "field": "activity",
+  "old": [
+   "posing",
+   "playing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-192",
+  "field": "place",
+  "old": "plain-background",
+  "new": "sky"
+ },
+ {
+  "id": "sv03.5-192",
+  "field": "activity",
+  "old": [
+   "flying",
+   "using-move"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "sv03.5-193",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-193",
+  "field": "activity",
+  "old": [
+   "flying",
+   "posing"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "sv03.5-195",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-198",
+  "field": "place",
+  "old": "garden",
+  "new": "jungle"
+ },
+ {
+  "id": "sv03.5-199",
+  "field": "place",
+  "old": "volcano",
+  "new": "sky"
+ },
+ {
+  "id": "sv03.5-199",
+  "field": "weather",
+  "old": "none-visible",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-200",
+  "field": "activity",
+  "old": [
+   "posing",
+   "swimming"
+  ],
+  "new": [
+   "swimming"
+  ]
+ },
+ {
+  "id": "sv03.5-201",
+  "field": "activity",
+  "old": [
+   "using-move",
+   "posing"
+  ],
+  "new": [
+   "using-move"
+  ]
+ },
+ {
+  "id": "sv03.5-202",
+  "field": "weather",
+  "old": "storm",
+  "new": "clear"
+ },
+ {
+  "id": "sv03.5-202",
+  "field": "activity",
+  "old": [
+   "flying",
+   "using-move"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "sv03.5-203",
+  "field": "place",
+  "old": "indoors",
+  "new": "garden"
+ },
+ {
+  "id": "sv03.5-204",
+  "field": "activity",
+  "old": [
+   "resting",
+   "posing"
+  ],
+  "new": [
+   "posing"
+  ]
+ },
+ {
+  "id": "sv03.5-205",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-205",
+  "field": "activity",
+  "old": [
+   "flying",
+   "posing"
+  ],
+  "new": [
+   "flying"
+  ]
+ },
+ {
+  "id": "sv03.5-206",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ },
+ {
+  "id": "sv03.5-207",
+  "field": "place",
+  "old": "plain-background",
+  "new": "abstract"
+ }
+]

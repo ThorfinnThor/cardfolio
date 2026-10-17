@@ -1,0 +1,29 @@
+{
+ "reviewer": "the orchestrating Claude session (not the Sonnet taggers), fresh contact sheets of each top 8 (temp files, deleted afterwards)",
+ "rule": "same rule as v1: a hit counts if the drawn scene matches; borderline counts as a miss; empty top-8 slots count as misses",
+ "correctTotal": 122,
+ "slots": 160,
+ "v1CorrectTotal": 127,
+ "perQuery": {
+  "at the beach": {"correct": 8, "v1": 8, "delta": 0, "misses": []},
+  "in the forest": {"correct": 8, "v1": 8, "delta": 0, "misses": []},
+  "at night": {"correct": 8, "v1": 8, "delta": 0, "misses": []},
+  "in the snow": {"correct": 8, "v1": 8, "delta": 0, "misses": []},
+  "underwater": {"correct": 8, "v1": 8, "delta": 0, "misses": []},
+  "in space": {"correct": 2, "v1": 2, "delta": 0, "misses": ["sm1-64 (Cosmog on a cliff, not space)", "only 3 results in total"]},
+  "on a mountain": {"correct": 6, "v1": 6, "delta": 0, "misses": ["bw1-31 (coastal cliffs)", "bw1-77 (coastal cliff)"]},
+  "in a city": {"correct": 8, "v1": 8, "delta": 0, "misses": []},
+  "sleeping": {"correct": 6, "v1": 6, "delta": 0, "misses": ["sv01-250 (human asleep, not a Pokémon)", "base1-43 (Abra sitting, ambiguous)"]},
+  "eating food": {"correct": 4, "v1": 5, "delta": -1, "misses": ["ex1-74 (no food)", "sv01-014 (flower, not food)", "sv01-159 (apple nearby, not eating)", "sv03.5-012 (fruit trees, not eating)"]},
+  "flying in the sky": {"correct": 7, "v1": 7, "delta": 0, "misses": ["dp1-21 (Carnivine hanging, not flying)"]},
+  "near a volcano": {"correct": 5, "v1": 5, "delta": 0, "misses": ["ex1-4 (holo foil background, no volcano)", "only 6 results in total"]},
+  "in the rain": {"correct": 5, "v1": 4, "delta": 1, "misses": ["hgss1-122 (energy card with storm lines)", "only 6 results in total"]},
+  "in a desert": {"correct": 8, "v1": 8, "delta": 0, "misses": []},
+  "at sunset": {"correct": 7, "v1": 7, "delta": 0, "misses": ["dp1-91 (pink clouds, no clear sunset)"]},
+  "with flowers": {"correct": 7, "v1": 8, "delta": -1, "misses": ["hgss1-26 (the flower is part of the Pokémon, no flowers in the scene)"]},
+  "in a cave": {"correct": 8, "v1": 8, "delta": 0, "misses": []},
+  "two pokemon playing together": {"correct": 1, "v1": 4, "delta": -3, "misses": ["dp1-97 (three Seedot standing, not playing)", "only 2 results in total: the re-tag marked just 1 card as playing-together"]},
+  "a pokemon with a human trainer": {"correct": 7, "v1": 7, "delta": 0, "misses": ["sv01-218 (no human visible in the whole-card thumbnail)"]},
+  "in a kitchen": {"correct": 1, "v1": 2, "delta": -1, "misses": ["only 1 card in the whole set was tagged kitchen; swsh1-89 (tea cups on a counter) was not"]}
+ }
+}
