@@ -907,7 +907,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
                 {recommendedBinderOffers?.map((offer, index) => {
                   const destinationUrl = offer.status === "available" ? partnerAdapter?.buildExternalUrl(offer.id) : undefined;
                   return <div className={styles.offerRow} data-recommended={index === 0} key={offer.id}>
-                    <div><strong>{offer.displayName}{index === 0 ? <em>Empfohlen</em> : null}</strong><small>{offer.price ? `${offer.price.qualifier === "from" ? "ab " : ""}${formatMoney(offer.price.amountMinor, offer.price.currency)} · Stand ${formatDate(offer.price.sourceUpdatedAt)}` : "Kein bestätigter Binderpreis"}</small>
+                    <div><strong>{offer.displayName}{index === 0 ? <em>Empfohlen</em> : null}</strong><small className={styles.offerPrice}>{offer.price ? `${offer.price.qualifier === "from" ? "ab " : ""}${formatMoney(offer.price.amountMinor, offer.price.currency)} · geprüft am ${formatDate(offer.price.sourceUpdatedAt)}` : "Preis im Shop prüfen"}</small>
                       {offer.capacityCards ? <small>{offer.pocketsPerPage ? `${offer.pocketsPerPage}-Pocket · ` : ""}Platz für bis zu {offer.capacityCards} Karten</small> : null}
                       {offer.affiliateDisclosure ? <small>{offer.affiliateDisclosure}</small> : null}
                       {destinationUrl ? <small>Verfügbarkeit und Versand im Shop prüfen.</small> : null}

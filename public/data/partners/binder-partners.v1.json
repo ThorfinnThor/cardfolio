@@ -1,16 +1,51 @@
 {
   "schemaVersion": 1,
   "enabled": true,
-  "reviewedAt": "2026-10-12",
+  "reviewedAt": "2026-10-17",
   "partners": [
+    {
+      "id": "vaultx-amazon-9-pocket",
+      "displayName": "Vault X 9-Pocket Binder",
+      "kind": "standard",
+      "enabled": true,
+      "verifiedAt": "2026-10-17",
+      "reviewAfter": "2026-11-17",
+      "destinationUrl": "https://www.amazon.de/dp/B01MTYY0IB",
+      "affiliate": {
+        "enabled": true,
+        "text": "Werbelink: Cardfolio kann bei einem Kauf eine Provision erhalten. Dein Preis bleibt gleich.",
+        "staticQuery": {
+          "th": "1",
+          "linkCode": "ll2",
+          "tag": "cardbinder-21",
+          "linkId": "56e8c4651397e6496c96436b71e99d5f",
+          "ref_": "as_li_ss_tl"
+        }
+      },
+      "capabilities": {
+        "personalization": false,
+        "photoUpload": false
+      },
+      "capacityCards": 360,
+      "pocketsPerPage": 9,
+      "price": {
+        "amountMinor": 1799,
+        "currency": "EUR",
+        "qualifier": "fixed",
+        "sourceUpdatedAt": "2026-10-17"
+      },
+      "evidenceUrls": [
+        "https://www.amazon.de/dp/B01MTYY0IB"
+      ]
+    },
     {
       "id": "vaultx-eu-9-pocket-zip",
       "displayName": "Vault X 9-Pocket Zip Binder",
       "kind": "standard",
       "enabled": true,
-      "verifiedAt": "2026-10-12",
-      "reviewAfter": "2026-10-26",
-      "destinationUrl": "https://eu.vaultx.com/collections/card-binders/products/9-pocket-exo-tec-zip-binder",
+      "verifiedAt": "2026-10-17",
+      "reviewAfter": "2026-11-17",
+      "destinationUrl": "https://eu.vaultx.com/products/9-pocket-exo-tec-zip-binder",
       "affiliate": {
         "enabled": false
       },
@@ -23,14 +58,40 @@
       "price": {
         "amountMinor": 2699,
         "currency": "EUR",
-        "qualifier": "from",
-        "sourceUpdatedAt": "2026-10-12"
+        "qualifier": "fixed",
+        "sourceUpdatedAt": "2026-10-17"
       },
       "evidenceUrls": [
-        "https://eu.vaultx.com/collections/card-binders/products/9-pocket-exo-tec-zip-binder",
+        "https://eu.vaultx.com/products/9-pocket-exo-tec-zip-binder",
         "https://eu.vaultx.com/policies/shipping-policy",
-        "https://eu.vaultx.com/policies/privacy-policy",
-        "https://www.vaultx.com/become-an-affiliate"
+        "https://eu.vaultx.com/policies/privacy-policy"
+      ]
+    },
+    {
+      "id": "ultimate-guard-zipfolio-360",
+      "displayName": "Ultimate Guard Zipfolio 360 Xenoskin",
+      "kind": "standard",
+      "enabled": true,
+      "verifiedAt": "2026-10-17",
+      "reviewAfter": "2026-11-17",
+      "destinationUrl": "https://ultimateguard.com/en/Binders-Albums/Zipfolio-360-18-Pocket-Xenoskin-Grey/UGD010213/",
+      "affiliate": {
+        "enabled": false
+      },
+      "capabilities": {
+        "personalization": false,
+        "photoUpload": false
+      },
+      "capacityCards": 360,
+      "pocketsPerPage": 9,
+      "price": {
+        "amountMinor": 3399,
+        "currency": "EUR",
+        "qualifier": "fixed",
+        "sourceUpdatedAt": "2026-10-17"
+      },
+      "evidenceUrls": [
+        "https://ultimateguard.com/en/Binders-Albums/Zipfolio-360-18-Pocket-Xenoskin-Grey/UGD010213/"
       ]
     }
   ]

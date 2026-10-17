@@ -782,14 +782,18 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await page.getByRole("button", { name: "Weiter zum Einkauf" }).click();
   await expect(page.getByRole("heading", { name: /Geschenk · Pikachu/ })).toBeVisible();
   await expect(page.getByText(/Die Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten/i)).toBeVisible();
-  await expect(page.getByText("Vault X 9-Pocket Zip Binder")).toBeVisible();
-  await expect(page.getByText(/9-Pocket · Platz für bis zu 360 Karten/i)).toBeVisible();
+  await expect(page.getByText("Vault X 9-Pocket Binder", { exact: true })).toBeVisible();
+  await expect(page.getByText("17,99 € · geprüft am 17.10.2026", { exact: true })).toBeVisible();
+  await expect(page.getByText(/Werbelink: Cardfolio kann bei einem Kauf eine Provision erhalten/i)).toBeVisible();
+  await expect(page.getByText(/9-Pocket · Platz für bis zu 360 Karten/i).first()).toBeVisible();
   await expect(page.getByText("Passt zu deinem Plan")).toBeVisible();
 
-  const binderLink = page.getByRole("link", { name: /Diesen Binder bestellen/i });
+  const binderLink = page.getByRole("link", { name: /Diesen Binder bestellen/i }).first();
   const openedBinderUrl = await binderLink.getAttribute("href");
-  expect(openedBinderUrl).toBe("https://eu.vaultx.com/collections/card-binders/products/9-pocket-exo-tec-zip-binder");
-  expect(new URL(openedBinderUrl ?? "").search).toBe("");
+  const binderTarget = new URL(openedBinderUrl ?? "");
+  expect(binderTarget.origin).toBe("https://www.amazon.de");
+  expect(binderTarget.pathname).toBe("/dp/B01MTYY0IB");
+  expect(binderTarget.searchParams.get("tag")).toBe("cardbinder-21");
 
   await page.getByRole("button", { name: "Karten besorgen" }).click();
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });

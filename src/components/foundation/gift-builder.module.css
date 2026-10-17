@@ -148,6 +148,7 @@
 .offerRow strong { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; color: var(--cf-text); font-size: 17px; }
 .offerRow strong em { border-radius: 999px; background: var(--cf-accent); color: var(--cf-on-accent); padding: 3px 7px; font-family: var(--cf-font-mono); font-size: 8px; font-style: normal; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .offerRow small { color: var(--cf-muted); font-size: 14px; line-height: 1.45; }
+.offerRow .offerPrice { color: var(--cf-accent-strong); font-size: 16px; font-weight: 800; }
 .offerRow button, .offerRow a { flex: 0 0 auto; min-height: 40px; }
 .offerAction { min-height: 58px !important; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--cf-accent); border-radius: 8px; background: var(--cf-accent); color: var(--cf-on-accent); padding: 11px 18px; font-size: 16px; font-weight: 800; text-align: center; text-decoration: none; cursor: pointer; }
 .offerAction:hover:not(:disabled) { background: color-mix(in srgb, var(--cf-accent) 88%, #fff); }
