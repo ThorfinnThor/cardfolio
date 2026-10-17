@@ -78,6 +78,23 @@ describe("deterministic Gift selection", () => {
     expect(result.budgetStatus).toBe("near");
   });
 
+  it("keeps to the budget when fewer cards have a price than the plan needs", () => {
+    const priced = Array.from({ length: 5 }, (_, index) => candidate(index, { price: { ...candidate(index).price, amountMinor: 1_000 + index * 1_000 } }));
+    const unpriced = Array.from({ length: 6 }, (_, index) => candidate(20 + index, { price: { ...candidate(0).price, amountMinor: undefined, confidence: "unknown" } }));
+    const result = engine.select({ candidates: [...priced, ...unpriced], preferences: preferences({ budgetMinor: 4_000 }) });
+    const spent = result.selected.reduce((sum, item) => sum + (item.price.amountMinor ?? 0), 0);
+    expect(spent).toBeLessThanOrEqual(4_000);
+    expect(result.selected.length).toBeGreaterThanOrEqual(8);
+  });
+
+  it("spends at most the budget when spending it fully, without any hidden tolerance", () => {
+    const spender = new DeterministicGiftSelectionEngine({ spendBudget: true });
+    const pool = Array.from({ length: 40 }, (_, index) => candidate(index, { price: { ...candidate(index).price, amountMinor: 100 + index * 37 } }));
+    const result = spender.select({ candidates: pool, preferences: preferences({ budgetMinor: 5_000 }) });
+    expect(result.estimatedTotalMinor).toBeLessThanOrEqual(5_000);
+    expect(result.budgetStatus).toBe("within");
+  });
+
   it("reports over-budget when even the cheapest complete selection exceeds the ceiling", () => {
     const result = engine.select({
       candidates: Array.from({ length: 9 }, (_, index) => candidate(index + 1)),
