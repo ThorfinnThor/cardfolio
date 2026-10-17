@@ -41,7 +41,12 @@
 .form input, .form select { width: 100%; min-height: 40px; border: 1px solid var(--cf-line2); border-radius: 7px; background: var(--cf-field); color: var(--cf-text); padding: 0 11px; font: inherit; font-size: 13px; }
 .form input:focus, .form select:focus { border-color: var(--cf-accent); outline: 3px solid var(--cf-accent-soft); }
 .orderConditionField { border: 1px solid var(--cf-line); border-radius: 8px; background: var(--cf-surface2); padding: 12px; }
+.subjectSearchRow { display: grid; grid-template-columns: minmax(0, 1fr) minmax(190px, 260px); align-items: start; gap: 18px; }
 .subjectField { display: grid; gap: 8px; }
+.languageChoice { display: grid !important; gap: 8px !important; color: var(--cf-text) !important; font-size: 16px !important; font-weight: 750 !important; }
+.languageChoice select { min-height: 52px !important; font-size: 16px !important; }
+.languageChoice small { color: var(--cf-muted); font-size: 13px; font-weight: 500; line-height: 1.4; }
+.languageChoiceStandalone { width: min(100%, 260px); }
 .discoveryMode, .themePicker { min-width: 0; margin: 0; border: 0; padding: 0; }
 .discoveryMode legend, .themePicker legend { margin-bottom: 10px; color: var(--cf-text); font-size: 16px; font-weight: 750; }
 .themePicker { display: grid; gap: 10px; }
@@ -128,7 +133,7 @@
 .purchaseFlowIntro { display: grid; gap: 8px; border-left: 4px solid var(--cf-accent); background: var(--cf-accent-soft); padding: 20px 22px; }
 .purchaseFlowIntro h3 { margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: 28px; font-weight: 650; line-height: 1.2; }
 .purchaseFlowIntro > p:last-child { max-width: 760px; margin: 0; color: var(--cf-text2); font-size: 16px; line-height: 1.5; }
-.purchaseOptions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.purchaseOptions { display: grid; gap: 16px; }
 .purchaseCard { display: flex; flex-direction: column; justify-content: space-between; gap: 22px; min-width: 0; border: 1px solid var(--cf-line); border-radius: 11px; background: var(--cf-surface); padding: 22px; }
 .purchaseCardFeatured { border: 2px solid var(--cf-accent); background: var(--cf-accent-soft); box-shadow: 0 12px 26px -22px var(--cf-sh-deep); }
 .purchaseCard > div { display: grid; align-content: start; gap: 8px; }
@@ -142,17 +147,21 @@
 .binderMatch > span { display: grid; gap: 2px; }
 .binderMatch strong { color: var(--cf-text); font-size: 15px; }
 .binderMatch > span { color: var(--cf-text2); font-size: 14px; line-height: 1.45; }
-.offerRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid var(--cf-line); padding-top: 10px; }
-.offerRow[data-recommended="true"] { margin-top: 2px; border: 1px solid color-mix(in srgb, var(--cf-accent) 50%, var(--cf-line)); border-radius: 8px; background: var(--cf-surface); padding: 12px; }
-.offerRow > div { display: grid; gap: 4px; min-width: 0; }
-.offerRow strong { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; color: var(--cf-text); font-size: 17px; }
-.offerRow strong em { border-radius: 999px; background: var(--cf-accent); color: var(--cf-on-accent); padding: 3px 7px; font-family: var(--cf-font-mono); font-size: 8px; font-style: normal; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-.offerRow small { color: var(--cf-muted); font-size: 14px; line-height: 1.45; }
-.offerRow .offerPrice { color: var(--cf-accent-strong); font-size: 16px; font-weight: 800; }
-.offerRow button, .offerRow a { flex: 0 0 auto; min-height: 40px; }
+.offerGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 8px; }
+.offerCard { display: flex; min-width: 0; flex-direction: column; justify-content: space-between; gap: 18px; border: 1px solid var(--cf-line2); border-radius: 10px; background: var(--cf-surface); padding: 16px; }
+.offerCard[data-recommended="true"] { border-color: var(--cf-accent); box-shadow: inset 0 0 0 1px var(--cf-accent); }
+.offerDetails { display: grid; align-content: start; gap: 5px; min-width: 0; }
+.offerDetails strong { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; min-height: 46px; color: var(--cf-text); font-size: 17px; line-height: 1.3; }
+.offerDetails strong em { border-radius: 999px; background: var(--cf-accent); color: var(--cf-on-accent); padding: 3px 7px; font-family: var(--cf-font-mono); font-size: 8px; font-style: normal; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.offerDetails small { color: var(--cf-muted); font-size: 13px; line-height: 1.4; }
+.offerDetails .offerPrice { color: var(--cf-accent-strong); font-family: var(--cf-font-display); font-size: 23px; font-weight: 700; line-height: 1.1; }
+.offerDetails .affiliateDisclosure { margin-top: 5px; color: var(--cf-text2); font-size: 12px; }
+.offerNote { margin-top: 2px !important; color: var(--cf-muted) !important; font-size: 13px !important; }
 .offerAction { min-height: 58px !important; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--cf-accent); border-radius: 8px; background: var(--cf-accent); color: var(--cf-on-accent); padding: 11px 18px; font-size: 16px; font-weight: 800; text-align: center; text-decoration: none; cursor: pointer; }
 .offerAction:hover:not(:disabled) { background: color-mix(in srgb, var(--cf-accent) 88%, #fff); }
 .offerAction:disabled { cursor: not-allowed; opacity: .5; }
+.purchaseCardCompact { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 420px); align-items: center; gap: 28px; }
+.purchaseCardCompact > .primaryButton { width: 100%; }
 .summaryActions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; border-top: 1px solid var(--cf-line); padding-top: 14px; }
 .summaryActions > button { min-height: 44px; }
 .panel :focus-visible { outline: 3px solid var(--cf-accent); outline-offset: 3px; }
@@ -259,13 +268,17 @@
 
 @media (max-width: 1024px) {
   .pickGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .offerGrid { grid-template-columns: 1fr; }
+  .offerDetails strong { min-height: 0; }
 }
 @media (max-width: 760px) {
   .quickChoices { grid-template-columns: 1fr; gap: 18px; }
+  .subjectSearchRow { grid-template-columns: 1fr; }
+  .languageChoiceStandalone { width: 100%; }
   .progressLine { gap: 10px 16px; }
   .candidateLimitNotice { grid-template-columns: auto minmax(0, 1fr); }
   .candidateLimitNotice button { grid-column: 1 / -1; width: 100%; }
-  .purchaseOptions { grid-template-columns: 1fr; }
+  .purchaseCardCompact { grid-template-columns: 1fr; }
   .inspectorHead { grid-template-columns: minmax(84px, 120px) minmax(0, 1fr) auto; gap: 10px; }
 }
 @media (max-width: 560px) {
@@ -300,8 +313,7 @@
   .stepLead > span { width: fit-content; }
   .stepLead > div { grid-column: 1 / -1; grid-row: 2; }
   .summaryCards ol { gap: 10px 8px; }
-  .offerRow { align-items: stretch; flex-direction: column; }
-  .offerRow button { width: 100%; white-space: normal; }
+  .offerCard button { width: 100%; white-space: normal; }
   .summaryActions { flex-direction: column; }
   .summaryActions > button { width: 100%; }
   .allResults li { grid-template-columns: 44px minmax(0, 1fr); }

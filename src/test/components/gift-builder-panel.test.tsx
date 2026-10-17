@@ -254,7 +254,7 @@ describe("GiftBuilderPanel", () => {
     await waitFor(() => expect(loader.loadCandidatePool).toHaveBeenCalledWith(expect.objectContaining({ subjectQuery: "Eevee", language: "en" })));
   });
 
-  it("asks only what changes the proposal: the optional wishes without effect are gone and the card language sits behind one control", () => {
+  it("asks only what changes the proposal and keeps the card language visible beside the Pokémon search", () => {
     const loader = { loadCandidatePool: vi.fn(), hydrateCandidates: vi.fn() };
     render(<GiftBuilderPanel loader={loader} pricingEnabled onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
 
@@ -262,9 +262,9 @@ describe("GiftBuilderPanel", () => {
     for (const gone of ["Weitere Wünsche für das Geschenk", "Für wen?", "Anlass", "Stil", "Budgettoleranz", "Währung"]) {
       expect(screen.queryByText(gone, { exact: false })).not.toBeInTheDocument();
     }
-    const language = screen.getByText("Kartensprache ändern").closest("details");
-    expect(language).not.toBeNull();
-    expect(within(language as HTMLElement).getByRole("combobox", { name: /Kartensprache/i })).toHaveValue("de");
+    const language = screen.getByRole("combobox", { name: /Kartensprache/i });
+    expect(language).toHaveValue("de");
+    expect(language.closest("details")).toBeNull();
   });
 
   it("tells the buyer when the proposal stays far below the budget instead of looking broken", async () => {

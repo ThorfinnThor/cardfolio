@@ -773,7 +773,6 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await page.goto("/");
   await page.getByRole("button", { name: "Geschenk-Binder gestalten" }).click();
   await expect(page.getByRole("heading", { name: "Dein Geschenk-Binder beginnt hier" })).toBeVisible();
-  await page.getByText("Kartensprache ändern").click();
   await page.getByLabel("Kartensprache").selectOption("en");
   await page.getByRole("button", { name: /Binder-Seite ansehen/ }).click();
   await expect(page.getByText("9 / 9")).toBeVisible();
@@ -783,7 +782,8 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await expect(page.getByRole("heading", { name: /Geschenk · Pikachu/ })).toBeVisible();
   await expect(page.getByText(/Die Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten/i)).toBeVisible();
   await expect(page.getByText("Vault X 9-Pocket Binder", { exact: true })).toBeVisible();
-  await expect(page.getByText("17,99 € · geprüft am 17.10.2026", { exact: true })).toBeVisible();
+  await expect(page.getByText("17,99 €", { exact: true })).toBeVisible();
+  await expect(page.getByText("Preis geprüft am 17.10.2026", { exact: true })).toBeVisible();
   await expect(page.getByText(/Werbelink: Cardfolio kann bei einem Kauf eine Provision erhalten/i)).toBeVisible();
   await expect(page.getByText(/9-Pocket · Platz für bis zu 360 Karten/i).first()).toBeVisible();
   await expect(page.getByText("Passt zu deinem Plan")).toBeVisible();

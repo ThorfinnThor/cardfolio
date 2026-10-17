@@ -766,11 +766,24 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
               {smartSearch ? <label className={styles.choice}><input type="radio" name="gift-discovery" checked={startChoice === "theme"} onChange={() => setDiscoveryMode("theme")} />Ein Bildmotiv</label> : null}
             </div>
           </fieldset>
-          {discoveryMode === "pokemon" && !pokemonHelp ? <div className={styles.subjectField}>
-            <label htmlFor="gift-subject">Lieblings-Pokémon</label>
-            <span className={styles.inputWithIcon}><Search aria-hidden="true" size={17} /><input id="gift-subject" required aria-describedby="gift-subject-hint" value={pokemonQuery} onChange={(event) => choosePokemon(event.target.value)} placeholder={language === "de" ? "Zum Beispiel Pikachu oder Glurak" : "For example Pikachu or Charizard"} /></span>
-            <small id="gift-subject-hint">{language === "de" ? "Den deutschen Namen eintippen, zum Beispiel Glurak." : "Search with English names, for example Charizard."}</small>
+          {discoveryMode === "pokemon" && !pokemonHelp ? <div className={styles.subjectSearchRow}>
+            <div className={styles.subjectField}>
+              <label htmlFor="gift-subject">Lieblings-Pokémon</label>
+              <span className={styles.inputWithIcon}><Search aria-hidden="true" size={17} /><input id="gift-subject" required aria-describedby="gift-subject-hint" value={pokemonQuery} onChange={(event) => choosePokemon(event.target.value)} placeholder={language === "de" ? "Zum Beispiel Pikachu oder Glurak" : "For example Pikachu or Charizard"} /></span>
+              <small id="gift-subject-hint">{language === "de" ? "Suche mit dem deutschen Namen, zum Beispiel Glurak." : "Search with the English name, for example Charizard."}</small>
+            </div>
+            <label className={styles.languageChoice}>Kartensprache
+              <select value={language} onChange={(event) => changeLanguage(event.target.value as GiftLanguage)}>
+                <option value="de">Deutsch</option><option value="en">English</option>
+              </select>
+              <small>{language === "de" ? "Zeigt deutsche Kartennamen." : "Shows English card names."}</small>
+            </label>
           </div> : null}
+          {discoveryMode === "pokemon" && pokemonHelp ? <label className={`${styles.languageChoice} ${styles.languageChoiceStandalone}`}>Kartensprache
+            <select value={language} onChange={(event) => changeLanguage(event.target.value as GiftLanguage)}>
+              <option value="de">Deutsch</option><option value="en">English</option>
+            </select>
+          </label> : null}
           {discoveryMode === "pokemon" ? <fieldset className={styles.popularPicks}>
             <legend>{pokemonHelp ? "Welches Pokémon gefällt dir am besten?" : "Oder wähle ein beliebtes Pokémon"}</legend>
             {pokemonHelp ? <p>Kein Problem – diese Pokémon kennt fast jeder. Du kannst später jede einzelne Karte austauschen.</p> : null}
@@ -823,15 +836,6 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
               <small>Die Karten kosten zusammen etwa so viel, aber nie mehr (ohne Versand).</small>
             </label>
           </div>
-          <details className={styles.extraOptions}>
-            <summary>Kartensprache ändern <span>aktuell: {language === "de" ? "Deutsch" : "English"}</span></summary>
-            <label className={styles.languageChoice}>Kartensprache
-              <select disabled={discoveryMode === "theme"} value={discoveryMode === "theme" ? "en" : language} onChange={(event) => changeLanguage(event.target.value as GiftLanguage)}>
-                <option value="de">Deutsch</option><option value="en">English</option>
-              </select>
-              {discoveryMode === "theme" ? <small>Für Bildmotive gibt es derzeit nur geprüfte englische Karten.</small> : <small>{language === "de" ? "Deutsche Karten sind für Käufer in Deutschland meist die richtige Wahl." : "Englische Karten sind oft günstiger und besser verfügbar."}</small>}
-            </label>
-          </details>
           <p className={styles.localHint}>{pricingEnabled ? `Alles bleibt in diesem Browser. Kartenpreise sind unverbindliche Schätzungen ohne Versand und Steuern.${budgetGuaranteeEnabled ? "" : " Das Budget ist eine Orientierung."}` : "Alles bleibt in diesem Browser. Die Preisprüfung ist derzeit deaktiviert; das Budget kann noch nicht zugesagt werden."}</p>
           <div className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={leaveFlow}>Zurück</button><button type="submit" className={styles.primaryButton} disabled={loading || (discoveryMode === "theme" ? !selectedThemeId : !preferences.subjectQuery.trim())}>{loading ? <><LoaderCircle className={styles.spin} aria-hidden="true" size={16} /> Karten werden gesucht…</> : <>Binder-Seite ansehen <ArrowRight aria-hidden="true" size={18} /></>}</button></div>
         </form>
@@ -897,28 +901,29 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
             <h3 id="purchase-flow-heading">Bestelle einen Binder und die Karten.</h3>
             <p>Dein Plan ist gespeichert. Erledige beide Käufe nacheinander.</p>
           </div>
-          <section className={styles.purchaseOptions} aria-label="Nächste Schritte: Karten und Binder kaufen">
+          <section className={styles.purchaseOptions} aria-label="Nächste Schritte: Binder und Karten kaufen">
             <article className={`${styles.purchaseCard} ${styles.purchaseCardFeatured}`}>
               <div><p className={styles.purchaseStep}>SCHRITT 1</p><h3>Passenden Binder bestellen</h3><p>Dieser Binder passt zum 3×3-Seitenplan.</p>
                 {partnerLoadError ? <p role="status">Angebote sind momentan nicht erreichbar. Du kannst den lokalen Binder weiter bearbeiten.</p> : null}
                 {!partnerLoadError && !binderOffers ? <p role="status">Binder-Angebote werden geprüft…</p> : null}
                 {!partnerLoadError && recommendedBinderOffers?.length === 0 ? <p role="status">Zurzeit ist kein geprüfter Binder-Shop verfügbar. Du kannst den lokalen Binder trotzdem weiter bearbeiten.</p> : null}
                 {recommendedBinderOffers?.length ? <p className={styles.binderMatch}><Check aria-hidden="true" size={20} /><span><strong>Passt zu deinem Plan</strong>{planSize} Karten = {Math.ceil(planSize / 9)} {Math.ceil(planSize / 9) === 1 ? "Binder-Seite" : "Binder-Seiten"}.</span></p> : null}
-                {recommendedBinderOffers?.map((offer, index) => {
+                {recommendedBinderOffers?.length ? <div className={styles.offerGrid}>{recommendedBinderOffers.map((offer, index) => {
                   const destinationUrl = offer.status === "available" ? partnerAdapter?.buildExternalUrl(offer.id) : undefined;
-                  return <div className={styles.offerRow} data-recommended={index === 0} key={offer.id}>
-                    <div><strong>{offer.displayName}{index === 0 ? <em>Empfohlen</em> : null}</strong><small className={styles.offerPrice}>{offer.price ? `${offer.price.qualifier === "from" ? "ab " : ""}${formatMoney(offer.price.amountMinor, offer.price.currency)} · geprüft am ${formatDate(offer.price.sourceUpdatedAt)}` : "Preis im Shop prüfen"}</small>
+                  return <div className={styles.offerCard} data-recommended={index === 0} key={offer.id}>
+                    <div className={styles.offerDetails}><strong>{offer.displayName}{index === 0 ? <em>Empfohlen</em> : null}</strong><small className={styles.offerPrice}>{offer.price ? `${offer.price.qualifier === "from" ? "ab " : ""}${formatMoney(offer.price.amountMinor, offer.price.currency)}` : "Preis im Shop prüfen"}</small>
                       {offer.capacityCards ? <small>{offer.pocketsPerPage ? `${offer.pocketsPerPage}-Pocket · ` : ""}Platz für bis zu {offer.capacityCards} Karten</small> : null}
-                      {offer.affiliateDisclosure ? <small>{offer.affiliateDisclosure}</small> : null}
-                      {destinationUrl ? <small>Verfügbarkeit und Versand im Shop prüfen.</small> : null}
+                      {offer.price ? <small>Preis geprüft am {formatDate(offer.price.sourceUpdatedAt)}</small> : null}
+                      {offer.affiliateDisclosure ? <small className={styles.affiliateDisclosure}>{offer.affiliateDisclosure}</small> : null}
                       {offer.status !== "available" ? <small>{offer.statusReason ?? "Angebot nicht verfügbar."}</small> : null}
                     </div>
                     {destinationUrl ? <a className={styles.offerAction} href={destinationUrl} target="_blank" rel="noopener noreferrer">{offer.kind === "personalized" ? "Binder personalisieren" : "Diesen Binder bestellen"} <ExternalLink aria-hidden="true" size={15} /></a> : <button type="button" className={styles.offerAction} disabled>Derzeit nicht verfügbar</button>}
                   </div>;
-                })}
+                })}</div> : null}
+                {recommendedBinderOffers?.length ? <p className={styles.offerNote}>Aktuellen Preis, Verfügbarkeit und Versand prüfst du im Shop.</p> : null}
               </div>
             </article>
-            <article className={styles.purchaseCard}>
+            <article className={`${styles.purchaseCard} ${styles.purchaseCardCompact}`}>
               <div><p className={styles.purchaseStep}>SCHRITT 2</p><h3>Kartenliste öffnen</h3><p>Wähle einen Anbieter und übernimm die vorbereitete Einkaufsliste.</p><a className={styles.howtoLink} href="/anleitung/cardmarket/" target="_blank" rel="noopener noreferrer">Anleitung mit Bildern <ExternalLink aria-hidden="true" size={14} /></a></div>
               <button type="button" className={styles.primaryButton} aria-label="Karten besorgen" onClick={onCardsPurchase}><ShoppingBag aria-hidden="true" size={18} /> Karten jetzt kaufen <ArrowRight aria-hidden="true" size={18} /></button>
             </article>
