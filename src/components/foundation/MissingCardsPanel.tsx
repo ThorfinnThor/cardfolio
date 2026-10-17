@@ -13,6 +13,7 @@ import { formatCollectorNumber } from "@/domain/catalog-search";
 import { groupMissingItemsBySet } from "@/domain/missing-items";
 import { missingItemReviewNote } from "@/domain/missing-items-export";
 import { cardmarketMinimumCondition, conditionProfile, conditionProfiles } from "@/domain/purchase-preferences";
+import { suggestMarketplaceRegion } from "@/domain/marketplace-region";
 import type { MarketplaceProductIdentityMapping } from "@/domain/marketplace-product-identity";
 import { ConditionGuide } from "./ConditionGuide";
 import { GiftPurchaseGuide } from "./GiftPurchaseGuide";
@@ -112,11 +113,18 @@ export function MissingCardsPanel({
 }: MissingCardsPanelProps) {
   const [query, setQuery] = useState("");
   const [cardmarketPartIndex, setCardmarketPartIndex] = useState(0);
-  // The beginner guide assumes the German-language audience buys in Europe; the region stays changeable.
-  const beginnerCardmarket = beginner && cardmarketEnabled;
-  const [marketplaceChoice, setMarketplaceChoice] = useState<MarketplaceChoice | undefined>(() => (beginnerCardmarket ? "cardmarket" : undefined));
-  const [marketplaceRegion, setMarketplaceRegion] = useState<MarketplaceRegion | undefined>(() => (beginnerCardmarket ? "europe" : undefined));
-  const [expertOpen, setExpertOpen] = useState(() => beginner && !cardmarketEnabled);
+  // The beginner guide starts with the provider that fits the browser language (a guess from the language
+  // setting only, no location is read); the region stays changeable. The guide itself exists for Cardmarket.
+  const [suggestedRegion] = useState<MarketplaceRegion | undefined>(() => beginner
+    ? suggestMarketplaceRegion(typeof navigator === "undefined" ? [] : navigator.languages?.length ? navigator.languages : [navigator.language])
+    : undefined);
+  const suggestedChoice: MarketplaceChoice | undefined = suggestedRegion === "europe" && cardmarketEnabled
+    ? "cardmarket"
+    : suggestedRegion === "north-america" && tcgplayerEnabled ? "tcgplayer" : undefined;
+  const beginnerCardmarket = beginner && suggestedChoice === "cardmarket";
+  const [marketplaceChoice, setMarketplaceChoice] = useState<MarketplaceChoice | undefined>(suggestedChoice);
+  const [marketplaceRegion, setMarketplaceRegion] = useState<MarketplaceRegion | undefined>(suggestedRegion);
+  const [expertOpen, setExpertOpen] = useState(() => beginner && suggestedChoice !== "cardmarket");
   const beginnerPrepared = useRef(false);
   const [showProviderChoices, setShowProviderChoices] = useState(false);
   const [cardmarketGuideStep, setCardmarketGuideStep] = useState<CardmarketGuideStep>(1);
@@ -292,7 +300,7 @@ export function MissingCardsPanel({
       {beginner && !expertOpen && marketplaceChoice === "cardmarket" ? (
         <div className={styles.providerRecommendation} role="status">
           <Check aria-hidden="true" size={19} />
-          <span><strong>Du kaufst bei Cardmarket</strong><small>Für Europa und UK ist das normalerweise der einfachste Start.</small></span>
+          <span><strong>Du kaufst bei Cardmarket</strong><small>Nach deiner Browser-Sprache gewählt – für Europa und UK normalerweise der einfachste Start.</small></span>
           <button type="button" onClick={() => setExpertOpen(true)}>Anderer Wohnort oder Anbieter?</button>
         </div>
       ) : null}

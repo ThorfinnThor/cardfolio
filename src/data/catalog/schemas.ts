@@ -22,8 +22,9 @@ export const tcgdexCardSchema = z.object({
   category: z.string().nullish(),
   level: z.string().nullish(),
   suffix: z.string().nullish(),
-  abilities: z.array(z.object({ name: z.string().min(1) })).nullish(),
-  attacks: z.array(z.object({ name: z.string().min(1) })).nullish(),
+  // Some cards list an ability or attack without a name; that must not make the whole card unreadable.
+  abilities: z.array(z.object({ name: z.string().nullish() })).nullish(),
+  attacks: z.array(z.object({ name: z.string().nullish() })).nullish(),
   pricing: z.unknown().optional(),
   variants: z
     .object({

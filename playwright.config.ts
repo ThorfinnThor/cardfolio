@@ -7,6 +7,8 @@ export default defineConfig({
   reporter: "list",
   use: {
     baseURL: "http://127.0.0.1:4173",
+    // The interface is German; the purchase guide picks its first provider from the browser language.
+    locale: "de-DE",
     trace: "on-first-retry",
   },
   webServer: {

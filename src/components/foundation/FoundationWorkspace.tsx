@@ -67,6 +67,7 @@ import { persistPageSelection, persistPageSelectionUndo, persistReversiblePageSe
 import { catalogLabel, coverLeather } from "./binder-cover";
 import { BinderOverview } from "./BinderOverview";
 import { GiftBuilderPanel } from "./GiftBuilderPanel";
+import { clearGiftResume, readGiftResume } from "./gift-resume";
 import { SetBinderWizard } from "./SetBinderWizard";
 import { BinderGrid } from "./BinderGrid";
 import { CardArtwork } from "./CardArtwork";
@@ -487,6 +488,9 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
   const [catalogSelection, setCatalogSelection] = useState<CatalogSearchItem[]>([]);
   const [celebratedEntryId, setCelebratedEntryId] = useState<string>();
 
+  // While a gift is being planned or bought the sidebar and collector toolbar are out of the way, so the
+  // binder gets the full width. Collectors keep the normal layout everywhere else.
+  const giftChrome = giftShell || giftBuilderOpen || (missingOpen && missingBeginner);
   const activeBinder = binders.find((binder) => binder.id === activeId);
   const workspaceView: WorkspaceHistoryView = !activeBinder || binderManagerOpen
     ? setBinderWizardOpen
@@ -1884,8 +1888,8 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
     .map((entry) => ({ entry, card: cards.get(entry.cardKey) }));
 
   return (
-    <div className={styles.appShell} data-design={PRODUCT_DESIGN} data-shell={shell}>
-      {giftShell ? null : <aside className={styles.sidebar} aria-label="Cardfolio Navigation">
+    <div className={styles.appShell} data-design={PRODUCT_DESIGN} data-shell={giftChrome ? "gift" : "full"}>
+      {giftChrome ? null : <aside className={styles.sidebar} aria-label="Cardfolio Navigation">
         <button type="button" className={styles.brand} onClick={() => setBinderManagerOpen(true)}>
           <span className={styles.brandMark} aria-hidden="true"><i /><i /></span>
           <span className={styles.brandText}>Cardfolio<small>Wunschbinder · lokal</small></span>
@@ -1920,14 +1924,16 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
       </aside>}
 
       <div className={styles.mainColumn}>
-        {giftShell ? <header className={styles.giftBar}>
+        {giftChrome ? <header className={styles.giftBar}>
           <button type="button" className={styles.giftBrand} onClick={() => { setSetBinderWizardOpen(false); setMissingOpen(false); setGiftBuilderOpen(false); setBinderManagerOpen(true); }} aria-label="Cardfolio – zur Geschenk-Startseite">
             <span className={styles.brandMark} aria-hidden="true"><i /><i /></span>
             <span>Cardfolio</span>
           </button>
           <div className={styles.giftBarActions}>
             <ThemeToggle className={styles.themeToggle} />
-            <Link className={styles.giftBarLink} href="/">Ich sammle selbst</Link>
+            {giftShell
+              ? <Link className={styles.giftBarLink} href="/">Ich sammle selbst</Link>
+              : <button type="button" className={styles.giftBarLink} onClick={() => { setSetBinderWizardOpen(false); setMissingOpen(false); setMissingBeginner(false); setGiftBuilderOpen(false); setBinderManagerOpen(true); }}>Meine Binder</button>}
           </div>
         </header> : <header className={styles.topbar}>
           <button type="button" className={styles.mobileMenu} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }} aria-label="Binderverwaltung öffnen"><Menu size={19} /></button>
@@ -1998,9 +2004,9 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
             onRequestDelete={setBinderToDelete}
             onExport={exportBackup}
             onImport={importBackup}
-            onGiftStart={() => { setGiftDiscoveryMode("pokemon"); setGiftSubjectQuery("Pikachu"); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
-            onGiftExampleStart={(subjectQuery) => { setGiftDiscoveryMode("pokemon"); setGiftSubjectQuery(subjectQuery); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
-            onThemeStart={() => { setGiftDiscoveryMode("theme"); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
+            onGiftStart={() => { clearGiftResume(); setGiftDiscoveryMode("pokemon"); setGiftSubjectQuery("Pikachu"); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
+            onGiftExampleStart={(subjectQuery) => { clearGiftResume(); setGiftDiscoveryMode("pokemon"); setGiftSubjectQuery(subjectQuery); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
+            onThemeStart={() => { clearGiftResume(); setGiftDiscoveryMode("theme"); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
             onSetStart={() => { setSetBinderWizardOpen(true); setGiftBuilderOpen(false); setBinderManagerOpen(true); setMissingOpen(false); }}
             giftOnly={giftShell}
           />
@@ -2215,7 +2221,15 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
               onTextExport={(items) => downloadMissingExport(items, "text")}
               onCsvExport={(items) => downloadMissingExport(items, "csv")}
               onConditionsChange={(items, condition) => void changeMissingConditions(items, condition)}
-              onClose={() => setMissingOpen(false)}
+              onClose={() => {
+                setMissingOpen(false);
+                // Back from the purchase view to the finished plan instead of to the binder editor.
+                if (missingBeginner && readGiftResume()) {
+                  setMissingBeginner(false);
+                  setGiftBuilderOpen(true);
+                  setBinderManagerOpen(true);
+                }
+              }}
               tcgplayerEnabled={FEATURES.tcgplayerTextExport}
               tcgplayerCopyState={tcgplayerCopyState}
               onTcgplayerCopy={copyTcgplayerExport}

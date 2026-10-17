@@ -173,10 +173,20 @@ function diverseOrder(candidates: GiftCardCandidate[]): GiftCardCandidate[] {
   return result;
 }
 
+/**
+ * With a spending target the proposal aims at the budget instead of at the cheapest cards: each pick is the
+ * card closest to, but not above, an even share of what is still available per remaining slot.
+ */
+function shareDistance(candidate: GiftCardCandidate, share: number): number {
+  const price = candidate.price.amountMinor ?? Number.MAX_SAFE_INTEGER;
+  return price <= share ? share - price : 1_000_000_000 + (price - share);
+}
+
 function diverseSelectionWithinBudget(
   candidates: GiftCardCandidate[],
   target: number,
   ceiling: number,
+  spendBudget = false,
 ): GiftCardCandidate[] {
   const remaining = [...candidates];
   const selected: GiftCardCandidate[] = [];
@@ -184,6 +194,7 @@ function diverseSelectionWithinBudget(
   const yearCounts = new Map<number, number>();
   let total = 0;
   while (selected.length < target) {
+    const share = Math.floor((ceiling - total) / (target - selected.length));
     const ranked = [...remaining].sort((left, right) =>
       Number(!giftCandidateHasArtwork(left)) - Number(!giftCandidateHasArtwork(right))
       || Number(!giftCandidateHasPrice(left)) - Number(!giftCandidateHasPrice(right))
@@ -191,6 +202,7 @@ function diverseSelectionWithinBudget(
       || (setCounts.get(left.card.setId) ?? 0) - (setCounts.get(right.card.setId) ?? 0)
       || (left.releaseYear === undefined ? 1 : yearCounts.get(left.releaseYear) ?? 0)
         - (right.releaseYear === undefined ? 1 : yearCounts.get(right.releaseYear) ?? 0)
+      || (spendBudget ? shareDistance(left, share) - shareDistance(right, share) : 0)
       || stableCandidateOrder(left, right));
     const slotsAfterThis = target - selected.length - 1;
     const next = ranked.find((candidate) => {
@@ -220,7 +232,14 @@ function withReasonTags(candidate: GiftCardCandidate, selected: GiftCardCandidat
   return { ...candidate, reasonTags: [...tags].sort() };
 }
 
+export interface GiftSelectionEngineOptions {
+  /** Aim at the budget (nicer, pricier cards) instead of the cheapest diverse cards. Never exceeds the ceiling. */
+  spendBudget?: boolean;
+}
+
 export class DeterministicGiftSelectionEngine implements GiftSelectionEngine {
+  constructor(private readonly options: GiftSelectionEngineOptions = {}) {}
+
   select({ candidates, preferences }: GiftSelectionRequest): GiftSelectionResult {
     assertGiftPreferences(preferences);
     const issues = new Set<GiftSelectionIssue>();
@@ -257,7 +276,7 @@ export class DeterministicGiftSelectionEngine implements GiftSelectionEngine {
     if (priced.length >= target && cheapestTotal <= ceiling) {
       // Price estimates may guide the proposal even when they are not strong
       // enough for a checkout guarantee. The UI keeps that distinction clear.
-      selectedPool = diverseSelectionWithinBudget(priced, target, ceiling);
+      selectedPool = diverseSelectionWithinBudget(priced, target, ceiling, this.options.spendBudget === true);
     } else if (priced.length >= target) {
       selectedPool = diverseOrder(cheapestTarget);
       issues.add("budget-impossible");

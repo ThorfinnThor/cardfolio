@@ -1,5 +1,7 @@
 import type { TCGdexGiftCardDetail } from "@/data/catalog/tcgdex";
 import { openCardfolioDB, type GiftCandidateCacheRecord } from "@/data/persistence/db";
+import { eraOfSetId, type GiftEra } from "@/domain/gift-era";
+import { matchesGiftSubject } from "@/domain/gift-subject";
 import type {
   GiftCardCandidate,
   GiftCurrency,
@@ -35,6 +37,15 @@ export interface GiftCandidateHydrationOptions {
 }
 
 const DEFAULT_CACHE_TTL_MS = 24 * 60 * 60 * 1_000;
+/** Upper bound for how many catalogue briefs are scanned for one Pokémon (briefs are cheap, details are not). */
+const MAX_SCAN = 480;
+const MAX_SCAN_PAGES = 20;
+
+/** Picks `count` items spread evenly over the list, so a sample covers every era and set instead of the first sets only. */
+export function spreadSample<T>(items: readonly T[], count: number): T[] {
+  if (items.length <= count) return [...items];
+  return Array.from({ length: count }, (_, index) => items[Math.floor((index * items.length) / count)]);
+}
 const GIFT_CANDIDATE_CACHE_VERSION = 2;
 
 function abortReason(signal?: AbortSignal): unknown {
@@ -87,24 +98,50 @@ export class GiftCandidateLoader {
     return { ...result, page: input.page };
   }
 
-  /** Loads a bounded pool of lightweight briefs. It never hydrates details. */
+  /** Reads catalogue briefs page by page up to `limit`. The catalogue adapter may remove a complete Pocket-only API page, so empty physical pages are skipped, within an explicit request bound. */
+  private async gatherBriefs(input: { subjectQuery: string; language: CardLanguage; pageSize?: number }, limit: number, signal?: AbortSignal): Promise<{ items: CatalogSearchItem[]; complete: boolean }> {
+    const pageSize = Math.min(input.pageSize ?? 24, limit);
+    const items: CatalogSearchItem[] = [];
+    let complete = false;
+    for (let page = 1; items.length < limit && page <= MAX_SCAN_PAGES; page += 1) {
+      const result = await this.loadSubjectPage({ ...input, page, pageSize }, signal);
+      items.push(...result.items.slice(0, limit - items.length));
+      if (!result.hasMore) {
+        complete = true;
+        break;
+      }
+    }
+    return { items, complete };
+  }
+
+  /**
+   * Loads a bounded pool of lightweight briefs. It never hydrates details.
+   * With `scan` the catalogue is read more widely, only briefs whose name is the Pokémon itself are kept,
+   * and `maximum` of them are sampled evenly across the whole list.
+   */
   async loadCandidatePool(input: {
     subjectQuery: string;
     language: CardLanguage;
     maximum?: number;
     pageSize?: number;
+    scan?: number;
+    /** Lean the sample towards cards of this era (judged from the set id); the release year decides later. */
+    era?: GiftEra;
   }, signal?: AbortSignal): Promise<CatalogSearchItem[]> {
     const maximum = Math.min(Math.max(input.maximum ?? 60, 1), 80);
-    const pageSize = Math.min(input.pageSize ?? 24, maximum);
-    const items: CatalogSearchItem[] = [];
-    // The catalog adapter may remove a complete Pocket-only API page. Continue
-    // across empty physical pages, but keep an explicit upper request bound.
-    for (let page = 1; items.length < maximum && page <= 20; page += 1) {
-      const result = await this.loadSubjectPage({ ...input, page, pageSize }, signal);
-      items.push(...result.items.slice(0, maximum - items.length));
-      if (!result.hasMore) break;
-    }
-    return items;
+    if (input.scan === undefined) return (await this.gatherBriefs(input, maximum, signal)).items;
+    const scan = Math.min(Math.max(input.scan, maximum), MAX_SCAN);
+    const { items } = await this.gatherBriefs(input, scan, signal);
+    const relevant = items.filter((item) => matchesGiftSubject({ name: item.name }, input.subjectQuery));
+    const ofEra = input.era ? relevant.filter((item) => eraOfSetId(item.setId) === input.era) : relevant;
+    const basis = input.era && ofEra.length >= 9 ? ofEra : relevant.length >= maximum ? relevant : items;
+    return spreadSample(basis, maximum);
+  }
+
+  /** How many cards exist for the Pokémon (whole-word name match). `capped` means more than the scan limit. */
+  async countSubjectCards(input: { subjectQuery: string; language: CardLanguage }, signal?: AbortSignal): Promise<{ count: number; capped: boolean }> {
+    const { items, complete } = await this.gatherBriefs(input, MAX_SCAN, signal);
+    return { count: items.filter((item) => matchesGiftSubject({ name: item.name }, input.subjectQuery)).length, capped: !complete };
   }
 
   /** Hydrates only the explicitly supplied visible/shortlisted briefs. */
@@ -116,6 +153,7 @@ export class GiftCandidateLoader {
     const concurrency = Math.min(Math.max(options.concurrency ?? 4, 1), 8);
     const ttl = options.cacheTtlMs ?? DEFAULT_CACHE_TTL_MS;
     const results = new Array<GiftCardCandidate | undefined>(items.length);
+    const failures: unknown[] = [];
     let cursor = 0;
     const worker = async () => {
       while (cursor < items.length) {
@@ -123,38 +161,47 @@ export class GiftCandidateLoader {
         const index = cursor;
         cursor += 1;
         const brief = items[index];
-        const key = `gift-candidate-v${GIFT_CANDIDATE_CACHE_VERSION}:tcgdex:${brief.ref.id}:${brief.ref.language}`;
-        const cached = await cachedDetail(key);
-        let detail: TCGdexGiftCardDetail;
-        if (cached) {
-          detail = { card: cached.card, rawPricing: cached.rawPricing, releaseYear: cached.releaseYear };
-        } else if (this.catalog.getGiftCardDetail) {
-          detail = await this.catalog.getGiftCardDetail(brief.ref, signal);
-          await storeDetail(key, detail, ttl);
-        } else {
-          detail = { card: await this.catalog.getCard(brief.ref, signal), rawPricing: undefined };
+        try {
+          const key = `gift-candidate-v${GIFT_CANDIDATE_CACHE_VERSION}:tcgdex:${brief.ref.id}:${brief.ref.language}`;
+          const cached = await cachedDetail(key);
+          let detail: TCGdexGiftCardDetail;
+          if (cached) {
+            detail = { card: cached.card, rawPricing: cached.rawPricing, releaseYear: cached.releaseYear };
+          } else if (this.catalog.getGiftCardDetail) {
+            detail = await this.catalog.getGiftCardDetail(brief.ref, signal);
+            await storeDetail(key, detail, ttl);
+          } else {
+            detail = { card: await this.catalog.getCard(brief.ref, signal), rawPricing: undefined };
+          }
+          if (detail.card.physicalStatus === "digital") continue;
+          const variant = options.variantFor(detail.card);
+          const price = await this.prices.getPrice({
+            card: detail.card,
+            variant,
+            currency: options.currency,
+            rawPricing: detail.rawPricing,
+            fetchedAt: detail.card.fetchedAt,
+            printingMatch: options.printingMatch?.(detail.card) ?? "candidate",
+          }, signal);
+          results[index] = {
+            card: detail.card,
+            variant,
+            preferences: options.preferences ?? { minimumCondition: "any" },
+            releaseYear: detail.releaseYear,
+            price,
+            reasonTags: [],
+          };
+        } catch (error) {
+          // A single card the catalogue cannot deliver must not stop the whole proposal; a stop request still does.
+          if (signal?.aborted) throw error;
+          failures.push(error);
         }
-        if (detail.card.physicalStatus === "digital") continue;
-        const variant = options.variantFor(detail.card);
-        const price = await this.prices.getPrice({
-          card: detail.card,
-          variant,
-          currency: options.currency,
-          rawPricing: detail.rawPricing,
-          fetchedAt: detail.card.fetchedAt,
-          printingMatch: options.printingMatch?.(detail.card) ?? "candidate",
-        }, signal);
-        results[index] = {
-          card: detail.card,
-          variant,
-          preferences: options.preferences ?? { minimumCondition: "any" },
-          releaseYear: detail.releaseYear,
-          price,
-          reasonTags: [],
-        };
       }
     };
     await Promise.all(Array.from({ length: Math.min(concurrency, items.length) }, () => worker()));
-    return results.filter((candidate): candidate is GiftCardCandidate => candidate !== undefined);
+    const candidates = results.filter((candidate): candidate is GiftCardCandidate => candidate !== undefined);
+    // Only when nothing at all could be loaded is the failure worth showing.
+    if (candidates.length === 0 && failures.length > 0) throw failures[0];
+    return candidates;
   }
 }

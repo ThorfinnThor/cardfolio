@@ -44,6 +44,25 @@ describe("TCGdexCatalogAdapter", () => {
     });
   });
 
+  it("reads a card whose ability or attack has no name and leaves that entry out", async () => {
+    vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        id: "swshp-1",
+        localId: "001",
+        name: "Pikachu",
+        category: "Pokemon",
+        abilities: [{ type: "Poke-BODY" }, { name: "Static" }],
+        attacks: [{ name: "Thunder Jolt" }, { damage: 30 }, { name: null }],
+        set: { id: "swshp", name: "Promos" },
+      })))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ id: "swshp", name: "Promos", serie: { id: "swsh", name: "Sword & Shield" } })));
+
+    const card = await new TCGdexCatalogAdapter().getCard({ provider: "tcgdex", id: "swshp-1", language: "en" });
+
+    expect(card.attacks).toEqual(["Thunder Jolt"]);
+    expect(card.abilities).toEqual(["Static"]);
+  });
+
   it("passes set browsing and pagination to TCGdex", async () => {
     const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(JSON.stringify([])));
     const adapter = new TCGdexCatalogAdapter();
