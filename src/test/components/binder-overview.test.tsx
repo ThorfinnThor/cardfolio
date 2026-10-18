@@ -28,14 +28,14 @@ describe("BinderOverview", () => {
   it("starts with the gift action and shows the short creation path", () => {
     render(<BinderOverview {...props()} />);
 
-    expect(screen.getByRole("heading", { name: /Pokémon-Binder als persönliches Geschenk/ })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Binder voller Karten vom Lieblings-Pokémon/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Geschenk-Binder gestalten" })).toBeInTheDocument();
     expect(screen.getByRole("list", { name: "So entsteht dein Geschenk-Binder" }).children).toHaveLength(3);
     expect(screen.getByRole("heading", { name: "So kann eine fertige Binder-Seite aussehen." })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Mit Glurak starten" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Mit Pikachu starten" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Mit Evoli starten" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /Passende Karten gezielt und transparent vergleichen/ })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Gekauft wird beim Marktplatz/ })).toBeInTheDocument();
     expect(screen.queryByText("Gesamtsammlung")).not.toBeInTheDocument();
   });
 

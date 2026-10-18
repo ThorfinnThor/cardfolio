@@ -88,7 +88,7 @@
 .status[data-status="error"] > span { background: var(--cf-miss); box-shadow: 0 0 0 3px var(--cf-miss-soft); }
 
 /* Header */
-.eyebrow { margin: 0; color: var(--cf-accent-text) !important; font-family: var(--cf-font-mono); font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+.eyebrow { margin: 0; color: var(--cf-accent-text) !important; font-size: 13px; font-weight: 700; }
 .binderHeader { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 20px; }
 .binderBreadcrumb { display: flex; align-items: center; gap: 9px; margin: 0 0 10px !important; color: var(--cf-muted) !important; font-size: 12px; }
 .catalogTag { border: 1px solid var(--cf-line2); border-radius: 4px; background: var(--cf-surface); color: var(--cf-text2); padding: 2px 6px; font-family: var(--cf-font-mono); font-size: 10px; font-weight: 600; letter-spacing: .08em; }

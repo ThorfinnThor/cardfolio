@@ -1,7 +1,7 @@
 .panel { display: grid; gap: 28px; }
 .header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
-.eyebrow { display: flex; align-items: center; gap: 7px; margin: 0; color: var(--cf-accent-text); font-family: var(--cf-font-mono); font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-.header h1 { scroll-margin-top: 112px; max-width: 850px; margin: 12px 0 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(2rem, 3.4vw, 3rem); font-weight: 600; letter-spacing: -.035em; line-height: 1.08; text-wrap: balance; }
+.eyebrow { display: flex; align-items: center; gap: 7px; margin: 0; color: var(--cf-accent-text); font-size: 13px; font-weight: 700; }
+.header h1 { scroll-margin-top: 112px; max-width: 850px; margin: 12px 0 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(1.7rem, 2.9vw, 2.5rem); font-weight: 600; letter-spacing: -.035em; line-height: 1.08; text-wrap: balance; }
 .intro { max-width: 720px; margin: 14px 0 0; color: var(--cf-text2); font-size: clamp(1rem, 1.3vw, 1.15rem); line-height: 1.5; }
 .closeButton { display: inline-grid; width: 44px; height: 44px; flex: 0 0 auto; place-items: center; border: 1px solid var(--cf-line2); border-radius: 7px; background: var(--cf-field); color: var(--cf-text2); cursor: pointer; }
 .closeButton:hover { border-color: var(--cf-accent); color: var(--cf-accent-text); }
@@ -122,7 +122,9 @@
 .summaryHeader > p:last-child { margin: 0; color: var(--cf-muted); font-size: 13px; }
 .greetingPreview { margin: 0; border-left: 3px solid var(--cf-accent); color: var(--cf-text2); padding: 8px 12px; font-size: 14px; white-space: pre-wrap; overflow-wrap: anywhere; }
 .summaryDisclosure { margin: 0; color: var(--cf-muted); font-size: 11px; line-height: 1.55; }
-.summaryCards { display: grid; gap: 8px; }
+.summaryCards { display: grid; gap: 12px; }
+.summaryCards > summary { width: fit-content; color: var(--cf-accent-text); font-size: 15px; font-weight: 700; cursor: pointer; }
+.summaryCards[open] > summary { margin-bottom: 12px; }
 .summaryCards h3, .purchaseCard h3 { margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: 16px; font-weight: 600; }
 .summaryCardIdentity { display: grid; gap: 3px; min-width: 0; }
 .summaryCardIdentity strong { color: var(--cf-text); font-size: 13px; font-weight: 650; }
@@ -130,17 +132,14 @@
 .greetingField { display: grid; gap: 9px; color: var(--cf-text2); font-size: 16px; font-weight: 700; }
 .greetingField span { color: var(--cf-muted); font-size: 13px; font-weight: 500; }
 .greetingField textarea { width: 100%; resize: vertical; border: 1px solid var(--cf-line2); border-radius: 7px; background: var(--cf-field); color: var(--cf-text); padding: 13px; font: inherit; font-size: 16px; }
-.purchaseFlowIntro { display: grid; gap: 8px; border-left: 4px solid var(--cf-accent); background: var(--cf-accent-soft); padding: 20px 22px; }
-.purchaseFlowIntro h3 { margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: 28px; font-weight: 650; line-height: 1.2; }
-.purchaseFlowIntro > p:last-child { max-width: 760px; margin: 0; color: var(--cf-text2); font-size: 16px; line-height: 1.5; }
 .purchaseOptions { display: grid; gap: 16px; }
-.purchaseCard { display: flex; flex-direction: column; justify-content: space-between; gap: 22px; min-width: 0; border: 1px solid var(--cf-line); border-radius: 11px; background: var(--cf-surface); padding: 22px; }
-.purchaseCardFeatured { border: 2px solid var(--cf-accent); background: var(--cf-accent-soft); box-shadow: 0 12px 26px -22px var(--cf-sh-deep); }
+.purchaseCard { display: flex; flex-direction: column; justify-content: space-between; gap: 22px; min-width: 0; border: 0; border-top: 1px solid var(--cf-line); background: transparent; padding: 26px 0 0; }
+.purchaseCardFeatured { border-top: 0; padding-top: 0; }
+.purchaseNumber { display: inline-grid; width: 36px; height: 36px; margin-right: 10px; place-items: center; border-radius: 50%; background: var(--cf-accent); color: var(--cf-on-accent); font-size: 16px; font-weight: 800; vertical-align: 2px; }
 .purchaseCard > div { display: grid; align-content: start; gap: 8px; }
 .purchaseCard h3 { font-size: 24px; line-height: 1.2; }
 .purchaseCard > div > p:not(.eyebrow) { margin: 0; color: var(--cf-text2); font-size: 16px; line-height: 1.5; }
 .howtoLink { display: inline-flex; align-items: center; gap: 6px; width: fit-content; min-height: 44px; color: var(--cf-accent-text); font-weight: 700; text-underline-offset: 3px; }
-.purchaseStep { margin: 0; color: var(--cf-accent-text); font-family: var(--cf-font-mono); font-size: 12px; font-weight: 800; letter-spacing: .11em; }
 .purchaseCard > .primaryButton { align-self: stretch; min-height: 62px; font-size: 17px; }
 .binderMatch { display: flex; align-items: flex-start; gap: 9px; margin: 2px 0 !important; border: 1px solid color-mix(in srgb, var(--cf-ok) 36%, var(--cf-line)); border-radius: 8px; background: var(--cf-ok-soft); color: var(--cf-text2) !important; padding: 10px 11px; }
 .binderMatch > svg { flex: 0 0 auto; margin-top: 2px; color: var(--cf-ok); }
@@ -201,8 +200,9 @@
 .tileFlag { position: absolute; top: clamp(8px, 1.8vw, 16px); right: clamp(8px, 1.8vw, 16px); max-width: 62%; overflow: hidden; border: 1px solid var(--cf-line2); border-radius: 999px; background: var(--cf-surface); color: var(--cf-text2); padding: 3px 7px; font-size: 10px; font-weight: 800; text-overflow: ellipsis; white-space: nowrap; box-shadow: 0 1px 4px rgb(0 0 0 / 18%); pointer-events: none; }
 .tileFlag[data-kind="invalid"] { border-color: var(--cf-miss); background: var(--cf-miss-soft); color: var(--cf-miss-text); }
 .binderWrap { display: grid; justify-items: center; gap: 14px; }
-.binder { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); width: 100%; max-width: 760px; padding: clamp(14px, 2.4vw, 28px); border-radius: 18px; background: radial-gradient(120% 90% at 20% 0%, #5b4129 0%, #3b2918 55%, #2a1c10 100%); box-shadow: 0 30px 50px -28px rgb(0 0 0 / 60%), inset 0 0 0 2px rgb(255 255 255 / 6%), inset 0 -6px 14px rgb(0 0 0 / 35%); }
-.binder::before { position: absolute; inset: 7px; border: 2px dashed rgb(230 200 140 / 38%); border-radius: 13px; content: ""; pointer-events: none; }
+.binder { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); width: 100%; max-width: 760px; padding: clamp(14px, 2.4vw, 28px); border-radius: 18px; background: radial-gradient(120% 90% at 20% 0%, #3552b8 0%, #243a8c 55%, #182866 100%); box-shadow: 0 30px 50px -28px rgb(0 0 0 / 60%), inset 0 0 0 2px rgb(255 255 255 / 6%), inset 0 -6px 14px rgb(0 0 0 / 35%); }
+.binder::before { position: absolute; inset: 7px; border: 2px dashed rgb(255 214 110 / 55%); border-radius: 13px; content: ""; pointer-events: none; }
+.binder[data-spread="single"] { max-width: 560px; }
 .binder[data-spread="double"] { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 1180px; }
 .binderRings { position: absolute; top: 9%; bottom: 9%; left: 50%; z-index: 3; display: flex; flex-direction: column; justify-content: space-around; transform: translateX(-50%); pointer-events: none; }
 .binderRings i { display: block; width: 38px; height: 13px; border-radius: 8px; background: linear-gradient(180deg, #f3f3f3, #9b9b9b 55%, #d2d2d2); box-shadow: 0 2px 4px rgb(0 0 0 / 55%); }
@@ -222,7 +222,7 @@
 .pocket .tileIndex, .pocket .tileFlag { z-index: 2; }
 .pocketPrice { position: absolute; right: 0; bottom: 0; left: 0; z-index: 2; background: rgb(20 24 32 / 76%); color: #fff; padding: 2px 4px; font-family: var(--cf-font-mono); font-size: clamp(9px, 1.1vw, 11px); font-weight: 700; text-align: center; pointer-events: none; }
 .pocketEmpty { aspect-ratio: 5 / 7; border-radius: 5px; background: rgb(0 0 0 / 5%); box-shadow: inset 0 0 0 1px rgb(0 0 0 / 10%); }
-.innerCover { display: grid; place-items: center; border-radius: 8px 0 0 8px; background: radial-gradient(100% 80% at 30% 20%, #5a4029, #3a2918); color: rgb(230 200 140 / 55%); font-family: var(--cf-font-display); font-size: clamp(1.2rem, 2.4vw, 1.9rem); letter-spacing: .1em; box-shadow: inset -16px 0 18px -16px rgb(0 0 0 / 60%); }
+.innerCover { display: grid; place-items: center; border-radius: 8px 0 0 8px; background: radial-gradient(100% 80% at 30% 20%, #3552b8, #1f3380); color: rgb(255 214 110 / 70%); font-family: var(--cf-font-display); font-size: clamp(1.2rem, 2.4vw, 1.9rem); letter-spacing: .1em; box-shadow: inset -16px 0 18px -16px rgb(0 0 0 / 60%); }
 .blankPage { border-radius: 0 8px 8px 0; background: var(--cf-page); opacity: .85; box-shadow: inset 16px 0 18px -16px rgb(0 0 0 / 38%); }
 .dragGhost { width: 110px; transform: rotate(4deg); overflow: hidden; border-radius: 6px; box-shadow: 0 14px 24px rgb(0 0 0 / 45%); }
 .flip { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; }
@@ -330,7 +330,7 @@
   .printSummary, .printSummary * { visibility: visible !important; }
   .printSummary { position: absolute; inset: 0; width: 100%; border: 0; background: #fff; color: #111; padding: 0; }
   .printSummary :global(*) { box-shadow: none !important; }
-  .greetingField, .purchaseFlowIntro, .purchaseOptions, .summaryActions, .header, .progressLine, .printSummary .localHint, .summaryCardImage, .summaryCardImageFallback { display: none !important; }
+  .greetingField, .purchaseOptions, .summaryActions, .header, .progressLine, .printSummary .localHint, .summaryCardImage, .summaryCardImageFallback { display: none !important; }
   .summaryCards ol { grid-template-columns: 1fr; }
   .screenOnly { display: none !important; }
   .printOnly { display: inline !important; }

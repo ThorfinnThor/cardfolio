@@ -69,9 +69,8 @@ export function BinderOverview({
 
       {startMode === "gift" ? <><div className={styles.giftHero} id="start-panel" role={showStartTabs ? "tabpanel" : undefined} aria-labelledby={showStartTabs ? "start-tab-gift" : undefined} data-has-binders={binders.length > 0}>
         <div className={styles.giftHeroCopy}>
-          <span className={styles.eyebrow}>Ein Geschenk, das persönlich wird</span>
-          <h1 id="binder-heading">Ein Pokémon-Binder als persönliches Geschenk.</h1>
-          <p>Wähle ein Lieblings-Pokémon oder Bildmotiv. Wir schlagen passende Karten vor und führen dich bis zur Einkaufsliste.</p>
+          <h1 id="binder-heading">Ein Binder voller Karten vom Lieblings-Pokémon.</h1>
+          <p>Such das Pokémon aus. Wir stellen neun passende Karten zu einer Binder-Seite zusammen und zeigen dir, wo du sie kaufst.</p>
           <button type="button" className={styles.heroButton} onClick={() => onGiftStart?.()} disabled={binders.length >= MAX_BINDERS}>
             <Gift aria-hidden="true" size={22} /> Geschenk-Binder gestalten <ArrowRight aria-hidden="true" size={21} />
           </button>
@@ -92,7 +91,6 @@ export function BinderOverview({
 
       {startMode === "gift" ? <section className={styles.exampleSection} aria-labelledby="gift-examples-heading">
         <div className={styles.sectionIntro}>
-          <span className={styles.eyebrow}>Drei Ideen für den Anfang</span>
           <h2 id="gift-examples-heading">So kann eine fertige Binder-Seite aussehen.</h2>
           <p>Wähle ein Beispiel. Im nächsten Schritt kannst du Sprache, Kartenanzahl und Budget noch ändern.</p>
         </div>
@@ -114,8 +112,7 @@ export function BinderOverview({
 
       {startMode === "gift" ? <section className={styles.marketplacePromise} aria-labelledby="marketplace-promise-heading">
         <div className={styles.promiseIntro}>
-          <span className={styles.eyebrow}>Gezielter einkaufen</span>
-          <h2 id="marketplace-promise-heading">Passende Karten gezielt und transparent vergleichen.</h2>
+          <h2 id="marketplace-promise-heading">Gekauft wird beim Marktplatz. Wir bereiten die Liste vor.</h2>
           <p>Cardfolio bereitet Karte, Set, Nummer, Sprache, Ausführung und Zustand vor. Cardmarket oder TCGplayer zeigen dir anschließend passende Angebote. Den Endpreis inklusive Versand bestätigst du erst dort.</p>
         </div>
         <ul className={styles.promiseList}>

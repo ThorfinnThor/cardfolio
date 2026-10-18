@@ -11,7 +11,7 @@ test("start screen has no horizontal overflow and keeps keyboard focus visible",
   for (const viewport of targetViewports) {
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
     await page.goto(`/?viewport=${viewport.name}`);
-    await expect(page.getByRole("heading", { name: "Ein Pokémon-Binder als persönliches Geschenk." })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Ein Binder voller Karten vom Lieblings-Pokémon." })).toBeVisible();
 
     const layout = await page.evaluate(() => ({
       viewportWidth: window.innerWidth,

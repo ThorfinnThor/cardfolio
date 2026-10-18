@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, Check, CircleAlert, Download, ExternalLink, Gift, LoaderCircle, Printer, RefreshCw, Search, ShoppingBag, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, CircleAlert, Download, ExternalLink, LoaderCircle, Printer, RefreshCw, Search, ShoppingBag, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import type { GiftCandidateLoader } from "@/data/gift/gift-candidate-loader";
@@ -229,6 +229,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
   const [partnerLoadError, setPartnerLoadError] = useState<string>();
   const [greeting, setGreeting] = useState(resumed?.greeting ?? "");
   const stepMounted = useRef(false);
+  const cardsDetails = useRef<HTMLDetailsElement>(null);
   // How many cards exist for the chosen Pokémon, so a size that cannot be met is not offered.
   const [availability, setAvailability] = useState<{ key: string; count: number; capped: boolean }>();
   const availabilityKey = `${preferences.preferredLanguage ?? "de"}:${pokemonQuery.trim().toLocaleLowerCase("de")}`;
@@ -299,6 +300,13 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     }
     document.getElementById("gift-builder-heading")?.scrollIntoView?.({ block: "start" });
   }, [step]);
+
+  // The printed list always shows every card, even when the list is folded on screen.
+  useEffect(() => {
+    const open = () => { if (cardsDetails.current) cardsDetails.current.open = true; };
+    window.addEventListener("beforeprint", open);
+    return () => window.removeEventListener("beforeprint", open);
+  }, []);
 
   useEffect(() => {
     if (step === "summary" && selection && giftProject) saveGiftResume({ selection, preferences, project: giftProject, greeting });
@@ -737,7 +745,6 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     <section className={styles.panel} aria-labelledby="gift-builder-heading">
       <div className={styles.header}>
         <div>
-          <p className={styles.eyebrow}><Gift aria-hidden="true" size={15} /> Persönliches Pokémon-Geschenk</p>
           <h1 id="gift-builder-heading">{STEP_GUIDANCE[step].title}</h1>
           <p className={styles.intro}>{STEP_GUIDANCE[step].text}</p>
         </div>
@@ -896,14 +903,9 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
 
       {step === "summary" && selection && giftProject && printSummary ? (
         <div className={styles.summaryStep}>
-          <div className={styles.purchaseFlowIntro} aria-labelledby="purchase-flow-heading">
-            <p className={styles.eyebrow}>NOCH ZWEI SCHRITTE</p>
-            <h3 id="purchase-flow-heading">Bestelle einen Binder und die Karten.</h3>
-            <p>Dein Plan ist gespeichert. Erledige beide Käufe nacheinander.</p>
-          </div>
-          <section className={styles.purchaseOptions} aria-label="Nächste Schritte: Binder und Karten kaufen">
+          <section className={styles.purchaseOptions} aria-label="Nächste Schritte: Binder bestellen und Karten kaufen">
             <article className={`${styles.purchaseCard} ${styles.purchaseCardFeatured}`}>
-              <div><p className={styles.purchaseStep}>SCHRITT 1</p><h3>Passenden Binder bestellen</h3><p>Dieser Binder passt zum 3×3-Seitenplan.</p>
+              <div><h3><span className={styles.purchaseNumber} aria-hidden="true">1</span> Binder bestellen</h3><p>Dieser Binder passt zum 3×3-Seitenplan.</p>
                 {partnerLoadError ? <p role="status">Angebote sind momentan nicht erreichbar. Du kannst den lokalen Binder weiter bearbeiten.</p> : null}
                 {!partnerLoadError && !binderOffers ? <p role="status">Binder-Angebote werden geprüft…</p> : null}
                 {!partnerLoadError && recommendedBinderOffers?.length === 0 ? <p role="status">Zurzeit ist kein geprüfter Binder-Shop verfügbar. Du kannst den lokalen Binder trotzdem weiter bearbeiten.</p> : null}
@@ -924,14 +926,13 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
               </div>
             </article>
             <article className={`${styles.purchaseCard} ${styles.purchaseCardCompact}`}>
-              <div><p className={styles.purchaseStep}>SCHRITT 2</p><h3>Kartenliste öffnen</h3><p>Wähle einen Anbieter und übernimm die vorbereitete Einkaufsliste.</p><a className={styles.howtoLink} href="/anleitung/cardmarket/" target="_blank" rel="noopener noreferrer">Anleitung mit Bildern <ExternalLink aria-hidden="true" size={14} /></a></div>
+              <div><h3><span className={styles.purchaseNumber} aria-hidden="true">2</span> Karten kaufen</h3><p>Wähle einen Anbieter und übernimm die vorbereitete Einkaufsliste.</p><a className={styles.howtoLink} href="/anleitung/cardmarket/" target="_blank" rel="noopener noreferrer">Anleitung mit Bildern <ExternalLink aria-hidden="true" size={14} /></a></div>
               <button type="button" className={styles.primaryButton} aria-label="Karten besorgen" onClick={onCardsPurchase}><ShoppingBag aria-hidden="true" size={18} /> Karten jetzt kaufen <ArrowRight aria-hidden="true" size={18} /></button>
             </article>
           </section>
 
           <article className={styles.printSummary} aria-labelledby="gift-summary-title">
             <header className={styles.summaryHeader}>
-              <p className={styles.eyebrow}><Check aria-hidden="true" size={15} /> Lokal angelegt</p>
               <h2 id="gift-summary-title">{printSummary.title}</h2>
               <p>{printSummary.recipientName ? `Für ${printSummary.recipientName} · ` : ""}{printSummary.subject} · {printSummary.cardCount} Karten</p>
             </header>
@@ -942,8 +943,8 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
               {pricingEnabled && printSummary.cardPurchase.unknownPriceCount > 0 ? <div><dt>Ohne Preis</dt><dd>{printSummary.cardPurchase.unknownPriceCount} {printSummary.cardPurchase.unknownPriceCount === 1 ? "Karte" : "Karten"}</dd></div> : null}
             </dl>
             <p className={styles.summaryDisclosure}>Karten und physischer Binder sind getrennte Käufe. {pricingEnabled ? "Die Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten." : "Für Karten wird derzeit kein Preis berechnet und keine Budgetzusage abgegeben."} Alle Geschenkangaben bleiben lokal in diesem Browser.</p>
-            <section className={styles.summaryCards} aria-labelledby="summary-cards-heading">
-              <h3 id="summary-cards-heading">Karten im Binder</h3>
+            <details className={styles.summaryCards} ref={cardsDetails}>
+              <summary id="summary-cards-heading">Alle {printSummary.cardCount} Karten ansehen</summary>
               <ol>{printSummary.cards.map((card, index) => {
                 const candidate = selection.selected[index];
                 const note = candidate ? plainVariantNote(candidate.variant) : undefined;
@@ -956,7 +957,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
                   </span>
                 </li>;
               })}</ol>
-            </section>
+            </details>
             <p className={styles.localHint}>Die Bildschirmansicht zeigt verfügbare Katalogbilder. Druckansicht und Textdatei enthalten nur Kartenangaben und keine Pokémon-Kartenbilder oder Logos. Persönliche Fotos werden nicht hochgeladen.</p>
           </article>
 
