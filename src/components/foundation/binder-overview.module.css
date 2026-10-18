@@ -12,7 +12,7 @@
 .giftHero[data-has-binders="true"] { min-height: 330px; }
 .giftHero[data-has-binders="true"] .giftHeroCopy h1 { font-size: clamp(1.9rem, 3.2vw, 3.1rem); }
 .giftHeroCopy { display: grid; justify-items: start; gap: 20px; max-width: 660px; }
-.giftHeroCopy h1 { margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(2rem, 3.55vw, 3.4rem); font-weight: 600; letter-spacing: -.045em; line-height: 1.08; text-wrap: balance; }
+.giftHeroCopy h1 { margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(1.65rem, 3vw, 2.8rem); font-weight: 600; letter-spacing: -.045em; line-height: 1.08; text-wrap: balance; }
 .giftHeroCopy > p { max-width: 55ch; margin: 0; color: var(--cf-text2); font-size: clamp(1rem, 1.35vw, 1.2rem); line-height: 1.55; }
 .heroButton { min-height: 64px; display: inline-flex; align-items: center; justify-content: center; gap: 12px; border: 1px solid var(--cf-accent); border-radius: 11px; background: var(--cf-accent); color: var(--cf-on-accent); padding: 14px 23px; font-size: clamp(1rem, 1.4vw, 1.16rem); font-weight: 750; cursor: pointer; box-shadow: 0 12px 20px -14px var(--cf-sh-deep); }
 .heroButton:hover:not(:disabled) { background: var(--cf-accent-deep); }
@@ -21,7 +21,7 @@
 .collectorLink { min-height: 44px; display: inline-flex; align-items: center; border: 0; background: transparent; color: var(--cf-accent-text); padding: 0; font: inherit; font-size: 14px; font-weight: 650; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
 .collectorLink:hover { color: var(--cf-accent-deep); }
 .giftHeroVisual { display: grid; justify-items: center; gap: 13px; transform: rotate(4deg); }
-.pageCaption { color: var(--cf-accent-text); font-family: var(--cf-font-mono); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.pageCaption { color: var(--cf-accent-text); font-size: 13px; font-weight: 700; }
 .samplePage { width: min(100%, 350px); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; border: 12px solid color-mix(in srgb, var(--cf-text) 80%, #000); border-radius: 15px; background: color-mix(in srgb, var(--cf-text) 82%, #000); padding: 11px; box-shadow: 0 23px 36px -21px var(--cf-sh-deep); }
 .exampleArtwork { position: relative; aspect-ratio: 63 / 88; overflow: hidden; border-radius: 4px; background: linear-gradient(145deg, var(--cf-surface2), var(--cf-accent-soft)); box-shadow: 0 2px 5px rgb(0 0 0 / 22%); }
 .exampleArtwork img { width: 100%; height: 100%; display: block; object-fit: cover; }
@@ -58,7 +58,7 @@
 .promiseList small { color: var(--cf-text2); font-size: 12px; line-height: 1.45; }
 .promiseNote { grid-column: 1 / -1; margin: -16px 0 0; border-top: 1px dashed var(--cf-line2); padding-top: 13px; color: var(--cf-muted); font-size: 11px; line-height: 1.5; }
 .startPanel { display: grid; justify-items: start; gap: 18px; min-height: 330px; align-content: center; border: 1px solid var(--cf-line); border-radius: 18px; background: radial-gradient(circle at 88% 22%, var(--cf-accent-soft), transparent 38%), var(--cf-surface); padding: clamp(28px, 5vw, 60px); }
-.startPanel h1 { max-width: 780px; margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(2rem, 3.55vw, 3.4rem); font-weight: 600; letter-spacing: -.045em; line-height: 1.08; text-wrap: balance; }
+.startPanel h1 { max-width: 780px; margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(1.65rem, 3vw, 2.8rem); font-weight: 600; letter-spacing: -.045em; line-height: 1.08; text-wrap: balance; }
 .startPanel > p { max-width: 62ch; margin: 0; color: var(--cf-text2); font-size: clamp(1rem, 1.3vw, 1.15rem); line-height: 1.55; }
 .createFormLarge { display: grid; width: min(100%, 760px); gap: 8px; }
 .createFormLarge > label { color: var(--cf-text); font-size: 13px; font-weight: 700; }
@@ -78,7 +78,7 @@
 .backupImport { width: fit-content; color: var(--cf-muted); }
 .collectionFooter button:hover, .backupImport:hover { text-decoration: underline; }
 .overviewHeader { position: relative; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
-.eyebrow, .sectionKicker, .slabLabel { display: block; color: var(--cf-accent-text); font-family: var(--cf-font-mono); font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+.eyebrow, .sectionKicker, .slabLabel { display: block; color: var(--cf-accent-text); font-size: 13px; font-weight: 700; }
 .overviewHeader h1 { margin: 8px 0 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(1.9rem, 3.6vw, 2.6rem); font-weight: 600; letter-spacing: -.02em; line-height: 1.05; }
 .overviewHeader p { margin: 8px 0 0; color: var(--cf-muted); font-size: 14px; }
 .headerActions { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }

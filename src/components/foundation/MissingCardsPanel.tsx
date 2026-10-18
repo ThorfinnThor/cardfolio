@@ -18,6 +18,7 @@ import type { MarketplaceProductIdentityMapping } from "@/domain/marketplace-pro
 import { ConditionGuide } from "./ConditionGuide";
 import { GiftPurchaseGuide } from "./GiftPurchaseGuide";
 import { GuidedFlow } from "./GuidedFlow";
+import { useStepHistory } from "./step-history";
 import { createTcgplayerMassEntryExport, type TcgplayerCardMapping, type TcgplayerMassEntryExport } from "@/domain/tcgplayer-export";
 import type { MissingItem, PurchasePreferences } from "@/domain/types";
 import { printingLabels, selectedPrinting } from "@/domain/variant-selection";
@@ -127,7 +128,8 @@ export function MissingCardsPanel({
   const [expertOpen, setExpertOpen] = useState(() => beginner && suggestedChoice !== "cardmarket");
   const beginnerPrepared = useRef(false);
   const [showProviderChoices, setShowProviderChoices] = useState(false);
-  const [cardmarketGuideStep, setCardmarketGuideStep] = useState<CardmarketGuideStep>(1);
+  const [cardmarketGuideStep, setCardmarketGuideStepDirect] = useState<CardmarketGuideStep>(1);
+  const setCardmarketGuideStep = useStepHistory("purchase-guide", cardmarketGuideStep, setCardmarketGuideStepDirect);
   const [loadedTcgplayerMappings, setLoadedTcgplayerMappings] = useState<readonly TcgplayerCardMapping[]>();
   const [tcgplayerMappingsError, setTcgplayerMappingsError] = useState<string>();
   const [loadedCardmarketMappings, setLoadedCardmarketMappings] = useState<readonly MarketplaceProductIdentityMapping[]>();
@@ -212,6 +214,8 @@ export function MissingCardsPanel({
   const visibleConditions = new Set(visibleItems.map((item) => item.preferences.minimumCondition));
   const sharedCondition = visibleConditions.size === 1 ? [...visibleConditions][0] : undefined;
   const sharedCardmarketCondition = sharedCondition ? cardmarketMinimumCondition(sharedCondition) : undefined;
+  const visibleLanguages = new Set(visibleItems.map((item) => item.card.ref.language));
+  const sharedLanguage = visibleLanguages.size === 1 ? [...visibleLanguages][0] : undefined;
 
   useEffect(() => {
     if (!beginnerCardmarket || beginnerPrepared.current) return;
@@ -298,11 +302,16 @@ export function MissingCardsPanel({
       ) : null}
 
       {beginner && !expertOpen && marketplaceChoice === "cardmarket" ? (
-        <div className={styles.providerRecommendation} role="status">
-          <Check aria-hidden="true" size={19} />
-          <span><strong>Du kaufst bei Cardmarket</strong><small>Nach deiner Browser-Sprache gewählt – für Europa und UK normalerweise der einfachste Start.</small></span>
-          <button type="button" onClick={() => setExpertOpen(true)}>Anderer Wohnort oder Anbieter?</button>
-        </div>
+        <section className={styles.regionPick} aria-labelledby="region-pick-heading">
+          <h3 id="region-pick-heading"><MapPin aria-hidden="true" size={20} /> Wo wohnst du?</h3>
+          <p>Der Marktplatz hängt vom Wohnort ab: In <b>Europa</b> kauft man vor allem bei <b>Cardmarket</b>, in den <b>USA</b> vor allem bei <b>TCGplayer</b>. Wir haben nach deiner Browser-Sprache vorausgewählt. Stimmt das nicht, wähle hier den richtigen Ort.</p>
+          <div className={styles.regionButtons} role="group" aria-label="Wohnort auswählen">
+            <button type="button" aria-label="Europa & UK · Cardmarket" aria-pressed="true"><strong>Europa & UK</strong><small>Cardmarket</small><Check aria-hidden="true" size={16} /></button>
+            <button type="button" aria-label="USA & Kanada · TCGplayer" aria-pressed="false" onClick={() => { chooseRegion("north-america"); setExpertOpen(true); }}><strong>USA & Kanada</strong><small>TCGplayer</small></button>
+            <button type="button" aria-label="Andere Region · Versand prüfen" aria-pressed="false" onClick={() => { chooseRegion("other"); setExpertOpen(true); }}><strong>Andere Region</strong><small>Versand prüfen</small></button>
+          </div>
+          <p className={styles.regionHint} role="status"><strong>Du kaufst bei Cardmarket.</strong> Es ist der größte Marktplatz für Pokémon-Karten in Europa.</p>
+        </section>
       ) : null}
 
       {showStandardLayout && (tcgplayerEnabled || cardmarketEnabled || cardtraderEnabled || cardtraderPreviewVisible) ? (
@@ -479,6 +488,7 @@ export function MissingCardsPanel({
             busyLabel={cardmarketPreparing || !cardmarketDecklistReady ? "Kartenliste wird sicher geprüft …" : "Keine verifizierte Sammelliste verfügbar"}
             copyState={cardmarketCopyState}
             onCopyAndOpen={() => onCardmarketCopy?.(activeCardmarketPart)}
+            language={sharedLanguage}
             condition={sharedCondition && sharedCardmarketCondition ? { cardfolio: conditionProfile(sharedCondition).shortLabel, code: sharedCardmarketCondition.code, label: sharedCardmarketCondition.label } : undefined}
           />
           {cardmarketDecklistError ? <p className={styles.error} role="alert">{cardmarketDecklistError} Aus Sicherheitsgründen wird keine ungeprüfte Sammelliste erzeugt.</p> : null}

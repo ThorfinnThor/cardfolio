@@ -117,7 +117,7 @@ describe("GiftBuilderPanel", () => {
     expect(screen.getByText(/9-Pocket · Platz für bis zu 360 Karten/i)).toBeInTheDocument();
     expect(screen.getByText("Passt zu deinem Plan")).toBeInTheDocument();
     expect(screen.queryByText(/kein Affiliate-Link/i)).not.toBeInTheDocument();
-    const binderLink = screen.getByRole("link", { name: /Diesen Binder bestellen/i });
+    const binderLink = screen.getByRole("link", { name: /Bei .+ bestellen/i });
     expect(binderLink).toHaveAttribute("href", "https://partner.example/9-pocket-binder");
     expect(binderLink).toHaveAttribute("target", "_blank");
     expect(binderLink).toHaveAttribute("rel", "noopener noreferrer");

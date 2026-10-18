@@ -3,7 +3,7 @@
 .header { margin: 28px 0 24px; }
 .header h1 { margin: 8px 0 12px; font-family: var(--cf-font-display); font-size: clamp(1.9rem, 5.5vw, 3rem); font-weight: 600; letter-spacing: -.02em; line-height: 1.06; }
 .header > p:last-child { max-width: 620px; color: var(--cf-text2); font-size: 1.05rem; line-height: 1.6; }
-.eyebrow { margin: 0; color: var(--cf-accent-text); font-family: var(--cf-font-mono); font-size: .7rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+.eyebrow { margin: 0; color: var(--cf-accent-text); font-size: .85rem; font-weight: 700; }
 .section { position: relative; margin-top: 14px; border: 1px solid var(--cf-line); border-radius: 12px; background: var(--cf-surface); padding: 22px 22px 22px 26px; box-shadow: 0 12px 30px -24px var(--cf-sh-soft); }
 .section::before { position: absolute; top: 22px; left: 0; width: 3px; height: 22px; border-radius: 0 3px 3px 0; background: var(--cf-accent); content: ""; }
 .section h2 { margin: 0 0 10px; font-family: var(--cf-font-display); font-size: 1.05rem; font-weight: 600; }

@@ -351,7 +351,7 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   await mockCatalog(cleanPage);
   await cleanPage.goto("/");
   // A first-time visitor lands on the gift-first start screen, without any binder.
-  await expect(cleanPage.getByRole("heading", { name: "Ein Pokémon-Binder als persönliches Geschenk." })).toBeVisible();
+  await expect(cleanPage.getByRole("heading", { name: "Ein Binder voller Karten vom Lieblings-Pokémon." })).toBeVisible();
   await cleanPage.locator("#backup-import").setInputFiles({
     buffer: backup,
     mimeType: "application/json",
@@ -439,7 +439,7 @@ test("keeps Cardfolio views in the browser back and forward history", async ({ p
   await expect(page.getByRole("heading", { name: "Dein Geschenk-Binder beginnt hier" })).toBeVisible();
 
   await page.goBack();
-  await expect(page.getByRole("heading", { name: "Ein Pokémon-Binder als persönliches Geschenk." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Ein Binder voller Karten vom Lieblings-Pokémon." })).toBeVisible();
 
   await page.goForward();
   await expect(page.getByRole("heading", { name: "Dein Geschenk-Binder beginnt hier" })).toBeVisible();
@@ -781,14 +781,14 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await page.getByRole("button", { name: "Weiter zum Einkauf" }).click();
   await expect(page.getByRole("heading", { name: /Geschenk · Pikachu/ })).toBeVisible();
   await expect(page.getByText(/Die Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten/i)).toBeVisible();
-  await expect(page.getByText("Vault X 9-Pocket Binder", { exact: true })).toBeVisible();
-  await expect(page.getByText("17,99 €", { exact: true })).toBeVisible();
-  await expect(page.getByText("Preis geprüft am 17.10.2026", { exact: true })).toBeVisible();
+  await expect(page.getByText(/^Vault X 9-Pocket Binder/)).toBeVisible();
+  await expect(page.getByText("17,99 €", { exact: true }).first()).toBeVisible();
+  await expect(page.getByText("Preis geprüft am 17.10.2026", { exact: true }).first()).toBeVisible();
   await expect(page.getByText(/Werbelink: Cardfolio kann bei einem Kauf eine Provision erhalten/i)).toBeVisible();
   await expect(page.getByText(/9-Pocket · Platz für bis zu 360 Karten/i).first()).toBeVisible();
   await expect(page.getByText("Passt zu deinem Plan")).toBeVisible();
 
-  const binderLink = page.getByRole("link", { name: /Diesen Binder bestellen/i }).first();
+  const binderLink = page.getByRole("link", { name: /Bei Amazon bestellen/i }).first();
   const openedBinderUrl = await binderLink.getAttribute("href");
   const binderTarget = new URL(openedBinderUrl ?? "");
   expect(binderTarget.origin).toBe("https://www.amazon.de");
@@ -801,9 +801,10 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await expect(missingCards.getByText(/9 Positionen · gekauft wird erst beim Anbieter/i)).toBeVisible();
   // Gift buyers get the plain-language Cardmarket guide; the region question is one click away.
   await expect(missingCards.getByRole("heading", { name: "So bekommst du die Karten" })).toBeVisible();
-  await expect(missingCards.getByText("Du kaufst bei Cardmarket")).toBeVisible();
+  await expect(missingCards.getByText("Du kaufst bei Cardmarket.")).toBeVisible();
+  await expect(missingCards.getByRole("heading", { name: "Wo wohnst du?" })).toBeVisible();
   await expect(missingCards.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" })).toHaveCount(0);
-  await missingCards.getByRole("button", { name: "Anderer Wohnort oder Anbieter?" }).click();
+  await missingCards.getByRole("button", { name: "USA & Kanada · TCGplayer", exact: true }).click();
   await expect(missingCards.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" })).toBeVisible();
   await expect(missingCards.getByRole("button", { name: "USA & Kanada · TCGplayer empfohlen" })).toBeVisible();
   await missingCards.getByRole("button", { name: "Fehlkartenansicht schließen" }).click();
@@ -821,7 +822,7 @@ test("offers a lean gift entry without collector navigation", async ({ page }) =
   await page.setViewportSize({ height: 812, width: 375 });
   await page.goto("/geschenk/");
 
-  await expect(page.getByRole("heading", { name: "Ein Pokémon-Binder als persönliches Geschenk." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Ein Binder voller Karten vom Lieblings-Pokémon." })).toBeVisible();
   await expect(page.getByRole("complementary", { name: "Cardfolio Navigation" })).toHaveCount(0);
   await expect(page.getByRole("tab")).toHaveCount(0);
   await expect(page.getByRole("link", { name: "Ich sammle selbst" })).toHaveAttribute("href", "/");

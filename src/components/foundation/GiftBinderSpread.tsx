@@ -108,7 +108,9 @@ function BinderPage({ pockets, firstIndex, label, inspectedKey, onInspect }: { p
  * places; a tap opens the card. Two pages sit side by side on wide screens, one page on phones.
  */
 export function GiftBinderSpread({ pages, inspectedKey, onInspect, onSwap }: GiftBinderSpreadProps) {
-  const twoPages = useTwoPages();
+  const wide = useTwoPages();
+  // A one-page plan is shown as one centred page; two pages side by side only when there are two to show.
+  const twoPages = wide && pages.length > 1;
   const [view, setView] = useState(0);
   const [dragged, setDragged] = useState<CardSnapshot>();
   const sensors = useSensors(
@@ -140,12 +142,11 @@ export function GiftBinderSpread({ pages, inspectedKey, onInspect, onSwap }: Gif
     if (to && to !== from) onSwap(from, to);
   }
 
-  const single = pages.length === 1;
   const leftIndex = twoPages ? start : undefined;
-  const rightIndex = twoPages ? (single ? 0 : start + 1) : start;
-  const left = leftIndex !== undefined && !single ? pages[leftIndex] : undefined;
+  const rightIndex = twoPages ? start + 1 : start;
+  const left = leftIndex !== undefined ? pages[leftIndex] : undefined;
   const right = pages[rightIndex];
-  const rangeLabel = twoPages && !single && start + 1 < pages.length ? `Seite ${start + 1}–${start + 2}` : `Seite ${(twoPages && single ? 0 : start) + 1}`;
+  const rangeLabel = twoPages && start + 1 < pages.length ? `Seite ${start + 1}–${start + 2}` : `Seite ${start + 1}`;
 
   return (
     <div className={styles.binderWrap}>

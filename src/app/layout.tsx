@@ -4,8 +4,8 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 const displayFont = localFont({
-  src: "./fonts/fraunces-latin-variable.woff2",
-  weight: "100 900",
+  src: "./fonts/unbounded-latin-wght-normal.woff2",
+  weight: "200 900",
   variable: "--font-display",
   display: "swap",
 });

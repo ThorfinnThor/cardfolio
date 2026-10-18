@@ -4,13 +4,14 @@ import { ArrowLeft, ArrowRight, Check, Clipboard, ExternalLink } from "lucide-re
 import { useState } from "react";
 
 import styles from "./missing-cards-panel.module.css";
+import { useStepHistory } from "./step-history";
 
 type GuideStep = 1 | 2 | 3 | 4;
 
 const GUIDE_STEPS = [
   { step: 1, label: "Liste kopieren" },
   { step: 2, label: "Karten einfügen" },
-  { step: 3, label: "Zustand setzen" },
+  { step: 3, label: "Zustand & Sprache" },
   { step: 4, label: "Verkäufer wählen" },
 ] as const;
 
@@ -27,6 +28,8 @@ export interface GiftPurchaseGuideProps {
   busyLabel: string;
   copyState: "idle" | "copied" | "error";
   onCopyAndOpen: () => void;
+  /** The card language ("de", "en", …) when all cards share one. */
+  language?: string;
   /** The shared condition the buyer chose in Cardfolio and its Cardmarket equivalent, when all cards agree. */
   condition?: { cardfolio: string; code: string; label: string };
 }
@@ -34,9 +37,10 @@ export interface GiftPurchaseGuideProps {
 /**
  * Plain-language walkthrough of the Cardmarket handoff for gift buyers. It uses the same prepared list
  * and URLs as the detailed guide; it only changes what is said and in which order. Statements about
- * Cardmarket (account needed for the Shopping Wizard, the two strategies, "Add All to Cart" needing six
- * completed purchases) come from Cardmarket's own help centre (help.cardmarket.com, Shopping Wizard).
+ * Cardmarket (account needed for the Shopping Wizard, the two strategies) come from Cardmarket's own help
+ * centre (help.cardmarket.com, Shopping Wizard); the German button names were checked on the live pages.
  */
+const LANGUAGE_NAMES: Record<string, string> = { de: "Deutsch", en: "Englisch", fr: "Französisch", es: "Spanisch", it: "Italienisch", pt: "Portugiesisch", ja: "Japanisch", ko: "Koreanisch" };
 const HOWTO_URL = "/anleitung/cardmarket/";
 
 function Illustrated({ step }: { step: number }) {
@@ -56,8 +60,11 @@ export function GiftPurchaseGuide({
   copyState,
   onCopyAndOpen,
   condition,
+  language,
 }: GiftPurchaseGuideProps) {
-  const [step, setStep] = useState<GuideStep>(1);
+  const [step, setStepDirect] = useState<GuideStep>(1);
+  const setStep = useStepHistory("purchase-guide", step, setStepDirect);
+  const languageName = language ? LANGUAGE_NAMES[language] : undefined;
   const cardsLabel = positionCount === 1 ? "1 Karte" : `${positionCount} Karten`;
 
   return (
@@ -87,7 +94,7 @@ export function GiftPurchaseGuide({
         {step === 1 ? <>
           <span className={styles.cardmarketGuideKicker}>Schritt 1</span>
           <h5>Einkaufsliste kopieren und Cardmarket öffnen</h5>
-          <p>Der große Button kopiert alle Karten und öffnet Cardmarket in einem neuen Tab. Du musst keine Karte einzeln suchen.</p>
+          <p>Der große Button kopiert alle Karten und öffnet Cardmarket. Du musst keine Karte einzeln suchen.</p>
           {partCount > 1 ? (
             <label className={styles.cardmarketBulkPart} htmlFor="gift-purchase-part">
               <span>Cardmarket erlaubt höchstens 150 Positionen pro Wants-Liste. Wähle den Teil, den du jetzt übertragen möchtest:</span>
@@ -134,9 +141,9 @@ export function GiftPurchaseGuide({
           <h5>Die Karten bei Cardmarket einfügen</h5>
           <ol className={styles.cardmarketInstructionList}>
             <li>Melde dich bei Cardmarket an – oder lege dort ein Konto an.</li>
-            <li>Lege eine neue <b>Wants-Liste</b> an (so nennt Cardmarket die Wunschliste) oder öffne eine vorhandene.</li>
+            <li>Lege eine neue <b>Wants-Liste</b> an (so nennt Cardmarket die Wunschliste): Name eintippen, <b>ohne Leerzeichen</b>, zum Beispiel „GeschenkEvoli“, dann auf <b>„Liste hinzufügen“</b> klicken.</li>
             <li>Wähle <b>„Deck-Liste hinzufügen“</b>, klicke in das große Textfeld und füge die Liste mit <b>Strg+V</b> beziehungsweise <b>⌘V</b> ein.</li>
-            <li>Klicke auf <b>„Hinzufügen“</b>. Ein grünes Häkchen heißt: Karten hinzugefügt. Ein rotes Kreuz heißt: Karte nicht hinzugefügt.</li>
+            <li>Klicke auf den grünen Knopf <b>„Zu [Name deiner Liste] hinzufügen“</b>. Ein grünes Häkchen heißt: Karten hinzugefügt. Ein rotes Kreuz heißt: Karte nicht hinzugefügt.</li>
           </ol>
           <div className={styles.cardmarketGuideActions}>
             <a href={wantsUrl} target="_blank" rel="noopener noreferrer" onClick={onCopyAndOpen}>
@@ -149,7 +156,7 @@ export function GiftPurchaseGuide({
 
         {step === 3 ? <>
           <span className={styles.cardmarketGuideKicker}>Schritt 3</span>
-          <h5>Nur gut erhaltene Karten zulassen</h5>
+          <h5>Zustand und Sprache einstellen</h5>
           <div className={styles.cardmarketConditionWarning} role="alert">
             <div>
               <strong>Cardmarket zeigt nach dem Import zunächst „≥ PO“</strong>
@@ -164,10 +171,11 @@ export function GiftPurchaseGuide({
             ) : (
               <p><b>Die Karten haben unterschiedliche Zustandswünsche.</b> Stelle sie bei Cardmarket gruppenweise gemäß den Cardfolio-Angaben ein.</p>
             )}
+            <p><b>Warum „EX“?</b> Near Mint ist am schönsten, aber deutlich teurer. Excellent sieht auf dem Foto meist fast wie neu aus und ist unser Kompromiss.</p>
             <ol className={styles.cardmarketConditionSteps}>
               <li>Alle Karten markieren (Kästchen in der Titelzeile der Tabelle)</li>
               <li>„Massenveränderung“ öffnen</li>
-              <li>Bei „Mindest-Zustand“ {condition ? <b>{condition.code}</b> : "den passenden Wert"} wählen und „Ausgewählte ändern“ klicken</li>
+              <li>Bei „Mindest-Zustand“ {condition ? <b>{condition.code}</b> : "den passenden Wert"} wählen{languageName ? <>, bei „Sprachen“ <b>{languageName}</b></> : null} und „Ausgewählte ändern“ klicken</li>
             </ol>
           </div>
           <div className={styles.cardmarketGuideActions}>
@@ -181,9 +189,10 @@ export function GiftPurchaseGuide({
           <span className={styles.cardmarketGuideKicker}>Schritt 4</span>
           <h5>Verkäufer finden und kaufen</h5>
           <ol className={styles.cardmarketInstructionList}>
-            <li>Öffne bei Cardmarket den <b>Shopping Wizard</b> (der Einkaufsassistent), wähle deine Wants-Liste und klicke auf <b>„Run Wizard“</b>.</li>
-            <li>Bei vielen günstigen Karten: Wähle die Strategie <b>„Reduce Shipments“</b>. Dann kommen die Karten von möglichst wenigen Verkäufern. Das spart meist Versand, kann die Karten selbst aber teurer machen. „Reduce Price“ sucht dagegen den niedrigsten Gesamtpreis, auch bei mehr Sendungen.</li>
-            <li>Neu bei Cardmarket? „Add All to Cart“ funktioniert erst nach <b>sechs abgeschlossenen Käufen</b>. Lege die gefundenen Angebote dann einzeln in den Warenkorb.</li>
+            <li>Öffne bei Cardmarket den <b>Shopping Wizard</b> (der Einkaufsassistent, Knopf oben rechts), wähle deine Wants-Liste und klicke auf <b>„Nächste“</b>.</li>
+            <li>Bei „Standort des Verkäufers“ empfehlen wir <b>Europa</b>. Dann sind mehr Verkäufer dabei und die Karten manchmal etwas günstiger. Der Versand dauert dafür vielleicht ein paar Tage länger.</li>
+            <li>Wähle die Strategie. <b>„Bestellungen reduzieren“</b> sucht möglichst wenige Verkäufer und spart meist Versand, die Karten können etwas teurer sein. <b>„Preis reduzieren“</b> sucht den niedrigsten Kartenpreis, auch bei mehr Bestellungen. Bei vielen günstigen Karten ist „Bestellungen reduzieren“ meist sinnvoll. Klicke dann auf <b>„Wizard ausführen“</b>.</li>
+            <li>Oben siehst du die <b>Gesamtsumme</b> inklusive Versand. Mit <b>„In den Warenkorb“</b> legst du alles auf einmal hinein. Klappt das nicht, lege die Angebote einzeln in den Warenkorb.</li>
             <li>Prüfe vor dem Bezahlen Endpreis, Versand, Sprache und Zustand.</li>
           </ol>
           <div className={styles.cardmarketGuideActions}>
@@ -192,7 +201,7 @@ export function GiftPurchaseGuide({
               Cardmarket öffnen <ExternalLink aria-hidden="true" size={17} />
             </a>
           </div>
-          <Illustrated step={6} />
+          <Illustrated step={7} />
           <small>
             Der Wizard durchsucht nicht alle Angebote. Wirkt das Ergebnis zu teuer, schau selbst nach oder wähle andere Karten. Preise, Versand und die endgültige Auswahl bestätigst du erst bei Cardmarket.{" "}
             <a href={wizardHelpUrl} target="_blank" rel="noopener noreferrer">Hilfe von Cardmarket zum Shopping Wizard <ExternalLink aria-hidden="true" size={13} /></a>
