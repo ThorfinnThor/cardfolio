@@ -65,7 +65,8 @@ describe("gift purchase guide", () => {
     const { rerender } = render(panel({ onCardmarketPrepare }));
 
     expect(screen.getByRole("heading", { name: "3 Karten bei Cardmarket kaufen" })).toBeInTheDocument();
-    expect(screen.getByText("Du kaufst bei Cardmarket")).toBeInTheDocument();
+    expect(screen.getByText("Du kaufst bei Cardmarket.")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Wo wohnst du?" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "So bekommst du die Karten" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Europa & UK · Cardmarket empfohlen" })).not.toBeInTheDocument();
     expect(screen.queryByRole("list", { name: "Schritte zum Kartenkauf" })).not.toBeInTheDocument();
@@ -105,16 +106,18 @@ describe("gift purchase guide", () => {
     expect(screen.getByText(/Ein grünes Häkchen heißt: Karten hinzugefügt/)).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /Karten sind eingefügt/ }));
 
-    expect(screen.getByRole("heading", { name: "Nur gut erhaltene Karten zulassen" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Zustand und Sprache einstellen" })).toBeInTheDocument();
     expect(screen.getByText("Sehr gut")).toBeInTheDocument();
     expect(screen.getByText("≥ EX · Excellent")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /Zustand ist eingestellt/ }));
 
     expect(screen.getByText("Schritt 4 von 4")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Verkäufer finden und kaufen" })).toBeInTheDocument();
-    expect(screen.getByText("„Run Wizard“")).toBeInTheDocument();
-    expect(screen.getByText("„Reduce Shipments“")).toBeInTheDocument();
-    expect(screen.getByText("sechs abgeschlossenen Käufen")).toBeInTheDocument();
+    expect(screen.getByText("„Wizard ausführen“")).toBeInTheDocument();
+    expect(screen.getByText("„Bestellungen reduzieren“")).toBeInTheDocument();
+    expect(screen.getByText("„Preis reduzieren“")).toBeInTheDocument();
+    expect(screen.getByText(/Standort des Verkäufers/)).toBeInTheDocument();
+    expect(screen.getByText("„In den Warenkorb“")).toBeInTheDocument();
     expect(screen.getByText(/Der Wizard durchsucht nicht alle Angebote/)).toBeInTheDocument();
     const help = screen.getByRole("link", { name: /Hilfe von Cardmarket zum Shopping Wizard/ });
     expect(help).toHaveAttribute("href", "https://help.cardmarket.com/en/ShoppingWizard");
@@ -135,7 +138,7 @@ describe("gift purchase guide", () => {
   it("keeps the region and provider choice one click away", () => {
     render(panel());
 
-    fireEvent.click(screen.getByRole("button", { name: "Anderer Wohnort oder Anbieter?" }));
+    fireEvent.click(screen.getByRole("button", { name: "USA & Kanada · TCGplayer" }));
 
     expect(screen.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "USA & Kanada · TCGplayer empfohlen" })).toBeInTheDocument();
@@ -187,6 +190,6 @@ describe("gift purchase guide", () => {
     expect(open()).toBe("/anleitung/cardmarket/#schritt-5");
     expect(screen.getByText(/Mindest-Zustand/)).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /Zustand ist eingestellt/ }));
-    expect(open()).toBe("/anleitung/cardmarket/#schritt-6");
+    expect(open()).toBe("/anleitung/cardmarket/#schritt-7");
   });
 });

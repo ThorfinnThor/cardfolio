@@ -30,6 +30,7 @@ import { createInitialVariantSelection, isVariantSelectionValid, variantAvailabi
 import { CardArtwork } from "./CardArtwork";
 import { GiftBinderSpread, type SpreadPocket } from "./GiftBinderSpread";
 import { clearGiftResume, readGiftResume, saveGiftResume } from "./gift-resume";
+import { useStepHistory } from "./step-history";
 import { VariantFields } from "./VariantFields";
 import {
   POPULAR_POKEMON,
@@ -168,6 +169,15 @@ function topUpWithinBudget(base: readonly GiftCardCandidate[], others: readonly 
   return result;
 }
 
+/** The shop's name for a button label, taken from the link's host. */
+function shopName(url: string): string {
+  const host = (() => { try { return new URL(url).hostname.replace(/^www\./, ""); } catch { return url; } })();
+  if (host.includes("amazon")) return "Amazon";
+  if (host.includes("vaultx")) return "Vault X";
+  if (host.includes("ultimateguard")) return "Ultimate Guard";
+  return host;
+}
+
 function summarizeSelection(selected: GiftCardCandidate[], preferences: GiftPreferences, issues: GiftSelectionResult["issues"] = []): GiftSelectionResult {
   const unpricedCount = selected.filter((candidate) => candidate.price.amountMinor === undefined).length;
   const approximateCount = selected.filter((candidate) => candidate.price.confidence === "approximate").length;
@@ -204,7 +214,8 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
   const engine = useMemo(() => new DeterministicGiftSelectionEngine({ spendBudget: true }), []);
   // A finished plan comes back after a detour to the purchase view or the browser's back button.
   const [resumed] = useState(() => readGiftResume());
-  const [step, setStep] = useState<GiftStep>(resumed ? "summary" : "details");
+  const [step, setStepDirect] = useState<GiftStep>(resumed ? "summary" : "details");
+  const setStep = useStepHistory("gift", step, setStepDirect);
   const [preferences, setPreferences] = useState<GiftPreferences>(() => resumed?.preferences ?? { ...initialPreferences, subjectQuery: initialSubjectQuery });
   const [pokemonQuery, setPokemonQuery] = useState(resumed?.preferences.subjectQuery ?? initialSubjectQuery);
   const [discoveryMode, setDiscoveryMode] = useState<GiftDiscoveryMode>(initialDiscoveryMode);
@@ -919,7 +930,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
                       {offer.affiliateDisclosure ? <small className={styles.affiliateDisclosure}>{offer.affiliateDisclosure}</small> : null}
                       {offer.status !== "available" ? <small>{offer.statusReason ?? "Angebot nicht verfügbar."}</small> : null}
                     </div>
-                    {destinationUrl ? <a className={styles.offerAction} href={destinationUrl} target="_blank" rel="noopener noreferrer">{offer.kind === "personalized" ? "Binder personalisieren" : "Diesen Binder bestellen"} <ExternalLink aria-hidden="true" size={15} /></a> : <button type="button" className={styles.offerAction} disabled>Derzeit nicht verfügbar</button>}
+                    {destinationUrl ? <a className={styles.offerAction} href={destinationUrl} target="_blank" rel="noopener noreferrer">{offer.kind === "personalized" ? `Bei ${shopName(destinationUrl)} personalisieren` : `Bei ${shopName(destinationUrl)} bestellen`} <ExternalLink aria-hidden="true" size={15} /></a> : <button type="button" className={styles.offerAction} disabled>Derzeit nicht verfügbar</button>}
                   </div>;
                 })}</div> : null}
                 {recommendedBinderOffers?.length ? <p className={styles.offerNote}>Aktuellen Preis, Verfügbarkeit und Versand prüfst du im Shop.</p> : null}

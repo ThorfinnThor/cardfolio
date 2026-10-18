@@ -595,7 +595,10 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
       return;
     }
     if (!sameEntry) {
-      window.history.pushState(workspaceHistoryState(nextEntry.view, nextEntry.binderId), "", window.location.href);
+      // The same screen that only gains its binder (a gift plan being saved) is not a new place for the Back button.
+      const sameScreenGainsBinder = currentEntry?.view === nextEntry.view && currentEntry.binderId === undefined;
+      const writeEntry = sameScreenGainsBinder ? window.history.replaceState : window.history.pushState;
+      writeEntry.call(window.history, workspaceHistoryState(nextEntry.view, nextEntry.binderId), "", window.location.href);
     }
   }, [activeId, storageStatus, workspaceView]);
 

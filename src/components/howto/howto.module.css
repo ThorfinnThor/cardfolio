@@ -31,52 +31,16 @@
 .conditionTable td { color: var(--cf-text2); font-family: var(--cf-font-mono); font-size: .9rem; }
 .footer { margin-top: 24px; color: var(--cf-muted); font-size: .88rem; line-height: 1.6; }
 
-/* Redrawn Cardmarket screens: fixed light colours, like a screenshot, in both themes. */
-.mock { position: relative; margin-top: 10px; overflow: hidden; border: 1px solid #d3d9e3; border-radius: 8px; background: #f7f9fc; color: #14213d; padding: 12px; font-family: var(--cf-font-ui); font-size: .8rem; user-select: none; }
-.mock + .mock { margin-top: 10px; }
-.mockTitle { margin: 0 0 10px; font-size: 1.35rem; font-weight: 800; letter-spacing: -.01em; }
-.mockToolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-.spacer { flex: 1 1 20px; }
-.btnGreen, .btnGreenOutline, .btnNavy, .btnNavyOutline, .btnRedOutline { position: relative; display: inline-flex; align-items: center; border-radius: 4px; padding: 8px 12px; font-size: .72rem; font-weight: 750; letter-spacing: .02em; text-transform: uppercase; white-space: nowrap; }
-.btnGreen { background: #2a9d4b; color: #fff; }
-.btnGreenOutline { border: 1px solid #2a9d4b; background: #fff; color: #2a9d4b; }
-.btnNavy { background: #14305f; color: #fff; }
-.btnNavyOutline { border: 1px solid #14305f; background: #fff; color: #14305f; }
-.btnRedOutline { border: 1px solid #d64545; background: #fff; color: #d64545; opacity: .7; }
-.mock [data-hl="true"] { box-shadow: 0 0 0 3px rgb(169 131 47 / 85%); }
-.hint { position: absolute; top: -10px; right: -8px; z-index: 2; display: grid; width: 22px; height: 22px; place-items: center; border-radius: 50%; background: #a9832f; color: #fff; font-size: .72rem; font-style: normal; font-weight: 800; box-shadow: 0 1px 4px rgb(0 0 0 / 35%); }
-.hint::before { content: attr(data-n); }
-.pasteBox { position: relative; display: grid; gap: 3px; min-height: 86px; border: 1px solid #b9c3d3; border-radius: 4px; background: #fff; padding: 9px 10px; font-family: var(--cf-font-mono); font-size: .76rem; }
-.pasteActions { display: flex; justify-content: flex-end; margin-top: 10px; }
-.results { display: grid; gap: 5px; margin: 12px 0 0; padding: 0; list-style: none; }
-.results li { color: #14213d; }
-.ok { color: #2a9d4b; }
-.bad { color: #d64545; }
-.countLine { position: relative; display: inline-block; margin: 2px 0 10px; border-radius: 4px; padding: 3px 8px; font-size: 1.05rem; font-weight: 800; }
-.table { border: 1px solid #d3d9e3; border-radius: 6px; background: #fff; overflow: hidden; }
-.tableHead, .tableRow { display: grid; grid-template-columns: 34px minmax(0, 1fr) 70px; align-items: center; gap: 8px; padding: 8px 10px; }
-.tableHead { background: #14305f; color: #fff; font-size: .72rem; font-weight: 750; }
-.tableRow { border-top: 1px solid #e6eaf1; color: #1a56b8; font-weight: 600; }
-.tableRow:nth-child(odd) { background: #f2f4f8; }
-.tableMore { padding: 4px 10px 8px; color: #6b7894; }
-.cardName { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.checkbox { position: relative; display: inline-grid; width: 16px; height: 16px; place-items: center; border: 1px solid #8493ad; border-radius: 3px; background: #fff; }
-.checkbox[data-checked="true"]::after { color: #14305f; content: "✓"; font-size: .7rem; font-weight: 900; }
-.badgeRed, .badgeBlue { justify-self: start; border-radius: 4px; padding: 2px 7px; color: #fff; font-size: .7rem; font-weight: 800; }
-.badgeRed { background: #d64545; }
-.badgeBlue { background: #2a6fdb; }
-.panelHead { position: relative; display: inline-block; margin-bottom: 10px; padding: 2px 6px; color: #14305f; font-size: 1.15rem; font-weight: 800; }
-.fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px 14px; }
-.fields label { position: relative; display: grid; gap: 4px; }
-.fields small { color: #3d4b69; font-size: .75rem; font-weight: 650; }
-.field { display: flex; justify-content: space-between; border: 1px solid #b9c3d3; border-radius: 4px; background: #fff; padding: 7px 9px; color: #14213d; font-size: .8rem; }
-.field i { color: #5c6a85; font-style: normal; }
-.panelActions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.figure > a { display: block; }
+.zoomHint { white-space: nowrap; }
+.shot { display: block; width: 100%; height: auto; border: 1px solid var(--cf-line2); border-radius: 8px; background: #fff; }
+.tip { margin: 14px 0 0; border-left: 4px solid var(--cf-accent); border-radius: 0 8px 8px 0; background: var(--cf-accent-soft); padding: 12px 16px; color: var(--cf-text); line-height: 1.6; }
+.tip b { color: var(--cf-text); }
+.sub { margin: 24px 0 0; font-family: var(--cf-font-display); font-size: 1.05rem; font-weight: 600; letter-spacing: -.01em; }
+.conditionTable td.plain { font-family: inherit; font-size: .95rem; }
+.conditionTable tr[data-pick="true"] th, .conditionTable tr[data-pick="true"] td { background: var(--cf-accent-soft); }
 
 @media (max-width: 520px) {
   .page { width: min(100% - 20px, 860px); padding-top: 24px; }
   .step { padding: 18px 14px 20px; }
-  .mock { padding: 10px; }
-  .btnGreen, .btnGreenOutline, .btnNavy, .btnNavyOutline, .btnRedOutline { white-space: normal; }
-  .tableHead, .tableRow { grid-template-columns: 24px minmax(0, 1fr) 56px; }
 }
