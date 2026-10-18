@@ -29,6 +29,9 @@ interface BinderOverviewProps {
   onSetStart?: () => void;
   /** Lean variant for the /geschenk/ entry: gift start only, no collector tools. */
   giftOnly?: boolean;
+  /** A saved gift binder that still has cards to buy: the start page offers to continue there. */
+  continueGift?: { binder: Binder; missing: number; planned: number };
+  onContinueGift?: (binder: Binder) => void;
 }
 
 export function BinderOverview({
@@ -49,6 +52,8 @@ export function BinderOverview({
   onThemeStart,
   onSetStart,
   giftOnly = false,
+  continueGift,
+  onContinueGift,
 }: BinderOverviewProps) {
   const [startMode, setStartMode] = useState<"gift" | "theme" | "set" | "manual">("gift");
   const [collectorModes, setCollectorModes] = useState(false);
@@ -66,6 +71,11 @@ export function BinderOverview({
         <button id="start-tab-set" type="button" role="tab" aria-selected={startMode === "set"} aria-controls="start-panel" onClick={() => setStartMode("set")}><BookOpen aria-hidden="true" size={18} /><span>Komplettes Set</span></button>
         <button id="start-tab-manual" type="button" role="tab" aria-selected={startMode === "manual"} aria-controls="start-panel" onClick={() => setStartMode("manual")}><PencilRuler aria-hidden="true" size={18} /><span>Selbst gestalten</span></button>
       </div> : null}
+
+      {startMode === "gift" && continueGift ? <section className={styles.continueStrip} aria-label="Dein Geschenk wartet">
+        <div><strong>Dein Geschenk wartet noch auf dich</strong><span>„{continueGift.binder.name}“: {continueGift.missing} von {continueGift.planned} Karten fehlen noch.</span></div>
+        <button type="button" onClick={() => onContinueGift?.(continueGift.binder)}>Weiter zum Einkauf <ArrowRight aria-hidden="true" size={18} /></button>
+      </section> : null}
 
       {startMode === "gift" ? <><div className={styles.giftHero} id="start-panel" role={showStartTabs ? "tabpanel" : undefined} aria-labelledby={showStartTabs ? "start-tab-gift" : undefined} data-has-binders={binders.length > 0}>
         <div className={styles.giftHeroCopy}>

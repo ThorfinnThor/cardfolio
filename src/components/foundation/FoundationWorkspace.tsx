@@ -62,6 +62,7 @@ import { catalogSeries, catalogSets, catalogSetIndex, completeCardSnapshotMetada
 import { RevisionConflictError } from "@/data/persistence/binder-repository";
 import { IndexedDBBinderRepository } from "@/data/persistence/indexeddb-binder-repository";
 import { IndexedDBGiftProjectRepository } from "@/data/persistence/gift-project-repository";
+import { GiftContinueCard } from "./GiftContinueCard";
 import { persistPageSelection, persistPageSelectionUndo, persistReversiblePageSelection } from "@/data/persistence/page-selection-service";
 
 import { catalogLabel, coverLeather } from "./binder-cover";
@@ -491,7 +492,25 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
   // While a gift is being planned or bought the sidebar and collector toolbar are out of the way, so the
   // binder gets the full width. Collectors keep the normal layout everywhere else.
   const giftChrome = giftShell || giftBuilderOpen || (missingOpen && missingBeginner);
+  // Which binders were planned as a gift: they get the "so geht es weiter" card when the buyer comes back later.
+  const [giftBinderIds, setGiftBinderIds] = useState<ReadonlySet<string>>(new Set());
+  useEffect(() => {
+    let cancelled = false;
+    void giftProjects.list()
+      .then((projects) => { if (!cancelled) setGiftBinderIds(new Set(projects.flatMap((project) => project.binderId ? [project.binderId] : []))); })
+      .catch(() => undefined);
+    return () => { cancelled = true; };
+  }, [giftProjects, binders.length]);
   const activeBinder = binders.find((binder) => binder.id === activeId);
+  const continueGift = useMemo(() => {
+    for (const binder of binders) {
+      if (!giftBinderIds.has(binder.id)) continue;
+      const stats = deriveBinderStats(binder);
+      if (stats.missing > 0) return { binder, missing: stats.missing, planned: stats.planned };
+    }
+    return undefined;
+  }, [binders, giftBinderIds]);
+  const isGiftBinder = Boolean(activeBinder && giftBinderIds.has(activeBinder.id));
   const workspaceView: WorkspaceHistoryView = !activeBinder || binderManagerOpen
     ? setBinderWizardOpen
       ? "set"
@@ -908,6 +927,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
       setStorageStatus("saving");
       await repository.create(result.binder, result.cards);
       await giftProjects.create(linkedProject);
+      setGiftBinderIds((current) => new Set(current).add(result.binder.id));
       const nextBinders = [result.binder, ...bindersRef.current];
       bindersRef.current = nextBinders;
       setBinders(nextBinders);
@@ -1904,7 +1924,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
           <button type="button" className={activeBinder && !binderManagerOpen && !missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(false); }} disabled={!activeBinder}>
             <Archive size={18} /> <span>Binder</span>
           </button>
-          <button type="button" aria-label={stats ? `Fehlende Karten (${stats.missing})` : "Fehlende Karten"} className={missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingBeginner(false); setMissingOpen(true); setSearchOpen(false); }} disabled={!activeBinder}>
+          <button type="button" aria-label={stats ? `Fehlende Karten (${stats.missing})` : "Fehlende Karten"} className={missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingBeginner(isGiftBinder); setMissingOpen(true); setSearchOpen(false); }} disabled={!activeBinder}>
             <ListFilter size={18} /> <span>Karten kaufen</span>{stats ? <span className={styles.navBadge}>{stats.missing}</span> : null}
           </button>
         </nav>
@@ -2014,6 +2034,8 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
             onThemeStart={() => { clearGiftResume(); setGiftDiscoveryMode("theme"); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
             onSetStart={() => { setSetBinderWizardOpen(true); setGiftBuilderOpen(false); setBinderManagerOpen(true); setMissingOpen(false); }}
             giftOnly={giftShell}
+            continueGift={continueGift}
+            onContinueGift={(binder) => { setActiveId(binder.id); setActivePageIndex(0); setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingBeginner(true); setMissingOpen(true); setSearchOpen(false); }}
           />
         )
       ) : null}
@@ -2198,11 +2220,13 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
             <div className={styles.binderHeaderActions}>
               <button type="button" className={styles.secondaryButton} onClick={() => setBinderRename({ binderId: activeBinder.id, name: activeBinder.name })}><Pencil size={16} /> Binder umbenennen</button>
               <button type="button" className={styles.secondaryButton} onClick={() => openSearchForSlot()}><Search size={17} /> Karte hinzufügen</button>
-              <button type="button" aria-label={missingOpen ? "Zurück zum Binder" : `Fehlende Karten (${stats.missing})`} className={styles.primaryButton} onClick={() => { setMissingBeginner(giftShell); setMissingOpen((open) => !open); setSearchOpen(false); setCopyState("idle"); setTcgplayerCopyState("idle"); setCardmarketCopyState("idle"); }} disabled={Boolean(missingResult.error) || cardsBinderId !== activeId}>
+              <button type="button" aria-label={missingOpen ? "Zurück zum Binder" : `Fehlende Karten (${stats.missing})`} className={styles.primaryButton} onClick={() => { setMissingBeginner(giftShell || isGiftBinder); setMissingOpen((open) => !open); setSearchOpen(false); setCopyState("idle"); setTcgplayerCopyState("idle"); setCardmarketCopyState("idle"); }} disabled={Boolean(missingResult.error) || cardsBinderId !== activeId}>
                 <ListFilter size={17} /> {missingOpen ? "Zurück zum Binder" : `Karten kaufen (${stats.missing})`}
               </button>
             </div>
           </section>}
+
+          {isGiftBinder && !missingOpen ? <GiftContinueCard planned={stats.planned} missing={stats.missing} onCardsPurchase={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingBeginner(true); setMissingOpen(true); setSearchOpen(false); }} /> : null}
 
           {missingOpen && missingBeginner ? null : <section className={styles.stats} aria-label="Binderfortschritt">
             <div className={styles.statsHero} data-complete={stats.planned > 0 && stats.owned === stats.planned}>
@@ -2762,7 +2786,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
                       ) : <p>Keine geplante Karte dieser Seite ist noch offen.</p>}
                     </section>
                     <button type="button" className={styles.primaryButton} onClick={() => openSearchForSlot()}><Search size={16} /> Karte hinzufügen</button>
-                    <button type="button" className={styles.secondaryButton} onClick={() => { setMissingBeginner(giftShell); setMissingOpen(true); }}><ListFilter size={16} /> Gesamte Fehlkartenliste</button>
+                    <button type="button" className={styles.secondaryButton} onClick={() => { setMissingBeginner(giftShell || isGiftBinder); setMissingOpen(true); }}><ListFilter size={16} /> Gesamte Fehlkartenliste</button>
                   </div>
                 )}
               </aside>
