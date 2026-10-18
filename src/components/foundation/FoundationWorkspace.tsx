@@ -1,7 +1,7 @@
 "use client";
 
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import { Archive, ArrowLeft, ArrowRight, BookOpen, CircleHelp, Copy, DatabaseBackup, ListFilter, Menu, Pencil, Search, Settings2, Trash2, X } from "lucide-react";
+import { ListChecks, Archive, ArrowLeft, ArrowRight, BookOpen, CircleHelp, Copy, DatabaseBackup, ListFilter, Menu, Pencil, Search, Settings2, Trash2, X } from "lucide-react";
 import Link from "next/link";
 import { type ChangeEvent, type FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -1921,6 +1921,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
         ) : null}
         <div className={styles.sidebarBottom}>
           <button type="button" className={styles.navItem} onClick={() => void exportBackup()} disabled={!binders.length}><DatabaseBackup size={18} /> <span>Backup exportieren</span></button>
+          <Link className={styles.navItem} href="/anleitung/cardmarket/" target="_blank" rel="noopener noreferrer"><ListChecks size={18} /> <span>Kauf-Anleitung</span></Link>
           <Link className={styles.navItem} href="/help/"><CircleHelp size={18} /> <span>Hilfe</span></Link>
           <span className={styles.navItemMuted}><Settings2 size={18} /> <span>Einstellungen</span></span>
         </div>
@@ -1934,6 +1935,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
           </button>
           <div className={styles.giftBarActions}>
             <ThemeToggle className={styles.themeToggle} />
+            <Link className={styles.giftBarLink} href="/anleitung/cardmarket/" target="_blank" rel="noopener noreferrer" aria-label="Anleitung: Karten bei Cardmarket kaufen (öffnet in neuem Tab)">Anleitung</Link>
             {giftShell
               ? <Link className={styles.giftBarLink} href="/">Ich sammle selbst</Link>
               : <button type="button" className={styles.giftBarLink} onClick={() => { setSetBinderWizardOpen(false); setMissingOpen(false); setMissingBeginner(false); setGiftBuilderOpen(false); setBinderManagerOpen(true); }}>Meine Binder</button>}

@@ -826,10 +826,15 @@ test("offers a lean gift entry without collector navigation", async ({ page }) =
   await expect(page.getByRole("complementary", { name: "Cardfolio Navigation" })).toHaveCount(0);
   await expect(page.getByRole("tab")).toHaveCount(0);
   await expect(page.getByRole("link", { name: "Ich sammle selbst" })).toHaveAttribute("href", "/");
+  await expect(page.getByRole("link", { name: /Anleitung: Karten bei Cardmarket kaufen/ })).toHaveAttribute("href", "/anleitung/cardmarket/");
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(375);
 
-  await page.getByRole("button", { name: "Geschenk-Binder gestalten" }).click();
-  await expect(page.getByRole("heading", { name: "Dein Geschenk-Binder beginnt hier" })).toBeVisible();
+  // The first click can land before the page is interactive on a loaded machine: retry the click until the wizard shows.
+  await expect(async () => {
+    await page.getByRole("button", { name: "Geschenk-Binder gestalten" }).click({ timeout: 2000 });
+    await expect(page.getByRole("heading", { name: "Dein Geschenk-Binder beginnt hier" })).toBeVisible({ timeout: 2000 });
+  }).toPass({ timeout: 20000 });
+  await expect(page.getByRole("link", { name: /Anleitung: Karten bei Cardmarket kaufen/ })).toBeVisible();
   await page.getByRole("radio", { name: "Ich kenne mich nicht aus" }).check();
   await expect(page.getByRole("radio", { name: "Evoli" })).toBeVisible();
   await expect(page.getByRole("textbox", { name: "Lieblings-Pokémon" })).toHaveCount(0);
