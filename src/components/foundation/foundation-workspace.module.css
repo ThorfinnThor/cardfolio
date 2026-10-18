@@ -626,3 +626,14 @@
   .pageSelectionImage, .pageSelectionImage img { height: 160px; min-height: 160px; }
   .pageSelectionItem > summary { align-items: flex-start; flex-direction: column; }
 }
+
+/* The gift bar keeps each link on one line; on a very narrow phone the links move to a second row instead of overflowing. */
+.giftBarLink { white-space: nowrap; }
+.giftBar { flex-wrap: wrap; }
+.giftBarActions { flex-wrap: wrap; justify-content: flex-end; }
+@media (max-width: 430px) {
+  .giftBar { padding-inline: 12px; column-gap: 8px; }
+  .giftBarActions { gap: 4px 10px; }
+  .giftBarLink { font-size: 13px; }
+  .giftBrand { gap: 8px; font-size: 17px; }
+}

@@ -310,5 +310,5 @@
 .regionPick { display: grid; gap: 14px; border: 2px solid var(--cf-accent); border-radius: 12px; background: var(--cf-surface); padding: clamp(16px, 2.4vw, 24px); }
 .regionPick h3 { display: flex; align-items: center; gap: 9px; margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(1.15rem, 2vw, 1.5rem); font-weight: 600; }
 .regionPick h3 svg { color: var(--cf-accent-text); }
-.regionPick > p { max-width: 80ch; margin: 0; color: var(--cf-text2); line-height: 1.55; }
+.regionPick > p { margin: 0; color: var(--cf-text2); line-height: 1.55; }
 .regionPick .regionHint { display: block; border-left: 4px solid var(--cf-ok); background: var(--cf-ok-soft); padding: 10px 14px; }
