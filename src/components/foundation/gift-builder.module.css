@@ -335,3 +335,8 @@
   .screenOnly { display: none !important; }
   .printOnly { display: inline !important; }
 }
+
+.continueCard { display: grid; gap: 18px; margin: 0 0 22px; border: 2px solid var(--cf-accent); border-radius: 14px; background: var(--cf-surface); padding: clamp(16px, 2.6vw, 28px); }
+.continueCard[data-done="true"] { border-color: var(--cf-ok); background: var(--cf-ok-soft); }
+.continueIntro h2, .continueCard[data-done="true"] h2 { display: flex; align-items: center; gap: 10px; margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(1.25rem, 2.2vw, 1.7rem); font-weight: 600; }
+.continueIntro p, .continueCard[data-done="true"] p { margin: 8px 0 0; color: var(--cf-text2); font-size: 1.05rem; line-height: 1.5; }

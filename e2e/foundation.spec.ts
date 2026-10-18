@@ -815,6 +815,15 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await expect(page.getByRole("article", { name: "Pikachu 1, Slot 1" })).toBeVisible();
   await page.reload();
   await expect(page.getByRole("article", { name: "Pikachu 1, Slot 1" })).toBeVisible();
+
+  // Coming back later: the saved gift binder says what is still to do and where to continue.
+  const continueCard = page.getByRole("region", { name: "So geht es mit deinem Geschenk weiter" });
+  await expect(continueCard).toBeVisible();
+  await expect(continueCard.getByText(/Es fehlen noch/)).toBeVisible();
+  await expect(continueCard.getByRole("heading", { name: /Binder bestellen/ })).toBeVisible();
+  await continueCard.getByRole("button", { name: "Karten besorgen" }).click();
+  await expect(page.getByRole("heading", { name: "So bekommst du die Karten" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Wo wohnst du?" })).toBeVisible();
 });
 
 test("offers a lean gift entry without collector navigation", async ({ page }) => {

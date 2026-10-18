@@ -332,3 +332,11 @@
 - **`/anleitung/cardmarket/` uses real screenshots** (user-provided, Oct 2026) instead of our own redrawings (this reverses the earlier "own drawings" decision at the user's request): browser chrome cropped, user name and seller names blurred, yellow numbered frames. They show Cardmarket's UI and logo; the page says so and states that Cardfolio is not affiliated. Whether publishing them is fine with Cardmarket is not clarified.
 - Guide text uses the German button names seen on the live pages ("Wizard ausführen", "Preis reduzieren", "Bestellungen reduzieren", "In den Warenkorb"). The earlier claim that "In den Warenkorb" needs six completed purchases was removed: it worked on the user's account. No price percentages per condition are stated because none could be verified.
 - The release gate `release:evidence` still forbids raster card images in the static export; the guide's 14 screenshots under `public/howto/` are the one named exception (counted separately in the evidence output). They contain no card artwork.
+
+## 2026-10-18 — Coming back to a gift binder: "so geht es weiter"
+
+- Problem: a buyer who stopped and came back later landed in the collector's binder editor with no hint how to continue buying.
+- A binder is a gift binder when a gift project links to it (IndexedDB `giftProjects`). Such a binder shows, above its progress, the card "So geht es mit deinem Geschenk weiter": cards still missing, step 1 order the binder (same recommendations as after planning), step 2 buy the cards. With nothing missing it says so instead.
+- The start page shows a strip "Dein Geschenk wartet noch auf dich" with "Weiter zum Einkauf" for the newest gift binder that still has missing cards.
+- "Karten kaufen" for a gift binder opens the plain-language purchase view, not the collector's expert view.
+- The binder offers moved into `GiftPurchaseSteps`, shared by the planner summary and this card.

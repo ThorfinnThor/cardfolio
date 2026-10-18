@@ -251,3 +251,10 @@
   .binderGrid { grid-template-columns: 1fr; padding-right: 12px; }
   .cover { height: 230px; }
 }
+
+.continueStrip { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin: 0 0 18px; border: 2px solid var(--cf-accent); border-radius: 14px; background: var(--cf-surface); padding: 16px 20px; }
+.continueStrip > div { display: grid; gap: 4px; min-width: 0; }
+.continueStrip strong { color: var(--cf-text); font-family: var(--cf-font-display); font-size: 1.15rem; font-weight: 600; }
+.continueStrip span { color: var(--cf-text2); line-height: 1.45; }
+.continueStrip button { min-height: 52px; display: inline-flex; align-items: center; gap: 9px; border: 1px solid var(--cf-accent); border-radius: 10px; background: var(--cf-accent); color: var(--cf-on-accent); padding: 0 20px; font-size: 1rem; font-weight: 750; cursor: pointer; }
+.continueStrip button:hover { background: var(--cf-accent-deep); }
