@@ -783,17 +783,20 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await expect(page.getByText(/Die Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten/i)).toBeVisible();
   await expect(page.getByText(/^Vault X 9-Pocket Binder/)).toBeVisible();
   await expect(page.getByText("17,99 €", { exact: true }).first()).toBeVisible();
-  await expect(page.getByText("Preis geprüft am 17.10.2026", { exact: true }).first()).toBeVisible();
+  await expect(page.getByText("Preis geprüft am 19.10.2026", { exact: true }).first()).toBeVisible();
   await expect(page.getByText(/Werbelink: Cardfolio kann bei einem Kauf eine Provision erhalten/i)).toBeVisible();
   await expect(page.getByText(/9-Pocket · Platz für bis zu 360 Karten/i).first()).toBeVisible();
   await expect(page.getByText("Passt zu deinem Plan")).toBeVisible();
 
-  const binderLink = page.getByRole("link", { name: /Bei Amazon bestellen/i }).first();
-  const openedBinderUrl = await binderLink.getAttribute("href");
-  const binderTarget = new URL(openedBinderUrl ?? "");
-  expect(binderTarget.origin).toBe("https://www.amazon.de");
-  expect(binderTarget.pathname).toBe("/dp/B01MTYY0IB");
-  expect(binderTarget.searchParams.get("tag")).toBe("cardbinder-21");
+  const binderLinks = page.getByRole("link", { name: /Bei Amazon bestellen/i });
+  await expect(binderLinks).toHaveCount(3);
+  const binderTargets = await binderLinks.evaluateAll((links) => links.map((link) => (link as HTMLAnchorElement).href));
+  expect(binderTargets.map((href) => new URL(href).pathname)).toEqual(["/dp/B01MTYY0IB", "/dp/B0H626R5C9", "/dp/B00VBQHKFU"]);
+  for (const href of binderTargets) {
+    const target = new URL(href);
+    expect(target.origin).toBe("https://www.amazon.de");
+    expect(target.searchParams.get("tag")).toBe("cardbinder-21");
+  }
 
   await page.getByRole("button", { name: "Karten besorgen" }).click();
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
