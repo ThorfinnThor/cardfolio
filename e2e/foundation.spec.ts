@@ -791,7 +791,7 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   const binderLinks = page.getByRole("link", { name: /Bei Amazon bestellen/i });
   await expect(binderLinks).toHaveCount(3);
   const binderTargets = await binderLinks.evaluateAll((links) => links.map((link) => (link as HTMLAnchorElement).href));
-  expect(binderTargets.map((href) => new URL(href).pathname)).toEqual(["/dp/B01MTYY0IB", "/dp/B0H626R5C9", "/dp/B00VBQHKFU"]);
+  expect(binderTargets.map((href) => new URL(href).pathname)).toEqual(["/dp/B01MTYY0IB", "/dp/B0GRHHKR8G", "/dp/B00VBQHKFU"]);
   for (const href of binderTargets) {
     const target = new URL(href);
     expect(target.origin).toBe("https://www.amazon.de");

@@ -12,7 +12,7 @@ describe("production binder partner catalog", () => {
     expect(offers).toHaveLength(3);
     expect(offers.every((offer) => offer.status === "available")).toBe(true);
     expect(offers.every((offer) => offer.capacityCards === 360 && offer.pocketsPerPage === 9)).toBe(true);
-    expect(offers.map((offer) => offer.price?.amountMinor)).toEqual([1799, 2699, 2849]);
+    expect(offers.map((offer) => offer.price?.amountMinor)).toEqual([1799, 3163, 2849]);
   });
 
   it("sends all three offers to Amazon with the affiliate tag and visible disclosure", () => {
@@ -24,7 +24,7 @@ describe("production binder partner catalog", () => {
     expect(offers[0]).toMatchObject({ price: { amountMinor: 1799, currency: "EUR", qualifier: "fixed" } });
 
     const targets = offers.map((offer) => new URL(adapter.buildExternalUrl(offer.id, now) ?? ""));
-    expect(targets.map((target) => target.pathname)).toEqual(["/dp/B01MTYY0IB", "/dp/B0H626R5C9", "/dp/B00VBQHKFU"]);
+    expect(targets.map((target) => target.pathname)).toEqual(["/dp/B01MTYY0IB", "/dp/B0GRHHKR8G", "/dp/B00VBQHKFU"]);
     for (const target of targets) {
       expect(target.origin).toBe("https://www.amazon.de");
       expect(target.searchParams.get("tag")).toBe("cardbinder-21");

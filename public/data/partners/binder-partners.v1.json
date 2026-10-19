@@ -39,13 +39,13 @@
       ]
     },
     {
-      "id": "vaultx-amazon-exotec-9-pocket-zip",
-      "displayName": "Vault X Exo-Tec 9-Pocket Zip Binder",
+      "id": "ultra-pro-amazon-eevee-9-pocket-zip",
+      "displayName": "Ultra Pro Evoli 9-Pocket Zip PRO-Binder",
       "kind": "standard",
       "enabled": true,
       "verifiedAt": "2026-10-19",
       "reviewAfter": "2026-11-19",
-      "destinationUrl": "https://www.amazon.de/dp/B0H626R5C9",
+      "destinationUrl": "https://www.amazon.de/dp/B0GRHHKR8G",
       "affiliate": {
         "enabled": true,
         "text": "Werbelink: Cardfolio kann bei einem Kauf eine Provision erhalten. Dein Preis bleibt gleich.",
@@ -63,13 +63,13 @@
       "capacityCards": 360,
       "pocketsPerPage": 9,
       "price": {
-        "amountMinor": 2699,
+        "amountMinor": 3163,
         "currency": "EUR",
         "qualifier": "fixed",
         "sourceUpdatedAt": "2026-10-19"
       },
       "evidenceUrls": [
-        "https://www.amazon.de/dp/B0H626R5C9"
+        "https://www.amazon.de/dp/B0GRHHKR8G"
       ]
     },
     {
