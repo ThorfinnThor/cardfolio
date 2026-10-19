@@ -784,7 +784,7 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await expect(page.getByText(/^Vault X 9-Pocket Binder/)).toBeVisible();
   await expect(page.getByText("17,99 €", { exact: true }).first()).toBeVisible();
   await expect(page.getByText("Preis geprüft am 19.10.2026", { exact: true }).first()).toBeVisible();
-  await expect(page.getByText(/Werbelink: Cardfolio kann bei einem Kauf eine Provision erhalten/i)).toBeVisible();
+  await expect(page.getByText(/Werbelink: Cardfolio kann bei einem Kauf eine Provision erhalten/i).first()).toBeVisible();
   await expect(page.getByText(/9-Pocket · Platz für bis zu 360 Karten/i).first()).toBeVisible();
   await expect(page.getByText("Alle passen zu deinem Plan")).toBeVisible();
 
@@ -830,7 +830,7 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   const continueCard = page.getByRole("region", { name: "So geht es mit deinem Geschenk weiter" });
   await expect(continueCard).toBeVisible();
   await expect(continueCard.getByText(/Es fehlen noch/)).toBeVisible();
-  await expect(continueCard.getByRole("heading", { name: /Binder bestellen/ })).toBeVisible();
+  await expect(continueCard.getByRole("heading", { name: /Binder auswählen und bestellen/ })).toBeVisible();
   await continueCard.getByRole("button", { name: "Karten besorgen" }).click();
   await expect(page.getByRole("heading", { name: "So bekommst du die Karten" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Wo wohnst du?" })).toBeVisible();
