@@ -17,7 +17,9 @@ describe("gift continue card", () => {
 
     expect(screen.getByRole("region", { name: "So geht es mit deinem Geschenk weiter" })).toBeInTheDocument();
     expect(screen.getByText("9 von 9 Karten")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /Binder bestellen/ })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /Binder auswählen und bestellen/ }),
+    ).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /Karten kaufen/ })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Karten besorgen" }));
     expect(onCardsPurchase).toHaveBeenCalledTimes(1);

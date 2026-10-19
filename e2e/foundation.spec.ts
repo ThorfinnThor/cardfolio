@@ -786,12 +786,19 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await expect(page.getByText("Preis geprüft am 19.10.2026", { exact: true }).first()).toBeVisible();
   await expect(page.getByText(/Werbelink: Cardfolio kann bei einem Kauf eine Provision erhalten/i)).toBeVisible();
   await expect(page.getByText(/9-Pocket · Platz für bis zu 360 Karten/i).first()).toBeVisible();
-  await expect(page.getByText("Passt zu deinem Plan")).toBeVisible();
+  await expect(page.getByText("Alle passen zu deinem Plan")).toBeVisible();
 
   const binderLinks = page.getByRole("link", { name: /Bei Amazon bestellen/i });
-  await expect(binderLinks).toHaveCount(3);
+  await expect(binderLinks).toHaveCount(6);
   const binderTargets = await binderLinks.evaluateAll((links) => links.map((link) => (link as HTMLAnchorElement).href));
-  expect(binderTargets.map((href) => new URL(href).pathname)).toEqual(["/dp/B01MTYY0IB", "/dp/B0GRHHKR8G", "/dp/B00VBQHKFU"]);
+  expect(binderTargets.map((href) => new URL(href).pathname)).toEqual([
+    "/dp/B01MTYY0IB",
+    "/dp/B00VBQHKFU",
+    "/dp/B0GRHHKR8G",
+    "/dp/B0FT4T733F",
+    "/dp/B0DK7Y5QFY",
+    "/dp/B09CLS5XNB",
+  ]);
   for (const href of binderTargets) {
     const target = new URL(href);
     expect(target.origin).toBe("https://www.amazon.de");

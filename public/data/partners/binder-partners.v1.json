@@ -105,6 +105,108 @@
       "evidenceUrls": [
         "https://www.amazon.de/dp/B00VBQHKFU"
       ]
+    },
+    {
+      "id": "ultra-pro-amazon-gengar-9-pocket-zip",
+      "displayName": "Ultra Pro Gengar 9-Pocket Zip PRO-Binder",
+      "kind": "standard",
+      "enabled": true,
+      "verifiedAt": "2026-10-19",
+      "reviewAfter": "2026-11-19",
+      "destinationUrl": "https://www.amazon.de/dp/B0FT4T733F",
+      "affiliate": {
+        "enabled": true,
+        "text": "Werbelink: Cardfolio kann bei einem Kauf eine Provision erhalten. Dein Preis bleibt gleich.",
+        "staticQuery": {
+          "th": "1",
+          "linkCode": "ll2",
+          "tag": "cardbinder-21",
+          "ref_": "as_li_ss_tl"
+        }
+      },
+      "capabilities": {
+        "personalization": false,
+        "photoUpload": false
+      },
+      "capacityCards": 360,
+      "pocketsPerPage": 9,
+      "price": {
+        "amountMinor": 4699,
+        "currency": "EUR",
+        "qualifier": "fixed",
+        "sourceUpdatedAt": "2026-10-19"
+      },
+      "evidenceUrls": [
+        "https://www.amazon.de/dp/B0FT4T733F"
+      ]
+    },
+    {
+      "id": "ultra-pro-amazon-lucario-9-pocket-zip",
+      "displayName": "Ultra Pro Lucario 9-Pocket Zip PRO-Binder",
+      "kind": "standard",
+      "enabled": true,
+      "verifiedAt": "2026-10-19",
+      "reviewAfter": "2026-11-19",
+      "destinationUrl": "https://www.amazon.de/dp/B0DK7Y5QFY",
+      "affiliate": {
+        "enabled": true,
+        "text": "Werbelink: Cardfolio kann bei einem Kauf eine Provision erhalten. Dein Preis bleibt gleich.",
+        "staticQuery": {
+          "th": "1",
+          "linkCode": "ll2",
+          "tag": "cardbinder-21",
+          "ref_": "as_li_ss_tl"
+        }
+      },
+      "capabilities": {
+        "personalization": false,
+        "photoUpload": false
+      },
+      "capacityCards": 360,
+      "pocketsPerPage": 9,
+      "price": {
+        "amountMinor": 4937,
+        "currency": "EUR",
+        "qualifier": "fixed",
+        "sourceUpdatedAt": "2026-10-19"
+      },
+      "evidenceUrls": [
+        "https://www.amazon.de/dp/B0DK7Y5QFY"
+      ]
+    },
+    {
+      "id": "ultra-pro-amazon-pikachu-9-pocket-zip",
+      "displayName": "Ultra Pro Pikachu 9-Pocket Zip PRO-Binder",
+      "kind": "standard",
+      "enabled": true,
+      "verifiedAt": "2026-10-19",
+      "reviewAfter": "2026-11-19",
+      "destinationUrl": "https://www.amazon.de/dp/B09CLS5XNB",
+      "affiliate": {
+        "enabled": true,
+        "text": "Werbelink: Cardfolio kann bei einem Kauf eine Provision erhalten. Dein Preis bleibt gleich.",
+        "staticQuery": {
+          "th": "1",
+          "linkCode": "ll2",
+          "tag": "cardbinder-21",
+          "ref_": "as_li_ss_tl"
+        }
+      },
+      "capabilities": {
+        "personalization": false,
+        "photoUpload": false
+      },
+      "capacityCards": 360,
+      "pocketsPerPage": 9,
+      "price": {
+        "amountMinor": 5447,
+        "currency": "EUR",
+        "qualifier": "fixed",
+        "sourceUpdatedAt": "2026-10-19"
+      },
+      "evidenceUrls": [
+        "https://www.amazon.de/dp/B09CLS5XNB"
+      ]
     }
   ]
 }

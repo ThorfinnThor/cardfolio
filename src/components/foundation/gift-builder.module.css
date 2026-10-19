@@ -268,7 +268,7 @@
 
 @media (max-width: 1024px) {
   .pickGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .offerGrid { grid-template-columns: 1fr; }
+  .offerGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .offerDetails strong { min-height: 0; }
 }
 @media (max-width: 760px) {
@@ -278,6 +278,7 @@
   .progressLine { gap: 10px 16px; }
   .candidateLimitNotice { grid-template-columns: auto minmax(0, 1fr); }
   .candidateLimitNotice button { grid-column: 1 / -1; width: 100%; }
+  .offerGrid { grid-template-columns: 1fr; }
   .purchaseCardCompact { grid-template-columns: 1fr; }
   .inspectorHead { grid-template-columns: minmax(84px, 120px) minmax(0, 1fr) auto; gap: 10px; }
 }

@@ -115,7 +115,7 @@ describe("GiftBuilderPanel", () => {
     expect(screen.queryByText("Kein bestätigter Preis")).not.toBeInTheDocument();
     expect(await screen.findByText("9-Pocket Test-Binder")).toBeInTheDocument();
     expect(screen.getByText(/9-Pocket · Platz für bis zu 360 Karten/i)).toBeInTheDocument();
-    expect(screen.getByText("Passt zu deinem Plan")).toBeInTheDocument();
+    expect(screen.getByText("Alle passen zu deinem Plan")).toBeInTheDocument();
     expect(screen.queryByText(/kein Affiliate-Link/i)).not.toBeInTheDocument();
     const binderLink = screen.getByRole("link", { name: /Bei .+ bestellen/i });
     expect(binderLink).toHaveAttribute("href", "https://partner.example/9-pocket-binder");

@@ -53,17 +53,17 @@ export function GiftPurchaseSteps({ planSize, onCardsPurchase }: GiftPurchaseSte
       Number(right.pocketsPerPage === 9) - Number(left.pocketsPerPage === 9)
       || (left.price?.amountMinor ?? Number.MAX_SAFE_INTEGER) - (right.price?.amountMinor ?? Number.MAX_SAFE_INTEGER)
       || left.displayName.localeCompare(right.displayName, "de"),
-    ).slice(0, 3);
+    ).slice(0, 6);
   }, [binderOffers, planSize]);
 
   return (
     <section className={styles.purchaseOptions} aria-label="Nächste Schritte: Binder bestellen und Karten kaufen">
       <article className={`${styles.purchaseCard} ${styles.purchaseCardFeatured}`}>
-        <div><h3><span className={styles.purchaseNumber} aria-hidden="true">1</span> Binder bestellen</h3><p>Dieser Binder passt zum 3×3-Seitenplan.</p>
+        <div><h3><span className={styles.purchaseNumber} aria-hidden="true">1</span> Binder auswählen und bestellen</h3><p>Wähle einen passenden 9-Pocket-Binder.</p>
           {partnerLoadError ? <p role="status">Angebote sind momentan nicht erreichbar. Du kannst den lokalen Binder weiter bearbeiten.</p> : null}
           {!partnerLoadError && !binderOffers ? <p role="status">Binder-Angebote werden geprüft…</p> : null}
           {!partnerLoadError && recommendedBinderOffers?.length === 0 ? <p role="status">Zurzeit ist kein geprüfter Binder-Shop verfügbar. Du kannst den lokalen Binder trotzdem weiter bearbeiten.</p> : null}
-          {recommendedBinderOffers?.length ? <p className={styles.binderMatch}><Check aria-hidden="true" size={20} /><span><strong>Passt zu deinem Plan</strong>{planSize} Karten = {Math.ceil(planSize / 9)} {Math.ceil(planSize / 9) === 1 ? "Binder-Seite" : "Binder-Seiten"}.</span></p> : null}
+          {recommendedBinderOffers?.length ? <p className={styles.binderMatch}><Check aria-hidden="true" size={20} /><span><strong>Alle passen zu deinem Plan</strong>{planSize} Karten = {Math.ceil(planSize / 9)} {Math.ceil(planSize / 9) === 1 ? "Binder-Seite" : "Binder-Seiten"}.</span></p> : null}
           {recommendedBinderOffers?.length ? <div className={styles.offerGrid}>{recommendedBinderOffers.map((offer, index) => {
             const destinationUrl = offer.status === "available" ? partnerAdapter?.buildExternalUrl(offer.id) : undefined;
             return <div className={styles.offerCard} data-recommended={index === 0} key={offer.id}>

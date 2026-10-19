@@ -4,18 +4,18 @@ import partnerData from "../../../public/data/partners/binder-partners.v1.json";
 import { parseBinderPartnerCatalog, ReviewedBinderAffiliateAdapter } from "@/data/partners/binder-affiliate-adapter";
 
 describe("production binder partner catalog", () => {
-  it("exposes three reviewed Pokémon-compatible binders with checked prices", () => {
+  it("exposes six reviewed Pokémon-compatible binders with checked prices", () => {
     const catalog = parseBinderPartnerCatalog(partnerData);
     const adapter = new ReviewedBinderAffiliateAdapter(catalog);
     const offers = adapter.listOffers(new Date("2026-10-19T12:00:00Z"));
 
-    expect(offers).toHaveLength(3);
+    expect(offers).toHaveLength(6);
     expect(offers.every((offer) => offer.status === "available")).toBe(true);
     expect(offers.every((offer) => offer.capacityCards === 360 && offer.pocketsPerPage === 9)).toBe(true);
-    expect(offers.map((offer) => offer.price?.amountMinor)).toEqual([1799, 3163, 2849]);
+    expect(offers.map((offer) => offer.price?.amountMinor)).toEqual([1799, 3163, 2849, 4699, 4937, 5447]);
   });
 
-  it("sends all three offers to Amazon with the affiliate tag and visible disclosure", () => {
+  it("sends all six offers to Amazon with the affiliate tag and visible disclosure", () => {
     const adapter = new ReviewedBinderAffiliateAdapter(parseBinderPartnerCatalog(partnerData));
     const now = new Date("2026-10-19T12:00:00Z");
     const offers = adapter.listOffers(now);
@@ -24,7 +24,14 @@ describe("production binder partner catalog", () => {
     expect(offers[0]).toMatchObject({ price: { amountMinor: 1799, currency: "EUR", qualifier: "fixed" } });
 
     const targets = offers.map((offer) => new URL(adapter.buildExternalUrl(offer.id, now) ?? ""));
-    expect(targets.map((target) => target.pathname)).toEqual(["/dp/B01MTYY0IB", "/dp/B0GRHHKR8G", "/dp/B00VBQHKFU"]);
+    expect(targets.map((target) => target.pathname)).toEqual([
+      "/dp/B01MTYY0IB",
+      "/dp/B0GRHHKR8G",
+      "/dp/B00VBQHKFU",
+      "/dp/B0FT4T733F",
+      "/dp/B0DK7Y5QFY",
+      "/dp/B09CLS5XNB",
+    ]);
     for (const target of targets) {
       expect(target.origin).toBe("https://www.amazon.de");
       expect(target.searchParams.get("tag")).toBe("cardbinder-21");
