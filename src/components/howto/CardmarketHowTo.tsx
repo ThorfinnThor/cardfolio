@@ -1,8 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { CARDMARKET_POKEMON_WANTS_URL, CARDMARKET_SHOPPING_WIZARD_HELP_URL } from "@/domain/cardmarket-handoff";
 import { cardmarketMinimumCondition, conditionProfiles } from "@/domain/purchase-preferences";
+import { LanguageMenu } from "@/components/foundation/LanguageMenu";
+import { useLocale } from "@/i18n/locale";
 
 import styles from "./howto.module.css";
 
@@ -33,14 +37,15 @@ type ShotName = keyof typeof SHOTS;
 
 /** A real screenshot of the Cardmarket page; the user name is blurred and the numbered frames match the caption. */
 function Shot({ name, alt, caption }: { name: ShotName; alt: string; caption: string }) {
+  const { locale } = useLocale();
   const [width, height] = SHOTS[name];
   return (
     <figure className={styles.figure}>
-      <a href={`/howto/cardmarket/${name}.webp`} target="_blank" rel="noopener noreferrer" aria-label="Bild in voller Größe öffnen">
+      <a href={`/howto/cardmarket/${name}.webp`} target="_blank" rel="noopener noreferrer" aria-label={locale === "en" ? "Open full-size image" : "Bild in voller Größe öffnen"}>
         {/* eslint-disable-next-line @next/next/no-img-element -- a static export without the image optimiser */}
         <img className={styles.shot} src={`/howto/cardmarket/${name}.webp`} width={width} height={height} alt={alt} loading="lazy" decoding="async" />
       </a>
-      <figcaption>{caption} <span className={styles.zoomHint}>Antippen zum Vergrößern.</span></figcaption>
+      <figcaption>{caption} <span className={styles.zoomHint}>{locale === "en" ? "Select to enlarge." : "Antippen zum Vergrößern."}</span></figcaption>
     </figure>
   );
 }
@@ -66,10 +71,171 @@ const CONDITIONS = [
   { code: "PO", name: "Poor", text: "Stark beschädigt. Nur nehmen, wenn der Zustand wirklich egal ist." },
 ] as const;
 
-export function CardmarketHowTo() {
+const STEPS_EN = [
+  { id: "schritt-1", title: "Create an account or sign in" },
+  { id: "schritt-2", title: "Copy the list in Cardfolio" },
+  { id: "schritt-3", title: "Create a wants list and add cards" },
+  { id: "schritt-4", title: "Check that every card was added" },
+  { id: "schritt-5", title: "Set the condition for every card" },
+  { id: "schritt-6", title: "Set the card language" },
+  { id: "schritt-7", title: "Find sellers with the Shopping Wizard" },
+  { id: "schritt-8", title: "Review the cart and pay" },
+] as const;
+
+const CONDITIONS_EN = [
+  { code: "MT", name: "Mint", text: "Flawless, as if fresh from the pack. Rare and usually most expensive." },
+  { code: "NM", name: "Near Mint", text: "Virtually new, with at most tiny signs of wear." },
+  { code: "EX", name: "Excellent", text: "Hardly any wear at first glance; corners or edges may be lightly worn.", pick: true },
+  { code: "GD", name: "Good", text: "Visibly used, with worn corners, edges or light scratches." },
+  { code: "LP", name: "Light Played", text: "Clearly used; small creases and scratches are possible." },
+  { code: "PL", name: "Played", text: "Heavily used. Not recommended for a gift." },
+  { code: "PO", name: "Poor", text: "Heavily damaged. Choose only if condition does not matter." },
+] as const;
+
+function CardmarketHowToEnglish() {
   return (
     <main className={styles.page}>
-      <Link className={styles.back} href="/">← Zurück zu Cardfolio</Link>
+      <div className={styles.topline}>
+        <Link className={styles.back} href="/">← Back to Cardfolio</Link>
+        <LanguageMenu />
+      </div>
+      <header className={styles.header}>
+        <p className={styles.eyebrow}>Buying guide</p>
+        <h1>Buying cards on Cardmarket – step by step</h1>
+        <p>Follow these steps to move your prepared Cardfolio list into a Cardmarket cart. Cardfolio does not sell cards. Cardmarket is mainly used in Europe; TCGplayer is the common marketplace in the USA.</p>
+      </header>
+
+      <nav className={styles.toc} aria-label="Steps in this guide">
+        <ol>{STEPS_EN.map((step) => <li key={step.id}><a href={`#${step.id}`}>{step.title}</a></li>)}</ol>
+      </nav>
+
+      <aside className={styles.note} aria-label="Note about the images">
+        <strong>About the images:</strong> The screenshots show Cardmarket in October 2026. Numbered yellow frames mark where to click. Cardmarket may change labels or layout, so look for the closest matching option if something differs.
+      </aside>
+
+      <section className={styles.step} id="schritt-1" aria-labelledby="schritt-1-title">
+        <h2 id="schritt-1-title"><span>1</span> Create an account or sign in</h2>
+        <p>Open <External href={CARDMARKET_HOME_URL}>Cardmarket</External> and sign in. If you do not have an account, create one there.</p>
+        <p>You need an account for the Shopping Wizard, which combines suitable sellers later in the process.</p>
+      </section>
+
+      <section className={styles.step} id="schritt-2" aria-labelledby="schritt-2-title">
+        <h2 id="schritt-2-title"><span>2</span> Copy the list in Cardfolio</h2>
+        <p>In Cardfolio, select the large <b>“Copy cards &amp; open Cardmarket”</b> button. It copies the prepared list and opens Cardmarket’s Wants section in a new tab.</p>
+        <p>Do not copy anything else before pasting the list with <b>Ctrl+V</b> on Windows or <b>⌘V</b> on Mac.</p>
+      </section>
+
+      <section className={styles.step} id="schritt-3" aria-labelledby="schritt-3-title">
+        <h2 id="schritt-3-title"><span>3</span> Create a wants list and add cards</h2>
+        <p>A wants list is Cardmarket’s wish list. Cardmarket allows up to 150 cards per list.</p>
+        <h3 className={styles.sub}>Create the list</h3>
+        <p>On the Wants page, enter a name under <b>“New Wants List”</b> and select <b>“Add List”</b>. Use letters and numbers only, with no spaces.</p>
+        <Shot name="wants-liste-anlegen" alt="Cardmarket Wants page with the new-list field and Add List button highlighted." caption="Enter a name and add the new list (1)." />
+        <h3 className={styles.sub}>Add the cards</h3>
+        <p>Open the empty list and select <b>“Add Deck List”</b>.</p>
+        <Shot name="deck-liste-knopf" alt="An empty wants list with the Add Deck List button highlighted." caption="The Add Deck List button (1) opens the input area." />
+        <ol className={styles.numbered}>
+          <li>Select the large text area and paste with <b>Ctrl+V</b> or <b>⌘V</b>.</li>
+          <li>Select the green <b>“Add to [your list name]”</b> button.</li>
+        </ol>
+        <Shot name="liste-einfuegen" alt="The deck-list input, add button and Cardmarket result message." caption="Paste into the text area (1), then select the green button (2). Cardmarket confirms which cards were added below." />
+        <p className={styles.tip}><b>Good to know:</b> Cardmarket may display a translated Pokémon name. That is expected when the set and attacks match.</p>
+      </section>
+
+      <section className={styles.step} id="schritt-4" aria-labelledby="schritt-4-title">
+        <h2 id="schritt-4-title"><span>4</span> Check that every card was added</h2>
+        <p>Open your list and compare the number above the table with the number in Cardfolio. For example, a nine-card binder should show nine cards.</p>
+        <Shot name="wants-uebersicht" alt="Cardmarket wants list showing the number of cards above the table." caption="The count above the table (1) shows how many cards were added. Each card initially shows condition ≥ PO." />
+        <p>If Cardmarket did not recognise a card, return to Cardfolio and use its individual search link.</p>
+      </section>
+
+      <section className={styles.step} id="schritt-5" aria-labelledby="schritt-5-title">
+        <h2 id="schritt-5-title"><span>5</span> Set the condition for every card</h2>
+        <p>Cardmarket initially shows <b>≥ PO</b>, meaning Poor or better. Use the bulk change to set the condition once for all cards.</p>
+        <ol className={styles.numbered}>
+          <li>Select the checkbox in the table header to mark every card.</li>
+          <li>Expand <b>“Bulk Editing”</b>.</li>
+        </ol>
+        <Shot name="alle-markieren" alt="Cardmarket wants list with the select-all checkbox and bulk-editing bar highlighted." caption="Select all cards (1), then expand bulk editing (2)." />
+        <ol className={styles.numbered} style={{ counterReset: "howto 2" }}>
+          <li>Set <b>“Minimum condition”</b> to the Cardfolio recommendation. We normally recommend <b>EX</b>.</li>
+          <li>Select <b>“Change selected”</b>, not the red delete button.</li>
+        </ol>
+        <Shot name="zustand-waehlen" alt="The minimum-condition menu with EX selected." caption="Choose the minimum condition (1). EX is selected in this example." />
+        <Shot name="zustand-uebernehmen" alt="Selected cards, condition EX and the Change selected button." caption="With all cards selected and condition EX set, select Change selected (3)." />
+        <Shot name="zustand-gesetzt" alt="Cardmarket confirmation and EX condition on every card." caption="The green message confirms the change. Every card now shows ≥ EX." />
+
+        <h3 className={styles.sub}>Which condition is right?</h3>
+        <p>Better condition usually costs more. Near Mint looks best, while Excellent normally allows many more listings and is our recommended balance for a gift.</p>
+        <table className={styles.conditionTable}>
+          <caption>Cardmarket conditions</caption>
+          <thead><tr><th scope="col">Code</th><th scope="col">Meaning</th></tr></thead>
+          <tbody>{CONDITIONS_EN.map((condition) => <tr key={condition.code} data-pick={"pick" in condition ? "true" : undefined}><th scope="row">{condition.code} · {condition.name}{"pick" in condition ? " (recommended)" : ""}</th><td className={styles.plain}>{condition.text}</td></tr>)}</tbody>
+        </table>
+        <p>“≥ EX” means Excellent or better. For valuable cards, still review the listing photos and seller description.</p>
+      </section>
+
+      <section className={styles.step} id="schritt-6" aria-labelledby="schritt-6-title">
+        <h2 id="schritt-6-title"><span>6</span> Set the card language</h2>
+        <p>Without a language filter, Cardmarket can return cards in any language. Set the language in the same bulk-editing panel.</p>
+        <ol className={styles.numbered}>
+          <li>Select all cards and expand bulk editing again.</li>
+          <li>Choose the required language under <b>“Languages”</b>.</li>
+          <li>Select <b>“Change selected”</b>.</li>
+        </ol>
+        <Shot name="sprache-waehlen" alt="Bulk editing with the language selector and condition EX." caption="The selected language appears as a flag (1). Minimum condition remains EX." />
+        <p className={styles.tip}><b>Tip:</b> Set condition and language together, then apply the change once.</p>
+      </section>
+
+      <section className={styles.step} id="schritt-7" aria-labelledby="schritt-7-title">
+        <h2 id="schritt-7-title"><span>7</span> Find sellers with the Shopping Wizard</h2>
+        <p>Every seller charges shipping separately. The Shopping Wizard helps combine your cards into sensible orders.</p>
+        <h3 className={styles.sub}>1. Choose your wants list</h3>
+        <p>Open <b>“Shopping Wizard”</b>, choose your list and select <b>“Next”</b>.</p>
+        <Shot name="wizard-liste" alt="Shopping Wizard with the wants list and Next button highlighted." caption="Choose your list and select Next (1)." />
+        <h3 className={styles.sub}>2. Choose sellers</h3>
+        <p>For seller location, selecting all of Europe usually provides more listings. International shipping may take longer and cost more.</p>
+        <Shot name="wizard-auswahl" alt="Shopping Wizard seller-location options and Next button." caption="Choose the seller region (1), then select Next (2)." />
+        <h3 className={styles.sub}>3. Choose a strategy</h3>
+        <p><b>“Reduce price”</b> favours lower card prices across more sellers. <b>“Reduce shipments”</b> favours fewer sellers and often saves shipping on inexpensive cards.</p>
+        <Shot name="wizard-strategie" alt="The Reduce price and Reduce shipments strategies." caption="Choose Reduce price (1) or Reduce shipments (2)." />
+        <h3 className={styles.sub}>4. Review the result</h3>
+        <p>Review item value, shipping cost, total and number of sellers before adding the results to the cart.</p>
+        <Shot name="wizard-ergebnis" alt="Shopping Wizard result showing item value, shipping, total and Add to cart." caption="Review the summary (1), then add the results to the cart (2)." />
+        <p className={styles.tip}><b>Remember:</b> Shipping can cost more than inexpensive cards. If the total is too high, reduce the number of cards or choose fewer sellers.</p>
+        <p>Read the <External href={CARDMARKET_SHOPPING_WIZARD_HELP_URL}>Cardmarket Shopping Wizard help</External> for the marketplace’s current rules.</p>
+      </section>
+
+      <section className={styles.step} id="schritt-8" aria-labelledby="schritt-8-title">
+        <h2 id="schritt-8-title"><span>8</span> Review the cart and pay</h2>
+        <p>Each seller is a separate order with separate shipping.</p>
+        <Shot name="warenkorb" alt="A seller section in the cart showing shipping, card condition and language." caption="Review the seller total, shipping method, card condition and language." />
+        <ul>
+          <li>Check the <b>final total including shipping</b>.</li>
+          <li>Review <b>language</b>, <b>condition</b> and <b>printing</b> for every listing.</li>
+          <li>For valuable cards, consider tracked shipping.</li>
+          <li>Payment happens on Cardmarket. Cardfolio has no access to your account and makes no purchase.</li>
+        </ul>
+        <p>Order the physical binder separately using the recommendation in Cardfolio.</p>
+      </section>
+
+      <footer className={styles.footer}>
+        <p>Cardmarket information checked in October 2026. Labels and flows may change. Cardfolio is independent and is not affiliated with Cardmarket.</p>
+        <p><External href={CARDMARKET_POKEMON_WANTS_URL}>Open the Cardmarket Wants page</External></p>
+      </footer>
+    </main>
+  );
+}
+
+export function CardmarketHowTo() {
+  const { locale } = useLocale();
+  if (locale === "en") return <CardmarketHowToEnglish />;
+  return (
+    <main className={styles.page}>
+      <div className={styles.topline}>
+        <Link className={styles.back} href="/">← Zurück zu Cardfolio</Link>
+        <LanguageMenu />
+      </div>
       <header className={styles.header}>
         <p className={styles.eyebrow}>Anleitung</p>
         <h1>Karten bei Cardmarket kaufen – Schritt für Schritt</h1>

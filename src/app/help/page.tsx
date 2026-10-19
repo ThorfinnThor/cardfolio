@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { LanguageMenu } from "@/components/foundation/LanguageMenu";
+
 import styles from "./help.module.css";
 
 export const metadata: Metadata = {
@@ -11,7 +13,10 @@ export const metadata: Metadata = {
 export default function HelpPage() {
   return (
     <main className={styles.page}>
-      <Link className={styles.back} href="/">← Zurück zu Cardfolio</Link>
+      <div className={styles.topline}>
+        <Link className={styles.back} href="/">← Zurück zu Cardfolio</Link>
+        <LanguageMenu />
+      </div>
       <header className={styles.header}>
         <p className={styles.eyebrow}>Hilfe und Transparenz</p>
         <h1>Was Cardfolio speichert und verbindet</h1>

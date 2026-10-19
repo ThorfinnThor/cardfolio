@@ -76,6 +76,7 @@ import { MissingCardsPanel } from "./MissingCardsPanel";
 import { PageSelectionReview, type PageSelectionReviewTarget } from "./PageSelectionReview";
 import { SemanticCardSearch } from "./SemanticCardSearch";
 import { ThemeToggle } from "./ThemeToggle";
+import { LanguageMenu } from "./LanguageMenu";
 import { VariantFields } from "./VariantFields";
 import styles from "./foundation-workspace.module.css";
 
@@ -1954,6 +1955,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
             <span>Cardfolio</span>
           </button>
           <div className={styles.giftBarActions}>
+            <LanguageMenu />
             <ThemeToggle className={styles.themeToggle} />
             <Link className={styles.giftBarLink} href="/anleitung/cardmarket/" target="_blank" rel="noopener noreferrer" aria-label="Anleitung: Karten bei Cardmarket kaufen (öffnet in neuem Tab)">Anleitung</Link>
             {giftShell
@@ -1971,6 +1973,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
             <button type="button" className={styles.topbarSearch} onClick={() => { setBinderManagerOpen(false); setMissingOpen(false); openSearchForSlot(); }} disabled={!activeBinder}>
               <Search size={17} /> <span>Karte suchen</span>
             </button>
+            <LanguageMenu />
             <ThemeToggle className={styles.themeToggle} />
             <span className={styles.status} data-status={storageStatus}><span />{storageStatus === "ready" || storageStatus === "saved" ? "Lokal gespeichert" : storageStatus}</span>
           </div>

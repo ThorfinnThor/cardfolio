@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import type { ReactNode } from "react";
 import "./globals.css";
 
+import { Providers } from "./providers";
+
 const displayFont = localFont({
   src: "./fonts/unbounded-latin-wght-normal.woff2",
   weight: "200 900",
@@ -30,19 +32,23 @@ const monoFont = localFont({
 
 export const metadata: Metadata = {
   title: "Cardfolio",
-  description: "Lokaler Wunschbinder für physische Pokémon-Sammelkarten.",
+  description: "Create a personal Pokémon card binder as a gift or for your own collection.",
 };
 
 /* Applies the stored or system colour mode before the first paint to avoid a light/dark flash. */
 const themeScript = `(function(){try{var s=localStorage.getItem("cardfolio-theme");var t=s==="tag"||s==="nacht"?s:(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"nacht":"tag");document.documentElement.dataset.theme=t;}catch(e){document.documentElement.dataset.theme="nacht";}})();`;
+
+/* Uses the browser language only on the first visit. A manual choice is stored locally and always wins. */
+const localeScript = `(function(){try{var s=localStorage.getItem("cardfolio-locale");var p=(navigator.languages&&navigator.languages[0])||navigator.language||"en";var l=s==="de"||s==="en"?s:(String(p).toLowerCase().indexOf("de")===0?"de":"en");document.documentElement.dataset.locale=l;document.documentElement.lang=l;}catch(e){document.documentElement.dataset.locale="de";document.documentElement.lang="de";}})();`;
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="de" className={`h-full antialiased ${displayFont.variable} ${uiFont.variable} ${monoFont.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: localeScript }} />
       </head>
-      <body>{children}</body>
+      <body><Providers>{children}</Providers></body>
     </html>
   );
 }

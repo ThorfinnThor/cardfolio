@@ -1,0 +1,35 @@
+.menu {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 7px;
+  color: var(--cf-text2);
+  background: var(--cf-field);
+  border: 1px solid var(--cf-line2);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px -6px var(--cf-sh-soft);
+}
+
+.menu > button {
+  min-width: 34px;
+  min-height: 30px;
+  padding: 0 7px;
+  color: inherit;
+  font: 700 12px/1 var(--font-ui), sans-serif;
+  letter-spacing: 0.04em;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.menu > button:hover { color: var(--cf-text); background: var(--cf-surface2); }
+.menu > button[aria-pressed="true"] { color: var(--cf-on-accent); background: var(--cf-accent); }
+.menu > span { width: 1px; height: 18px; background: var(--cf-line); }
+
+@media (max-width: 680px) {
+  .menu { min-height: 36px; padding: 3px 5px; }
+  .menu > svg, .menu > span { display: none; }
+  .menu > button { min-width: 30px; min-height: 28px; padding-inline: 5px; }
+}

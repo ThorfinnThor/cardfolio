@@ -6,6 +6,7 @@ import { useState, type ChangeEvent, type CSSProperties, type FormEvent } from "
 import { deriveBinderStats } from "@/domain/binder-stats";
 import { MAX_BINDERS } from "@/domain/binder-actions";
 import type { Binder } from "@/domain/types";
+import { useLocale, type AppLocale } from "@/i18n/locale";
 
 import { catalogLabel, coverLeather } from "./binder-cover";
 import styles from "./binder-overview.module.css";
@@ -55,6 +56,7 @@ export function BinderOverview({
   continueGift,
   onContinueGift,
 }: BinderOverviewProps) {
+  const { locale } = useLocale();
   const [startMode, setStartMode] = useState<"gift" | "theme" | "set" | "manual">("gift");
   const [collectorModes, setCollectorModes] = useState(false);
   // A first-time visitor sees only the gift start; collectors (or anyone who asks) get all four starts.
@@ -89,7 +91,7 @@ export function BinderOverview({
         </div>
         <div className={styles.giftHeroVisual} aria-hidden="true">
           <span className={styles.pageCaption}>So könnte deine erste Seite aussehen</span>
-          <ExamplePage example={GIFT_EXAMPLES[1]} compact />
+          <ExamplePage example={GIFT_EXAMPLES[1]} compact locale={locale} />
         </div>
       </div>
 
@@ -107,12 +109,12 @@ export function BinderOverview({
         <div className={styles.exampleGrid}>
           {GIFT_EXAMPLES.map((example) => (
             <article className={styles.exampleCard} key={example.query} data-tone={example.tone}>
-              <ExamplePage example={example} />
+              <ExamplePage example={example} locale={locale} />
               <div className={styles.exampleCopy}>
                 <div><span>{example.kicker}</span><h3>{example.title}</h3></div>
                 <p>{example.description}</p>
                 <button type="button" onClick={() => onGiftExampleStart?.(example.query)} disabled={binders.length >= MAX_BINDERS}>
-                  Mit {example.query} starten <ArrowRight aria-hidden="true" size={17} />
+                  {locale === "en" ? <>Start with {giftExampleName(example.query, locale)}</> : <>Mit {example.query} starten</>} <ArrowRight aria-hidden="true" size={17} />
                 </button>
               </div>
             </article>
@@ -292,14 +294,22 @@ const GIFT_EXAMPLES: readonly GiftExample[] = [
   },
 ] as const;
 
-function ExamplePage({ example, compact = false }: { example: GiftExample; compact?: boolean }) {
+function giftExampleName(query: GiftExample["query"], locale: AppLocale): string {
+  if (locale === "de") return query;
+  if (query === "Glurak") return "Charizard";
+  if (query === "Evoli") return "Eevee";
+  return query;
+}
+
+function ExamplePage({ example, compact = false, locale }: { example: GiftExample; compact?: boolean; locale: AppLocale }) {
+  const displayName = giftExampleName(example.query, locale);
   return (
-    <div className={compact ? styles.samplePage : styles.examplePage} aria-label={`${example.query}-Binder-Seite als Beispiel`}>
+    <div className={compact ? styles.samplePage : styles.examplePage} aria-label={locale === "en" ? `${displayName} binder page example` : `${example.query}-Binder-Seite als Beispiel`}>
       {example.cards.map((src, index) => (
         <span className={styles.exampleArtwork} key={src}>
           {/* TCGdex serves the card artwork at runtime; Cardfolio does not store the image bytes. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={src} alt={compact ? "" : `${example.query}-Kartenbeispiel ${index + 1}`} loading="lazy" />
+          <img src={src} alt={compact ? "" : locale === "en" ? `${displayName} card example ${index + 1}` : `${example.query}-Kartenbeispiel ${index + 1}`} loading="lazy" />
         </span>
       ))}
     </div>
