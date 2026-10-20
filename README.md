@@ -47,7 +47,7 @@ Cloudflare Pages owns builds and deployments for the connected public GitHub rep
 - Output directory: `out`
 - Node version: `24.19.0`
 
-Technical preview: `https://cardfolio-780.pages.dev/`
+Primary origin: `https://yourcardbinder.com/` (the earlier technical preview lived at `https://cardfolio-780.pages.dev/`)
 
 See `docs/cloudflare-pages.md` for the exact integration and target-origin verification state. This preview is not an approved public production launch.
 
