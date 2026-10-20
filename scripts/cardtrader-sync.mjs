@@ -195,7 +195,8 @@ await writeIfChanged(join(outDir, "manifest.json"), `${JSON.stringify({
 const semantic = JSON.parse(await readFile("public/data/semantic/card-artwork-search-v1.json", "utf8"));
 const tcgdexBySet = new Map();
 for (const row of semantic.cards) { const [id, , , name, number, setId] = row; (tcgdexBySet.get(setId) ?? tcgdexBySet.set(setId, []).get(setId)).push({ id, name, number }); }
-const noImage = JSON.parse(await readFile("cards-without-images.en.json", "utf8")).cards;
+// Optional audit file (cards TCGdex has no image for). Not tracked on every branch, so the sync does not depend on it.
+const noImage = await readFile("cards-without-images.en.json", "utf8").then((text) => JSON.parse(text).cards, () => []);
 const coverage = { generatedAt: new Date().toISOString(), setsChecked: 0, tcgdexCards: 0, matched: 0, cardtraderOnly: 0, tcgdexOnly: 0, noImageCards: noImage.length, noImageWithCardtraderImage: 0, cardtraderOnlyBySet: [] };
 for (const [key, expansionId] of Object.entries(catalogToExpansion)) {
   if (!key.startsWith("en:") || !perExpansion[expansionId]) continue;
