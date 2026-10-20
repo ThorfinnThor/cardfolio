@@ -37,7 +37,7 @@ jobs:
       - name: Read CardTrader and write the public data files
         env:
           CARDTRADER_API_TOKEN: ${{ secrets.CARDTRADER_API_TOKEN }}
-          MAX_EXPANSIONS: ${{ github.event_name == 'push' && '12' || inputs.max_expansions || '0' }}
+          MAX_EXPANSIONS: ${{ github.event_name == 'push' && '0' || inputs.max_expansions || '0' }}
         run: node --max-old-space-size=4096 scripts/cardtrader-sync.mjs --max-expansions "$MAX_EXPANSIONS" --coverage-out .cardtrader/coverage.json
       - name: Report coverage
         shell: bash
