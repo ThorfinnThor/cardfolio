@@ -3,11 +3,17 @@ import Link from "next/link";
 
 import { LanguageMenu } from "@/components/foundation/LanguageMenu";
 
+import { pageUrlMetadata } from "@/config/site";
+
 import styles from "./help.module.css";
 
+const TITLE = "Hilfe und Datenflüsse · Cardfolio";
+const DESCRIPTION = "Speicherung, Backups, externe Anbieter und Grenzen von Cardfolio.";
+
 export const metadata: Metadata = {
-  title: "Hilfe und Datenflüsse · Cardfolio",
-  description: "Speicherung, Backups, externe Anbieter und Grenzen von Cardfolio.",
+  title: TITLE,
+  description: DESCRIPTION,
+  ...pageUrlMetadata("/help/", TITLE, DESCRIPTION),
 };
 
 export default function HelpPage() {

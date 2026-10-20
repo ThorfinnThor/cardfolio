@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import type { ReactNode } from "react";
 import "./globals.css";
 
+import { SITE_ORIGIN, pageUrlMetadata } from "@/config/site";
+
 import { Providers } from "./providers";
 
 const displayFont = localFont({
@@ -30,9 +32,14 @@ const monoFont = localFont({
   display: "swap",
 });
 
+const SITE_TITLE = "Cardfolio";
+const SITE_DESCRIPTION = "Create a personal Pokémon card binder as a gift or for your own collection.";
+
 export const metadata: Metadata = {
-  title: "Cardfolio",
-  description: "Create a personal Pokémon card binder as a gift or for your own collection.",
+  metadataBase: new URL(SITE_ORIGIN),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  ...pageUrlMetadata("/", SITE_TITLE, SITE_DESCRIPTION),
 };
 
 /* Applies the stored or system colour mode before the first paint to avoid a light/dark flash. */
