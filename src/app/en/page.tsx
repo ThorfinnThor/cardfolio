@@ -1,14 +1,9 @@
-import { LandingSections } from "@/components/content/Articles";
-import { ContentFrame } from "@/components/content/ContentFrame";
+import { LandingPage } from "@/components/content/Landing";
 import { homeMetadata } from "@/content/page-meta";
-import { publishedSpecies } from "@/content/pokemon-stats";
+import { homePath } from "@/content/routes";
 
 export const metadata = homeMetadata("en");
 
 export default function EnglishHome() {
-  return (
-    <ContentFrame language="en" alternatePath="/">
-      <LandingSections language="en" species={publishedSpecies()} withIntro />
-    </ContentFrame>
-  );
+  return <LandingPage language="en" alternatePath={homePath("de")} />;
 }

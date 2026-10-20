@@ -56,3 +56,19 @@
   .page { width: min(100% - 20px, 820px); padding-top: 20px; }
   .section { padding: 17px 17px 17px 21px; }
 }
+
+.hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 28px 40px; align-items: center; margin: 28px 0 8px; }
+.heroText h1 { overflow-wrap: break-word; hyphens: auto; margin: 8px 0 14px; font-family: var(--cf-font-display); font-size: clamp(2rem, 6vw, 3.1rem); font-weight: 600; letter-spacing: -.025em; line-height: 1.06; }
+.heroActions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 18px; }
+.heroActions .cta { margin-top: 0; padding: 14px 24px; font-size: 1.05rem; }
+.secondary { color: var(--cf-accent-text); font-weight: 650; text-underline-offset: 3px; }
+.binder { margin: 0; }
+.binder figcaption { margin-top: 10px; color: var(--cf-accent-text); font-size: .85rem; font-weight: 650; text-align: center; }
+.binderPage { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; border-radius: 16px; background: var(--cf-plaque); padding: 16px; box-shadow: 0 24px 40px -28px var(--cf-cover-sh); transform: rotate(2deg); }
+.pocket { display: block; aspect-ratio: 63 / 88; overflow: hidden; border-radius: 5px; background: rgba(255,255,255,.1); }
+.pocket img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+@media (max-width: 720px) {
+  .hero { grid-template-columns: minmax(0, 1fr); }
+  .binder { max-width: 260px; margin: 0 auto; }
+}

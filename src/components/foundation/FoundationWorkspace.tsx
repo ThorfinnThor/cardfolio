@@ -1959,7 +1959,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
             <ThemeToggle className={styles.themeToggle} />
             <Link className={styles.giftBarLink} href="/anleitung/cardmarket/" target="_blank" rel="noopener noreferrer" aria-label="Anleitung: Karten bei Cardmarket kaufen (öffnet in neuem Tab)">Anleitung</Link>
             {giftShell
-              ? <Link className={styles.giftBarLink} href="/">Ich sammle selbst</Link>
+              ? <Link className={styles.giftBarLink} href="/app/">Ich sammle selbst</Link>
               : <button type="button" className={styles.giftBarLink} onClick={() => { setSetBinderWizardOpen(false); setMissingOpen(false); setMissingBeginner(false); setGiftBuilderOpen(false); setBinderManagerOpen(true); }}>Meine Binder</button>}
           </div>
         </header> : <header className={styles.topbar}>

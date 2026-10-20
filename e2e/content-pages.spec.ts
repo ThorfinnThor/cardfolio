@@ -24,17 +24,51 @@ for (const { path, lang, heading } of PAGES) {
   });
 }
 
-test("the home page explains the product below the app and states the independence notice", async ({ page }) => {
+test("the home page is a landing page with one clear way into the tool and a way to the app", async ({ page }) => {
+  await page.addInitScript(() => window.localStorage.setItem("cardfolio-locale", "en"));
   await page.goto("/");
-  const section = page.getByRole("region", { name: "Über Cardfolio" });
-  await expect(section.getByRole("heading", { name: "Was Cardfolio macht" })).toBeAttached();
-  await expect(section.getByText(/nicht mit Nintendo, Creatures Inc., GAME FREAK inc. oder The Pokémon Company verbunden/)).toBeAttached();
+  await expect(page.locator("html")).toHaveAttribute("lang", "de");
+  await expect(page.getByRole("heading", { level: 1, name: /Ein Binder voller Karten/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Geschenk-Binder gestalten" }).first()).toHaveAttribute("href", "/geschenk/");
+  await expect(page.getByRole("link", { name: "Ich sammle selbst" })).toHaveAttribute("href", "/app/");
+  await expect(page.getByRole("heading", { name: "Was Cardfolio macht" })).toBeVisible();
+  await expect(page.getByText(/nicht mit Nintendo, Creatures Inc., GAME FREAK inc. oder The Pokémon Company verbunden/)).toBeVisible();
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://yourcardbinder.com/");
+  await expect(page.locator('nav a[href="/ratgeber/"]').first()).toBeVisible();
 });
 
-test("the gift entry canonicalises to the home page", async ({ page }) => {
-  await page.goto("/geschenk/");
-  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://yourcardbinder.com/");
+for (const path of ["/", "/en/"]) {
+  test(`landing page ${path} fits a phone`, async ({ page }) => {
+    await page.setViewportSize({ height: 812, width: 375 });
+    await page.goto(path);
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(375);
+  });
+}
+
+test("the landing page opens the gift tool and the app on their own addresses", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: "Geschenk-Binder gestalten" }).first().click();
+  await expect(page).toHaveURL(/\/geschenk\/$/);
+  await page.goto("/");
+  await page.getByRole("link", { name: "Ich sammle selbst" }).click();
+  await expect(page).toHaveURL(/\/app\/$/);
+  await expect(page.getByRole("button", { name: "Backup exportieren" }).or(page.getByText("Backup exportieren")).first()).toBeVisible();
+});
+
+test("the English landing page stays English whatever language was stored", async ({ page }) => {
+  await page.addInitScript(() => window.localStorage.setItem("cardfolio-locale", "de"));
+  await page.goto("/en/");
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await expect(page.getByRole("heading", { level: 1, name: /A binder full of cards/ })).toBeVisible();
+  await expect(page.locator('link[rel="alternate"][hreflang="de"]')).toHaveAttribute("href", "https://yourcardbinder.com/");
+});
+
+test("the gift tool and the app are not offered to search engines", async ({ page }) => {
+  for (const path of ["/geschenk/", "/app/"]) {
+    await page.goto(path);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+  }
 });
 
 for (const { path, lang, heading } of [
@@ -56,7 +90,7 @@ for (const { path, lang, heading } of [
   });
 }
 
-for (const path of ["/", "/geschenk/", "/help/", "/anleitung/cardmarket/", "/ratgeber/pokemon-karten-verschenken/"]) {
+for (const path of ["/", "/app/", "/geschenk/", "/help/", "/anleitung/cardmarket/", "/ratgeber/pokemon-karten-verschenken/"]) {
   test(`${path} links the legal notice and the privacy policy`, async ({ page }) => {
     await page.goto(path);
     await expect(page.locator('a[href="/impressum/"]').first()).toBeAttached();

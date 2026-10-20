@@ -28,7 +28,7 @@ function words(markup: string): number {
 
 /** Every route the site publishes, as paths with trailing slash. */
 function knownPaths(): Set<string> {
-  const paths = new Set<string>(["/", "/en/", "/geschenk/", "/help/", "/anleitung/cardmarket/", "/impressum/", "/datenschutz/", "/en/legal-notice/", "/en/privacy/"]);
+  const paths = new Set<string>(["/", "/en/", "/geschenk/", "/app/", "/help/", "/anleitung/cardmarket/", "/impressum/", "/datenschutz/", "/en/legal-notice/", "/en/privacy/"]);
   for (const language of LANGUAGES) {
     paths.add(guideIndexPath(language));
     paths.add(speciesIndexPath(language));
@@ -156,7 +156,7 @@ describe("internal links", () => {
     const known = knownPaths();
     for (const language of LANGUAGES) {
       const pages = [
-        <ContentFrame key="home" language={language}><LandingSections language={language} species={published} withIntro /></ContentFrame>,
+        <ContentFrame key="home" language={language}><LandingSections language={language} species={published} /></ContentFrame>,
         <ContentFrame key="guides" language={language}><GuideIndex language={language} /></ContentFrame>,
         ...GUIDES.map((guide) => <ContentFrame key={guide.id} language={language}><GuideArticle guide={guide} language={language} /></ContentFrame>),
         ...published.map((item) => <ContentFrame key={item.entry.slug} language={language}><SpeciesArticle published={item} language={language} all={published} /></ContentFrame>),
@@ -213,7 +213,8 @@ describe("fixed language routes", () => {
     expect(fixedLocaleForPath("/en/guides/gift-pokemon-cards/")).toBe("en");
     expect(fixedLocaleForPath("/ratgeber/pokemon-kartenzustand")).toBe("de");
     expect(fixedLocaleForPath("/pokemon-binder/glurak/")).toBe("de");
-    expect(fixedLocaleForPath("/")).toBeNull();
+    expect(fixedLocaleForPath("/")).toBe("de");
+    expect(fixedLocaleForPath("/app/")).toBeNull();
     expect(fixedLocaleForPath("/geschenk/")).toBeNull();
     expect(fixedLocaleForPath("/help/")).toBeNull();
     expect(fixedLocaleForPath("/entry/")).toBeNull();

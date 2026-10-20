@@ -231,8 +231,8 @@ export function ArtworkReviewWorkspace({ enabled }: { enabled: boolean }) {
     window.location.reload();
   }
 
-  if (!enabled) return <main className={styles.shell}><h1>Artwork-Prüfung</h1><p>Diese lokale Qualitätsoberfläche ist in Produktions-Builds deaktiviert.</p><Link href="/">Zurück zu Cardfolio</Link></main>;
-  if (error) return <main className={styles.shell}><h1>Artwork-Prüfung</h1><p role="alert">{error}</p><Link href="/">Zurück zu Cardfolio</Link></main>;
+  if (!enabled) return <main className={styles.shell}><h1>Artwork-Prüfung</h1><p>Diese lokale Qualitätsoberfläche ist in Produktions-Builds deaktiviert.</p><Link href="/app/">Zurück zu Cardfolio</Link></main>;
+  if (error) return <main className={styles.shell}><h1>Artwork-Prüfung</h1><p role="alert">{error}</p><Link href="/app/">Zurück zu Cardfolio</Link></main>;
   if (!current) return <main className={styles.shell}><h1>Artwork-Prüfung wird geladen…</h1></main>;
 
   const [id, , caption, name, collectorNumber, setId, setName, seriesId] = current.row;
@@ -250,7 +250,7 @@ export function ArtworkReviewWorkspace({ enabled }: { enabled: boolean }) {
   return <main className={styles.shell}>
     <header className={styles.header}>
       <div><p className={styles.eyebrow}>LOKALES QUALITÄTSWERKZEUG</p><h1>Artwork-Motive prüfen</h1><p>Bewerte ausschließlich das eigentliche Artwork – nicht Kartenname, Typ, Angriffe oder Rahmen. Pro Thema priorisiert die Stichprobe mindestens zehn neuere Full-Art-Kandidaten.</p></div>
-      <Link href="/">Cardfolio öffnen</Link>
+      <Link href="/app/">Cardfolio öffnen</Link>
     </header>
     <section className={styles.toolbar}>
       <label>Thema<select value={themeFilter} onChange={(event) => { setThemeFilter(event.target.value); setPosition(0); }}><option value="all">Alle 10 Themen · {totalReviewCount} Prüfungen</option>{GIFT_THEME_PRESETS.map((theme) => { const limit = themeLimits.get(theme.id) ?? PER_THEME; return <option key={theme.id} value={theme.id}>{theme.label} · {limit}{limit > PER_THEME ? " · Zusatzrunde" : ""}</option>; })}</select></label>

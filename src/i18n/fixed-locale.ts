@@ -9,6 +9,7 @@ export const FIXED_GERMAN_PREFIXES = ["/ratgeber/", "/pokemon-binder/", "/impres
 
 export function fixedLocaleForPath(pathname: string): AppLocale | null {
   const path = pathname.endsWith("/") ? pathname : `${pathname}/`;
+  if (path === "/") return "de";
   if (path.startsWith(FIXED_ENGLISH_PREFIX)) return "en";
   if (FIXED_GERMAN_PREFIXES.some((prefix) => path.startsWith(prefix))) return "de";
   return null;

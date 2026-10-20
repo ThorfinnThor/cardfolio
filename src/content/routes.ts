@@ -5,6 +5,11 @@ import type { SpeciesEntry } from "./pokemon-species";
 
 export const TOOL_PATH = "/geschenk/";
 
+/** The full app (collector navigation, saved binders). Never reuse `/` for it: the home page is the public landing page. */
+export function appPath(): string {
+  return "/app/";
+}
+
 export function homePath(language: PageLanguage): string {
   return language === "de" ? "/" : "/en/";
 }
