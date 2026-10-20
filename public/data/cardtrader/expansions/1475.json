@@ -1,0 +1,9 @@
+{"id":1475,"code":"wpromos","name":"W Promos","blueprints":[
+{"id":111380,"n":"063","name":"Wartortle","rar":"Promo","img":"111380/preview_wartortle-w-promo-63-130-w-promos.jpg","cm":[275593],"tp":127206},
+{"id":119670,"n":"050","name":"Kabuto","rar":"Common","img":"119670/preview_kabuto-w-promo-50-62-w-promos.jpg","cm":[275590],"tp":123631},
+{"id":120620,"n":"037/132","name":"Brock's Vulpix","rar":"Uncommon","img":"120620/preview_brock-s-vulpix-w-promo-37-132-gym-challange-promos.jpg","cm":[275589],"tp":123632},
+{"id":120886,"n":"054","name":"Misty's Psyduck Lv.15","rar":"Promo","img":"120886/preview_misty-s-psyduck-w-promo-54-132-w-promos.jpg","cm":[275591]},
+{"id":121533,"n":"060","name":"Pikachu","rar":"Common","img":"121533/preview_pikachu-w-promo-60-64-jungle-promos.jpg","cm":[275592],"tp":126209},
+{"id":129502,"n":"019","name":"Dark Arbok","rar":"Promo","img":"129502/preview_dark-arbok-w-stamped-promo-19-82-team-rocket-promos.jpg","cm":[275587],"tp":126208},
+{"id":129503,"n":"032","name":"Dark Charmeleon","rar":"Promo","img":"129503/preview_dark-charmeleon-w-stamped-promo-32-82-team-rocket-promos.jpg","cm":[275588],"tp":180834}
+]}

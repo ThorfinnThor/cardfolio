@@ -54,6 +54,7 @@ export function plainVariantNote(variant: VariantSelection): string | undefined 
 export function plainPriceSource(source: GiftCardCandidate["price"]["source"]): string | undefined {
   if (source === "tcgdex-cardmarket") return "Cardmarket";
   if (source === "tcgdex-tcgplayer") return "TCGplayer";
+  if (source === "cardtrader") return "CardTrader (günstigstes Angebot)";
   return undefined;
 }
 

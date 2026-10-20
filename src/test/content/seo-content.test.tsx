@@ -247,7 +247,7 @@ describe("legal pages", () => {
     for (const language of LANGUAGES) {
       const privacy = text(language, "privacy");
       for (const key of BROWSER_STORAGE_KEYS) expect(privacy, `${language} ${key}`).toContain(key);
-      for (const host of ["api.tcgdex.net", "assets.tcgdex.net", "Cloudflare", "Cardmarket", "TCGplayer", "amazon.de"]) expect(privacy, `${language} ${host}`).toContain(host);
+      for (const host of ["api.tcgdex.net", "assets.tcgdex.net", "cardtrader.com", "Cloudflare", "Cardmarket", "TCGplayer", "amazon.de"]) expect(privacy, `${language} ${host}`).toContain(host);
     }
   });
 

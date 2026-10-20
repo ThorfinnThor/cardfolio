@@ -172,4 +172,25 @@ describe("Gift candidate loader", () => {
     const modern = await loader.loadCandidatePool({ subjectQuery: "Pikachu", language: "en", maximum: 8, pageSize: 24, scan: 100, era: "modern" });
     expect(modern.every((item) => !["base1", "neo2", "ex5", "dp3"].includes(item.setId ?? ""))).toBe(true);
   });
+
+  it("marks cards that only have CardTrader artwork, and passes the minimum condition to the price provider", async () => {
+    const seen: Array<string | undefined> = [];
+    const priceSpy: PriceProvider = { async getPrice(request) { seen.push(request.minimumCondition); return prices.getPrice(request); } };
+    const withImage = (ref: CardRef) => ({ ...snapshot(ref), imageBaseUrl: "https://assets.tcgdex.net/en/base/base1/1" });
+    const catalog = {
+      async search(query: CatalogQuery) {
+        return { items: [0, 1].map((index) => ({ ref: { provider: "tcgdex" as const, id: `a${index}`, language: query.language }, name: "Pikachu", collectorNumber: `${index}` })), hasMore: false };
+      },
+      async getCard(ref: CardRef) { return ref.id === "a1" ? withImage(ref) : snapshot(ref); },
+    };
+    const asked: string[] = [];
+    const loader = new GiftCandidateLoader(catalog, priceSpy, async (card) => { asked.push(card.ref.id); return true; });
+    const briefs = await loader.loadCandidatePool({ subjectQuery: "Pikachu", language: "en", maximum: 2, pageSize: 2 });
+    const candidates = await loader.hydrateCandidates(briefs, { currency: "EUR", variantFor: () => ({ finish: "normal", edition: "unlimited", printing: "shadowed" }), preferences: { minimumCondition: "near-mint" }, cacheTtlMs: 60_000 });
+
+    expect(seen).toEqual(["near-mint", "near-mint"]);
+    expect(asked).toEqual(["a0"]);
+    expect(candidates.find((candidate) => candidate.card.ref.id === "a0")?.cardtraderImage).toBe(true);
+    expect(candidates.find((candidate) => candidate.card.ref.id === "a1")?.cardtraderImage).toBeUndefined();
+  });
 });

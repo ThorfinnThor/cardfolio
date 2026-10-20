@@ -4,8 +4,10 @@
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 
+import { FEATURES } from "@/config/feature-flags";
 import { imageLanguage } from "@/data/catalog/image-fallbacks";
 import { cardImageUrl } from "@/data/catalog/images";
+import { cardtraderCatalog, cardtraderImageUrl } from "@/data/cardtrader/catalog";
 import type { CardSnapshot } from "@/domain/types";
 
 const IMAGE_LANGUAGE_LABELS: Record<string, string> = {
@@ -18,7 +20,7 @@ const IMAGE_LANGUAGE_LABELS: Record<string, string> = {
 };
 
 interface CardArtworkProps {
-  card: Pick<CardSnapshot, "name" | "setName" | "collectorNumber" | "ref" | "imageBaseUrl" | "imageFallbackBaseUrl">;
+  card: Pick<CardSnapshot, "name" | "setName" | "collectorNumber" | "ref" | "imageBaseUrl" | "imageFallbackBaseUrl"> & { setId?: string; englishIdentity?: { name: string } };
   className: string;
   fallback: ReactNode;
   onAvailable?: () => void;
@@ -34,10 +36,42 @@ export function CardArtwork({ card, className, fallback, onAvailable, onUnavaila
   const candidateIndex = attempt.signature === signature ? attempt.candidateIndex : 0;
   const exhausted = candidateIndex >= candidates.length;
 
-  useEffect(() => {
-    if (exhausted) onUnavailable?.();
-  }, [exhausted, onUnavailable, signature]);
+  // When TCGdex has no usable image, look the card up in the CardTrader data (verified set mapping, unique number).
+  const cardtraderKey = `${card.ref.language}|${card.setId}|${card.collectorNumber}|${card.name}`;
+  const [cardtrader, setCardtrader] = useState<{ key: string; url?: string; done: boolean }>({ key: cardtraderKey, done: false });
+  const cardtraderState = cardtrader.key === cardtraderKey ? cardtrader : { key: cardtraderKey, done: false };
+  const useCardtrader = FEATURES.cardtraderImages && exhausted && Boolean(card.setId);
+  const nameHint = card.englishIdentity?.name ?? card.name;
 
+  useEffect(() => {
+    if (!useCardtrader || cardtraderState.done) return;
+    let cancelled = false;
+    void cardtraderCatalog.blueprint(card.ref.language, card.setId!, card.collectorNumber, nameHint).then((match) => {
+      if (cancelled) return;
+      setCardtrader({ key: cardtraderKey, url: match?.blueprint.img ? cardtraderImageUrl(match.blueprint.img) : undefined, done: true });
+    });
+    return () => { cancelled = true; };
+  }, [useCardtrader, cardtraderState.done, cardtraderKey, card.ref.language, card.setId, card.collectorNumber, nameHint]);
+
+  const waitingForCardtrader = useCardtrader && !cardtraderState.done;
+  const unavailable = exhausted && !waitingForCardtrader && !cardtraderState.url;
+  useEffect(() => {
+    if (unavailable) onUnavailable?.();
+  }, [unavailable, onUnavailable, signature, cardtraderState.url]);
+
+  if (exhausted && cardtraderState.url) {
+    return (
+      <span className={className}>
+        <img
+          src={cardtraderState.url}
+          alt={`${card.name}, ${card.setName} ${card.collectorNumber}`}
+          onLoad={onAvailable}
+          onError={() => setCardtrader({ key: cardtraderKey, done: true })}
+        />
+        <span>Bild: CardTrader</span>
+      </span>
+    );
+  }
   const imageBaseUrl = candidates[candidateIndex];
   if (!imageBaseUrl) return fallback;
   const shownLanguage = imageLanguage(imageBaseUrl);

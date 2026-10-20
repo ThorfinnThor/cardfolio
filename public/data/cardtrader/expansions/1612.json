@@ -1,0 +1,20 @@
+{"id":1612,"code":"det","name":"Detective Pikachu","blueprints":[
+{"id":113921,"n":"001","name":"Bulbasaur","rar":"Promo","img":"113921/preview_bulbasaur-holo-promo-1-18-detective-pikachu.jpg","cm":[370766],"tp":186001},
+{"id":113922,"n":"02/18","name":"Ludicolo","rar":"Promo","img":"113922/preview_ludicolo-holo-promo-2-18-detective-pikachu.jpg","cm":[370767],"tp":186003},
+{"id":113923,"n":"03/18","name":"Morelull","rar":"Promo","img":"113923/preview_morelull-holo-promo-3-18-detective-pikachu.jpg","cm":[370768],"tp":186004},
+{"id":113924,"n":"04/18","name":"Charmander","rar":"Promo","img":"113924/preview_charmander-holo-promo-4-18-detective-pikachu.jpg","cm":[370769],"tp":186005},
+{"id":113925,"n":"05/18","name":"Charizard","rar":"Promo","img":"113925/preview_charizard-holo-promo-5-18-detective-pikachu.jpg","cm":[370770],"tp":186007},
+{"id":113926,"n":"06/18","name":"Arcanine","rar":"Promo","img":"113926/preview_arcanine-holo-promo-6-18-detective-pikachu.jpg","cm":[370771],"tp":186009},
+{"id":113927,"n":"07/18","name":"Psyduck","rar":"Promo","img":"113927/preview_psyduck-holo-promo-7-18-detective-pikachu.jpg","cm":[370626],"tp":186010},
+{"id":113928,"n":"08/18","name":"Magikarp","rar":"Promo","img":"113928/preview_magikarp-holo-promo-8-18-detective-pikachu.jpg","cm":[370772],"tp":186012},
+{"id":113929,"n":"09/18","name":"Greninja","rar":"Promo","img":"113929/preview_greninja-holo-promo-9-18-detective-pikachu.jpg","cm":[370773],"tp":186013},
+{"id":113930,"n":"10/18","name":"Detective Pikachu","rar":"Promo","img":"113930/preview_detective-pikachu-holo-promo-10-18-detective-pikachu.jpg","cm":[370774],"tp":186015},
+{"id":113931,"n":"11/18","name":"Mr. Mime","rar":"Promo","img":"113931/preview_mr-mime-holo-promo-11-18-detective-pikachu.jpg","cm":[370628],"tp":186019},
+{"id":113932,"n":"12/18","name":"Mewtwo","rar":"Promo","img":"113932/preview_mewtwo-holo-promo-12-18-detective-pikachu.jpg","cm":[370775],"tp":186020},
+{"id":113933,"n":"13/18","name":"Machamp","rar":"Promo","img":"113933/preview_machamp-holo-promo-13-18-detective-pikachu.jpg","cm":[370776],"tp":186021},
+{"id":113934,"n":"14/18","name":"Jigglypuff","rar":"Promo","img":"113934/preview_jigglypuff-holo-promo-14-18-detective-pikachu.jpg","cm":[370627],"tp":186022},
+{"id":113935,"n":"15/18","name":"Snubbull","rar":"Promo","img":"113935/preview_snubbull-holo-promo-15-18-detective-pikachu.jpg","cm":[370777],"tp":186023},
+{"id":113936,"n":"16/18","name":"Lickitung","rar":"Promo","img":"113936/preview_lickitung-holo-promo-16-18-detective-pikachu.jpg","cm":[370778],"tp":186024},
+{"id":113937,"n":"17/18","name":"Ditto","rar":"Promo","img":"113937/preview_ditto-holo-promo-17-18-detective-pikachu.jpg","cm":[370779],"tp":186025},
+{"id":113938,"n":"18/18","name":"Slaking","rar":"Promo","img":"113938/preview_slaking-holo-promo-18-18-detective-pikachu.jpg","cm":[370780],"tp":186026}
+]}

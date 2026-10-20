@@ -12,7 +12,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 - Read the implementation plan and `docs/decisions.md` before changing architecture.
 - P0 is local-first: no Supabase, R2, authentication, server-side user database, or private user data in GitHub.
-- Card images stay external `assets.tcgdex.net` references. Do not download, mirror, proxy, commit, or cache image bytes.
+- Card images stay external references: `assets.tcgdex.net` first and, as a clearly labelled fallback only when TCGdex has no working image, `cardtrader.com` blueprint images (CardTrader permission of 2026-10-20). Do not download, mirror, proxy, commit, or cache image bytes from either host.
+- CardTrader data (`public/data/cardtrader/`) is written only by `.github/workflows/cardtrader-sync.yml` from read-only API endpoints. The token never reaches the browser, a backup or the repository. Wishlist, cart and purchase endpoints are never called; `cardtraderCatalog`, `cardtraderWishlist` and `cardtraderCommerce` stay off without a new written permission.
 - The application is a static Next.js export. Do not introduce Server Actions, dynamic route handlers, cookies, or a required runtime server.
 - Keep domain and repository logic independent of React. A blank slot is not a missing card.
 - Card identity includes provider ID, language, variant, edition, and purchase preference where relevant.
