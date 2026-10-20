@@ -4,6 +4,10 @@ name: CardTrader API shape probe
 # data integration is built. Uploads a small trimmed sample for one day. See docs/cardtrader-release-gate.md.
 on:
   workflow_dispatch:
+  # Temporary: lets the probe run from its own branch before it exists on the default branch.
+  push:
+    branches: [feat/cardtrader-data]
+    paths: [scripts/cardtrader-sample.mjs, .github/workflows/cardtrader-sample.yml]
 
 permissions:
   contents: read
