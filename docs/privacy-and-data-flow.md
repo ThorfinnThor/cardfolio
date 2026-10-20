@@ -36,7 +36,7 @@ A copy in the same browser profile is not an independent backup. Losing the devi
 
 ## Operator actions required before a public launch
 
-1. ~~Record the legal operator name, contact path, country and production domain.~~ Done on 2026-10-20 in `src/config/operator.ts` (SeitenHafen361, owner Schayan Yousefian, Berlin). The contact mailbox `info@yourcardbinder.com` still has to be confirmed to exist.
+1. ~~Record the legal operator name, contact path, country and production domain.~~ Done on 2026-10-20 in `src/config/operator.ts` (SeitenHafen361, owner Schayan Yousefian, Berlin). The contact address `info@yourcardbinder.com` was chosen by the owner; the mailbox must receive mail before the public launch.
 2. Review which Cloudflare request/security logs are enabled, their purpose, access and retention.
 3. ~~Produce the privacy notice and imprint~~ Drafted on 2026-10-20 (`/datenschutz/`, `/impressum/`, English versions). Still to do: legal read-through before the public launch.
 4. Verify whether a consent mechanism is required. The current build has no analytics or advertising and does not add one implicitly.
