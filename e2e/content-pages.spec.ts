@@ -107,3 +107,20 @@ test("every public content page uses the same column width", async ({ page }) =>
   }
   expect(Object.values(widths).every((width) => width === 1120), JSON.stringify(widths)).toBe(true);
 });
+
+test("articles fill the column with a sidebar on desktop and drop it on a phone", async ({ page }) => {
+  await page.setViewportSize({ height: 900, width: 1440 });
+  for (const path of ["/ratgeber/pokemon-karten-verschenken/", "/pokemon-binder/glurak/", "/datenschutz/", "/help/", "/anleitung/cardmarket/"]) {
+    await page.goto(path);
+    const toc = page.getByRole("navigation", { name: /Auf dieser Seite|Schritte dieser Anleitung/ });
+    await expect(toc, path).toBeVisible();
+    const box = (await toc.boundingBox())!;
+    const main = (await page.locator("main").first().boundingBox())!;
+    expect(box.x + box.width, `${path} sidebar sits at the right edge of the column`).toBeGreaterThan(main.x + main.width - 4);
+  }
+
+  await page.setViewportSize({ height: 812, width: 375 });
+  await page.goto("/ratgeber/pokemon-karten-verschenken/");
+  await expect(page.getByRole("navigation", { name: "Auf dieser Seite" })).toBeHidden();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(375);
+});

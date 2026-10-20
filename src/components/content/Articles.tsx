@@ -8,6 +8,7 @@ import { TOOL_PATH, guideIndexPath, guidePath, homePath, speciesIndexPath, speci
 import { SEMANTIC_TAG_LABELS, type SemanticTag } from "@/domain/semantic-card-search";
 
 import styles from "./content.module.css";
+import { ArticleLayout, sectionId } from "./ArticleLayout";
 import { JsonLd } from "./JsonLd";
 import { ToolLink } from "./ToolLink";
 
@@ -78,23 +79,24 @@ export function GuideArticle({ guide, language }: { guide: Guide; language: Page
         <p className={styles.lead}>{text.intro}</p>
         <p className={styles.meta}>{updatedLabel}: <time dateTime={guide.updated}>{formatDate(language, guide.updated)}</time></p>
       </header>
-      {text.sections.map((section) => (
-        <section key={section.heading} className={styles.section}>
-          <h2>{section.heading}</h2>
-          {section.blocks.map((block, index) => <Block key={index} block={block} />)}
+      <ArticleLayout language={language} toc={[...text.sections.map((section, index) => ({ id: sectionId(index), label: section.heading })), { id: "weiterlesen", label: relatedHeading }]}>
+        {text.sections.map((section, index) => (
+          <section key={section.heading} id={sectionId(index)} className={styles.section}>
+            <h2>{section.heading}</h2>
+            {section.blocks.map((block, blockIndex) => <Block key={blockIndex} block={block} />)}
+          </section>
+        ))}
+        <section id="weiterlesen" className={styles.section}>
+          <h2>{relatedHeading}</h2>
+          <ul>
+            {guide.related.flatMap((id) => {
+              const related = guideById(id);
+              return related ? [<li key={id}><Link href={guidePath(language, related)}>{related[language].title}</Link></li>] : [];
+            })}
+            {language === "de" ? <li><Link href="/anleitung/cardmarket/">{copy.buyingGuideLabel}</Link>. {copy.buyingGuideText}</li> : null}
+          </ul>
         </section>
-      ))}
-      <section className={styles.section}>
-        <h2>{relatedHeading}</h2>
-        <ul>
-          {guide.related.flatMap((id) => {
-            const related = guideById(id);
-            return related ? [<li key={id}><Link href={guidePath(language, related)}>{related[language].title}</Link></li>] : [];
-          })}
-          {language === "de" ? <li><Link href="/anleitung/cardmarket/">{copy.buyingGuideLabel}</Link>. {copy.buyingGuideText}</li> : null}
-        </ul>
-        <ToolCta language={language} label={copy.cta} />
-      </section>
+      </ArticleLayout>
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "Article",
@@ -155,9 +157,21 @@ export function SpeciesArticle({ published, language, all }: { published: Publis
         <h1>{de ? `${name}-Binder: Karten sammeln und verschenken` : `${name} binder: collecting and gifting the cards`}</h1>
         <p className={styles.lead}>{entry.about[language][0]}</p>
       </header>
+      <ArticleLayout
+        language={language}
+        toc={[
+          { id: "glance", label: de ? "Auf einen Blick" : "At a glance" },
+          { id: "about", label: de ? `Über ${name}` : `About ${name}` },
+          { id: "numbers", label: de ? "In Zahlen" : "By the numbers" },
+          ...(stats.topThemes.length > 0 ? [{ id: "themes", label: de ? "Häufige Motive" : "Common artwork themes" }] : []),
+          { id: "plan", label: de ? "Binder planen" : "Planning the binder" },
+          { id: "examples", label: de ? "Beispielkarten" : "Example cards" },
+          { id: "weiterlesen", label: de ? "Weiterlesen" : "Keep reading" },
+        ]}
+      >
 
-      <section className={styles.section} aria-labelledby="glance">
-        <h2 id="glance">{de ? "Auf einen Blick" : "At a glance"}</h2>
+      <section id="glance" className={styles.section} aria-labelledby="glance-title">
+        <h2 id="glance-title">{de ? "Auf einen Blick" : "At a glance"}</h2>
         <dl className={styles.facts}>
           <div><dt>{de ? "Pokédex-Nr." : "Pokédex no."}</dt><dd>{entry.dexNumber}</dd></div>
           <div><dt>{de ? "Typ" : "Type"}</dt><dd>{entry.types[language]}</dd></div>
@@ -168,12 +182,12 @@ export function SpeciesArticle({ published, language, all }: { published: Publis
         <p>{de ? "Entwicklung" : "Family"}: {entry.family[language]}.</p>
       </section>
 
-      <section className={styles.section}>
+      <section id="about" className={styles.section}>
         <h2>{de ? `Über ${name}` : `About ${name}`}</h2>
         <p>{entry.about[language][1]}</p>
       </section>
 
-      <section className={styles.section}>
+      <section id="numbers" className={styles.section}>
         <h2>{de ? `${name} im Sammelkartenspiel in Zahlen` : `${name} in the trading card game by the numbers`}</h2>
         <p>
           {de
@@ -190,7 +204,7 @@ export function SpeciesArticle({ published, language, all }: { published: Publis
       </section>
 
       {stats.topThemes.length > 0 ? (
-        <section className={styles.section}>
+        <section id="themes" className={styles.section}>
           <h2>{de ? "Häufige Motive auf den Karten" : "Common artwork themes"}</h2>
           <ul>
             {stats.topThemes.map(({ tag, cards }) => (
@@ -201,7 +215,7 @@ export function SpeciesArticle({ published, language, all }: { published: Publis
         </section>
       ) : null}
 
-      <section className={styles.section}>
+      <section id="plan" className={styles.section}>
         <h2>{de ? `So planst du einen ${name}-Binder` : `How to plan a ${name} binder`}</h2>
         <p>
           {de
@@ -215,7 +229,7 @@ export function SpeciesArticle({ published, language, all }: { published: Publis
         </p>
       </section>
 
-      <section className={styles.section}>
+      <section id="examples" className={styles.section}>
         <h2>{de ? `Beispielkarten mit ${name}` : `Example cards featuring ${name}`}</h2>
         <p>{de ? "Eine Auswahl über die Jahre, höchstens eine Karte pro Set:" : "A selection across the years, at most one card per set:"}</p>
         <ul>
@@ -223,7 +237,7 @@ export function SpeciesArticle({ published, language, all }: { published: Publis
         </ul>
       </section>
 
-      <section className={styles.section}>
+      <section id="weiterlesen" className={styles.section}>
         <h2>{de ? "Weiterlesen" : "Keep reading"}</h2>
         {relatedSpecies.length > 0 ? (
           <ul className={styles.cards}>
@@ -238,8 +252,9 @@ export function SpeciesArticle({ published, language, all }: { published: Publis
           </ul>
         ) : null}
         <p><Link href={guidePath(language, guideById("gift")!)}>{guideById("gift")![language].title}</Link></p>
-        <ToolCta language={language} label={copy.cta} />
       </section>
+
+      </ArticleLayout>
 
       <JsonLd data={{
         "@context": "https://schema.org",
