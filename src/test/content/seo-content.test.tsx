@@ -10,7 +10,9 @@ import { GUIDES } from "@/content/guides";
 import { guideMetadata, homeMetadata, speciesMetadata } from "@/content/page-meta";
 import { SPECIES } from "@/content/pokemon-species";
 import { MIN_CARDS, MIN_SETS, computeSpeciesStats, publishedSpecies } from "@/content/pokemon-stats";
-import { guideIndexPath, guidePath, homePath, speciesIndexPath, speciesPath, speciesSlug } from "@/content/routes";
+import { BROWSER_STORAGE_KEYS, LEGAL } from "@/content/legal";
+import { OPERATOR } from "@/config/operator";
+import { guideIndexPath, guidePath, homePath, legalPath, speciesIndexPath, speciesPath, speciesSlug } from "@/content/routes";
 import sitemap from "@/app/sitemap";
 import { fixedLocaleForPath } from "@/i18n/fixed-locale";
 
@@ -26,7 +28,7 @@ function words(markup: string): number {
 
 /** Every route the site publishes, as paths with trailing slash. */
 function knownPaths(): Set<string> {
-  const paths = new Set<string>(["/", "/en/", "/geschenk/", "/help/", "/anleitung/cardmarket/"]);
+  const paths = new Set<string>(["/", "/en/", "/geschenk/", "/help/", "/anleitung/cardmarket/", "/impressum/", "/datenschutz/", "/en/legal-notice/", "/en/privacy/"]);
   for (const language of LANGUAGES) {
     paths.add(guideIndexPath(language));
     paths.add(speciesIndexPath(language));
@@ -215,5 +217,51 @@ describe("fixed language routes", () => {
     expect(fixedLocaleForPath("/geschenk/")).toBeNull();
     expect(fixedLocaleForPath("/help/")).toBeNull();
     expect(fixedLocaleForPath("/entry/")).toBeNull();
+  });
+});
+
+describe("legal pages", () => {
+  const text = (language: PageLanguage, id: "imprint" | "privacy") => {
+    const document = LEGAL.find((entry) => entry.id === id)![language];
+    return JSON.stringify([document.intro, document.sections]);
+  };
+
+  it("name the operator and a contact address in the legal notice and the privacy policy", () => {
+    for (const language of LANGUAGES) {
+      for (const id of ["imprint", "privacy"] as const) {
+        const all = text(language, id);
+        for (const part of [OPERATOR.businessName, OPERATOR.owner, OPERATOR.street, OPERATOR.postalCode, OPERATOR.email]) expect(all, `${language}/${id} ${part}`).toContain(part);
+      }
+    }
+  });
+
+  it("carry the Amazon Associates statement wherever Amazon links are described", () => {
+    expect(text("de", "imprint")).toContain("Als Amazon-Partner verdiene ich an qualifizierten Verkäufen.");
+    expect(text("de", "privacy")).toContain("Als Amazon-Partner verdiene ich an qualifizierten Verkäufen.");
+    expect(text("en", "imprint")).toContain("As an Amazon Associate I earn from qualifying purchases.");
+    expect(text("en", "privacy")).toContain("As an Amazon Associate I earn from qualifying purchases.");
+  });
+
+  it("list every browser storage entry the app writes, and every external host it connects to", () => {
+    for (const language of LANGUAGES) {
+      const privacy = text(language, "privacy");
+      for (const key of BROWSER_STORAGE_KEYS) expect(privacy, `${language} ${key}`).toContain(key);
+      for (const host of ["api.tcgdex.net", "assets.tcgdex.net", "Cloudflare", "Cardmarket", "TCGplayer", "amazon.de"]) expect(privacy, `${language} ${host}`).toContain(host);
+    }
+  });
+
+  it("are linked from every public content page and have matching paths in both languages", () => {
+    for (const language of LANGUAGES) {
+      const markup = renderToStaticMarkup(<ContentFrame language={language}><GuideIndex language={language} /></ContentFrame>);
+      expect(hrefs(markup)).toContain(legalPath(language, "imprint"));
+      expect(hrefs(markup)).toContain(legalPath(language, "privacy"));
+    }
+    expect(legalPath("de", "privacy")).toBe("/datenschutz/");
+    expect(legalPath("en", "imprint")).toBe("/en/legal-notice/");
+  });
+
+  it("are not offered to search engines", () => {
+    const urls = sitemap().map((entry) => entry.url).join(" ");
+    for (const path of ["/impressum/", "/datenschutz/", "/en/legal-notice/", "/en/privacy/"]) expect(urls).not.toContain(path);
   });
 });

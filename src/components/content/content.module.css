@@ -10,12 +10,12 @@
 .crumbs a { color: var(--cf-accent-text); text-underline-offset: 3px; }
 .header { margin: 18px 0 22px; }
 .eyebrow { margin: 0; color: var(--cf-accent-text); font-size: .85rem; font-weight: 700; }
-.header h1 { margin: 8px 0 12px; font-family: var(--cf-font-display); font-size: clamp(1.8rem, 5.2vw, 2.7rem); font-weight: 600; letter-spacing: -.02em; line-height: 1.1; }
+.header h1 { overflow-wrap: break-word; hyphens: auto; margin: 8px 0 12px; font-family: var(--cf-font-display); font-size: clamp(1.8rem, 5.2vw, 2.7rem); font-weight: 600; letter-spacing: -.02em; line-height: 1.1; }
 .lead { max-width: 660px; margin: 0; color: var(--cf-text2); font-size: 1.05rem; line-height: 1.65; }
 .meta { margin: 12px 0 0; color: var(--cf-muted); font-size: .85rem; }
 .section { position: relative; margin-top: 14px; border: 1px solid var(--cf-line); border-radius: 12px; background: var(--cf-surface); padding: 22px 22px 22px 26px; box-shadow: 0 12px 30px -24px var(--cf-sh-soft); }
 .section::before { position: absolute; top: 22px; left: 0; width: 3px; height: 22px; border-radius: 0 3px 3px 0; background: var(--cf-accent); content: ""; }
-.section h2 { margin: 0 0 10px; font-family: var(--cf-font-display); font-size: 1.1rem; font-weight: 600; }
+.section h2 { overflow-wrap: break-word; hyphens: auto; margin: 0 0 10px; font-family: var(--cf-font-display); font-size: 1.1rem; font-weight: 600; }
 .section h3 { margin: 14px 0 4px; font-size: 1rem; }
 .section p, .section li, .section dd { color: var(--cf-text2); line-height: 1.65; }
 .section p { margin: 8px 0 0; }
@@ -45,8 +45,10 @@
 .disclaimer { margin-top: 28px; border: 1px solid var(--cf-line); border-radius: 12px; background: var(--cf-accent-soft); padding: 16px 20px; }
 .disclaimer h2 { margin: 0 0 6px; font-size: .98rem; }
 .disclaimer p { margin: 6px 0 0; color: var(--cf-text2); font-size: .9rem; line-height: 1.6; }
-.footer { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .88rem; }
+.footer { margin-top: 22px; font-size: .88rem; }
+.footerNav { display: flex; flex-wrap: wrap; gap: 6px 18px; }
 .footer a { color: var(--cf-accent-text); text-underline-offset: 3px; }
+.appFooter { width: min(820px, calc(100% - 32px)); margin: 0 auto; padding: 8px 0 40px; }
 
 @media (max-width: 520px) {
   .table { font-size: .85rem; }

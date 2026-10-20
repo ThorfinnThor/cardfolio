@@ -12,6 +12,8 @@ This document records the P0 implementation facts. It is not a legal opinion and
 | Local binder | Binder name, page/slot structure, ownership and preferences | Browser IndexedDB for the current origin | Until the user/browser clears it or storage is evicted |
 | JSON backup | Selected local binders and referenced card snapshots | User-selected local download/file | Controlled by the user; no automatic upload |
 | Marketplace handoff | Only the link navigation initiated by the user | TCGplayer or Cardmarket | Governed by the destination; Cardfolio sends no authenticated request |
+| Binder offers | Link navigation initiated by the user; the link carries the Cardfolio Amazon partner tag | `amazon.de` | Governed by Amazon; Cardfolio only sees aggregated partner reports |
+| Network error reporting | Anonymous error report when a connection fails, if the browser supports Network Error Logging | Cloudflare (`nel` header set by Cloudflare) | Governed by Cloudflare; successful visits are not reported (`success_fraction` 0) |
 | Scheduled catalog sync | Public English/German TCGdex set metadata | GitHub repository | Validated files under `public/data/catalog` only |
 
 There is no Cardfolio account, authentication cookie, server-side user database, Supabase project, R2 bucket, analytics script, advertising script or required application secret in P0. GitHub Actions cannot access browser IndexedDB or backup files.
@@ -34,8 +36,8 @@ A copy in the same browser profile is not an independent backup. Losing the devi
 
 ## Operator actions required before a public launch
 
-1. Record the legal operator name, contact path, country and production domain.
+1. ~~Record the legal operator name, contact path, country and production domain.~~ Done on 2026-10-20 in `src/config/operator.ts` (SeitenHafen361, owner Schayan Yousefian, Berlin). The contact mailbox `info@yourcardbinder.com` still has to be confirmed to exist.
 2. Review which Cloudflare request/security logs are enabled, their purpose, access and retention.
-3. Produce and review the privacy notice and any required provider/imprint text for that concrete operating model.
+3. ~~Produce the privacy notice and imprint~~ Drafted on 2026-10-20 (`/datenschutz/`, `/impressum/`, English versions). Still to do: legal read-through before the public launch.
 4. Verify whether a consent mechanism is required. The current build has no analytics or advertising and does not add one implicitly.
 5. Repeat this inventory before adding telemetry, error reporting, accounts, sharing, server storage or new third-party embeds.

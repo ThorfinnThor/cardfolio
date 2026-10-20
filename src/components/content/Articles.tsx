@@ -47,7 +47,7 @@ function formatNumber(language: PageLanguage, value: number): string {
   return value.toLocaleString(language === "de" ? "de-DE" : "en-GB");
 }
 
-function Block({ block }: { block: GuideBlock }) {
+export function Block({ block }: { block: GuideBlock }) {
   if (block.type === "p") return <p>{block.text}</p>;
   if (block.type === "ul") return <ul>{block.items.map((item) => <li key={item}>{item}</li>)}</ul>;
   return (

@@ -1,5 +1,6 @@
 import { LandingSections } from "./Articles";
 import { TrademarkNotice } from "./ContentFrame";
+import { LegalFooter } from "./LegalFooter";
 import styles from "./content.module.css";
 import { publishedSpecies } from "@/content/pokemon-stats";
 
@@ -13,6 +14,7 @@ export function HomeSeoSection() {
       <section className={styles.page} aria-label="Über Cardfolio">
         <LandingSections language="de" species={publishedSpecies()} />
         <TrademarkNotice language="de" />
+        <LegalFooter language="de" />
       </section>
     </div>
   );

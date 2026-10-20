@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { AppLegalFooter } from "@/components/content/LegalFooter";
 import { CardmarketHowTo } from "@/components/howto/CardmarketHowTo";
 import { pageUrlMetadata } from "@/config/site";
 
@@ -13,5 +14,10 @@ export const metadata: Metadata = {
 };
 
 export default function CardmarketHowToPage() {
-  return <CardmarketHowTo />;
+  return (
+    <>
+      <CardmarketHowTo />
+      <AppLegalFooter />
+    </>
+  );
 }
