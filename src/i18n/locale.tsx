@@ -32,6 +32,7 @@ const translations: Record<string, string> = {
   "Physischen Binder kaufen": "Buy the physical binder",
   "Backup exportieren": "Export backup",
   "Kauf-Anleitung": "Buying guide",
+  "Auf dieser Seite": "On this page",
   "Anleitung": "Guide",
   "Anleitung mit Bildern": "Illustrated guide",
   "Hilfe": "Help",

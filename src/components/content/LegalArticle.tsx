@@ -2,6 +2,7 @@ import type { PageLanguage } from "@/config/site";
 import { LEGAL_UPDATED } from "@/config/operator";
 import type { LegalText } from "@/content/legal";
 
+import { ArticleLayout, sectionId } from "./ArticleLayout";
 import { Block } from "./Articles";
 import styles from "./content.module.css";
 
@@ -18,12 +19,14 @@ export function LegalArticle({ text, language }: { text: LegalText; language: Pa
         <p className={styles.lead}>{text.intro}</p>
         <p className={styles.meta}>{language === "de" ? "Stand" : "Last updated"}: <time dateTime={LEGAL_UPDATED}>{formatDate(language, LEGAL_UPDATED)}</time></p>
       </header>
-      {text.sections.map((section) => (
-        <section key={section.heading} className={styles.section}>
-          <h2>{section.heading}</h2>
-          {section.blocks.map((block, index) => <Block key={index} block={block} />)}
-        </section>
-      ))}
+      <ArticleLayout language={language} withCta={false} toc={text.sections.map((section, index) => ({ id: sectionId(index), label: section.heading }))}>
+        {text.sections.map((section, index) => (
+          <section key={section.heading} id={sectionId(index)} className={styles.section}>
+            <h2>{section.heading}</h2>
+            {section.blocks.map((block, blockIndex) => <Block key={blockIndex} block={block} />)}
+          </section>
+        ))}
+      </ArticleLayout>
     </>
   );
 }

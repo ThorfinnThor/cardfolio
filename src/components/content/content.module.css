@@ -20,8 +20,6 @@
 .section p, .section li, .section dd { color: var(--cf-text2); line-height: 1.65; }
 .section p { margin: 8px 0 0; }
 .section ul, .section ol { margin: 8px 0 0; padding-left: 20px; }
-/* Wide cards, but running text keeps a readable line length. */
-.section > p, .section > ul:not(.cards), .section > ol { max-width: 76ch; }
 .section ul:not(.cards) { list-style: disc; }
 .section ol { list-style: decimal; }
 .section li + li { margin-top: 6px; }
@@ -90,4 +88,24 @@
 @media (max-width: 520px) {
   .nav { gap: 6px 14px; font-size: .86rem; }
   .hero { margin-top: 20px; }
+}
+
+.articleGrid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 0 28px; align-items: start; }
+.articleMain { min-width: 0; }
+.articleMain > .section:first-child { margin-top: 0; }
+.articleAside { position: sticky; top: 20px; display: grid; gap: 14px; margin-top: 14px; }
+.articleAside .toc { border: 1px solid var(--cf-line); border-radius: 12px; background: var(--cf-surface); padding: 16px 18px; }
+.articleAside .toc h2 { margin: 0 0 8px; font-family: var(--cf-font-display); font-size: .95rem; font-weight: 600; }
+.articleAside .toc ol { display: grid; gap: 2px; margin: 0; padding-left: 20px; }
+.articleAside .toc a { display: inline-block; padding: 4px 0; color: var(--cf-accent-text); font-size: .9rem; font-weight: 600; line-height: 1.4; text-underline-offset: 3px; }
+.articleAside .toc li::marker { color: var(--cf-accent-text); font-size: .85rem; }
+.asideCta { border: 1px solid var(--cf-line); border-radius: 12px; background: var(--cf-accent-soft); padding: 16px 18px; }
+.asideCta p { margin: 0; color: var(--cf-text2); font-size: .92rem; line-height: 1.55; }
+.asideCta .cta { margin-top: 12px; }
+.section[id] { scroll-margin-top: 16px; }
+
+@media (max-width: 960px) {
+  .articleGrid { grid-template-columns: minmax(0, 1fr); }
+  .articleAside { position: static; }
+  .articleAside .toc { display: none; }
 }
