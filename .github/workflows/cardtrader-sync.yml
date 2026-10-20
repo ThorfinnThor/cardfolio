@@ -1,0 +1,60 @@
+name: Sync CardTrader data
+
+# Reads the official CardTrader API (read-only: expansions, blueprints, marketplace listings) and writes the
+# validated public files under public/data/cardtrader. Permission: written confirmation from CardTrader support,
+# 2026-10-20 (see docs/cardtrader-release-gate.md). Cart, purchase and wishlist endpoints are never called.
+on:
+  schedule:
+    - cron: "43 3 * * 3"
+  workflow_dispatch:
+    inputs:
+      max_expansions:
+        description: "Number of expansions (0 = all mapped expansions)"
+        required: true
+        default: "0"
+  # Temporary: lets the first runs happen from the feature branch with a small sample.
+  push:
+    branches: [feat/cardtrader-data]
+    paths: [scripts/cardtrader-sync.mjs, .github/workflows/cardtrader-sync.yml]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cardtrader-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Read CardTrader and write the public data files
+        env:
+          CARDTRADER_API_TOKEN: ${{ secrets.CARDTRADER_API_TOKEN }}
+          MAX_EXPANSIONS: ${{ github.event_name == 'push' && '12' || inputs.max_expansions || '0' }}
+        run: node --max-old-space-size=4096 scripts/cardtrader-sync.mjs --max-expansions "$MAX_EXPANSIONS" --coverage-out .cardtrader/coverage.json
+      - name: Report coverage
+        shell: bash
+        run: |
+          {
+            echo "### CardTrader data coverage"
+            echo '```json'
+            node -e 'const c=require("./.cardtrader/coverage.json"); delete c.cardtraderOnlyBySet; console.log(JSON.stringify(c,null,1))'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Keep the result of branch runs for inspection
+        if: github.ref != 'refs/heads/main'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: cardtrader-sync-${{ github.run_id }}
+          path: |
+            .cardtrader/coverage.json
+            public/data/cardtrader
+          include-hidden-files: true
+          retention-days: 2
