@@ -33,18 +33,20 @@ export function TrademarkNotice({ language }: { language: PageLanguage }) {
  * Shared shell of the single-language content pages. The text is fixed, so the wrapper opts out of the
  * app's automatic translation and declares its own language.
  */
-export function ContentFrame({ language, alternatePath, crumbs, children }: {
+export function ContentFrame({ language, alternatePath, crumbs, wide, children }: {
   language: PageLanguage;
   /** The same page in the other language, if one exists. */
   alternatePath?: string;
   crumbs?: readonly Crumb[];
+  /** Wider column for landing pages with a hero and card grids. Articles keep the narrow reading column. */
+  wide?: boolean;
   children: ReactNode;
 }) {
   const nav = NAV[language];
   const other = otherLanguage(language);
   return (
     <div lang={language} data-no-translate>
-      <main className={styles.page}>
+      <main className={wide ? `${styles.page} ${styles.pageWide}` : styles.page}>
         <div className={styles.topline}>
           <Link className={styles.brand} href={homePath(language)}>{SITE_NAME}</Link>
           <nav className={styles.nav} aria-label={language === "de" ? "Hauptnavigation" : "Main navigation"}>
