@@ -874,7 +874,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
             </dl>
             <p className={styles.summaryDisclosure}>Karten und physischer Binder sind getrennte Käufe. {pricingEnabled ? "Die Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten." : "Für Karten wird derzeit kein Preis berechnet und keine Budgetzusage abgegeben."} Alle Geschenkangaben bleiben lokal in diesem Browser.</p>
             <details className={styles.summaryCards} ref={cardsDetails}>
-              <summary id="summary-cards-heading">Alle {printSummary.cardCount} Karten ansehen</summary>
+              <summary id="summary-cards-heading">{`Alle ${printSummary.cardCount} Karten ansehen`}</summary>
               <ol>{printSummary.cards.map((card, index) => {
                 const candidate = selection.selected[index];
                 const note = candidate ? plainVariantNote(candidate.variant) : undefined;

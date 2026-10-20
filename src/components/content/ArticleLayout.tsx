@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import type { PageLanguage } from "@/config/site";
 import { LANDING } from "@/content/landing";
-import { TOOL_PATH } from "@/content/routes";
+import { TOOL_START_PATH } from "@/content/routes";
 
 import styles from "./content.module.css";
 import { ToolLink } from "./ToolLink";
@@ -43,7 +43,7 @@ export function ArticleLayout({ language, toc, withCta = true, children }: {
         {withCta ? (
           <div className={styles.asideCta}>
             <p>{label.ctaText}</p>
-            <ToolLink href={TOOL_PATH} language={language} className={styles.cta}>{LANDING[language].cta}</ToolLink>
+            <ToolLink href={TOOL_START_PATH} language={language} className={styles.cta}>{LANDING[language].cta}</ToolLink>
           </div>
         ) : null}
       </aside>

@@ -4,7 +4,7 @@ import { SITE_NAME, absoluteUrl, type PageLanguage } from "@/config/site";
 import { GUIDES, guideById, type Guide, type GuideBlock } from "@/content/guides";
 import { LANDING } from "@/content/landing";
 import type { PublishedSpecies } from "@/content/pokemon-stats";
-import { TOOL_PATH, guideIndexPath, guidePath, homePath, speciesIndexPath, speciesPath } from "@/content/routes";
+import { TOOL_START_PATH, guideIndexPath, guidePath, homePath, speciesIndexPath, speciesPath } from "@/content/routes";
 import { SEMANTIC_TAG_LABELS, type SemanticTag } from "@/domain/semantic-card-search";
 
 import styles from "./content.module.css";
@@ -52,7 +52,7 @@ export function Block({ block }: { block: GuideBlock }) {
   if (block.type === "p") return <p>{block.text}</p>;
   if (block.type === "ul") return <ul>{block.items.map((item) => <li key={item}>{item}</li>)}</ul>;
   return (
-    <div className={styles.tableWrap}>
+    <div className={styles.tableWrap} role="region" aria-label={block.caption} tabIndex={0}>
       <table className={styles.table}>
         <caption>{block.caption}</caption>
         <thead><tr>{block.head.map((cell, index) => <th key={`${cell}-${index}`} scope="col">{cell}</th>)}</tr></thead>
@@ -63,7 +63,7 @@ export function Block({ block }: { block: GuideBlock }) {
 }
 
 function ToolCta({ language, label }: { language: PageLanguage; label: string }) {
-  return <ToolLink href={TOOL_PATH} language={language} className={styles.cta}>{label}</ToolLink>;
+  return <ToolLink href={TOOL_START_PATH} language={language} className={styles.cta}>{label}</ToolLink>;
 }
 
 export function GuideArticle({ guide, language }: { guide: Guide; language: PageLanguage }) {

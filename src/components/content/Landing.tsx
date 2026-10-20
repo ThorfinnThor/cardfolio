@@ -3,7 +3,7 @@ import Link from "next/link";
 import { SITE_NAME, type PageLanguage } from "@/config/site";
 import { LANDING } from "@/content/landing";
 import { publishedSpecies } from "@/content/pokemon-stats";
-import { TOOL_PATH, appPath } from "@/content/routes";
+import { TOOL_START_PATH, appPath } from "@/content/routes";
 
 import { LandingSections } from "./Articles";
 import { ContentFrame } from "./ContentFrame";
@@ -70,7 +70,7 @@ export function LandingPage({ language, alternatePath }: { language: PageLanguag
           <h1>{hero.headline}</h1>
           <p className={styles.lead}>{copy.metaDescription}</p>
           <div className={styles.heroActions}>
-            <ToolLink href={TOOL_PATH} language={language} className={styles.cta}>{copy.cta}</ToolLink>
+            <ToolLink href={TOOL_START_PATH} language={language} className={styles.cta}>{copy.cta}</ToolLink>
             <Link className={styles.secondary} href={appPath()}>{hero.collector}</Link>
           </div>
           <p className={styles.meta}>{hero.reassurance}</p>

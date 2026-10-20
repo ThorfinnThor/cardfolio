@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { AppLegalFooter } from "@/components/content/LegalFooter";
 import { FoundationWorkspace } from "@/components/foundation/FoundationWorkspace";
 import { pageUrlMetadata } from "@/config/site";
 
@@ -16,10 +15,5 @@ export const metadata: Metadata = {
 };
 
 export default function GiftEntry() {
-  return (
-    <>
-      <FoundationWorkspace shell="gift" />
-      <AppLegalFooter />
-    </>
-  );
+  return <FoundationWorkspace shell="gift" />;
 }

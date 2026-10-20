@@ -1,7 +1,8 @@
 "use client";
 
+import { LegalLinksInline } from "@/components/content/AppLegalFooter";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import { ListChecks, Archive, ArrowLeft, ArrowRight, BookOpen, CircleHelp, Copy, DatabaseBackup, ListFilter, Menu, Pencil, Search, Settings2, Trash2, X } from "lucide-react";
+import { ListChecks, Archive, ArrowLeft, ArrowRight, BookOpen, CircleHelp, Copy, DatabaseBackup, ListFilter, Menu, Pencil, Search, Trash2, X } from "lucide-react";
 import Link from "next/link";
 import { type ChangeEvent, type FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -495,6 +496,22 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
   const giftChrome = giftShell || giftBuilderOpen || (missingOpen && missingBeginner);
   // Which binders were planned as a gift: they get the "so geht es weiter" card when the buyer comes back later.
   const [giftBinderIds, setGiftBinderIds] = useState<ReadonlySet<string>>(new Set());
+  // The landing page and the guides link to /geschenk/?start=1 so the visitor lands in step 1, not on a second hero.
+  useEffect(() => {
+    if (!giftShell) return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("start") !== "1") return;
+    params.delete("start");
+    const query = params.toString();
+    window.history.replaceState(window.history.state, "", `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`);
+    clearGiftResume();
+    setGiftDiscoveryMode("pokemon");
+    setGiftSubjectQuery("Pikachu");
+    setGiftBuilderOpen(true);
+    setBinderManagerOpen(true);
+    setMissingOpen(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- runs once on mount
+  }, []);
   useEffect(() => {
     let cancelled = false;
     void giftProjects.list()
@@ -1914,15 +1931,15 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
   return (
     <div className={styles.appShell} data-design={PRODUCT_DESIGN} data-shell={giftChrome ? "gift" : "full"}>
       {giftChrome ? null : <aside className={styles.sidebar} aria-label="Cardfolio Navigation">
-        <button type="button" className={styles.brand} onClick={() => setBinderManagerOpen(true)}>
+        <button type="button" className={styles.brand} aria-label="Cardfolio: Meine Binder" onClick={() => setBinderManagerOpen(true)}>
           <span className={styles.brandMark} aria-hidden="true"><i /><i /></span>
           <span className={styles.brandText}>Cardfolio<small>Wunschbinder · lokal</small></span>
         </button>
         <nav className={styles.primaryNav} aria-label="Hauptnavigation">
-          <button type="button" className={binderManagerOpen || !activeBinder ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }}>
+          <button type="button" aria-label="Meine Binder" className={binderManagerOpen || !activeBinder ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }}>
             <BookOpen size={18} /> <span>Meine Binder</span>
           </button>
-          <button type="button" className={activeBinder && !binderManagerOpen && !missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(false); }} disabled={!activeBinder}>
+          <button type="button" aria-label="Binder" className={activeBinder && !binderManagerOpen && !missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingOpen(false); }} disabled={!activeBinder}>
             <Archive size={18} /> <span>Binder</span>
           </button>
           <button type="button" aria-label={stats ? `Fehlende Karten (${stats.missing})` : "Fehlende Karten"} className={missingOpen ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingBeginner(isGiftBinder); setMissingOpen(true); setSearchOpen(false); }} disabled={!activeBinder}>
@@ -1941,10 +1958,9 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
           </div>
         ) : null}
         <div className={styles.sidebarBottom}>
-          <button type="button" className={styles.navItem} onClick={() => void exportBackup()} disabled={!binders.length}><DatabaseBackup size={18} /> <span>Backup exportieren</span></button>
-          <Link className={styles.navItem} href="/anleitung/cardmarket/" target="_blank" rel="noopener noreferrer"><ListChecks size={18} /> <span>Kauf-Anleitung</span></Link>
-          <Link className={styles.navItem} href="/help/"><CircleHelp size={18} /> <span>Hilfe</span></Link>
-          <span className={styles.navItemMuted}><Settings2 size={18} /> <span>Einstellungen</span></span>
+          <button type="button" aria-label="Backup exportieren" className={styles.navItem} onClick={() => void exportBackup()} disabled={!binders.length}><DatabaseBackup size={18} /> <span>Backup exportieren</span></button>
+          <Link className={styles.navItem} href="/anleitung/cardmarket/" target="_blank" rel="noopener noreferrer" aria-label="Kauf-Anleitung (öffnet in neuem Tab)"><ListChecks size={18} /> <span>Kauf-Anleitung</span></Link>
+          <Link className={styles.navItem} href="/help/" aria-label="Hilfe"><CircleHelp size={18} /> <span>Hilfe</span></Link>
         </div>
       </aside>}
 
@@ -1970,7 +1986,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
             <strong>{activeBinder?.name ?? "Übersicht"}</strong>
           </div>
           <div className={styles.topbarActions}>
-            <button type="button" className={styles.topbarSearch} onClick={() => { setBinderManagerOpen(false); setMissingOpen(false); openSearchForSlot(); }} disabled={!activeBinder}>
+            <button type="button" className={styles.topbarSearch} aria-label="Karte suchen" onClick={() => { setBinderManagerOpen(false); setMissingOpen(false); openSearchForSlot(); }} disabled={!activeBinder}>
               <Search size={17} /> <span>Karte suchen</span>
             </button>
             <LanguageMenu />
@@ -2820,7 +2836,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
 
       <footer className={styles.footer}>
         <p>{binders.length > 0 && !giftBuilderOpen && !giftShell ? "Keine Cloud-Synchronisierung. Sichere wichtige Binder regelmäßig als JSON-Datei." : "Alles bleibt in deinem Browser – kein Konto, keine Cloud."}</p>
-        <Link href="/help/">Hilfe, Datenflüsse und Hinweise</Link>
+        <span><Link href="/help/">Hilfe, Datenflüsse und Hinweise</Link> · <LegalLinksInline /></span>
       </footer>
         </main>
       </div>

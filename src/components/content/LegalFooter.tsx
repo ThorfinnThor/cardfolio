@@ -11,8 +11,8 @@ const LABELS = {
 } as const;
 
 /** Links the legal notice and privacy policy from every public page, as the provider information must be reachable at all times. */
-export function LegalFooter({ language }: { language: PageLanguage }) {
-  const label = LABELS[language];
+export function LegalFooter({ language, helpLabel }: { language: PageLanguage; helpLabel?: string }) {
+  const label = { ...LABELS[language], ...(helpLabel ? { help: helpLabel } : {}) };
   return (
     <footer className={styles.footer}>
       <nav aria-label={label.nav} className={styles.footerNav}>
@@ -21,14 +21,5 @@ export function LegalFooter({ language }: { language: PageLanguage }) {
         <Link href="/help/">{label.help}</Link>
       </nav>
     </footer>
-  );
-}
-
-/** The same links for the German app pages, which sit outside `ContentFrame`. */
-export function AppLegalFooter() {
-  return (
-    <div lang="de" data-no-translate className={styles.appFooter}>
-      <LegalFooter language="de" />
-    </div>
   );
 }

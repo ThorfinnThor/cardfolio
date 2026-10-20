@@ -59,16 +59,16 @@ export function GiftPurchaseSteps({ planSize, onCardsPurchase }: GiftPurchaseSte
   return (
     <section className={styles.purchaseOptions} aria-label="Nächste Schritte: Binder bestellen und Karten kaufen">
       <article className={`${styles.purchaseCard} ${styles.purchaseCardFeatured}`}>
-        <div><h3><span className={styles.purchaseNumber} aria-hidden="true">1</span> Binder auswählen und bestellen</h3><p>Wähle einen passenden 9-Pocket-Binder.</p>
+        <div><h2><span className={styles.purchaseNumber} aria-hidden="true">1</span> Binder auswählen und bestellen</h2><p>Wähle einen passenden 9-Pocket-Binder.</p>
           {partnerLoadError ? <p role="status">Angebote sind momentan nicht erreichbar. Du kannst den lokalen Binder weiter bearbeiten.</p> : null}
           {!partnerLoadError && !binderOffers ? <p role="status">Binder-Angebote werden geprüft…</p> : null}
           {!partnerLoadError && recommendedBinderOffers?.length === 0 ? <p role="status">Zurzeit ist kein geprüfter Binder-Shop verfügbar. Du kannst den lokalen Binder trotzdem weiter bearbeiten.</p> : null}
-          {recommendedBinderOffers?.length ? <p className={styles.binderMatch}><Check aria-hidden="true" size={20} /><span><strong>Alle passen zu deinem Plan</strong>{planSize} Karten = {Math.ceil(planSize / 9)} {Math.ceil(planSize / 9) === 1 ? "Binder-Seite" : "Binder-Seiten"}.</span></p> : null}
+          {recommendedBinderOffers?.length ? <p className={styles.binderMatch}><Check aria-hidden="true" size={20} /><span><strong>Alle passen zu deinem Plan</strong>{`${planSize} Karten = ${Math.ceil(planSize / 9)} ${Math.ceil(planSize / 9) === 1 ? "Binder-Seite" : "Binder-Seiten"}.`}</span></p> : null}
           {recommendedBinderOffers?.length ? <div className={styles.offerGrid}>{recommendedBinderOffers.map((offer, index) => {
             const destinationUrl = offer.status === "available" ? partnerAdapter?.buildExternalUrl(offer.id) : undefined;
             return <div className={styles.offerCard} data-recommended={index === 0} key={offer.id}>
               <div className={styles.offerDetails}><strong>{offer.displayName}{index === 0 ? <em>Empfohlen</em> : null}</strong><small className={styles.offerPrice}>{offer.price ? `${offer.price.qualifier === "from" ? "ab " : ""}${formatMoney(offer.price.amountMinor, offer.price.currency)}` : "Preis im Shop prüfen"}</small>
-                {offer.capacityCards ? <small>{offer.pocketsPerPage ? `${offer.pocketsPerPage}-Pocket · ` : ""}Platz für bis zu {offer.capacityCards} Karten</small> : null}
+                {offer.capacityCards ? <small>{`${offer.pocketsPerPage ? `${offer.pocketsPerPage}-Pocket · ` : ""}Platz für bis zu ${offer.capacityCards} Karten`}</small> : null}
                 {offer.price ? <small>Preis geprüft am {formatDate(offer.price.sourceUpdatedAt)}</small> : null}
                 {offer.affiliateDisclosure ? <small className={styles.affiliateDisclosure}>{offer.affiliateDisclosure}</small> : null}
                 {offer.status !== "available" ? <small>{offer.statusReason ?? "Angebot nicht verfügbar."}</small> : null}
@@ -80,7 +80,7 @@ export function GiftPurchaseSteps({ planSize, onCardsPurchase }: GiftPurchaseSte
         </div>
       </article>
       <article className={`${styles.purchaseCard} ${styles.purchaseCardCompact}`}>
-        <div><h3><span className={styles.purchaseNumber} aria-hidden="true">2</span> Karten kaufen</h3><p>Wähle einen Anbieter und übernimm die vorbereitete Einkaufsliste.</p><a className={styles.howtoLink} href="/anleitung/cardmarket/" target="_blank" rel="noopener noreferrer">Anleitung mit Bildern <ExternalLink aria-hidden="true" size={14} /></a></div>
+        <div><h2><span className={styles.purchaseNumber} aria-hidden="true">2</span> Karten kaufen</h2><p>Wähle einen Anbieter und übernimm die vorbereitete Einkaufsliste.</p><a className={styles.howtoLink} href="/anleitung/cardmarket/" target="_blank" rel="noopener noreferrer">Anleitung mit Bildern <ExternalLink aria-hidden="true" size={14} /></a></div>
         <button type="button" className={styles.primaryButton} aria-label="Karten besorgen" onClick={onCardsPurchase}><ShoppingBag aria-hidden="true" size={18} /> Karten jetzt kaufen <ArrowRight aria-hidden="true" size={18} /></button>
       </article>
     </section>

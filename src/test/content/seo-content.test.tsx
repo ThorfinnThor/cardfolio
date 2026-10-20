@@ -40,7 +40,7 @@ function knownPaths(): Set<string> {
 
 function hrefs(markup: string): string[] {
   /* next/link adds the configured trailing slash at build time only, so compare the normalised form. */
-  return [...markup.matchAll(/href="([^"]+)"/g)].map((match) => match[1]!).filter((href) => href.startsWith("/")).map((href) => (href.endsWith("/") ? href : `${href}/`));
+  return [...markup.matchAll(/href="([^"]+)"/g)].map((match) => match[1]!).filter((href) => href.startsWith("/")).map((href) => href.split("?")[0]!).map((href) => (href.endsWith("/") ? href : `${href}/`));
 }
 
 describe("Pokémon pages are only published with real material behind them", () => {
