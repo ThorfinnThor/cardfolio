@@ -97,3 +97,13 @@ for (const path of ["/", "/app/", "/geschenk/", "/help/", "/anleitung/cardmarket
     await expect(page.locator('a[href="/datenschutz/"]').first()).toBeAttached();
   });
 }
+
+test("every public content page uses the same column width", async ({ page }) => {
+  await page.setViewportSize({ height: 900, width: 1440 });
+  const widths: Record<string, number> = {};
+  for (const path of ["/", "/en/", "/ratgeber/", "/ratgeber/pokemon-kartenzustand/", "/pokemon-binder/", "/pokemon-binder/glurak/", "/en/guides/", "/impressum/", "/datenschutz/", "/help/", "/anleitung/cardmarket/"]) {
+    await page.goto(path);
+    widths[path] = Math.round((await page.locator("main").first().boundingBox())!.width);
+  }
+  expect(Object.values(widths).every((width) => width === 1120), JSON.stringify(widths)).toBe(true);
+});
