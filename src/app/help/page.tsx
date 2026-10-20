@@ -4,6 +4,7 @@ import Link from "next/link";
 import { LanguageMenu } from "@/components/foundation/LanguageMenu";
 
 import { pageUrlMetadata } from "@/config/site";
+import { DISCLAIMER } from "@/content/disclaimer";
 
 import styles from "./help.module.css";
 
@@ -61,7 +62,8 @@ export default function HelpPage() {
 
       <section className={styles.section}>
         <h2>Marken, Bilder und Anbieter</h2>
-        <p>Cardfolio ist ein unabhängiger Arbeitstitel und kein offizielles Produkt von Nintendo, The Pokémon Company, TCGdex, TCGplayer oder Cardmarket. Marken und Kartenabbildungen gehören ihren jeweiligen Rechteinhabern.</p>
+        <p><strong>{DISCLAIMER.de.heading}.</strong> {DISCLAIMER.de.lines[0]}</p>
+        <p>{DISCLAIMER.de.lines[1]} Cardfolio ist außerdem kein offizielles Produkt von TCGdex.</p>
         <p>Die Betreiber- und Datenschutzangaben für den konkreten öffentlichen Host werden vor einer öffentlichen Freigabe ergänzt und geprüft. Diese Seite ist keine Zusage vollständiger Rechtskonformität.</p>
       </section>
     </main>
