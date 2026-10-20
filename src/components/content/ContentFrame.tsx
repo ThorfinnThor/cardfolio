@@ -7,6 +7,7 @@ import { guideIndexPath, homePath, otherLanguage, speciesIndexPath } from "@/con
 
 import styles from "./content.module.css";
 import { JsonLd } from "./JsonLd";
+import { LegalFooter } from "./LegalFooter";
 
 export interface Crumb {
   name: string;
@@ -71,6 +72,7 @@ export function ContentFrame({ language, alternatePath, crumbs, children }: {
         ) : null}
         {children}
         <TrademarkNotice language={language} />
+        <LegalFooter language={language} />
       </main>
     </div>
   );

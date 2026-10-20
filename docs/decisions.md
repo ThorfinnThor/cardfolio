@@ -352,3 +352,12 @@
 - **Social preview.** `public/og-cardfolio.png` (1200 × 630, text only, no card artwork) is the shared Open Graph image. `release:evidence` names it as a second allowed raster next to `howto/`.
 - Not done on purpose: structured data beyond `WebApplication`, `Article` and `BreadcrumbList`; FAQ rich-result markup; English versions of the Cardmarket guide and help page; pages for more Pokémon before the first ten show traffic.
 
+## 2026-10-20 — Legal notice and privacy policy
+
+- **Operator.** The legal notice and privacy policy name SeitenHafen361 (sole proprietorship), owner Schayan Yousefian, Freienwalder Str. 34, 13359 Berlin, as already published on stargazingindex.com. Cardfolio earns affiliate commission on binder links, so the commercial identity is used rather than the private-person variant from besttravelclimate.com. Operator data lives in `src/config/operator.ts`.
+- **Contact address.** `info@yourcardbinder.com`, chosen by the owner on 2026-10-20. A legal notice needs a reachable address, so the mailbox must receive mail before the public launch (Cloudflare Email Routing is one option).
+- **Four pages.** `/impressum/`, `/datenschutz/`, `/en/legal-notice/`, `/en/privacy/`. They are `noindex`, out of the sitemap, and linked from every public page (content pages, home page, gift entry, help and Cardmarket guide).
+- **The privacy policy follows the code, not a template.** It describes: Cloudflare hosting and its Network Error Logging header, the browser storage actually written (IndexedDB `cardfolio`, `cardfolio-theme`, `cardfolio-locale`, `cardfolio-gift-summary`, the `cardfolio-binder-sync` channel), direct TCGdex requests from the browser (API and images), marketplace and Amazon links after a click, no cookies/analytics/advertising, and the GDPR rights with the Berlin supervisory authority. `src/test/content/seo-content.test.tsx` fails if a storage key or external host named there is dropped. Whoever adds a new storage key, third-party request or script must update `src/content/legal.ts` and `BROWSER_STORAGE_KEYS` in the same change.
+- **Amazon Associates.** The required statement "Als Amazon-Partner verdiene ich an qualifizierten Verkäufen." appears in both legal notices, both privacy policies and the home page text, next to the existing offer-level affiliate notice.
+- **Not a legal opinion.** The texts are drafted from the actual data flows and the owner's other sites; they still need a legal read-through before the public launch.
+

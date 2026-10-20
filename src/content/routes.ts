@@ -33,3 +33,10 @@ export function speciesPath(language: PageLanguage, entry: SpeciesEntry): string
 export function otherLanguage(language: PageLanguage): PageLanguage {
   return language === "de" ? "en" : "de";
 }
+
+export type LegalId = "imprint" | "privacy";
+
+export function legalPath(language: PageLanguage, id: LegalId): string {
+  const slug = { imprint: { de: "impressum", en: "legal-notice" }, privacy: { de: "datenschutz", en: "privacy" } }[id][language];
+  return language === "de" ? `/${slug}/` : `/en/${slug}/`;
+}

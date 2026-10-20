@@ -5,7 +5,7 @@ import type { AppLocale } from "./locale";
  * their counterpart with hreflang. They must not follow the stored or browser language like the app does.
  */
 export const FIXED_ENGLISH_PREFIX = "/en/";
-export const FIXED_GERMAN_PREFIXES = ["/ratgeber/", "/pokemon-binder/"] as const;
+export const FIXED_GERMAN_PREFIXES = ["/ratgeber/", "/pokemon-binder/", "/impressum/", "/datenschutz/"] as const;
 
 export function fixedLocaleForPath(pathname: string): AppLocale | null {
   const path = pathname.endsWith("/") ? pathname : `${pathname}/`;
