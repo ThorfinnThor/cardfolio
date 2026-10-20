@@ -78,12 +78,12 @@ export const LEGAL: readonly LegalDocument[] = [
         },
         {
           heading: "Haftung für Links",
-          blocks: [{ type: "p", text: "Das Angebot enthält Links zu externen Websites Dritter, etwa zu Cardmarket, TCGplayer, Amazon und TCGdex, auf deren Inhalte ich keinen Einfluss habe. Für diese fremden Inhalte kann ich keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber verantwortlich. Zum Zeitpunkt der Verlinkung waren keine Rechtsverstöße erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen entferne ich derartige Links umgehend." }],
+          blocks: [{ type: "p", text: "Das Angebot enthält Links zu externen Websites Dritter, etwa zu Cardmarket, TCGplayer, Amazon, TCGdex und CardTrader, auf deren Inhalte ich keinen Einfluss habe. Für diese fremden Inhalte kann ich keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber verantwortlich. Zum Zeitpunkt der Verlinkung waren keine Rechtsverstöße erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen entferne ich derartige Links umgehend." }],
         },
         {
           heading: "Urheberrecht und Rechte Dritter",
           blocks: [
-            { type: "p", text: "Die von mir erstellten Texte, Gestaltungen und die Software dieser Website unterliegen dem deutschen Urheberrecht. Pokémon-Kartenabbildungen werden nicht von Cardfolio gespeichert oder kopiert, sondern direkt vom Browser von assets.tcgdex.net geladen. Sie sowie Kartennamen und Pokémon-Figuren gehören den jeweiligen Rechteinhabern." },
+            { type: "p", text: "Die von mir erstellten Texte, Gestaltungen und die Software dieser Website unterliegen dem deutschen Urheberrecht. Pokémon-Kartenabbildungen werden nicht von Cardfolio gespeichert oder kopiert, sondern direkt vom Browser von assets.tcgdex.net oder, ersatzweise, cardtrader.com geladen. Sie sowie Kartennamen und Pokémon-Figuren gehören den jeweiligen Rechteinhabern." },
             { type: "p", text: "Solltest du eine Rechtsverletzung auf dieser Website bemerken, schreib bitte an die oben genannte E-Mail-Adresse. Ich prüfe den Hinweis zeitnah und entferne den Inhalt, wenn er berechtigt ist." },
           ],
         },
@@ -142,12 +142,12 @@ export const LEGAL: readonly LegalDocument[] = [
         },
         {
           heading: "Liability for links",
-          blocks: [{ type: "p", text: "The site contains links to external third-party websites, for example Cardmarket, TCGplayer, Amazon and TCGdex, over whose content I have no influence. I cannot accept any liability for this third-party content. The respective provider or operator is always responsible for the content of the linked pages. No infringements were apparent when the links were set. Permanent monitoring of the linked pages is not reasonable without concrete indications of an infringement. Once I learn of infringements I will remove such links without delay." }],
+          blocks: [{ type: "p", text: "The site contains links to external third-party websites, for example Cardmarket, TCGplayer, Amazon, TCGdex and CardTrader, over whose content I have no influence. I cannot accept any liability for this third-party content. The respective provider or operator is always responsible for the content of the linked pages. No infringements were apparent when the links were set. Permanent monitoring of the linked pages is not reasonable without concrete indications of an infringement. Once I learn of infringements I will remove such links without delay." }],
         },
         {
           heading: "Copyright and third-party rights",
           blocks: [
-            { type: "p", text: "The texts, designs and software of this website created by me are subject to German copyright law. Pokémon card images are not stored or copied by Cardfolio; the browser loads them directly from assets.tcgdex.net. They, card names and Pokémon characters belong to their respective owners." },
+            { type: "p", text: "The texts, designs and software of this website created by me are subject to German copyright law. Pokémon card images are not stored or copied by Cardfolio; the browser loads them directly from assets.tcgdex.net or, as a fallback, cardtrader.com. They, card names and Pokémon characters belong to their respective owners." },
             { type: "p", text: "If you notice an infringement on this website, please write to the email address above. I will review the notice promptly and remove the content if the complaint is justified." },
           ],
         },
@@ -175,7 +175,7 @@ export const LEGAL: readonly LegalDocument[] = [
               "Deine Binder, Karten und Einstellungen liegen ausschließlich in deinem Browser und werden nicht an Cardfolio übertragen.",
               "Cardfolio setzt keine Cookies und lädt keine Analyse-, Tracking-, Werbe- oder Chat-Skripte.",
               "Beim Aufruf der Seite verarbeitet der Hosting-Anbieter Cloudflare technisch notwendige Verbindungsdaten.",
-              "Kartendaten und Kartenbilder lädt dein Browser direkt von TCGdex; dabei erhält TCGdex deine IP-Adresse.",
+              "Kartendaten und Kartenbilder lädt dein Browser direkt von TCGdex, ersatzweise Bilder von CardTrader; dabei erhält der jeweilige Anbieter deine IP-Adresse.",
               "Erst wenn du auf einen Link zu Cardmarket, TCGplayer oder Amazon klickst, verlässt du Cardfolio und der jeweilige Anbieter verarbeitet Daten nach eigener Erklärung.",
             ] },
           ],
@@ -218,6 +218,7 @@ export const LEGAL: readonly LegalDocument[] = [
           heading: "6. Kartendaten und Kartenbilder (TCGdex)",
           blocks: [
             { type: "p", text: "Für die Kartensuche und die Kartendetails fragt dein Browser die Daten direkt bei der Schnittstelle api.tcgdex.net ab. Übermittelt werden dabei dein Suchbegriff, die gewählte Kartensprache und die angeforderten Karten- oder Set-Kennungen. Die Kartenbilder lädt dein Browser direkt von assets.tcgdex.net. Cardfolio kopiert, speichert oder bündelt die Bilder nicht. Das gilt auch für die neun Beispielkarten im Kopf der Startseite: Sie werden beim Aufruf direkt von assets.tcgdex.net geladen." },
+            { type: "p", text: "Hat TCGdex für eine Karte kein Bild, lädt dein Browser das Bild ersatzweise direkt von cardtrader.com (CardTrader) und kennzeichnet es als „Bild: CardTrader“. Auch CardTrader erhält dabei technisch notwendige Daten wie deine IP-Adresse; auf die dortige Verarbeitung habe ich keinen Einfluss. Preisangaben, die nicht von TCGdex stammen, kommen aus einer Datei, die Cardfolio wöchentlich aus der CardTrader-Schnittstelle erzeugt und von der eigenen Domain ausliefert. Dein Browser kontaktiert CardTrader dafür nicht." },
             { type: "p", text: "Wie bei jeder Verbindung erhält TCGdex dabei technisch notwendige Daten, insbesondere deine IP-Adresse, Datum und Uhrzeit, den Browsertyp und die angeforderte Adresse. Die Verbindung ist erforderlich, damit die von dir verlangten Karten und Bilder angezeigt werden können (Art. 6 Abs. 1 lit. b und f DSGVO). TCGdex ist ein eigenständig betriebenes, gemeinschaftlich gepflegtes Projekt. Auf die dortige Verarbeitung, den Standort der Server und die Speicherdauer habe ich keinen Einfluss. Informationen findest du bei TCGdex unter tcgdex.dev." },
             { type: "p", text: "Die Motivsuche („Smart Search“) arbeitet vollständig in deinem Browser. Der dafür nötige Suchindex wird von Cardfolio wie die übrigen Dateien der Website ausgeliefert. Dein Suchtext wird nicht an Dritte übermittelt. Für die gefundenen Karten ruft dein Browser anschließend, wie oben beschrieben, die Kartendaten bei TCGdex ab." },
           ],
@@ -241,7 +242,7 @@ export const LEGAL: readonly LegalDocument[] = [
         {
           heading: "10. Empfänger und Übermittlung in Drittländer",
           blocks: [
-            { type: "p", text: "Empfänger der Verbindungsdaten sind Cloudflare (Hosting), TCGdex (Kartendaten und Bilder) und, nach deinem Klick, der jeweilige Marktplatz oder Shop. Eine Übermittlung in Staaten außerhalb der EU und des EWR kann dabei nicht ausgeschlossen werden, zum Beispiel an Cloudflare in den USA oder an Marktplätze mit Sitz außerhalb der EU. Cloudflare stützt sich nach eigenen Angaben auf das EU-US Data Privacy Framework und Standardvertragsklauseln. Bei den übrigen Anbietern gelten deren eigene Garantien." },
+            { type: "p", text: "Empfänger der Verbindungsdaten sind Cloudflare (Hosting), TCGdex (Kartendaten und Bilder), CardTrader (ersatzweise Bilder) und, nach deinem Klick, der jeweilige Marktplatz oder Shop. Eine Übermittlung in Staaten außerhalb der EU und des EWR kann dabei nicht ausgeschlossen werden, zum Beispiel an Cloudflare in den USA oder an Marktplätze mit Sitz außerhalb der EU. Cloudflare stützt sich nach eigenen Angaben auf das EU-US Data Privacy Framework und Standardvertragsklauseln. Bei den übrigen Anbietern gelten deren eigene Garantien." },
             { type: "p", text: "Der Quellcode und die öffentlichen Katalogdaten von Cardfolio liegen in einem öffentlichen GitHub-Repository. Beim Besuch von Cardfolio findet keine Verbindung zu GitHub statt, und deine Binder gelangen nicht dorthin." },
           ],
         },
@@ -268,7 +269,7 @@ export const LEGAL: readonly LegalDocument[] = [
         {
           heading: "13. Sicherheit und Änderungen",
           blocks: [
-            { type: "p", text: "Die Website wird ausschließlich verschlüsselt über HTTPS ausgeliefert. Sie setzt eine strikte Content Security Policy ein, die Verbindungen und Bilder auf die eigene Domain und die beiden TCGdex-Adressen begrenzt, und lädt keine Skripte von Fremdservern." },
+            { type: "p", text: "Die Website wird ausschließlich verschlüsselt über HTTPS ausgeliefert. Sie setzt eine strikte Content Security Policy ein, die Verbindungen und Bilder auf die eigene Domain, die beiden TCGdex-Adressen und für Bilder cardtrader.com begrenzt, und lädt keine Skripte von Fremdservern." },
             { type: "p", text: "Ändert sich die Website, zum Beispiel durch ein Konto, Statistik oder neue eingebettete Dienste, passe ich diese Erklärung vorher an. Stand: 20. Oktober 2026." },
           ],
         },
@@ -289,7 +290,7 @@ export const LEGAL: readonly LegalDocument[] = [
               "Your binders, cards and settings live only in your browser and are not transmitted to Cardfolio.",
               "Cardfolio sets no cookies and loads no analytics, tracking, advertising or chat scripts.",
               "When you open the site, the hosting provider Cloudflare processes technically necessary connection data.",
-              "Your browser loads card data and card images directly from TCGdex; TCGdex receives your IP address in the process.",
+              "Your browser loads card data and card images directly from TCGdex, and some images from CardTrader instead; the respective provider receives your IP address in the process.",
               "Only when you click a link to Cardmarket, TCGplayer or Amazon do you leave Cardfolio, and that provider processes data under its own policy.",
             ] },
           ],
@@ -332,6 +333,7 @@ export const LEGAL: readonly LegalDocument[] = [
           heading: "6. Card data and card images (TCGdex)",
           blocks: [
             { type: "p", text: "For card search and card details, your browser queries the interface api.tcgdex.net directly. This transmits your search term, the chosen card language and the requested card or set identifiers. Your browser loads the card images directly from assets.tcgdex.net. Cardfolio does not copy, store or bundle the images. This also applies to the nine example cards at the top of the home page: they are loaded directly from assets.tcgdex.net when you open it." },
+            { type: "p", text: "If TCGdex has no image for a card, your browser loads the image from cardtrader.com (CardTrader) instead and marks it “Bild: CardTrader”. CardTrader likewise receives technically necessary data such as your IP address; I have no influence on the processing there. Prices that do not come from TCGdex are taken from a file Cardfolio generates weekly from the CardTrader interface and serves from its own domain. Your browser does not contact CardTrader for that." },
             { type: "p", text: "As with any connection, TCGdex receives technically necessary data, in particular your IP address, date and time, browser type and the requested address. The connection is necessary to show the cards and images you asked for (Art. 6(1)(b) and (f) GDPR). TCGdex is an independently operated, community-maintained project. I have no influence on the processing there, the location of the servers or the retention period. Information is available from TCGdex at tcgdex.dev." },
             { type: "p", text: "The artwork search (“Smart Search”) runs entirely in your browser. The search index it needs is delivered by Cardfolio like the other files of the site. Your search text is not transmitted to third parties. For the cards found, your browser then retrieves the card data from TCGdex as described above." },
           ],
@@ -355,7 +357,7 @@ export const LEGAL: readonly LegalDocument[] = [
         {
           heading: "10. Recipients and transfers to third countries",
           blocks: [
-            { type: "p", text: "Recipients of connection data are Cloudflare (hosting), TCGdex (card data and images) and, after your click, the respective marketplace or shop. A transfer to countries outside the EU and the EEA cannot be ruled out, for example to Cloudflare in the USA or to marketplaces based outside the EU. Cloudflare states that it relies on the EU–US Data Privacy Framework and Standard Contractual Clauses. For the other providers their own safeguards apply." },
+            { type: "p", text: "Recipients of connection data are Cloudflare (hosting), TCGdex (card data and images), CardTrader (images as a fallback) and, after your click, the respective marketplace or shop. A transfer to countries outside the EU and the EEA cannot be ruled out, for example to Cloudflare in the USA or to marketplaces based outside the EU. Cloudflare states that it relies on the EU–US Data Privacy Framework and Standard Contractual Clauses. For the other providers their own safeguards apply." },
             { type: "p", text: "Cardfolio's source code and public catalogue data are kept in a public GitHub repository. Visiting Cardfolio makes no connection to GitHub, and your binders do not get there." },
           ],
         },
@@ -382,7 +384,7 @@ export const LEGAL: readonly LegalDocument[] = [
         {
           heading: "13. Security and changes",
           blocks: [
-            { type: "p", text: "The website is delivered only encrypted over HTTPS. It uses a strict Content Security Policy that limits connections and images to its own domain and the two TCGdex addresses, and it loads no scripts from third-party servers." },
+            { type: "p", text: "The website is delivered only encrypted over HTTPS. It uses a strict Content Security Policy that limits connections and images to its own domain, the two TCGdex addresses and, for images, cardtrader.com, and it loads no scripts from third-party servers." },
             { type: "p", text: "If the website changes, for example through an account, statistics or new embedded services, I will update this policy beforehand. Last updated: 20 October 2026." },
           ],
         },

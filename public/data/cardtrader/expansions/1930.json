@@ -1,0 +1,20 @@
+{"id":1930,"code":"bog","name":"Best of Game","blueprints":[
+{"id":111385,"n":"001","name":"Electabuzz","rar":"Promo","img":"111385/preview_electabuzz-promo-1-best-of-game.jpg","tp":85106},
+{"id":111386,"n":"1w","name":"Electabuzz","rar":"Promo","img":"111386/preview_electabuzz-promo-winner-1-best-of-game.jpg","tp":167078},
+{"id":111387,"n":"002","name":"Hitmonchan","rar":"Promo","img":"111387/preview_hitmonchan-promo-2-best-of-game.jpg","tp":86098},
+{"id":111388,"n":"2w","name":"Hitmonchan","rar":"Promo","img":"111388/preview_hitmonchan-promo-winner-2-best-of-game.jpg","tp":117599},
+{"id":111389,"n":"003","name":"Professor Elm","rar":"Promo","img":"111389/preview_professor-elm-promo-3-best-of-game.jpg","tp":88387},
+{"id":111390,"n":"3w","name":"Professor Elm","rar":"Promo","img":"111390/preview_professor-elm-promo-winner-3-best-of-game.jpg"},
+{"id":111391,"n":"004","name":"Rocket's Scizor","rar":"Promo","img":"111391/preview_rocket-s-scizor-promo-4-best-of-game.jpg","tp":88786},
+{"id":111392,"n":"4w","name":"Rocket's Scizor","rar":"Promo","img":"111392/preview_rocket-s-scizor-promo-winner-4-best-of-game.jpg","tp":167081},
+{"id":111393,"n":"005","name":"Rocket's Sneasel","rar":"Promo","img":"111393/preview_rocket-s-sneasel-promo-5-best-of-game.jpg","tp":88793},
+{"id":111394,"n":"5w","name":"Rocket's Sneasel","rar":"Promo","img":"111394/preview_rocket-s-sneasel-promo-winner-5-best-of-game.jpg","tp":107877},
+{"id":111395,"n":"006","name":"Dark Ivysaur","rar":"Promo","img":"111395/preview_dark-ivysaur-promo-6-best-of-game.jpg","tp":84616},
+{"id":111396,"n":"6w","name":"Dark Ivysaur","rar":"Promo","img":"111396/preview_dark-ivysaur-promo-winner-6-best-of-game.jpg","tp":107876},
+{"id":111397,"n":"007","name":"Dark Venusaur","rar":"Promo","img":"111397/preview_dark-venusaur-promo-7-best-of-game.jpg","tp":84666},
+{"id":111398,"n":"7w","name":"Dark Venusaur","rar":"Promo","img":"111398/preview_dark-venusaur-promo-winner-7-best-of-game.jpg","tp":167077},
+{"id":111399,"n":"008","name":"Rocket's Mewtwo","rar":"Promo","img":"111399/preview_rocket-s-mewtwo-promo-8-best-of-game.jpg"},
+{"id":111400,"n":"8w","name":"Rocket's Mewtwo","rar":"Promo","img":"111400/preview_rocket-s-mewtwo-promo-winner-8-best-of-game.jpg","cm":[275418],"tp":167080},
+{"id":111401,"n":"009","name":"Rocket's Hitmonchan","rar":"Promo","img":"111401/preview_rocket-s-hitmonchan-promo-9-best-of-game.jpg"},
+{"id":111402,"n":"9w","name":"Rocket's Hitmonchan","rar":"Promo","img":"111402/preview_rocket-s-hitmonchan-promo-winner-9-best-of-game.jpg","tp":167079}
+]}

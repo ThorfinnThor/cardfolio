@@ -40,10 +40,10 @@ export interface GiftPriceRange {
 }
 
 export interface GiftPriceQuote {
-  source?: "tcgdex-cardmarket" | "tcgdex-tcgplayer";
+  source?: "tcgdex-cardmarket" | "tcgdex-tcgplayer" | "cardtrader";
   currency: GiftCurrency;
   amountMinor?: number;
-  metric?: "trend" | "avg30" | "avg" | "market" | "mid";
+  metric?: "trend" | "avg30" | "avg" | "market" | "mid" | "low-listing";
   range?: GiftPriceRange;
   fetchedAt: string;
   sourceUpdatedAt?: string;
@@ -58,6 +58,8 @@ export interface GiftCardCandidate {
   releaseYear?: number;
   price: GiftPriceQuote;
   reasonTags: string[];
+  /** True when TCGdex has no usable image but the CardTrader data does (shown as a labelled fallback). */
+  cardtraderImage?: boolean;
 }
 
 export interface GiftProject {
@@ -80,6 +82,8 @@ export interface GiftPriceRequest {
   rawPricing: unknown;
   fetchedAt: string;
   printingMatch: "verified-printing" | "candidate";
+  /** The buyer's minimum condition, for price sources that list prices per condition. */
+  minimumCondition?: PurchasePreferences["minimumCondition"];
 }
 
 export interface PriceProvider {
@@ -127,7 +131,7 @@ function styleMatches(candidate: GiftCardCandidate, style: GiftStyle): boolean {
 }
 
 export function giftCandidateHasArtwork(candidate: GiftCardCandidate): boolean {
-  return Boolean(candidate.card.imageBaseUrl || candidate.card.imageFallbackBaseUrl);
+  return Boolean(candidate.card.imageBaseUrl || candidate.card.imageFallbackBaseUrl || candidate.cardtraderImage);
 }
 
 export function giftCandidateHasPrice(candidate: GiftCardCandidate): boolean {

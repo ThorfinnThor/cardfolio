@@ -1,0 +1,10 @@
+{"id":4336,"code":"mee","name":"Mega Evolution Energies","blueprints":[
+{"id":352942,"n":"001","name":"Basic Grass Energy","rar":"Common","img":"352942/preview_basic-grass-energy-mee-001-mega-evolution-energies.jpg","cm":[851008],"tp":656263},
+{"id":352943,"n":"002","name":"Basic Fire Energy","rar":"Common","img":"352943/preview_basic-fire-energy-mee-002-mega-evolution-energies.jpg","cm":[851009],"tp":656264},
+{"id":352944,"n":"003","name":"Basic Water Energy","rar":"Common","img":"352944/preview_basic-water-energy-mee-003-mega-evolution-energies.jpg","cm":[851010],"tp":656265},
+{"id":352945,"n":"004","name":"Basic Lightning Energy","rar":"Common","img":"352945/preview_basic-lightning-energy-mee-004-mega-evolution-energies.jpg","cm":[851011],"tp":656266},
+{"id":352946,"n":"005","name":"Basic Psychic Energy","rar":"Common","img":"352946/preview_basic-psychic-energy-mee-005-mega-evolution-energies.jpg","cm":[851012],"tp":656267},
+{"id":352947,"n":"006","name":"Basic Fighting Energy","rar":"Common","img":"352947/preview_basic-fighting-energy-mee-006-mega-evolution-energies.jpg","cm":[851013],"tp":656268},
+{"id":352948,"n":"007","name":"Basic Darkness Energy","rar":"Common","img":"352948/preview_basic-darkness-energy-mee-007-mega-evolution-energies.jpg","cm":[851014],"tp":656269},
+{"id":352949,"n":"008","name":"Basic Metal Energy","rar":"Common","img":"352949/preview_basic-metal-energy-mee-008-mega-evolution-energies.jpg","cm":[851015],"tp":656270}
+]}

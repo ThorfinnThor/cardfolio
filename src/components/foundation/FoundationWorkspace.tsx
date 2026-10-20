@@ -58,6 +58,8 @@ import { createInitialVariantSelection, formatVariantSelection, isVariantSelecti
 import { catalogQueryKey, detailQueryKey, TCGdexCatalogAdapter } from "@/data/catalog/tcgdex";
 import { LocalStaticSmartSearchAdapter } from "@/data/catalog/semantic-search";
 import { GiftCandidateLoader } from "@/data/gift/gift-candidate-loader";
+import { cardtraderCatalog } from "@/data/cardtrader/catalog";
+import { CardTraderGiftPriceProvider, FallbackGiftPriceProvider } from "@/data/pricing/cardtrader-price-provider";
 import { TCGdexGiftPriceProvider } from "@/data/pricing/gift-price-provider";
 import { catalogSeries, catalogSets, catalogSetIndex, completeCardSnapshotMetadata, searchCatalogSets, setMetadataForSearchItem } from "@/data/catalog/set-counts";
 import { RevisionConflictError } from "@/data/persistence/binder-repository";
@@ -379,6 +381,7 @@ function CatalogResultArtwork({ item, className = styles.resultArtwork, fallback
     <CardArtwork
       card={{
         name: item.name,
+        setId: item.setId,
         setName: item.setName ?? "Karte",
         collectorNumber: item.collectorNumber,
         ref: item.ref,
@@ -428,7 +431,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
   const repository = useMemo(() => new IndexedDBBinderRepository(), []);
   const giftProjects = useMemo(() => new IndexedDBGiftProjectRepository(), []);
   const catalog = useMemo(() => new TCGdexCatalogAdapter(), []);
-  const giftLoader = useMemo(() => new GiftCandidateLoader(catalog, FEATURES.giftPriceEstimates ? new TCGdexGiftPriceProvider() : disabledGiftPriceProvider), [catalog]);
+  const giftLoader = useMemo(() => new GiftCandidateLoader(catalog, FEATURES.giftPriceEstimates ? (FEATURES.cardtraderPrices ? new FallbackGiftPriceProvider(new TCGdexGiftPriceProvider(), new CardTraderGiftPriceProvider()) : new TCGdexGiftPriceProvider()) : disabledGiftPriceProvider, FEATURES.cardtraderImages ? async (card) => Boolean((await cardtraderCatalog.blueprint(card.ref.language, card.setId, card.collectorNumber, card.englishIdentity?.name ?? card.name))?.blueprint.img) : undefined), [catalog]);
   const giftSmartSearch = useMemo(() => FEATURES.smartSearch ? new LocalStaticSmartSearchAdapter() : undefined, []);
   const syncChannelRef = useRef<BroadcastChannel | undefined>(undefined);
   const searchReturnFocusRef = useRef<HTMLElement | null>(null);

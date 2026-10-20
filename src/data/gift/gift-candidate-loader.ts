@@ -79,6 +79,8 @@ export class GiftCandidateLoader {
   constructor(
     private readonly catalog: GiftCatalogAdapter,
     private readonly prices: PriceProvider,
+    /** Optional check for artwork outside TCGdex, used when the catalogue has no image for a card. */
+    private readonly alternativeArtwork?: (card: CardSnapshot) => Promise<boolean>,
   ) {}
 
   async loadSubjectPage(input: {
@@ -182,7 +184,11 @@ export class GiftCandidateLoader {
             rawPricing: detail.rawPricing,
             fetchedAt: detail.card.fetchedAt,
             printingMatch: options.printingMatch?.(detail.card) ?? "candidate",
+            minimumCondition: options.preferences?.minimumCondition,
           }, signal);
+          const cardtraderImage = !detail.card.imageBaseUrl && !detail.card.imageFallbackBaseUrl && this.alternativeArtwork
+            ? await this.alternativeArtwork(detail.card)
+            : undefined;
           results[index] = {
             card: detail.card,
             variant,
@@ -190,6 +196,7 @@ export class GiftCandidateLoader {
             releaseYear: detail.releaseYear,
             price,
             reasonTags: [],
+            ...(cardtraderImage ? { cardtraderImage: true } : {}),
           };
         } catch (error) {
           // A single card the catalogue cannot deliver must not stop the whole proposal; a stop request still does.

@@ -1,0 +1,27 @@
+{
+ "schemaVersion": 1,
+ "source": "https://www.cardtrader.com/en-EU/docs/api/full/reference",
+ "permission": "Written confirmation from CardTrader support, 2026-10-20: images, prices and the other API data may be used; listing links included.",
+ "attribution": "Card images, product ids and prices via the CardTrader API (cardtrader.com).",
+ "imagePrefix": "https://cardtrader.com/uploads/blueprints/image/",
+ "priceSlots": [
+  "en:nm",
+  "en:ex",
+  "en:lp",
+  "en:pl",
+  "en:any",
+  "de:nm",
+  "de:ex",
+  "de:lp",
+  "de:pl",
+  "de:any"
+ ],
+ "counts": {
+  "expansions": 188,
+  "blueprints": 21951,
+  "withImage": 21902,
+  "withCardmarketId": 21468,
+  "withTcgplayerId": 21561,
+  "pricedBlueprints": 21425
+ }
+}

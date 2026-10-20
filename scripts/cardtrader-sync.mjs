@@ -98,8 +98,13 @@ function aggregatePrices(listings, blueprintIds) {
   return { prices, stats };
 }
 
+/* Same shape the app validates (src/data/cardtrader/catalog.ts): numeric folder, plain file name. */
+const IMAGE_PATH = /^\d+\/[A-Za-z0-9._()-]+\.(?:jpe?g|png|webp)$/i;
+
 function imagePath(url) {
-  return typeof url === "string" && url.startsWith(IMAGE_PREFIX) ? url.slice(IMAGE_PREFIX.length) : undefined;
+  if (typeof url !== "string" || !url.startsWith(IMAGE_PREFIX)) return undefined;
+  const path = url.slice(IMAGE_PREFIX.length);
+  return IMAGE_PATH.test(path) ? path : undefined;
 }
 
 function blueprintRecord(blueprint) {
@@ -144,7 +149,7 @@ for (const expansionId of expansionIds) {
     .sort((a, b) => a.id - b.id);
   const records = blueprints.map(blueprintRecord);
   const file = `${JSON.stringify({ id: Number(expansionId), code: expansion.code, name: expansion.name })}`.replace(/}$/, `,"blueprints":${lines(records)}}`);
-  (await writeIfChanged(join(outDir, "expansions", `${expansionId}.json`), `${file}\n`)) ? written.changed += 1 : written.unchanged += 1;
+  written[(await writeIfChanged(join(outDir, "expansions", `${expansionId}.json`), `${file}\n`)) ? "changed" : "unchanged"] += 1;
   manifest.expansions += 1;
   manifest.blueprints += records.length;
   manifest.withImage += records.filter((record) => record.img).length;
@@ -158,7 +163,7 @@ for (const expansionId of expansionIds) {
     const { prices, stats } = aggregatePrices(Array.isArray(listings) ? {} : listings, new Set(blueprints.map((blueprint) => blueprint.id)));
     const ordered = Object.fromEntries(Object.keys(prices).sort((a, b) => Number(a) - Number(b)).map((key) => [key, prices[key]]));
     const body = `{"id":${expansionId},"currency":"EUR","slots":["en:nm","en:ex","en:lp","en:pl","en:any","de:nm","de:ex","de:lp","de:pl","de:any"],"p":{\n${Object.entries(ordered).map(([key, slots]) => `${JSON.stringify(key)}:${JSON.stringify(slots)}`).join(",\n")}\n}}\n`;
-    (await writeIfChanged(join(outDir, "prices", `${expansionId}.json`), body)) ? written.changed += 1 : written.unchanged += 1;
+    written[(await writeIfChanged(join(outDir, "prices", `${expansionId}.json`), body)) ? "changed" : "unchanged"] += 1;
     manifest.priced += Object.keys(ordered).length;
     manifest.listingsUsed += stats.used;
     manifest.listingsSeen += stats.listings;

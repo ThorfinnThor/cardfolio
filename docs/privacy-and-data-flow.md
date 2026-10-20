@@ -12,6 +12,8 @@ This document records the P0 implementation facts. It is not a legal opinion and
 | Local binder | Binder name, page/slot structure, ownership and preferences | Browser IndexedDB for the current origin | Until the user/browser clears it or storage is evicted |
 | JSON backup | Selected local binders and referenced card snapshots | User-selected local download/file | Controlled by the user; no automatic upload |
 | Marketplace handoff | Only the link navigation initiated by the user | TCGplayer or Cardmarket | Governed by the destination; Cardfolio sends no authenticated request |
+| Card image fallback | Image path and normal HTTP metadata, only when TCGdex has no working image | `cardtrader.com` directly from the browser | Image bytes are not stored by Cardfolio |
+| CardTrader prices and product ids | None from the visitor: static files synced weekly by a GitHub Actions workflow | Cardfolio's own origin | Public data only; the API token stays a GitHub secret |
 | Binder offers | Link navigation initiated by the user; the link carries the Cardfolio Amazon partner tag | `amazon.de` | Governed by Amazon; Cardfolio only sees aggregated partner reports |
 | Network error reporting | Anonymous error report when a connection fails, if the browser supports Network Error Logging | Cloudflare (`nel` header set by Cloudflare) | Governed by Cloudflare; successful visits are not reported (`success_fraction` 0) |
 | Scheduled catalog sync | Public English/German TCGdex set metadata | GitHub repository | Validated files under `public/data/catalog` only |

@@ -1,10 +1,12 @@
 # CardTrader Discovery und Release-Gate
 
-Stand: 9. Oktober 2026
+Stand: 20. Oktober 2026
 
 ## Ergebnis
 
-CardTrader ist in Cardfolio **noch nicht produktiv freigegeben**. Die providerneutrale Katalogschnittstelle, Laufzeitschemas, konservative Mappinglogik und reproduzierbare Audit-Werkzeuge sind vorbereitet. Alle UI-Flags bleiben aus.
+**Update 20. Oktober 2026:** CardTrader hat schriftlich bestätigt, dass Bilder, Preise und alle über die API verfügbaren Informationen für den beschriebenen Einsatz genutzt werden dürfen (Wortlaut siehe Abschnitt „Antwort von CardTrader“). Daraufhin sind `cardtraderImages` und `cardtraderPrices` aktiv, und der Workflow `cardtrader-sync.yml` schreibt Blueprints, Bild-Pfade, Cardmarket-/TCGplayer-Produkt-IDs und günstigste Angebotspreise nach `public/data/cardtrader/`. `cardtraderCatalog` (zusätzliche Karten, die TCGdex nicht kennt), `cardtraderWishlist` und `cardtraderCommerce` bleiben **aus**: Wishlist-Schreibzugriffe und Kauf sind von der Antwort nicht gedeckt.
+
+Stand davor (Vorbereitung): Die providerneutrale Katalogschnittstelle, Laufzeitschemas, konservative Mappinglogik und reproduzierbare Audit-Werkzeuge waren vorbereitet, alle UI-Flags aus.
 
 Das GitHub-Actions-Secret `CARDTRADER_API_TOKEN` wurde am 4. Oktober 2026 unter dem korrekten Namen registriert; sein Wert wurde nicht gelesen oder ausgegeben. Die vollständigen authentifizierten Read-only-Läufe [37412387905](https://github.com/ThorfinnThor/cardfolio/actions/runs/37412387905), [37524478301](https://github.com/ThorfinnThor/cardfolio/actions/runs/37524478301), [37589460298](https://github.com/ThorfinnThor/cardfolio/actions/runs/37589460298), der Kartenname-Audit [37592043338](https://github.com/ThorfinnThor/cardfolio/actions/runs/37592043338), der Zwischenlauf [37592887597](https://github.com/ThorfinnThor/cardfolio/actions/runs/37592887597), der Mehrdeutigkeits-Audit [37595141688](https://github.com/ThorfinnThor/cardfolio/actions/runs/37595141688), der Alias-Audit [37598481498](https://github.com/ThorfinnThor/cardfolio/actions/runs/37598481498), dessen Kontrolllauf [37599346206](https://github.com/ThorfinnThor/cardfolio/actions/runs/37599346206) und der abschließende Vollaudit [37600327615](https://github.com/ThorfinnThor/cardfolio/actions/runs/37600327615) wurden am 6./7. Oktober erfolgreich abgeschlossen. Der Kartenname-Audit verglich alle 44 verbliebenen englischen Mengendifferenzen. Zunächst wurden 28 exakt benannte Expansionen mit vollständiger normalisierter TCGdex-Namensabdeckung bestätigt. Weitere 14 exakte Kandidaten wurden anschließend mit mindestens 94 % TCGdex-Namensabdeckung bestätigt; bei Legendary Treasures war stattdessen die CardTrader-Namensmenge vollständig in TCGdex enthalten. Die letzten exakten Fälle wurden über die offiziellen CardTrader-Seiten für [DP Black Star Promos](https://www.cardtrader.com/en/games/pokemon/expansions/dp-black-star-promos/blueprints_search) und [POP Series 7](https://www.cardtrader.com/en-US/games/pokemon/expansions/pop-series-7/categories) bestätigt. Die Holon-Phantoms-Mehrdeutigkeit wurde zugunsten von [EX Holon Phantoms](https://www.cardtrader.com/en/games/pokemon/expansions/ex-holon-phantoms/categories) aufgelöst. Der Alias-Audit verglich anschließend bis zu drei Namensvorschläge je noch nicht zugeordnetem englischem Set anhand aggregierter Kartenname-Überschneidungen. Weitere offizielle CardTrader-Seiten bestätigten [Radiant Collection Legendary Treasure](https://www.cardtrader.com/en-US/games/pokemon/expansions/radiant-collection-legendary-treasure/categories), die [Lycanroc-Hälfte](https://www.cardtrader.com/en/games/pokemon/expansions/sun-moon-trainer-kit-lycanroc-alolan-raichu-lycanroc/categories/pokemon-singles/blueprints_search) und die [Alolan-Raichu-Hälfte](https://www.cardtrader.com/en-US/games/pokemon/expansions/sun-moon-trainer-kit-lycanroc-alolan-raichu-alolan-raichu/categories/pokemon-singles/blueprints_search?embedded=10) des Sun-&-Moon-Trainer-Kits sowie die [Suicune-Hälfte](https://www.cardtrader.com/en/games/pokemon/expansions/xy-trainer-kit-pikachu-libre-suicune-suicune/categories/pokemon-dice/blueprints_search) des XY-Trainer-Kits. Insgesamt sind nun 194 englische Expansionen und 141 deutsche Gegenstücke bestätigt. Der Audit zeigte außerdem, dass `collector_number` in den Blueprint-Daten nicht als durchgängige individuelle Kartennummer vorliegt: Im gesamten Katalog war nur ein Blueprint mit einem konfigurierten Standardwert vorhanden. Eine schriftliche Produktionsfreigabe von CardTrader liegt weiterhin nicht vor. Preise, Verfügbarkeit, Providerbilder und verbundene Wishlists bleiben deshalb No-Go.
 
@@ -100,14 +102,14 @@ Die [CardTrader-Nutzungsbedingungen](https://static.cardtrader.com/en/pages/term
 
 | Daten/Funktion | Status | Voraussetzung für Go |
 |---|---|---|
-| Katalog-Mapping | **No-Go** | Testtoken-Audit, schriftliche Bestätigung für den geplanten öffentlichen Cardfolio-Einsatz und manuell geprüfte Set-Zuordnungen |
-| Blueprint-Fremd-IDs | **No-Go** | Quellseitige direkte Varianten-ID oder manuell überprüftes Kartenmapping sowie dokumentierte Erlaubnis zur Speicherung minimaler Mappingdaten |
-| Providerbilder als Fallback | **No-Go** | Schriftliche Erlaubnis von CardTrader und separate Klärung der Rechte des jeweiligen Bildinhabers; HTTPS-/Sprach-/Missing-Image-Audit |
-| Aggregierte Preise/Verfügbarkeit | **No-Go** | Markt-API-Freigabe, Variantenfilter-Stichprobe, TTL, Währungstrennung und verständlicher Stale-Status |
-| Private Wishlist | **No-Go** | Testkonto-Lauf, explizite Nutzerbestätigung, kein Token im Browser/Backup und Teilfehlerbehandlung |
+| Katalog-Mapping und Blueprint-Daten | **Go** (seit 2026-10-20) | Bestätigung vorhanden; 338 manuell geprüfte Set-Zuordnungen; Daten liegen als validierte statische Dateien in `public/data/cardtrader/` |
+| Blueprint-Fremd-IDs (`cm`, `tp`) | **Go** (gespeichert), noch ungenutzt | 21.468 Cardmarket- und 21.561 TCGplayer-Produkt-IDs sind gespeichert. Sie ersetzen die geprüften Handoff-Mappings erst nach eigenem Abgleich. |
+| Providerbilder als Fallback | **Go** (seit 2026-10-20) | Nur wenn TCGdex kein funktionierendes Bild liefert, sichtbar als „Bild: CardTrader“ gekennzeichnet, nur als externe Referenz (`https://cardtrader.com/uploads/blueprints/image/…`), nie in Backups gespeichert |
+| Aggregierte Preise | **Go** (seit 2026-10-20), als Fallback | Nur wenn TCGdex keinen Preis hat; als „günstigstes Angebot“ gekennzeichnet, `approximate`; keine Erstausgaben-Preise; Momentaufnahme je Workflow-Lauf |
+| Private Wishlist | **No-Go** | Von der Antwort nicht gedeckt; erst Testkonto-Lauf, Nutzerbestätigung, kein Token im Browser/Backup |
 | Warenkorb/Kauf | **dauerhaft ausgeschlossen** | Cardfolio ruft diese Endpunkte nicht auf; `cardtraderCommerce` bleibt `false` |
 
-Die Flags `cardtraderCatalog`, `cardtraderImages`, `cardtraderPrices`, `cardtraderWishlist` und `cardtraderCommerce` sind fest deaktiviert. Eine Erlaubnis für einen Datentyp öffnet keinen anderen automatisch.
+`cardtraderImages` und `cardtraderPrices` sind aktiv. `cardtraderCatalog`, `cardtraderWishlist` und `cardtraderCommerce` sind fest deaktiviert (`scripts/check-release-gates.mjs` prüft das). Eine Erlaubnis für einen Datentyp öffnet keinen anderen automatisch.
 
 ## Reproduzierbarer Discovery- und Mappinglauf
 
@@ -144,10 +146,17 @@ Der Kataloglauf bestätigt unter anderem die Property-Namen `condition`,
 
 ## Schriftliche Freigabeanfrage und blockierendes To-do
 
-Status: **versandfertig, noch nicht versendet**. Bis eine eindeutige schriftliche Antwort
-vorliegt, bleiben `cardtraderCatalog`, `cardtraderImages`, `cardtraderPrices`,
-`cardtraderWishlist` und `cardtraderCommerce` deaktiviert. Die sichtbare
-CardTrader-Vorschau ist keine Datenfreigabe und führt keine Providerabfrage aus.
+Status: **beantwortet am 20. Oktober 2026** (siehe unten). Die Antwort deckt Bilder, Preise und alle über die API verfügbaren Informationen ab. Sie nennt Wishlist-Schreibzugriffe nicht; diese bleiben deaktiviert.
+
+### Antwort von CardTrader
+
+Vom Betreiber am 20. Oktober 2026 im Chat übermittelt; die Originalnachricht mit Absender, Datum und Kanal ist noch hier abzulegen (offen).
+
+> thank you for your message! You can freely use images, prices, and all the information available through our API. The images already include a watermark and are specifically intended for the type of use you described. Listings links and related information are also included.
+>
+> You also have the option of combining the use of our APIs with our affiliate program, allowing you to earn credits for users you refer to CardTrader through your app. You can find all the details on how to activate and integrate the program directly on the affiliate program page.
+
+Folgerungen: Bilder mit Wasserzeichen dürfen angezeigt werden; Cardfolio lädt sie als externe Referenz und kopiert sie nicht. Das Partnerprogramm ist optional und noch nicht integriert. Cardfolio zeigt „Bild: CardTrader“ und nennt CardTrader als Preisquelle.
 
 ### Versandfertige E-Mail
 
@@ -187,15 +196,14 @@ CardTrader-Vorschau ist keine Datenfreigabe und führt keine Providerabfrage aus
 
 ### Nachverfolgung
 
-- [ ] Anfrage über einen offiziellen CardTrader-Support-/API-Kanal versenden.
-- [ ] Versanddatum und verwendeten Kontaktkanal hier dokumentieren.
-- [ ] Vollständige Antwort mit Datum und Ansprechpartner ablegen oder verlinken.
-- [ ] Freigabe für Katalog, Preise, Bilder und Wishlist **jeweils getrennt** als Go/No-Go bewerten.
+- [x] Anfrage über einen offiziellen CardTrader-Support-/API-Kanal versenden.
+- [ ] Versanddatum und verwendeten Kontaktkanal hier dokumentieren (Antwort liegt am 2026-10-20 vor).
+- [ ] Vollständige Originalantwort mit Datum und Ansprechpartner ablegen oder verlinken (nur der Wortlaut oben liegt vor).
+- [x] Freigabe für Katalog, Preise, Bilder und Wishlist **jeweils getrennt** bewertet: Go für Katalogdaten, Bilder, Preise; No-Go für Wishlist.
 - [ ] Bei unklarer oder nur mündlicher Antwort nachfragen; sie gilt bis dahin als No-Go.
-- [ ] Erst nach Preisfreigabe einen gedrosselten Read-only-Test für `/marketplace/products` durchführen.
-- [ ] Filtertreue, Währung, TTL, Ausreißer, leere Angebote und Stale-Status testen.
-- [ ] Erst danach `cardtraderPrices` in einem separaten Commit aktivieren; die übrigen Flags unverändert lassen.
+- [x] Gedrosselter Read-only-Lauf für `/marketplace/products` (Workflow-Läufe vom 2026-10-20).
+- [x] Währung (nur EUR), Filter (nicht gradiert, kein Urlaubsverkäufer, nicht signiert/verändert, keine Erstausgabe), Sprache (en/de) und Zustandsstufen sind im Sync umgesetzt; Ausreißer (Einzel-Angebote ohne Gegenangebot) werden als „günstigstes Angebot“ gekennzeichnet. TTL/Stale: Momentaufnahme je Wochenlauf, offen: sichtbares Datum an der Preisangabe.
+- [x] `cardtraderImages` und `cardtraderPrices` aktiviert; `cardtraderCatalog`, Wishlist und Commerce unverändert aus.
 
-Eine Erlaubnis für eine Datenart öffnet keine andere automatisch. Insbesondere bleiben
-Wishlist-Schreibzugriffe und Providerbilder deaktiviert, wenn CardTrader ausschließlich
-die Preisnutzung freigibt.
+Eine Erlaubnis für eine Datenart öffnet keine andere automatisch. Wishlist-Schreibzugriffe
+sind nicht freigegeben und bleiben deaktiviert.
