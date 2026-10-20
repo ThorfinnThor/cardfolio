@@ -27,18 +27,19 @@ const HERO = {
 
 /**
  * Example page for the hero: the same nine Pikachu cards the app's start screen shows. TCGdex serves the
- * artwork at runtime; Cardfolio does not store or copy the image bytes. Purely decorative, so no alt text.
+ * artwork at runtime; Cardfolio does not store or copy the image bytes. Purely decorative, so no alt text. The small
+ * image size (about 20 KB each) is enough for a pocket this size.
  */
 const EXAMPLE_CARDS = [
-  "https://assets.tcgdex.net/en/base/base1/58/high.webp",
-  "https://assets.tcgdex.net/en/base/base2/60/high.webp",
-  "https://assets.tcgdex.net/en/base/basep/1/high.webp",
-  "https://assets.tcgdex.net/en/bw/bw1/115/high.webp",
-  "https://assets.tcgdex.net/en/bw/bw11/RC7/high.webp",
-  "https://assets.tcgdex.net/en/bw/bw4/39/high.webp",
-  "https://assets.tcgdex.net/en/dp/dp5/70/high.webp",
-  "https://assets.tcgdex.net/en/ecard/ecard3/84/high.webp",
-  "https://assets.tcgdex.net/en/swsh/cel25/5/high.webp",
+  "https://assets.tcgdex.net/en/base/base1/58/low.webp",
+  "https://assets.tcgdex.net/en/base/base2/60/low.webp",
+  "https://assets.tcgdex.net/en/base/basep/1/low.webp",
+  "https://assets.tcgdex.net/en/bw/bw1/115/low.webp",
+  "https://assets.tcgdex.net/en/bw/bw11/RC7/low.webp",
+  "https://assets.tcgdex.net/en/bw/bw4/39/low.webp",
+  "https://assets.tcgdex.net/en/dp/dp5/70/low.webp",
+  "https://assets.tcgdex.net/en/ecard/ecard3/84/low.webp",
+  "https://assets.tcgdex.net/en/swsh/cel25/5/low.webp",
 ] as const;
 
 function BinderPage({ label }: { label: string }) {
@@ -48,7 +49,7 @@ function BinderPage({ label }: { label: string }) {
         {EXAMPLE_CARDS.map((src) => (
           <span key={src} className={styles.pocket}>
             {/* eslint-disable-next-line @next/next/no-img-element -- static export without the image optimiser */}
-            <img src={src} alt="" width={63} height={88} loading="lazy" decoding="async" />
+            <img src={src} alt="" width={63} height={88} loading="eager" decoding="async" />
           </span>
         ))}
       </div>
@@ -62,7 +63,7 @@ export function LandingPage({ language, alternatePath }: { language: PageLanguag
   const copy = LANDING[language];
   const hero = HERO[language];
   return (
-    <ContentFrame language={language} alternatePath={alternatePath}>
+    <ContentFrame language={language} alternatePath={alternatePath} wide>
       <header className={styles.hero}>
         <div className={styles.heroText}>
           <p className={styles.eyebrow}>{SITE_NAME}</p>

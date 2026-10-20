@@ -1,4 +1,5 @@
 .page { width: min(820px, calc(100% - 32px)); margin: 0 auto; padding: 32px 0 72px; color: var(--cf-text); }
+.pageWide { width: min(1120px, calc(100% - 48px)); }
 .topline { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
 .brand { color: var(--cf-text); font-family: var(--cf-font-display); font-size: 1.05rem; font-weight: 700; text-decoration: none; }
 .nav { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; font-size: .9rem; }
@@ -20,6 +21,8 @@
 .section p, .section li, .section dd { color: var(--cf-text2); line-height: 1.65; }
 .section p { margin: 8px 0 0; }
 .section ul, .section ol { margin: 8px 0 0; padding-left: 20px; }
+.section ul:not(.cards) { list-style: disc; }
+.section ol { list-style: decimal; }
 .section li + li { margin-top: 6px; }
 .section li::marker { color: var(--cf-accent-text); }
 .section a { color: var(--cf-accent-text); font-weight: 650; text-underline-offset: 3px; }
@@ -58,7 +61,7 @@
 }
 
 .hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 28px 40px; align-items: center; margin: 28px 0 8px; }
-.heroText h1 { overflow-wrap: break-word; hyphens: auto; margin: 8px 0 14px; font-family: var(--cf-font-display); font-size: clamp(2rem, 6vw, 3.1rem); font-weight: 600; letter-spacing: -.025em; line-height: 1.06; }
+.heroText h1 { overflow-wrap: break-word; margin: 8px 0 14px; font-family: var(--cf-font-display); font-size: clamp(1.75rem, 7.2vw, 3.1rem); font-weight: 600; letter-spacing: -.025em; line-height: 1.06; }
 .heroActions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 18px; }
 .heroActions .cta { margin-top: 0; padding: 14px 24px; font-size: 1.05rem; }
 .secondary { color: var(--cf-accent-text); font-weight: 650; text-underline-offset: 3px; }
@@ -71,4 +74,20 @@
 @media (max-width: 720px) {
   .hero { grid-template-columns: minmax(0, 1fr); }
   .binder { max-width: 260px; margin: 0 auto; }
+}
+
+.landingGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 22px; }
+.landingGrid .section { margin-top: 0; }
+.spanAll { grid-column: 1 / -1; }
+.hero { margin-top: 40px; margin-bottom: 14px; }
+.faq dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 36px; margin: 0; }
+
+@media (max-width: 900px) {
+  .landingGrid { grid-template-columns: minmax(0, 1fr); }
+  .faq dl { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 520px) {
+  .nav { gap: 6px 14px; font-size: .86rem; }
+  .pageWide { width: min(100% - 20px, 1120px); }
+  .hero { margin-top: 20px; }
 }

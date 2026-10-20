@@ -291,6 +291,7 @@ export function LandingSections({ language, species }: { language: PageLanguage;
   const copy = LANDING[language];
   return (
     <>
+      <div className={styles.landingGrid}>
       <section className={styles.section}>
         <h2>{copy.whatHeading}</h2>
         {copy.whatText.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
@@ -304,6 +305,15 @@ export function LandingSections({ language, species }: { language: PageLanguage;
         <ul>{copy.know.map((item) => <li key={item}>{item}</li>)}</ul>
       </section>
       <section className={styles.section}>
+        <h2>{copy.guidesHeading}</h2>
+        <p>{copy.guidesText}</p>
+        <ul>
+          {GUIDES.map((guide) => <li key={guide.id}><Link href={guidePath(language, guide)}>{guide[language].title}</Link></li>)}
+          {language === "de" ? <li><Link href="/anleitung/cardmarket/">{copy.buyingGuideLabel}</Link></li> : null}
+        </ul>
+        <p><Link href={guideIndexPath(language)}>{language === "de" ? "Alle Ratgeber" : "All guides"}</Link></p>
+      </section>
+      <section className={`${styles.section} ${styles.spanAll}`}>
         <h2>{copy.speciesHeading}</h2>
         <p>{copy.speciesText}</p>
         <ul className={styles.cards}>
@@ -318,22 +328,14 @@ export function LandingSections({ language, species }: { language: PageLanguage;
         </ul>
         <p><Link href={speciesIndexPath(language)}>{language === "de" ? "Alle Pokémon-Binder-Seiten" : "All Pokémon binder pages"}</Link></p>
       </section>
-      <section className={styles.section}>
-        <h2>{copy.guidesHeading}</h2>
-        <p>{copy.guidesText}</p>
-        <ul>
-          {GUIDES.map((guide) => <li key={guide.id}><Link href={guidePath(language, guide)}>{guide[language].title}</Link></li>)}
-          {language === "de" ? <li><Link href="/anleitung/cardmarket/">{copy.buyingGuideLabel}</Link></li> : null}
-        </ul>
-        <p><Link href={guideIndexPath(language)}>{language === "de" ? "Alle Ratgeber" : "All guides"}</Link></p>
-      </section>
-      <section className={`${styles.section} ${styles.faq}`}>
+      <section className={`${styles.section} ${styles.faq} ${styles.spanAll}`}>
         <h2>{copy.faqHeading}</h2>
         <dl>
           {copy.faq.map((item) => (<div key={item.q}><dt>{item.q}</dt><dd>{item.a}</dd></div>))}
         </dl>
         <ToolCta language={language} label={copy.cta} />
       </section>
+      </div>
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "WebApplication",
