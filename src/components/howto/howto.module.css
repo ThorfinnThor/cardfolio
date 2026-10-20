@@ -1,9 +1,9 @@
-.page { width: min(860px, calc(100% - 32px)); margin: 0 auto; padding: 40px 0 80px; }
+.page { width: min(1120px, calc(100% - 48px)); margin: 0 auto; padding: 40px 0 80px; }
 .topline { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .back { color: var(--cf-accent-text); font-family: var(--cf-font-mono); font-size: .8rem; font-weight: 600; letter-spacing: .02em; text-underline-offset: 3px; }
 .header { margin: 28px 0 20px; }
 .header h1 { margin: 8px 0 12px; font-family: var(--cf-font-display); font-size: clamp(1.9rem, 5.5vw, 3rem); font-weight: 600; letter-spacing: -.02em; line-height: 1.08; text-wrap: balance; }
-.header > p:last-child { max-width: 640px; color: var(--cf-text2); font-size: 1.05rem; line-height: 1.6; }
+.header > p:last-child { max-width: 720px; color: var(--cf-text2); font-size: 1.05rem; line-height: 1.6; }
 .eyebrow { margin: 0; color: var(--cf-accent-text); font-size: .85rem; font-weight: 700; }
 .toc { border: 1px solid var(--cf-line); border-radius: 12px; background: var(--cf-surface); padding: 16px 20px; }
 .toc ol { display: grid; gap: 4px; margin: 0; padding-left: 22px; }
@@ -15,14 +15,14 @@
 .step h2 span { display: grid; flex: 0 0 auto; width: 36px; height: 36px; place-items: center; border-radius: 50%; background: var(--cf-accent); color: var(--cf-on-accent); font-family: var(--cf-font-mono); font-size: .95rem; font-weight: 750; }
 .step h3 { margin: 18px 0 6px; font-size: 1.05rem; }
 .step p, .step li { color: var(--cf-text2); line-height: 1.65; }
-.step p { margin: 8px 0 0; }
+.step p { max-width: 76ch; margin: 8px 0 0; }
 .step a, .footer a { color: var(--cf-accent-text); font-weight: 650; text-underline-offset: 3px; }
-.step ul { margin: 10px 0 0; padding-left: 20px; }
+.step ul { max-width: 76ch; margin: 10px 0 0; padding-left: 20px; }
 .step li + li { margin-top: 6px; }
 .numbered { display: grid; gap: 8px; margin: 12px 0 0; padding: 0; counter-reset: howto; list-style: none; }
 .numbered li { position: relative; padding-left: 38px; counter-increment: howto; }
 .numbered li::before { position: absolute; top: 1px; left: 0; display: grid; width: 26px; height: 26px; place-items: center; border-radius: 50%; background: var(--cf-accent-soft); color: var(--cf-accent-text); content: counter(howto); font-family: var(--cf-font-mono); font-size: .8rem; font-weight: 750; }
-.figure { margin: 16px 0 0; }
+.figure { max-width: 940px; margin: 16px 0 0; }
 .figure figcaption { margin-top: 8px; color: var(--cf-muted); font-size: .88rem; line-height: 1.5; }
 .conditionTable { width: 100%; margin-top: 16px; border-collapse: collapse; font-size: .95rem; }
 .conditionTable caption { padding-bottom: 8px; color: var(--cf-text); font-weight: 750; text-align: left; }
@@ -42,6 +42,6 @@
 .conditionTable tr[data-pick="true"] th, .conditionTable tr[data-pick="true"] td { background: var(--cf-accent-soft); }
 
 @media (max-width: 520px) {
-  .page { width: min(100% - 20px, 860px); padding-top: 24px; }
+  .page { width: min(100% - 20px, 1120px); padding-top: 24px; }
   .step { padding: 18px 14px 20px; }
 }

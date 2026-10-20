@@ -63,7 +63,7 @@ export function LandingPage({ language, alternatePath }: { language: PageLanguag
   const copy = LANDING[language];
   const hero = HERO[language];
   return (
-    <ContentFrame language={language} alternatePath={alternatePath} wide>
+    <ContentFrame language={language} alternatePath={alternatePath}>
       <header className={styles.hero}>
         <div className={styles.heroText}>
           <p className={styles.eyebrow}>{SITE_NAME}</p>
