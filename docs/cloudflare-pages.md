@@ -2,14 +2,19 @@
 
 Cardfolio uses a static Next.js export and Cloudflare Pages Git integration. Do not create a Direct Upload project for this repository.
 
-## Current integration state — 2026-09-27
+## Current integration state — 2026-10-20
 
 - Public source repository: `https://github.com/ThorfinnThor/cardfolio`
 - Production branch: `main`
 - Project: `cardfolio`
+- Primary custom origin: `https://yourcardbinder.com/`
+- `https://www.yourcardbinder.com/` is connected to Pages and redirects permanently to the primary origin.
 - Technical-preview origin: `https://cardfolio-780.pages.dev/`
 - Automatic deployments from the public repository are enabled.
 - Build settings use **Next.js (Static HTML Export)**, `npm run build`, output directory `out` and `NODE_VERSION=24.19.0`.
+- Namecheap delegates DNS to Cloudflare through `collins.ns.cloudflare.com` and `wilson.ns.cloudflare.com`.
+- Cloudflare Universal SSL is active for the apex and wildcard hostnames. **Always Use HTTPS** is enabled; HSTS remains disabled until the production-origin review is complete.
+- On 2026-10-20, the apex returned HTTP 200 over HTTPS, `www` returned a permanent redirect to the apex, HTTP redirected to HTTPS, and `/help/` plus `/anleitung/cardmarket/` returned HTTP 200 with the repository security headers.
 - Verified application deployment: `https://fd3f7b29.cardfolio-780.pages.dev/`, commit `33b801f17783c16d6ef19cbd463a7303a7eba041`, Cloudflare status `success`.
 - The target-origin checks are recorded in `docs/releases/technical-preview-2026-09-27.md`.
 - GitHub CI run `36338067792` passed the complete remote suite for commit `33b801f17783c16d6ef19cbd463a7303a7eba041`, including all seven Playwright scenarios, full collector numbers and the persisted printing-variant regression.
@@ -49,4 +54,4 @@ Cloudflare Pages applies `_headers` to static assets but not to Pages Functions.
 
 IndexedDB is origin-bound. A `pages.dev` address, each branch preview address and a custom domain do not share binder data. Before replacing a production origin, publish a visible migration window: users export on the old origin and import on the new one. Never describe a preview deployment as durable storage for a real collection.
 
-For a custom domain, decide and verify HSTS at the Cloudflare zone level only after HTTPS and subdomain behavior are known. It is intentionally not asserted by the repository-level `_headers` file before that decision.
+The custom domain uses Cloudflare's HTTPS redirect and `www`-to-apex redirect. HSTS remains disabled until the remaining production-origin checks and rollback behavior are complete. It is intentionally not asserted by the repository-level `_headers` file before that decision.

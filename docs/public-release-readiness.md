@@ -1,6 +1,6 @@
 # CF-21 public-release readiness
 
-Assessment date: 2026-09-27. Scope: public GitHub repository, local static export and deployed Cloudflare Pages technical preview. This is not an approval for public production launch.
+Assessment date: 2026-10-20. Scope: public GitHub repository, local static export, Cloudflare Pages technical preview and connected custom domain. This is not an approval for public production launch.
 
 ## Decision
 
@@ -15,7 +15,7 @@ Assessment date: 2026-09-27. Scope: public GitHub repository, local static expor
 | Data/image use | **Blocked — human review** | API/data/image flows and the separation between database licensing and artwork rights are documented. Images remain external references. | Review TCGdex provider terms and the concrete public/non-commercial/commercial image and trademark use. Obtain advice/permission or replace public card imagery with neutral placeholders. Confirm the product name. |
 | Privacy/provider details | **Blocked — explicitly deferred operator input** | `docs/privacy-and-data-flow.md` and `/help/` describe actual storage and network flows without claiming there are no third-party connections. The owner stated that operator details will follow later. | Supply operator identity/contact/country/production domain, review Cloudflare logging/retention, and approve the required privacy/provider/imprint texts. |
 | Local data security | Passed for repository scope | Backup roundtrip, invalid import, save error, revision conflict, origin warning and external image-host validation are implemented/tested. | Keep a real old-schema backup fixture before any schema migration. |
-| Hosting | Passed for technical preview | `https://cardfolio-780.pages.dev/` is connected to public `main`. The immutable deployment for application commit `33b801f17783c16d6ef19cbd463a7303a7eba041` succeeded, and routes, headers, hydration, live provider flows including complete search numbers, persistence, printing variants, JSON export/import, conflict handling, German-to-English image fallback, assets, 375 px layout and keyboard focus were checked. | Keep the preview labeled non-production and repeat the checklist for the final custom/production origin. |
+| Hosting | Conditional — custom origin connected | `https://yourcardbinder.com/` and `https://www.yourcardbinder.com/` are connected to the `cardfolio` Pages project with Universal SSL. HTTP redirects to HTTPS and `www` redirects permanently to the apex. The apex, `/help/` and `/anleitung/cardmarket/` returned successful responses with the repository security headers on 2026-10-20. | Complete the remaining browser, persistence, backup, provider-flow, responsive-layout and accessibility checks on the custom origin for the exact release commit. Keep the public launch blocked until the human gates are closed. |
 | GitHub verification | Passed | The existing public CI and public-data workflows verify type safety, lint, unit/component tests, static build, release gates and Chromium scenarios. The scheduled data job is now also required to account for every physical TCGdex set in the official TCGplayer Mass Entry catalog or an explicit unavailable-set list. | Keep CI required for human pushes and inspect the next scheduled marketplace-metadata refresh before release. |
 | Purchase presentation | Passed | Prices remain disabled. TCGplayer uses synchronized official set/product identities and visibly excludes unresolved records; Cardmarket is labeled as a manual review handoff. Finish, edition and printing are mandatory before insertion/export. | Repeat checks when mappings or marketplace behavior change. |
 
@@ -38,7 +38,7 @@ The CSP intentionally retains `'unsafe-inline'` for `script-src` because the cur
 ## Exact close-out sequence
 
 1. Human closes the data/image/trademark and operator/privacy gates.
-2. Owner chooses the repository license and final production origin.
+2. Owner chooses the repository license; the configured production origin is `https://yourcardbinder.com/`.
 3. Complete a release record from `docs/release-record-template.md` with the exact production commit and results.
 4. Rerun CI and the target-origin checklist for that exact production commit.
 5. Only then change this decision from blocked to approved public production.

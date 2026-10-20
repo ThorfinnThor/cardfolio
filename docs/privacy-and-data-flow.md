@@ -18,7 +18,7 @@ There is no Cardfolio account, authentication cookie, server-side user database,
 
 ## Origin and backup warning
 
-IndexedDB is scoped to the browser origin. A `pages.dev` production address, every preview address and a later custom domain are separate storage locations. Before changing the production origin, users must export on the old origin and import on the new origin. Preview deployments must not be presented as permanent storage for real collections.
+IndexedDB is scoped to the browser origin. `https://yourcardbinder.com/`, the `pages.dev` address and every branch-preview address are separate storage locations. Existing preview users must export on the old origin and import on `https://yourcardbinder.com/`; browser data is not transferred by the DNS change. Preview deployments must not be presented as permanent storage for real collections.
 
 A copy in the same browser profile is not an independent backup. Losing the device/profile, clearing site data or storage eviction can remove local binders.
 
