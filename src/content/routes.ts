@@ -5,6 +5,9 @@ import type { SpeciesEntry } from "./pokemon-species";
 
 export const TOOL_PATH = "/geschenk/";
 
+/** Opens the gift tool straight in step 1, so a visitor who clicked "Geschenk-Binder gestalten" does not meet a second hero. */
+export const TOOL_START_PATH = "/geschenk/?start=1";
+
 /** The full app (collector navigation, saved binders). Never reuse `/` for it: the home page is the public landing page. */
 export function appPath(): string {
   return "/app/";

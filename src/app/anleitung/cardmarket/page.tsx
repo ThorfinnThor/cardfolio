@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { AppLegalFooter } from "@/components/content/LegalFooter";
+import { AppLegalFooter } from "@/components/content/AppLegalFooter";
 import { CardmarketHowTo } from "@/components/howto/CardmarketHowTo";
 import { pageUrlMetadata } from "@/config/site";
 

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { ArticleLayout } from "@/components/content/ArticleLayout";
-import { AppLegalFooter } from "@/components/content/LegalFooter";
+import { AppLegalFooter, LegalLinksInline } from "@/components/content/AppLegalFooter";
 import { LanguageMenu } from "@/components/foundation/LanguageMenu";
 
 import { pageUrlMetadata } from "@/config/site";
@@ -73,7 +73,7 @@ export default function HelpPage() {
           <h2>Marken, Bilder und Anbieter</h2>
           <p><strong>{DISCLAIMER.de.heading}.</strong> {DISCLAIMER.de.lines[0]}</p>
           <p>{DISCLAIMER.de.lines[1]} Cardfolio ist außerdem kein offizielles Produkt von TCGdex.</p>
-          <p>Wer Cardfolio betreibt, steht im <Link href="/impressum/">Impressum</Link>. Welche Daten verarbeitet werden, beschreibt die <Link href="/datenschutz/">Datenschutzerklärung</Link>.</p>
+          <p>Betreiberangaben und Datenschutz: <LegalLinksInline /></p>
         </section>
       </ArticleLayout>
 

@@ -4,6 +4,8 @@ import { createContext, type ReactNode, useCallback, useContext, useEffect, useM
 
 export type AppLocale = "de" | "en";
 
+import { DISCLAIMER } from "@/content/disclaimer";
+
 import { fixedLocaleForPath } from "./fixed-locale";
 
 const LOCALE_STORAGE_KEY = "cardfolio-locale";
@@ -519,9 +521,59 @@ const translations: Record<string, string> = {
   "Wie du von der fertigen Liste zu den Karten bei Cardmarket kommst, steht Schritt für Schritt mit Abbildungen in der": "The illustrated step-by-step route from your finished list to the cards on Cardmarket is explained in the",
   "Cardfolio ist ein unabhängiger Arbeitstitel und kein offizielles Produkt von Nintendo, The Pokémon Company, TCGdex, TCGplayer oder Cardmarket. Marken und Kartenabbildungen gehören ihren jeweiligen Rechteinhabern.": "Cardfolio is an independent working title and is not an official product of Nintendo, The Pokémon Company, TCGdex, TCGplayer or Cardmarket. Trademarks and card images belong to their respective owners.",
   "Die Betreiber- und Datenschutzangaben für den konkreten öffentlichen Host werden vor einer öffentlichen Freigabe ergänzt und geprüft. Diese Seite ist keine Zusage vollständiger Rechtskonformität.": "Operator and privacy information for the final public host will be added and reviewed before public release. This page is not a guarantee of complete legal compliance.",
+  "Karten": "Cards",
+  "geschätzter Wert": "estimated value",
+  "ändern": "change",
+  "Tippe eine Karte an, um sie zu sehen. Ziehe sie auf eine andere Karte, um beide zu tauschen. Auf dem Handy: Karte kurz gedrückt halten, dann ziehen.": "Tap a card to view it. Drag it onto another card to swap the two. On a phone: press and hold a card, then drag.",
+  "Deutlich gebraucht": "Clearly used",
+  "Beliebig": "Any",
+  "Fast keine sichtbaren Gebrauchsspuren. Meist teurer und besonders für Sammler geeignet.": "Almost no visible signs of wear. Usually more expensive and especially suited to collectors.",
+  "Kleine Rand- oder Oberflächenspuren sind okay. Gute Balance aus Geschenkqualität, Preis und Verfügbarkeit.": "Small marks on the edges or surface are fine. A good balance of gift quality, price and availability.",
+  "Sichtbare Kratzer oder Kantenabnutzung sind möglich, die Karte bleibt aber gut nutzbar.": "Visible scratches or edge wear are possible, but the card remains perfectly usable.",
+  "Deutliche Kratzer, Kantenabnutzung oder kleine Knicke sind möglich. Für Geschenke meist nicht empfohlen.": "Clear scratches, edge wear or small creases are possible. Usually not recommended for gifts.",
+  "Auch stark gebrauchte oder beschädigte Karten können angeboten werden. Nur wählen, wenn der Zustand wirklich egal ist.": "Heavily used or damaged cards may be offered as well. Choose only if condition really does not matter.",
+  "Cardmarket: Near Mint oder Excellent · TCGplayer: Near Mint oder Lightly Played": "Cardmarket: Near Mint or Excellent · TCGplayer: Near Mint or Lightly Played",
+  "Cardmarket: bis Light Played · TCGplayer: bis Lightly Played": "Cardmarket: up to Light Played · TCGplayer: up to Lightly Played",
+  "Cardmarket: bis Played · TCGplayer: bis Heavily Played": "Cardmarket: up to Played · TCGplayer: up to Heavily Played",
+  "Alle Zustände; beschädigte Karten können enthalten sein": "All conditions; damaged cards may be included",
+  "„Sehr gut“ – kleine Spuren sind okay, ohne unnötig nur die teuersten Angebote zuzulassen.": "“Very good” – minor wear is acceptable without limiting the search to only the most expensive listings.",
+  "Der Zustand beschreibt sichtbare Abnutzung. Er ist unabhängig von Sprache, Holo-Ausführung und Edition.": "Condition describes visible wear. It is independent of language, holo finish and edition.",
+  "Prüfe bei wertvollen Karten immer die Angebotsfotos und die Zustandsbeschreibung des Verkäufers. „Zustand egal“ kann beschädigte Karten einschließen.": "With valuable cards, always check the listing photos and the seller's condition description. “Any condition” can include damaged cards.",
+  "Erklärung der Kartenzustände": "Explanation of card conditions",
+  "Zum Beispiel Pikachu oder Glurak": "For example Pikachu or Charizard",
+  "Geschenk-Binder wurde lokal angelegt. Prüfe die Zusammenfassung oder öffne den Binder.": "Gift binder created locally. Review the summary or open the binder.",
+  "Binder auswählen und bestellen": "Choose and order a binder",
+  "Wähle einen passenden 9-Pocket-Binder.": "Choose a matching 9-pocket binder.",
+  "Alle passen zu deinem Plan": "All of them fit your plan",
+  "Die Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten.": "Card prices are estimates; shipping and taxes are not included.",
+  "(optional, nur in diesem Browser)": "(optional, only in this browser)",
+  "Nächste Schritte: Binder bestellen und Karten kaufen": "Next steps: order the binder and buy the cards",
+  "Karten besorgen": "Get the cards",
+  "Cardfolio ist außerdem kein offizielles Produkt von TCGdex.": "Cardfolio is also not an official TCGdex product.",
+  "Betreiberangaben und Datenschutz:": "Provider details and privacy:",
+  "Impressum": "Legal notice",
+  "Datenschutzerklärung": "Privacy policy",
+  "Cardfolio: Meine Binder": "Cardfolio: My binders",
+  "Kauf-Anleitung (öffnet in neuem Tab)": "Buying guide (opens in a new tab)",
 };
 
+/* The trademark notice is defined once in German and English; reuse it so the help page translates too. */
+Object.assign(translations, {
+  [DISCLAIMER.de.heading]: DISCLAIMER.en.heading,
+  [DISCLAIMER.de.lines[0]!]: DISCLAIMER.en.lines[0]!,
+  [DISCLAIMER.de.lines[1]!]: DISCLAIMER.en.lines[1]!,
+});
+
 const patterns: Array<[RegExp, (...matches: string[]) => string]> = [
+  [/^Geschenk · (.+)$/, (subject) => `Gift · ${subject}`],
+  [/^Alle passenden Karten ansehen \((\d+)\)$/, (count) => `View all matching cards (${count})`],
+  [/^Alle (\d+) Karten ansehen$/, (count) => `View all ${count} cards`],
+  [/^(.+): Details ansehen$/, (name) => `${name}: view details`],
+  [/^(\d+) Karten = (\d+) Binder-Seite\.$/, (cards, pages) => `${cards} cards = ${pages} binder page.`],
+  [/^(\d+) Karten = (\d+) Binder-Seiten\.$/, (cards, pages) => `${cards} cards = ${pages} binder pages.`],
+  [/^(?:(\d+)-Pocket · )?Platz für bis zu (\d+) Karten$/, (pockets, cards) => `${pockets ? `${pockets}-pocket · ` : ""}Holds up to ${cards} cards`],
+  [/^für (\d+) von (\d+) Karten$/, (priced, total) => `for ${priced} of ${total} cards`],
+  [/^mind\. (.+)$/, (value) => `at least ${value}`],
   [/^(\d+) Karten$/, (count) => `${count} cards`],
   [/^(\d+) Karte$/, (count) => `${count} card`],
   [/^(\d+) Seiten$/, (count) => `${count} pages`],

@@ -26,6 +26,7 @@
 .section li::marker { color: var(--cf-accent-text); }
 .section a { color: var(--cf-accent-text); font-weight: 650; text-underline-offset: 3px; }
 .tableWrap { margin-top: 10px; overflow-x: auto; }
+.tableWrap:focus-visible { outline: 2px solid var(--cf-accent-text); outline-offset: 2px; }
 .table { width: 100%; border-collapse: collapse; font-size: .92rem; }
 .table caption { padding-bottom: 6px; color: var(--cf-muted); font-size: .82rem; text-align: left; }
 .table th, .table td { border-bottom: 1px solid var(--cf-line); padding: 8px 10px; text-align: left; vertical-align: top; color: var(--cf-text2); }

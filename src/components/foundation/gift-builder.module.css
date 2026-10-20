@@ -125,7 +125,7 @@
 .summaryCards { display: grid; gap: 12px; }
 .summaryCards > summary { width: fit-content; color: var(--cf-accent-text); font-size: 15px; font-weight: 700; cursor: pointer; }
 .summaryCards[open] > summary { margin-bottom: 12px; }
-.summaryCards h3, .purchaseCard h3 { margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: 16px; font-weight: 600; }
+.summaryCards h3, .purchaseCard h2, .purchaseCard h3 { margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: 16px; font-weight: 600; }
 .summaryCardIdentity { display: grid; gap: 3px; min-width: 0; }
 .summaryCardIdentity strong { color: var(--cf-text); font-size: 13px; font-weight: 650; }
 .summaryCardIdentity small { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 11px; line-height: 1.35; overflow-wrap: anywhere; }
@@ -137,7 +137,8 @@
 .purchaseCardFeatured { border-top: 0; padding-top: 0; }
 .purchaseNumber { display: inline-grid; width: 36px; height: 36px; margin-right: 10px; place-items: center; border-radius: 50%; background: var(--cf-accent); color: var(--cf-on-accent); font-size: 16px; font-weight: 800; vertical-align: 2px; }
 .purchaseCard > div { display: grid; align-content: start; gap: 8px; }
-.purchaseCard h3 { font-size: 24px; line-height: 1.2; }
+.purchaseCard h2, .purchaseCard h3 { font-size: 24px; line-height: 1.2; }
+@media (max-width: 520px) { .purchaseCard h2, .purchaseCard h3 { font-size: 20px; } }
 .purchaseCard > div > p:not(.eyebrow) { margin: 0; color: var(--cf-text2); font-size: 16px; line-height: 1.5; }
 .howtoLink { display: inline-flex; align-items: center; gap: 6px; width: fit-content; min-height: 44px; color: var(--cf-accent-text); font-weight: 700; text-underline-offset: 3px; }
 .purchaseCard > .primaryButton { align-self: stretch; min-height: 62px; font-size: 17px; }

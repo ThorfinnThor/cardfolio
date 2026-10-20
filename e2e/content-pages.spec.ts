@@ -29,7 +29,7 @@ test("the home page is a landing page with one clear way into the tool and a way
   await page.goto("/");
   await expect(page.locator("html")).toHaveAttribute("lang", "de");
   await expect(page.getByRole("heading", { level: 1, name: /Ein Binder voller Karten/ })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Geschenk-Binder gestalten" }).first()).toHaveAttribute("href", "/geschenk/");
+  await expect(page.getByRole("link", { name: "Geschenk-Binder gestalten" }).first()).toHaveAttribute("href", "/geschenk/?start=1");
   await expect(page.getByRole("link", { name: "Ich sammle selbst" })).toHaveAttribute("href", "/app/");
   await expect(page.getByRole("heading", { name: "Was Cardfolio macht" })).toBeVisible();
   await expect(page.getByText(/nicht mit Nintendo, Creatures Inc., GAME FREAK inc. oder The Pokémon Company verbunden/)).toBeVisible();
@@ -50,6 +50,7 @@ test("the landing page opens the gift tool and the app on their own addresses", 
   await page.goto("/");
   await page.getByRole("link", { name: "Geschenk-Binder gestalten" }).first().click();
   await expect(page).toHaveURL(/\/geschenk\/$/);
+  await expect(page.getByRole("heading", { name: "Dein Geschenk-Binder beginnt hier" })).toBeVisible();
   await page.goto("/");
   await page.getByRole("link", { name: "Ich sammle selbst" }).click();
   await expect(page).toHaveURL(/\/app\/$/);
@@ -123,4 +124,14 @@ test("articles fill the column with a sidebar on desktop and drop it on a phone"
   await page.goto("/ratgeber/pokemon-karten-verschenken/");
   await expect(page.getByRole("navigation", { name: "Auf dieser Seite" })).toBeHidden();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(375);
+});
+
+test("the app sidebar keeps accessible names when it shrinks to icons, and has no dead entries", async ({ page }) => {
+  await page.setViewportSize({ height: 900, width: 768 });
+  await page.goto("/app/");
+  for (const name of ["Meine Binder", "Backup exportieren", "Hilfe"]) await expect(page.getByRole(name === "Hilfe" ? "link" : "button", { name }).first()).toBeAttached();
+  await expect(page.getByRole("link", { name: /Kauf-Anleitung/ })).toBeAttached();
+  await expect(page.getByText("Einstellungen")).toHaveCount(0);
+  await expect(page.locator("footer").getByRole("link", { name: "Impressum" })).toHaveAttribute("href", "/impressum/");
+  await expect(page.locator('footer a[href="/help/"]')).toHaveCount(1);
 });
