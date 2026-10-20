@@ -40,7 +40,9 @@ const rasterFiles = outputFiles.filter((path) => [".gif", ".jpeg", ".jpg", ".png
 // The guide's screenshots of Cardmarket's pages (howto/) are the only allowed rasters: no card artwork, names blurred.
 const howtoScreenshotPrefix = `howto${process.platform === "win32" ? "\\" : "/"}`;
 const howtoScreenshots = rasterFiles.filter((path) => relative(outputRoot, path).startsWith(howtoScreenshotPrefix));
-const rasterCardCandidates = rasterFiles.filter((path) => !howtoScreenshots.includes(path));
+// The text-only social preview (public/og-cardfolio.png) is the second named exception: it shows no card artwork.
+const socialPreviewFiles = rasterFiles.filter((path) => relative(outputRoot, path) === "og-cardfolio.png");
+const rasterCardCandidates = rasterFiles.filter((path) => !howtoScreenshots.includes(path) && !socialPreviewFiles.includes(path));
 const semanticPath = join(root, "public/data/semantic/card-artwork-search-v1.json");
 const semanticBytes = readFileSync(semanticPath);
 const manifest = readJson("public/data/catalog/manifest.json");
@@ -101,7 +103,7 @@ if (process.argv.includes("--json")) {
   console.log(`JavaScript: ${evidence.staticOutput.javascript.files} files, ${formatBytes(evidence.staticOutput.javascript.rawBytes)} raw / ${formatBytes(evidence.staticOutput.javascript.gzipBytes)} gzip`);
   console.log(`CSS: ${evidence.staticOutput.css.files} files, ${formatBytes(evidence.staticOutput.css.rawBytes)} raw / ${formatBytes(evidence.staticOutput.css.gzipBytes)} gzip`);
   console.log(`Public data: ${formatBytes(evidence.staticOutput.publicDataBytes)}`);
-  console.log(`Bundled raster images: ${evidence.staticOutput.bundledRasterImageFiles.length} (plus ${evidence.staticOutput.howtoScreenshotFiles.length} guide screenshots under howto/)`);
+  console.log(`Bundled raster images: ${evidence.staticOutput.bundledRasterImageFiles.length} (plus ${evidence.staticOutput.howtoScreenshotFiles.length} guide screenshots under howto/ and ${socialPreviewFiles.length} social preview)`);
   console.log(`Semantic index: ${formatBytes(evidence.semanticSearch.rawBytes)} raw / ${formatBytes(evidence.semanticSearch.gzipBytes)} gzip; ${evidence.semanticSearch.indexedCards}/${evidence.semanticSearch.eligibleCards} indexed; ${evidence.semanticSearch.evaluationQueries} evaluation queries`);
   console.log(`Catalog: ${evidence.catalog.englishSets} EN sets, ${evidence.catalog.germanSets} DE sets; TCGplayer ${evidence.catalog.tcgplayerMappedCards} mapped cards / ${evidence.catalog.tcgplayerUnmappedCards} unresolved`);
   console.log(`CardTrader: ${evidence.cardtrader.verifiedLocaleMappings} verified locale mappings, ${evidence.cardtrader.explicitExclusions} explicit exclusions; productive data flags remain off`);

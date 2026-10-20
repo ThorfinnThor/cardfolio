@@ -340,3 +340,15 @@
 - The start page shows a strip "Dein Geschenk wartet noch auf dich" with "Weiter zum Einkauf" for the newest gift binder that still has missing cards.
 - "Karten kaufen" for a gift binder opens the plain-language purchase view, not the collector's expert view.
 - The binder offers moved into `GiftPurchaseSteps`, shared by the planner summary and this card.
+
+## 2026-10-20 — SEO content: canonical URLs, hreflang, guides and Pokémon pages
+
+- Problem: the site had one indexable page per language-less route, `/` and `/geschenk/` were near-duplicates, English was invisible to search engines (client-side translation on one URL), and there was no sitemap.
+- **One canonical origin.** `src/config/site.ts` holds `SITE_ORIGIN` (`https://yourcardbinder.com`). Every route sets its own canonical and Open Graph URL; `/geschenk/` canonicalises to `/` and is not in the sitemap. `/artwork-review/` is `noindex`.
+- **Single-language content pages.** German guides live under `/ratgeber/`, German Pokémon pages under `/pokemon-binder/`, and the English counterparts under `/en/guides/`, `/en/pokemon-binder/` and `/en/`. Each pair is linked with hreflang in `<head>` and in `sitemap.xml`. The app itself (`/`, `/geschenk/`) keeps the automatic DE/EN switch. `src/i18n/fixed-locale.ts` makes the locale script and `LocaleProvider` leave these content pages in their own language; their wrapper carries `lang` and `data-no-translate`.
+- **No spam pages.** A Pokémon page exists only if the Pokémon has a hand-written entry in `src/content/pokemon-species.ts` AND the catalogue holds at least 30 cards in at least 8 sets (`MIN_CARDS`, `MIN_SETS` in `pokemon-stats.ts`). Pages are added one at a time with their own text, never generated in bulk; the first ten were chosen by popularity and are all above the thresholds. The figures on each page (card count, sets, years, top sets, artwork themes, example cards) are computed at build time from the public catalogue and the semantic index, so no two pages share text or numbers. `src/test/content/seo-content.test.tsx` fails if a page falls below the thresholds, repeats another page's title/description/figures, is shorter than about 280 words, contains a currency amount, links to a route that does not exist, or lacks the trademark notice.
+- **Trademark notice.** Every content page, the home page and the help page state in full that Cardfolio is not affiliated with Nintendo, Creatures Inc., GAME FREAK inc. or The Pokémon Company (`src/content/disclaimer.ts`, German and English).
+- **No prices on content pages.** Guides and Pokémon pages quote no amounts. Condition mappings reuse `conditionProfiles`; the page counts say "catalogue cards", not market statements.
+- **Social preview.** `public/og-cardfolio.png` (1200 × 630, text only, no card artwork) is the shared Open Graph image. `release:evidence` names it as a second allowed raster next to `howto/`.
+- Not done on purpose: structured data beyond `WebApplication`, `Article` and `BreadcrumbList`; FAQ rich-result markup; English versions of the Cardmarket guide and help page; pages for more Pokémon before the first ten show traffic.
+

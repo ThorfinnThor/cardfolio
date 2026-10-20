@@ -4,6 +4,8 @@ import { createContext, type ReactNode, useCallback, useContext, useEffect, useM
 
 export type AppLocale = "de" | "en";
 
+import { fixedLocaleForPath } from "./fixed-locale";
+
 const LOCALE_STORAGE_KEY = "cardfolio-locale";
 
 const translations: Record<string, string> = {
@@ -654,6 +656,13 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    const fixed = fixedLocaleForPath(window.location.pathname);
+    if (fixed) {
+      /* Single-language content page: keep its own language and leave the text untouched. */
+      document.documentElement.lang = fixed;
+      document.documentElement.dataset.locale = fixed;
+      return;
+    }
     document.documentElement.lang = locale;
     document.documentElement.dataset.locale = locale;
     if (locale === "de") {
