@@ -10,8 +10,9 @@ const DESCRIPTION = "Ein persönlicher Pokémon-Binder als Geschenk: Lieblings-P
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  /* The gift flow is the same page as the home page; search engines should index one of them. */
-  ...pageUrlMetadata("/", TITLE, DESCRIPTION),
+  /* The tool itself is not meant to rank; the landing page at `/` and the guides are. */
+  robots: { index: false, follow: true },
+  ...pageUrlMetadata("/geschenk/", TITLE, DESCRIPTION),
 };
 
 export default function GiftEntry() {

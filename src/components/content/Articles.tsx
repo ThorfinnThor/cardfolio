@@ -286,19 +286,11 @@ export function SpeciesIndex({ all, language }: { all: readonly PublishedSpecies
   );
 }
 
-/** The long-form explanation shown on the home page and on the English landing page. */
-export function LandingSections({ language, species, withIntro }: { language: PageLanguage; species: readonly PublishedSpecies[]; withIntro?: boolean }) {
+/** The explanation below the hero on the German and English landing pages. */
+export function LandingSections({ language, species }: { language: PageLanguage; species: readonly PublishedSpecies[] }) {
   const copy = LANDING[language];
   return (
     <>
-      {withIntro ? (
-        <header className={styles.header}>
-          <p className={styles.eyebrow}>{SITE_NAME}</p>
-          <h1>{language === "de" ? "Ein Binder voller Karten vom Lieblings-Pokémon" : "A binder full of cards from a favourite Pokémon"}</h1>
-          <p className={styles.lead}>{copy.metaDescription}</p>
-          <ToolCta language={language} label={copy.cta} />
-        </header>
-      ) : null}
       <section className={styles.section}>
         <h2>{copy.whatHeading}</h2>
         {copy.whatText.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}

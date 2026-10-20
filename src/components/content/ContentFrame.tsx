@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 import { SITE_NAME, absoluteUrl, type PageLanguage } from "@/config/site";
 import { DISCLAIMER } from "@/content/disclaimer";
-import { guideIndexPath, homePath, otherLanguage, speciesIndexPath } from "@/content/routes";
+import { appPath, guideIndexPath, homePath, otherLanguage, speciesIndexPath } from "@/content/routes";
 
 import styles from "./content.module.css";
 import { JsonLd } from "./JsonLd";
@@ -15,8 +15,8 @@ export interface Crumb {
 }
 
 const NAV = {
-  de: { guides: "Ratgeber", species: "Pokémon-Binder", help: "Hilfe", crumbs: "Brotkrumen-Navigation", help_path: "/help/", other: "English version" },
-  en: { guides: "Guides", species: "Pokémon binders", help: "Help (German)", crumbs: "Breadcrumbs", help_path: "/help/", other: "Deutsche Version" },
+  de: { guides: "Ratgeber", species: "Pokémon-Binder", myBinders: "Meine Binder", help: "Hilfe", crumbs: "Brotkrumen-Navigation", help_path: "/help/", other: "English version" },
+  en: { guides: "Guides", species: "Pokémon binders", myBinders: "My binders", help: "Help (German)", crumbs: "Breadcrumbs", help_path: "/help/", other: "Deutsche Version" },
 } as const;
 
 export function TrademarkNotice({ language }: { language: PageLanguage }) {
@@ -50,6 +50,7 @@ export function ContentFrame({ language, alternatePath, crumbs, children }: {
           <nav className={styles.nav} aria-label={language === "de" ? "Hauptnavigation" : "Main navigation"}>
             <Link href={guideIndexPath(language)}>{nav.guides}</Link>
             <Link href={speciesIndexPath(language)}>{nav.species}</Link>
+            <Link href={appPath()}>{nav.myBinders}</Link>
             <Link href={nav.help_path}>{nav.help}</Link>
             <Link className={styles.lang} href={alternatePath ?? homePath(other)} hrefLang={other} lang={other}>{other.toUpperCase()}</Link>
           </nav>

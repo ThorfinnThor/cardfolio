@@ -302,7 +302,7 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   page,
 }) => {
   await mockCatalog(page);
-  await page.goto("/");
+  await page.goto("/app/");
 
   await createBinderFromStart(page, "E2E Binder");
 
@@ -349,7 +349,7 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   const cleanContext = await browser.newContext();
   const cleanPage = await cleanContext.newPage();
   await mockCatalog(cleanPage);
-  await cleanPage.goto("/");
+  await cleanPage.goto("/app/");
   // A first-time visitor lands on the gift-first start screen, without any binder.
   await expect(cleanPage.getByRole("heading", { name: "Ein Binder voller Karten vom Lieblings-Pokémon." })).toBeVisible();
   await cleanPage.locator("#backup-import").setInputFiles({
@@ -367,7 +367,7 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
 
 test("inserts one card and safely undoes the exact saved mutation", async ({ page }) => {
   await mockCatalog(page);
-  await page.goto("/");
+  await page.goto("/app/");
   await createBinderFromStart(page, "Undo Binder");
 
   await addCard(page, 1, "Bulbasaur", "Bulbasaur");
@@ -382,7 +382,7 @@ test("inserts one card and safely undoes the exact saved mutation", async ({ pag
 
 test("reviews multiple cards and fills from the next free slot continuously", async ({ page }) => {
   await mockCatalog(page);
-  await page.goto("/");
+  await page.goto("/app/");
   await createBinderFromStart(page, "Mehrfachauswahl");
   await addCard(page, 1, "Bulbasaur", "Bulbasaur");
 
@@ -410,7 +410,7 @@ test("reviews multiple cards and fills from the next free slot continuously", as
 
 test("creates a reviewed set binder through the guided start", async ({ page }) => {
   await mockCatalog(page);
-  await page.goto("/");
+  await page.goto("/app/");
   await openCollectorStarts(page);
   await page.getByRole("tab", { name: "Komplettes Set" }).click();
   await page.getByRole("button", { name: "Mit einem Set starten" }).click();
@@ -433,7 +433,7 @@ test("creates a reviewed set binder through the guided start", async ({ page }) 
 
 test("keeps Cardfolio views in the browser back and forward history", async ({ page }) => {
   await mockCatalog(page);
-  await page.goto("/");
+  await page.goto("/app/");
 
   await page.getByRole("button", { name: "Geschenk-Binder gestalten" }).click();
   await expect(page.getByRole("heading", { name: "Dein Geschenk-Binder beginnt hier" })).toBeVisible();
@@ -446,7 +446,7 @@ test("keeps Cardfolio views in the browser back and forward history", async ({ p
 });
 
 test("autosaves the binder description and each page note across reloads", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/app/");
   await createBinderFromStart(page, "Notizen Binder");
 
   const descriptionEditor = page.getByRole("group", { name: "Binderbeschreibung" });
@@ -469,7 +469,7 @@ test("autosaves the binder description and each page note across reloads", async
 
 test("renames binders and safely duplicates and deletes pages", async ({ page }) => {
   await mockCatalog(page);
-  await page.goto("/");
+  await page.goto("/app/");
   await createBinderFromStart(page, "Verwaltung Alt");
 
   await page.getByRole("button", { name: "Binder umbenennen" }).click();
@@ -518,7 +518,7 @@ test("renames binders and safely duplicates and deletes pages", async ({ page })
 });
 
 test("names and reorders pages, then duplicates and sorts binders", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/app/");
   await createBinderFromStart(page, "Sortierbasis");
 
   await page.getByRole("button", { name: "+ Seite" }).click();
@@ -560,11 +560,11 @@ test("detects a binder update from another tab and reloads the current revision"
   context,
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/app/");
   await createBinderFromStart(page, "Multi-Tab Binder");
 
   const secondTab = await context.newPage();
-  await secondTab.goto("/");
+  await secondTab.goto("/app/");
   await expect(secondTab.getByRole("heading", { name: "Multi-Tab Binder", exact: true })).toBeVisible();
 
   await page.getByRole("button", { name: "+ Seite" }).click();
@@ -575,7 +575,7 @@ test("detects a binder update from another tab and reloads the current revision"
 
 test("confirms a lossless layout change and keeps mouse drag optional", async ({ page }) => {
   await mockCatalog(page);
-  await page.goto("/");
+  await page.goto("/app/");
   await createBinderFromStart(page, "Layout Binder");
   await addCard(page, 1, "Bulbasaur", "Bulbasaur");
   await addCard(page, 2, "Ivysaur", "Ivysaur");
@@ -621,7 +621,7 @@ test("shows a visible storage error when IndexedDB is unavailable", async ({ pag
   await page.addInitScript(() => {
     Object.defineProperty(window, "indexedDB", { configurable: true, value: undefined });
   });
-  await page.goto("/");
+  await page.goto("/app/");
 
   await expect(page.getByText("IndexedDB is not available in this environment.")).toBeVisible();
   await expect(page.getByRole("banner").getByText("error", { exact: true })).toBeVisible();
@@ -634,7 +634,7 @@ test("keeps the 3 x 3 grid usable on mobile and supports drawer focus and Escape
 }) => {
   await mockCatalog(page);
   await page.setViewportSize({ height: 812, width: 375 });
-  await page.goto("/");
+  await page.goto("/app/");
   await createBinderFromStart(page, "Mobile Binder");
 
   await expect(page.getByRole("button", { name: /Freier Platz \d+, Karte einsetzen/ })).toHaveCount(9);
@@ -658,7 +658,7 @@ test("offers Smart Search recovery, language choice and no mobile overflow", asy
   await mockCatalog(page);
   await mockSemanticIndex(page);
   await page.setViewportSize({ height: 812, width: 375 });
-  await page.goto("/");
+  await page.goto("/app/");
   await createBinderFromStart(page, "Smart Search");
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
   const dialog = searchDialogOf(page);
@@ -682,7 +682,7 @@ test("offers Smart Search recovery, language choice and no mobile overflow", asy
 test("offers a direct normal-search fallback when the Smart Search index fails", async ({ page }) => {
   await mockCatalog(page);
   await mockSemanticIndex(page, 503);
-  await page.goto("/");
+  await page.goto("/app/");
   await createBinderFromStart(page, "Smart Search Fehler");
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
   const dialog = searchDialogOf(page);
@@ -694,7 +694,7 @@ test("offers a direct normal-search fallback when the Smart Search index fails",
 
 test("searches German and English catalogs and labels the result language", async ({ page }) => {
   await mockCatalog(page);
-  await page.goto("/");
+  await page.goto("/app/");
   await createBinderFromStart(page, "Sprachsuche");
 
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
@@ -724,7 +724,7 @@ test("searches German and English catalogs and labels the result language", asyn
 
 test("keeps Pocket cards out of the physical binder search", async ({ page }) => {
   await mockCatalog(page);
-  await page.goto("/");
+  await page.goto("/app/");
   await createBinderFromStart(page, "Physische Suche");
 
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
@@ -770,7 +770,7 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
     });
   });
   await page.setViewportSize({ height: 900, width: 375 });
-  await page.goto("/");
+  await page.goto("/app/");
   await page.getByRole("button", { name: "Geschenk-Binder gestalten" }).click();
   await expect(page.getByRole("heading", { name: "Dein Geschenk-Binder beginnt hier" })).toBeVisible();
   await page.getByLabel("Kartensprache").selectOption("en");
@@ -844,7 +844,7 @@ test("offers a lean gift entry without collector navigation", async ({ page }) =
   await expect(page.getByRole("heading", { name: "Ein Binder voller Karten vom Lieblings-Pokémon." })).toBeVisible();
   await expect(page.getByRole("complementary", { name: "Cardfolio Navigation" })).toHaveCount(0);
   await expect(page.getByRole("tab")).toHaveCount(0);
-  await expect(page.getByRole("link", { name: "Ich sammle selbst" })).toHaveAttribute("href", "/");
+  await expect(page.getByRole("link", { name: "Ich sammle selbst" })).toHaveAttribute("href", "/app/");
   await expect(page.getByRole("link", { name: /Anleitung: Karten bei Cardmarket kaufen/ })).toHaveAttribute("href", "/anleitung/cardmarket/");
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(375);
 
@@ -873,7 +873,7 @@ test("shows the illustrated Cardmarket instructions without horizontal overflow 
 
 test("sets, edits and persists the minimum condition for marketplace handoff", async ({ page }) => {
   await mockCatalog(page);
-  await page.goto("/");
+  await page.goto("/app/");
   await createBinderFromStart(page, "Zustandswunsch");
 
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
@@ -911,7 +911,7 @@ test("sets, edits and persists the minimum condition for marketplace handoff", a
 
 test("filters equal card names by language and balances the combined results", async ({ page }) => {
   await mockCatalog(page);
-  await page.goto("/");
+  await page.goto("/app/");
   await createBinderFromStart(page, "Sprachfilter");
 
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
@@ -938,7 +938,7 @@ test("filters equal card names by language and balances the combined results", a
 
 test("browses a selected set and loads catalog results page by page", async ({ page }) => {
   await mockCatalog(page);
-  await page.goto("/");
+  await page.goto("/app/");
   await createBinderFromStart(page, "Setfilter");
 
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
@@ -964,7 +964,7 @@ test("browses a selected set and loads catalog results page by page", async ({ p
 
 test("finds and displays an exact full collector number", async ({ page }) => {
   await mockCatalog(page);
-  await page.goto("/");
+  await page.goto("/app/");
   await createBinderFromStart(page, "Nummernsuche");
 
   await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
@@ -1009,7 +1009,7 @@ test("finds and displays an exact full collector number", async ({ page }) => {
 
 test("exports the verified Tornupto and Blaine's Charizard identities to TCGplayer", async ({ page }) => {
   await mockCatalog(page);
-  await page.goto("/");
+  await page.goto("/app/");
   await createBinderFromStart(page, "TCGplayer Mapping");
 
   await addCard(page, 1, "Tornupto", "Tornupto");

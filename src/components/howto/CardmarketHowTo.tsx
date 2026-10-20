@@ -96,7 +96,7 @@ function CardmarketHowToEnglish() {
   return (
     <main className={styles.page}>
       <div className={styles.topline}>
-        <Link className={styles.back} href="/">← Back to Cardfolio</Link>
+        <Link className={styles.back} href="/app/">← Back to Cardfolio</Link>
         <LanguageMenu />
       </div>
       <header className={styles.header}>
@@ -233,7 +233,7 @@ export function CardmarketHowTo() {
   return (
     <main className={styles.page}>
       <div className={styles.topline}>
-        <Link className={styles.back} href="/">← Zurück zu Cardfolio</Link>
+        <Link className={styles.back} href="/app/">← Zurück zu Cardfolio</Link>
         <LanguageMenu />
       </div>
       <header className={styles.header}>

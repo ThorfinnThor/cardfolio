@@ -361,3 +361,13 @@
 - **Amazon Associates.** The required statement "Als Amazon-Partner verdiene ich an qualifizierten Verkäufen." appears in both legal notices, both privacy policies and the home page text, next to the existing offer-level affiliate notice.
 - **Not a legal opinion.** The texts are drafted from the actual data flows and the owner's other sites; they still need a legal read-through before the public launch.
 
+## 2026-10-20 — Landing page at `/`, the app at `/app/`
+
+- Problem: `/` was the full app (sidebar, "Meine Binder", backup menu), a tool view that newcomers from search did not need, with the explanatory text far below the fold and no link to the guides.
+- **`/` is now the public landing page** (German) and `/en/` its English counterpart: one promise, one button ("Geschenk-Binder gestalten" to `/geschenk/`), a secondary "Ich sammle selbst" to the app, the same nine example cards the app showed (TCGdex images, loaded at runtime, decorative), then what Cardfolio does, steps, good-to-know, Pokémon pages, guides, FAQ, trademark notice and legal links. Shared header navigation on every content page links Ratgeber, Pokémon-Binder, Meine Binder and Hilfe.
+- **The full app lives at `/app/`** (`noindex`). Do not use `/` for the app again; links, tests and bookmarks for the app go to `/app/`. Back links from help, the Cardmarket guide and the artwork review point there, as does "Ich sammle selbst".
+- **`/geschenk/` stays the gift tool** and is `noindex` with its own canonical: the landing page and the guides are what should rank, not the tool shell.
+- `/` is a fixed-language route (German), like the other content pages, so the visitor's stored app language no longer changes it. English visitors reach `/en/` through the visible language link; there is no automatic redirect by browser language.
+- The privacy policy now also says that the hero's example cards load from `assets.tcgdex.net` when the home page is opened.
+- Not done: detecting saved binders on the landing page to show "Zu meinen Bindern" (the header link "Meine Binder" is always present instead).
+
