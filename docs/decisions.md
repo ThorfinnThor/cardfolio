@@ -383,3 +383,11 @@
 - **Product ids unused so far.** `cm` and `tp` are stored but the Cardmarket and TCGplayer handoffs still use their reviewed mappings; filling the unresolved ones from CardTrader is a separate, reviewed step.
 - **Affiliate programme.** CardTrader offers credits for referred users. Not integrated; it would need its own disclosure next to the existing Amazon notice.
 
+## 2026-10-21 — Direct Cardmarket product pages from CardTrader product ids
+
+- CardTrader lists the Cardmarket product id on each blueprint (`card_market_ids`). 21,467 blueprints have exactly one, none is shared by two blueprints. The same data agrees with our independently built TCGplayer mapping in 99.86% of 20,626 comparable cards, which is the only quality evidence available for the Cardmarket ids.
+- The URL format `https://www.cardmarket.com/en/Pokemon/Products?idProduct=<id>` was opened by hand by the owner on 2026-10-21 for three cards (Base Set Alakazam, Base Set Charizard, Obsidian Flames Charizard ex): all led to the right product page. The format could not be tested automatically because Cardmarket's bot protection blocks automated browsers; do not try to bypass it.
+- `cardtraderCardmarketMappings` derives `verified` mappings of source kind `provider-external-id` at display time (blueprint found through the verified set mapping and collector number, exactly one id), for the cards on screen. Cards with a reviewed mapping keep it, so two mappings never compete. Nothing is stored per card; the ids live in the weekly CardTrader files. Flag: `cardtraderProductIds`.
+- In "Kaufen → Cardmarket", the collapsed fallback section is now "Direkte Produktseiten" with the note that the ids come from CardTrader and that set, number and language must be checked on the page. The decklist import and the Shopping Wizard stay the main path.
+- Not done: more spot checks beyond the three; the German site variant (`/de/…`) was not tested, so links use `/en/`.
+

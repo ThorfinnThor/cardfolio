@@ -63,6 +63,7 @@ requireText("src/config/feature-flags.ts", [
   "cardtraderCatalog: false",
   "cardtraderImages: true",
   "cardtraderPrices: true",
+  "cardtraderProductIds: true",
   "cardtraderWishlist: false",
   "cardtraderCommerce: false",
   "publicSharing: false",

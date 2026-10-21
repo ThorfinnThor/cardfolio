@@ -558,6 +558,9 @@ const translations: Record<string, string> = {
   "Fehlt bei TCGdex ein Bild oder ein Preis, ergänzt Cardfolio ihn aus Daten von CardTrader (cardtrader.com). Solche Bilder sind als „Bild: CardTrader“ gekennzeichnet, solche Preise als „günstigstes Angebot“ bei CardTrader. Die Preise sind Momentaufnahmen aus einer wöchentlich erzeugten Datei und ohne Gewähr. Ein einzelnes sehr teures oder sehr günstiges Angebot kann den Wert verzerren.": "Where TCGdex lacks an image or a price, Cardfolio fills it in with data from CardTrader (cardtrader.com). Such images are marked “Image: CardTrader”, and such prices are labelled as the cheapest listing at CardTrader. Prices are snapshots from a file generated weekly and come without guarantee. A single very expensive or very cheap listing can distort the value.",
   "CardTrader (günstigstes Angebot)": "CardTrader (cheapest listing)",
   "Kauf-Anleitung (öffnet in neuem Tab)": "Buying guide (opens in a new tab)",
+  "Direkte Produktseiten": "Direct product pages",
+  "Die Produkt-IDs stammen von CardTrader und führen direkt auf die Cardmarket-Produktseite. Prüfe dort Set, Nummer und Sprache, bevor du kaufst.": "The product ids come from CardTrader and lead straight to the Cardmarket product page. Check set, number and language there before you buy.",
+  "· ID laut CardTrader": "· id from CardTrader",
 };
 
 /* The trademark notice is defined once in German and English; reuse it so the help page translates too. */

@@ -13,6 +13,7 @@ export const FEATURES = {
   cardtraderCatalog: false,
   cardtraderImages: true,
   cardtraderPrices: true,
+  cardtraderProductIds: true,
   cardtraderWishlist: false,
   cardtraderCommerce: false,
   publicSharing: false,
