@@ -11,6 +11,7 @@ export const FEATURES = {
   cardmarketImport: true,
   cardtraderPreview: true,
   cardtraderCatalog: false,
+  cardtraderSupplements: true,
   cardtraderImages: true,
   cardtraderPrices: true,
   cardtraderProductIds: true,

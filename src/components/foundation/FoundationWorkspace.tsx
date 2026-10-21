@@ -59,6 +59,7 @@ import { catalogQueryKey, detailQueryKey, TCGdexCatalogAdapter } from "@/data/ca
 import { LocalStaticSmartSearchAdapter } from "@/data/catalog/semantic-search";
 import { GiftCandidateLoader } from "@/data/gift/gift-candidate-loader";
 import { cardtraderCatalog } from "@/data/cardtrader/catalog";
+import { SupplementedCatalogAdapter } from "@/data/catalog/supplemented-catalog";
 import { CardTraderGiftPriceProvider, FallbackGiftPriceProvider } from "@/data/pricing/cardtrader-price-provider";
 import { TCGdexGiftPriceProvider } from "@/data/pricing/gift-price-provider";
 import { catalogSeries, catalogSets, catalogSetIndex, completeCardSnapshotMetadata, searchCatalogSets, setMetadataForSearchItem } from "@/data/catalog/set-counts";
@@ -430,7 +431,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
   const giftShell = shell === "gift";
   const repository = useMemo(() => new IndexedDBBinderRepository(), []);
   const giftProjects = useMemo(() => new IndexedDBGiftProjectRepository(), []);
-  const catalog = useMemo(() => new TCGdexCatalogAdapter(), []);
+  const catalog = useMemo(() => FEATURES.cardtraderSupplements ? new SupplementedCatalogAdapter(new TCGdexCatalogAdapter()) : new TCGdexCatalogAdapter(), []);
   const giftLoader = useMemo(() => new GiftCandidateLoader(catalog, FEATURES.giftPriceEstimates ? (FEATURES.cardtraderPrices ? new FallbackGiftPriceProvider(new TCGdexGiftPriceProvider(), new CardTraderGiftPriceProvider()) : new TCGdexGiftPriceProvider()) : disabledGiftPriceProvider, FEATURES.cardtraderImages ? async (card) => Boolean((await cardtraderCatalog.blueprint(card.ref.language, card.setId, card.collectorNumber, card.englishIdentity?.name ?? card.name))?.blueprint.img) : undefined), [catalog]);
   const giftSmartSearch = useMemo(() => FEATURES.smartSearch ? new LocalStaticSmartSearchAdapter() : undefined, []);
   const syncChannelRef = useRef<BroadcastChannel | undefined>(undefined);

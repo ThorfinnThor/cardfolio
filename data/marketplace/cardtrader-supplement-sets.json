@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "provider": "cardtrader",
+  "reviewedAt": "2026-10-21",
+  "purpose": "Verified CardTrader expansions whose cards TCGdex lists incompletely. The cards CardTrader has and TCGdex lacks are offered in the catalogue as cards with the identity provider \"cardtrader\". Add a set only after checking its numbering against TCGdex.",
+  "sets": [
+    {
+      "catalogKey": "en:rc",
+      "note": "Radiant Collection: TCGdex lists the set (25 cards) but no cards."
+    },
+    {
+      "catalogKey": "en:miscp",
+      "note": "Miscellaneous Promos: TCGdex lists 1 of about 110 cards."
+    }
+  ]
+}

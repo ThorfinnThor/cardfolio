@@ -13,7 +13,15 @@ const headers = {
  */
 const IVYSAUR_ID = "base1-30";
 
+/** The CardTrader supplement cards are served from the app's own data; tests keep them out unless they ask for them. */
+async function mockSupplements(page: Page, sets: Record<string, unknown> = {}) {
+  await page.route("**/data/cardtrader/supplements.json", async (route) => {
+    await route.fulfill({ body: JSON.stringify({ schemaVersion: 1, source: "test", sets }), headers, status: 200 });
+  });
+}
+
 async function mockCatalog(page: Page) {
+  await mockSupplements(page);
   await page.route("https://api.tcgdex.net/**", async (route) => {
     const url = new URL(route.request().url());
 
@@ -1040,3 +1048,33 @@ test("exports the verified Tornupto and Blaine's Charizard identities to TCGplay
     "1x Blaine's Charizard Roaring Flames Flame Jet\n1x Typhlosion Fire Recharge Flame Burst",
   );
 });
+
+test("offers a CardTrader supplement card that TCGdex does not list, with its own number and image", async ({ page }) => {
+  await mockCatalog(page);
+  await mockSupplements(page, {
+    rc: { setName: "Radiant Collection", expansionId: 1931, total: 25, cards: [{ id: 500007, n: "0RC7/RC25", name: "Pikachu", img: "500007/preview_pikachu-rc7.jpg" }] },
+  });
+  await page.goto("/app/");
+  await createBinderFromStart(page, "Ergänzung");
+
+  await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
+  await page.getByPlaceholder(SEARCH_PLACEHOLDER).fill("Pikachu");
+  const supplement = resultTilesOf(page).filter({ hasText: "Radiant Collection" });
+  await expect(supplement).toHaveCount(1);
+  await expect(supplement).toContainText("RC7/RC25");
+  await supplement.getByRole("button", { name: "Details" }).click();
+
+  const preview = page.getByRole("dialog", { name: "Karte prüfen" });
+  await expect(preview).toContainText("Pikachu");
+  await expect(preview).toContainText("RC7/RC25");
+  await openVariantOptions(preview);
+  await preview.getByLabel("Ausführung der Karte").selectOption("holo");
+  await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
+
+  const card = page.getByRole("article", { name: "Pikachu, Slot 1" });
+  await expect(card).toBeVisible();
+  await expect(card).toContainText("Radiant Collection · RC7/RC25");
+  await page.reload();
+  await expect(page.getByRole("article", { name: "Pikachu, Slot 1" })).toContainText("Radiant Collection · RC7/RC25");
+});
+

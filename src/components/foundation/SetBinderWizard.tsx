@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 
 import { catalogSetAssetUrl, type CatalogSetAsset, type CatalogSetIndexEntry } from "@/domain/catalog-set";
 import { createSetBinderPlan, type SetBinderPlan } from "@/domain/set-binder-plan";
-import type { CatalogAdapter, CardLanguage, CardSnapshot } from "@/domain/types";
+import type { CatalogAdapter, CardLanguage, CardRef, CardSnapshot } from "@/domain/types";
 
 import { CardArtwork } from "./CardArtwork";
 import styles from "./foundation-workspace.module.css";
@@ -84,7 +84,7 @@ export function SetBinderWizard({ catalog, sets, onCancel, onCreate }: SetBinder
     setError(undefined);
     setPlan(undefined);
     try {
-      const items = new Map<string, { ref: { provider: "tcgdex"; id: string; language: CardLanguage } }>();
+      const items = new Map<string, { ref: CardRef }>();
       let page = 1;
       let hasMore = true;
       while (hasMore && page <= 20) {

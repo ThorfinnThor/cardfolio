@@ -840,7 +840,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
             <p>{discoveryMode === "theme" ? `Die Liste enthält Artwork-Treffer zum Motiv „${preferences.subjectQuery}“ aus dem englischen Kartenkatalog.` : "Die Liste enthält Namens-Treffer. Karten, auf denen das Pokémon nur im Artwork vorkommt, sind nicht enthalten."}</p>
             {selection.selected.length >= preferences.targetCardCount ? <p className={styles.resultHint} role="status">Die Zielanzahl ist erreicht. Entferne zuerst oben eine Karte, um hier eine andere hinzuzufügen.</p> : null}
             <ul>{briefs.map((item) => {
-              const cardKey = `tcgdex:${item.ref.id}:${item.ref.language}`;
+              const cardKey = `${item.ref.provider}:${item.ref.id}:${item.ref.language}`;
               const candidate = candidateByKey.get(cardKey);
               const alreadySelected = selection.selected.some((entry) => entry.card.key === cardKey);
               const wasRemoved = excludedKeys.has(cardKey);
