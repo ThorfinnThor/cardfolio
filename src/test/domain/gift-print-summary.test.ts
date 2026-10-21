@@ -65,7 +65,6 @@ describe("Gift Print Summary contract", () => {
     const summary = createGiftPrintSummary({
       project,
       selection,
-      greeting: "Viel Freude mit deinem Binder!",
       generatedAt: "2026-10-01T12:00:00.000Z",
     });
 

@@ -9,7 +9,6 @@ export interface GiftResume {
   selection: GiftSelectionResult;
   preferences: GiftPreferences;
   project: GiftProject;
-  greeting: string;
 }
 
 const STORAGE_KEY = "cardfolio-gift-summary";
@@ -21,13 +20,12 @@ function isObject(value: unknown): value is Record<string, unknown> {
 
 function isValidResume(value: unknown): value is GiftResume {
   if (!isObject(value)) return false;
-  const { selection, preferences, project, greeting } = value;
+  const { selection, preferences, project } = value;
   if (!isObject(selection) || !Array.isArray(selection.selected) || selection.selected.length === 0) return false;
   const cardsOk = selection.selected.every((entry) => isObject(entry) && isObject(entry.card) && typeof entry.card.key === "string" && isObject(entry.variant) && isObject(entry.preferences) && isObject(entry.price));
   return cardsOk
     && isObject(preferences) && typeof preferences.subjectQuery === "string" && typeof preferences.targetCardCount === "number"
-    && isObject(project) && typeof project.id === "string"
-    && typeof greeting === "string";
+    && isObject(project) && typeof project.id === "string";
 }
 
 export function saveGiftResume(resume: GiftResume, now = Date.now()): void {

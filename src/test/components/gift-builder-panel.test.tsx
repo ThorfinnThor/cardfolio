@@ -121,8 +121,7 @@ describe("GiftBuilderPanel", () => {
     expect(binderLink).toHaveAttribute("href", "https://partner.example/9-pocket-binder");
     expect(binderLink).toHaveAttribute("target", "_blank");
     expect(binderLink).toHaveAttribute("rel", "noopener noreferrer");
-    fireEvent.change(screen.getByLabelText(/Grußtext für die lokale Druckansicht/i), { target: { value: "Viel Freude!" } });
-    expect(screen.getByText("Viel Freude!", { selector: "blockquote" })).toBeInTheDocument();
+    expect(screen.queryByLabelText(/Grußtext/i)).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /Drucken \/ als PDF speichern/i }));
     expect(print).toHaveBeenCalledOnce();
     fireEvent.click(screen.getByRole("button", { name: "Karten besorgen" }));
@@ -464,8 +463,35 @@ describe("GiftBuilderPanel", () => {
     expect(screen.getByRole("button", { name: "Pikachu 1 eine Position nach vorn" })).toBeDisabled();
     fireEvent.click(screen.getByRole("button", { name: "Pikachu 1 eine Position nach hinten" }));
     expect(order().slice(0, 3)).toEqual(["Pikachu 2", "Pikachu 1", "Pikachu 3"]);
+    // The opened card says where it sits now, so a move is visible even when the binder is scrolled out of view.
+    expect(screen.getByText("Platz 2 von 9 · Seite 1")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Pikachu 1 eine Position nach vorn" }));
     expect(order().slice(0, 3)).toEqual(["Pikachu 1", "Pikachu 2", "Pikachu 3"]);
+    expect(screen.getByText("Platz 1 von 9 · Seite 1")).toBeInTheDocument();
+  });
+
+  it("follows a card to the next page when it is moved across the page border", async () => {
+    const pool = Array.from({ length: 24 }, (_, index) => candidateWith(index + 1, { name: `Pikachu ${index + 1}` }));
+    const loader = {
+      loadCandidatePool: vi.fn(async () => pool.map((candidate) => ({ ref: candidate.card.ref, name: candidate.card.name, collectorNumber: candidate.card.collectorNumber }))),
+      hydrateCandidates: vi.fn(async () => pool),
+    };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+    fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
+    fireEvent.click(screen.getByRole("radio", { name: /2 Seiten · 18 Karten/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await screen.findByText("18 / 18");
+
+    const visible = screen.getAllByRole("button", { name: /: Details ansehen$/ });
+    expect(visible).toHaveLength(9);
+    const lastOnPage = visible[8]!.getAttribute("aria-label")!.split(",")[0]!;
+    fireEvent.click(visible[8]!);
+    expect(screen.getByRole("region", { name: "Seite 1" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: `${lastOnPage} eine Position nach hinten` }));
+
+    expect(screen.getByText("Platz 10 von 18 · Seite 2")).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Seite 2" })).toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: "Seite 1" })).not.toBeInTheDocument();
   });
 
   it("shows an open binder with two pages side by side on wide screens and lets the buyer turn the pages", async () => {
@@ -672,17 +698,15 @@ describe("GiftBuilderPanel", () => {
     await screen.findByText("9 / 9");
     fireEvent.click(screen.getByRole("button", { name: "Weiter zum Einkauf" }));
     await screen.findByRole("heading", { name: "Dein Geschenk-Binder ist fertig geplant" });
-    fireEvent.change(screen.getByLabelText(/Grußtext für die lokale Druckansicht/i), { target: { value: "Viel Freude!" } });
     fireEvent.click(screen.getByRole("button", { name: "Karten besorgen" }));
     expect(onCardsPurchase).toHaveBeenCalledOnce();
     first.unmount();
 
-    // The panel is mounted again (the buyer came back): the finished plan is there, with greeting, without a second save.
+    // The panel is mounted again (the buyer came back): the finished plan is there, without a second save.
     const onCancel = vi.fn();
     render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={onCancel} onCreateBinder={onCreateBinder} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
     expect(await screen.findByRole("heading", { name: "Dein Geschenk-Binder ist fertig geplant" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Geschenk · Schiggy" })).toBeInTheDocument();
-    expect(screen.getByLabelText(/Grußtext für die lokale Druckansicht/i)).toHaveValue("Viel Freude!");
     expect(onCreateBinder).toHaveBeenCalledTimes(1);
 
     fireEvent.click(screen.getByRole("button", { name: "Geschenk-Gestaltung schließen" }));
