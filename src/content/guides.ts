@@ -33,8 +33,8 @@ export interface Guide {
 export const GUIDES: readonly Guide[] = [
   {
     id: "gift",
-    updated: "2026-10-20",
-    related: ["binder-size", "condition", "marketplaces"],
+    updated: "2026-10-21",
+    related: ["personalized-gift", "birthday-gift", "christmas-gift", "binder-size", "condition", "marketplaces"],
     de: {
       slug: "pokemon-karten-verschenken",
       title: "Pokémon-Karten verschenken: So gelingt ein Geschenk, das passt",
@@ -310,8 +310,8 @@ export const GUIDES: readonly Guide[] = [
   },
   {
     id: "marketplaces",
-    updated: "2026-10-20",
-    related: ["condition", "language-and-finish"],
+    updated: "2026-10-21",
+    related: ["cardmarket-vs-cardtrader", "condition", "language-and-finish"],
     de: {
       slug: "cardmarket-oder-tcgplayer",
       title: "Cardmarket oder TCGplayer: Wo kaufst du deine Pokémon-Karten?",
@@ -495,6 +495,654 @@ export const GUIDES: readonly Guide[] = [
           blocks: [
             { type: "p", text: "Set language and finish deliberately when you order. Both are shown on the listing, though not always in the same place. Check before buying that the photo matches the variant described." },
             { type: "p", text: "Your Card Binder asks for finish and edition and puts them into the list you hand to the marketplace. Cards where this cannot be settled clearly stay visible and are not guessed." },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    id: "personalized-gift",
+    updated: "2026-10-21",
+    related: ["gift", "birthday-gift", "binder-size"],
+    de: {
+      slug: "personalisiertes-pokemon-geschenk",
+      title: "Personalisiertes Pokémon-Geschenk: Ein Binder, der zur Person passt",
+      metaTitle: "Personalisiertes Pokémon-Geschenk: Ideen und Umsetzung",
+      description: "Persönlich wird ein Pokémon-Geschenk durch die Auswahl der Karten, nicht durch Aufdrucke. So stellst du einen Binder für eine bestimmte Person zusammen.",
+      intro: "Offizielle Pokémon-Karten lassen sich nicht individuell bedrucken, und selbst gemachte „Karten“ sind weder echt noch wertvoll. Persönlich wird ein Geschenk deshalb auf anderem Weg: durch die Auswahl. Ein Binder, der erkennbar für genau diese Person zusammengestellt wurde, wirkt mehr als jedes Standardgeschenk.",
+      sections: [
+        {
+          heading: "Was „personalisiert“ bei Sammelkarten bedeutet",
+          blocks: [
+            { type: "p", text: "Das Persönliche steckt in drei Entscheidungen: welches Pokémon oder Motiv, welche Karten davon und wie sie zusammen aussehen. Wer Glurak liebt, freut sich über eine Seite voller Glurak-Karten aus verschiedenen Jahren. Wer eher die Bilder mag, bekommt Karten, deren Motive zusammenpassen, etwa Meer, Wald oder Schnee." },
+            { type: "p", text: "Wichtig ist, dass die Person sich wiedererkennt. Ein Binder voller Karten, die dich als Schenkenden interessieren, ist ein Geschenk an dich selbst." },
+          ],
+        },
+        {
+          heading: "Fünf Fragen, bevor du Karten auswählst",
+          blocks: [
+            { type: "ul", items: [
+              "Welches Pokémon steht für die Person? Oft ist es das erste, das sie je gemocht hat, nicht das aktuell stärkste.",
+              "Mag sie ältere Karten mit klassischen Zeichnungen oder moderne Karten mit großen, ganzseitigen Bildern?",
+              "Soll der Text auf Deutsch oder Englisch sein? Das hängt davon ab, was sie kennt und was es für das Pokémon gibt.",
+              "Wird der Binder zum Anschauen genutzt oder zum Spielen und Tauschen?",
+              "Wie viele Karten sind sinnvoll: eine Seite mit neun Karten oder mehrere Seiten?",
+            ] },
+          ],
+        },
+        {
+          heading: "So setzt du es mit Your Card Binder um",
+          blocks: [
+            { type: "p", text: "Du wählst ein Lieblings-Pokémon oder ein Motiv, den Zeitraum der Karten und die Sprache. Your Card Binder schlägt passende Karten vor und zeigt sie als Binder-Seite. Jede Karte lässt sich austauschen, entfernen oder durch eine andere ersetzen, bis das Ergebnis zur Person passt." },
+            { type: "p", text: "Erst danach geht es ans Besorgen: Your Card Binder bereitet die Liste für den Marktplatz deiner Wahl vor, und du entscheidest dort über Verkäufer, Zustand und Preis." },
+          ],
+        },
+        {
+          heading: "Die Übergabe persönlich machen",
+          blocks: [
+            { type: "ul", items: [
+              "Schreibe auf eine Karte oder einen Zettel, warum du genau dieses Pokémon gewählt hast.",
+              "Lege die erste Seite so, dass die Lieblingskarte beim Aufschlagen sofort zu sehen ist.",
+              "Lass bewusst ein paar Taschen frei, damit die Sammlung weiterwachsen kann.",
+              "Notiere, wo du die Karten gekauft hast, falls später etwas nachgekauft werden soll.",
+            ] },
+          ],
+        },
+        {
+          heading: "Was du besser lässt",
+          blocks: [
+            { type: "p", text: "Kaufe keine „personalisierten Pokémon-Karten“ von Anbietern, die behaupten, Karten mit Namen oder Foto zu bedrucken. Das sind keine offiziellen Karten, sie haben keinen Sammlerwert und können Markenrechte verletzen. Dein Geschenk bleibt persönlich, wenn echte Karten gezielt ausgewählt sind." },
+            { type: "p", text: "Your Card Binder ist ein unabhängiges Projekt und nicht mit Nintendo, Creatures, GAME FREAK oder The Pokémon Company verbunden." },
+          ],
+        },
+      ],
+    },
+    en: {
+      slug: "personalised-pokemon-gift",
+      title: "Personalised Pokémon gift: a binder that fits the person",
+      metaTitle: "Personalised Pokémon gift: ideas and how to do it",
+      description: "A Pokémon gift gets personal through the choice of cards, not through printing. How to put together a binder for one specific person.",
+      intro: "Official Pokémon cards cannot be printed individually, and home-made “cards” are neither genuine nor valuable. A gift becomes personal another way: through selection. A binder that is visibly put together for exactly this person says more than any standard present.",
+      sections: [
+        {
+          heading: "What “personalised” means for trading cards",
+          blocks: [
+            { type: "p", text: "The personal part sits in three decisions: which Pokémon or motif, which cards of it, and how they look together. Someone who loves Charizard enjoys a page of Charizard cards from different years. Someone who prefers the pictures gets cards whose motifs match, such as sea, forest or snow." },
+            { type: "p", text: "What matters is that the person recognises themselves. A binder full of cards that interest you as the giver is a gift to yourself." },
+          ],
+        },
+        {
+          heading: "Five questions before you choose cards",
+          blocks: [
+            { type: "ul", items: [
+              "Which Pokémon stands for the person? Often it is the first one they ever liked, not the strongest right now.",
+              "Do they like older cards with classic drawings or modern cards with large, full-page pictures?",
+              "Should the text be German or English? That depends on what they know and what exists for the Pokémon.",
+              "Will the binder be used for looking at cards, or for playing and trading?",
+              "How many cards make sense: one page of nine, or several pages?",
+            ] },
+          ],
+        },
+        {
+          heading: "How to do it with Your Card Binder",
+          blocks: [
+            { type: "p", text: "You pick a favourite Pokémon or a motif, the period of the cards and the language. Your Card Binder suggests matching cards and shows them as a binder page. Every card can be swapped, removed or replaced until the result fits the person." },
+            { type: "p", text: "Only then comes the buying: Your Card Binder prepares the list for the marketplace you choose, and you decide there about sellers, condition and price." },
+          ],
+        },
+        {
+          heading: "Make the handover personal",
+          blocks: [
+            { type: "ul", items: [
+              "Write on a card or note why you chose exactly this Pokémon.",
+              "Arrange the first page so the favourite card is visible as soon as the binder is opened.",
+              "Leave a few pockets empty on purpose so the collection can keep growing.",
+              "Note where you bought the cards in case you want to add to them later.",
+            ] },
+          ],
+        },
+        {
+          heading: "What to avoid",
+          blocks: [
+            { type: "p", text: "Do not buy “personalised Pokémon cards” from sellers who claim to print names or photos on cards. These are not official cards, they have no collector value and may infringe trademarks. Your gift stays personal when genuine cards are chosen with care." },
+            { type: "p", text: "Your Card Binder is an independent project and is not affiliated with Nintendo, Creatures, GAME FREAK or The Pokémon Company." },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    id: "birthday-gift",
+    updated: "2026-10-21",
+    related: ["personalized-gift", "gift", "condition"],
+    de: {
+      slug: "pokemon-geburtstagsgeschenk",
+      title: "Pokémon-Geschenk zum Geburtstag: Ideen für Kinder, Jugendliche und Erwachsene",
+      metaTitle: "Pokémon-Geburtstagsgeschenk: Ideen nach Alter",
+      description: "Ein Pokémon-Binder passt zu Kindern, Jugendlichen und erwachsenen Fans. Ideen nach Alter, ein Zeitplan für die Lieferung und Wege, die Zahl der Karten zu wählen.",
+      intro: "Zum Geburtstag soll das Geschenk pünktlich da sein und trotzdem nicht nach Last-Minute aussehen. Bei Sammelkarten kommt die Besonderheit dazu, dass sie meist von mehreren Verkäufern geliefert werden. Mit einem festen Plan klappt beides.",
+      sections: [
+        {
+          heading: "Je nach Alter anders",
+          blocks: [
+            { type: "table", caption: "Welcher Binder zu welchem Alter passt", head: ["Alter", "Was gut ankommt", "Worauf du achtest"], rows: [
+              ["Kinder", "Eine Seite mit dem Lieblings-Pokémon, gut erkennbare Bilder", "Karten in Schutzhüllen, nichts Empfindliches ohne Binder"],
+              ["Jugendliche", "Mehrere Seiten, gemischte Pokémon, moderne Illustrationskarten", "Sprache und Edition passend zu dem, was sie sammeln"],
+              ["Erwachsene Fans", "Karten aus der eigenen Kindheit, alte Sets", "Zustand und Seltenheit realistisch einschätzen"],
+            ] },
+            { type: "p", text: "Die Tabelle ist eine Orientierung. Entscheidend bleibt, was die Person selbst mag." },
+          ],
+        },
+        {
+          heading: "Ein Zeitplan für die Lieferung",
+          blocks: [
+            { type: "ul", items: [
+              "Etwa drei bis vier Wochen vorher: Pokémon, Zeitraum und Sprache festlegen und die Karten auswählen.",
+              "Etwa zwei Wochen vorher: bestellen. Karten von mehreren Verkäufern kommen nicht gleichzeitig an.",
+              "Einige Tage vorher: Eingang prüfen, Zustand ansehen, Karten in den Binder einsortieren.",
+              "Fehlt eine Karte, bleibt dir Zeit für einen Ersatz.",
+            ] },
+          ],
+        },
+        {
+          heading: "Wie viele Karten es sein sollen",
+          blocks: [
+            { type: "p", text: "Eine Seite mit neun Karten ist ein guter Anfang und lässt sich in einem Rutsch besorgen. Wer ein größeres Geschenk plant, kann das Alter als Anhaltspunkt nehmen und für jedes Lebensjahr eine Karte wählen. Bei hohen Zahlen lohnt sich ein Binder mit mehr Seiten, den du nach und nach füllst." },
+            { type: "p", text: "Lege vor der Suche fest, wie viel du für das gesamte Geschenk ausgeben möchtest. Rechne Versand dazu: Bei mehreren Verkäufern entstehen mehrere Sendungen." },
+          ],
+        },
+        {
+          heading: "Ideen, die sich erzählen lassen",
+          blocks: [
+            { type: "ul", items: [
+              "Das Pokémon, dessen Nummer im Pokédex dem Geburtstag oder dem Alter entspricht.",
+              "Karten aus dem Jahr der Geburt, soweit es passende Pokémon dazu gibt.",
+              "Das Pokémon, das die Person als Erstes gespielt oder gesehen hat.",
+              "Ein Starter der Region, in der sie am liebsten spielt.",
+            ] },
+          ],
+        },
+        {
+          heading: "Von der Idee zur Liste",
+          blocks: [
+            { type: "p", text: "In Your Card Binder wählst du das Pokémon, schaust dir die Vorschläge an und tauschst Karten aus. Danach bereitet Your Card Binder die Kaufliste für Cardmarket, CardTrader oder TCGplayer vor. Bestellt wird erst beim Marktplatz, und dort prüfst du Zustand, Versand und Gesamtpreis." },
+          ],
+        },
+      ],
+    },
+    en: {
+      slug: "pokemon-birthday-gift",
+      title: "Pokémon gift for a birthday: ideas for kids, teens and adults",
+      metaTitle: "Pokémon birthday gift: ideas by age",
+      description: "A Pokémon binder suits kids, teens and adult fans. Ideas by age, a delivery timeline and ways to decide how many cards to give.",
+      intro: "A birthday gift should arrive on time without looking last-minute. Trading cards add one more thing: they usually come from several sellers. A fixed plan takes care of both.",
+      sections: [
+        {
+          heading: "Different for each age",
+          blocks: [
+            { type: "table", caption: "Which binder suits which age", head: ["Age", "What goes down well", "What to watch"], rows: [
+              ["Kids", "One page of the favourite Pokémon, easily recognisable pictures", "Cards in sleeves, nothing delicate without a binder"],
+              ["Teens", "Several pages, mixed Pokémon, modern illustration cards", "Language and edition matching what they collect"],
+              ["Adult fans", "Cards from their own childhood, older sets", "Judge condition and rarity realistically"],
+            ] },
+            { type: "p", text: "The table is a rough guide. What counts is what the person likes." },
+          ],
+        },
+        {
+          heading: "A delivery timeline",
+          blocks: [
+            { type: "ul", items: [
+              "About three to four weeks ahead: decide on Pokémon, period and language, and choose the cards.",
+              "About two weeks ahead: order. Cards from several sellers do not arrive at the same time.",
+              "A few days ahead: check what has arrived, look at the condition, sort the cards into the binder.",
+              "If a card is missing, there is still time for a replacement.",
+            ] },
+          ],
+        },
+        {
+          heading: "How many cards to give",
+          blocks: [
+            { type: "p", text: "One page of nine cards is a good start and can be sourced in one go. For a bigger gift you can use the age as a guide and pick one card for every year of life. For high numbers, a binder with more pages that you fill gradually is worth it." },
+            { type: "p", text: "Before searching, decide how much you want to spend on the whole gift. Add shipping: with several sellers you get several parcels." },
+          ],
+        },
+        {
+          heading: "Ideas you can tell a story with",
+          blocks: [
+            { type: "ul", items: [
+              "The Pokémon whose Pokédex number matches the birthday or the age.",
+              "Cards from the year of birth, where matching Pokémon exist.",
+              "The Pokémon the person played or saw first.",
+              "A starter from the region they like to play in most.",
+            ] },
+          ],
+        },
+        {
+          heading: "From idea to list",
+          blocks: [
+            { type: "p", text: "In Your Card Binder you pick the Pokémon, look at the suggestions and swap cards. Then Your Card Binder prepares the shopping list for Cardmarket, CardTrader or TCGplayer. You only order at the marketplace, and there you check condition, shipping and total price." },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    id: "christmas-gift",
+    updated: "2026-10-21",
+    related: ["birthday-gift", "marketplaces", "gift"],
+    de: {
+      slug: "pokemon-weihnachtsgeschenk",
+      title: "Pokémon-Weihnachtsgeschenk: Früh planen, Karten richtig besorgen",
+      metaTitle: "Pokémon-Weihnachtsgeschenk: Planung und Ideen",
+      description: "Pokémon-Karten zu Weihnachten zu verschenken braucht etwas Vorlauf. Ein Zeitplan, Ideen wie ein Karten-Adventskalender und was du bei Lieferzeiten beachtest.",
+      intro: "Vor Weihnachten sind Postwege länger und beliebte Karten schneller vergriffen. Ein Pokémon-Binder ist trotzdem ein dankbares Geschenk, wenn du früh genug anfängst und die Lieferung einplanst.",
+      sections: [
+        {
+          heading: "Warum der Zeitplan hier wichtiger ist",
+          blocks: [
+            { type: "p", text: "Sammelkarten kaufst du bei Marktplätzen von vielen Einzelverkäufern. Jeder verschickt selbst, manche aus dem Ausland. In der Vorweihnachtszeit kann das länger dauern als gewohnt. Plane deshalb mehr Puffer ein als bei einem Geschenk aus dem Laden." },
+          ],
+        },
+        {
+          heading: "Ein Plan bis Heiligabend",
+          blocks: [
+            { type: "ul", items: [
+              "Spätestens Ende November: Pokémon oder Motiv festlegen und die Karten auswählen.",
+              "Anfang Dezember: bestellen, am besten bei wenigen Verkäufern, damit weniger Sendungen unterwegs sind.",
+              "Vor dem Fest: Eingang prüfen, Zustand ansehen, Karten sortieren und einpacken.",
+              "Fehlt etwas, kannst du bei einem anderen Verkäufer nachbestellen oder die Karte durch eine ähnliche ersetzen.",
+            ] },
+          ],
+        },
+        {
+          heading: "Idee: Der Karten-Adventskalender",
+          blocks: [
+            { type: "p", text: "24 Karten für 24 Tage: Jeden Tag bis Heiligabend wird eine Karte ausgepackt oder in den Binder gesteckt. Drei Seiten mit neun Taschen bieten Platz für 27 Karten, also für den Kalender und drei Überraschungen am Fest." },
+            { type: "p", text: "So setzt du es um: Wähle ein Lieblings-Pokémon oder ein Motiv und lass dir mehr Karten vorschlagen, als du brauchst. Behalte die schönsten für den Heiligabend." },
+          ],
+        },
+        {
+          heading: "Wo du kaufst",
+          blocks: [
+            { type: "p", text: "In Europa sind Cardmarket und CardTrader die naheliegenden Marktplätze. Bei beiden kannst du dir die Verkäufer ansehen und wählen, wer wie schnell liefert. Prüfe den voraussichtlichen Liefertermin und die Bewertung des Verkäufers vor der Bestellung." },
+            { type: "p", text: "Your Card Binder kann bei Käufen über CardTrader-Links eine Provision erhalten. Dein Preis bleibt gleich." },
+          ],
+        },
+        {
+          heading: "Verpacken und übergeben",
+          blocks: [
+            { type: "ul", items: [
+              "Binder in Geschenkpapier, die Lieblingskarte obenauf als Hinweis.",
+              "Eine kurze Karte dazu, warum du dieses Pokémon gewählt hast.",
+              "Freie Taschen lassen, damit unter dem Baum noch etwas nachkommen kann.",
+            ] },
+          ],
+        },
+      ],
+    },
+    en: {
+      slug: "pokemon-christmas-gift",
+      title: "Pokémon Christmas gift: plan early, source the cards properly",
+      metaTitle: "Pokémon Christmas gift: planning and ideas",
+      description: "Giving Pokémon cards at Christmas needs some lead time. A timeline, ideas such as a card advent calendar and what to keep in mind about delivery times.",
+      intro: "Before Christmas, postal routes are longer and popular cards sell out faster. A Pokémon binder is still a welcome gift if you start early enough and plan for delivery.",
+      sections: [
+        {
+          heading: "Why the timeline matters more here",
+          blocks: [
+            { type: "p", text: "You buy trading cards on marketplaces from many individual sellers. Each ships on their own, some from abroad. In the weeks before Christmas this can take longer than usual. So allow more buffer than for a gift from a shop." },
+          ],
+        },
+        {
+          heading: "A plan until Christmas Eve",
+          blocks: [
+            { type: "ul", items: [
+              "By the end of November at the latest: decide on the Pokémon or motif and choose the cards.",
+              "Early December: order, preferably from few sellers so fewer parcels are on the way.",
+              "Before the holiday: check what has arrived, look at the condition, sort and wrap the cards.",
+              "If something is missing, reorder from another seller or replace the card with a similar one.",
+            ] },
+          ],
+        },
+        {
+          heading: "Idea: the card advent calendar",
+          blocks: [
+            { type: "p", text: "24 cards for 24 days: every day until Christmas Eve one card is unwrapped or slipped into the binder. Three pages of nine pockets leave room for 27 cards, so for the calendar plus three surprises on the day." },
+            { type: "p", text: "How to do it: choose a favourite Pokémon or motif and have more cards suggested than you need. Keep the nicest ones for Christmas Eve." },
+          ],
+        },
+        {
+          heading: "Where to buy",
+          blocks: [
+            { type: "p", text: "In Europe, Cardmarket and CardTrader are the obvious marketplaces. On both you can look at the sellers and choose who delivers how fast. Check the expected delivery date and the seller's rating before ordering." },
+            { type: "p", text: "Your Card Binder may receive a commission on purchases made through CardTrader links. Your price stays the same." },
+          ],
+        },
+        {
+          heading: "Wrapping and handing over",
+          blocks: [
+            { type: "ul", items: [
+              "Wrap the binder, with the favourite card on top as a hint.",
+              "Add a short note on why you chose this Pokémon.",
+              "Leave pockets free so something can still be added under the tree.",
+            ] },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    id: "start-collection",
+    updated: "2026-10-21",
+    related: ["condition", "binder-size", "gift"],
+    de: {
+      slug: "pokemon-sammlung-starten",
+      title: "Eine Pokémon-Sammlung starten: So fängst du an, ohne dich zu verzetteln",
+      metaTitle: "Pokémon-Sammlung starten: Einstieg in 5 Schritten",
+      description: "Der Start einer Pokémon-Sammlung gelingt mit einem klaren Fokus. Fünf Schritte vom ersten Pokémon über den Binder bis zum Zustand der Karten.",
+      intro: "Wer ohne Plan Karten kauft, hat schnell einen Karton voller Doppelter und keinen roten Faden. Ein Fokus macht eine Sammlung übersichtlich, günstiger und zu etwas, das dir gehört. So fängst du an.",
+      sections: [
+        {
+          heading: "Schritt 1: Einen Fokus wählen",
+          blocks: [
+            { type: "p", text: "Fast alle langjährigen Sammlungen beginnen mit einer einfachen Grenze: ein Lieblings-Pokémon, ein Set, ein Typ oder eine Region. Ein Pokémon eignet sich für den Anfang am besten, weil es viele Karten aus unterschiedlichen Jahren gibt und die Sammlung ein Gesicht bekommt." },
+          ],
+        },
+        {
+          heading: "Schritt 2: Ein Budget festlegen",
+          blocks: [
+            { type: "p", text: "Setze eine Summe pro Monat oder für den Start fest und halte sie ein. Karten gibt es in sehr unterschiedlichen Preisbereichen. Du brauchst am Anfang keine teuren Karten, um eine Sammlung zu haben, die gut aussieht." },
+          ],
+        },
+        {
+          heading: "Schritt 3: Mit einem Binder beginnen",
+          blocks: [
+            { type: "ul", items: [
+              "Ein Binder mit neun Taschen pro Seite ist der übliche Standard.",
+              "Karten in Hüllen oder direkt in Binder-Taschen schützen sie vor Kratzern.",
+              "Lass Platz: Wer 90 Karten besitzt, braucht keinen Binder für 900.",
+            ] },
+            { type: "p", text: "Wie viele Taschen welche Größe hat, erklärt der Ratgeber zu Binder-Größen." },
+          ],
+        },
+        {
+          heading: "Schritt 4: Auf den Zustand achten",
+          blocks: [
+            { type: "p", text: "Marktplätze bewerten Karten in festen Stufen von Near Mint bis Played. Für eine Sammlung zum Anschauen ist ein guter Zustand angenehm, muss aber nicht immer Near Mint sein. Lege vorab fest, was du akzeptierst, und stelle den Mindestzustand beim Kauf ein." },
+          ],
+        },
+        {
+          heading: "Schritt 5: Die Liste führen und kaufen",
+          blocks: [
+            { type: "p", text: "Halte fest, welche Karten du hast und welche fehlen. In Your Card Binder legst du dafür einen Wunsch-Binder an: Du siehst, welche Plätze frei sind, und bekommst die fehlenden Karten als Kaufliste für Cardmarket, CardTrader oder TCGplayer. Freie Plätze zählen dabei nicht als fehlende Karte, bis du dich für eine entscheidest." },
+            { type: "p", text: "Eine Sammlung ist nie fertig, und das ist der Reiz. Fang klein an und lass sie wachsen." },
+          ],
+        },
+      ],
+    },
+    en: {
+      slug: "start-a-pokemon-collection",
+      title: "Starting a Pokémon collection: how to begin without scattering",
+      metaTitle: "Starting a Pokémon collection: five steps",
+      description: "Starting a Pokémon collection works best with a clear focus. Five steps from the first Pokémon through the binder to the condition of the cards.",
+      intro: "Buying cards without a plan quickly leaves you with a box of duplicates and no common thread. A focus keeps a collection tidy, cheaper and yours. Here is how to begin.",
+      sections: [
+        {
+          heading: "Step 1: choose a focus",
+          blocks: [
+            { type: "p", text: "Almost every long-running collection begins with a simple boundary: a favourite Pokémon, one set, one type or one region. One Pokémon suits a start best, because there are many cards from different years and the collection gets a face." },
+          ],
+        },
+        {
+          heading: "Step 2: set a budget",
+          blocks: [
+            { type: "p", text: "Fix an amount per month, or for the start, and stick to it. Cards come in very different price ranges. You do not need expensive cards at first to have a collection that looks good." },
+          ],
+        },
+        {
+          heading: "Step 3: begin with a binder",
+          blocks: [
+            { type: "ul", items: [
+              "A binder with nine pockets per page is the usual standard.",
+              "Sleeves, or the binder pockets themselves, protect cards from scratches.",
+              "Leave room: someone with 90 cards does not need a binder for 900.",
+            ] },
+            { type: "p", text: "The guide to binder sizes explains how many pockets each size has." },
+          ],
+        },
+        {
+          heading: "Step 4: pay attention to condition",
+          blocks: [
+            { type: "p", text: "Marketplaces grade cards in fixed steps from Near Mint to Played. For a collection to look at, a good condition is pleasant but does not always have to be Near Mint. Decide in advance what you accept and set the minimum condition when you buy." },
+          ],
+        },
+        {
+          heading: "Step 5: keep the list and buy",
+          blocks: [
+            { type: "p", text: "Keep track of which cards you have and which are missing. In Your Card Binder you create a wish binder for that: you see which places are free and get the missing cards as a shopping list for Cardmarket, CardTrader or TCGplayer. A free place does not count as a missing card until you decide on one." },
+            { type: "p", text: "A collection is never finished, and that is its charm. Start small and let it grow." },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    id: "first-binder-kids",
+    updated: "2026-10-21",
+    related: ["start-collection", "birthday-gift", "condition"],
+    de: {
+      slug: "pokemon-karten-fuer-kinder",
+      title: "Der Start einer Leidenschaft: Pokémon-Karten für Kinder und Einsteiger",
+      metaTitle: "Pokémon-Karten für Kinder: Der erste Binder",
+      description: "Ein erster Binder macht aus losen Karten eine Sammlung. Was Kinder und Einsteiger brauchen, wie Eltern beim Kauf helfen und woran sie echte Karten erkennen.",
+      intro: "Für viele Kinder beginnt es mit einer Handvoll Karten vom Schulhof. Ein erster Binder macht daraus eine Sammlung und zeigt: Diese Karten sind etwas wert, auch wenn sie nicht teuer sind. Mit wenig Aufwand wird aus dem Interesse ein Hobby.",
+      sections: [
+        {
+          heading: "Mit dem Lieblings-Pokémon beginnen",
+          blocks: [
+            { type: "p", text: "Kinder haben fast immer ein Pokémon, das sie über alle anderen stellen. Eine Seite nur mit diesem Pokémon ist leicht zu verstehen und macht stolz. Neun Karten reichen für den Anfang." },
+          ],
+        },
+        {
+          heading: "Was du für den ersten Binder brauchst",
+          blocks: [
+            { type: "ul", items: [
+              "Einen Binder mit neun Taschen pro Seite, der sich leicht aufschlagen lässt.",
+              "Die Karten selbst, gern aus verschiedenen Sets mit unterschiedlichen Bildern.",
+              "Ein Plätzchen, an dem der Binder liegt, ohne dass er gequetscht oder nass wird.",
+            ] },
+          ],
+        },
+        {
+          heading: "Eltern und Schenkende: So gehst du vor",
+          blocks: [
+            { type: "p", text: "Setze vorab ein Budget und lass das Kind mitentscheiden, welche Karten dazukommen. Ein Kind, das aussucht, kümmert sich später besser um seine Sammlung. Kaufe bei bekannten Marktplätzen wie Cardmarket oder CardTrader und achte auf Bewertungen der Verkäufer." },
+            { type: "p", text: "Your Card Binder zeigt dir die Binder-Seite vorab und bereitet die Kaufliste vor. Gekauft wird erst beim Marktplatz, und dort kannst du Versand und Gesamtpreis in Ruhe prüfen." },
+          ],
+        },
+        {
+          heading: "Echt oder gefälscht?",
+          blocks: [
+            { type: "p", text: "Gefälschte Karten gibt es vor allem bei auffällig günstigen Angeboten und bei Verkäufern ohne Bewertungen. Marktplätze mit Verkäuferbewertungen und Beschreibung von Set, Nummer und Zustand sind der sicherere Weg. Wenn dir eine Karte ungewöhnlich glatt, dünn oder in den Farben falsch vorkommt, sprich den Verkäufer an." },
+          ],
+        },
+        {
+          heading: "Sorgsam umgehen lernen",
+          blocks: [
+            { type: "ul", items: [
+              "Karten nur mit sauberen, trockenen Händen anfassen.",
+              "Nicht in die Hosentasche stecken, sondern in den Binder.",
+              "Den Binder aufrecht und nicht übervoll lagern.",
+            ] },
+            { type: "p", text: "So lernen Kinder spielerisch, mit Sachen sorgsam umzugehen, und die Sammlung bleibt über Jahre schön." },
+          ],
+        },
+      ],
+    },
+    en: {
+      slug: "pokemon-cards-for-kids",
+      title: "The start of a passion: Pokémon cards for kids and beginners",
+      metaTitle: "Pokémon cards for kids: the first binder",
+      description: "A first binder turns loose cards into a collection. What kids and beginners need, how parents can help with buying and how to recognise genuine cards.",
+      intro: "For many kids it starts with a handful of cards from the schoolyard. A first binder turns them into a collection and shows: these cards matter, even if they are not expensive. With little effort, an interest becomes a hobby.",
+      sections: [
+        {
+          heading: "Start with the favourite Pokémon",
+          blocks: [
+            { type: "p", text: "Kids almost always have one Pokémon they put above all others. A page with just this Pokémon is easy to understand and makes them proud. Nine cards are enough to start." },
+          ],
+        },
+        {
+          heading: "What you need for a first binder",
+          blocks: [
+            { type: "ul", items: [
+              "A binder with nine pockets per page that opens easily.",
+              "The cards themselves, ideally from different sets with different pictures.",
+              "A spot where the binder lies without being squashed or getting wet.",
+            ] },
+          ],
+        },
+        {
+          heading: "Parents and givers: how to go about it",
+          blocks: [
+            { type: "p", text: "Set a budget beforehand and let the child help decide which cards come next. A child who chooses looks after the collection better later. Buy from known marketplaces such as Cardmarket or CardTrader and look at the sellers' ratings." },
+            { type: "p", text: "Your Card Binder shows you the binder page in advance and prepares the shopping list. You only buy at the marketplace, where you can check shipping and total price in peace." },
+          ],
+        },
+        {
+          heading: "Genuine or fake?",
+          blocks: [
+            { type: "p", text: "Fake cards turn up mostly with strikingly cheap offers and sellers without ratings. Marketplaces with seller ratings and a description of set, number and condition are the safer route. If a card feels unusually smooth, thin or wrong in colour, talk to the seller." },
+          ],
+        },
+        {
+          heading: "Learning to handle things with care",
+          blocks: [
+            { type: "ul", items: [
+              "Touch cards only with clean, dry hands.",
+              "Do not put them in a trouser pocket; put them in the binder.",
+              "Store the binder upright and not overfilled.",
+            ] },
+            { type: "p", text: "That way kids learn playfully to handle things with care, and the collection stays nice for years." },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    id: "cardmarket-vs-cardtrader",
+    updated: "2026-10-21",
+    related: ["marketplaces", "condition", "language-and-finish"],
+    de: {
+      slug: "cardmarket-oder-cardtrader",
+      title: "Cardmarket oder CardTrader: Welcher Marktplatz passt zu deinen Pokémon-Karten?",
+      metaTitle: "Cardmarket oder CardTrader: Pokémon-Karten kaufen",
+      description: "Cardmarket und CardTrader sind europäische Marktplätze für Sammelkarten. Was sie unterscheidet, wann welcher passt und worauf du beim Versand achtest.",
+      intro: "Beide Plattformen verbinden Käufer mit vielen Einzelverkäufern, und beide eignen sich für Pokémon-Karten in Europa. Im Alltag unterscheiden sie sich vor allem darin, wie du eine Bestellung zusammenstellst und wie der Versand gebündelt wird.",
+      sections: [
+        {
+          heading: "Was beide gemeinsam haben",
+          blocks: [
+            { type: "ul", items: [
+              "Du kaufst von einzelnen Verkäufern, nicht von einem Shop.",
+              "Jede Karte hat Zustand, Sprache und oft eine Ausführung wie Holo oder Reverse Holo.",
+              "Preis und Versand hängen vom Verkäufer ab.",
+              "Du prüfst Gesamtpreis und Versand erst vor dem Bezahlen endgültig.",
+            ] },
+          ],
+        },
+        {
+          heading: "Wo sie sich unterscheiden",
+          blocks: [
+            { type: "table", caption: "Kurzvergleich aus Sicht eines Käufers in Europa", head: ["", "Cardmarket", "CardTrader"], rows: [
+              ["Bestellung zusammenstellen", "Wants-Liste anlegen, dann den Shopping Wizard Verkäufer vorschlagen lassen", "Liste im Shop Optimizer anlegen, der Verkäufer nach Preis, Zahl der Verkäufer oder Tempo auswählt"],
+              ["Versand", "Wird pro Verkäufer berechnet", "Mit CardTrader Zero können Karten mehrerer Verkäufer in einer Sendung ankommen"],
+              ["Übergabe aus Your Card Binder", "Deckliste zum Einfügen in die Wants-Liste", "Links zu jeder Karte und der Shop Optimizer"],
+              ["Wichtig vor dem Kauf", "Mindestzustand und Sprache nach dem Import einstellen", "Sprache und Mindestzustand im Shop Optimizer prüfen"],
+            ] },
+            { type: "p", text: "Die Angaben sind eine Orientierung und können sich ändern. Prüfe die aktuellen Bedingungen immer auf der Seite des Marktplatzes." },
+          ],
+        },
+        {
+          heading: "Wann welcher Marktplatz passt",
+          blocks: [
+            { type: "p", text: "Wer viele Karten auf einmal besorgt und eine bewährte Liste importieren möchte, kommt bei Cardmarket schnell zum Ziel. Wer Wert darauf legt, dass Karten verschiedener Verkäufer in einer Sendung ankommen, schaut sich CardTrader an. Welcher Weg günstiger ist, hängt vom Versand und von den Verkäufern ab, und beides siehst du erst bei der Bestellung." },
+            { type: "p", text: "Ein Preisvergleich vorab ist deshalb nur eine Momentaufnahme. Wenn dir der Endpreis wichtig ist, stelle dieselbe Liste bei beiden zusammen und vergleiche die Summe einschließlich Versand." },
+          ],
+        },
+        {
+          heading: "Worauf du bei beiden achtest",
+          blocks: [
+            { type: "ul", items: [
+              "Sprache der Karte: Deutsch und Englisch sind unterschiedliche Karten.",
+              "Ausführung: Holo, Reverse Holo und Normal haben verschiedene Preise.",
+              "Zustand: Lege den Mindestzustand fest, bevor du Verkäufer wählst.",
+              "Verkäufer: Bewertung und Lieferzeit ansehen.",
+            ] },
+          ],
+        },
+        {
+          heading: "Was Your Card Binder dabei macht",
+          blocks: [
+            { type: "p", text: "Your Card Binder bereitet die Liste für beide Marktplätze vor und führt dich in vier Schritten durch den Ablauf. Bestellt, bezahlt und gekauft wird nur beim Marktplatz selbst." },
+            { type: "p", text: "Your Card Binder kann bei Käufen über CardTrader-Links eine Provision erhalten. Dein Preis bleibt gleich. Your Card Binder steht mit keinem der Marktplätze in einer geschäftlichen Verbindung außer diesem Partnerprogramm." },
+          ],
+        },
+      ],
+    },
+    en: {
+      slug: "cardmarket-or-cardtrader",
+      title: "Cardmarket or CardTrader: which marketplace suits your Pokémon cards?",
+      metaTitle: "Cardmarket or CardTrader: buying Pokémon cards",
+      description: "Cardmarket and CardTrader are European marketplaces for trading cards. What sets them apart, when each one fits and what to watch for with shipping.",
+      intro: "Both platforms connect buyers with many individual sellers, and both suit Pokémon cards in Europe. In daily use they differ mostly in how you put an order together and how shipping is bundled.",
+      sections: [
+        {
+          heading: "What both have in common",
+          blocks: [
+            { type: "ul", items: [
+              "You buy from individual sellers, not from one shop.",
+              "Every card has a condition, a language and often a finish such as holo or reverse holo.",
+              "Price and shipping depend on the seller.",
+              "You only check total price and shipping for good before paying.",
+            ] },
+          ],
+        },
+        {
+          heading: "Where they differ",
+          blocks: [
+            { type: "table", caption: "Quick comparison from a buyer's view in Europe", head: ["", "Cardmarket", "CardTrader"], rows: [
+              ["Putting an order together", "Create a wants list, then let the Shopping Wizard propose sellers", "Create a list in the Shop Optimizer, which picks sellers by price, number of sellers or speed"],
+              ["Shipping", "Calculated per seller", "With CardTrader Zero, cards from several sellers can arrive in one parcel"],
+              ["Handover from Your Card Binder", "Deck list to paste into the wants list", "Links for every card and the Shop Optimizer"],
+              ["Important before buying", "Set minimum condition and language after the import", "Check language and minimum condition in the Shop Optimizer"],
+            ] },
+            { type: "p", text: "The details are a rough guide and can change. Always check the current terms on the marketplace itself." },
+          ],
+        },
+        {
+          heading: "When which marketplace fits",
+          blocks: [
+            { type: "p", text: "If you source many cards at once and want to import a ready list, Cardmarket gets you there quickly. If it matters to you that cards from different sellers arrive in one parcel, look at CardTrader. Which route is cheaper depends on shipping and sellers, and you only see both when you order." },
+            { type: "p", text: "A price comparison in advance is therefore only a snapshot. If the final price matters to you, put the same list together on both and compare the total including shipping." },
+          ],
+        },
+        {
+          heading: "What to watch on both",
+          blocks: [
+            { type: "ul", items: [
+              "Card language: German and English are different cards.",
+              "Finish: holo, reverse holo and normal have different prices.",
+              "Condition: set the minimum condition before choosing sellers.",
+              "Sellers: look at rating and delivery time.",
+            ] },
+          ],
+        },
+        {
+          heading: "What Your Card Binder does here",
+          blocks: [
+            { type: "p", text: "Your Card Binder prepares the list for both marketplaces and guides you through the process in four steps. You order, pay and buy only at the marketplace itself." },
+            { type: "p", text: "Your Card Binder may receive a commission on purchases made through CardTrader links. Your price stays the same. Your Card Binder has no business relationship with either marketplace apart from this partner programme." },
           ],
         },
       ],
