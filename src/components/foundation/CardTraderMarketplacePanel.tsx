@@ -48,9 +48,9 @@ const GUIDE_STEPS = [
   { step: 4, label: "Kauf prüfen" },
 ] as const;
 
-/** "12 Angebote · Verkäufer aus DE, IT": counts come from the 25 cheapest listings, so a full list reads "mind.". */
-function offersLabel(count: number, atLeast: boolean, countries?: readonly string[]): string {
-  const offers = `${atLeast ? "mind. " : ""}${count} ${count === 1 ? "Angebot" : "Angebote"}`;
+/** "12 Angebote · Verkäufer aus DE, IT" (weekly snapshot). */
+function offersLabel(count: number, countries?: readonly string[]): string {
+  const offers = `${count} ${count === 1 ? "Angebot" : "Angebote"}`;
   return countries?.length ? `${offers} · Verkäufer aus ${countries.join(", ")}` : offers;
 }
 
@@ -162,7 +162,7 @@ export function CardTraderMarketplacePanel({ items, wishlistEnabled = false }: {
                       <span>
                         <strong>{item.quantity}× {item.card.name}</strong>
                         <small>{item.card.setName} · Nr. {formatCollectorNumber(item.card.collectorNumber, item.card.collectorTotal)} · {item.card.ref.language.toUpperCase()}{entry?.unitPriceMinor ? ` · ab ca. ${euro(entry.unitPriceMinor)}` : ""}</small>
-                        {entry?.offerCount ? <small>{offersLabel(entry.offerCount, entry.offersAtLeast === true, entry.sellerCountries)}</small> : null}
+                        {entry?.offerCount ? <small>{offersLabel(entry.offerCount, entry.sellerCountries)}</small> : null}
                       </span>
                       {entry?.url
                         ? <a aria-label={`Bei CardTrader ansehen: ${item.card.name}`} href={entry.url} target="_blank" rel="noopener noreferrer">Bei CardTrader ansehen <ExternalLink aria-hidden="true" size={14} /></a>

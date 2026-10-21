@@ -414,7 +414,7 @@ describe("MissingCardsPanel", () => {
   describe("CardTrader as a marketplace", () => {
     const handoff = {
       entries: [
-        { identityKey: "pikachu", blueprintId: 111, url: "https://www.cardtrader.com/en/cards/111?share_code=yourcardbinder", unitPriceMinor: 250, offerCount: 12, offersAtLeast: true, sellerCountries: ["DE", "IT"] },
+        { identityKey: "pikachu", blueprintId: 111, url: "https://www.cardtrader.com/en/cards/111?share_code=yourcardbinder", unitPriceMinor: 250, offerCount: 12, sellerCountries: ["DE", "IT"] },
         { identityKey: "bulbasaur" },
       ],
       linkedCount: 1,
@@ -448,7 +448,7 @@ describe("MissingCardsPanel", () => {
       expect(await screen.findByRole("link", { name: "Bei CardTrader ansehen: Pikachu" })).toHaveAttribute("href", "https://www.cardtrader.com/en/cards/111?share_code=yourcardbinder");
       expect(screen.getByText("Keine sichere Zuordnung")).toBeInTheDocument();
       expect(screen.getByText("1 von 2 zugeordnet")).toBeInTheDocument();
-      expect(screen.getByText("mind. 12 Angebote · Verkäufer aus DE, IT")).toBeInTheDocument();
+      expect(screen.getByText("12 Angebote · Verkäufer aus DE, IT")).toBeInTheDocument();
       expect(screen.getByText(/Richtwert: ab ca\./)).toHaveTextContent("2 von 3 Karten");
       expect(screen.getByText(/ohne Versand/)).toBeInTheDocument();
     });

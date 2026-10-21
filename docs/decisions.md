@@ -434,7 +434,7 @@
 ## 2026-10-21 — Offer counts and seller countries per card
 
 - **Source.** The weekly CardTrader sync already reads `/marketplace/products` (the 25 cheapest listings per blueprint). `scripts/cardtrader-offers.mjs` now also counts the usable listings per language and collects the sellers' ISO country codes, cheapest first (at most six). Nothing else about a seller is kept: no name, id or listing id.
-- **Format.** `prices/<expansion>.json` gains `o` (`[English, German, capped]`, capped = 1 when the API returned its limit of 25) and `c` (`"DE,IT"`). Old files without the keys stay valid.
-- **Display.** In the CardTrader guide each matched card shows "mind. 12 Angebote · Verkäufer aus DE, IT"; "mind." appears when the limit was reached, because the real number may be higher. Counts are a weekly snapshot, not live.
+- **Format.** `prices/<expansion>.json` gains `o` (`[English, German]`) and `c` (`"DE,IT"`). Old files without the keys stay valid. The expansion query returns all listings (the first run saw up to 303 per card); the 25-listing limit applies only to queries by blueprint, so no "at least" flag is kept (a first version assumed a limit of 25 and showed a wrong "mind." until corrected).
+- **Display.** In the CardTrader guide each matched card shows "12 Angebote · Verkäufer aus DE, IT". Counts are a weekly snapshot, not live.
 - **Not done.** Live offers (rate limit, needs a token), shipping methods (per seller and destination), and any use of the cart or purchase endpoints.
 

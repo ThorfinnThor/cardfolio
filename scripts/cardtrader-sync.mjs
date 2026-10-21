@@ -10,7 +10,7 @@
  *   index.json                  catalog key ("en:base1") -> CardTrader expansion id
  *   expansions/<id>.json        Pokémon Singles blueprints: collector number, name, rarity, image, product ids
  *   prices/<id>.json            cheapest EUR price per blueprint, language and minimum condition (p); offer counts
- *                               per language with a "capped at 25" flag (o); seller country codes, cheapest first (c)
+ *                               per language (o); seller country codes, cheapest first (c)
  *   manifest.json               counts, source, attribution
  */
 import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
@@ -100,7 +100,7 @@ function aggregatePrices(listings, blueprintIds) {
       stats.used += 1;
       usable.push(listing);
     }
-    const summary = summarizeOffers(usable, entries.length);
+    const summary = summarizeOffers(usable);
     if (summary) offers[blueprintId] = summary;
   }
   return { prices, offers, stats };
@@ -171,7 +171,7 @@ for (const expansionId of expansionIds) {
     const { prices, offers, stats } = aggregatePrices(Array.isArray(listings) ? {} : listings, new Set(blueprints.map((blueprint) => blueprint.id)));
     const ordered = Object.fromEntries(Object.keys(prices).sort((a, b) => Number(a) - Number(b)).map((key) => [key, prices[key]]));
     const offerKeys = Object.keys(offers).filter((key) => ordered[key]).sort((a, b) => Number(a) - Number(b));
-    const offerCounts = offerKeys.map((key) => `${JSON.stringify(key)}:${JSON.stringify([...offers[key].counts, offers[key].capped])}`).join(",\n");
+    const offerCounts = offerKeys.map((key) => `${JSON.stringify(key)}:${JSON.stringify(offers[key].counts)}`).join(",\n");
     const offerCountries = offerKeys.filter((key) => offers[key].countries.length).map((key) => `${JSON.stringify(key)}:${JSON.stringify(offers[key].countries.join(","))}`).join(",\n");
     const body = `{"id":${expansionId},"currency":"EUR","slots":["en:nm","en:ex","en:lp","en:pl","en:any","de:nm","de:ex","de:lp","de:pl","de:any"],"p":{\n${Object.entries(ordered).map(([key, slots]) => `${JSON.stringify(key)}:${JSON.stringify(slots)}`).join(",\n")}\n},"o":{\n${offerCounts}\n},"c":{\n${offerCountries}\n}}\n`;
     written[(await writeIfChanged(join(outDir, "prices", `${expansionId}.json`), body)) ? "changed" : "unchanged"] += 1;
