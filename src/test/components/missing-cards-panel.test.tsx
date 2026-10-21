@@ -1,10 +1,16 @@
-import { fireEvent, render, screen, cleanup } from "@testing-library/react";
+import { fireEvent, render, screen, cleanup, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { MissingCardsPanel } from "@/components/foundation/MissingCardsPanel";
+import { cardtraderCardmarketMappings } from "@/data/marketplace/cardtrader-cardmarket-products";
 import type { MarketplaceProductIdentityMapping } from "@/domain/marketplace-product-identity";
 import type { TcgplayerCardMapping } from "@/domain/tcgplayer-export";
 import type { MissingItem } from "@/domain/types";
+
+vi.mock("@/data/marketplace/cardtrader-cardmarket-products", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/data/marketplace/cardtrader-cardmarket-products")>();
+  return { ...actual, cardtraderCardmarketMappings: vi.fn(actual.cardtraderCardmarketMappings) };
+});
 
 afterEach(() => cleanup());
 
@@ -244,7 +250,7 @@ describe("MissingCardsPanel", () => {
     const fallback = screen.getByText("Nur falls Cardmarket eine Karte nicht erkennt: Einzelsuchen (2)").closest("details");
     expect(fallback).not.toHaveAttribute("open");
     fireEvent.click(screen.getByText("Nur falls Cardmarket eine Karte nicht erkennt: Einzelsuchen (2)"));
-    expect(screen.getByText("Geprüfte Produktseiten")).toBeInTheDocument();
+    expect(screen.getByText("Direkte Produktseiten")).toBeInTheDocument();
     expect(screen.getByText("Vorausgefüllte Suchlinks")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Produktseite öffnen/ })).toHaveAttribute("href", "https://www.cardmarket.com/en/Pokemon/Cards/Pikachu");
     const searchLinks = screen.getAllByRole("link", { name: /Karte suchen/ });
@@ -345,5 +351,47 @@ describe("MissingCardsPanel", () => {
     expect(screen.getByText("1× Bulbasaur")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Wishlist erstellen" })).toBeDisabled();
     expect(screen.getAllByText("Noch nicht freigegeben")).toHaveLength(2);
+  });
+
+  it("offers a direct Cardmarket product page for cards whose CardTrader product id is known", async () => {
+    vi.mocked(cardtraderCardmarketMappings).mockResolvedValue([{
+      schemaVersion: 1,
+      provider: "cardmarket",
+      tcgdexCardId: "base1-44",
+      cardName: "Bulbasaur",
+      scope: { language: "any", finish: "any", edition: "any", printing: "any" },
+      status: "verified",
+      providerProductId: "273700",
+      productUrl: "https://www.cardmarket.com/en/Pokemon/Products?idProduct=273700",
+      source: { kind: "provider-external-id", label: "Cardmarket-Produkt-ID laut CardTrader-Blueprint 111152" },
+      checkedAt: "2026-10-21T10:00:00.000Z",
+      verifiedAt: "2026-10-21T10:00:00.000Z",
+    }]);
+    render(
+      <MissingCardsPanel
+        {...props()}
+        cardmarketEnabled
+        cardmarketProductMappings={cardmarketProductMappings}
+        cardmarketDecklistIdentities={{ "basep-1": "Pikachu Static Growl Thundershock", "base1-44": "Bulbasaur Leech Seed" }}
+        onCardmarketPrepare={vi.fn()}
+        onCardmarketCopy={vi.fn()}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" }));
+    fireEvent.click(screen.getByRole("link", { name: "2 Karten kopieren & Cardmarket öffnen" }));
+    fireEvent.click(screen.getByRole("button", { name: /Karten sind eingefügt/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Zustand ist eingestellt/ }));
+    fireEvent.click(screen.getByText(/Nur falls Cardmarket eine Karte nicht erkennt: Einzelsuchen/));
+
+    await waitFor(() => expect(screen.getAllByRole("link", { name: /Produktseite öffnen/ })).toHaveLength(2));
+    const links = screen.getAllByRole("link", { name: /Produktseite öffnen/ });
+    expect(links.map((link) => link.getAttribute("href"))).toEqual([
+      "https://www.cardmarket.com/en/Pokemon/Cards/Pikachu",
+      "https://www.cardmarket.com/en/Pokemon/Products?idProduct=273700",
+    ]);
+    expect(screen.getByText(/ID laut CardTrader/)).toBeInTheDocument();
+    expect(screen.getByText(/Die Produkt-IDs stammen von CardTrader/)).toBeInTheDocument();
+    expect(screen.queryByText("Vorausgefüllte Suchlinks")).not.toBeInTheDocument();
+    expect(vi.mocked(cardtraderCardmarketMappings)).toHaveBeenCalledWith(expect.any(Array), { alreadyMapped: new Set(["basep-1"]) });
   });
 });

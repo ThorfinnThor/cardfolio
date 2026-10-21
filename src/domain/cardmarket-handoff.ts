@@ -45,6 +45,8 @@ export interface CardmarketProductTarget extends CardmarketSearchTarget {
   status: MarketplaceProductIdentityStatus;
   reason: string;
   productUrl?: string;
+  /** "reviewed": checked by hand against the product page; "provider-id": product id listed by CardTrader. */
+  productSource?: "reviewed" | "provider-id";
 }
 
 export interface CardmarketHandoff {
@@ -163,6 +165,9 @@ function createProductTarget(
     status: resolution.status,
     reason: resolution.reason,
     productUrl: resolution.status === "verified" ? resolution.mapping?.productUrl : undefined,
+    productSource: resolution.status === "verified" && resolution.mapping?.productUrl
+      ? (resolution.mapping.source.kind === "provider-external-id" ? "provider-id" : "reviewed")
+      : undefined,
   };
 }
 

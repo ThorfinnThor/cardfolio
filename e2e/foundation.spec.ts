@@ -1002,9 +1002,14 @@ test("finds and displays an exact full collector number", async ({ page }) => {
     "https://www.cardmarket.com/de/Pokemon/Wants",
   );
   await missingCards.getByText("Nur falls Cardmarket eine Karte nicht erkennt: Einzelsuchen (1)").click();
-  const cardmarketLink = missingCards.getByRole("link", { name: /Karte suchen/ });
-  const cardmarketUrl = new URL(await cardmarketLink.getAttribute("href") ?? "");
-  expect(cardmarketUrl.searchParams.get("searchString")).toBe("Charizard Grundset 4/102");
+  // Base Set Charizard has exactly one Cardmarket product id in the CardTrader data, so it gets a direct product page
+  // (the id was opened by hand on 2026-10-21) instead of a prefilled search.
+  await expect(missingCards.getByRole("link", { name: /Produktseite öffnen/ })).toHaveAttribute(
+    "href",
+    "https://www.cardmarket.com/en/Pokemon/Products?idProduct=273699",
+  );
+  await expect(missingCards.getByText(/ID laut CardTrader/)).toBeVisible();
+  await expect(missingCards.getByRole("link", { name: /Karte suchen/ })).toHaveCount(0);
 });
 
 test("exports the verified Tornupto and Blaine's Charizard identities to TCGplayer", async ({ page }) => {

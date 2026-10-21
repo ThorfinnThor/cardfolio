@@ -3,6 +3,8 @@
 import { ArrowLeft, ArrowRight, Check, Clipboard, Download, ExternalLink, FileDown, MapPin, Search, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { FEATURES } from "@/config/feature-flags";
+import { cardtraderCardmarketMappings } from "@/data/marketplace/cardtrader-cardmarket-products";
 import { loadCardmarketProductMappingCatalog } from "@/data/marketplace/cardmarket-product-mappings";
 import { loadCardmarketDecklistIdentityCatalog, type CardmarketDecklistIdentityCatalog } from "@/data/marketplace/cardmarket-decklist-identities";
 import { loadTcgplayerCardMappings } from "@/data/marketplace/tcgplayer-card-mappings";
@@ -137,7 +139,13 @@ export function MissingCardsPanel({
   const [cardmarketDecklistCatalog, setCardmarketDecklistCatalog] = useState<CardmarketDecklistIdentityCatalog>();
   const [cardmarketDecklistError, setCardmarketDecklistError] = useState<string>();
   const tcgplayerMappings = tcgplayerCardMappings ?? loadedTcgplayerMappings;
-  const cardmarketMappings = cardmarketProductMappings ?? loadedCardmarketMappings;
+  const reviewedCardmarketMappings = cardmarketProductMappings ?? loadedCardmarketMappings;
+  const [cardtraderCardmarketMappingList, setCardtraderCardmarketMappingList] = useState<readonly MarketplaceProductIdentityMapping[]>([]);
+  // Cards with a reviewed mapping keep it; the rest get a direct product link from the CardTrader product id.
+  const cardmarketMappings = useMemo(
+    () => reviewedCardmarketMappings ? [...reviewedCardmarketMappings, ...cardtraderCardmarketMappingList] : undefined,
+    [reviewedCardmarketMappings, cardtraderCardmarketMappingList],
+  );
   useEffect(() => {
     if (marketplaceChoice !== "tcgplayer" || tcgplayerCardMappings || loadedTcgplayerMappings) return;
     const controller = new AbortController();
@@ -179,6 +187,19 @@ export function MissingCardsPanel({
     if (!normalizedQuery) return items;
     return items.filter((item) => [item.card.name, item.card.setName, item.card.collectorNumber].some((value) => value.toLocaleLowerCase("de-DE").includes(normalizedQuery)));
   }, [items, query]);
+  // Direct product pages from the CardTrader product ids, for the cards that are on screen and not reviewed by hand.
+  const cardtraderIdentitySignature = visibleItems.map((item) => item.card.ref.id).join("|");
+  useEffect(() => {
+    if (!FEATURES.cardtraderProductIds || marketplaceChoice !== "cardmarket" || !reviewedCardmarketMappings) return;
+    let cancelled = false;
+    const reviewedIds = new Set(reviewedCardmarketMappings.map((mapping) => mapping.tcgdexCardId));
+    void cardtraderCardmarketMappings(visibleItems, { alreadyMapped: reviewedIds }).then((mappings) => {
+      if (!cancelled) setCardtraderCardmarketMappingList(mappings);
+    });
+    return () => { cancelled = true; };
+    // The signature stands for the visible items; the list itself changes identity on every render pass.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cardtraderIdentitySignature, marketplaceChoice, reviewedCardmarketMappings]);
   const visibleQuantity = visibleItems.reduce((total, item) => total + item.quantity, 0);
   const visibleGroups = useMemo(() => groupMissingItemsBySet(visibleItems), [visibleItems]);
   const tcgplayerExport = useMemo(
@@ -698,13 +719,14 @@ export function MissingCardsPanel({
                 {verifiedCardmarketProducts.length ? (
                   <section className={styles.cardmarketProductSection} aria-labelledby="cardmarket-verified-heading">
                     <div className={styles.cardmarketProductHeading}>
-                      <div><span className={styles.cardmarketNumber}>1</span><h4 id="cardmarket-verified-heading">Geprüfte Produktseiten</h4></div>
+                      <div><span className={styles.cardmarketNumber}>1</span><h4 id="cardmarket-verified-heading">Direkte Produktseiten</h4></div>
                       <small>{verifiedCardmarketProducts.length} Karten</small>
                     </div>
+                    {verifiedCardmarketProducts.some((product) => product.productSource === "provider-id") ? <p className={styles.cardmarketSectionIntro}>Die Produkt-IDs stammen von CardTrader und führen direkt auf die Cardmarket-Produktseite. Prüfe dort Set, Nummer und Sprache, bevor du kaufst.</p> : null}
                     <ul>
                       {verifiedCardmarketProducts.map((product) => (
                         <li key={product.identityKey}>
-                          <span><strong>{product.label}</strong><small>{product.details}</small></span>
+                          <span><strong>{product.label}</strong><small>{product.details}{product.productSource === "provider-id" ? " · ID laut CardTrader" : ""}</small></span>
                           <a aria-label={`Produktseite öffnen: ${product.label}`} href={product.productUrl} target="_blank" rel="noopener noreferrer">Produktseite öffnen <ExternalLink aria-hidden="true" size={14} /></a>
                         </li>
                       ))}
