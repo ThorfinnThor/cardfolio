@@ -1005,10 +1005,11 @@ test("finds and displays an exact full collector number", async ({ page }) => {
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   await missingCards.getByRole("button", { name: "Andere Region · Versand prüfen" }).click();
   await missingCards.getByRole("button", { name: "TCGplayer", exact: true }).click();
+  await missingCards.getByText("Falls etwas nicht klappt").click();
   await expect(missingCards.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue(
     "1 Charizard [BS] 004/102",
   );
-  const tcgplayerLink = missingCards.getByRole("link", { name: "Liste bei TCGplayer öffnen" });
+  const tcgplayerLink = missingCards.getByRole("link", { name: "1 Karte kopieren & TCGplayer öffnen" });
   const tcgplayerUrl = new URL(await tcgplayerLink.getAttribute("href") ?? "");
   expect(tcgplayerUrl.searchParams.get("c")).toBe("1 Charizard [BS] 004/102");
   expect(tcgplayerUrl.searchParams.get("productline")).toBe("Pokemon");
@@ -1043,6 +1044,7 @@ test("exports the verified Tornupto and Blaine's Charizard identities to TCGplay
   await missingCards.getByRole("button", { name: "TCGplayer", exact: true }).click();
 
   await expect(missingCards.getByText("2 übergabebereit · 2 Produktzuordnungen · 0 prüfen")).toBeVisible();
+  await missingCards.getByText("Falls etwas nicht klappt").click();
   await expect(missingCards.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue(
     "1 Blaine's Charizard [G2] 002/132\n1 Typhlosion (17) [N1] 017/111",
   );

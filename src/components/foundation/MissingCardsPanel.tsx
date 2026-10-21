@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { FEATURES } from "@/config/feature-flags";
 import { CardTraderMarketplacePanel, MarketplaceComparison } from "./CardTraderMarketplacePanel";
+import { TcgplayerGuide } from "./TcgplayerGuide";
 import { cardtraderCardmarketMappings } from "@/data/marketplace/cardtrader-cardmarket-products";
 import { loadCardmarketProductMappingCatalog } from "@/data/marketplace/cardmarket-product-mappings";
 import { loadCardmarketDecklistIdentityCatalog, type CardmarketDecklistIdentityCatalog } from "@/data/marketplace/cardmarket-decklist-identities";
@@ -400,11 +401,7 @@ export function MissingCardsPanel({
               <h3 id="tcgplayer-export-heading">TCGplayer Mass Entry</h3>
               <p>{tcgplayerExport.readyCount} übergabebereit · {tcgplayerExport.verifiedCount} Produktzuordnungen · {tcgplayerExport.reviewRequiredCount} prüfen</p>
             </div>
-            {tcgplayerExport.text ? (
-              <a href={tcgplayerExport.massEntryUrl} target="_blank" rel="noopener noreferrer">
-                {tcgplayerExport.massEntryPrefilled ? "Liste bei TCGplayer öffnen" : "TCGplayer öffnen"} <ExternalLink aria-hidden="true" size={15} />
-              </a>
-            ) : <span className={styles.marketplaceUnavailable}>Keine sichere Übergabe verfügbar</span>}
+            {!tcgplayerExport.text ? <span className={styles.marketplaceUnavailable}>Keine sichere Übergabe verfügbar</span> : null}
           </div>
 
           <div className={styles.reviewOverview} data-has-exceptions={tcgplayerExceptions.length > 0}>
@@ -427,15 +424,13 @@ export function MissingCardsPanel({
             </div>
           ) : null}
 
-          {tcgplayerExport.text ? (
-            <ol className={styles.handoffSteps} aria-label="TCGplayer-Übergabeschritte">
-              <li>{tcgplayerExport.massEntryPrefilled ? "Die übergabebereiten Positionen werden in Mass Entry vorausgefüllt." : "Kopiere den Text und füge ihn in Mass Entry ein."}</li>
-              <li>Aktiviere dort die unten genannten Printing- und Zustandsfilter. Holofoil, 1st Edition Holofoil und Unlimited Holofoil sind getrennte Optionen.</li>
-              <li>Prüfe Kartenname, Set, vollständige Nummer, Sprache, Printing und Zustand.</li>
-              <li>Erst anschließend lässt du TCGplayer externe Angebote in den Warenkorb legen.</li>
-            </ol>
-          ) : null}
+          <TcgplayerGuide exported={tcgplayerExport} onCopy={onTcgplayerCopy} />
 
+          <details className={styles.advancedCardmarket}>
+            <summary>Falls etwas nicht klappt</summary>
+            <div className={styles.advancedCardmarketBody}>
+            <div className={styles.fallbackSection}>
+              <h4>Mass-Entry-Text kopieren oder als Datei speichern</h4>
           <label className={styles.massEntryPreview}>
             <span>Mass-Entry-Text · offizielle Produktnamen, Setcodes und vollständige Kartennummern</span>
             <textarea
@@ -478,6 +473,9 @@ export function MissingCardsPanel({
               </ul>
             </details>
           ) : null}
+            </div>
+            </div>
+          </details>
         </section>
       ) : null}
 

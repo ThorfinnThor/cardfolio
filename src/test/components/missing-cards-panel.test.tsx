@@ -172,17 +172,29 @@ describe("MissingCardsPanel", () => {
     expect(screen.getByText("1 Karte braucht deine Aufmerksamkeit")).toBeInTheDocument();
     expect(screen.getByText("Vor der Übergabe prüfen")).toBeInTheDocument();
     expect(screen.getByText(/bleiben in deiner Fehlkartenliste/)).toBeInTheDocument();
-    const handoffLink = screen.getByRole("link", { name: /Liste bei TCGplayer öffnen/ });
+    expect(screen.getByText("Schritt 1 von 4")).toBeInTheDocument();
+    const handoffLink = screen.getByRole("link", { name: /1 Karte kopieren & TCGplayer öffnen/ });
     expect(handoffLink).toHaveAttribute("rel", "noopener noreferrer");
     expect(new URL(handoffLink.getAttribute("href") ?? "").searchParams.get("c")).toBe("1 Bulbasaur [BS] 044/102");
     expect(screen.getByText(/Printing: Unlimited · Zustand: alle Zustände einschließlich Damaged/)).toBeInTheDocument();
     expect(screen.getByText("Bereits vorbereitete Karten anzeigen (1)").closest("details")).not.toHaveAttribute("open");
     expect(screen.getByText("Alle fehlenden Karten als Liste (2)").closest("details")).not.toHaveAttribute("open");
 
+    fireEvent.click(handoffLink);
+    expect(onTcgplayerCopy).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole("heading", { name: "Karten in Mass Entry laden" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /Karten sind geladen/ }));
+    expect(screen.getByRole("heading", { name: "Printing und Zustand einstellen" })).toBeInTheDocument();
+    expect(screen.getByText("Unlimited · 1 Karte")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /Filter sind eingestellt/ }));
+    expect(screen.getByRole("heading", { name: "Ergebnis prüfen und in den Warenkorb legen" })).toBeInTheDocument();
+    expect(screen.getByText("Schritt 4 von 4")).toBeInTheDocument();
+
     fireEvent.click(screen.getByRole("button", { name: "TCGplayer kopieren" }));
     fireEvent.click(screen.getByRole("button", { name: "TCGplayer TXT" }));
 
-    expect(onTcgplayerCopy).toHaveBeenCalledWith(expect.objectContaining({ text: "1 Bulbasaur [BS] 044/102", verifiedCount: 1 }));
+    expect(onTcgplayerCopy).toHaveBeenCalledTimes(2);
+    expect(onTcgplayerCopy).toHaveBeenLastCalledWith(expect.objectContaining({ text: "1 Bulbasaur [BS] 044/102", verifiedCount: 1 }));
     expect(onTcgplayerTextExport).toHaveBeenCalledWith(expect.objectContaining({ text: "1 Bulbasaur [BS] 044/102", reviewRequiredCount: 1 }));
   });
 
