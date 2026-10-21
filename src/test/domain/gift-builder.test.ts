@@ -51,6 +51,29 @@ function preferences(overrides: Partial<GiftPreferences> = {}): GiftPreferences 
   };
 }
 
+describe("Gift selection with several Pokémon", () => {
+  const engine = new DeterministicGiftSelectionEngine();
+
+  it("keeps the Pokémon in balance instead of filling the page with the cheaper one", () => {
+    // Pikachu cards are all cheaper than Glurak cards, so a price-led pick would take only Pikachu.
+    const pikachu = Array.from({ length: 12 }, (_, index) => candidate(index, { subjectKey: "pikachu", price: { ...candidate(0).price, amountMinor: 100 + index } }));
+    const glurak = Array.from({ length: 12 }, (_, index) => candidate(100 + index, { subjectKey: "glurak", price: { ...candidate(0).price, amountMinor: 900 + index } }));
+    const result = engine.select({ candidates: [...pikachu, ...glurak], preferences: preferences({ targetCardCount: 9, budgetMinor: 20_000 }) });
+    const counts = new Map<string | undefined, number>();
+    for (const item of result.selected) counts.set(item.subjectKey, (counts.get(item.subjectKey) ?? 0) + 1);
+    expect(result.selected).toHaveLength(9);
+    expect(Math.abs((counts.get("pikachu") ?? 0) - (counts.get("glurak") ?? 0))).toBeLessThanOrEqual(1);
+  });
+
+  it("still fills the page when one Pokémon has too few cards", () => {
+    const pikachu = Array.from({ length: 2 }, (_, index) => candidate(index, { subjectKey: "pikachu" }));
+    const glurak = Array.from({ length: 12 }, (_, index) => candidate(100 + index, { subjectKey: "glurak" }));
+    const result = engine.select({ candidates: [...pikachu, ...glurak], preferences: preferences({ targetCardCount: 9, budgetMinor: 20_000 }) });
+    expect(result.selected).toHaveLength(9);
+    expect(result.selected.filter((item) => item.subjectKey === "pikachu")).toHaveLength(2);
+  });
+});
+
 describe("deterministic Gift selection", () => {
   const engine = new DeterministicGiftSelectionEngine();
 

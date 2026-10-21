@@ -60,6 +60,8 @@ export interface GiftCardCandidate {
   reasonTags: string[];
   /** True when TCGdex has no usable image but the CardTrader data does (shown as a labelled fallback). */
   cardtraderImage?: boolean;
+  /** Which of the requested Pokémon the card belongs to; with several, the proposal keeps them in balance. */
+  subjectKey?: string;
 }
 
 export interface GiftProject {
@@ -157,11 +159,13 @@ function diverseOrder(candidates: GiftCardCandidate[]): GiftCardCandidate[] {
   const result: GiftCardCandidate[] = [];
   const setCounts = new Map<string, number>();
   const yearCounts = new Map<number, number>();
+  const subjectCounts = new Map<string, number>();
   while (remaining.length) {
     remaining.sort((left, right) =>
       Number(!giftCandidateHasArtwork(left)) - Number(!giftCandidateHasArtwork(right))
       || Number(!giftCandidateHasPrice(left)) - Number(!giftCandidateHasPrice(right))
       || Number(!giftCandidateHasVerifiedFinish(left)) - Number(!giftCandidateHasVerifiedFinish(right))
+      || (subjectCounts.get(left.subjectKey ?? "") ?? 0) - (subjectCounts.get(right.subjectKey ?? "") ?? 0)
       || (setCounts.get(left.card.setId) ?? 0) - (setCounts.get(right.card.setId) ?? 0)
       || (left.releaseYear === undefined ? 1 : yearCounts.get(left.releaseYear) ?? 0)
         - (right.releaseYear === undefined ? 1 : yearCounts.get(right.releaseYear) ?? 0)
@@ -169,6 +173,7 @@ function diverseOrder(candidates: GiftCardCandidate[]): GiftCardCandidate[] {
     const next = remaining.shift();
     if (!next) break;
     result.push(next);
+    subjectCounts.set(next.subjectKey ?? "", (subjectCounts.get(next.subjectKey ?? "") ?? 0) + 1);
     setCounts.set(next.card.setId, (setCounts.get(next.card.setId) ?? 0) + 1);
     if (next.releaseYear !== undefined) {
       yearCounts.set(next.releaseYear, (yearCounts.get(next.releaseYear) ?? 0) + 1);
@@ -196,6 +201,7 @@ function diverseSelectionWithinBudget(
   const selected: GiftCardCandidate[] = [];
   const setCounts = new Map<string, number>();
   const yearCounts = new Map<number, number>();
+  const subjectCounts = new Map<string, number>();
   let total = 0;
   while (selected.length < target) {
     const share = Math.floor((ceiling - total) / (target - selected.length));
@@ -203,6 +209,7 @@ function diverseSelectionWithinBudget(
       Number(!giftCandidateHasArtwork(left)) - Number(!giftCandidateHasArtwork(right))
       || Number(!giftCandidateHasPrice(left)) - Number(!giftCandidateHasPrice(right))
       || Number(!giftCandidateHasVerifiedFinish(left)) - Number(!giftCandidateHasVerifiedFinish(right))
+      || (subjectCounts.get(left.subjectKey ?? "") ?? 0) - (subjectCounts.get(right.subjectKey ?? "") ?? 0)
       || (setCounts.get(left.card.setId) ?? 0) - (setCounts.get(right.card.setId) ?? 0)
       || (left.releaseYear === undefined ? 1 : yearCounts.get(left.releaseYear) ?? 0)
         - (right.releaseYear === undefined ? 1 : yearCounts.get(right.releaseYear) ?? 0)
@@ -219,6 +226,7 @@ function diverseSelectionWithinBudget(
     });
     if (!next) return [];
     selected.push(next);
+    subjectCounts.set(next.subjectKey ?? "", (subjectCounts.get(next.subjectKey ?? "") ?? 0) + 1);
     total += next.price.amountMinor ?? 0;
     remaining.splice(remaining.indexOf(next), 1);
     setCounts.set(next.card.setId, (setCounts.get(next.card.setId) ?? 0) + 1);

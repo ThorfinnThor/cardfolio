@@ -424,3 +424,10 @@
 - The product was called "Cardfolio"; since 2026-10-21 it is "Your Card Binder" in all visible texts, metadata, the social preview image (`og-yourcardbinder.png`), legal pages (name only), docs and code comments.
 - **Kept on purpose:** the IndexedDB name `cardfolio`, the `cardfolio-*` browser storage keys, the package name, the repository and Cloudflare project names, and the words in guide screenshots. Renaming stored names would hide every visitor's saved binders unless a migration copies them first; that is not worth the risk.
 
+## 2026-10-21 — Several Pokémon in one gift binder
+
+- **Input.** The gift subject field accepts up to four Pokémon separated by comma, "und"/"and", "&", "+" or ";" (`parseGiftSubjects`). `subjectQuery` stays a plain string, so saved gift projects, resume data and backups are unchanged.
+- **Loading.** `GiftCandidateLoader` queries the catalogue per Pokémon (each gets an equal share of the pool, interleaved) and counts unique cards over all of them.
+- **Balance.** `GiftCardCandidate.subjectKey` (optional, not persisted) lets the deterministic engine prefer the Pokémon with fewer picks so far, after artwork/price/finish and before set and year diversity. A Pokémon with too few cards simply gives its slots to the others; a note names Pokémon without any match.
+- **Not changed.** Quick-pick chips still replace the text; the card language switch translates every popular name in the list.
+

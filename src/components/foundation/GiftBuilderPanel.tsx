@@ -20,7 +20,7 @@ import { createGiftPrintSummary } from "@/domain/gift-print-summary";
 import { GIFT_THEME_PRESETS, giftThemePreset } from "@/domain/gift-theme-presets";
 import { conditionProfile, conditionProfiles } from "@/domain/purchase-preferences";
 import { ConditionGuide } from "./ConditionGuide";
-import { matchesGiftSubject, separateRepeatedCards } from "@/domain/gift-subject";
+import { giftSubjectOf, matchesGiftSubject, parseGiftSubjects, separateRepeatedCards } from "@/domain/gift-subject";
 import type { SmartSearchAdapter } from "@/domain/semantic-card-search";
 import type { CardSnapshot, CatalogSearchItem, PurchasePreferences, VariantSelection } from "@/domain/types";
 import { createInitialVariantSelection, isVariantSelectionValid, variantAvailabilityForCard, variantSelectionIssue } from "@/domain/variant-selection";
@@ -369,8 +369,12 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
           || left.card.key.localeCompare(right.card.key));
       // Only the Pokémon itself (not "Evolith" for "Evoli"), and cards that look different first: reprints with
       // the same attacks come last and are only used when too few different cards exist.
-      const relevant = theme ? safe : safe.filter((candidate) => matchesGiftSubject(candidate.card, wanted.subjectQuery));
-      const subjectPool = relevant.length >= wanted.targetCardCount ? relevant : safe;
+      const subjects = theme ? [] : parseGiftSubjects(wanted.subjectQuery);
+      const tagged = subjects.length > 1
+        ? safe.map((candidate) => ({ ...candidate, subjectKey: giftSubjectOf(candidate.card, wanted.subjectQuery) }))
+        : safe;
+      const relevant = theme ? safe : tagged.filter((candidate) => matchesGiftSubject(candidate.card, wanted.subjectQuery));
+      const subjectPool = relevant.length >= wanted.targetCardCount ? relevant : tagged;
       const { distinct, ordered } = separateRepeatedCards(subjectPool);
       const selectionPool = distinct.length >= wanted.targetCardCount ? distinct : ordered;
       setBriefs(ordered.map(({ card }) => ({
@@ -399,6 +403,13 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
         result = summarizeSelection(filled, wanted, result.issues);
       }
       if (result.budgetStatus === "over" && !theme && maximum < WIDE_SAMPLE && pool.length >= maximum) continue;
+      if (subjects.length > 1) {
+        const missing = subjects.filter((name) => !result.selected.some((candidate) => candidate.subjectKey === name.toLocaleLowerCase("de")));
+        if (missing.length) {
+          const text = `Für ${missing.join(" und ")} ${missing.length === 1 ? "wurde keine passende Karte" : "wurden keine passenden Karten"} gefunden. Prüfe die Schreibweise oder suche in der anderen Sprache.`;
+          note = note ? `${note} ${text}` : text;
+        }
+      }
       setEraNote(note);
       setSelection(result);
       setStep("candidates");
@@ -733,8 +744,8 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
           {discoveryMode === "pokemon" && !pokemonHelp ? <div className={styles.subjectSearchRow}>
             <div className={styles.subjectField}>
               <label htmlFor="gift-subject">Lieblings-Pokémon</label>
-              <span className={styles.inputWithIcon}><Search aria-hidden="true" size={17} /><input id="gift-subject" required aria-describedby="gift-subject-hint" value={pokemonQuery} onChange={(event) => choosePokemon(event.target.value)} placeholder={language === "de" ? "Zum Beispiel Pikachu oder Glurak" : "For example Pikachu or Charizard"} /></span>
-              <small id="gift-subject-hint">{language === "de" ? "Suche mit dem deutschen Namen, zum Beispiel Glurak." : "Search with the English name, for example Charizard."}</small>
+              <span className={styles.inputWithIcon}><Search aria-hidden="true" size={17} /><input id="gift-subject" required aria-describedby="gift-subject-hint" value={pokemonQuery} onChange={(event) => choosePokemon(event.target.value)} placeholder={language === "de" ? "Zum Beispiel Pikachu oder Pikachu, Glurak" : "For example Pikachu or Pikachu, Charizard"} /></span>
+              <small id="gift-subject-hint">{language === "de" ? "Suche mit dem deutschen Namen, zum Beispiel Glurak. Mehrere Pokémon trennst du mit Komma, bis zu vier." : "Search with the English name, for example Charizard. Separate several Pokémon with a comma, up to four."}</small>
             </div>
             <label className={styles.languageChoice}>Kartensprache
               <select value={language} onChange={(event) => changeLanguage(event.target.value as GiftLanguage)}>

@@ -1,7 +1,7 @@
 import type { TCGdexGiftCardDetail } from "@/data/catalog/tcgdex";
 import { openAppDatabase, type GiftCandidateCacheRecord } from "@/data/persistence/db";
 import { eraOfSetId, type GiftEra } from "@/domain/gift-era";
-import { matchesGiftSubject } from "@/domain/gift-subject";
+import { matchesGiftSubject, parseGiftSubjects } from "@/domain/gift-subject";
 import type {
   GiftCardCandidate,
   GiftCurrency,
@@ -127,6 +127,35 @@ export class GiftCandidateLoader {
     maximum?: number;
     pageSize?: number;
     scan?: number;
+    era?: GiftEra;
+  }, signal?: AbortSignal): Promise<CatalogSearchItem[]> {
+    const subjects = parseGiftSubjects(input.subjectQuery);
+    if (subjects.length < 2) return this.loadSinglePool(input, signal);
+    // Every Pokémon gets its share of the pool; the shares are interleaved so no Pokémon is pushed out by another.
+    const maximum = Math.min(Math.max(input.maximum ?? 60, 1), 80);
+    const share = Math.ceil(maximum / subjects.length);
+    const pools = await Promise.all(subjects.map((subject) => this.loadSinglePool({ ...input, subjectQuery: subject, maximum: share }, signal)));
+    const seen = new Set<string>();
+    const merged: CatalogSearchItem[] = [];
+    for (let index = 0; merged.length < maximum && pools.some((pool) => index < pool.length); index += 1) {
+      for (const pool of pools) {
+        const item = pool[index];
+        if (!item) continue;
+        const key = `${item.ref.provider}:${item.ref.id}:${item.ref.language}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        merged.push(item);
+      }
+    }
+    return merged.slice(0, maximum);
+  }
+
+  private async loadSinglePool(input: {
+    subjectQuery: string;
+    language: CardLanguage;
+    maximum?: number;
+    pageSize?: number;
+    scan?: number;
     /** Lean the sample towards cards of this era (judged from the set id); the release year decides later. */
     era?: GiftEra;
   }, signal?: AbortSignal): Promise<CatalogSearchItem[]> {
@@ -142,8 +171,13 @@ export class GiftCandidateLoader {
 
   /** How many cards exist for the Pokémon (whole-word name match). `capped` means more than the scan limit. */
   async countSubjectCards(input: { subjectQuery: string; language: CardLanguage }, signal?: AbortSignal): Promise<{ count: number; capped: boolean }> {
-    const { items, complete } = await this.gatherBriefs(input, MAX_SCAN, signal);
-    return { count: items.filter((item) => matchesGiftSubject({ name: item.name }, input.subjectQuery)).length, capped: !complete };
+    const subjects = parseGiftSubjects(input.subjectQuery);
+    const scans = await Promise.all((subjects.length ? subjects : [input.subjectQuery]).map((subject) => this.gatherBriefs({ ...input, subjectQuery: subject }, MAX_SCAN, signal)));
+    const keys = new Set<string>();
+    for (const { items } of scans) {
+      for (const item of items) if (matchesGiftSubject({ name: item.name }, input.subjectQuery)) keys.add(`${item.ref.provider}:${item.ref.id}:${item.ref.language}`);
+    }
+    return { count: keys.size, capped: scans.some(({ complete }) => !complete) };
   }
 
   /** Hydrates only the explicitly supplied visible/shortlisted briefs. */
