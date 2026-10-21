@@ -445,6 +445,38 @@ describe("GiftBuilderPanel", () => {
     expect(screen.queryByText("Pikachulith")).not.toBeInTheDocument();
   });
 
+  it("builds one page from several Pokémon and shows both", async () => {
+    const pool = [
+      ...Array.from({ length: 7 }, (_, index) => candidateWith(index + 1, { name: "Pikachu" })),
+      ...Array.from({ length: 7 }, (_, index) => candidateWith(index + 20, { name: "Glurak" })),
+    ];
+    const loader = {
+      loadCandidatePool: vi.fn(async () => pool.map((candidate) => ({ ref: candidate.card.ref, name: candidate.card.name, collectorNumber: candidate.card.collectorNumber }))),
+      hydrateCandidates: vi.fn(async () => pool),
+    };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
+    fireEvent.change(screen.getByLabelText("Lieblings-Pokémon"), { target: { value: "Pikachu, Glurak" } });
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await screen.findByText("9 / 9");
+
+    expect(loader.loadCandidatePool).toHaveBeenCalledWith(expect.objectContaining({ subjectQuery: "Pikachu, Glurak" }));
+    const labels = screen.getAllByRole("button", { name: /: Details ansehen$/ }).map((button) => button.getAttribute("aria-label") ?? "");
+    expect(labels).toHaveLength(9);
+    const glurak = labels.filter((label) => label.startsWith("Glurak,")).length;
+    expect(glurak).toBeGreaterThanOrEqual(4);
+    expect(labels.length - glurak).toBeGreaterThanOrEqual(4);
+  });
+
+  it("translates every popular Pokémon of a list when the card language changes", async () => {
+    const loader = { loadCandidatePool: vi.fn(async () => []), hydrateCandidates: vi.fn() };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+    fireEvent.change(screen.getByLabelText("Lieblings-Pokémon"), { target: { value: "Pikachu, Glurak" } });
+    fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
+    expect((screen.getByLabelText("Lieblings-Pokémon") as HTMLInputElement).value).toBe("Pikachu, Charizard");
+  });
+
   it("moves a card one position at a time as the keyboard-friendly alternative to dragging", async () => {
     const pool = Array.from({ length: 9 }, (_, index) => candidateWith(index + 1, { name: `Pikachu ${index + 1}` }));
     const loader = {

@@ -193,4 +193,38 @@ describe("Gift candidate loader", () => {
     expect(candidates.find((candidate) => candidate.card.ref.id === "a0")?.cardtraderImage).toBe(true);
     expect(candidates.find((candidate) => candidate.card.ref.id === "a1")?.cardtraderImage).toBeUndefined();
   });
+
+  describe("with several Pokémon", () => {
+    class NamedCatalog extends CatalogFixture {
+      override async search(query: CatalogQuery) {
+        this.searches.push(query);
+        const items = Array.from({ length: 8 }, (_, index) => {
+          const id = `${query.name}-${index}`;
+          return { ref: { provider: "tcgdex" as const, id, language: query.language }, name: query.name ?? "", collectorNumber: String(index) };
+        });
+        return { items, hasMore: false };
+      }
+    }
+
+    it("asks the catalogue per Pokémon and interleaves the shares", async () => {
+      const catalog = new NamedCatalog();
+      const loader = new GiftCandidateLoader(catalog, prices);
+      const briefs = await loader.loadCandidatePool({ subjectQuery: "Pikachu, Glurak", language: "de", maximum: 6, pageSize: 6 });
+      expect(new Set(catalog.searches.map((query) => query.name))).toEqual(new Set(["Pikachu", "Glurak"]));
+      expect(briefs.map((item) => item.name)).toEqual(["Pikachu", "Glurak", "Pikachu", "Glurak", "Pikachu", "Glurak"]);
+    });
+
+    it("counts the cards of all Pokémon once", async () => {
+      const loader = new GiftCandidateLoader(new NamedCatalog(), prices);
+      await expect(loader.countSubjectCards({ subjectQuery: "Pikachu und Glurak", language: "de" })).resolves.toEqual({ count: 16, capped: false });
+    });
+
+    it("keeps the single-Pokémon path unchanged", async () => {
+      const catalog = new NamedCatalog();
+      const loader = new GiftCandidateLoader(catalog, prices);
+      const briefs = await loader.loadCandidatePool({ subjectQuery: "Pikachu", language: "de", maximum: 5, pageSize: 5 });
+      expect(briefs).toHaveLength(5);
+      expect(catalog.searches.every((query) => query.name === "Pikachu")).toBe(true);
+    });
+  });
 });

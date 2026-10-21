@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { giftFunctionalKey, matchesGiftSubject, separateRepeatedCards } from "@/domain/gift-subject";
+import { giftFunctionalKey, giftSubjectOf, matchesGiftSubject, parseGiftSubjects, separateRepeatedCards } from "@/domain/gift-subject";
 import type { CardSnapshot } from "@/domain/types";
 
 function card(name: string, extra: Partial<CardSnapshot> = {}): CardSnapshot {
@@ -33,6 +33,31 @@ describe("matchesGiftSubject", () => {
     expect(matchesGiftSubject(card("Farfetch'd"), "Farfetch'd")).toBe(true);
     expect(matchesGiftSubject(card("Mew"), "M.w")).toBe(false);
     expect(matchesGiftSubject(card("Irgendwas"), "")).toBe(true);
+  });
+});
+
+describe("several Pokémon", () => {
+  it("splits what the buyer typed and keeps hyphens and apostrophes", () => {
+    expect(parseGiftSubjects("Pikachu")).toEqual(["Pikachu"]);
+    expect(parseGiftSubjects("Pikachu, Glurak")).toEqual(["Pikachu", "Glurak"]);
+    expect(parseGiftSubjects("Pikachu und Glurak")).toEqual(["Pikachu", "Glurak"]);
+    expect(parseGiftSubjects("Pikachu & Charizard + Evoli; Mew")).toEqual(["Pikachu", "Charizard", "Evoli", "Mew"]);
+    expect(parseGiftSubjects("Ho-Oh, Porygon-Z, Farfetch'd")).toEqual(["Ho-Oh", "Porygon-Z", "Farfetch'd"]);
+    expect(parseGiftSubjects("pikachu, Pikachu , ")).toEqual(["pikachu"]);
+    expect(parseGiftSubjects("")).toEqual([]);
+  });
+
+  it("allows at most four Pokémon", () => {
+    expect(parseGiftSubjects("A1, B2, C3, D4, E5, F6")).toHaveLength(4);
+  });
+
+  it("matches a card that belongs to any of them and names which one", () => {
+    expect(matchesGiftSubject(card("Glurak-ex"), "Pikachu, Glurak")).toBe(true);
+    expect(matchesGiftSubject(card("Pikachu V"), "Pikachu, Glurak")).toBe(true);
+    expect(matchesGiftSubject(card("Evoli"), "Pikachu, Glurak")).toBe(false);
+    expect(matchesGiftSubject(card("Glurak", { category: "trainer" }), "Pikachu, Glurak")).toBe(false);
+    expect(giftSubjectOf(card("Glurak-ex"), "Pikachu, Glurak")).toBe("glurak");
+    expect(giftSubjectOf(card("Evoli"), "Pikachu, Glurak")).toBeUndefined();
   });
 });
 

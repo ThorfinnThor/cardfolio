@@ -1,5 +1,6 @@
 import type { GiftCardCandidate } from "@/domain/gift-builder";
 import type { VariantSelection } from "@/domain/types";
+import { parseGiftSubjects } from "@/domain/gift-subject";
 
 export type GiftLanguage = "de" | "en";
 
@@ -27,12 +28,18 @@ export function popularPokemonName(entry: (typeof POPULAR_POKEMON)[number], lang
   return entry[language];
 }
 
-/** Keeps a quick pick valid when the card language changes; free text is left untouched. */
+/** Keeps a quick pick valid when the card language changes; free text is left untouched, name by name. */
 export function translatePopularPokemon(query: string, language: GiftLanguage): string {
-  const normalized = query.trim().toLocaleLowerCase("de");
-  const match = POPULAR_POKEMON.find((entry) =>
-    entry.de.toLocaleLowerCase("de") === normalized || entry.en.toLocaleLowerCase("de") === normalized);
-  return match ? match[language] : query;
+  const translate = (name: string) => {
+    const normalized = name.trim().toLocaleLowerCase("de");
+    const match = POPULAR_POKEMON.find((entry) =>
+      entry.de.toLocaleLowerCase("de") === normalized || entry.en.toLocaleLowerCase("de") === normalized);
+    return match ? match[language] : name;
+  };
+  const subjects = parseGiftSubjects(query);
+  if (subjects.length < 2) return translate(query);
+  const translated = subjects.map(translate);
+  return translated.every((name, index) => name === subjects[index]) ? query : translated.join(", ");
 }
 
 /**
