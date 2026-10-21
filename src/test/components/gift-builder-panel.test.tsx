@@ -445,6 +445,31 @@ describe("GiftBuilderPanel", () => {
     expect(screen.queryByText("Pikachulith")).not.toBeInTheDocument();
   });
 
+  it("hands the proposal over to the binder editor for free card choice", async () => {
+    const briefs: CatalogSearchItem[] = Array.from({ length: 9 }, (_, index) => ({
+      ref: { provider: "tcgdex", id: `gift-ui-${index + 1}`, language: "en" },
+      name: `Pikachu ${index + 1}`,
+      collectorNumber: String(index + 1),
+    }));
+    const loader = {
+      loadCandidatePool: vi.fn(async () => briefs),
+      hydrateCandidates: vi.fn(async () => Array.from({ length: 9 }, (_, index) => candidateWithArtwork(index + 1))),
+    };
+    const onCreateBinder = vi.fn(async (_selection, preferences) => createGiftProject("Geschenk · Pikachu", preferences));
+    const onOpenBinder = vi.fn();
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={onCreateBinder} onOpenBinder={onOpenBinder} onCardsPurchase={vi.fn()} />);
+
+    fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await screen.findAllByText("9 / 9");
+    fireEvent.click(screen.getByRole("button", { name: "Als Binder öffnen und Karten frei wählen" }));
+    await waitFor(() => expect(onOpenBinder).toHaveBeenCalledTimes(1));
+    expect(onCreateBinder).toHaveBeenCalledWith(
+      expect.objectContaining({ selected: expect.arrayContaining([expect.any(Object)]) }),
+      expect.objectContaining({ subjectQuery: "Pikachu" }),
+    );
+  });
+
   it("builds one page from several Pokémon and shows both", async () => {
     const pool = [
       ...Array.from({ length: 7 }, (_, index) => candidateWith(index + 1, { name: "Pikachu" })),

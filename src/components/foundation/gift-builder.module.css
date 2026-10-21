@@ -339,3 +339,7 @@
 .continueCard[data-done="true"] { border-color: var(--cf-ok); background: var(--cf-ok-soft); }
 .continueIntro h2, .continueCard[data-done="true"] h2 { display: flex; align-items: center; gap: 10px; margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(1.25rem, 2.2vw, 1.7rem); font-weight: 600; }
 .continueIntro p, .continueCard[data-done="true"] p { margin: 8px 0 0; color: var(--cf-text2); font-size: 1.05rem; line-height: 1.5; }
+
+.freeChoiceHint { margin: 4px 0 0; color: var(--cf-text2); font-size: .86rem; line-height: 1.5; }
+.freeChoiceHint button { border: 0; background: transparent; padding: 0; color: var(--cf-accent-text); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }
+.freeChoiceHint button:disabled { opacity: .6; cursor: wait; }
