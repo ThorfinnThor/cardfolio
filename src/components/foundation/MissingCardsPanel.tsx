@@ -130,7 +130,6 @@ export function MissingCardsPanel({
   const [marketplaceRegion, setMarketplaceRegion] = useState<MarketplaceRegion | undefined>(suggestedRegion);
   const [expertOpen, setExpertOpen] = useState(() => beginner && suggestedChoice !== "cardmarket");
   const beginnerPrepared = useRef(false);
-  const [showProviderChoices, setShowProviderChoices] = useState(false);
   const [cardmarketGuideStep, setCardmarketGuideStepDirect] = useState<CardmarketGuideStep>(1);
   const setCardmarketGuideStep = useStepHistory("purchase-guide", cardmarketGuideStep, setCardmarketGuideStepDirect);
   const [loadedTcgplayerMappings, setLoadedTcgplayerMappings] = useState<readonly TcgplayerCardMapping[]>();
@@ -257,7 +256,6 @@ export function MissingCardsPanel({
       onCardmarketPrepare?.(visibleItems);
     }
     setMarketplaceChoice(choice);
-    setShowProviderChoices(false);
   }
 
   function chooseRegion(region: MarketplaceRegion) {
@@ -271,7 +269,6 @@ export function MissingCardsPanel({
       return;
     }
     setMarketplaceChoice(undefined);
-    setShowProviderChoices(true);
   }
 
   return (
@@ -362,13 +359,7 @@ export function MissingCardsPanel({
                 ? "Für USA und Kanada ist TCGplayer normalerweise der einfachste Start."
                 : "Verfügbarkeit und Versand unterscheiden sich je nach Land. Prüfe beide Anbieter vor dem Kauf."}</p> : null}
           </div>
-          {marketplaceChoice && !showProviderChoices ? <div className={styles.providerRecommendation} role="status">
-            <Check aria-hidden="true" size={19} />
-            <span><strong>{marketplaceChoice === "cardmarket" ? "Cardmarket ausgewählt" : marketplaceChoice === "tcgplayer" ? "TCGplayer ausgewählt" : "CardTrader ausgewählt"}</strong><small>Die passende Einkaufshilfe steht direkt unter diesem Abschnitt.</small></span>
-            <button type="button" onClick={() => setShowProviderChoices(true)}>Anderen Anbieter wählen</button>
-          </div> : null}
-          {showProviderChoices ? <><div className={styles.providerHeading}><strong>Anbieter selbst wählen</strong><span>Verfügbarkeit und Versand unterscheiden sich je nach Region.</span></div>
-          {cardmarketEnabled && cardtraderEnabled ? <MarketplaceComparison /> : null}
+          <div className={styles.providerHeading}><strong>Anbieter</strong><span>Verfügbarkeit und Versand unterscheiden sich je nach Region.</span></div>
           <div className={styles.marketplaceChoiceActions} role="group" aria-label="Marketplace auswählen">
             {tcgplayerEnabled ? (
               <button
@@ -394,7 +385,8 @@ export function MissingCardsPanel({
                 onClick={() => chooseMarketplace("cardtrader")}
               ><strong>CardTrader{!cardtraderEnabled ? " · Vorschau" : ""}</strong><small>{cardtraderEnabled ? "Shop Optimizer · Karten mehrerer Verkäufer" : "Wishlist-Freigabe ausstehend"}</small><ArrowRight aria-hidden="true" size={17} /></button>
             ) : null}
-          </div></> : null}
+          </div>
+          {cardmarketEnabled && cardtraderEnabled ? <details className={styles.providerCompare}><summary>Cardmarket oder CardTrader? Der Unterschied</summary><MarketplaceComparison /></details> : null}
         </section>
       ) : null}
 
@@ -663,8 +655,10 @@ export function MissingCardsPanel({
           {!cardmarketDecklistReady && !cardmarketDecklistError ? <p className={styles.handoffSteps} role="status">Der vollständige Cardmarket-Produktabgleich wird geladen …</p> : null}
 
           <details className={styles.advancedCardmarket}>
-            <summary>Importliste ansehen oder als Datei speichern</summary>
+            <summary>Falls etwas nicht klappt</summary>
             <div className={styles.advancedCardmarketBody}>
+            <div className={styles.fallbackSection}>
+              <h4>Importliste kopieren oder als Datei speichern</h4>
               <p className={styles.reviewExplanation}>Cardmarket erkennt Pokémon über den vollständigen Namen sowie Fähigkeiten und Attacken. Set, Sprache, Ausführung und Zustand werden vom Decklistenformat nicht automatisch übertragen und müssen im Ergebnis kurz kontrolliert werden.</p>
 
               <div className={styles.reviewOverview} data-has-exceptions={cardmarketHandoff.excluded.length > 0}>
@@ -710,12 +704,10 @@ export function MissingCardsPanel({
               </div>
               {cardmarketCopyState === "error" ? <p className={styles.error} role="status">Kopieren wurde nicht erlaubt. Der Text bleibt oben markierbar oder kann als TXT geladen werden.</p> : null}
             </div>
-          </details>
 
           {verifiedCardmarketProducts.length || unresolvedCardmarketProducts.length ? (
-            <details className={styles.advancedCardmarket}>
-              <summary>Nur falls Cardmarket eine Karte nicht erkennt: Einzelsuchen ({activeCardmarketPart.products.length})</summary>
-              <div className={styles.advancedCardmarketBody}>
+            <div className={styles.fallbackSection}>
+                <h4>Einzelne Karten suchen ({activeCardmarketPart.products.length})</h4>
                 <p className={styles.reviewExplanation}>Diese Links brauchst du nur für Karten, die Cardmarket nach dem Sammelimport ausdrücklich nicht gefunden hat.</p>
 
                 {verifiedCardmarketProducts.length ? (
@@ -753,9 +745,10 @@ export function MissingCardsPanel({
                     </ul>
                   </section>
                 ) : null}
-              </div>
-            </details>
+            </div>
           ) : null}
+            </div>
+          </details>
 
         </section>
       ) : null}
@@ -769,7 +762,7 @@ export function MissingCardsPanel({
       ) : null}
 
       {!showStandardLayout ? (items.length ? null : <div className={styles.empty}><strong>Keine fehlenden Karten</strong><p>Leere Slots und vorhandene Karten werden nicht als Bedarf gezählt.</p></div>) : items.length ? <details className={styles.completeListDisclosure}>
-        <summary>Vollständige Fehlkartenliste anzeigen ({visibleItems.length})</summary>
+        <summary>Alle fehlenden Karten als Liste ({visibleItems.length})</summary>
         <div className={styles.listTools}>
           <div className={styles.toolbar}>
             <label className={styles.searchLabel} htmlFor="missing-card-filter">

@@ -213,6 +213,11 @@
 .advancedCardmarket > summary { cursor: pointer; color: var(--cf-text2); padding: 12px 14px; font-size: .78rem; font-weight: 650; }
 .advancedCardmarket[open] > summary { border-bottom: 1px solid var(--cf-line); }
 .advancedCardmarketBody { padding: 0 13px 13px; }
+.fallbackSection + .fallbackSection { margin-top: 18px; border-top: 1px solid var(--cf-line); padding-top: 14px; }
+.fallbackSection > h4 { margin: 14px 0 8px; color: var(--cf-text); font-size: .86rem; }
+.providerCompare { border: 1px dashed var(--cf-line2); border-radius: 9px; background: var(--cf-surface); }
+.providerCompare > summary { cursor: pointer; color: var(--cf-text2); padding: 10px 13px; font-size: .76rem; font-weight: 650; }
+.providerCompare[open] > summary { border-bottom: 1px solid var(--cf-line); }
 .marketplaceSearches { margin-top: 14px; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-surface); }
 .marketplaceSearches summary { cursor: pointer; color: var(--cf-accent-text); padding: 11px 12px; font-size: .8rem; font-weight: 650; }
 .marketplaceSearches ul { display: grid; gap: 0; margin: 0; border-top: 1px solid var(--cf-line); padding: 0; list-style: none; }

@@ -71,8 +71,8 @@ describe("gift purchase guide", () => {
     expect(screen.queryByRole("button", { name: "Europa & UK · Cardmarket empfohlen" })).not.toBeInTheDocument();
     expect(screen.queryByRole("list", { name: "Schritte zum Kartenkauf" })).not.toBeInTheDocument();
     expect(screen.queryByText("Für Geschenke vorbereitet")).not.toBeInTheDocument();
-    expect(screen.queryByText(/Vollständige Fehlkartenliste anzeigen/)).not.toBeInTheDocument();
-    expect(screen.queryByText("Importliste ansehen oder als Datei speichern")).not.toBeInTheDocument();
+    expect(screen.queryByText(/Alle fehlenden Karten als Liste/)).not.toBeInTheDocument();
+    expect(screen.queryByText("Falls etwas nicht klappt")).not.toBeInTheDocument();
     expect(onCardmarketPrepare).toHaveBeenCalledTimes(1);
     expect(onCardmarketPrepare).toHaveBeenCalledWith(items);
 

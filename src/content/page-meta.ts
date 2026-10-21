@@ -37,7 +37,7 @@ export function guideMetadata(language: PageLanguage, guide: Guide): Metadata {
 }
 
 export function speciesIndexMetadata(language: PageLanguage): Metadata {
-  const title = language === "de" ? "Pokémon-Binder nach Lieblingsfigur · Cardfolio" : "Pokémon binders by favourite figure · Cardfolio";
+  const title = language === "de" ? "Binder nach Lieblings-Pokémon gestalten · Cardfolio" : "Design a binder around your favourite Pokémon · Cardfolio";
   const description = LANDING[language].speciesText;
   return { title, description, ...pageUrlMetadata(speciesIndexPath(language), title, description, { language, alternates: alternatesFor(speciesIndexPath("de"), speciesIndexPath("en")) }) };
 }

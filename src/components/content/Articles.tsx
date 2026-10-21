@@ -277,7 +277,7 @@ export function SpeciesIndex({ all, language }: { all: readonly PublishedSpecies
     <>
       <header className={styles.header}>
         <p className={styles.eyebrow}>{de ? "Pokémon-Binder" : "Pokémon binders"}</p>
-        <h1>{de ? "Pokémon-Binder nach Lieblingsfigur" : "Pokémon binders by favourite figure"}</h1>
+        <h1>{de ? "Binder nach Lieblings-Pokémon gestalten" : "Design a binder around your favourite Pokémon"}</h1>
         <p className={styles.lead}>{copy.speciesText}</p>
       </header>
       <section className={styles.section}>
