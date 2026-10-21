@@ -1,4 +1,4 @@
-# Cardfolio technical-preview record — 2026-09-27
+# Your Card Binder technical-preview record — 2026-09-27
 
 This record describes a technical preview, not an approved public production release.
 

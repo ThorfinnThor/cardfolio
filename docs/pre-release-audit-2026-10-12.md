@@ -1,4 +1,4 @@
-# Cardfolio pre-release audit — 2026-10-12
+# Your Card Binder pre-release audit — 2026-10-12
 
 This record assesses the current uncommitted worktree based on `57b572d`. It is not a release approval and must not be reused as evidence for a later commit without rerunning the checks.
 

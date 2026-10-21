@@ -1,5 +1,5 @@
 import type { TCGdexGiftCardDetail } from "@/data/catalog/tcgdex";
-import { openCardfolioDB, type GiftCandidateCacheRecord } from "@/data/persistence/db";
+import { openAppDatabase, type GiftCandidateCacheRecord } from "@/data/persistence/db";
 import { eraOfSetId, type GiftEra } from "@/domain/gift-era";
 import { matchesGiftSubject } from "@/domain/gift-subject";
 import type {
@@ -53,7 +53,7 @@ function abortReason(signal?: AbortSignal): unknown {
 }
 
 async function cachedDetail(key: string): Promise<GiftCandidateCacheRecord | undefined> {
-  const database = await openCardfolioDB();
+  const database = await openAppDatabase();
   const cached = await database.get("giftCandidateCache", key);
   if (!cached) return undefined;
   if (Date.parse(cached.expiresAt) > Date.now()) return cached;
@@ -71,7 +71,7 @@ async function storeDetail(key: string, detail: TCGdexGiftCardDetail, ttlMs: num
     cachedAt,
     expiresAt: new Date(Date.now() + ttlMs).toISOString(),
   };
-  const database = await openCardfolioDB();
+  const database = await openAppDatabase();
   await database.put("giftCandidateCache", value, key);
 }
 

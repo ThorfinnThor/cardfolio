@@ -130,7 +130,7 @@ function normalizeSet(item, seriesBySetId) {
 
 async function fetchJson(language, path) {
   const response = await fetch(`https://api.tcgdex.net/v2/${language}/${path}`, {
-    headers: { Accept: "application/json", "User-Agent": "Cardfolio public-data sync" },
+    headers: { Accept: "application/json", "User-Agent": "Your Card Binder public-data sync" },
     signal: AbortSignal.timeout(20_000),
   });
   if (!response.ok) throw new Error(`TCGdex ${language}/${path} failed with HTTP ${response.status}.`);
@@ -277,7 +277,7 @@ async function searchTcgplayerProducts(query) {
 async function syncTcgplayerMetadata(englishSets) {
   const officialResponse = await fetchRemoteJson(
     TCGPLAYER_SET_CODES_URL,
-    { headers: { Accept: "application/json", "User-Agent": "Cardfolio public-data sync" } },
+    { headers: { Accept: "application/json", "User-Agent": "Your Card Binder public-data sync" } },
     "TCGplayer set codes",
   );
   const officialSets = officialResponse?.results;
@@ -508,7 +508,7 @@ async function imageExists(baseUrl) {
     try {
       const response = await fetch(`${baseUrl}/high.webp`, {
         method: "HEAD",
-        headers: { "User-Agent": "Cardfolio public-data sync" },
+        headers: { "User-Agent": "Your Card Binder public-data sync" },
         signal: AbortSignal.timeout(20_000),
       });
       if (response.ok) return true;

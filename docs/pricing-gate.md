@@ -36,7 +36,7 @@ It never substitutes generic prices for First Edition, derives Reverse from holo
 
 ## Reopening the gate
 
-Before enabling `FEATURES.pricing`, Cardfolio needs a verified mapping for the intended card language, printing, finish and edition. A UI pass must then show source, metric, currency, source timestamp, coverage and candidate status, while keeping EUR and USD totals separate.
+Before enabling `FEATURES.pricing`, Your Card Binder needs a verified mapping for the intended card language, printing, finish and edition. A UI pass must then show source, metric, currency, source timestamp, coverage and candidate status, while keeping EUR and USD totals separate.
 
 Sources:
 

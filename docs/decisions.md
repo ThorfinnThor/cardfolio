@@ -18,7 +18,7 @@
 - The weekly catalog job compares current physical, image-bearing cards with the reviewed index and reports untagged IDs. It never generates or publishes visual annotations automatically.
 - Index loading has a caller abort path and an eight-second timeout. User-facing recovery, language selection and responsive/accessibility proof belong to the separate product gate.
 - The fixed automated benchmark contains 50 predeclared queries and compares artwork ranking with an identity-only lexical baseline. Current results are 394/400 versus 40/400 relevant top-eight positions.
-- `bhavnicksm/pokemon-card-explorer` was audited at commit `92cd922c889ed0c3cf32df0d64dfdb5436d677e6` and rejected as an implementation source: Cardfolio does not reuse its provider-dependent code, embeddings, scraped data or assets.
+- `bhavnicksm/pokemon-card-explorer` was audited at commit `92cd922c889ed0c3cf32df0d64dfdb5436d677e6` and rejected as an implementation source: Your Card Binder does not reuse its provider-dependent code, embeddings, scraped data or assets.
 
 ## 2026-10-01 — Smart Search failure recovery and language are explicit UI choices
 
@@ -60,15 +60,15 @@
 - All other cards remain in the neutral missing-card list and appear as `candidate` or `unresolved`; they are never silently translated or guessed.
 - Pokémon Mass Entry requires the full displayed collector number, including leading zeroes and set total. A local-only number such as `17` is not substituted for `017/111`.
 - Mapped-set candidates without a tested printing are excluded from Mass Entry. TCGplayer can reject the whole batch when one line cannot be fulfilled, so a speculative line must not block verified cards.
-- TCGplayer Printing options are separate filters: `Holofoil`, `1st Edition Holofoil` and `Unlimited Holofoil` are not interchangeable. Cardfolio shows the compatible filter labels but never claims that matching inventory exists.
+- TCGplayer Printing options are separate filters: `Holofoil`, `1st Edition Holofoil` and `Unlimited Holofoil` are not interchangeable. Your Card Binder shows the compatible filter labels but never claims that matching inventory exists.
 - TCGplayer lists Base Set (Shadowless) under its own `[BSS]` set code. A Shadowless selection is excluded from the regular `[BS]` handoff until that exact variant mapping is separately parser-tested.
-- The external TCGplayer link is user initiated. Cardfolio does not claim a purchase, price, seller match or successful cart state.
+- The external TCGplayer link is user initiated. Your Card Binder does not claim a purchase, price, seller match or successful cart state.
 
 ## 2026-09-27 — Cardmarket remains a review handoff
 
 - `cardmarketImport` enables the warning-heavy handoff panel, not an exact-product or session integration.
-- Cardmarket's documented Pokémon decklist matching needs abilities and attacks in addition to the name; Cardfolio currently lacks a verified source for those fields.
-- Cardfolio therefore exports a neutral reference list and never labels it as import-ready or exact.
+- Cardmarket's documented Pokémon decklist matching needs abilities and attacks in addition to the name; Your Card Binder currently lacks a verified source for those fields.
+- Your Card Binder therefore exports a neutral reference list and never labels it as import-ready or exact.
 - Every position retains the user's original printing preferences and requires a visible edition/illustration check before purchase.
 - Parts contain at most 150 grouped positions, matching the documented Wants-list limit. A quantity greater than one remains one position.
 - Links are user initiated and point only to the generic Pokémon Singles page and official help; no scraping, login, cart or checkout automation is performed.
@@ -103,7 +103,7 @@
 - Design 3, local data security and the current purchase presentation pass their repository-scope gates.
 - The productive static build disables `/design-preview/`; comparison components remain in source only for controlled development and tests.
 - Cloudflare Pages Git integration remains the sole deployment path. GitHub Actions verifies and updates validated public set metadata but never deploys or accesses binder data.
-- Public card imagery, Pokémon marks, the Cardfolio name and the concrete provider operating model require human review. API availability and a database software license are not treated as blanket artwork permission.
+- Public card imagery, Pokémon marks, the Your Card Binder name and the concrete provider operating model require human review. API availability and a database software license are not treated as blanket artwork permission.
 - Operator identity, required provider/privacy text, Cloudflare log settings and the final production origin are unknown. No claim of legal compliance is made.
 - At the CF-21 review point there was no configured Git remote or target host. CF-22 subsequently added the private GitHub remote and prepared Cloudflare Pages, but hosting headers and hydration remain unverified until the first deployment exists.
 - A public release is prohibited until the blocked gates in `docs/public-release-readiness.md` are closed and an exact `docs/release-record-template.md` is completed.
@@ -140,10 +140,10 @@
 ## 2026-09-28 — Physical catalog search uses a synchronized allowlist
 
 - Direct TCGdex card search can return physical Pokémon cards and Pokémon TCG Pocket cards together.
-- Search results are now accepted only when their derived set ID exists in Cardfolio's weekly synchronized physical-set catalog. Pocket and otherwise unverified sets are removed before the user can select a result.
+- Search results are now accepted only when their derived set ID exists in Your Card Binder's weekly synchronized physical-set catalog. Pocket and otherwise unverified sets are removed before the user can select a result.
 - A newly released physical set may therefore wait for the next successful catalog sync before it appears. This is preferable to presenting a digital card as a valid physical-binder candidate.
 - The detail-level digital-card check remains as defense in depth for stale local data or a provider classification change.
-- TCGplayer cards that lack a verified mapping remain in the Cardfolio missing list. The UI now says they are not copied into the TCGplayer list instead of suggesting that the cards themselves were removed.
+- TCGplayer cards that lack a verified mapping remain in the Your Card Binder missing list. The UI now says they are not copied into the TCGplayer list instead of suggesting that the cards themselves were removed.
 
 ## 2026-09-28 — TCGplayer identity coverage is synchronized, not hand-maintained
 
@@ -167,7 +167,7 @@
 
 - Missing or fallback TCGdex variant data leaves Normal, Holo and Reverse Holo available for manual verification; it no longer makes unrelated historical editions selectable.
 - Set-wide First Edition is allowed only for Base Set, Jungle, Fossil, Team Rocket, Gym Heroes, Gym Challenge, Neo Genesis, Neo Discovery, Neo Revelation and Neo Destiny. Base Set 2 and every later regular set are excluded.
-- Exceptional promotional printings are not enabled set-wide. They require a separately verified card-level mapping before Cardfolio may offer First Edition.
+- Exceptional promotional printings are not enabled set-wide. They require a separately verified card-level mapping before Your Card Binder may offer First Edition.
 - Shadowless is allowed only for English Base Set. German Base Set and every other set expose only `Mit Schatten / Standard`.
 - The full synchronized English and German set catalogs are covered by an allowlist audit, so newly synchronized modern sets cannot inherit First Edition or Shadowless from incomplete provider flags.
 - The verified English Wizards Promo 1 Ivy Pikachu is the first card-level exception. Its First Edition selection maps to TCGplayer's separate `Pikachu (1) (Misprint)` product; the Unlimited selection maps to `Pikachu (1)`.
@@ -177,7 +177,7 @@
 ## 2026-09-29 — TCGdex variant fallback is not a catalog confirmation
 
 - TCGdex answers every card without curated variant data with `normal: true` and all other variants `false`. All sampled Team Up cards and sampled cards from Cosmic Eclipse, Unified Minds, Hidden Fates, Evolutions and 151 carry no variant data, so this shape is indistinguishable from "unknown".
-- Cardfolio previously displayed it as "Katalog bestätigt: Non-Holo / Normal", preselected Non-Holo and blocked Holo and Reverse Holo, e.g. for the holo-only Celebi & Bisaflor GX (Team Up 159/181).
+- Your Card Binder previously displayed it as "Katalog bestätigt: Non-Holo / Normal", preselected Non-Holo and blocked Holo and Reverse Holo, e.g. for the holo-only Celebi & Bisaflor GX (Team Up 159/181).
 - The exact fallback shape is now treated as missing variant data in the adapter and when reading stored snapshots. All finishes stay selectable and the finish is not preselected. No schema or backup change is needed.
 - Trade-off: a card whose curated data genuinely says only Non-Holo (no Reverse, no First Edition) also shows as unconfirmed. That costs one manual choice but never blocks a real printing.
 
@@ -186,8 +186,8 @@
 - Gift completion reuses the existing TCGplayer and Cardmarket exporters. Preparing or opening a provider has the explicit ownership effect `none`; only the collector marks a card as present.
 - Card acquisition and a physical binder are separate purchases with separate price fields. Missing prices remain unknown.
 - Physical-binder destinations live in a reviewed runtime JSON catalog rather than UI components. Catalog-level and offer-level switches, review dates and evidence URLs allow offers to fail closed.
-- No binder offer is currently enabled. TCGplayer affiliate mode also remains off because Cardfolio has no approved partner code; Cardmarket remains a manual Wants/search handoff.
-- The printable Gift contract contains text identity only. Pokémon artwork/logos are not exported as cover assets, and Cardfolio does not accept or upload personal photos.
+- No binder offer is currently enabled. TCGplayer affiliate mode also remains off because Your Card Binder has no approved partner code; Cardmarket remains a manual Wants/search handoff.
+- The printable Gift contract contains text identity only. Pokémon artwork/logos are not exported as cover assets, and Your Card Binder does not accept or upload personal photos.
 
 ## 2026-10-02 — Gift themes require dominant visual review; prices are estimates only
 
@@ -206,14 +206,14 @@
 - Local discovery snapshots live under ignored `.cardtrader/`, redact `shared_secret` and never contain tokens or Wishlist contents.
 - CardTrader's official terms require an individual request for market APIs containing site data, availability and pricing. Catalog mapping, provider images, price/availability and connected Wishlists therefore have separate disabled feature flags and separate release decisions.
 - Provider image availability is not treated as artwork permission. Written CardTrader permission and the underlying artwork-rights review are both required.
-- `cardtraderCommerce` is permanently outside the planned Cardfolio flow; Cardfolio will not call cart or purchase endpoints.
+- `cardtraderCommerce` is permanently outside the planned Your Card Binder flow; Your Card Binder will not call cart or purchase endpoints.
 - The missing-card panel has one progressive provider switch. CardTrader's disabled preview explains mapping, image, price, shipping/tax and connection status without showing a second marketplace block at the same time.
-- CardTrader output rows repeat language, finish, edition, condition and quantity. Image provenance is explicit (`Cardfolio`, `Fallback`, or `missing`); a provider image is never presented as an unlabelled local card image.
+- CardTrader output rows repeat language, finish, edition, condition and quantity. Image provenance is explicit (`Your Card Binder`, `Fallback`, or `missing`); a provider image is never presented as an unlabelled local card image.
 - “Offers” and “Wishlist” remain separate disabled actions until their independent release gates pass. Unknown or stale prices are shown as such and never coerced to zero.
 - The repository has an Actions secret named `CARDTRADER_API_TOKEN`. Its presence was verified through secret metadata only; its value was not read. A manually dispatched, read-only workflow now consumes it only for the discovery step; registration alone cannot trigger an API call.
 - The workflow uploads only a public-safe summary and conservative mapping audit for seven days. The raw discovery snapshot, account identifiers, blueprint rows and image URLs remain on the ephemeral runner and are never committed or uploaded.
 - The authenticated full-catalog run on 2026-10-04 read 856 Pokémon expansions and 75,652 blueprints. Subsequent review completed the expansion classification: 338 language-specific TCGdex records are manually verified, 11 are explicitly excluded with evidence, and none remain unclassified. No name candidate was promoted automatically.
-- The 2026-10-08 foreign-ID audit inspected all 69,874 Pokémon Singles blueprints and the 21,948 blueprints in the 188 CardTrader expansions represented by verified locale mappings. In that verified scope, 21,780 blueprints expose at least one globally unique Cardmarket or TCGplayer ID, 168 expose neither, and no reused external-ID value or invalid identifier was observed. These are aggregate CardTrader-side findings only: they do not establish a Cardfolio/TCGdex-card match and do not authorize storage or production use.
+- The 2026-10-08 foreign-ID audit inspected all 69,874 Pokémon Singles blueprints and the 21,948 blueprints in the 188 CardTrader expansions represented by verified locale mappings. In that verified scope, 21,780 blueprints expose at least one globally unique Cardmarket or TCGplayer ID, 168 expose neither, and no reused external-ID value or invalid identifier was observed. These are aggregate CardTrader-side findings only: they do not establish a Your Card Binder/TCGdex-card match and do not authorize storage or production use.
 - The current documented TCGdex Card contract does not expose the corresponding per-variant provider IDs. TCGdex also documents known marketplace-mapping errors and an in-development `variants_detailed` field intended to carry explicit Cardmarket/TCGplayer identifiers. Therefore price presence or a set/number/name similarity must not be used as a substitute for a direct reviewed card mapping.
 - All sampled blueprint records exposed an image URL, but URL presence grants neither artwork rights nor a language/quality guarantee. CardTrader images remain disabled.
 - `.env.example` contains only an empty server-side placeholder. A release check rejects a populated example or any `NEXT_PUBLIC_CARDTRADER_API_TOKEN` declaration.
@@ -236,7 +236,7 @@
 ## 2026-10-09 — Gift budgets guide estimates; conditions remain explicit
 
 - When dated TCGdex marketplace estimates exist in the requested currency, the Gift selector now uses them to keep the proposed cards within the selected budget and tolerance where possible. Approximate estimates still never become a checkout, availability or final-price guarantee.
-- If even the cheapest complete estimated selection exceeds the ceiling, Cardfolio shows the cheapest complete proposal together with an explicit over-budget warning. Missing prices keep the budget status unknown.
+- If even the cheapest complete estimated selection exceeds the ceiling, Your Card Binder shows the cheapest complete proposal together with an explicit over-budget warning. Missing prices keep the budget status unknown.
 - The missing-card view exposes one condition selector for all currently filtered cards plus per-position overrides. Changes are persisted on the planned cards and immediately feed the existing TCGplayer, Cardmarket and CardTrader condition mappings; provider formats that cannot encode condition still require the documented provider-side selection.
 
 ## 2026-10-09 — Cardmarket keeps legacy Pokémon levels and explains condition choices
@@ -246,7 +246,7 @@
 
 ## 2026-10-12 — Order-ready marketplace identity is separate from catalog matching
 
-- Cardfolio now defines a provider-neutral product-identity contract with `verified`, `probable` and `missing` outcomes. The contract records the stable TCGdex card ID, provider product identity, language/variant scope, source evidence, check date and verification date.
+- Your Card Binder now defines a provider-neutral product-identity contract with `verified`, `probable` and `missing` outcomes. The contract records the stable TCGdex card ID, provider product identity, language/variant scope, source evidence, check date and verification date.
 - Only one valid, unambiguous `verified` mapping may unlock an order-ready product action. Text matches, search URLs and legacy name/level overrides remain candidates and never become verified implicitly.
 - Invalid mappings and equally specific ambiguous mappings fail closed. A versioned reviewed Cardmarket mapping catalog now supplies direct product pages; its initial verified scope contains Platinum Torchic 99/127. Every unmapped card remains an explicitly labelled provider search rather than being presented as an exact product.
 - The Cardmarket purchase view puts reviewed product pages first, search-required cards second and the lossy decklist import behind an advanced disclosure. The decklist remains a manual-review fallback because it cannot encode set, collector number, language, finish, printing or condition reliably.
@@ -254,14 +254,14 @@
 
 ## 2026-10-12 — Standard binder purchase is separate from affiliate personalization
 
-- The Gift summary may show the reviewed Vault X EU 9-Pocket Zip Binder as a normal external shop link. Its 9-pocket layout and 360-card capacity fit Cardfolio's 3×3 gift pages.
+- The Gift summary may show the reviewed Vault X EU 9-Pocket Zip Binder as a normal external shop link. Its 9-pocket layout and 360-card capacity fit Your Card Binder's 3×3 gift pages.
 - This link is not an affiliate link: it contains no referral parameter, produces no recorded commission and is labelled accordingly. Stock, colour, shipping and final price remain provider-side checks.
-- Affiliate applications and personalized-binder programs are separate release gates. An advertised application form is not approval, so Cardfolio does not enable tracking or claim a partnership.
+- Affiliate applications and personalized-binder programs are separate release gates. An advertised application form is not approval, so Your Card Binder does not enable tracking or claim a partnership.
 - Active binder offers now declare whether they are standard or personalized, plus card capacity and pocket layout. Contradictory personalized offers, invalid capacity data and non-affiliate tracking parameters fail closed.
 
 ## 2026-10-12 — Cardmarket identity retains suffixes and audited legacy levels
 
-- TCGdex card details can expose provider-relevant suffixes such as `Prime`; Cardfolio now retains them on both the selected card and its English marketplace identity instead of discarding them during schema validation.
+- TCGdex card details can expose provider-relevant suffixes such as `Prime`; Your Card Binder now retains them on both the selected card and its English marketplace identity instead of discarding them during schema validation.
 - Existing locally stored cards are refreshed once through a versioned Cardmarket-identity marker so previously saved binders also receive the new suffix metadata.
 - Cardmarket's reviewed product identity for Mysterious Treasures Typhlosion 16/123 requires `Lv.46`, while the current TCGdex detail omits the printed level. The provider-specific compatibility layer therefore supplies that audited level without changing the shared card name.
 - These corrections improve the documented decklist fallback but do not turn it into an exact set, language, finish, printing, condition or purchase integration.
@@ -270,7 +270,7 @@
 
 - The weekly data job compares every physical English TCGdex card with Cardmarket's official Pokémon Singles product catalog before it may enter the bulk decklist.
 - Exact product identities are accepted. A missing level or provider suffix is corrected only when the card name plus the ordered ability/attack identity resolves to exactly one official Cardmarket product name.
-- Ambiguous, incomplete or absent matches fail closed and stay visible as excluded positions; Cardfolio never sends a guessed line merely to keep the bulk list complete.
+- Ambiguous, incomplete or absent matches fail closed and stay visible as excluded positions; Your Card Binder never sends a guessed line merely to keep the bulk list complete.
 - The initial audit covers all 21,290 card records currently addressable through TCGdex: 20,429 verified identities, including 1,534 systematic corrections, and 861 deliberately excluded identities. TCGdex's set metadata declares another 228 positions without card records (primarily Jumbo, Sample and legacy side collections); those cannot be exported or silently counted as verified. The versioned runtime file is loaded only after Cardmarket is selected.
 - This check guarantees that emitted names exist in the official product catalog. It cannot make Cardmarket's lossy decklist format carry set, collector number, language, finish, printing or condition, so those attributes remain provider-side checks.
 
@@ -280,7 +280,7 @@
 - Condition stays visible as the beginner-facing purchase choice. Finish, edition and printing live behind “Andere Ausführung wählen” and open automatically only when catalog data is missing, contradictory or non-standard.
 - The purchase view asks for the buyer's region instead of requesting location access. Europe and the UK select Cardmarket, USA and Canada select TCGplayer, and other regions expose the provider comparison.
 - Provider selection remains reversible. CardTrader stays a labelled preview until its independent approval gates pass.
-- The Gift summary recommends only reviewed, currently available binder offers that fit the requested card count. A 9-pocket product is preferred because Cardfolio Gift pages use a 3×3 layout; capacity, current price evidence and external availability remain provider-side facts.
+- The Gift summary recommends only reviewed, currently available binder offers that fit the requested card count. A 9-pocket product is preferred because Your Card Binder Gift pages use a 3×3 layout; capacity, current price evidence and external availability remain provider-side facts.
 
 ## 2026-10-16 — The Gift flow is three steps, free of jargon and shown on a compact binder page
 
@@ -297,7 +297,7 @@
 
 - Opened from the Gift summary, the purchase view runs in beginner mode: Cardmarket is preselected (the interface is German-only and no location is requested), the region/provider choice sits behind “Anderer Wohnort oder Anbieter?”, and the binder header, statistics and expert sections (import list, single searches, complete list, TXT/CSV) are hidden. Collectors who open the view from the sidebar or the binder keep the detailed view unchanged. This narrows the 2026-10-15 region question to a default that stays one click from being changed.
 - The four-step guide states what Cardmarket documents in its help centre (Shopping Wizard and Wants-list articles, read 2026-10-16): the Shopping Wizard needs a logged-in account; its strategies are “Reduce Price” and “Reduce Shipments”; “Add All to Cart” requires six completed purchases, so newcomers add offers one by one; the Wizard does not search every offer. “Reduce Shipments” is offered as a hint for many cheap cards, not as a guarantee.
-- The condition step (“≥ PO” after import, then a mass change) is unchanged from the detailed guide. Cardfolio still buys nothing and makes no price or shipping claims.
+- The condition step (“≥ PO” after import, then a mass change) is unchanged from the detailed guide. Your Card Binder still buys nothing and makes no price or shipping claims.
 - These are third-party statements and can change. Re-check them when Cardmarket changes its interface or help pages.
 
 ## 2026-10-16 — The Gift proposal is an open binder; options without effect are removed; matches are the Pokémon itself
@@ -329,7 +329,7 @@
 
 - **Browser Back goes one step back.** The steps of the gift wizard and of the purchase guide are history entries (`step-history.ts`); the workspace no longer adds a second entry when a gift plan only gains its binder id. Before, Back from step 2 jumped to the start page.
 - **The region question is the first block of the purchase view** ("Wo wohnst du?", Europa & UK → Cardmarket, USA & Kanada → TCGplayer), preselected from the browser language, with the reason in one sentence.
-- **`/anleitung/cardmarket/` uses real screenshots** (user-provided, Oct 2026) instead of our own redrawings (this reverses the earlier "own drawings" decision at the user's request): browser chrome cropped, user name and seller names blurred, yellow numbered frames. They show Cardmarket's UI and logo; the page says so and states that Cardfolio is not affiliated. Whether publishing them is fine with Cardmarket is not clarified.
+- **`/anleitung/cardmarket/` uses real screenshots** (user-provided, Oct 2026) instead of our own redrawings (this reverses the earlier "own drawings" decision at the user's request): browser chrome cropped, user name and seller names blurred, yellow numbered frames. They show Cardmarket's UI and logo; the page says so and states that Your Card Binder is not affiliated. Whether publishing them is fine with Cardmarket is not clarified.
 - Guide text uses the German button names seen on the live pages ("Wizard ausführen", "Preis reduzieren", "Bestellungen reduzieren", "In den Warenkorb"). The earlier claim that "In den Warenkorb" needs six completed purchases was removed: it worked on the user's account. No price percentages per condition are stated because none could be verified.
 - The release gate `release:evidence` still forbids raster card images in the static export; the guide's 14 screenshots under `public/howto/` are the one named exception (counted separately in the evidence output). They contain no card artwork.
 
@@ -347,14 +347,14 @@
 - **One canonical origin.** `src/config/site.ts` holds `SITE_ORIGIN` (`https://yourcardbinder.com`). Every route sets its own canonical and Open Graph URL; `/geschenk/` canonicalises to `/` and is not in the sitemap. `/artwork-review/` is `noindex`.
 - **Single-language content pages.** German guides live under `/ratgeber/`, German Pokémon pages under `/pokemon-binder/`, and the English counterparts under `/en/guides/`, `/en/pokemon-binder/` and `/en/`. Each pair is linked with hreflang in `<head>` and in `sitemap.xml`. The app itself (`/`, `/geschenk/`) keeps the automatic DE/EN switch. `src/i18n/fixed-locale.ts` makes the locale script and `LocaleProvider` leave these content pages in their own language; their wrapper carries `lang` and `data-no-translate`.
 - **No spam pages.** A Pokémon page exists only if the Pokémon has a hand-written entry in `src/content/pokemon-species.ts` AND the catalogue holds at least 30 cards in at least 8 sets (`MIN_CARDS`, `MIN_SETS` in `pokemon-stats.ts`). Pages are added one at a time with their own text, never generated in bulk; the first ten were chosen by popularity and are all above the thresholds. The figures on each page (card count, sets, years, top sets, artwork themes, example cards) are computed at build time from the public catalogue and the semantic index, so no two pages share text or numbers. `src/test/content/seo-content.test.tsx` fails if a page falls below the thresholds, repeats another page's title/description/figures, is shorter than about 280 words, contains a currency amount, links to a route that does not exist, or lacks the trademark notice.
-- **Trademark notice.** Every content page, the home page and the help page state in full that Cardfolio is not affiliated with Nintendo, Creatures Inc., GAME FREAK inc. or The Pokémon Company (`src/content/disclaimer.ts`, German and English).
+- **Trademark notice.** Every content page, the home page and the help page state in full that Your Card Binder is not affiliated with Nintendo, Creatures Inc., GAME FREAK inc. or The Pokémon Company (`src/content/disclaimer.ts`, German and English).
 - **No prices on content pages.** Guides and Pokémon pages quote no amounts. Condition mappings reuse `conditionProfiles`; the page counts say "catalogue cards", not market statements.
 - **Social preview.** `public/og-yourcardbinder.png` (1200 × 630, text only, no card artwork) is the shared Open Graph image. `release:evidence` names it as a second allowed raster next to `howto/`.
 - Not done on purpose: structured data beyond `WebApplication`, `Article` and `BreadcrumbList`; FAQ rich-result markup; English versions of the Cardmarket guide and help page; pages for more Pokémon before the first ten show traffic.
 
 ## 2026-10-20 — Legal notice and privacy policy
 
-- **Operator.** The legal notice and privacy policy name SeitenHafen361 (sole proprietorship), owner Schayan Yousefian, Freienwalder Str. 34, 13359 Berlin, as already published on stargazingindex.com. Cardfolio earns affiliate commission on binder links, so the commercial identity is used rather than the private-person variant from besttravelclimate.com. Operator data lives in `src/config/operator.ts`.
+- **Operator.** The legal notice and privacy policy name SeitenHafen361 (sole proprietorship), owner Schayan Yousefian, Freienwalder Str. 34, 13359 Berlin, as already published on stargazingindex.com. Your Card Binder earns affiliate commission on binder links, so the commercial identity is used rather than the private-person variant from besttravelclimate.com. Operator data lives in `src/config/operator.ts`.
 - **Contact address.** `info@yourcardbinder.com`, chosen by the owner on 2026-10-20. A legal notice needs a reachable address, so the mailbox must receive mail before the public launch (Cloudflare Email Routing is one option).
 - **Four pages.** `/impressum/`, `/datenschutz/`, `/en/legal-notice/`, `/en/privacy/`. They are `noindex`, out of the sitemap, and linked from every public page (content pages, home page, gift entry, help and Cardmarket guide).
 - **The privacy policy follows the code, not a template.** It describes: Cloudflare hosting and its Network Error Logging header, the browser storage actually written (IndexedDB `cardfolio`, `cardfolio-theme`, `cardfolio-locale`, `cardfolio-gift-summary`, the `cardfolio-binder-sync` channel), direct TCGdex requests from the browser (API and images), marketplace and Amazon links after a click, no cookies/analytics/advertising, and the GDPR rights with the Berlin supervisory authority. `src/test/content/seo-content.test.tsx` fails if a storage key or external host named there is dropped. Whoever adds a new storage key, third-party request or script must update `src/content/legal.ts` and `BROWSER_STORAGE_KEYS` in the same change.
@@ -364,7 +364,7 @@
 ## 2026-10-20 — Landing page at `/`, the app at `/app/`
 
 - Problem: `/` was the full app (sidebar, "Meine Binder", backup menu), a tool view that newcomers from search did not need, with the explanatory text far below the fold and no link to the guides.
-- **`/` is now the public landing page** (German) and `/en/` its English counterpart: one promise, one button ("Geschenk-Binder gestalten" to `/geschenk/`), a secondary "Ich sammle selbst" to the app, the same nine example cards the app showed (TCGdex images, loaded at runtime, decorative), then what Cardfolio does, steps, good-to-know, Pokémon pages, guides, FAQ, trademark notice and legal links. Shared header navigation on every content page links Ratgeber, Pokémon-Binder, Meine Binder and Hilfe.
+- **`/` is now the public landing page** (German) and `/en/` its English counterpart: one promise, one button ("Geschenk-Binder gestalten" to `/geschenk/`), a secondary "Ich sammle selbst" to the app, the same nine example cards the app showed (TCGdex images, loaded at runtime, decorative), then what Your Card Binder does, steps, good-to-know, Pokémon pages, guides, FAQ, trademark notice and legal links. Shared header navigation on every content page links Ratgeber, Pokémon-Binder, Meine Binder and Hilfe.
 - **The full app lives at `/app/`** (`noindex`). Do not use `/` for the app again; links, tests and bookmarks for the app go to `/app/`. Back links from help, the Cardmarket guide and the artwork review point there, as does "Ich sammle selbst".
 - **`/geschenk/` stays the gift tool** and is `noindex` with its own canonical: the landing page and the guides are what should rank, not the tool shell.
 - `/` is a fixed-language route (German), like the other content pages, so the visitor's stored app language no longer changes it. English visitors reach `/en/` through the visible language link; there is no automatic redirect by browser language.
@@ -373,7 +373,7 @@
 
 ## 2026-10-20 — CardTrader data fills gaps in TCGdex (images, prices, product ids)
 
-- **Permission.** CardTrader support confirmed in writing that images, prices and all information available through the API may be used for Cardfolio's described purpose (quote in `docs/cardtrader-release-gate.md`). It does not mention wishlist writes, so those stay off.
+- **Permission.** CardTrader support confirmed in writing that images, prices and all information available through the API may be used for Your Card Binder's described purpose (quote in `docs/cardtrader-release-gate.md`). It does not mention wishlist writes, so those stay off.
 - **Static data, not live calls.** The token cannot live in a static site. `.github/workflows/cardtrader-sync.yml` (weekly, or manual) reads `/expansions`, `/blueprints/export` and `/marketplace/products` for the 188 manually verified expansions and writes `public/data/cardtrader/`: `index.json` (catalog key to expansion id), `expansions/<id>.json` (blueprint id, collector number, name, rarity, image path, Cardmarket and TCGplayer product ids), `prices/<id>.json` (cheapest EUR listing per blueprint, language en/de and minimum condition), `manifest.json`. About 5 MB raw, loaded per set on demand. The workflow runs the full check chain and commits only that folder, and only for a full run.
 - **Price rules.** Only EUR listings; not graded, signed, altered or first edition; sellers on holiday excluded; languages en and de; slots per minimum condition (near mint, excellent, lightly played, played, any), each covering its own grade and better. No widening to worse conditions: no listing means unknown.
 - **Images.** A fallback in `CardArtwork`: when TCGdex has no working image, the card is looked up by verified set mapping plus collector number (a name hint only breaks ties between blueprints with the same number). Shown as "Bild: CardTrader". Gift ranking counts such a card as having artwork. Nothing is stored in snapshots or backups; the CSP allows `https://cardtrader.com` for images.
@@ -404,9 +404,9 @@
 ## 2026-10-21 — CardTrader as a third marketplace, with the referral code
 
 - **Referral programme.** CardTrader's programme (read from the owner's account page on 2026-10-21): anyone opening CardTrader through a link with `share_code=<code>` is the owner's invitee for 48 hours after the last click; the owner earns 1% of the price of each single card they buy, shipping excluded; payout monthly from EUR 10. The code is `yourcardbinder` (`src/config/cardtrader.ts`); `/en/invite/<code>` is the alternative homepage link. The buyer's price does not change.
-- **Links we build.** The card page `https://www.cardtrader.com/en/cards/<blueprint id>?share_code=…` (the id-only address redirects to the canonical page and keeps the code, opened by hand) and the Shop Optimizer `…/en/wishlists/new?share_code=…`. Every CardTrader link carries the code and, next to it, the notice "Werbelink: Cardfolio kann bei einem Kauf eine Provision erhalten. Dein Preis bleibt gleich." The legal notice and the privacy policy name the programme.
-- **Purchase view.** `cardtraderCatalog` (now on) switches CardTrader from a preview to a real choice next to Cardmarket and TCGplayer: `CardTraderMarketplacePanel` shows the three steps, a link to the Shop Optimizer, one page per matched card, and a price hint (cheapest single listings at the chosen condition from the weekly snapshot, shipping excluded, only for cards that have a price). Cardfolio creates no wishlist through the API and fills no cart; wishlist and commerce flags stay off.
-- **No list import yet.** CardTrader's Shop Optimizer has a "Paste text" import that accepts lines like `2 Dream Trawler` and `Island (ELD)`. Its behaviour for Pokémon (set codes, collector numbers) was not verified, so Cardfolio does not generate such a list yet. Verify with a real list first.
+- **Links we build.** The card page `https://www.cardtrader.com/en/cards/<blueprint id>?share_code=…` (the id-only address redirects to the canonical page and keeps the code, opened by hand) and the Shop Optimizer `…/en/wishlists/new?share_code=…`. Every CardTrader link carries the code and, next to it, the notice "Werbelink: Your Card Binder kann bei einem Kauf eine Provision erhalten. Dein Preis bleibt gleich." The legal notice and the privacy policy name the programme.
+- **Purchase view.** `cardtraderCatalog` (now on) switches CardTrader from a preview to a real choice next to Cardmarket and TCGplayer: `CardTraderMarketplacePanel` shows the three steps, a link to the Shop Optimizer, one page per matched card, and a price hint (cheapest single listings at the chosen condition from the weekly snapshot, shipping excluded, only for cards that have a price). Your Card Binder creates no wishlist through the API and fills no cart; wishlist and commerce flags stay off.
+- **No list import yet.** CardTrader's Shop Optimizer has a "Paste text" import that accepts lines like `2 Dream Trawler` and `Island (ELD)`. Its behaviour for Pokémon (set codes, collector numbers) was not verified, so Your Card Binder does not generate such a list yet. Verify with a real list first.
 - **Comparison, not a recommendation.** Region guidance still recommends Cardmarket for Europe. In the provider list a short factual comparison names what each side offers (Cardmarket: largest EU marketplace, whole-list import and Shopping Wizard, shipping per seller; CardTrader: CardTrader Zero, Shop Optimizer, list built on CardTrader). No end prices are compared in advance: shipping and sellers decide and are only known at checkout, and the two price sources are not comparable (CardTrader cheapest listing at a condition versus Cardmarket aggregates).
 
 ## 2026-10-21 — Guided CardTrader flow with an optional wishlist
@@ -418,4 +418,9 @@
 - **Scope.** `cardtraderWishlist` is on; `cardtraderCommerce` stays off. CSP `connect-src` now includes `https://api.cardtrader.com`; the release gate asserts it.
 - **Permission.** The owner stated on 2026-10-21 that CardTrader gave permission; the written message is not yet in the repository (open item). The privacy policy still has to name the new connection (pending the owner's approval of the wording).
 - **Unverified.** The success answer's shape beyond `id`, and a run with a real token, have not been seen; the guide links to the verified Shop Optimizer address rather than a guessed wishlist URL.
+
+## 2026-10-21 — Product renamed to Your Card Binder
+
+- The product was called "Cardfolio"; since 2026-10-21 it is "Your Card Binder" in all visible texts, metadata, the social preview image (`og-yourcardbinder.png`), legal pages (name only), docs and code comments.
+- **Kept on purpose:** the IndexedDB name `cardfolio`, the `cardfolio-*` browser storage keys, the package name, the repository and Cloudflare project names, and the words in guide screenshots. Renaming stored names would hide every visitor's saved binders unless a migration copies them first; that is not worth the risk.
 

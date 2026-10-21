@@ -8,7 +8,7 @@ This gate covers the technical half of D-05. Product states, responsive behavior
 
 - Runtime: static browser-only search over a versioned JSON file. No model, embeddings API, vector database, server route, secret or paid provider is used.
 - Identity: every result remains a TCGdex card ID and is hydrated through the existing catalog path. Image bytes are neither copied nor stored.
-- Query privacy: artwork queries stay in the browser. Cardfolio does not log or transmit them.
+- Query privacy: artwork queries stay in the browser. Your Card Binder does not log or transmit them.
 - Replaceability: UI consumers depend on `SmartSearchAdapter`, `SmartSearchQuery` and `SmartSearchHit`; V1 provides `LocalStaticSmartSearchAdapter` only.
 - Feature gate: `NEXT_PUBLIC_FEATURE_SMART_SEARCH=false` removes the productive entry point. The default is enabled for the prepared review build.
 - Failure boundary: index loading supports a caller abort signal and an explicit 8-second timeout. The ordinary name/number catalog path is independent.

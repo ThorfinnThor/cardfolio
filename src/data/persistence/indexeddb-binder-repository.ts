@@ -4,7 +4,7 @@ import { MAX_BINDERS } from "@/domain/binder-actions";
 import { validateBackup, validateBinder } from "@/domain/validation";
 
 import { type BinderRepository, type ImportMode, RevisionConflictError } from "./binder-repository";
-import { openCardfolioDB } from "./db";
+import { openAppDatabase } from "./db";
 
 const BINDER_ORDER_SETTING = "binder-order";
 
@@ -58,7 +58,7 @@ function cloneGiftProject(project: GiftProject, binderIds: ReadonlyMap<UUID, UUI
 
 export class IndexedDBBinderRepository implements BinderRepository {
   async list(): Promise<Binder[]> {
-    const database = await openCardfolioDB();
+    const database = await openAppDatabase();
     const transaction = database.transaction(["binders", "settings"], "readonly");
     const [binders, order] = await Promise.all([
       transaction.objectStore("binders").getAll(),
@@ -69,13 +69,13 @@ export class IndexedDBBinderRepository implements BinderRepository {
   }
 
   async get(id: UUID): Promise<Binder | null> {
-    const database = await openCardfolioDB();
+    const database = await openAppDatabase();
     return (await database.get("binders", id)) ?? null;
   }
 
   async create(binder: Binder, cards: CardSnapshot[]): Promise<void> {
     const cleanBinder = validateBinder(binder);
-    const database = await openCardfolioDB();
+    const database = await openAppDatabase();
     const transaction = database.transaction(["binders", "cards", "settings"], "readwrite");
     const binderStore = transaction.objectStore("binders");
     if (await binderStore.get(cleanBinder.id)) {
@@ -106,7 +106,7 @@ export class IndexedDBBinderRepository implements BinderRepository {
     expectedRevision: number,
   ): Promise<Binder> {
     const cleanBinder = validateBinder(binder);
-    const database = await openCardfolioDB();
+    const database = await openAppDatabase();
     const transaction = database.transaction(["binders", "cards"], "readwrite");
     const store = transaction.objectStore("binders");
     const current = await store.get(cleanBinder.id);
@@ -128,7 +128,7 @@ export class IndexedDBBinderRepository implements BinderRepository {
 
   async saveOrder(ids: UUID[]): Promise<void> {
     if (ids.length !== new Set(ids).size) throw new Error("Binder order contains duplicate IDs.");
-    const database = await openCardfolioDB();
+    const database = await openAppDatabase();
     const transaction = database.transaction(["binders", "settings"], "readwrite");
     const currentIds = (await transaction.objectStore("binders").getAllKeys()).map(String);
     const currentSet = new Set(currentIds);
@@ -142,7 +142,7 @@ export class IndexedDBBinderRepository implements BinderRepository {
   }
 
   async remove(id: UUID, expectedRevision: number): Promise<void> {
-    const database = await openCardfolioDB();
+    const database = await openAppDatabase();
     const transaction = database.transaction(["binders", "settings"], "readwrite");
     const binderStore = transaction.objectStore("binders");
     const current = await binderStore.get(id);
@@ -159,7 +159,7 @@ export class IndexedDBBinderRepository implements BinderRepository {
   }
 
   async exportBackup(ids?: UUID[]): Promise<LocalBackupV2> {
-    const database = await openCardfolioDB();
+    const database = await openAppDatabase();
     const transaction = database.transaction(["binders", "cards", "giftProjects"], "readonly");
     const allBinders = await transaction.objectStore("binders").getAll();
     const binders = ids ? allBinders.filter((binder) => ids.includes(binder.id)) : allBinders;
@@ -195,7 +195,7 @@ export class IndexedDBBinderRepository implements BinderRepository {
     const giftProjects = mode === "import-as-new"
       ? backup.giftProjects.map((project) => cloneGiftProject(project, binderIds))
       : backup.giftProjects;
-    const database = await openCardfolioDB();
+    const database = await openAppDatabase();
     const transaction = database.transaction(["binders", "cards", "settings", "giftProjects"], "readwrite");
     const binderStore = transaction.objectStore("binders");
     const settingsStore = transaction.objectStore("settings");

@@ -2,7 +2,7 @@ import type { GiftProject } from "@/domain/gift-builder";
 import type { UUID } from "@/domain/types";
 
 import { RevisionConflictError } from "./binder-repository";
-import { openCardfolioDB } from "./db";
+import { openAppDatabase } from "./db";
 import { validateGiftProject } from "@/domain/validation";
 
 export interface GiftProjectRepository {
@@ -15,18 +15,18 @@ export interface GiftProjectRepository {
 
 export class IndexedDBGiftProjectRepository implements GiftProjectRepository {
   async list(): Promise<GiftProject[]> {
-    const database = await openCardfolioDB();
+    const database = await openAppDatabase();
     return (await database.getAll("giftProjects")).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
   }
 
   async get(id: UUID): Promise<GiftProject | null> {
-    const database = await openCardfolioDB();
+    const database = await openAppDatabase();
     return (await database.get("giftProjects", id)) ?? null;
   }
 
   async create(project: GiftProject): Promise<void> {
     const clean = validateGiftProject(project);
-    const database = await openCardfolioDB();
+    const database = await openAppDatabase();
     const transaction = database.transaction("giftProjects", "readwrite");
     if (await transaction.store.get(clean.id)) {
       transaction.abort();
@@ -39,7 +39,7 @@ export class IndexedDBGiftProjectRepository implements GiftProjectRepository {
 
   async save(project: GiftProject, expectedRevision: number): Promise<GiftProject> {
     const clean = validateGiftProject(project);
-    const database = await openCardfolioDB();
+    const database = await openAppDatabase();
     const transaction = database.transaction("giftProjects", "readwrite");
     const current = await transaction.store.get(clean.id);
     if (!current || current.revision !== expectedRevision) {
@@ -58,7 +58,7 @@ export class IndexedDBGiftProjectRepository implements GiftProjectRepository {
   }
 
   async remove(id: UUID, expectedRevision: number): Promise<void> {
-    const database = await openCardfolioDB();
+    const database = await openAppDatabase();
     const transaction = database.transaction("giftProjects", "readwrite");
     const current = await transaction.store.get(id);
     if (!current || current.revision !== expectedRevision) {

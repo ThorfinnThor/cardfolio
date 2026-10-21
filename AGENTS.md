@@ -8,7 +8,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-# Cardfolio project rules
+# Your Card Binder project rules
 
 - Read the implementation plan and `docs/decisions.md` before changing architecture.
 - P0 is local-first: no Supabase, R2, authentication, server-side user database, or private user data in GitHub.

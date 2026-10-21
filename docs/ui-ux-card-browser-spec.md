@@ -7,7 +7,7 @@ Diese Spezifikation übersetzt die UI/UX-To-do-Liste in einen konkreten Ablauf f
 
 ## Leitidee
 
-Cardfolio soll sich wie ein geführter Ausfüllvorgang anfühlen: eine sichtbare nächste Aktion, eine verständliche Vorschau und eine sichere Bestätigung. Ein Nutzer muss weder Setcodes noch Marketplace-Formate kennen.
+Your Card Binder soll sich wie ein geführter Ausfüllvorgang anfühlen: eine sichtbare nächste Aktion, eine verständliche Vorschau und eine sichere Bestätigung. Ein Nutzer muss weder Setcodes noch Marketplace-Formate kennen.
 
 Es gibt keinen getrennten „Eltern-Modus“. Der Standard ist bereits ruhig und einfach; seltene Fachoptionen werden erst eingeblendet, wenn sie für genau diese Karte relevant sind.
 

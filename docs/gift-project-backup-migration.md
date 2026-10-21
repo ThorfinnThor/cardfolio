@@ -2,7 +2,7 @@
 
 Date: 2026-10-01
 
-Gift Projects are local-only IndexedDB records. Recipient names, occasions and future greeting text are not sent to Cardfolio, TCGdex, a marketplace or analytics. Candidate-detail pricing responses are stored in a separate TTL cache and are deliberately excluded from backups.
+Gift Projects are local-only IndexedDB records. Recipient names, occasions and future greeting text are not sent to Your Card Binder, TCGdex, a marketplace or analytics. Candidate-detail pricing responses are stored in a separate TTL cache and are deliberately excluded from backups.
 
 ## IndexedDB migration
 

@@ -5,14 +5,14 @@ Stand: 4. Oktober 2026
 ## Aktueller Status
 
 - Das GitHub-Actions-Secret `CARDTRADER_API_TOKEN` ist im Repository `ThorfinnThor/cardfolio` registriert.
-- Der Secret-Wert wurde von Cardfolio weder gelesen noch ausgegeben.
+- Der Secret-Wert wurde von Your Card Binder weder gelesen noch ausgegeben.
 - Der Token wird ausschließlich vom manuell startbaren Workflow `cardtrader-discovery.yml` verwendet. Das bloße Anlegen des Secrets löst weiterhin keinen CardTrader-Aufruf aus.
 - Katalog, Bilder, Preise, Wishlist und Commerce bleiben über getrennte Feature-Flags deaktiviert.
 
-### CardTrader-Begriffe für Cardfolio
+### CardTrader-Begriffe für Your Card Binder
 
 - Ein **Blueprint** beschreibt das exakte kaufbare Kartenmodell, zum Beispiel Spiel, Set,
-  Kartennummer, Sprache und Variante. Cardfolio darf für einen späteren Export nur einen
+  Kartennummer, Sprache und Variante. Your Card Binder darf für einen späteren Export nur einen
   eindeutig bestätigten Blueprint referenzieren.
 - Ein **Product** ist dagegen ein konkretes Verkäuferangebot zu einem Blueprint, also mit
   Verkäufer, Menge, Preis und weiteren Angebotsdaten. Ein Product ist nicht die Karten-
@@ -51,7 +51,7 @@ Nicht erlaubt sind im ersten Workflow:
 Der Workflow hat nur `contents: read`, führt keinen Commit und keinen Push aus und kann
 deshalb weder Katalogdateien noch Anwendungscode verändern. Bild-URLs werden im rohen,
 nicht hochgeladenen Snapshot lediglich gezählt; sie werden weder gerendert noch als
-Cardfolio-Bildquelle freigeschaltet.
+Your Card Binder-Bildquelle freigeschaltet.
 
 ### Verständliche Fehlerzustände
 

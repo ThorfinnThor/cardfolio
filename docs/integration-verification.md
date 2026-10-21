@@ -135,11 +135,11 @@ Environment: official TCGplayer Mass Entry web UI, current TCGplayer Pokémon se
 Environment: current official Cardmarket help pages, controlled domain/component tests and production `out/` in the Codex in-app Chromium browser.
 
 - Cardmarket documents a maximum of 150 entries per Wants list. A 151-position fixture therefore produces two review-list parts with 150 and 1 positions; quantities do not consume additional entry slots.
-- Cardmarket's Pokémon decklist help says a Pokémon name alone is insufficient and requires full name plus abilities and attacks. Cardfolio does not store the latter two reliably, so it does not claim that its reference text is an accepted decklist import.
+- Cardmarket's Pokémon decklist help says a Pokémon name alone is insufficient and requires full name plus abilities and attacks. Your Card Binder does not store the latter two reliably, so it does not claim that its reference text is an accepted decklist import.
 - The handoff always warns that another version or expansion may be selected and keeps the original set, number, language, finish, edition and condition visible for manual comparison.
 - The UI uses a generic Pokémon Singles link and the official Cardmarket decklist-help link; it does not construct undocumented query parameters, scrape products, automate a session or claim an exact purchase match.
 
-Superseded on 2026-09-28: Cardfolio now persists TCGdex ability and attack names and emits the documented Pokémon decklist grammar. Set, collector number and variants remain outside the import text and require the same manual product check.
+Superseded on 2026-09-28: Your Card Binder now persists TCGdex ability and attack names and emits the documented Pokémon decklist grammar. Set, collector number and variants remain outside the import text and require the same manual product check.
 - Browser fixture result: the existing missing Pikachu rendered as `1x Pikachu | Wizards Black Star Promos | Nr. 1 | EN | Nicht angegeben | Nicht angegeben | Beliebig` beneath all three review warnings.
 - The static page rendered meaningful content without a framework error overlay. The local Playwright rerun was blocked before all four test bodies by the already documented macOS Mach-port restriction, not by an application assertion.
 
@@ -173,7 +173,7 @@ Environment: production `out/` served by `python3 -m http.server`, Codex in-app 
 Environment: clean static Next.js export served locally, Codex in-app Chromium, repository release checker and current official Cloudflare/GitHub/TCGdex documentation.
 
 - The productive static route list contains `/`, `/_not-found` and `/help`; `/design-preview` is absent.
-- `/help/` rendered the expected local-storage, backup, network-flow, data-limit and rights/provider sections. Its back link navigated to the productive Cardfolio route.
+- `/help/` rendered the expected local-storage, backup, network-flow, data-limit and rights/provider sections. Its back link navigated to the productive Your Card Binder route.
 - Desktop checks reported meaningful content, the expected page titles/headings, no framework error overlay, and no browser console warnings/errors on either route.
 - At 375×812, `/help/` reported `innerWidth=375` and `scrollWidth=375`; the back link and primary heading remained present.
 - `release:check` passed for the static output, help route, security headers, disabled feature gates, full-SHA GitHub Action pins, GitHub/Cloudflare deployment separation and direct runtime licenses.
@@ -262,7 +262,7 @@ Environment: TCGdex physical English catalog, TCGplayer's official Pokémon Mass
 
 - The sync accounted for all 205 physical English TCGdex sets: 203 mapped to an official Mass Entry code and `Pokémon Futsal 2020` plus `My First Battle` were recorded as unavailable because the official Mass Entry list supplies no code for them.
 - The generated product catalog mapped 21,241 of 21,290 card records returned by TCGdex. A guarded cross-set lookup also resolves products that TCGplayer classifies outside their TCGdex set, such as Base Set Machamp under `Deck Exclusives`; it requires an exact collector number, a compatible name and an official Mass Entry set code.
-- Of the 49 unmatched records, 39 belong to the two unavailable sets and 10 have no exact product record in the current TCGplayer catalog: `BW78`, `DP54`, `DP55`, `Pikachu at the Museum`, and six currently missing SVP promo records. They remain visible in Cardfolio and are excluded only from automatic TCGplayer handoff.
+- Of the 49 unmatched records, 39 belong to the two unavailable sets and 10 have no exact product record in the current TCGplayer catalog: `BW78`, `DP54`, `DP55`, `Pikachu at the Museum`, and six currently missing SVP promo records. They remain visible in Your Card Binder and are excluded only from automatic TCGplayer handoff.
 - Controlled validator checks accepted `1 Typhlosion [BKT] 20/162`, `1 Dark Typhlosion [N4] 010/105` and `1 Typhlosion (Delta Species) [DF] 12/101`.
 - Cardmarket's current Typhlosion product/species pages identify the old Dragon Frontiers card as `Typhlosion δ Delta Species [Shady Move | Burning Ball]`; the handoff now expands symbol-only TCGdex names to that provider wording.
 - The first two shortened/incorrect forms tested during the regression were rejected, confirming that exact product names and TCGplayer's own collector-number formatting remain necessary even after a set code is known.

@@ -1,6 +1,6 @@
 # Cloudflare Pages setup
 
-Cardfolio uses a static Next.js export and Cloudflare Pages Git integration. Do not create a Direct Upload project for this repository.
+Your Card Binder uses a static Next.js export and Cloudflare Pages Git integration. Do not create a Direct Upload project for this repository.
 
 ## Current integration state — 2026-10-20
 
@@ -24,7 +24,7 @@ Cardfolio uses a static Next.js export and Cloudflare Pages Git integration. Do 
 
 1. Push the local `main` branch to the intended GitHub repository.
 2. In Cloudflare, create a Pages application and select **Import an existing Git repository**.
-3. Select the Cardfolio repository and use the **Next.js (Static HTML Export)** preset.
+3. Select the Your Card Binder repository and use the **Next.js (Static HTML Export)** preset.
 4. Configure production branch `main`, build command `npm run build`, and output directory `out`.
 5. Set the build environment Node version to `24.19.0` if Cloudflare does not derive it from `.nvmrc`.
 6. Keep preview deployments enabled for pull requests.
@@ -48,7 +48,7 @@ Do not treat a successful local build as hosting approval. Record the exact resu
 6. Verify the 375 px layout and keyboard focus path.
 7. Inspect the deployed file list: no card-image bytes, user backups or binder data may be present.
 
-Cloudflare Pages applies `_headers` to static assets but not to Pages Functions. Cardfolio intentionally has no Functions or `_worker.js`. Keep it that way unless the architecture and privacy review are reopened.
+Cloudflare Pages applies `_headers` to static assets but not to Pages Functions. Your Card Binder intentionally has no Functions or `_worker.js`. Keep it that way unless the architecture and privacy review are reopened.
 
 ## Origin changes
 
