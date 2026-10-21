@@ -44,7 +44,7 @@ requireText("out/_headers", [
   "X-Frame-Options: DENY",
   "Permissions-Policy:",
   "Content-Security-Policy:",
-  "connect-src 'self' https://api.tcgdex.net",
+  "connect-src 'self' https://api.tcgdex.net https://api.cardtrader.com",
   "img-src 'self' https://assets.tcgdex.net https://cardtrader.com",
   "frame-ancestors 'none'",
   "object-src 'none'",
@@ -65,7 +65,7 @@ requireText("src/config/feature-flags.ts", [
   "cardtraderImages: true",
   "cardtraderPrices: true",
   "cardtraderProductIds: true",
-  "cardtraderWishlist: false",
+  "cardtraderWishlist: true",
   "cardtraderCommerce: false",
   "publicSharing: false",
 ]);

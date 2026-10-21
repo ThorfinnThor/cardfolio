@@ -15,7 +15,7 @@ export const FEATURES = {
   cardtraderImages: true,
   cardtraderPrices: true,
   cardtraderProductIds: true,
-  cardtraderWishlist: false,
+  cardtraderWishlist: true,
   cardtraderCommerce: false,
   publicSharing: false,
 } as const;

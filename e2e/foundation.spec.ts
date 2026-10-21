@@ -910,6 +910,11 @@ test("sets, edits and persists the minimum condition for marketplace handoff", a
   await expect(missingCards.getByText("Cardmarket und CardTrader im Vergleich")).toHaveCount(0);
   await missingCards.getByRole("button", { name: "CardTrader", exact: true }).click();
   await expect(missingCards.getByRole("heading", { name: "1 Karte bei CardTrader kaufen" })).toBeVisible();
+  await expect(missingCards.getByText("Schritt 1 von 4")).toBeVisible();
+  await missingCards.getByRole("button", { name: /^Weiter/ }).click();
+  await expect(missingCards.getByRole("heading", { name: "Liste bei CardTrader anlegen" })).toBeVisible();
+  await expect(missingCards.getByLabel("CardTrader-Token")).toBeVisible();
+  await missingCards.getByRole("button", { name: "Ohne Wunschliste weiter" }).click();
   const optimizer = new URL(await missingCards.getByRole("link", { name: /Shop Optimizer öffnen/ }).getAttribute("href") ?? "");
   expect(optimizer.origin + optimizer.pathname).toBe("https://www.cardtrader.com/en/wishlists/new");
   expect(optimizer.searchParams.get("share_code")).toBe("yourcardbinder");

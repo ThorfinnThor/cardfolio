@@ -431,9 +431,6 @@ describe("MissingCardsPanel", () => {
       openCardTrader();
 
       expect(screen.getByRole("heading", { name: "3 Karten bei CardTrader kaufen" })).toBeInTheDocument();
-      const optimizer = screen.getByRole("link", { name: /Shop Optimizer öffnen/ });
-      expect(optimizer).toHaveAttribute("href", "https://www.cardtrader.com/en/wishlists/new?share_code=yourcardbinder");
-      expect(optimizer).toHaveAttribute("rel", "noopener noreferrer");
       expect(screen.getByText(/Werbelink: Your Card Binder kann bei einem Kauf eine Provision erhalten/)).toBeInTheDocument();
 
       expect(await screen.findByRole("link", { name: "Bei CardTrader ansehen: Pikachu" })).toHaveAttribute("href", "https://www.cardtrader.com/en/cards/111?share_code=yourcardbinder");
@@ -441,6 +438,72 @@ describe("MissingCardsPanel", () => {
       expect(screen.getByText("1 von 2 zugeordnet")).toBeInTheDocument();
       expect(screen.getByText(/Richtwert: ab ca\./)).toHaveTextContent("2 von 3 Karten");
       expect(screen.getByText(/ohne Versand/)).toBeInTheDocument();
+    });
+
+    it("guides through four steps and ends at the Shop Optimizer without a token", async () => {
+      vi.mocked(prepareCardtraderHandoff).mockResolvedValue(handoff);
+      openCardTrader();
+      expect(screen.getByText("Schritt 1 von 4")).toBeInTheDocument();
+      expect(screen.queryByRole("link", { name: /Shop Optimizer öffnen/ })).not.toBeInTheDocument();
+
+      fireEvent.click(screen.getByRole("button", { name: /^Weiter/ }));
+      expect(screen.getByRole("heading", { name: "Liste bei CardTrader anlegen" })).toBeInTheDocument();
+      expect(screen.queryByLabelText("CardTrader-Token")).not.toBeInTheDocument();
+      fireEvent.click(screen.getByRole("button", { name: /^Weiter/ }));
+
+      const optimizer = screen.getByRole("link", { name: /Shop Optimizer öffnen/ });
+      expect(optimizer).toHaveAttribute("href", "https://www.cardtrader.com/en/wishlists/new?share_code=yourcardbinder");
+      expect(optimizer).toHaveAttribute("rel", "noopener noreferrer");
+      fireEvent.click(screen.getByRole("button", { name: /Ich bin im Shop Optimizer fertig/ }));
+      expect(screen.getByRole("heading", { name: "Ergebnis prüfen und bei CardTrader bezahlen" })).toBeInTheDocument();
+      expect(screen.getByText("Schritt 4 von 4")).toBeInTheDocument();
+    });
+
+    describe("wishlist with the user's own token", () => {
+      const token = "eyJhbGciOiJIUzI1NiJ9.test-token-value-0123456789";
+      afterEach(() => { vi.unstubAllGlobals(); });
+
+      async function openWishlistStep() {
+        vi.mocked(prepareCardtraderHandoff).mockResolvedValue(handoff);
+        openCardTrader({ cardtraderWishlistEnabled: true });
+        await screen.findByRole("link", { name: "Bei CardTrader ansehen: Pikachu" });
+        fireEvent.click(screen.getByRole("button", { name: /^Weiter/ }));
+      }
+
+      it("states what is sent, sends nothing before the click and clears the token afterwards", async () => {
+        const fetchMock = vi.fn(async () => new Response(JSON.stringify({ id: 9 }), { status: 200 }));
+        vi.stubGlobal("fetch", fetchMock);
+        await openWishlistStep();
+
+        expect(screen.getByText(/private/)).toBeInTheDocument();
+        expect(screen.getByText(/Es wird nichts gekauft und nichts in einen Warenkorb gelegt/)).toBeInTheDocument();
+        const button = screen.getByRole("button", { name: "Wunschliste mit 2 Karten anlegen" });
+        expect(button).toBeDisabled();
+        fireEvent.change(screen.getByLabelText("CardTrader-Token"), { target: { value: token } });
+        expect(fetchMock).not.toHaveBeenCalled();
+
+        fireEvent.click(screen.getByRole("button", { name: "Wunschliste mit 2 Karten anlegen" }));
+        await waitFor(() => expect(screen.getByRole("heading", { name: "Shop Optimizer öffnen und Verkäufer wählen" })).toBeInTheDocument());
+        expect(fetchMock).toHaveBeenCalledTimes(1);
+        const [url, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
+        expect(url).toBe("https://api.cardtrader.com/api/v2/wishlists");
+        expect(JSON.parse(String(init.body)).deck.deck_items_attributes).toEqual([{ blueprint_id: 111, language: "en", quantity: 2 }]);
+        expect(screen.getByText(/liegt jetzt in deinem CardTrader-Konto/)).toBeInTheDocument();
+        expect(document.body.innerHTML).not.toContain(token);
+        fireEvent.click(screen.getByRole("button", { name: /Zurück/ }));
+        expect((screen.getByLabelText("CardTrader-Token") as HTMLInputElement).value).toBe("");
+      });
+
+      it("shows a clear error for a rejected token and lets the user continue without a wishlist", async () => {
+        vi.stubGlobal("fetch", vi.fn(async () => new Response("{}", { status: 401 })));
+        await openWishlistStep();
+        fireEvent.change(screen.getByLabelText("CardTrader-Token"), { target: { value: token } });
+        fireEvent.click(screen.getByRole("button", { name: "Wunschliste mit 2 Karten anlegen" }));
+        expect(await screen.findByRole("alert")).toHaveTextContent("CardTrader hat das Token abgelehnt");
+        fireEvent.click(screen.getByRole("button", { name: "Ohne Wunschliste weiter" }));
+        expect(screen.getByRole("heading", { name: "Shop Optimizer öffnen und Verkäufer wählen" })).toBeInTheDocument();
+        expect(screen.queryByText(/liegt jetzt in deinem CardTrader-Konto/)).not.toBeInTheDocument();
+      });
     });
 
     it("keeps the price hint out when no card has a price", async () => {

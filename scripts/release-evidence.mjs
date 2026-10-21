@@ -91,7 +91,7 @@ const evidence = {
     reviewedAt: cardtraderReview.reviewedAt,
     verifiedLocaleMappings: cardtraderReview.mappings.length,
     explicitExclusions: cardtraderExclusions.exclusions.length,
-    productiveFlagsExpectedOff: ["wishlist", "commerce"],
+    productiveFlagsExpectedOff: ["commerce"],
   },
 };
 
@@ -106,7 +106,7 @@ if (process.argv.includes("--json")) {
   console.log(`Bundled raster images: ${evidence.staticOutput.bundledRasterImageFiles.length} (plus ${evidence.staticOutput.howtoScreenshotFiles.length} guide screenshots under howto/ and ${socialPreviewFiles.length} social preview)`);
   console.log(`Semantic index: ${formatBytes(evidence.semanticSearch.rawBytes)} raw / ${formatBytes(evidence.semanticSearch.gzipBytes)} gzip; ${evidence.semanticSearch.indexedCards}/${evidence.semanticSearch.eligibleCards} indexed; ${evidence.semanticSearch.evaluationQueries} evaluation queries`);
   console.log(`Catalog: ${evidence.catalog.englishSets} EN sets, ${evidence.catalog.germanSets} DE sets; TCGplayer ${evidence.catalog.tcgplayerMappedCards} mapped cards / ${evidence.catalog.tcgplayerUnmappedCards} unresolved`);
-  console.log(`CardTrader: ${evidence.cardtrader.verifiedLocaleMappings} verified locale mappings, ${evidence.cardtrader.explicitExclusions} explicit exclusions; CardTrader wishlist and commerce flags remain off`);
+  console.log(`CardTrader: ${evidence.cardtrader.verifiedLocaleMappings} verified locale mappings, ${evidence.cardtrader.explicitExclusions} explicit exclusions; CardTrader commerce flag remains off (wishlist creation only with the user's own token)`);
 }
 
 if (rasterCardCandidates.length) {

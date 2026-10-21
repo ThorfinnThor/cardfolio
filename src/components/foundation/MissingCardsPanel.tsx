@@ -80,6 +80,7 @@ interface MissingCardsPanelProps {
   onCardmarketCopy?: (part: CardmarketHandoffPart) => void;
   onCardmarketTextExport?: (part: CardmarketHandoffPart) => void;
   cardtraderEnabled?: boolean;
+  cardtraderWishlistEnabled?: boolean;
   cardtraderPreviewVisible?: boolean;
   cardtraderStatus?: CardTraderStatus;
   cardtraderQuote?: CardTraderQuotePreview;
@@ -110,6 +111,7 @@ export function MissingCardsPanel({
   onCardmarketCopy,
   onCardmarketTextExport,
   cardtraderEnabled = false,
+  cardtraderWishlistEnabled = false,
   cardtraderPreviewVisible = false,
   cardtraderStatus = "not-approved",
   cardtraderQuote = { status: "unknown" },
@@ -754,7 +756,7 @@ export function MissingCardsPanel({
       ) : null}
 
       {marketplaceChoice === "cardtrader" && cardtraderEnabled ? (
-        <CardTraderMarketplacePanel items={visibleItems} />
+        <CardTraderMarketplacePanel items={visibleItems} wishlistEnabled={cardtraderWishlistEnabled} />
       ) : null}
 
       {marketplaceChoice === "cardtrader" && !cardtraderEnabled && cardtraderPreviewVisible ? (

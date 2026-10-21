@@ -2294,6 +2294,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
               onCardmarketTextExport={downloadCardmarketHandoff}
               cardtraderPreviewVisible={FEATURES.cardtraderPreview}
               cardtraderEnabled={FEATURES.cardtraderCatalog}
+              cardtraderWishlistEnabled={FEATURES.cardtraderWishlist}
               beginner={missingBeginner}
             />
           ) : (

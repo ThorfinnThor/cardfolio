@@ -326,3 +326,11 @@
 .marketplaceComparison p { grid-column: 1 / -1; margin: 0; color: var(--cf-muted); font-size: .76rem; line-height: 1.5; }
 @media (max-width: 640px) { .marketplaceComparison { grid-template-columns: minmax(0, 1fr); } }
 .numberedSteps { list-style: decimal; padding-left: 30px; }
+
+.tokenFacts { display: grid; gap: 7px; margin: 0; padding-left: 18px; list-style: disc; color: var(--cf-text2); font-size: .9rem; line-height: 1.5; }
+.tokenField { display: grid; gap: 6px; max-width: 520px; color: var(--cf-text2); font-size: .82rem; font-weight: 650; }
+.tokenField input { min-height: 48px; border: 1px solid var(--cf-line2); border-radius: 9px; background: var(--cf-surface); color: var(--cf-text); padding: 10px 12px; font-family: var(--cf-font-mono); font-size: .9rem; }
+.tokenField input:focus-visible { outline: 3px solid color-mix(in srgb, var(--cf-accent) 35%, transparent); outline-offset: 2px; }
+.cardtraderCreated { display: flex; align-items: center; gap: 8px; margin: 0; border-radius: 9px; background: var(--cf-ok-soft); color: var(--cf-ok-text); padding: 10px 12px; font-weight: 650; }
+.cardmarketGuideCard > p a { white-space: nowrap; }
+.cardmarketGuideActions > .secondaryAction { border-color: var(--cf-line2); background: var(--cf-surface); color: var(--cf-text2); }
