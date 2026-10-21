@@ -312,3 +312,12 @@
 .regionPick h3 svg { color: var(--cf-accent-text); }
 .regionPick > p { margin: 0; color: var(--cf-text2); line-height: 1.55; }
 .regionPick .regionHint { display: block; border-left: 4px solid var(--cf-ok); background: var(--cf-ok-soft); padding: 10px 14px; }
+
+.affiliateNotice { margin: 10px 0 0; color: var(--cf-muted); font-size: .76rem; line-height: 1.5; }
+.cardtraderEstimate { margin: 12px 0 0; border-left: 3px solid var(--cf-accent); background: var(--cf-accent-soft); padding: 9px 12px; color: var(--cf-text2); font-size: .82rem; line-height: 1.5; }
+.marketplaceComparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 10px 0 12px; border: 1px solid var(--cf-line); border-radius: 10px; background: var(--cf-surface); padding: 14px 16px; }
+.marketplaceComparison strong { color: var(--cf-text); font-size: .9rem; }
+.marketplaceComparison ul { margin: 6px 0 0; padding-left: 18px; color: var(--cf-text2); font-size: .8rem; line-height: 1.5; }
+.marketplaceComparison p { grid-column: 1 / -1; margin: 0; color: var(--cf-muted); font-size: .76rem; line-height: 1.5; }
+@media (max-width: 640px) { .marketplaceComparison { grid-template-columns: minmax(0, 1fr); } }
+.numberedSteps { list-style: decimal; padding-left: 30px; }

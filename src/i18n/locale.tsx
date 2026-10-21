@@ -561,6 +561,26 @@ const translations: Record<string, string> = {
   "Direkte Produktseiten": "Direct product pages",
   "Die Produkt-IDs stammen von CardTrader und führen direkt auf die Cardmarket-Produktseite. Prüfe dort Set, Nummer und Sprache, bevor du kaufst.": "The product ids come from CardTrader and lead straight to the Cardmarket product page. Check set, number and language there before you buy.",
   "· ID laut CardTrader": "· id from CardTrader",
+  "Marktplatz": "Marketplace",
+  "Shop Optimizer öffnen": "Open Shop Optimizer",
+  "Shop Optimizer · Karten mehrerer Verkäufer": "Shop Optimizer · cards from several sellers",
+  "So kaufst du bei CardTrader": "How to buy at CardTrader",
+  "Öffne den Shop Optimizer. Dort legst du eine Liste an und wählst später, wie die Verkäufer ausgesucht werden.": "Open the Shop Optimizer. There you create a list and later choose how the sellers are picked.",
+  "Füge deine Karten hinzu. Unten findest du zu jeder Karte die Seite bei CardTrader mit Set, Nummer und allen Angeboten.": "Add your cards. Below you find the CardTrader page of every card with set, number and all offers.",
+  "Seiten bei CardTrader": "Pages at CardTrader",
+  "Wird geladen …": "Loading …",
+  "Bei CardTrader ansehen": "View at CardTrader",
+  "Keine sichere Zuordnung": "No safe match",
+  "Richtwert: ab ca.": "Estimate: from approx.",
+  "Cardfolio legt nichts in deinen Warenkorb und kauft nichts. Prüfe Set, Kartennummer, Sprache, Finish, Edition und Zustand vor dem Kauf.": "Cardfolio puts nothing in your cart and buys nothing. Check set, card number, language, finish, edition and condition before you buy.",
+  "Cardmarket und CardTrader im Vergleich": "Cardmarket and CardTrader compared",
+  "Größter Marktplatz für Pokémon-Karten in Europa.": "The largest marketplace for Pokémon cards in Europe.",
+  "Du fügst die ganze Liste auf einmal ein, und der Shopping Wizard stellt die Bestellung zusammen.": "You paste the whole list at once, and the Shopping Wizard puts the order together.",
+  "Versand wird pro Verkäufer berechnet.": "Shipping is charged per seller.",
+  "Mit CardTrader Zero können Karten mehrerer Verkäufer in einer Sendung ankommen.": "With CardTrader Zero, cards from several sellers can arrive in one shipment.",
+  "Der Shop Optimizer wählt Verkäufer nach Preis, Anzahl der Verkäufer oder Tempo.": "The Shop Optimizer picks sellers by price, number of sellers or speed.",
+  "Du legst deine Liste dort selbst an; Cardfolio zeigt zu jeder Karte die passende Seite.": "You build your list there yourself; Cardfolio shows the matching page for every card.",
+  "Welcher Weg günstiger ist, hängt vom Versand und von den Verkäufern ab. Beides siehst du erst vor dem Kauf, deshalb vergleichen wir keine Endpreise vorab.": "Which way is cheaper depends on shipping and sellers. You only see both before you buy, so we do not compare final prices in advance.",
 };
 
 /* The trademark notice is defined once in German and English; reuse it so the help page translates too. */
@@ -571,6 +591,14 @@ Object.assign(translations, {
 });
 
 const patterns: Array<[RegExp, (...matches: string[]) => string]> = [
+  [/^(\d+) Karten bei CardTrader kaufen$/, (count) => `Buy ${count} cards at CardTrader`],
+  [/^1 Karte bei CardTrader kaufen$/, () => "Buy 1 card at CardTrader"],
+  [/^(\d+) Positionen · gekauft wird erst bei CardTrader$/, (count) => `${count} items · you only buy at CardTrader`],
+  [/^(\d+) von (\d+) zugeordnet$/, (linked, total) => `${linked} of ${total} matched`],
+  [/^Bei CardTrader ansehen: (.+)$/, (name) => `View at CardTrader: ${name}`],
+  [/^Stelle Sprache und Mindestzustand(?: \((.+)\))? ein, prüfe Gesamtpreis und Versand und zahle erst dort\.$/, (condition) => `Set language and minimum condition${condition ? ` (${condition})` : ""}, check the total price and shipping, and pay only there.`],
+  [/^für (\d+) von (\d+) Karten \(günstigste Einzelangebote bei CardTrader im gewählten Zustand, ohne Versand\)\. Der Endpreis hängt von den Verkäufern ab\.$/, (priced, total) => `for ${priced} of ${total} cards (cheapest single listings at CardTrader in the chosen condition, excluding shipping). The final price depends on the sellers.`],
+  [/^(.+) · ab ca\. (.+)$/, (rest, price) => `${rest} · from approx. ${price}`],
   [/^Platz (\d+) von (\d+) · Seite (\d+)$/, (position, total, page) => `Position ${position} of ${total} · Page ${page}`],
   [/^Geschenk · (.+)$/, (subject) => `Gift · ${subject}`],
   [/^Alle passenden Karten ansehen \((\d+)\)$/, (count) => `View all matching cards (${count})`],

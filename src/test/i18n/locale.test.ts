@@ -43,4 +43,16 @@ describe("interface locale", () => {
       }
     }
   });
+
+  it("translates the CardTrader purchase panel", () => {
+    expect(translateGermanText("3 Karten bei CardTrader kaufen")).toBe("Buy 3 cards at CardTrader");
+    expect(translateGermanText("1 Karte bei CardTrader kaufen")).toBe("Buy 1 card at CardTrader");
+    expect(translateGermanText("2 Positionen · gekauft wird erst bei CardTrader")).toBe("2 items · you only buy at CardTrader");
+    expect(translateGermanText("1 von 2 zugeordnet")).toBe("1 of 2 matched");
+    expect(translateGermanText("Bei CardTrader ansehen: Pikachu")).toBe("View at CardTrader: Pikachu");
+    expect(translateGermanText("Base Set · Nr. 4 · EN · ab ca. 5,00 €")).toContain("from approx. 5,00 €");
+    expect(translateGermanText("Stelle Sprache und Mindestzustand (Sehr gut) ein, prüfe Gesamtpreis und Versand und zahle erst dort.")).toContain("minimum condition (Sehr gut)");
+    expect(translateGermanText("Versand wird pro Verkäufer berechnet.")).toBe("Shipping is charged per seller.");
+  });
 });
+

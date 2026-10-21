@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, Check, Clipboard, Download, ExternalLink, FileDo
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { FEATURES } from "@/config/feature-flags";
+import { CardTraderMarketplacePanel, MarketplaceComparison } from "./CardTraderMarketplacePanel";
 import { cardtraderCardmarketMappings } from "@/data/marketplace/cardtrader-cardmarket-products";
 import { loadCardmarketProductMappingCatalog } from "@/data/marketplace/cardmarket-product-mappings";
 import { loadCardmarketDecklistIdentityCatalog, type CardmarketDecklistIdentityCatalog } from "@/data/marketplace/cardmarket-decklist-identities";
@@ -367,6 +368,7 @@ export function MissingCardsPanel({
             <button type="button" onClick={() => setShowProviderChoices(true)}>Anderen Anbieter wählen</button>
           </div> : null}
           {showProviderChoices ? <><div className={styles.providerHeading}><strong>Anbieter selbst wählen</strong><span>Verfügbarkeit und Versand unterscheiden sich je nach Region.</span></div>
+          {cardmarketEnabled && cardtraderEnabled ? <MarketplaceComparison /> : null}
           <div className={styles.marketplaceChoiceActions} role="group" aria-label="Marketplace auswählen">
             {tcgplayerEnabled ? (
               <button
@@ -390,7 +392,7 @@ export function MissingCardsPanel({
                 aria-label={`CardTrader${!cardtraderEnabled ? " · Vorschau" : ""}`}
                 aria-pressed={marketplaceChoice === "cardtrader"}
                 onClick={() => chooseMarketplace("cardtrader")}
-              ><strong>CardTrader{!cardtraderEnabled ? " · Vorschau" : ""}</strong><small>{cardtraderEnabled ? "Wishlist vorbereiten" : "Wishlist-Freigabe ausstehend"}</small><ArrowRight aria-hidden="true" size={17} /></button>
+              ><strong>CardTrader{!cardtraderEnabled ? " · Vorschau" : ""}</strong><small>{cardtraderEnabled ? "Shop Optimizer · Karten mehrerer Verkäufer" : "Wishlist-Freigabe ausstehend"}</small><ArrowRight aria-hidden="true" size={17} /></button>
             ) : null}
           </div></> : null}
         </section>
@@ -758,7 +760,11 @@ export function MissingCardsPanel({
         </section>
       ) : null}
 
-      {marketplaceChoice === "cardtrader" && (cardtraderEnabled || cardtraderPreviewVisible) ? (
+      {marketplaceChoice === "cardtrader" && cardtraderEnabled ? (
+        <CardTraderMarketplacePanel items={visibleItems} />
+      ) : null}
+
+      {marketplaceChoice === "cardtrader" && !cardtraderEnabled && cardtraderPreviewVisible ? (
         <CardTraderPanel items={visibleItems} status={cardtraderStatus} quote={cardtraderQuote} />
       ) : null}
 

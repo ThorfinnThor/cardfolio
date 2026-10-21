@@ -907,9 +907,13 @@ test("sets, edits and persists the minimum condition for marketplace handoff", a
   await openMissingCards(page, 1);
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   await missingCards.getByRole("button", { name: "Andere Region · Versand prüfen" }).click();
-  await missingCards.getByRole("button", { name: "CardTrader · Vorschau" }).click();
-  await expect(missingCards.getByText(/CardTrader ist vorbereitet, aber noch nicht freigegeben/)).toBeVisible();
-  await expect(missingCards.getByRole("button", { name: "Wishlist erstellen" })).toBeDisabled();
+  await expect(missingCards.getByText("Cardmarket und CardTrader im Vergleich")).toHaveCount(0);
+  await missingCards.getByRole("button", { name: "CardTrader", exact: true }).click();
+  await expect(missingCards.getByRole("heading", { name: "1 Karte bei CardTrader kaufen" })).toBeVisible();
+  const optimizer = new URL(await missingCards.getByRole("link", { name: /Shop Optimizer öffnen/ }).getAttribute("href") ?? "");
+  expect(optimizer.origin + optimizer.pathname).toBe("https://www.cardtrader.com/en/wishlists/new");
+  expect(optimizer.searchParams.get("share_code")).toBe("yourcardbinder");
+  await expect(missingCards.getByText(/Werbelink: Cardfolio kann bei einem Kauf eine Provision erhalten/)).toBeVisible();
   await missingCards.getByRole("button", { name: "Anderen Anbieter wählen" }).click();
   await missingCards.getByRole("button", { name: "Cardmarket", exact: true }).click();
   await missingCards.getByText("Importliste ansehen oder als Datei speichern").click();

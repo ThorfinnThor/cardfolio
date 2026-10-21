@@ -67,6 +67,7 @@ export const LEGAL: readonly LegalDocument[] = [
           blocks: [
             { type: "p", text: AMAZON_DE },
             { type: "p", text: "Einige Empfehlungen für Binder enthalten Partnerlinks, sogenannte Werbelinks. Kommt über einen solchen Link ein Kauf zustande, kann Cardfolio eine Provision erhalten. Dein Preis bleibt gleich. Der Hinweis steht zusätzlich direkt am jeweiligen Angebot." },
+            { type: "p", text: "Links zu CardTrader enthalten einen Partnercode. Wer CardTrader über einen solchen Link öffnet, wird dort 48 Stunden lang als von Cardfolio vermittelt erfasst, und Cardfolio erhält 1 % des Kartenpreises ohne Versand. Dein Preis bleibt gleich. Der Hinweis steht direkt an den Links." },
           ],
         },
         {
@@ -131,6 +132,7 @@ export const LEGAL: readonly LegalDocument[] = [
           blocks: [
             { type: "p", text: AMAZON_EN },
             { type: "p", text: "Some binder recommendations contain affiliate links. If a purchase is made through such a link, Cardfolio may receive a commission. Your price stays the same. The notice also appears directly on the offer." },
+            { type: "p", text: "Links to CardTrader carry a partner code. Anyone who opens CardTrader through such a link is recorded there for 48 hours as referred by Cardfolio, and Cardfolio receives 1% of the card price, excluding shipping. Your price stays the same. The notice appears directly at the links." },
           ],
         },
         {
@@ -228,6 +230,7 @@ export const LEGAL: readonly LegalDocument[] = [
           blocks: [
             { type: "p", text: "Cardfolio bereitet Kauflisten für Cardmarket und TCGplayer vor und verlinkt Binder bei Amazon. Diese Anbieter werden erst geöffnet, wenn du selbst einen Link anklickst oder eine Liste dort einfügst. Cardfolio meldet sich dort nicht für dich an und schließt keinen Kauf ab. Beim Klick wird nach der Referrer-Richtlinie der Website nur der Ursprung (yourcardbinder.com), nicht die genaue Seite übermittelt. Danach gilt die Datenschutzerklärung des jeweiligen Anbieters, bei Cardmarket und TCGplayer ebenso wie bei Amazon." },
             { type: "p", text: "Einige Binder-Empfehlungen führen über Partnerlinks zu Amazon (amazon.de). Sie tragen eine Partnerkennung, über die Amazon einen Kauf Cardfolio zuordnen kann. Amazon kann nach dem Klick auf amazon.de eigene Cookies setzen und Daten nach der eigenen Datenschutzerklärung verarbeiten (Amazon EU S.à r.l., 38 avenue John F. Kennedy, L-1855 Luxemburg). Cardfolio sieht nur die von Amazon bereitgestellten Partnerberichte über Klicks und qualifizierte Käufe, keine Namen oder Adressen. Der Preis für dich bleibt gleich. Dieser Hinweis steht auch direkt am Angebot." },
+            { type: "p", text: "Links zu CardTrader (cardtrader.com, Gray Fox SRL, Italien) tragen den Partnercode von Cardfolio. Öffnest du CardTrader über einen solchen Link, erfasst CardTrader dich für 48 Stunden als von Cardfolio vermittelt und zahlt Cardfolio 1 % des Preises der Karten ohne Versand. Cardfolio erhält dabei keine Angaben über dich, nur die Abrechnung der Vermittlung. Danach gilt die Datenschutzerklärung von CardTrader. Dein Preis bleibt gleich." },
             { type: "p", text: AMAZON_DE },
           ],
         },
@@ -343,6 +346,7 @@ export const LEGAL: readonly LegalDocument[] = [
           blocks: [
             { type: "p", text: "Cardfolio prepares shopping lists for Cardmarket and TCGplayer and links binders on Amazon. These providers are only opened when you click a link yourself or paste a list there. Cardfolio does not log in for you there and does not complete a purchase. When you click, the site's referrer policy sends only the origin (yourcardbinder.com), not the exact page. After that the privacy policy of the respective provider applies, for Cardmarket and TCGplayer as well as for Amazon." },
             { type: "p", text: "Some binder recommendations lead to Amazon (amazon.de) through affiliate links. They carry a partner identifier with which Amazon can attribute a purchase to Cardfolio. After the click Amazon may set its own cookies on amazon.de and process data under its own privacy notice (Amazon EU S.à r.l., 38 avenue John F. Kennedy, L-1855 Luxembourg). Cardfolio only sees the partner reports provided by Amazon about clicks and qualifying purchases, not names or addresses. Your price stays the same. This notice also appears directly on the offer." },
+            { type: "p", text: "Links to CardTrader (cardtrader.com, Gray Fox SRL, Italy) carry Cardfolio's partner code. If you open CardTrader through such a link, CardTrader records you for 48 hours as referred by Cardfolio and pays Cardfolio 1% of the price of the cards, excluding shipping. Cardfolio receives no information about you in the process, only the settlement of the referral. After that CardTrader's privacy policy applies. Your price stays the same." },
             { type: "p", text: AMAZON_EN },
           ],
         },

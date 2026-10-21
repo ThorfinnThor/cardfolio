@@ -10,7 +10,7 @@ export const FEATURES = {
   tcgplayerPrefill: false,
   cardmarketImport: true,
   cardtraderPreview: true,
-  cardtraderCatalog: false,
+  cardtraderCatalog: true,
   cardtraderSupplements: true,
   cardtraderImages: true,
   cardtraderPrices: true,
