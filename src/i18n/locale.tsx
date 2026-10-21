@@ -644,6 +644,7 @@ Object.assign(translations, {
 });
 
 const patterns: Array<[RegExp, (...matches: string[]) => string]> = [
+  [/^(mind\. )?(\d+) Angebote?(?: · Verkäufer aus (.+))?$/, (atLeast, count, countries) => `${atLeast ? "at least " : ""}${count} ${count === "1" ? "offer" : "offers"}${countries ? ` · sellers from ${countries}` : ""}`],
   [/^(\d+) Karten? kopieren & TCGplayer öffnen$/, (count) => `Copy ${count} ${count === "1" ? "card" : "cards"} & open TCGplayer`],
   [/^(.+) · (\d+) Karten?$/, (label, count) => `${label} · ${count} ${count === "1" ? "card" : "cards"}`],
   [/^Einzelne Karten suchen \((\d+)\)$/, (count) => `Search single cards (${count})`],

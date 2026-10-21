@@ -26,7 +26,7 @@ describe("CardTrader referral links", () => {
 const FILES: Record<string, unknown> = {
   "index.json": { "en:base1": 1472 },
   "expansions/1472.json": { id: 1472, code: "bs", name: "Base Set", blueprints: [{ id: 111148, n: "001", name: "Alakazam" }, { id: 111149, n: "002", name: "Blastoise" }] },
-  "prices/1472.json": { id: 1472, currency: "EUR", slots: new Array(10).fill(""), p: { "111148": [900, 500, 400, 300, 200, 0, 0, 0, 0, 0] } },
+  "prices/1472.json": { id: 1472, currency: "EUR", slots: new Array(10).fill(""), p: { "111148": [900, 500, 400, 300, 200, 0, 0, 0, 0, 0] }, o: { "111148": [12, 0, 1] }, c: { "111148": "DE,IT,FR" } },
 };
 const catalog = () => new CardTraderCatalog(async (file) => { if (!(file in FILES)) throw new Error("404"); return FILES[file]; });
 
@@ -44,7 +44,8 @@ function item(number: string, name: string, quantity: number, overrides: Partial
 describe("prepareCardtraderHandoff", () => {
   it("links and prices matched cards by quantity and leaves the rest out", async () => {
     const result = await prepareCardtraderHandoff([item("1", "Alakazam", 2), item("2", "Blastoise", 1), item("9", "Unknown", 1)], catalog());
-    expect(result.entries[0]).toEqual({ identityKey: "k1", blueprintId: 111148, url: "https://www.cardtrader.com/en/cards/111148?share_code=yourcardbinder", unitPriceMinor: 500 });
+    expect(result.entries[0]).toEqual({ identityKey: "k1", blueprintId: 111148, url: "https://www.cardtrader.com/en/cards/111148?share_code=yourcardbinder", unitPriceMinor: 500, offerCount: 12, offersAtLeast: true, sellerCountries: ["DE", "IT", "FR"] });
+    expect(result.entries[1]?.offerCount).toBeUndefined();
     expect(result.entries[1]).toMatchObject({ identityKey: "k2", blueprintId: 111149 });
     expect(result.entries[1]?.unitPriceMinor).toBeUndefined();
     expect(result.entries[2]).toEqual({ identityKey: "k9" });
