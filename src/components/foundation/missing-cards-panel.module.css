@@ -334,3 +334,8 @@
 .cardtraderCreated { display: flex; align-items: center; gap: 8px; margin: 0; border-radius: 9px; background: var(--cf-ok-soft); color: var(--cf-ok-text); padding: 10px 12px; font-weight: 650; }
 .cardmarketGuideCard > p a { white-space: nowrap; }
 .cardmarketGuideActions > .secondaryAction { border-color: var(--cf-line2); background: var(--cf-surface); color: var(--cf-text2); }
+.optionTally { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.optionTally > span { display: grid; align-content: start; gap: 6px; }
+.optionTally small { color: var(--cf-text2); font-size: .76rem; }
+.optionTally b { color: var(--cf-text); font-size: .9rem; }
+@media (max-width: 640px) { .optionTally { grid-template-columns: 1fr; } }
