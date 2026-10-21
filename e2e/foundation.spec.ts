@@ -1,6 +1,8 @@
 import { readFile } from "node:fs/promises";
 
-import { expect, type Locator, type Page, test } from "@playwright/test";
+import { type Locator, type Page } from "@playwright/test";
+
+import { expect, test } from "./fixtures";
 
 const headers = {
   "access-control-allow-origin": "*",

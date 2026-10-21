@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 const PAGES = [
   { path: "/ratgeber/binder-groesse-taschen/", lang: "de", heading: /Welche Größe und wie viele Taschen/ },

@@ -335,7 +335,7 @@ const translations: Record<string, string> = {
   "Kartenbilder werden direkt von": "Card images are loaded directly from",
   "geladen und nicht von Your Card Binder kopiert oder in Backups gespeichert.": "and are not copied by Your Card Binder or stored in backups.",
   "Marketplace-Seiten werden nur nach einem eigenen Klick geöffnet. Your Card Binder meldet sich dort nicht an und führt keinen Kauf aus.": "Marketplace pages open only after you click. Your Card Binder does not sign in or make a purchase there.",
-  "Der aktuelle P0-Build verwendet keine Analyse-, Werbe- oder Chat-Skripte und setzt keine eigenen Login-Cookies.": "The current P0 build uses no analytics, advertising or chat scripts and sets no login cookies of its own.",
+  "Ohne deine Einwilligung lädt Your Card Binder keine Analyse-, Werbe- oder Chat-Skripte und setzt keine Cookies. Nur wenn du im Banner zustimmst, wird Google Analytics geladen.": "Without your consent Your Card Binder loads no analytics, advertising or chat scripts and sets no cookies. Google Analytics is loaded only if you agree in the banner.",
   "Grenzen der Daten": "Data limitations",
   "Anleitung zum Kauf": "Buying guide",
   "Marken, Bilder und Anbieter": "Brands, images and providers",

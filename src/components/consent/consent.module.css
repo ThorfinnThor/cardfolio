@@ -1,0 +1,14 @@
+.banner { position: fixed; right: 16px; bottom: 16px; left: 16px; z-index: 1000; display: flex; align-items: center; justify-content: space-between; gap: 18px 24px; max-width: 920px; margin: 0 auto; border: 1px solid var(--cf-line2); border-radius: 14px; background: var(--cf-surface); color: var(--cf-text); padding: 16px 18px; box-shadow: 0 10px 34px var(--cf-sh-deep); }
+.text { display: grid; gap: 6px; min-width: 0; }
+.text h2 { margin: 0; font-family: var(--cf-font-display); font-size: 1rem; font-weight: 650; line-height: 1.25; }
+.text p { margin: 0; color: var(--cf-text2); font-size: .86rem; line-height: 1.5; }
+.text p a { color: var(--cf-accent-text); font-weight: 650; text-decoration: underline; }
+.text small { color: var(--cf-muted); font-size: .76rem; line-height: 1.4; }
+.actions { display: flex; flex: 0 0 auto; gap: 10px; }
+.actions button { min-width: 112px; min-height: 46px; border: 2px solid var(--cf-accent-text); border-radius: 10px; background: var(--cf-surface); color: var(--cf-accent-text); padding: 10px 16px; font: inherit; font-size: .9rem; font-weight: 750; cursor: pointer; }
+.actions button:hover { background: var(--cf-accent-soft); }
+.actions button:focus-visible { outline: 3px solid color-mix(in srgb, var(--cf-accent) 55%, transparent); outline-offset: 2px; }
+@media (max-width: 680px) {
+  .banner { flex-direction: column; align-items: stretch; right: 12px; bottom: 12px; left: 12px; max-height: calc(100dvh - 24px); overflow: auto; }
+  .actions button { flex: 1 1 0; }
+}
