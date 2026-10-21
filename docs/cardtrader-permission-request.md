@@ -1,14 +1,14 @@
 # Request to CardTrader for market data (price) access – draft, not sent
 
-**Status:** draft. Nothing has been sent and no CardTrader price endpoint has been called by Cardfolio.
+**Status:** draft. Nothing has been sent and no CardTrader price endpoint has been called by Your Card Binder.
 Before sending, check this sentence: the catalogue discovery workflow already calls the CardTrader API
 with our token (read-only, catalogue only, see `docs/cardtrader-release-gate.md`). Say so honestly if asked.
 
-**Subject:** Request for market data (price) API access – Cardfolio
+**Subject:** Request for market data (price) API access – Your Card Binder
 
 Hello CardTrader team,
 
-I run Cardfolio (https://cardfolio-780.pages.dev), a free, local-first web app that helps people plan a
+I run Your Card Binder (https://cardfolio-780.pages.dev), a free, local-first web app that helps people plan a
 Pokémon card binder and then buy the cards at a marketplace. We would like to show an estimated price for
 each card and a total, using CardTrader price data.
 

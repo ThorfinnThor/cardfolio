@@ -1,4 +1,4 @@
-# Cardfolio release record — technical candidate / NO-GO
+# Your Card Binder release record — technical candidate / NO-GO
 
 This record assesses commit `28c2a6e354fd74b9d6fd94adb98df30b2f739d7b`. The commit containing this record is documentation-only and is not a production-release commit.
 

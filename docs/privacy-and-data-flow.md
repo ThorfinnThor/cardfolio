@@ -8,19 +8,19 @@ This document records the P0 implementation facts. It is not a legal opinion and
 |---|---|---|---|
 | Static site request | IP address and normal HTTP metadata | Configured Cloudflare Pages project | Depends on the operator's Cloudflare configuration and applicable logs |
 | Card search and detail | Search term, selected language and requested TCGdex card/set IDs | `api.tcgdex.net` directly from the browser | Card snapshots used by a binder are retained in local IndexedDB |
-| Card image | Image path and normal HTTP metadata | `assets.tcgdex.net` directly from the browser | Image bytes are not written to IndexedDB, GitHub, the static export or a Cardfolio-controlled cache |
+| Card image | Image path and normal HTTP metadata | `assets.tcgdex.net` directly from the browser | Image bytes are not written to IndexedDB, GitHub, the static export or a Your Card Binder-controlled cache |
 | Local binder | Binder name, page/slot structure, ownership and preferences | Browser IndexedDB for the current origin | Until the user/browser clears it or storage is evicted |
 | JSON backup | Selected local binders and referenced card snapshots | User-selected local download/file | Controlled by the user; no automatic upload |
-| Marketplace handoff | Only the link navigation initiated by the user | TCGplayer or Cardmarket | Governed by the destination; Cardfolio sends no authenticated request |
-| Card image fallback | Image path and normal HTTP metadata, only when TCGdex has no working image | `cardtrader.com` directly from the browser | Image bytes are not stored by Cardfolio |
-| CardTrader prices and product ids | None from the visitor: static files synced weekly by a GitHub Actions workflow | Cardfolio's own origin | Public data only; the API token stays a GitHub secret |
-| CardTrader links | Link navigation initiated by the user; the link carries the Cardfolio referral code | `cardtrader.com` | Governed by CardTrader; Cardfolio only sees the settlement of the referral |
+| Marketplace handoff | Only the link navigation initiated by the user | TCGplayer or Cardmarket | Governed by the destination; Your Card Binder sends no authenticated request |
+| Card image fallback | Image path and normal HTTP metadata, only when TCGdex has no working image | `cardtrader.com` directly from the browser | Image bytes are not stored by Your Card Binder |
+| CardTrader prices and product ids | None from the visitor: static files synced weekly by a GitHub Actions workflow | Your Card Binder's own origin | Public data only; the API token stays a GitHub secret |
+| CardTrader links | Link navigation initiated by the user; the link carries the Your Card Binder referral code | `cardtrader.com` | Governed by CardTrader; Your Card Binder only sees the settlement of the referral |
 | CardTrader wishlist (optional) | The visitor's own CardTrader API token (header) and the list: private name, blueprint ids, copies, language | `api.cardtrader.com` directly from the browser, only after an explicit click | The token stays in memory and is never stored or sent to Your Card Binder; the answer is only the wishlist id |
-| Binder offers | Link navigation initiated by the user; the link carries the Cardfolio Amazon partner tag | `amazon.de` | Governed by Amazon; Cardfolio only sees aggregated partner reports |
+| Binder offers | Link navigation initiated by the user; the link carries the Your Card Binder Amazon partner tag | `amazon.de` | Governed by Amazon; Your Card Binder only sees aggregated partner reports |
 | Network error reporting | Anonymous error report when a connection fails, if the browser supports Network Error Logging | Cloudflare (`nel` header set by Cloudflare) | Governed by Cloudflare; successful visits are not reported (`success_fraction` 0) |
 | Scheduled catalog sync | Public English/German TCGdex set metadata | GitHub repository | Validated files under `public/data/catalog` only |
 
-There is no Cardfolio account, authentication cookie, server-side user database, Supabase project, R2 bucket, analytics script, advertising script or required application secret in P0. GitHub Actions cannot access browser IndexedDB or backup files.
+There is no Your Card Binder account, authentication cookie, server-side user database, Supabase project, R2 bucket, analytics script, advertising script or required application secret in P0. GitHub Actions cannot access browser IndexedDB or backup files.
 
 ## Origin and backup warning
 

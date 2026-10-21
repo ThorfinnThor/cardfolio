@@ -181,7 +181,7 @@ This plan turns the remaining D-05 Smart Search work and D-06 Gift Builder V1 in
 - Define and implement `BinderAffiliateAdapter` plus a small reviewed repository configuration with verification date and enable/disable state.
 - Audit current provider, affiliate, deep-link and personalization terms before enabling any offer. Do not hardcode affiliate URLs in UI components and do not scrape product pages.
 - Keep `Karten besorgen` and `Binder personalisieren` as separate purchases with separate price disclosures.
-- Define the local Print Summary data contract; do not export Pokémon art/logos as physical cover assets and do not upload personal photos to Cardfolio.
+- Define the local Print Summary data contract; do not export Pokémon art/logos as physical cover assets and do not upload personal photos to Your Card Binder.
 - Complete privacy, rights, affiliate-disclosure, external-navigation, stale-offer and pricing Go/No-Go documentation.
 - Add integration tests for disabled/stale offers, URL construction, missing prices and marketplace handoff reuse.
 
@@ -189,7 +189,7 @@ This plan turns the remaining D-05 Smart Search work and D-06 Gift Builder V1 in
 
 - Affiliate/provider offers can be disabled without a code release or broken Gift flow.
 - No price, commission, exact-match or personalization capability is claimed without current evidence.
-- No private Gift text or media leaves the local-first repository through Cardfolio.
+- No private Gift text or media leaves the local-first repository through Your Card Binder.
 
 **Handoff:** Stop and tell the user to switch to Luna for Step 8.
 
@@ -221,7 +221,7 @@ This plan turns the remaining D-05 Smart Search work and D-06 Gift Builder V1 in
 ## Explicitly excluded from these eight steps
 
 - CLIP, runtime embeddings, vector databases or an external semantic-search service.
-- A Cardfolio checkout, automatic purchases or automatic ownership changes.
+- A Your Card Binder checkout, automatic purchases or automatic ownership changes.
 - Guaranteed card prices, shipping optimization or silent EUR/USD conversion.
 - A separate Gift application, server database or account requirement.
 - Server-side recipient data, greeting text, personal-photo uploads or private media analytics.

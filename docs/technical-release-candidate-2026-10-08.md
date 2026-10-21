@@ -1,4 +1,4 @@
-# Cardfolio technical release candidate — 2026-10-08
+# Your Card Binder technical release candidate — 2026-10-08
 
 This record assesses application commit `79c873488d15d3a8cb1105d474d15130f8aad158`. Its functional baseline is `0f92ecadfed801f1939f92adf5b0257ad8ab26c1`; the current commit adds the responsive/accessibility acceptance check and its human-abnahme checklist. It is not a public-production approval and does not authorize deployment, provider writes, commerce, or use of CardTrader data.
 
@@ -42,7 +42,7 @@ Gzip output can vary slightly by platform metadata. The table records the author
 | Smart Search | **GO, English artwork index only** | Reproducible index, 50-query evaluation set, explicit timeout/load-error fallbacks, and browser insertion path are present. Gift themes use the curated motif labels rather than unrestricted semantic inference. |
 | Gift binder | **GO without a price guarantee** | The local guided flow works and prioritizes valid image-bearing results. Any displayed estimate is informational and may not match a purchasable variant. |
 | TCGplayer handoff | **GO only for verified mappings** | 21,241 card mappings are available. The 49 unresolved records are excluded instead of guessed. No purchase confirmation is claimed. |
-| Cardmarket handoff | **GO as a manual-review list** | Output is intentionally a checking aid. Cardfolio does not promise exact automatic Cardmarket matching. |
+| Cardmarket handoff | **GO as a manual-review list** | Output is intentionally a checking aid. Your Card Binder does not promise exact automatic Cardmarket matching. |
 | CardTrader catalog, images, prices, Wishlist | **NO-GO** | Set-level mapping is not a trusted card/variant mapping. Written use permission, direct or manually verified card identities, variant/property samples, and image-language/rights evidence are still missing. |
 | CardTrader commerce | **NO-GO** | Not implemented or authorized; the commerce flag remains permanently separate and off. |
 | Price guarantees or budget promises | **NO-GO** | Gift estimates are display-only. No source currently supports an exact, fresh, variant-correct purchase total including shipping and taxes. |

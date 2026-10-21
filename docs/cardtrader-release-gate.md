@@ -57,12 +57,12 @@ Quell-ID verwendet werden.
 Quelle ist ausschließlich die [offizielle API-Referenz](https://www.cardtrader.com/en-EU/docs/api/full/reference):
 
 - Basis-URL: `https://api.cardtrader.com/api/v2`; jede Anfrage benötigt einen Bearer-Token.
-- `GET /info` prüft die Authentifizierung. Die Antwort kann `shared_secret` enthalten; Cardfolio protokolliert oder speichert dieses Feld nie.
+- `GET /info` prüft die Authentifizierung. Die Antwort kann `shared_secret` enthalten; Your Card Binder protokolliert oder speichert dieses Feld nie.
 - `GET /games`, `GET /categories?game_id=…`, `GET /expansions` und `GET /blueprints/export?expansion_id=…` bilden den read-only Katalogpfad.
 - Blueprints können `image_url`, `editable_properties`, `card_market_ids` und `tcg_player_id` enthalten.
 - `GET /marketplace/products` liefert bis zu 25 günstige Angebote je Blueprint, ist laut Referenz leicht gecacht und kann von späteren Warenkorbwerten abweichen.
-- Die Referenz nennt für den Marketplace an einer Stelle 1 Anfrage/Sekunde und unmittelbar danach 10 Anfragen/Sekunde. Cardfolio würde bis zur Klärung höchstens 1 Anfrage/Sekunde verwenden.
-- Wishlist-Positionen unterstützen unter anderem `blueprint_id`, Menge, Sprache, Zustand, Foil, Reverse und First Edition. Der Freitextimport kann unbekannte Zeilen laut Dokumentation still ignorieren; Cardfolio bereitet deshalb ausschließlich explizite, bestätigte `blueprint_id`-Positionen vor.
+- Die Referenz nennt für den Marketplace an einer Stelle 1 Anfrage/Sekunde und unmittelbar danach 10 Anfragen/Sekunde. Your Card Binder würde bis zur Klärung höchstens 1 Anfrage/Sekunde verwenden.
+- Wishlist-Positionen unterstützen unter anderem `blueprint_id`, Menge, Sprache, Zustand, Foil, Reverse und First Edition. Der Freitextimport kann unbekannte Zeilen laut Dokumentation still ignorieren; Your Card Binder bereitet deshalb ausschließlich explizite, bestätigte `blueprint_id`-Positionen vor.
 - Der read-only Adapter enthält absichtlich keine Methoden für `/cart`, `/cart/add` oder `/purchase`.
 
 Die Pokémon-spezifischen Eigenschaftsnamen und zulässigen Zustände werden **nicht** aus den Magic-Beispielen der Dokumentation abgeleitet. Sie wurden aus einem authentifizierten Pokémon-Kategorie-/Blueprint-Snapshot übernommen und anschließend sicher redigiert zusammengefasst.
@@ -71,7 +71,7 @@ Die Pokémon-spezifischen Eigenschaftsnamen und zulässigen Zustände werden **n
 
 Der Vollaudit verwendet ausschließlich die CardTrader-Kategorie `Pokémon Singles` (Kategorie-ID `73`). Zubehör, Booster, Tins, Complete Sets und `Pokémon Oversized` werden nicht als Einzelkartenvarianten verwendet.
 
-| Property | Beobachtete Werte | Cardfolio-Verwendung |
+| Property | Beobachtete Werte | Your Card Binder-Verwendung |
 |---|---|---|
 | `pokemon_language` | `de`, `en`, `es`, `fr`, `id`, `it`, `jp`, `kr`, `nl`, `pl`, `pt`, `ru`, `sv`, `th`, `zh-CN`, `zh-TW` | Sprachfilter und Exportfeld |
 | `condition` | `Mint`, `Near Mint`, `Slightly Played`, `Moderately Played`, `Played`, `Poor` | Zustandsauswahl; Default `Near Mint` |
@@ -107,7 +107,7 @@ Die [CardTrader-Nutzungsbedingungen](https://static.cardtrader.com/en/pages/term
 | Providerbilder als Fallback | **Go** (seit 2026-10-20) | Nur wenn TCGdex kein funktionierendes Bild liefert, sichtbar als „Bild: CardTrader“ gekennzeichnet, nur als externe Referenz (`https://cardtrader.com/uploads/blueprints/image/…`), nie in Backups gespeichert |
 | Aggregierte Preise | **Go** (seit 2026-10-20), als Fallback | Nur wenn TCGdex keinen Preis hat; als „günstigstes Angebot“ gekennzeichnet, `approximate`; keine Erstausgaben-Preise; Momentaufnahme je Workflow-Lauf |
 | Private Wishlist | **Go** (seit 2026-10-21, auf Aussage des Betreibers) | Die Freigabe liegt dem Repository noch nicht als Schriftstück bei (offen: Nachricht ablegen). Nur `POST /wishlists` mit dem eigenen Token des Nutzers, nur im Arbeitsspeicher, nach ausdrücklichem Klick; nie Sync-Token, nie Speicherung. Ein Lauf mit echtem Token steht noch aus. |
-| Warenkorb/Kauf | **dauerhaft ausgeschlossen** | Cardfolio ruft diese Endpunkte nicht auf; `cardtraderCommerce` bleibt `false` |
+| Warenkorb/Kauf | **dauerhaft ausgeschlossen** | Your Card Binder ruft diese Endpunkte nicht auf; `cardtraderCommerce` bleibt `false` |
 
 `cardtraderImages`, `cardtraderPrices`, `cardtraderProductIds`, `cardtraderSupplements` und `cardtraderCatalog` (CardTrader als Marktplatz neben Cardmarket und TCGplayer, nur Links, kein API-Schreibzugriff) sind aktiv. `cardtraderWishlist` und `cardtraderCommerce` sind fest deaktiviert (`scripts/check-release-gates.mjs` prüft das). Eine Erlaubnis für einen Datentyp öffnet keinen anderen automatisch.
 
@@ -156,22 +156,22 @@ Vom Betreiber am 20. Oktober 2026 im Chat übermittelt; die Originalnachricht mi
 >
 > You also have the option of combining the use of our APIs with our affiliate program, allowing you to earn credits for users you refer to CardTrader through your app. You can find all the details on how to activate and integrate the program directly on the affiliate program page.
 
-Folgerungen: Bilder mit Wasserzeichen dürfen angezeigt werden; Cardfolio lädt sie als externe Referenz und kopiert sie nicht. Das Partnerprogramm ist optional und noch nicht integriert. Cardfolio zeigt „Bild: CardTrader“ und nennt CardTrader als Preisquelle.
+Folgerungen: Bilder mit Wasserzeichen dürfen angezeigt werden; Your Card Binder lädt sie als externe Referenz und kopiert sie nicht. Das Partnerprogramm ist optional und noch nicht integriert. Your Card Binder zeigt „Bild: CardTrader“ und nennt CardTrader als Preisquelle.
 
 ### Versandfertige E-Mail
 
-**Subject:** API permission request for Cardfolio Pokémon binder planning
+**Subject:** API permission request for Your Card Binder Pokémon binder planning
 
 > Hello CardTrader API / Partnerships Team,
 >
-> my name is Schayan and I am developing Cardfolio, a local-first web application that helps Pokémon collectors — including parents and beginners — plan physical card binders and prepare missing-card lists. A current preview is available at https://cardfolio-780.pages.dev.
+> my name is Schayan and I am developing Your Card Binder, a local-first web application that helps Pokémon collectors — including parents and beginners — plan physical card binders and prepare missing-card lists. A current preview is available at https://cardfolio-780.pages.dev.
 >
-> Cardfolio does not sell cards and does not perform purchases. We will not scrape the CardTrader website and we do not intend to call cart or purchase endpoints. API credentials are kept server-side as a GitHub Actions secret and are never exposed in the browser, repository, local backups or exported binder files.
+> Your Card Binder does not sell cards and does not perform purchases. We will not scrape the CardTrader website and we do not intend to call cart or purchase endpoints. API credentials are kept server-side as a GitHub Actions secret and are never exposed in the browser, repository, local backups or exported binder files.
 >
 > We would like your written permission and technical guidance for the following capabilities. Please confirm each item separately, because we will keep every capability disabled unless it is explicitly approved:
 >
 > 1. **Catalog mapping:** Read CardTrader expansions and blueprints and store a minimal reviewed mapping between our TCGdex card identities and CardTrader expansion/blueprint IDs.
-> 2. **Marketplace prices and availability:** Read `/marketplace/products` for an exact blueprint and filter by language, condition and available variant properties. Cardfolio would display only dated, non-binding aggregate information such as the lowest matching offer, a typical offer range and the number of matching offers. Shipping, taxes and fees would be shown as excluded. We would not present these values as guaranteed market prices.
+> 2. **Marketplace prices and availability:** Read `/marketplace/products` for an exact blueprint and filter by language, condition and available variant properties. Your Card Binder would display only dated, non-binding aggregate information such as the lowest matching offer, a typical offer range and the number of matching offers. Shipping, taxes and fees would be shown as excluded. We would not present these values as guaranteed market prices.
 > 3. **Blueprint images:** Display a CardTrader blueprint image only as a clearly labelled fallback when our primary catalog has no image. We would reference the provider URL rather than redistribute an image archive.
 > 4. **Private Wishlist:** In a later phase, create a private Wishlist only after the user connects their own CardTrader account and explicitly confirms the exact blueprint, quantity, language, condition and variant. Tokens would not be stored in browser backups or exported files.
 >
@@ -186,13 +186,13 @@ Folgerungen: Bilder mit Wasserzeichen dürfen angezeigt werden; Cardfolio lädt 
 > - whether storing the minimal expansion/blueprint-ID mapping is permitted;
 > - and whether you require a separate production API token or application registration.
 >
-> We are happy to provide screenshots, a more detailed data-flow description or a limited test plan. Until we receive your written confirmation, CardTrader catalog data, images, prices and Wishlist actions will remain disabled in Cardfolio.
+> We are happy to provide screenshots, a more detailed data-flow description or a limited test plan. Until we receive your written confirmation, CardTrader catalog data, images, prices and Wishlist actions will remain disabled in Your Card Binder.
 >
 > Thank you for your guidance.
 >
 > Best regards<br>
 > Schayan<br>
-> Cardfolio
+> Your Card Binder
 
 ### Nachverfolgung
 

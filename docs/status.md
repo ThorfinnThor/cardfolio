@@ -200,7 +200,7 @@ Implemented:
 - Every line preserves quantity, original name, set, collector number, language, finish, edition and minimum condition for manual comparison.
 - Lists are split after 150 positions, not after 150 copies, matching Cardmarket's documented Wants-list entry limit.
 - Permanent warnings explain that Cardmarket may resolve another printing or illustration and that every edition must be checked before purchase.
-- Because Cardfolio does not reliably store Pokémon attacks and abilities, the output is labeled as a review list rather than a compatible decklist import.
+- Because Your Card Binder does not reliably store Pokémon attacks and abilities, the output is labeled as a review list rather than a compatible decklist import.
 - Design 3 panel with part selection, copy, TXT download, official help link and user-initiated Pokémon Singles search.
 
 Verification completed:
@@ -263,7 +263,7 @@ Implemented:
 - Public help/data-flow route covering local IndexedDB storage, origin binding, independent JSON backups, external TCGdex requests/images, marketplace handoffs and product limitations.
 - Repository data-flow record and release-gate matrix with explicit passed, conditional and blocked states; no legal-compliance claim is made.
 - Dependency and scaffold provenance record. All direct runtime packages declare reviewed permissive licenses; the complete installed tree was summarized separately from data/image rights.
-- Production design preview disabled; unused Create Next App public SVG assets removed and the default favicon replaced by an original Cardfolio icon.
+- Production design preview disabled; unused Create Next App public SVG assets removed and the default favicon replaced by an original Your Card Binder icon.
 - Cloudflare Pages CSP and security headers expanded to the actual static app hosts and capabilities.
 - GitHub Actions pinned to full verified commit SHAs, bounded by timeouts and extended with audit, typecheck, lint, build and automated release checks.
 - Repeatable `release:check` for static output, help route, header policy, disabled risky features, GitHub/Cloudflare separation and runtime licenses.
@@ -428,7 +428,7 @@ Completed:
 
 - Replaced the non-importable pipe-separated Cardmarket reference text with the documented `amountx full name abilities attacks` grammar.
 - TCGdex ability and attack names are stored in validated local card snapshots and backups. Existing snapshots are refreshed automatically when Cardmarket is selected.
-- Import text and variant review are now separate: Cardmarket receives only accepted decklist tokens, while set, number, language and printing preferences remain visible in Cardfolio.
+- Import text and variant review are now separate: Cardmarket receives only accepted decklist tokens, while set, number, language and printing preferences remain visible in Your Card Binder.
 - Cards lacking the required catalog identity fields are excluded visibly instead of producing a line that Cardmarket will reject.
 - Restored TCGplayer's full displayed collector numbers after live parser verification, such as `[G2] 002/132` and `[N1] 017/111`; local-only numbers are rejected by the Pokémon Mass Entry parser.
 
@@ -445,7 +445,7 @@ Completed:
 - The shortened lines `[N1] 17` and `[G2] 2` were rejected as not found. The full lines `[N1] 017/111` and `[G2] 002/132` were both resolved by the parser.
 - A single `1 Typhlosion (17) [N1] 017/111` line reached the anonymous cart as Neo Genesis, Moderately Played, Unlimited Holofoil. No checkout or payment was initiated.
 - Blaine's Charizard resolved but reported insufficient quantity under the selected Printing/Condition filters, proving that inventory/filter failure is distinct from an invalid line.
-- Cardfolio now lists the exact TCGplayer Printing and condition filters implied by each stored variant and condition preference. Unverified mapped-set candidates are excluded so one unsafe line cannot block the verified batch.
+- Your Card Binder now lists the exact TCGplayer Printing and condition filters implied by each stored variant and condition preference. Unverified mapped-set candidates are excluded so one unsafe line cannot block the verified batch.
 - Shadowless selections are excluded from the standard Base Set handoff because TCGplayer uses the separate `[BSS]` set code; this variant remains blocked until separately parser-tested.
 
 Verification completed:
@@ -459,7 +459,7 @@ Completed:
 
 - Card search now filters every provider result through the synchronized physical-set catalog before rendering it. Pokémon TCG Pocket cards can no longer be selected from the physical-binder search.
 - Unknown sets are held back until the weekly public-data workflow has classified them. The existing card-detail guard remains as a fallback.
-- The TCGplayer panel now explains that an unmapped card stays in Cardfolio's missing list and is only omitted from the generated TCGplayer list.
+- The TCGplayer panel now explains that an unmapped card stays in Your Card Binder's missing list and is only omitted from the generated TCGplayer list.
 - Replaced the ambiguous heading `Von der Übergabe ausgeschlossen` and exclusion wording with explicit TCGplayer-list language.
 
 Verification completed:
@@ -532,7 +532,7 @@ Completed:
 
 - Smart Search now has explicit loading, malformed-index/error, timeout and no-result guidance. Every failure state offers `Mit Name/Nummer suchen` and preserves the free-text query where available.
 - The search drawer supports keyboard-visible focus states and returns focus to the opening slot button after Escape/close. The single-mode feature-off layout no longer leaves a half-width toggle.
-- Card review now offers an explicit `Deutsch` / `English` choice for the binder. If a requested localized detail is unavailable, Cardfolio tries the English TCGdex detail and labels the fallback.
+- Card review now offers an explicit `Deutsch` / `English` choice for the binder. If a requested localized detail is unavailable, Your Card Binder tries the English TCGdex detail and labels the fallback.
 - Added browser scenarios for Smart Search success, DE/EN choice, mobile overflow and normal-search recovery. The suite contains 17 scenarios in total.
 
 Verification:
@@ -577,7 +577,7 @@ Completed:
 
 Known source limitation:
 
-- TCGdex currently returns no image reference for some records, including `2014xy-5`, `2022swsh-7` and `tk-hs-r-16`; the checked TCGdex language variants and asset locations did not provide a usable image. Cardfolio continues to show an honest fallback instead of introducing an unreviewed image source.
+- TCGdex currently returns no image reference for some records, including `2014xy-5`, `2022swsh-7` and `tk-hs-r-16`; the checked TCGdex language variants and asset locations did not provide a usable image. Your Card Binder continues to show an honest fallback instead of introducing an unreviewed image source.
 
 Verification:
 

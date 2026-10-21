@@ -1,4 +1,4 @@
-# Cardfolio UI/UX + CardTrader — Luna/Sol-Implementierungsplan
+# Your Card Binder UI/UX + CardTrader — Luna/Sol-Implementierungsplan
 
 Stand: 2026-10-04
 
@@ -6,14 +6,14 @@ Dieser Plan überprüft `cardfolio-ui-ux-todo.md` gegen den aktuellen Stand des 
 
 ## Produktziel
 
-Cardfolio soll auch für Menschen funktionieren, die Pokémon-Karten nicht kennen. Besonders Eltern sollen ohne Vorwissen eine Binderseite planen können, ohne Setcodes, Druckvarianten oder Marketplace-Begriffe verstehen zu müssen.
+Your Card Binder soll auch für Menschen funktionieren, die Pokémon-Karten nicht kennen. Besonders Eltern sollen ohne Vorwissen eine Binderseite planen können, ohne Setcodes, Druckvarianten oder Marketplace-Begriffe verstehen zu müssen.
 
 Die Standardstrecke lautet deshalb:
 
 1. **Was möchtest du erstellen?** Leer starten, mit einem Set starten oder Geschenk erstellen.
 2. **Welche Karten möchtest du?** Bilder und verständliche Namen zuerst; Fachfilter nur bei Bedarf.
 3. **Wohin kommen sie?** Binder, Seite und Platz bleiben sichtbar.
-4. **Ist es die richtige Ausgabe?** Cardfolio erklärt Finish, Edition und Druckvariante in Alltagssprache und zeigt nur tatsächlich mögliche Werte.
+4. **Ist es die richtige Ausgabe?** Your Card Binder erklärt Finish, Edition und Druckvariante in Alltagssprache und zeigt nur tatsächlich mögliche Werte.
 5. **Plan speichern.** Jede Änderung wird bestätigt und kann unmittelbar rückgängig gemacht werden.
 6. **Fehlende Karten besorgen.** Erst hier wird zwischen Cardmarket, TCGplayer und CardTrader gewählt.
 
@@ -82,10 +82,10 @@ Erweitern:
 
 CardTrader verwendet eine authentifizierte REST-API v2. Ein `Blueprint` ist die konkrete, handelbare Druckausgabe; ein `Product` ist ein tatsächlich angebotenes Exemplar dieses Blueprints.
 
-| CardTrader-Daten/Funktion | Nutzen in Cardfolio | Einschränkung / Regel |
+| CardTrader-Daten/Funktion | Nutzen in Your Card Binder | Einschränkung / Regel |
 |---|---|---|
 | Games, Kategorien, Expansions | Pokémon-Katalog und Setcodes abgleichen | IDs nicht hardcoden; Pokémon und „Single Cards“ bei jedem Sync anhand der API ermitteln. |
-| Blueprint-ID, Name, Version, Expansion | stabile CardTrader-Zuordnung einer konkreten Karte | TCGdex bleibt Cardfolios interne Identität; CardTrader-ID ist nur Provider-Mapping. |
+| Blueprint-ID, Name, Version, Expansion | stabile CardTrader-Zuordnung einer konkreten Karte | TCGdex bleibt Your Card Binders interne Identität; CardTrader-ID ist nur Provider-Mapping. |
 | `card_market_ids`, `tcg_player_id` | vorhandene Provider-Mappings gegenprüfen und Matches sicherer machen | Zuerst Abdeckung und Qualität speziell für Pokémon messen; leere IDs nicht erraten. |
 | `editable_properties` / Kategorie-Eigenschaften | erlaubte Sprache, Zustand, Foil/Reverse/First Edition dynamisch prüfen | Nicht die Magic-Beispiele aus der Dokumentation auf Pokémon übertragen; Werte aus der Pokémon-Kategorie lesen. |
 | `image_url` | möglicher Bildfallback, wenn TCGdex kein Bild liefert | Nur nach schriftlich geklärter Nutzung/Hotlinking/Caching-Regel; keine Bildkopie ins Repo ohne Erlaubnis. |
@@ -93,11 +93,11 @@ CardTrader verwendet eine authentifizierte REST-API v2. Ein `Blueprint` ist die 
 | Verkäuferdaten / CardTrader Zero | Verfügbarkeit, Land und Zero-Eignung erklären; später Einkaufsschätzung verbessern | Verkäuferprofil und Versand dürfen nicht als Kartenpreis vermischt werden. |
 | Shipping Methods | spätere Gesamtkosten-Schätzung je Verkäufer | Erst nach exakter Produktauswahl sinnvoll; nicht Teil der ersten Preisanzeige. |
 | Wishlist API | fehlende Karten mit Blueprint-ID, Menge, Sprache, Zustand, Foil/Reverse und First Edition an eine CardTrader-Wunschliste übergeben | Benötigt ein persönliches Bearer-Token des Nutzers. Kein Token im Frontend-Bundle oder in IndexedDB speichern. |
-| Cart API | ausgewählte konkrete Angebote in einen CardTrader-Warenkorb legen | Nicht Teil dieses Plans: kein automatischer Kauf und kein `purchase`-Aufruf aus Cardfolio. |
+| Cart API | ausgewählte konkrete Angebote in einen CardTrader-Warenkorb legen | Nicht Teil dieses Plans: kein automatischer Kauf und kein `purchase`-Aufruf aus Your Card Binder. |
 
 ### Preisstrategie
 
-CardTrader kann die Preisabdeckung verbessern, aber nicht automatisch einen „genaueren Kartenwert“ garantieren. Cardfolio berechnet nur dann eine Schätzung, wenn Blueprint, Sprache, Finish/Edition und Zustand ausreichend genau zugeordnet sind.
+CardTrader kann die Preisabdeckung verbessern, aber nicht automatisch einen „genaueren Kartenwert“ garantieren. Your Card Binder berechnet nur dann eine Schätzung, wenn Blueprint, Sprache, Finish/Edition und Zustand ausreichend genau zugeordnet sind.
 
 Für jede Schätzung werden gespeichert und angezeigt:
 
@@ -133,7 +133,7 @@ Das zuverlässigste CardTrader-Format ist kein erfundener TXT-String, sondern ei
 - `reverse`
 - `first_edition`
 
-Ohne verbundene CardTrader-Sitzung erzeugt Cardfolio nur eine überprüfbare Vorschau und eine Cardfolio-neutrale JSON/CSV-Datei. Sie darf nicht als „direkt importierbar“ bezeichnet werden, solange CardTrader dafür kein offizielles Käufer-Importformat dokumentiert. Mit Verbindung wird nach ausdrücklicher Bestätigung eine neue, standardmäßig private Wishlist über `POST /wishlists` angelegt. Kauf und Warenkorb bleiben getrennte, spätere Entscheidungen.
+Ohne verbundene CardTrader-Sitzung erzeugt Your Card Binder nur eine überprüfbare Vorschau und eine Your Card Binder-neutrale JSON/CSV-Datei. Sie darf nicht als „direkt importierbar“ bezeichnet werden, solange CardTrader dafür kein offizielles Käufer-Importformat dokumentiert. Mit Verbindung wird nach ausdrücklicher Bestätigung eine neue, standardmäßig private Wishlist über `POST /wishlists` angelegt. Kauf und Warenkorb bleiben getrennte, spätere Entscheidungen.
 
 ### Architektur und Sicherheit
 
@@ -362,7 +362,7 @@ Ohne verbundene CardTrader-Sitzung erzeugt Cardfolio nur eine überprüfbare Vor
 - Verbindung/Token als fortgeschrittenen Schritt erklären; keine Token-Persistenz anbieten.
 - Bildfallback sprachlich kennzeichnen, damit ein englisches/Providerbild nicht als deutsche Kartenausgabe missverstanden wird.
 
-**Abnahme:** Pro Provider wird nur ein Panel gezeigt; Nutzer verstehen, was sicher zugeordnet ist, was geschätzt wird und was Cardfolio nicht automatisch kauft.
+**Abnahme:** Pro Provider wird nur ein Panel gezeigt; Nutzer verstehen, was sicher zugeordnet ist, was geschätzt wird und was Your Card Binder nicht automatisch kauft.
 
 **Umsetzungsstand 04.10.2026:** Der Provider-Switch unterstützt CardTrader hinter `FEATURES.cardtraderCatalog` (aktuell `false`). Die vorbereitete Ansicht zeigt Status, Ausgabevorschau, Sprache, Finish, Edition, Zustand, Menge, Bildquelle, Preis-/Zeit-/Konfidenzstatus sowie getrennte, deaktivierte Angebote-/Wishlist-Aktionen. Token werden im Panel weder abgefragt noch gespeichert. Aktivierung bleibt bis zum externen CardTrader-Gate aus Schritt 8 blockiert.
 
@@ -385,7 +385,7 @@ Ohne verbundene CardTrader-Sitzung erzeugt Cardfolio nur eine überprüfbare Vor
 - Neutrale JSON/CSV-Prüfdatei für nicht verbundene Nutzer anbieten, ohne falsches Importversprechen.
 - Niemals `cart/purchase` aufrufen; `cardtraderCommerce` bleibt deaktiviert.
 
-**Abnahme:** Exakte Karten können verlustfrei in eine private Wishlist übergeben werden; unklare Karten bleiben in Cardfolio zur Prüfung; Preise/Bilder verschwinden sauber, wenn Flag, Freigabe oder Daten fehlen.
+**Abnahme:** Exakte Karten können verlustfrei in eine private Wishlist übergeben werden; unklare Karten bleiben in Your Card Binder zur Prüfung; Preise/Bilder verschwinden sauber, wenn Flag, Freigabe oder Daten fehlen.
 
 **Danach:** Zu Luna wechseln.
 

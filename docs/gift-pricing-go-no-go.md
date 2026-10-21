@@ -22,7 +22,7 @@ The application may display available provider metrics as estimates, including t
 
 A measured Pikachu plus two-other-Pokémon benchmark covering price availability, cache hit rate, request count and time to first results is still required before any budget guarantee or price-led preset. The current TCGdex printing/price mapping caveat also needs a fresh review immediately before commercial activation.
 
-The 2026-10-01 Step-7 provider review confirms that TCGplayer directs applications using pricing data to its partner APIs and requires direct contact for commission terms. Cardfolio has no recorded partner/API approval. TCGdex's MIT repository license is not treated as a grant to commercially reuse third-party marketplace data or Pokémon artwork. These are additional reasons to keep affiliate use, guaranteed prices and commercial price-led claims disabled; see `gift-commerce-release-gates.md`.
+The 2026-10-01 Step-7 provider review confirms that TCGplayer directs applications using pricing data to its partner APIs and requires direct contact for commission terms. Your Card Binder has no recorded partner/API approval. TCGdex's MIT repository license is not treated as a grant to commercially reuse third-party marketplace data or Pokémon artwork. These are additional reasons to keep affiliate use, guaranteed prices and commercial price-led claims disabled; see `gift-commerce-release-gates.md`.
 
 ## Go criteria
 

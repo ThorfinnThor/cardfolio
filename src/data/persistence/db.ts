@@ -12,7 +12,7 @@ export interface GiftCandidateCacheRecord {
   expiresAt: string;
 }
 
-interface CardfolioDB extends DBSchema {
+interface AppDatabaseSchema extends DBSchema {
   binders: {
     key: string;
     value: Binder;
@@ -35,13 +35,15 @@ interface CardfolioDB extends DBSchema {
   };
 }
 
-let databasePromise: Promise<IDBPDatabase<CardfolioDB>> | undefined;
+let databasePromise: Promise<IDBPDatabase<AppDatabaseSchema>> | undefined;
 
-export function openCardfolioDB(): Promise<IDBPDatabase<CardfolioDB>> {
+export function openAppDatabase(): Promise<IDBPDatabase<AppDatabaseSchema>> {
   if (typeof indexedDB === "undefined") {
     return Promise.reject(new Error("IndexedDB is not available in this environment."));
   }
-  databasePromise ??= openDB<CardfolioDB>("cardfolio", 2, {
+  // The database and storage-key names keep the product's original name ("cardfolio"): renaming them would orphan every
+  // visitor's saved binders.
+  databasePromise ??= openDB<AppDatabaseSchema>("cardfolio", 2, {
     upgrade(database) {
       if (!database.objectStoreNames.contains("binders")) database.createObjectStore("binders");
       if (!database.objectStoreNames.contains("cards")) database.createObjectStore("cards");

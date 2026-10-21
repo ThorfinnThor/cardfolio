@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Cardfolio must distinguish a catalog candidate from an order-ready Cardmarket
+Your Card Binder must distinguish a catalog candidate from an order-ready Cardmarket
 product. Text matching, a matching set name or a working search URL do not prove
 that the intended printing, language and variant were selected.
 

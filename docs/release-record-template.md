@@ -1,4 +1,4 @@
-# Cardfolio release record
+# Your Card Binder release record
 
 Complete this file for the exact commit before each public release. Do not replace unknown values with assumptions.
 

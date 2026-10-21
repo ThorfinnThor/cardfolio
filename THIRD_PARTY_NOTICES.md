@@ -2,7 +2,7 @@
 
 Review date: 2026-09-27. Versions are those resolved by the current `package-lock.json`.
 
-Cardfolio was implemented as a fresh project after the CF-02 reuse review. No code or assets from the external binder reference projects were copied. The initial repository scaffold was produced by Create Next App; Next.js is MIT licensed. The repository currently has no top-level project license, so no permission to reuse Cardfolio's own source is granted by default. The owner must choose and add a project license before presenting the repository as open source.
+Your Card Binder was implemented as a fresh project after the CF-02 reuse review. No code or assets from the external binder reference projects were copied. The initial repository scaffold was produced by Create Next App; Next.js is MIT licensed. The repository currently has no top-level project license, so no permission to reuse Your Card Binder's own source is granted by default. The owner must choose and add a project license before presenting the repository as open source.
 
 ## Runtime dependencies
 
@@ -31,6 +31,6 @@ The authoritative license texts and copyright notices remain in each installed p
 
 ## Data and image sources are separate
 
-TCGdex describes its cards-database repository as MIT licensed and its API as free without an API key. This does not establish a blanket license for Pokémon names, logos, card artwork or externally hosted card scans. Cardfolio stores TCGdex data references and loads images directly; the public image/brand operating model remains a human release gate.
+TCGdex describes its cards-database repository as MIT licensed and its API as free without an API key. This does not establish a blanket license for Pokémon names, logos, card artwork or externally hosted card scans. Your Card Binder stores TCGdex data references and loads images directly; the public image/brand operating model remains a human release gate.
 
-Marketplace names and links are used only to describe user-initiated handoffs. Cardfolio does not claim partnership, endorsement, price accuracy, an exact match or a completed purchase.
+Marketplace names and links are used only to describe user-initiated handoffs. Your Card Binder does not claim partnership, endorsement, price accuracy, an exact match or a completed purchase.

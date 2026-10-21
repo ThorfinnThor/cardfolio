@@ -52,7 +52,7 @@
     {
       "catalogKey": "en:jumbo",
       "category": "unsupported-product-category",
-      "reason": "TCGdex Jumbo cards belong to CardTrader's Oversized product category, while Cardfolio's reviewed mapping contract is restricted to Pokémon Singles.",
+      "reason": "TCGdex Jumbo cards belong to CardTrader's Oversized product category, while Your Card Binder's reviewed mapping contract is restricted to Pokémon Singles.",
       "evidenceUrls": [
         "https://github.com/ThorfinnThor/cardfolio/actions/runs/37741208480"
       ]
