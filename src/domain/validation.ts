@@ -26,7 +26,7 @@ const imageUrlSchema = z.url().refine((value) => {
 export const cardSnapshotSchema = z.object({
   key: cardKeySchema,
   ref: z.object({
-    provider: z.literal("tcgdex"),
+    provider: z.enum(["tcgdex", "cardtrader"]),
     id: z.string().min(1).max(200),
     language: z.enum(["en", "de"]),
   }),

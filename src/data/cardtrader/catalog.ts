@@ -47,7 +47,8 @@ type PriceFile = z.infer<typeof priceFileSchema>;
 /** Collector numbers are padded differently between providers ("001" vs "1"); compare the normalised form. */
 export function normalizeCollectorNumber(value: string): string {
   const text = value.trim().toLowerCase().split("/")[0]!.replace(/[^a-z0-9]+/g, "");
-  return text.replace(/^([a-z]*)0+(\d)/, "$1$2");
+  // "0RC1" (a leading zero before the letters) and "RC1" are the same number.
+  return text.replace(/^0+(?=[a-z])/, "").replace(/^([a-z]*)0+(\d)/, "$1$2");
 }
 
 function normalizeName(value: string): string {

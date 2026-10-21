@@ -45,6 +45,8 @@ jobs:
             node -e 'const c=require("./.cardtrader/coverage.json"); delete c.cardtraderOnlyBySet; console.log(JSON.stringify(c,null,1))'
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+      - name: Update the supplement cards (CardTrader cards TCGdex does not list)
+        run: node scripts/cardtrader-supplements.mjs
       - run: npm run typecheck
       - run: npm run lint
       - run: npm test

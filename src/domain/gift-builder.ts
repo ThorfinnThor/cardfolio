@@ -120,7 +120,7 @@ const MODERN_START_YEAR = 2010;
 
 function validCandidate(candidate: GiftCardCandidate): boolean {
   return candidate.card.physicalStatus !== "digital"
-    && candidate.card.key === `tcgdex:${candidate.card.ref.id}:${candidate.card.ref.language}`
+    && candidate.card.key === `${candidate.card.ref.provider}:${candidate.card.ref.id}:${candidate.card.ref.language}`
     && !variantSelectionIssue(candidate.variant, candidate.card.availableVariants);
 }
 

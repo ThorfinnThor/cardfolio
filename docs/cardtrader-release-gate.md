@@ -4,7 +4,7 @@ Stand: 20. Oktober 2026
 
 ## Ergebnis
 
-**Update 20. Oktober 2026:** CardTrader hat schriftlich bestätigt, dass Bilder, Preise und alle über die API verfügbaren Informationen für den beschriebenen Einsatz genutzt werden dürfen (Wortlaut siehe Abschnitt „Antwort von CardTrader“). Daraufhin sind `cardtraderImages` und `cardtraderPrices` aktiv, und der Workflow `cardtrader-sync.yml` schreibt Blueprints, Bild-Pfade, Cardmarket-/TCGplayer-Produkt-IDs und günstigste Angebotspreise nach `public/data/cardtrader/`. `cardtraderCatalog` (zusätzliche Karten, die TCGdex nicht kennt), `cardtraderWishlist` und `cardtraderCommerce` bleiben **aus**: Wishlist-Schreibzugriffe und Kauf sind von der Antwort nicht gedeckt.
+**Update 20. Oktober 2026:** CardTrader hat schriftlich bestätigt, dass Bilder, Preise und alle über die API verfügbaren Informationen für den beschriebenen Einsatz genutzt werden dürfen (Wortlaut siehe Abschnitt „Antwort von CardTrader“). Daraufhin sind `cardtraderImages` und `cardtraderPrices` aktiv, und der Workflow `cardtrader-sync.yml` schreibt Blueprints, Bild-Pfade, Cardmarket-/TCGplayer-Produkt-IDs und günstigste Angebotspreise nach `public/data/cardtrader/`. `cardtraderSupplements` ist seit 2026-10-21 aktiv (geprüfte Ergänzungskarten: Radiant Collection, Miscellaneous Promos); `cardtraderCatalog` (CardTrader als Marktplatz-Modus) bleibt aus. `cardtraderWishlist` und `cardtraderCommerce` bleiben **aus**: Wunschliste und Kauf brauchen zuerst ein geprüftes Konzept für den Token des Nutzers. Der Betreiber hat am 2026-10-21 erklärt, volle Erlaubnis von CardTrader zu haben; die Originalnachricht ist noch abzulegen.
 
 Stand davor (Vorbereitung): Die providerneutrale Katalogschnittstelle, Laufzeitschemas, konservative Mappinglogik und reproduzierbare Audit-Werkzeuge waren vorbereitet, alle UI-Flags aus.
 
@@ -109,7 +109,7 @@ Die [CardTrader-Nutzungsbedingungen](https://static.cardtrader.com/en/pages/term
 | Private Wishlist | **No-Go** | Von der Antwort nicht gedeckt; erst Testkonto-Lauf, Nutzerbestätigung, kein Token im Browser/Backup |
 | Warenkorb/Kauf | **dauerhaft ausgeschlossen** | Cardfolio ruft diese Endpunkte nicht auf; `cardtraderCommerce` bleibt `false` |
 
-`cardtraderImages` und `cardtraderPrices` sind aktiv. `cardtraderCatalog`, `cardtraderWishlist` und `cardtraderCommerce` sind fest deaktiviert (`scripts/check-release-gates.mjs` prüft das). Eine Erlaubnis für einen Datentyp öffnet keinen anderen automatisch.
+`cardtraderImages`, `cardtraderPrices`, `cardtraderProductIds` und `cardtraderSupplements` sind aktiv. `cardtraderCatalog`, `cardtraderWishlist` und `cardtraderCommerce` sind fest deaktiviert (`scripts/check-release-gates.mjs` prüft das). Eine Erlaubnis für einen Datentyp öffnet keinen anderen automatisch.
 
 ## Reproduzierbarer Discovery- und Mappinglauf
 

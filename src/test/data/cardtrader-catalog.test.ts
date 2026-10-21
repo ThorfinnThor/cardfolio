@@ -51,6 +51,9 @@ describe("collector number normalisation", () => {
     expect(normalizeCollectorNumber("TG01")).toBe("tg1");
     expect(normalizeCollectorNumber("SWSH001")).toBe("swsh1");
     expect(normalizeCollectorNumber("000")).toBe("0");
+    expect(normalizeCollectorNumber("0RC1/RC25")).toBe("rc1");
+    expect(normalizeCollectorNumber("RC1")).toBe("rc1");
+    expect(normalizeCollectorNumber("0h1")).toBe("h1");
     expect(normalizeCollectorNumber("")).toBe("");
   });
 });
@@ -148,6 +151,6 @@ describe("committed CardTrader data files", () => {
     // The script cannot be imported (it runs on import), so its normaliser is mirrored here and kept in step.
     const script = readFileSync(path.join(process.cwd(), "scripts", "cardtrader-sync.mjs"), "utf8");
     expect(script).toContain('.split("/")[0].replace(/[^a-z0-9]+/g, "")');
-    expect(script).toContain('.replace(/^([a-z]*)0+(\\d)/, "$1$2")');
+    expect(script).toContain('.replace(/^0+(?=[a-z])/, "").replace(/^([a-z]*)0+(\\d)/, "$1$2")');
   });
 });

@@ -4,7 +4,8 @@ export type CardKey = string;
 export type UUID = string;
 
 export interface CardRef {
-  provider: "tcgdex";
+  /** "cardtrader" only for the few supplement cards TCGdex does not list (see data/cardtrader/supplements). */
+  provider: "tcgdex" | "cardtrader";
   id: string;
   language: CardLanguage;
 }

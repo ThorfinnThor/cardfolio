@@ -61,6 +61,7 @@ requireText("src/config/feature-flags.ts", [
   "tcgplayerPrefill: false",
   "cardtraderPreview: true",
   "cardtraderCatalog: false",
+  "cardtraderSupplements: true",
   "cardtraderImages: true",
   "cardtraderPrices: true",
   "cardtraderProductIds: true",
