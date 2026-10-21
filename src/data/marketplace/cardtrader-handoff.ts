@@ -9,9 +9,8 @@ export interface CardtraderHandoffEntry {
   blueprintId?: number;
   /** Cheapest EUR listing at the item's minimum condition, from the weekly snapshot, per card. */
   unitPriceMinor?: number;
-  /** Offers in the card's language from the weekly snapshot; `atLeast` when the API limit of 25 was reached. */
+  /** Offers in the card's language from the weekly snapshot. */
   offerCount?: number;
-  offersAtLeast?: boolean;
   /** Seller countries of the offers, cheapest first. */
   sellerCountries?: string[];
 }
@@ -44,7 +43,7 @@ export async function prepareCardtraderHandoff(items: readonly MissingItem[], ca
       blueprintId: match.blueprint.id,
       url: cardtraderCardUrl(match.blueprint.id),
       ...(price ? { unitPriceMinor: price.amountMinor } : {}),
-      ...(offers ? { offerCount: offers.count, offersAtLeast: offers.atLeast, ...(offers.countries.length ? { sellerCountries: offers.countries } : {}) } : {}),
+      ...(offers ? { offerCount: offers.count, ...(offers.countries.length ? { sellerCountries: offers.countries } : {}) } : {}),
     });
     if (price) { pricedTotalMinor += price.amountMinor * item.quantity; pricedQuantity += item.quantity; }
   }
