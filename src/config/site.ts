@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 
 export const SITE_ORIGIN = "https://yourcardbinder.com";
-export const SITE_NAME = "Cardfolio";
+export const SITE_NAME = "Your Card Binder";
 
 /** Shared social preview (1200 × 630, text only). Pages that set their own `openGraph` must list it again. */
-export const OG_IMAGE = { url: "/og-cardfolio.png", width: 1200, height: 630, alt: "Cardfolio: Pokémon-Binder als Geschenk zusammenstellen" } as const;
+export const OG_IMAGE = { url: "/og-yourcardbinder.png", width: 1200, height: 630, alt: "Your Card Binder: Pokémon-Binder als Geschenk zusammenstellen" } as const;
 
 export type PageLanguage = "de" | "en";
 

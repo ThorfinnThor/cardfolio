@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { FoundationWorkspace } from "@/components/foundation/FoundationWorkspace";
 import { pageUrlMetadata } from "@/config/site";
 
-const TITLE = "Pokémon-Binder verschenken · Cardfolio";
+const TITLE = "Pokémon-Binder verschenken · Your Card Binder";
 const DESCRIPTION = "Ein persönlicher Pokémon-Binder als Geschenk: Lieblings-Pokémon wählen, Karten ansehen und Binder samt Karten besorgen. Ohne Konto, lokal im Browser.";
 
 export const metadata: Metadata = {

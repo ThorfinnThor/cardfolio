@@ -27,7 +27,7 @@ const HERO = {
 
 /**
  * Example page for the hero: the same nine Pikachu cards the app's start screen shows. TCGdex serves the
- * artwork at runtime; Cardfolio does not store or copy the image bytes. Purely decorative, so no alt text. The small
+ * artwork at runtime; Your Card Binder does not store or copy the image bytes. Purely decorative, so no alt text. The small
  * image size (about 20 KB each) is enough for a pocket this size.
  */
 const EXAMPLE_CARDS = [

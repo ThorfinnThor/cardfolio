@@ -8,7 +8,7 @@ export const metadata = speciesIndexMetadata("en");
 
 export default function SpeciesIndexPage() {
   return (
-    <ContentFrame language="en" alternatePath={speciesIndexPath("de")} crumbs={[{ name: "Cardfolio", path: homePath("en") }, { name: "Pokémon binders", path: speciesIndexPath("en") }]}>
+    <ContentFrame language="en" alternatePath={speciesIndexPath("de")} crumbs={[{ name: "Your Card Binder", path: homePath("en") }, { name: "Pokémon binders", path: speciesIndexPath("en") }]}>
       <SpeciesIndex all={publishedSpecies()} language="en" />
     </ContentFrame>
   );

@@ -7,7 +7,7 @@ export const metadata = guideIndexMetadata("en");
 
 export default function GuidesPage() {
   return (
-    <ContentFrame language="en" alternatePath={guideIndexPath("de")} crumbs={[{ name: "Cardfolio", path: homePath("en") }, { name: "Guides", path: guideIndexPath("en") }]}>
+    <ContentFrame language="en" alternatePath={guideIndexPath("de")} crumbs={[{ name: "Your Card Binder", path: homePath("en") }, { name: "Guides", path: guideIndexPath("en") }]}>
       <GuideIndex language="en" />
     </ContentFrame>
   );

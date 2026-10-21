@@ -156,7 +156,7 @@ export function GiftBinderSpread({ pages, inspectedKey, onInspect, onSwap }: Gif
           {twoPages ? <span className={styles.binderRings} aria-hidden="true"><i /><i /><i /></span> : null}
           {twoPages ? (left
             ? <BinderPage key={`page-${leftIndex}`} pockets={left} firstIndex={(leftIndex ?? 0) * POCKETS_PER_PAGE} label={`Seite ${(leftIndex ?? 0) + 1}`} inspectedKey={inspectedKey} onInspect={onInspect} />
-            : <div className={styles.innerCover} aria-hidden="true"><span>Cardfolio</span></div>) : null}
+            : <div className={styles.innerCover} aria-hidden="true"><span>Your Card Binder</span></div>) : null}
           {right
             ? <BinderPage key={`page-${rightIndex}`} pockets={right} firstIndex={rightIndex * POCKETS_PER_PAGE} label={`Seite ${rightIndex + 1}`} inspectedKey={inspectedKey} onInspect={onInspect} />
             : twoPages ? <div className={styles.blankPage} aria-hidden="true" /> : null}

@@ -10,8 +10,8 @@ import { DISCLAIMER } from "@/content/disclaimer";
 
 import styles from "./help.module.css";
 
-const TITLE = "Hilfe und Datenflüsse · Cardfolio";
-const DESCRIPTION = "Speicherung, Backups, externe Anbieter und Grenzen von Cardfolio.";
+const TITLE = "Hilfe und Datenflüsse · Your Card Binder";
+const DESCRIPTION = "Speicherung, Backups, externe Anbieter und Grenzen von Your Card Binder.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -23,13 +23,13 @@ export default function HelpPage() {
   return (
     <main className={styles.page}>
       <div className={styles.topline}>
-        <Link className={styles.back} href="/app/">← Zurück zu Cardfolio</Link>
+        <Link className={styles.back} href="/app/">← Zurück zu Your Card Binder</Link>
         <LanguageMenu />
       </div>
       <header className={styles.header}>
         <p className={styles.eyebrow}>Hilfe und Transparenz</p>
-        <h1>Was Cardfolio speichert und verbindet</h1>
-        <p>Cardfolio ist ein lokaler Wunschbinder. Es gibt kein Konto und keine Cloud-Synchronisierung.</p>
+        <h1>Was Your Card Binder speichert und verbindet</h1>
+        <p>Your Card Binder ist ein lokaler Wunschbinder. Es gibt kein Konto und keine Cloud-Synchronisierung.</p>
       </header>
 
       <ArticleLayout language="de" withCta={false} toc={[
@@ -50,18 +50,18 @@ export default function HelpPage() {
           <ul>
             <li>Der Hosting-Anbieter erhält technisch notwendige Verbindungsdaten beim Aufruf der statischen Website.</li>
             <li>Suche und Kartendetails werden direkt vom Browser bei <a href="https://tcgdex.dev/" target="_blank" rel="noreferrer">TCGdex</a> abgerufen.</li>
-            <li>Kartenbilder werden direkt von <code>assets.tcgdex.net</code> geladen und nicht von Cardfolio kopiert oder in Backups gespeichert.</li>
-            <li>Marketplace-Seiten werden nur nach einem eigenen Klick geöffnet. Cardfolio meldet sich dort nicht an und führt keinen Kauf aus.</li>
+            <li>Kartenbilder werden direkt von <code>assets.tcgdex.net</code> geladen und nicht von Your Card Binder kopiert oder in Backups gespeichert.</li>
+            <li>Marketplace-Seiten werden nur nach einem eigenen Klick geöffnet. Your Card Binder meldet sich dort nicht an und führt keinen Kauf aus.</li>
           </ul>
           <p>Der aktuelle P0-Build verwendet keine Analyse-, Werbe- oder Chat-Skripte und setzt keine eigenen Login-Cookies.</p>
         </section>
 
         <section id="grenzen" className={styles.section}>
           <h2>Grenzen der Daten</h2>
-          <p>Fehlt bei TCGdex ein Bild oder ein Preis, ergänzt Cardfolio ihn aus Daten von CardTrader (cardtrader.com). Solche Bilder sind als „Bild: CardTrader“ gekennzeichnet, solche Preise als „günstigstes Angebot“ bei CardTrader. Die Preise sind Momentaufnahmen aus einer wöchentlich erzeugten Datei und ohne Gewähr. Ein einzelnes sehr teures oder sehr günstiges Angebot kann den Wert verzerren.</p>
+          <p>Fehlt bei TCGdex ein Bild oder ein Preis, ergänzt Your Card Binder ihn aus Daten von CardTrader (cardtrader.com). Solche Bilder sind als „Bild: CardTrader“ gekennzeichnet, solche Preise als „günstigstes Angebot“ bei CardTrader. Die Preise sind Momentaufnahmen aus einer wöchentlich erzeugten Datei und ohne Gewähr. Ein einzelnes sehr teures oder sehr günstiges Angebot kann den Wert verzerren.</p>
         <p>TCGdex ist eine externe, gemeinschaftlich gepflegte Datenquelle. Karten, Varianten, Übersetzungen und Bilder können fehlen oder fehlerhaft sein. Preisangaben sind deaktiviert.</p>
           <p>Die Motivsuche durchsucht 19.635 englische physische Karten anhand automatisch erkannter Artwork-Merkmale und kurzer Beschreibungen. Diese Angaben wurden nicht vom Kartenhersteller bestätigt und können falsch oder unvollständig sein. Die Motivsuche zeigt deshalb ihre Herkunft sichtbar an und ersetzt nicht die Prüfung der konkreten Karte. Pokémon-TCG-Pocket-Karten sind nicht enthalten.</p>
-          <p>Finish, Edition und Druckvariante sind Pflichtangaben. Wenn TCGdex belastbare Finish-Signale liefert, zeigt Cardfolio nur die bestätigten Holo-, Non-Holo- und Reverse-Optionen. Fehlen sie, bleibt das Finish zur manuellen Prüfung offen. First Edition wird nur für die regulären historischen Sets von Base Set bis Neo Destiny angeboten, ausgenommen Base Set 2. Die geprüfte First-Edition-Ausnahme Ivy Pikachu (Wizards Promo 1) ist kartenspezifisch hinterlegt. Beim englischen Base Set setzt First Edition automatisch Shadowless voraus; nur Machamp 8/102 existiert als First Edition zusätzlich mit Schatten. Dessen nicht gestempelte Trainer-Deck-A-Ausgabe muss als Non-Holo mit eigener Bezeichnung erfasst werden. Shadowless ist ansonsten ausschließlich beim englischen Base Set auswählbar. „Unlimited / Standard“ und „Mit Schatten / Standard“ bleiben die Voreinstellungen, und „Andere“ benötigt eine eigene Bezeichnung.</p>
+          <p>Finish, Edition und Druckvariante sind Pflichtangaben. Wenn TCGdex belastbare Finish-Signale liefert, zeigt Your Card Binder nur die bestätigten Holo-, Non-Holo- und Reverse-Optionen. Fehlen sie, bleibt das Finish zur manuellen Prüfung offen. First Edition wird nur für die regulären historischen Sets von Base Set bis Neo Destiny angeboten, ausgenommen Base Set 2. Die geprüfte First-Edition-Ausnahme Ivy Pikachu (Wizards Promo 1) ist kartenspezifisch hinterlegt. Beim englischen Base Set setzt First Edition automatisch Shadowless voraus; nur Machamp 8/102 existiert als First Edition zusätzlich mit Schatten. Dessen nicht gestempelte Trainer-Deck-A-Ausgabe muss als Non-Holo mit eigener Bezeichnung erfasst werden. Shadowless ist ansonsten ausschließlich beim englischen Base Set auswählbar. „Unlimited / Standard“ und „Mit Schatten / Standard“ bleiben die Voreinstellungen, und „Andere“ benötigt eine eigene Bezeichnung.</p>
           <p>Die TCGplayer-Übergabe verwendet wöchentlich synchronisierte offizielle Set-Codes, Produktnamen und vollständige Kartennummern. Karten ohne eindeutiges TCGplayer-Produkt, ohne Mass-Entry-Set-Code oder mit widersprüchlichen Variantenangaben bleiben sichtbar und werden nicht spekulativ übertragen. Vor „Add to Cart“ müssen die empfohlenen Printing- und Zustandsfilter aktiviert werden; Holofoil, 1st Edition Holofoil und Unlimited Holofoil sind getrennte Optionen. Die Cardmarket-Deckliste folgt dem offiziellen Pokémon-Format aus Menge, vollständigem Namen, Fähigkeiten und Attacken. Da dieses Format Set, Nummer, Sprache, Finish und Edition nicht festlegt, müssen diese Angaben vor einem Kauf auf Cardmarket kontrolliert werden.</p>
         </section>
 
@@ -73,7 +73,7 @@ export default function HelpPage() {
         <section id="marken" className={styles.section}>
           <h2>Marken, Bilder und Anbieter</h2>
           <p><strong>{DISCLAIMER.de.heading}.</strong> {DISCLAIMER.de.lines[0]}</p>
-          <p>{DISCLAIMER.de.lines[1]} Cardfolio ist außerdem kein offizielles Produkt von TCGdex.</p>
+          <p>{DISCLAIMER.de.lines[1]} Your Card Binder ist außerdem kein offizielles Produkt von TCGdex.</p>
           <p>Betreiberangaben und Datenschutz: <LegalLinksInline /></p>
         </section>
       </ArticleLayout>

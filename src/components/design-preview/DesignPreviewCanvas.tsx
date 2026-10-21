@@ -150,10 +150,10 @@ interface PreviewSidebarProps {
 
 function PreviewSidebar({ variant, activePage, onPageChange }: PreviewSidebarProps) {
   return (
-    <aside className={styles.sidebar} aria-label="Cardfolio Navigation">
+    <aside className={styles.sidebar} aria-label="Your Card Binder Navigation">
       <div className={styles.brand}>
         <span className={styles.brandMark}>C</span>
-        <span>Cardfolio</span>
+        <span>Your Card Binder</span>
         <span className={styles.previewPill}>{variant === "design-2" ? "D2" : "D3"}</span>
       </div>
       <nav className={styles.primaryNav} aria-label="Hauptnavigation">

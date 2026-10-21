@@ -30,7 +30,7 @@ export interface GiftPurchaseGuideProps {
   onCopyAndOpen: () => void;
   /** The card language ("de", "en", …) when all cards share one. */
   language?: string;
-  /** The shared condition the buyer chose in Cardfolio and its Cardmarket equivalent, when all cards agree. */
+  /** The shared condition the buyer chose in Your Card Binder and its Cardmarket equivalent, when all cards agree. */
   condition?: { cardfolio: string; code: string; label: string };
 }
 
@@ -129,7 +129,7 @@ export function GiftPurchaseGuide({
           <aside className={styles.beginnerPrelude} aria-label="Das solltest du vorab wissen">
             <strong>Das solltest du vorab wissen</strong>
             <ul>
-              <li>Cardfolio verkauft nichts. Du kaufst die Karten bei <b>Cardmarket</b>, einem Marktplatz, auf dem viele Verkäufer ihre Karten anbieten.</li>
+              <li>Your Card Binder verkauft nichts. Du kaufst die Karten bei <b>Cardmarket</b>, einem Marktplatz, auf dem viele Verkäufer ihre Karten anbieten.</li>
               <li>Du brauchst ein <b>Cardmarket-Konto</b>. Der Einkaufsassistent „Shopping Wizard“ funktioniert nur, wenn du angemeldet bist.</li>
               <li>Jede Sendung kostet <b>Versand</b>. Bei sehr günstigen Karten kann das einen großen Teil der Kosten ausmachen.</li>
             </ul>
@@ -164,12 +164,12 @@ export function GiftPurchaseGuide({
             </div>
             {condition ? (
               <div className={styles.cardmarketConditionTranslation}>
-                <span><small>In Cardfolio gewählt</small><b>{condition.cardfolio}</b></span>
+                <span><small>In Your Card Binder gewählt</small><b>{condition.cardfolio}</b></span>
                 <ArrowRight aria-hidden="true" size={20} />
                 <span><small>Bei Cardmarket einstellen</small><b>≥ {condition.code} · {condition.label}</b></span>
               </div>
             ) : (
-              <p><b>Die Karten haben unterschiedliche Zustandswünsche.</b> Stelle sie bei Cardmarket gruppenweise gemäß den Cardfolio-Angaben ein.</p>
+              <p><b>Die Karten haben unterschiedliche Zustandswünsche.</b> Stelle sie bei Cardmarket gruppenweise gemäß den Your Card Binder-Angaben ein.</p>
             )}
             <p><b>Warum „EX“?</b> Near Mint ist am schönsten, aber deutlich teurer. Excellent sieht auf dem Foto meist fast wie neu aus und ist unser Kompromiss.</p>
             <ol className={styles.cardmarketConditionSteps}>

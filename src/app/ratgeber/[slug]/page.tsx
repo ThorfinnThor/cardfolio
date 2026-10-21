@@ -23,7 +23,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
     <ContentFrame
       language="de"
       alternatePath={guidePath("en", guide)}
-      crumbs={[{ name: "Cardfolio", path: homePath("de") }, { name: "Ratgeber", path: guideIndexPath("de") }, { name: guide.de.metaTitle, path: guidePath("de", guide) }]}
+      crumbs={[{ name: "Your Card Binder", path: homePath("de") }, { name: "Ratgeber", path: guideIndexPath("de") }, { name: guide.de.metaTitle, path: guidePath("de", guide) }]}
     >
       <GuideArticle guide={guide} language="de" />
     </ContentFrame>

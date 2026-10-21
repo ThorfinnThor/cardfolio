@@ -439,7 +439,7 @@ test("creates a reviewed set binder through the guided start", async ({ page }) 
   await expect(page.getByText(/1 Karten aus Grundset wurden eingeplant/)).toBeVisible();
 });
 
-test("keeps Cardfolio views in the browser back and forward history", async ({ page }) => {
+test("keeps Your Card Binder views in the browser back and forward history", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/app/");
 
@@ -792,7 +792,7 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await expect(page.getByText(/^Vault X 9-Pocket Binder/)).toBeVisible();
   await expect(page.getByText("17,99 €", { exact: true }).first()).toBeVisible();
   await expect(page.getByText("Preis geprüft am 19.10.2026", { exact: true }).first()).toBeVisible();
-  await expect(page.getByText(/Werbelink: Cardfolio kann bei einem Kauf eine Provision erhalten/i).first()).toBeVisible();
+  await expect(page.getByText(/Werbelink: Your Card Binder kann bei einem Kauf eine Provision erhalten/i).first()).toBeVisible();
   await expect(page.getByText(/9-Pocket · Platz für bis zu 360 Karten/i).first()).toBeVisible();
   await expect(page.getByText("Alle passen zu deinem Plan")).toBeVisible();
 
@@ -850,7 +850,7 @@ test("offers a lean gift entry without collector navigation", async ({ page }) =
   await page.goto("/geschenk/");
 
   await expect(page.getByRole("heading", { name: "Ein Binder voller Karten vom Lieblings-Pokémon." })).toBeVisible();
-  await expect(page.getByRole("complementary", { name: "Cardfolio Navigation" })).toHaveCount(0);
+  await expect(page.getByRole("complementary", { name: "Your Card Binder Navigation" })).toHaveCount(0);
   await expect(page.getByRole("tab")).toHaveCount(0);
   await expect(page.getByRole("link", { name: "Ich sammle selbst" })).toHaveAttribute("href", "/app/");
   await expect(page.getByRole("link", { name: /Anleitung: Karten bei Cardmarket kaufen/ })).toHaveAttribute("href", "/anleitung/cardmarket/");
@@ -913,7 +913,7 @@ test("sets, edits and persists the minimum condition for marketplace handoff", a
   const optimizer = new URL(await missingCards.getByRole("link", { name: /Shop Optimizer öffnen/ }).getAttribute("href") ?? "");
   expect(optimizer.origin + optimizer.pathname).toBe("https://www.cardtrader.com/en/wishlists/new");
   expect(optimizer.searchParams.get("share_code")).toBe("yourcardbinder");
-  await expect(missingCards.getByText(/Werbelink: Cardfolio kann bei einem Kauf eine Provision erhalten/)).toBeVisible();
+  await expect(missingCards.getByText(/Werbelink: Your Card Binder kann bei einem Kauf eine Provision erhalten/)).toBeVisible();
   await missingCards.getByRole("button", { name: "Cardmarket", exact: true }).click();
   await missingCards.getByText("Falls etwas nicht klappt").click();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue("1x Ivysaur Vine Whip Poisonpowder");

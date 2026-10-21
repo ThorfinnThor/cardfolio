@@ -32,7 +32,7 @@ export function MarketplaceComparison() {
         <ul>
           <li>Mit CardTrader Zero können Karten mehrerer Verkäufer in einer Sendung ankommen.</li>
           <li>Der Shop Optimizer wählt Verkäufer nach Preis, Anzahl der Verkäufer oder Tempo.</li>
-          <li>Du legst deine Liste dort selbst an; Cardfolio zeigt zu jeder Karte die passende Seite.</li>
+          <li>Du legst deine Liste dort selbst an; Your Card Binder zeigt zu jeder Karte die passende Seite.</li>
         </ul>
       </div>
       <p>Welcher Weg günstiger ist, hängt vom Versand und von den Verkäufern ab. Beides siehst du erst vor dem Kauf, deshalb vergleichen wir keine Endpreise vorab.</p>
@@ -105,7 +105,7 @@ export function CardTraderMarketplacePanel({ items }: { items: readonly MissingI
         </ul>
       </div>
 
-      <p className={styles.reviewExplanation}>Cardfolio legt nichts in deinen Warenkorb und kauft nichts. Prüfe Set, Kartennummer, Sprache, Finish, Edition und Zustand vor dem Kauf.</p>
+      <p className={styles.reviewExplanation}>Your Card Binder legt nichts in deinen Warenkorb und kauft nichts. Prüfe Set, Kartennummer, Sprache, Finish, Edition und Zustand vor dem Kauf.</p>
     </section>
   );
 }

@@ -89,8 +89,8 @@ export const SPECIES: readonly SpeciesEntry[] = [
       ],
     },
     collectingNote: {
-      de: "Die Entwicklungen zählen in Cardfolio als eigene Pokémon; ein Evoli-Binder enthält also nur Karten, auf denen Evoli selbst im Namen steht.",
-      en: "The evolutions count as separate Pokémon in Cardfolio, so an Eevee binder only contains cards with Eevee itself in the name.",
+      de: "Die Entwicklungen zählen in Your Card Binder als eigene Pokémon; ein Evoli-Binder enthält also nur Karten, auf denen Evoli selbst im Namen steht.",
+      en: "The evolutions count as separate Pokémon in Your Card Binder, so an Eevee binder only contains cards with Eevee itself in the name.",
     },
     related: ["pikachu", "mew", "relaxo"],
   },
@@ -112,8 +112,8 @@ export const SPECIES: readonly SpeciesEntry[] = [
       ],
     },
     collectingNote: {
-      de: "Achte auf den Namen: „Mew“ und „Mewtu“ sind verschiedene Pokémon und stehen in Cardfolio nicht im selben Binder.",
-      en: "Watch the name: “Mew” and “Mewtwo” are different Pokémon and do not share a binder in Cardfolio.",
+      de: "Achte auf den Namen: „Mew“ und „Mewtu“ sind verschiedene Pokémon und stehen in Your Card Binder nicht im selben Binder.",
+      en: "Watch the name: “Mew” and “Mewtwo” are different Pokémon and do not share a binder in Your Card Binder.",
     },
     related: ["mewtu", "evoli", "pikachu"],
   },

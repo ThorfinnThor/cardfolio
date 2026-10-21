@@ -25,7 +25,7 @@ export default async function SpeciesPage({ params }: { params: Promise<{ slug: 
     <ContentFrame
       language="de"
       alternatePath={speciesPath("en", entry)}
-      crumbs={[{ name: "Cardfolio", path: homePath("de") }, { name: "Pokémon-Binder", path: speciesIndexPath("de") }, { name: entry.names.de, path: speciesPath("de", entry) }]}
+      crumbs={[{ name: "Your Card Binder", path: homePath("de") }, { name: "Pokémon-Binder", path: speciesIndexPath("de") }, { name: entry.names.de, path: speciesPath("de", entry) }]}
     >
       <SpeciesArticle published={published} language="de" all={publishedSpecies()} />
     </ContentFrame>

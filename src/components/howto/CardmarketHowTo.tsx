@@ -52,7 +52,7 @@ function Shot({ name, alt, caption }: { name: ShotName; alt: string; caption: st
 
 const STEPS = [
   { id: "schritt-1", title: "Konto anlegen oder anmelden" },
-  { id: "schritt-2", title: "Liste in Cardfolio kopieren" },
+  { id: "schritt-2", title: "Liste in Your Card Binder kopieren" },
   { id: "schritt-3", title: "Wants-Liste anlegen und Karten einfügen" },
   { id: "schritt-4", title: "Prüfen, ob alle Karten angekommen sind" },
   { id: "schritt-5", title: "Den Kartenzustand für alle Karten einstellen" },
@@ -73,7 +73,7 @@ const CONDITIONS = [
 
 const STEPS_EN = [
   { id: "schritt-1", title: "Create an account or sign in" },
-  { id: "schritt-2", title: "Copy the list in Cardfolio" },
+  { id: "schritt-2", title: "Copy the list in Your Card Binder" },
   { id: "schritt-3", title: "Create a wants list and add cards" },
   { id: "schritt-4", title: "Check that every card was added" },
   { id: "schritt-5", title: "Set the condition for every card" },
@@ -96,13 +96,13 @@ function CardmarketHowToEnglish() {
   return (
     <main className={styles.page}>
       <div className={styles.topline}>
-        <Link className={styles.back} href="/app/">← Back to Cardfolio</Link>
+        <Link className={styles.back} href="/app/">← Back to Your Card Binder</Link>
         <LanguageMenu />
       </div>
       <header className={styles.header}>
         <p className={styles.eyebrow}>Buying guide</p>
         <h1>Buying cards on Cardmarket – step by step</h1>
-        <p>Follow these steps to move your prepared Cardfolio list into a Cardmarket cart. Cardfolio does not sell cards. Cardmarket is mainly used in Europe; TCGplayer is the common marketplace in the USA.</p>
+        <p>Follow these steps to move your prepared Your Card Binder list into a Cardmarket cart. Your Card Binder does not sell cards. Cardmarket is mainly used in Europe; TCGplayer is the common marketplace in the USA.</p>
       </header>
 
       <nav className={styles.toc} aria-label="Steps in this guide">
@@ -120,8 +120,8 @@ function CardmarketHowToEnglish() {
       </section>
 
       <section className={styles.step} id="schritt-2" aria-labelledby="schritt-2-title">
-        <h2 id="schritt-2-title"><span>2</span> Copy the list in Cardfolio</h2>
-        <p>In Cardfolio, select the large <b>“Copy cards &amp; open Cardmarket”</b> button. It copies the prepared list and opens Cardmarket’s Wants section in a new tab.</p>
+        <h2 id="schritt-2-title"><span>2</span> Copy the list in Your Card Binder</h2>
+        <p>In Your Card Binder, select the large <b>“Copy cards &amp; open Cardmarket”</b> button. It copies the prepared list and opens Cardmarket’s Wants section in a new tab.</p>
         <p>Do not copy anything else before pasting the list with <b>Ctrl+V</b> on Windows or <b>⌘V</b> on Mac.</p>
       </section>
 
@@ -144,9 +144,9 @@ function CardmarketHowToEnglish() {
 
       <section className={styles.step} id="schritt-4" aria-labelledby="schritt-4-title">
         <h2 id="schritt-4-title"><span>4</span> Check that every card was added</h2>
-        <p>Open your list and compare the number above the table with the number in Cardfolio. For example, a nine-card binder should show nine cards.</p>
+        <p>Open your list and compare the number above the table with the number in Your Card Binder. For example, a nine-card binder should show nine cards.</p>
         <Shot name="wants-uebersicht" alt="Cardmarket wants list showing the number of cards above the table." caption="The count above the table (1) shows how many cards were added. Each card initially shows condition ≥ PO." />
-        <p>If Cardmarket did not recognise a card, return to Cardfolio and use its individual search link.</p>
+        <p>If Cardmarket did not recognise a card, return to Your Card Binder and use its individual search link.</p>
       </section>
 
       <section className={styles.step} id="schritt-5" aria-labelledby="schritt-5-title">
@@ -158,7 +158,7 @@ function CardmarketHowToEnglish() {
         </ol>
         <Shot name="alle-markieren" alt="Cardmarket wants list with the select-all checkbox and bulk-editing bar highlighted." caption="Select all cards (1), then expand bulk editing (2)." />
         <ol className={styles.numbered} style={{ counterReset: "howto 2" }}>
-          <li>Set <b>“Minimum condition”</b> to the Cardfolio recommendation. We normally recommend <b>EX</b>.</li>
+          <li>Set <b>“Minimum condition”</b> to the Your Card Binder recommendation. We normally recommend <b>EX</b>.</li>
           <li>Select <b>“Change selected”</b>, not the red delete button.</li>
         </ol>
         <Shot name="zustand-waehlen" alt="The minimum-condition menu with EX selected." caption="Choose the minimum condition (1). EX is selected in this example." />
@@ -214,13 +214,13 @@ function CardmarketHowToEnglish() {
           <li>Check the <b>final total including shipping</b>.</li>
           <li>Review <b>language</b>, <b>condition</b> and <b>printing</b> for every listing.</li>
           <li>For valuable cards, consider tracked shipping.</li>
-          <li>Payment happens on Cardmarket. Cardfolio has no access to your account and makes no purchase.</li>
+          <li>Payment happens on Cardmarket. Your Card Binder has no access to your account and makes no purchase.</li>
         </ul>
-        <p>Order the physical binder separately using the recommendation in Cardfolio.</p>
+        <p>Order the physical binder separately using the recommendation in Your Card Binder.</p>
       </section>
 
       <footer className={styles.footer}>
-        <p>Cardmarket information checked in October 2026. Labels and flows may change. Cardfolio is independent and is not affiliated with Cardmarket.</p>
+        <p>Cardmarket information checked in October 2026. Labels and flows may change. Your Card Binder is independent and is not affiliated with Cardmarket.</p>
         <p><External href={CARDMARKET_POKEMON_WANTS_URL}>Open the Cardmarket Wants page</External></p>
       </footer>
     </main>
@@ -233,13 +233,13 @@ export function CardmarketHowTo() {
   return (
     <main className={styles.page}>
       <div className={styles.topline}>
-        <Link className={styles.back} href="/app/">← Zurück zu Cardfolio</Link>
+        <Link className={styles.back} href="/app/">← Zurück zu Your Card Binder</Link>
         <LanguageMenu />
       </div>
       <header className={styles.header}>
         <p className={styles.eyebrow}>Anleitung</p>
         <h1>Karten bei Cardmarket kaufen – Schritt für Schritt</h1>
-        <p>So kommst du von der fertigen Liste in Cardfolio zu den Karten im Warenkorb. Cardfolio verkauft nichts: Gekauft wird bei Cardmarket, einem Marktplatz, auf dem viele Verkäufer ihre Karten anbieten. Cardmarket wird vor allem in Europa genutzt. In den USA ist TCGplayer der übliche Marktplatz.</p>
+        <p>So kommst du von der fertigen Liste in Your Card Binder zu den Karten im Warenkorb. Your Card Binder verkauft nichts: Gekauft wird bei Cardmarket, einem Marktplatz, auf dem viele Verkäufer ihre Karten anbieten. Cardmarket wird vor allem in Europa genutzt. In den USA ist TCGplayer der übliche Marktplatz.</p>
       </header>
 
       <nav className={styles.toc} aria-label="Schritte dieser Anleitung">
@@ -259,8 +259,8 @@ export function CardmarketHowTo() {
       </section>
 
       <section className={styles.step} id="schritt-2" aria-labelledby="schritt-2-title">
-        <h2 id="schritt-2-title"><span>2</span> Liste in Cardfolio kopieren</h2>
-        <p>In Cardfolio klickst du auf den großen Knopf <b>„… Karten kopieren &amp; Cardmarket öffnen“</b>. Er legt deine Kartenliste in die Zwischenablage und öffnet die Wants-Seite von Cardmarket in einem neuen Tab.</p>
+        <h2 id="schritt-2-title"><span>2</span> Liste in Your Card Binder kopieren</h2>
+        <p>In Your Card Binder klickst du auf den großen Knopf <b>„… Karten kopieren &amp; Cardmarket öffnen“</b>. Er legt deine Kartenliste in die Zwischenablage und öffnet die Wants-Seite von Cardmarket in einem neuen Tab.</p>
         <p>Die Zwischenablage ist der Ort, aus dem du gleich mit <b>Strg+V</b> (Windows) oder <b>⌘V</b> (Mac) einfügst. Kopiere bis dahin nichts anderes.</p>
       </section>
 
@@ -283,9 +283,9 @@ export function CardmarketHowTo() {
 
       <section className={styles.step} id="schritt-4" aria-labelledby="schritt-4-title">
         <h2 id="schritt-4-title"><span>4</span> Prüfen, ob alle Karten angekommen sind</h2>
-        <p>Klicke oben auf den Namen deiner Liste („Wants“ → Liste). Über der Tabelle steht, wie viele Karten in der Liste sind, zum Beispiel <b>„9 Wants – 9 Karten“</b>. Die Zahl sollte zu deiner Cardfolio-Liste passen.</p>
+        <p>Klicke oben auf den Namen deiner Liste („Wants“ → Liste). Über der Tabelle steht, wie viele Karten in der Liste sind, zum Beispiel <b>„9 Wants – 9 Karten“</b>. Die Zahl sollte zu deiner Your Card Binder-Liste passen.</p>
         <Shot name="wants-uebersicht" alt="Die Wants-Liste mit der Überschrift 9 Wants – 9 Karten, gelb umrahmt, und der Tabelle darunter." caption="Die Zeile „9 Wants – 9 Karten“ (1) zeigt, wie viele Karten angekommen sind. In der Spalte „Zustand“ steht bei jeder Karte zunächst „≥ PO“ (rot)." />
-        <p>Fehlt eine Karte, hat Cardmarket sie nicht erkannt. In Cardfolio findest du unter „Anderer Wohnort oder Anbieter?“ → „Einzelsuchen“ einen Suchlink für genau diese Karte.</p>
+        <p>Fehlt eine Karte, hat Cardmarket sie nicht erkannt. In Your Card Binder findest du unter „Anderer Wohnort oder Anbieter?“ → „Einzelsuchen“ einen Suchlink für genau diese Karte.</p>
       </section>
 
       <section className={styles.step} id="schritt-5" aria-labelledby="schritt-5-title">
@@ -325,7 +325,7 @@ export function CardmarketHowTo() {
         <table className={styles.conditionTable}>
           <caption>Welchen Wert du bei Cardmarket einstellst</caption>
           <thead>
-            <tr><th scope="col">In Cardfolio gewählt</th><th scope="col">Bei „Mindest-Zustand“ einstellen</th></tr>
+            <tr><th scope="col">In Your Card Binder gewählt</th><th scope="col">Bei „Mindest-Zustand“ einstellen</th></tr>
           </thead>
           <tbody>
             {conditionProfiles.map((profile) => {
@@ -351,7 +351,7 @@ export function CardmarketHowTo() {
           <li>Auf <b>„Ausgewählte ändern“</b> klicken.</li>
         </ol>
         <Shot name="sprache-waehlen" alt="Die Massenveränderung mit gelb umrahmtem Feld Sprachen, in dem die deutsche Flagge gewählt ist, und Mindest-Zustand EX." caption="Bei „Sprachen“ (1) ist hier die deutsche Flagge gewählt. Daneben steht „Mindest-Zustand“ auf „EX“." />
-        <p className={styles.tip}><b>Tipp:</b> Zustand und Sprache kannst du in einem Durchgang setzen: erst beide Felder ausfüllen, dann einmal „Ausgewählte ändern“. Passt die Sprache nicht zu dem, was du in Cardfolio gewählt hast, findest du weniger oder andere Angebote.</p>
+        <p className={styles.tip}><b>Tipp:</b> Zustand und Sprache kannst du in einem Durchgang setzen: erst beide Felder ausfüllen, dann einmal „Ausgewählte ändern“. Passt die Sprache nicht zu dem, was du in Your Card Binder gewählt hast, findest du weniger oder andere Angebote.</p>
       </section>
 
       <section className={styles.step} id="schritt-7" aria-labelledby="schritt-7-title">
@@ -394,16 +394,16 @@ export function CardmarketHowTo() {
         <p>Im Warenkorb ist jeder Verkäufer ein eigener Block mit eigenem Versand.</p>
         <Shot name="warenkorb" alt="Der Warenkorb mit dem Block eines Verkäufers: Zusammenfassung, Versandmethode, und darunter die Karte mit Zustand EX und deutscher Flagge." caption="Ein Verkäufer im Warenkorb: links die Zusammenfassung mit Versandkosten und Gesamtsumme, in der Mitte die Versandmethode, unten die Karte mit Zustand (EX) und Sprache (Flagge)." />
         <ul>
-          <li>Prüfe den <b>Endpreis inklusive Versand</b>. Er kann höher sein als der Schätzwert in Cardfolio, denn Cardfolio zeigt nur Kartenpreise ohne Versand.</li>
+          <li>Prüfe den <b>Endpreis inklusive Versand</b>. Er kann höher sein als der Schätzwert in Your Card Binder, denn Your Card Binder zeigt nur Kartenpreise ohne Versand.</li>
           <li>Prüfe bei jedem Angebot <b>Sprache</b> (Flagge), <b>Zustand</b> (zum Beispiel EX) und die <b>Ausführung</b> (zum Beispiel Holo). Das Einfügen der Liste legt Set, Sprache und Ausführung nicht fest.</li>
           <li>Bei der <b>Versandmethode</b> steht bei günstigen Briefen „Versand ohne Sendungsverfolgung“. Geht der Brief verloren, gibt es dafür keinen Nachweis. Bei wertvolleren Karten wähle eine Versandart mit Sendungsverfolgung („Weitere Versandoptionen“).</li>
-          <li>Bezahlt wird bei Cardmarket. Cardfolio hat keinen Zugriff auf dein Konto und löst keinen Kauf aus.</li>
+          <li>Bezahlt wird bei Cardmarket. Your Card Binder hat keinen Zugriff auf dein Konto und löst keinen Kauf aus.</li>
         </ul>
-        <p>Den Binder bestellst du getrennt bei einem Shop. Die Empfehlung findest du in Cardfolio auf der Seite „Besorgen“.</p>
+        <p>Den Binder bestellst du getrennt bei einem Shop. Die Empfehlung findest du in Your Card Binder auf der Seite „Besorgen“.</p>
       </section>
 
       <footer className={styles.footer}>
-        <p>Stand der Cardmarket-Angaben: Oktober 2026. Die Abläufe und Namen stammen aus Cardmarkets Hilfe und eigenen Tests der Wants-Seite und können sich ändern. Cardfolio ist ein unabhängiges Projekt und nicht mit Cardmarket verbunden. Cardmarket ist eine Marke der Sammelkartenmarkt GmbH &amp; Co. KG.</p>
+        <p>Stand der Cardmarket-Angaben: Oktober 2026. Die Abläufe und Namen stammen aus Cardmarkets Hilfe und eigenen Tests der Wants-Seite und können sich ändern. Your Card Binder ist ein unabhängiges Projekt und nicht mit Cardmarket verbunden. Cardmarket ist eine Marke der Sammelkartenmarkt GmbH &amp; Co. KG.</p>
         <p><External href={CARDMARKET_POKEMON_WANTS_URL}>Wants-Seite bei Cardmarket öffnen</External></p>
       </footer>
     </main>

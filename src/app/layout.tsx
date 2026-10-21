@@ -35,7 +35,7 @@ const monoFont = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
-  title: "Cardfolio",
+  title: "Your Card Binder",
   description: "Pokémon-Binder als Geschenk zusammenstellen: Lieblings-Pokémon wählen, Karten ansehen und die Kaufliste für Cardmarket oder TCGplayer vorbereiten.",
   openGraph: { images: [OG_IMAGE] },
 };

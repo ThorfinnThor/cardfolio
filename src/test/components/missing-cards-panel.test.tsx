@@ -279,7 +279,7 @@ describe("MissingCardsPanel", () => {
     expect(onCardmarketTextExport).toHaveBeenCalledWith(expect.objectContaining({ index: 1, positionCount: 2 }));
   });
 
-  it("translates Cardfolio's shared condition into Cardmarket's minimum-condition code", () => {
+  it("translates Your Card Binder's shared condition into Cardmarket's minimum-condition code", () => {
     const excellentItems = items.map((item) => ({
       ...item,
       preferences: { minimumCondition: "excellent" as const },
@@ -434,7 +434,7 @@ describe("MissingCardsPanel", () => {
       const optimizer = screen.getByRole("link", { name: /Shop Optimizer öffnen/ });
       expect(optimizer).toHaveAttribute("href", "https://www.cardtrader.com/en/wishlists/new?share_code=yourcardbinder");
       expect(optimizer).toHaveAttribute("rel", "noopener noreferrer");
-      expect(screen.getByText(/Werbelink: Cardfolio kann bei einem Kauf eine Provision erhalten/)).toBeInTheDocument();
+      expect(screen.getByText(/Werbelink: Your Card Binder kann bei einem Kauf eine Provision erhalten/)).toBeInTheDocument();
 
       expect(await screen.findByRole("link", { name: "Bei CardTrader ansehen: Pikachu" })).toHaveAttribute("href", "https://www.cardtrader.com/en/cards/111?share_code=yourcardbinder");
       expect(screen.getByText("Keine sichere Zuordnung")).toBeInTheDocument();

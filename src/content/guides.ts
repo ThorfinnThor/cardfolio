@@ -69,10 +69,10 @@ export const GUIDES: readonly Guide[] = [
           ],
         },
         {
-          heading: "Wie Cardfolio dabei hilft",
+          heading: "Wie Your Card Binder dabei hilft",
           blocks: [
-            { type: "p", text: "Cardfolio stellt zu einem Pokémon neun passende Karten zusammen und zeigt dir die Seite, bevor du etwas kaufst. Danach bereitet es die Liste mit Karte, Set, Nummer, Sprache, Ausführung und Mindestzustand für Cardmarket oder TCGplayer vor." },
-            { type: "p", text: "Gekauft wird auf dem Marktplatz, nicht bei Cardfolio. Den Endpreis inklusive Versand bestätigst du dort selbst. Es braucht kein Konto, und die Binder bleiben lokal in deinem Browser gespeichert." },
+            { type: "p", text: "Your Card Binder stellt zu einem Pokémon neun passende Karten zusammen und zeigt dir die Seite, bevor du etwas kaufst. Danach bereitet es die Liste mit Karte, Set, Nummer, Sprache, Ausführung und Mindestzustand für Cardmarket oder TCGplayer vor." },
+            { type: "p", text: "Gekauft wird auf dem Marktplatz, nicht bei Your Card Binder. Den Endpreis inklusive Versand bestätigst du dort selbst. Es braucht kein Konto, und die Binder bleiben lokal in deinem Browser gespeichert." },
           ],
         },
       ],
@@ -111,10 +111,10 @@ export const GUIDES: readonly Guide[] = [
           ],
         },
         {
-          heading: "How Cardfolio helps",
+          heading: "How Your Card Binder helps",
           blocks: [
-            { type: "p", text: "Cardfolio assembles nine matching cards for a Pokémon and shows you the page before you buy anything. It then prepares the list with card, set, number, language, finish and minimum condition for Cardmarket or TCGplayer." },
-            { type: "p", text: "You buy on the marketplace, not at Cardfolio. You confirm the final price including shipping there yourself. No account is needed, and the binders stay stored locally in your browser." },
+            { type: "p", text: "Your Card Binder assembles nine matching cards for a Pokémon and shows you the page before you buy anything. It then prepares the list with card, set, number, language, finish and minimum condition for Cardmarket or TCGplayer." },
+            { type: "p", text: "You buy on the marketplace, not at Your Card Binder. You confirm the final price including shipping there yourself. No account is needed, and the binders stay stored locally in your browser." },
           ],
         },
       ],
@@ -228,14 +228,14 @@ export const GUIDES: readonly Guide[] = [
     de: {
       slug: "pokemon-kartenzustand",
       title: "Kartenzustand bei Pokémon-Karten: Was Near Mint, Excellent und Played bedeuten",
-      metaTitle: "Pokémon-Kartenzustand erklärt: Near Mint, Excellent, Played",
+      metaTitle: "Pokémon-Kartenzustand erklärt: Near Mint bis Played",
       description: "Marktplätze bewerten den Zustand von Karten mit festen Stufen. Was sie bedeuten, wie Cardmarket und TCGplayer sie benennen und welcher Mindestzustand sich für ein Geschenk eignet.",
       intro: "Auf Marktplätzen steht bei jeder Karte eine Zustandsstufe wie „Near Mint“ oder „Played“. Verkäufer vergeben sie selbst, deshalb lohnt es sich, die Stufen zu kennen und den Mindestzustand beim Einkauf zu setzen.",
       sections: [
         {
           heading: "Die Stufen im Überblick",
           blocks: [
-            { type: "table", caption: "Mindestzustand in Cardfolio und die passenden Stufen bei Cardmarket und TCGplayer", head: ["Cardfolio-Auswahl", "Cardmarket", "TCGplayer", "Gemeint ist"], rows: [
+            { type: "table", caption: "Mindestzustand in Your Card Binder und die passenden Stufen bei Cardmarket und TCGplayer", head: ["Your Card Binder-Auswahl", "Cardmarket", "TCGplayer", "Gemeint ist"], rows: [
               ["Wie neu", "Near Mint", "Near Mint", "Fast keine sichtbaren Gebrauchsspuren."],
               ["Sehr gut", "Near Mint oder Excellent", "Near Mint oder Lightly Played", "Kleine Rand- oder Oberflächenspuren."],
               ["Gebraucht", "bis Light Played", "bis Lightly Played", "Sichtbare Kratzer oder Kantenabnutzung."],
@@ -261,7 +261,7 @@ export const GUIDES: readonly Guide[] = [
           heading: "Welcher Mindestzustand für ein Geschenk?",
           blocks: [
             { type: "p", text: "Für ein Geschenk ist „Sehr gut“ meist ein guter Kompromiss: Kleine Spuren sind erlaubt, die Karten sehen im Binder trotzdem ordentlich aus, und die Auswahl bleibt groß. Wer ein besonders hochwertiges Geschenk machen möchte, wählt „Wie neu“ und akzeptiert dafür eine kleinere Auswahl." },
-            { type: "p", text: "Von „Beliebig“ rät Cardfolio für Geschenke ab, weil auch beschädigte Karten dabei sein können. Wie du den Mindestzustand auf Cardmarket für die ganze Liste setzt, steht in der bebilderten Anleitung." },
+            { type: "p", text: "Von „Beliebig“ rät Your Card Binder für Geschenke ab, weil auch beschädigte Karten dabei sein können. Wie du den Mindestzustand auf Cardmarket für die ganze Liste setzt, steht in der bebilderten Anleitung." },
           ],
         },
       ],
@@ -269,14 +269,14 @@ export const GUIDES: readonly Guide[] = [
     en: {
       slug: "pokemon-card-condition",
       title: "Pokémon card condition: what Near Mint, Excellent and Played mean",
-      metaTitle: "Pokémon card condition explained: Near Mint, Excellent, Played",
+      metaTitle: "Pokémon card condition: Near Mint to Played",
       description: "Marketplaces grade card condition in fixed steps. What they mean, how Cardmarket and TCGplayer name them, and which minimum condition suits a gift.",
       intro: "On marketplaces every card carries a condition grade such as “Near Mint” or “Played”. Sellers assign it themselves, so it pays to know the grades and to set a minimum condition when you buy.",
       sections: [
         {
           heading: "The grades at a glance",
           blocks: [
-            { type: "table", caption: "Minimum condition in Cardfolio and the matching grades at Cardmarket and TCGplayer", head: ["Cardfolio choice", "Cardmarket", "TCGplayer", "Meaning"], rows: [
+            { type: "table", caption: "Minimum condition in Your Card Binder and the matching grades at Cardmarket and TCGplayer", head: ["Your Card Binder choice", "Cardmarket", "TCGplayer", "Meaning"], rows: [
               ["Like new", "Near Mint", "Near Mint", "Almost no visible signs of wear."],
               ["Very good", "Near Mint or Excellent", "Near Mint or Lightly Played", "Small marks on edges or surface."],
               ["Used", "up to Light Played", "up to Lightly Played", "Visible scratches or edge wear."],
@@ -302,7 +302,7 @@ export const GUIDES: readonly Guide[] = [
           heading: "Which minimum condition for a gift?",
           blocks: [
             { type: "p", text: "For a gift, “Very good” is usually a good compromise: small marks are allowed, the cards still look tidy in the binder, and the choice stays large. If you want a particularly high-quality gift, choose “Like new” and accept a smaller selection." },
-            { type: "p", text: "Cardfolio advises against “Any” for gifts because damaged cards may be included. How to set the minimum condition on Cardmarket for the whole list is shown in the illustrated guide." },
+            { type: "p", text: "Your Card Binder advises against “Any” for gifts because damaged cards may be included. How to set the minimum condition on Cardmarket for the whole list is shown in the illustrated guide." },
           ],
         },
       ],
@@ -316,7 +316,7 @@ export const GUIDES: readonly Guide[] = [
       slug: "cardmarket-oder-tcgplayer",
       title: "Cardmarket oder TCGplayer: Wo kaufst du deine Pokémon-Karten?",
       metaTitle: "Cardmarket oder TCGplayer: Pokémon-Karten kaufen",
-      description: "Cardmarket und TCGplayer sind Marktplätze für Sammelkarten. Was sie unterscheidet, worauf du bei Versand und Gesamtpreis achtest und wo Cardfolio die Liste übergibt.",
+      description: "Cardmarket und TCGplayer sind Marktplätze für Sammelkarten. Was sie unterscheidet, worauf du bei Versand und Gesamtpreis achtest und wo Your Card Binder die Liste übergibt.",
       intro: "Beide Anbieter sind Marktplätze: Du kaufst nicht beim Betreiber, sondern bei einzelnen Verkäufern. Das hat Folgen für Versand, Zustand und Gesamtpreis, die du vor dem Kauf kennen solltest.",
       sections: [
         {
@@ -336,7 +336,7 @@ export const GUIDES: readonly Guide[] = [
             { type: "table", caption: "Kurzvergleich der beiden Marktplätze aus Sicht eines Käufers in Deutschland", head: ["", "Cardmarket", "TCGplayer"], rows: [
               ["Schwerpunkt", "Europäischer Marktplatz mit Verkäufern in vielen Ländern", "Marktplatz mit Schwerpunkt auf Verkäufern in den USA"],
               ["Sprache der Oberfläche", "Auch auf Deutsch verfügbar", "Englisch"],
-              ["Übergabe aus Cardfolio", "Deckliste für die Wants-Liste", "Text für die Mass-Entry-Funktion"],
+              ["Übergabe aus Your Card Binder", "Deckliste für die Wants-Liste", "Text für die Mass-Entry-Funktion"],
               ["Wichtig vor dem Kauf", "Mindestzustand und Sprache der Karten prüfen", "Prüfen, ob der Verkäufer in dein Land liefert"],
             ] },
             { type: "p", text: "Die Angaben sind eine Orientierung und können sich ändern. Prüfe die aktuellen Bedingungen immer auf der Seite des Marktplatzes." },
@@ -350,10 +350,10 @@ export const GUIDES: readonly Guide[] = [
           ],
         },
         {
-          heading: "Was Cardfolio übergibt",
+          heading: "Was Your Card Binder übergibt",
           blocks: [
-            { type: "p", text: "Cardfolio erzeugt die Liste im Format des Marktplatzes. Bei Cardmarket ist das die Deckliste für die Wants-Liste, bei TCGplayer der Text für die Mass-Entry-Funktion. Dort legst du Mindestzustand und Sprache fest und bestätigst den Kauf selbst." },
-            { type: "p", text: "Cardfolio steht mit keinem der Marktplätze in einer geschäftlichen Verbindung. Eine Schritt-für-Schritt-Anleitung für Cardmarket mit Abbildungen findest du in der Kaufanleitung." },
+            { type: "p", text: "Your Card Binder erzeugt die Liste im Format des Marktplatzes. Bei Cardmarket ist das die Deckliste für die Wants-Liste, bei TCGplayer der Text für die Mass-Entry-Funktion. Dort legst du Mindestzustand und Sprache fest und bestätigst den Kauf selbst." },
+            { type: "p", text: "Your Card Binder steht mit keinem der Marktplätze in einer geschäftlichen Verbindung. Eine Schritt-für-Schritt-Anleitung für Cardmarket mit Abbildungen findest du in der Kaufanleitung." },
           ],
         },
       ],
@@ -362,7 +362,7 @@ export const GUIDES: readonly Guide[] = [
       slug: "cardmarket-or-tcgplayer",
       title: "Cardmarket or TCGplayer: where should you buy your Pokémon cards?",
       metaTitle: "Cardmarket or TCGplayer: buying Pokémon cards",
-      description: "Cardmarket and TCGplayer are marketplaces for trading cards. What sets them apart, what to check for shipping and total price, and where Cardfolio hands over the list.",
+      description: "Cardmarket and TCGplayer are marketplaces for trading cards. What sets them apart, what to check for shipping and total price, and where Your Card Binder hands over the list.",
       intro: "Both are marketplaces: you do not buy from the operator but from individual sellers. That affects shipping, condition and total price, and you should understand how before you buy.",
       sections: [
         {
@@ -382,7 +382,7 @@ export const GUIDES: readonly Guide[] = [
             { type: "table", caption: "Short comparison of the two marketplaces from the point of view of a buyer in Europe", head: ["", "Cardmarket", "TCGplayer"], rows: [
               ["Focus", "European marketplace with sellers in many countries", "Marketplace focused on sellers in the USA"],
               ["Interface language", "Available in several languages, including English", "English"],
-              ["Hand-over from Cardfolio", "Deck list for the wants list", "Text for the mass-entry function"],
+              ["Hand-over from Your Card Binder", "Deck list for the wants list", "Text for the mass-entry function"],
               ["Check before buying", "Minimum condition and card language", "Whether the seller ships to your country"],
             ] },
             { type: "p", text: "These notes are a guide and can change. Always check the current terms on the marketplace itself." },
@@ -396,10 +396,10 @@ export const GUIDES: readonly Guide[] = [
           ],
         },
         {
-          heading: "What Cardfolio hands over",
+          heading: "What Your Card Binder hands over",
           blocks: [
-            { type: "p", text: "Cardfolio creates the list in the marketplace's format. For Cardmarket that is the deck list for the wants list; for TCGplayer it is the text for the mass-entry function. There you set the minimum condition and language and confirm the purchase yourself." },
-            { type: "p", text: "Cardfolio has no business relationship with either marketplace. A step-by-step guide with pictures for Cardmarket is in the buying guide." },
+            { type: "p", text: "Your Card Binder creates the list in the marketplace's format. For Cardmarket that is the deck list for the wants list; for TCGplayer it is the text for the mass-entry function. There you set the minimum condition and language and confirm the purchase yourself." },
+            { type: "p", text: "Your Card Binder has no business relationship with either marketplace. A step-by-step guide with pictures for Cardmarket is in the buying guide." },
           ],
         },
       ],
@@ -431,7 +431,7 @@ export const GUIDES: readonly Guide[] = [
               "Reverse Holo: Der Glanz liegt umgekehrt auf Rahmen und Hintergrund, das Bild bleibt matt.",
               "Non-Holo: Die Karte hat keinen Glanzeffekt.",
             ] },
-            { type: "p", text: "Nicht jede Karte existiert in jeder Ausführung. Manche gibt es nur als Holo, andere in mehreren Varianten. Die Katalogdaten sind nicht bei jeder Karte vollständig; Cardfolio fragt das Finish deshalb ab, wenn es nicht eindeutig bekannt ist." },
+            { type: "p", text: "Nicht jede Karte existiert in jeder Ausführung. Manche gibt es nur als Holo, andere in mehreren Varianten. Die Katalogdaten sind nicht bei jeder Karte vollständig; Your Card Binder fragt das Finish deshalb ab, wenn es nicht eindeutig bekannt ist." },
           ],
         },
         {
@@ -449,7 +449,7 @@ export const GUIDES: readonly Guide[] = [
           heading: "Was das für den Einkauf heißt",
           blocks: [
             { type: "p", text: "Setze Sprache und Finish bei der Bestellung bewusst. Beides steht auf dem Angebot, aber nicht immer an derselben Stelle. Prüfe vor dem Kauf, ob das Foto zur beschriebenen Variante passt." },
-            { type: "p", text: "Cardfolio fragt Finish und Edition ab und gibt sie in die Liste, die du an den Marktplatz übergibst. Karten, bei denen sich das nicht eindeutig klären lässt, bleiben sichtbar und werden nicht geraten." },
+            { type: "p", text: "Your Card Binder fragt Finish und Edition ab und gibt sie in die Liste, die du an den Marktplatz übergibst. Karten, bei denen sich das nicht eindeutig klären lässt, bleiben sichtbar und werden nicht geraten." },
           ],
         },
       ],
@@ -476,7 +476,7 @@ export const GUIDES: readonly Guide[] = [
               "Reverse holo: the shine is the other way round, on frame and background, while the picture stays matte.",
               "Non-holo: the card has no shine effect.",
             ] },
-            { type: "p", text: "Not every card exists in every finish. Some exist only as holo, others in several variants. The catalogue data is not complete for every card, so Cardfolio asks for the finish when it is not clearly known." },
+            { type: "p", text: "Not every card exists in every finish. Some exist only as holo, others in several variants. The catalogue data is not complete for every card, so Your Card Binder asks for the finish when it is not clearly known." },
           ],
         },
         {
@@ -494,7 +494,7 @@ export const GUIDES: readonly Guide[] = [
           heading: "What this means when you buy",
           blocks: [
             { type: "p", text: "Set language and finish deliberately when you order. Both are shown on the listing, though not always in the same place. Check before buying that the photo matches the variant described." },
-            { type: "p", text: "Cardfolio asks for finish and edition and puts them into the list you hand to the marketplace. Cards where this cannot be settled clearly stay visible and are not guessed." },
+            { type: "p", text: "Your Card Binder asks for finish and edition and puts them into the list you hand to the marketplace. Cards where this cannot be settled clearly stay visible and are not guessed." },
           ],
         },
       ],

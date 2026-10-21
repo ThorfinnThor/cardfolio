@@ -26,7 +26,7 @@ describe("CardTrader catalog adapter", () => {
   it("models explicit blueprint wishlist items rather than lossy free text", () => {
     expect(cardtraderWishlistCreateSchema.parse({
       deck: {
-        name: "Cardfolio Prüfung",
+        name: "Your Card Binder Prüfung",
         public: false,
         game_id: 5,
         deck_items_attributes: [{ blueprint_id: 123, quantity: 1, language: "de", condition: "Near Mint" }],

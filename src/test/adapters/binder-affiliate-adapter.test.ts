@@ -18,7 +18,7 @@ function catalog(overrides: Partial<BinderPartnerCatalog> = {}): BinderPartnerCa
       destinationUrl: "https://partner.example/custom-binder?product=binder",
       affiliate: {
         enabled: true,
-        text: "Affiliate-Link: Cardfolio kann eine Provision erhalten.",
+        text: "Affiliate-Link: Your Card Binder kann eine Provision erhalten.",
         staticQuery: { ref: "cardfolio", campaign: "gift" },
       },
       capabilities: { personalization: true, photoUpload: false },
@@ -61,7 +61,7 @@ describe("reviewed binder affiliate adapter", () => {
     expect(adapter.getOffer("example-binder", new Date("2026-10-15T00:00:00Z"))).toMatchObject({
       status: "available",
       price: undefined,
-      affiliateDisclosure: "Affiliate-Link: Cardfolio kann eine Provision erhalten.",
+      affiliateDisclosure: "Affiliate-Link: Your Card Binder kann eine Provision erhalten.",
       capacityCards: 360,
       pocketsPerPage: 9,
     });

@@ -125,27 +125,27 @@ export function BinderOverview({
       {startMode === "gift" ? <section className={styles.marketplacePromise} aria-labelledby="marketplace-promise-heading">
         <div className={styles.promiseIntro}>
           <h2 id="marketplace-promise-heading">Gekauft wird beim Marktplatz. Wir bereiten die Liste vor.</h2>
-          <p>Cardfolio bereitet Karte, Set, Nummer, Sprache, Ausführung und Zustand vor. Cardmarket oder TCGplayer zeigen dir anschließend passende Angebote. Den Endpreis inklusive Versand bestätigst du erst dort.</p>
+          <p>Your Card Binder bereitet Karte, Set, Nummer, Sprache, Ausführung und Zustand vor. Cardmarket oder TCGplayer zeigen dir anschließend passende Angebote. Den Endpreis inklusive Versand bestätigst du erst dort.</p>
         </div>
         <ul className={styles.promiseList}>
           <li><Tags aria-hidden="true" size={22} /><span><strong>Günstige Angebote finden</strong><small>Preise und Versand beim Marktplatz transparent prüfen.</small></span></li>
           <li><ShieldCheck aria-hidden="true" size={22} /><span><strong>Zustand vorher festlegen</strong><small>Der gewählte Mindestzustand bleibt bei jeder Karte sichtbar.</small></span></li>
           <li><BadgeCheck aria-hidden="true" size={22} /><span><strong>Die richtige Karte bestellen</strong><small>Set, Nummer und Ausführung führen direkt zur passenden Karte.</small></span></li>
         </ul>
-        <p className={styles.promiseNote}>Cardfolio verkauft oder authentifiziert keine Karten. Verfügbarkeit, Endpreis, Käuferschutz und Echtheit prüfst du beim gewählten Marktplatz.</p>
+        <p className={styles.promiseNote}>Your Card Binder verkauft oder authentifiziert keine Karten. Verfügbarkeit, Endpreis, Käuferschutz und Echtheit prüfst du beim gewählten Marktplatz.</p>
       </section> : null}
 
       {startMode === "theme" ? <section className={styles.startPanel} id="start-panel" role="tabpanel" aria-labelledby="start-tab-theme">
         <span className={styles.eyebrow}>Motiv-Binder</span>
         <h1 id="binder-heading">Eine Binder-Seite nach Bildmotiv gestalten.</h1>
-        <p>Wähle zum Beispiel Meer, Wald, Schnee oder Himmel. Cardfolio stellt daraus eine passende Seite mit Kartenbildern zusammen.</p>
+        <p>Wähle zum Beispiel Meer, Wald, Schnee oder Himmel. Your Card Binder stellt daraus eine passende Seite mit Kartenbildern zusammen.</p>
         <button type="button" className={styles.heroButton} onClick={() => onThemeStart?.()} disabled={binders.length >= MAX_BINDERS}><Images aria-hidden="true" size={21} /> Bildmotiv auswählen <ArrowRight aria-hidden="true" size={20} /></button>
       </section> : null}
 
       {startMode === "set" ? <section className={styles.startPanel} id="start-panel" role="tabpanel" aria-labelledby="start-tab-set">
         <span className={styles.eyebrow}>Set-Binder</span>
         <h1 id="binder-heading">Ein komplettes Pokémon-Set planen.</h1>
-        <p>Wähle ein Set, die Kartensprache und ob Secret Rares dazugehören. Cardfolio plant Seiten und freie Plätze automatisch.</p>
+        <p>Wähle ein Set, die Kartensprache und ob Secret Rares dazugehören. Your Card Binder plant Seiten und freie Plätze automatisch.</p>
         <button type="button" className={styles.heroButton} onClick={() => onSetStart?.()} disabled={binders.length >= MAX_BINDERS} aria-label="Mit einem Set starten"><BookOpen aria-hidden="true" size={21} /> Mit einem Set starten <ArrowRight aria-hidden="true" size={20} /></button>
       </section> : null}
 
@@ -307,7 +307,7 @@ function ExamplePage({ example, compact = false, locale }: { example: GiftExampl
     <div className={compact ? styles.samplePage : styles.examplePage} aria-label={locale === "en" ? `${displayName} binder page example` : `${example.query}-Binder-Seite als Beispiel`}>
       {example.cards.map((src, index) => (
         <span className={styles.exampleArtwork} key={src}>
-          {/* TCGdex serves the card artwork at runtime; Cardfolio does not store the image bytes. */}
+          {/* TCGdex serves the card artwork at runtime; Your Card Binder does not store the image bytes. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={src} alt={compact ? "" : locale === "en" ? `${displayName} card example ${index + 1}` : `${example.query}-Kartenbeispiel ${index + 1}`} loading="lazy" />
         </span>

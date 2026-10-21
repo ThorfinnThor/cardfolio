@@ -6,7 +6,7 @@ import styles from "@/components/content/content.module.css";
 import { guideIndexPath, homePath, speciesIndexPath } from "@/content/routes";
 
 export const metadata: Metadata = {
-  title: "Seite nicht gefunden · Cardfolio",
+  title: "Seite nicht gefunden · Your Card Binder",
   robots: { index: false, follow: true },
 };
 
