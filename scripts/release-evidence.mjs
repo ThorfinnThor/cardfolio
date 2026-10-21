@@ -40,8 +40,8 @@ const rasterFiles = outputFiles.filter((path) => [".gif", ".jpeg", ".jpg", ".png
 // The guide's screenshots of Cardmarket's pages (howto/) are the only allowed rasters: no card artwork, names blurred.
 const howtoScreenshotPrefix = `howto${process.platform === "win32" ? "\\" : "/"}`;
 const howtoScreenshots = rasterFiles.filter((path) => relative(outputRoot, path).startsWith(howtoScreenshotPrefix));
-// The text-only social preview (public/og-cardfolio.png) is the second named exception: it shows no card artwork.
-const socialPreviewFiles = rasterFiles.filter((path) => relative(outputRoot, path) === "og-cardfolio.png");
+// The text-only social preview (public/og-yourcardbinder.png) is the second named exception: it shows no card artwork.
+const socialPreviewFiles = rasterFiles.filter((path) => relative(outputRoot, path) === "og-yourcardbinder.png");
 const rasterCardCandidates = rasterFiles.filter((path) => !howtoScreenshots.includes(path) && !socialPreviewFiles.includes(path));
 const semanticPath = join(root, "public/data/semantic/card-artwork-search-v1.json");
 const semanticBytes = readFileSync(semanticPath);

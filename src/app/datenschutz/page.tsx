@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default function LegalPage() {
   return (
-    <ContentFrame language="de" alternatePath={legalPath("en", "privacy")} crumbs={[{ name: "Cardfolio", path: homePath("de") }, { name: text.title, path: legalPath("de", "privacy") }]}>
+    <ContentFrame language="de" alternatePath={legalPath("en", "privacy")} crumbs={[{ name: "Your Card Binder", path: homePath("de") }, { name: text.title, path: legalPath("de", "privacy") }]}>
       <LegalArticle text={text} language="de" />
     </ContentFrame>
   );

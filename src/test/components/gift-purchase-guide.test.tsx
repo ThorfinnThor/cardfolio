@@ -84,7 +84,7 @@ describe("gift purchase guide", () => {
     render(panel());
 
     const prelude = screen.getByRole("complementary", { name: "Das solltest du vorab wissen" });
-    expect(within(prelude).getByText(/Cardfolio verkauft nichts/)).toBeInTheDocument();
+    expect(within(prelude).getByText(/Your Card Binder verkauft nichts/)).toBeInTheDocument();
     expect(within(prelude).getByText("Cardmarket-Konto")).toBeInTheDocument();
     expect(within(prelude).getByText(/funktioniert nur, wenn du angemeldet bist/)).toBeInTheDocument();
     expect(within(prelude).getByText(/Jede Sendung kostet/)).toBeInTheDocument();

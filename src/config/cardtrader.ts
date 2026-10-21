@@ -24,4 +24,4 @@ export function cardtraderCardUrl(blueprintId: number): string {
 /** CardTrader's Shop Optimizer: build a list, then let it pick sellers (cheapest, fewest sellers, fastest). */
 export const CARDTRADER_SHOP_OPTIMIZER_URL = withCardtraderShareCode("https://www.cardtrader.com/en/wishlists/new");
 
-export const CARDTRADER_AFFILIATE_NOTICE = "Werbelink: Cardfolio kann bei einem Kauf eine Provision erhalten. Dein Preis bleibt gleich.";
+export const CARDTRADER_AFFILIATE_NOTICE = "Werbelink: Your Card Binder kann bei einem Kauf eine Provision erhalten. Dein Preis bleibt gleich.";

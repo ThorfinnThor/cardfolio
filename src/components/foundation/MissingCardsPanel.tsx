@@ -277,7 +277,7 @@ export function MissingCardsPanel({
         <div>
           <p className={styles.eyebrow}>{beginner ? "Karten besorgen" : "Kartenkauf"}</p>
           <h2 id="missing-cards-heading">{beginner && marketplaceChoice === "cardmarket" ? `${visibleQuantity} Karten bei Cardmarket kaufen` : `${visibleQuantity} Karten gemeinsam kaufen`}</h2>
-          <p className={styles.intro}>{beginner ? "Cardfolio hat die Liste für dich vorbereitet. In vier kurzen Schritten kommst du zu den Karten." : "Wähle deine Region. Cardfolio bereitet danach die komplette Liste für den passenden Anbieter vor."}</p>
+          <p className={styles.intro}>{beginner ? "Your Card Binder hat die Liste für dich vorbereitet. In vier kurzen Schritten kommst du zu den Karten." : "Wähle deine Region. Your Card Binder bereitet danach die komplette Liste für den passenden Anbieter vor."}</p>
           <p className={styles.subline}>{visibleItems.length} Positionen · gekauft wird erst beim Anbieter</p>
         </div>
         <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Fehlkartenansicht schließen"><X size={18} /></button>
@@ -529,7 +529,7 @@ export function MissingCardsPanel({
               <div>
                 <span className={styles.stepTag}>Anleitung · 4 Schritte</span>
                 <h4 id="cardmarket-guide-heading">Cardmarket-Anleitung</h4>
-                <p>Erledige nur die groß angezeigte Aufgabe. Danach kommst du zu Cardfolio zurück und klickst auf „Weiter“.</p>
+                <p>Erledige nur die groß angezeigte Aufgabe. Danach kommst du zu Your Card Binder zurück und klickst auf „Weiter“.</p>
               </div>
               <strong aria-live="polite">Schritt {cardmarketGuideStep} von {CARDMARKET_GUIDE_STEPS.length}</strong>
             </header>
@@ -607,21 +607,21 @@ export function MissingCardsPanel({
                 <div className={styles.cardmarketConditionWarning} role="alert">
                   <div>
                     <strong>Cardmarket zeigt nach dem Import zunächst ≥ PO</strong>
-                    <p>Das bedeutet „Poor oder besser“. Ändere es jetzt einmal gesammelt auf den in Cardfolio gewählten Zustand.</p>
+                    <p>Das bedeutet „Poor oder besser“. Ändere es jetzt einmal gesammelt auf den in Your Card Binder gewählten Zustand.</p>
                   </div>
                   {sharedCondition && sharedCardmarketCondition ? (
                     <div className={styles.cardmarketConditionTranslation}>
-                      <span><small>In Cardfolio gewählt</small><b>{conditionProfile(sharedCondition).shortLabel}</b></span>
+                      <span><small>In Your Card Binder gewählt</small><b>{conditionProfile(sharedCondition).shortLabel}</b></span>
                       <ArrowRight aria-hidden="true" size={20} />
                       <span><small>Bei Cardmarket einstellen</small><b>≥ {sharedCardmarketCondition.code} · {sharedCardmarketCondition.label}</b></span>
                     </div>
                   ) : (
-                    <p><b>Die Karten haben unterschiedliche Zustandswünsche.</b> Stelle sie bei Cardmarket gruppenweise gemäß den Cardfolio-Angaben ein.</p>
+                    <p><b>Die Karten haben unterschiedliche Zustandswünsche.</b> Stelle sie bei Cardmarket gruppenweise gemäß den Your Card Binder-Angaben ein.</p>
                   )}
                   <ol className={styles.cardmarketConditionSteps}>
                     <li>Alle Karten markieren</li>
                     <li>„Massenveränderung“ öffnen</li>
-                    <li>Mindestzustand {sharedCardmarketCondition ? <b>≥ {sharedCardmarketCondition.code}</b> : "passend zu den Cardfolio-Angaben"} wählen</li>
+                    <li>Mindestzustand {sharedCardmarketCondition ? <b>≥ {sharedCardmarketCondition.code}</b> : "passend zu den Your Card Binder-Angaben"} wählen</li>
                   </ol>
                 </div>
                 <div className={styles.cardmarketGuideActions}>
@@ -843,7 +843,7 @@ function cardTraderStatusCopy(status: CardTraderStatus): { label: string; title:
       return {
         label: "Nicht verbunden",
         title: "CardTrader ist noch nicht verbunden",
-        body: "Für eine persönliche Wishlist wäre später eine ausdrückliche Verbindung nötig. Cardfolio speichert dafür keinen Token im Browser oder Backup.",
+        body: "Für eine persönliche Wishlist wäre später eine ausdrückliche Verbindung nötig. Your Card Binder speichert dafür keinen Token im Browser oder Backup.",
       };
     case "review-required":
       return {
@@ -861,7 +861,7 @@ function cardTraderStatusCopy(status: CardTraderStatus): { label: string; title:
       return {
         label: "Geprüfte Vorschau",
         title: "CardTrader-Vorschau",
-        body: "Diese Vorschau zeigt nur bestätigte Angaben. Cardfolio legt keinen Artikel in einen Warenkorb und kauft nichts.",
+        body: "Diese Vorschau zeigt nur bestätigte Angaben. Your Card Binder legt keinen Artikel in einen Warenkorb und kauft nichts.",
       };
     default:
       return {
@@ -917,7 +917,7 @@ function CardTraderPanel({
       <div className={styles.cardtraderFacts} aria-label="CardTrader-Datenstatus">
         <div><span>Preis</span><strong>{quoteLabel}</strong><small>{quoteDetails}</small></div>
         <div><span>Versand &amp; Steuer</span><strong>Nicht enthalten</strong><small>Wird nicht aus einer Kartenpreisspanne abgeleitet.</small></div>
-        <div><span>Bildquelle</span><strong>Cardfolio-Katalog</strong><small>Ein Providerbild wäre als Fallback gekennzeichnet.</small></div>
+        <div><span>Bildquelle</span><strong>Your Card Binder-Katalog</strong><small>Ein Providerbild wäre als Fallback gekennzeichnet.</small></div>
       </div>
 
       <ol className={styles.handoffSteps} aria-label="CardTrader-Prüfschritte">
@@ -937,7 +937,7 @@ function CardTraderPanel({
                 <em>{finishLabels[item.variant.finish]}</em>
                 <em>{editionLabels[item.variant.edition]}</em>
                 <em>{conditionProfile(item.preferences.minimumCondition).label}</em>
-                <em>{item.card.imageBaseUrl ? "Bild: Cardfolio" : item.card.imageFallbackBaseUrl ? "Bild: Fallback" : "Bild fehlt"}</em>
+                <em>{item.card.imageBaseUrl ? "Bild: Your Card Binder" : item.card.imageFallbackBaseUrl ? "Bild: Fallback" : "Bild fehlt"}</em>
               </span>
             </li>
           ))}
@@ -946,7 +946,7 @@ function CardTraderPanel({
 
       <details className={styles.cardtraderConnection}>
         <summary>Verbindung als fortgeschrittene Option</summary>
-        <p>Eine spätere Verbindung verwendet einen eigenen CardTrader-Token nur zur Laufzeit. Cardfolio fordert keine Zugangsdaten in diesem Panel an, legt keine Tokens in Backups ab und trennt „Wishlist erstellen“ klar von „Angebote ansehen“.</p>
+        <p>Eine spätere Verbindung verwendet einen eigenen CardTrader-Token nur zur Laufzeit. Your Card Binder fordert keine Zugangsdaten in diesem Panel an, legt keine Tokens in Backups ab und trennt „Wishlist erstellen“ klar von „Angebote ansehen“.</p>
       </details>
 
       <div className={styles.marketplaceActions}>

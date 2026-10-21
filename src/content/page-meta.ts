@@ -21,14 +21,14 @@ export function homeMetadata(language: PageLanguage): Metadata {
 }
 
 export function guideIndexMetadata(language: PageLanguage): Metadata {
-  const title = language === "de" ? "Ratgeber für Pokémon-Binder und Sammelkarten · Cardfolio" : "Guides to Pokémon binders and trading cards · Cardfolio";
+  const title = language === "de" ? "Ratgeber für Pokémon-Binder und Sammelkarten · Your Card Binder" : "Guides to Pokémon binders and trading cards · Your Card Binder";
   const description = LANDING[language].guidesText;
   return { title, description, ...pageUrlMetadata(guideIndexPath(language), title, description, { language, alternates: alternatesFor(guideIndexPath("de"), guideIndexPath("en")) }) };
 }
 
 export function guideMetadata(language: PageLanguage, guide: Guide): Metadata {
   const text = guide[language];
-  const title = `${text.metaTitle} · Cardfolio`;
+  const title = `${text.metaTitle} · Your Card Binder`;
   return {
     title,
     description: text.description,
@@ -37,7 +37,7 @@ export function guideMetadata(language: PageLanguage, guide: Guide): Metadata {
 }
 
 export function speciesIndexMetadata(language: PageLanguage): Metadata {
-  const title = language === "de" ? "Binder nach Lieblings-Pokémon gestalten · Cardfolio" : "Design a binder around your favourite Pokémon · Cardfolio";
+  const title = language === "de" ? "Binder nach Lieblings-Pokémon gestalten · Your Card Binder" : "Design a binder around your favourite Pokémon · Your Card Binder";
   const description = LANDING[language].speciesText;
   return { title, description, ...pageUrlMetadata(speciesIndexPath(language), title, description, { language, alternates: alternatesFor(speciesIndexPath("de"), speciesIndexPath("en")) }) };
 }
@@ -45,7 +45,7 @@ export function speciesIndexMetadata(language: PageLanguage): Metadata {
 export function speciesMetadata(language: PageLanguage, published: PublishedSpecies): Metadata {
   const { entry, stats } = published;
   const name = entry.names[language];
-  const title = language === "de" ? `${name}-Binder: Karten, Sets und Motive · Cardfolio` : `${name} binder: cards, sets and artwork · Cardfolio`;
+  const title = language === "de" ? `${name}-Binder: Karten, Sets und Motive · Your Card Binder` : `${name} binder: cards, sets and artwork · Your Card Binder`;
   const description = language === "de"
     ? `${stats.cardCount} ${name}-Karten aus ${stats.setCount} Sets (${stats.firstYear}–${stats.lastYear}): Zahlen aus dem Katalog, häufige Motive und Tipps, wie du einen ${name}-Binder zusammenstellst.`
     : `${stats.cardCount} ${name} cards from ${stats.setCount} sets (${stats.firstYear}–${stats.lastYear}): figures from the catalogue, common artwork and tips for putting together a ${name} binder.`;

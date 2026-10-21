@@ -4,7 +4,7 @@ import { ArtworkReviewWorkspace } from "@/components/foundation/ArtworkReviewWor
 import { FEATURES } from "@/config/feature-flags";
 import { pageUrlMetadata } from "@/config/site";
 
-const TITLE = "Artwork review · Cardfolio";
+const TITLE = "Artwork review · Your Card Binder";
 const DESCRIPTION = "Internal review tool for card artwork tags.";
 
 export const metadata: Metadata = {

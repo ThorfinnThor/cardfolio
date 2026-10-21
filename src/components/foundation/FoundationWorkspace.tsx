@@ -1934,10 +1934,10 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
 
   return (
     <div className={styles.appShell} data-design={PRODUCT_DESIGN} data-shell={giftChrome ? "gift" : "full"}>
-      {giftChrome ? null : <aside className={styles.sidebar} aria-label="Cardfolio Navigation">
-        <button type="button" className={styles.brand} aria-label="Cardfolio: Meine Binder" onClick={() => setBinderManagerOpen(true)}>
+      {giftChrome ? null : <aside className={styles.sidebar} aria-label="Your Card Binder Navigation">
+        <button type="button" className={styles.brand} aria-label="Your Card Binder: Meine Binder" onClick={() => setBinderManagerOpen(true)}>
           <span className={styles.brandMark} aria-hidden="true"><i /><i /></span>
-          <span className={styles.brandText}>Cardfolio<small>Wunschbinder · lokal</small></span>
+          <span className={styles.brandText}>Your Card Binder<small>Wunschbinder · lokal</small></span>
         </button>
         <nav className={styles.primaryNav} aria-label="Hauptnavigation">
           <button type="button" aria-label="Meine Binder" className={binderManagerOpen || !activeBinder ? styles.navItemActive : styles.navItem} onClick={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }}>
@@ -1970,9 +1970,9 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
 
       <div className={styles.mainColumn}>
         {giftChrome ? <header className={styles.giftBar}>
-          <button type="button" className={styles.giftBrand} onClick={() => { setSetBinderWizardOpen(false); setMissingOpen(false); setGiftBuilderOpen(false); setBinderManagerOpen(true); }} aria-label="Cardfolio – zur Geschenk-Startseite">
+          <button type="button" className={styles.giftBrand} onClick={() => { setSetBinderWizardOpen(false); setMissingOpen(false); setGiftBuilderOpen(false); setBinderManagerOpen(true); }} aria-label="Your Card Binder – zur Geschenk-Startseite">
             <span className={styles.brandMark} aria-hidden="true"><i /><i /></span>
-            <span>Cardfolio</span>
+            <span>Your Card Binder</span>
           </button>
           <div className={styles.giftBarActions}>
             <LanguageMenu />

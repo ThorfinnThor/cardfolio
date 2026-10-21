@@ -1,4 +1,4 @@
-# Cardfolio
+# Your Card Binder
 
 Local-first Pokémon wish-binder prototype. Binder data and referenced card metadata are stored in the current browser with IndexedDB. The application has no account system and no server-side user database.
 

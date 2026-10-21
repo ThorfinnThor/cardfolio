@@ -206,7 +206,7 @@ export function createCardmarketHandoff(
         "Offizielles Pokémon-Decklistenformat: Menge, vollständiger Kartenname, Fähigkeiten und Attacken – eine Karte pro Zeile.",
         ...(verifiedIdentities ? ["Der Importtext enthält ausschließlich Kartenidentitäten, die mit dem offiziellen Cardmarket-Produktkatalog abgeglichen wurden."] : []),
         "Das Decklistenformat legt Set, Kartennummer, Sprache und Druckvariante nicht fest.",
-        "Der in Cardfolio gewählte Zustand wird gespeichert, aber vom Decklistenformat nicht übertragen. Wähle ihn nach dem Import in Cardmarket aus.",
+        "Der in Your Card Binder gewählte Zustand wird gespeichert, aber vom Decklistenformat nicht übertragen. Wähle ihn nach dem Import in Cardmarket aus.",
         "Vor dem Kauf jede Position anhand von Set, Kartennummer, Sprache, Finish, Edition, Druckvariante und Zustand prüfen.",
       ]
     : [];

@@ -26,7 +26,7 @@ export interface MarketplaceProductIdentitySource {
 }
 
 /**
- * A reviewed bridge from Cardfolio's stable TCGdex identity to one provider
+ * A reviewed bridge from Your Card Binder's stable TCGdex identity to one provider
  * product. It is deliberately separate from fuzzy catalog candidates: only a
  * valid `verified` row may be used as an order-ready product identity.
  */
