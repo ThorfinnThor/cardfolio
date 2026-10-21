@@ -912,9 +912,11 @@ test("sets, edits and persists the minimum condition for marketplace handoff", a
   await expect(missingCards.getByRole("heading", { name: "1 Karte bei CardTrader kaufen" })).toBeVisible();
   await expect(missingCards.getByText("Schritt 1 von 4")).toBeVisible();
   await missingCards.getByRole("button", { name: /^Weiter/ }).click();
-  await expect(missingCards.getByRole("heading", { name: "Liste bei CardTrader anlegen" })).toBeVisible();
+  await expect(missingCards.getByRole("heading", { name: "Karten bei CardTrader hinzufügen" })).toBeVisible();
+  await expect(missingCards.getByLabel("CardTrader-Token")).toBeHidden();
+  await missingCards.getByText("Für Fortgeschrittene: Liste automatisch anlegen").click();
   await expect(missingCards.getByLabel("CardTrader-Token")).toBeVisible();
-  await missingCards.getByRole("button", { name: "Ohne Wunschliste weiter" }).click();
+  await missingCards.getByRole("button", { name: /^Weiter/ }).click();
   const optimizer = new URL(await missingCards.getByRole("link", { name: /Shop Optimizer öffnen/ }).getAttribute("href") ?? "");
   expect(optimizer.origin + optimizer.pathname).toBe("https://www.cardtrader.com/en/wishlists/new");
   expect(optimizer.searchParams.get("share_code")).toBe("yourcardbinder");
