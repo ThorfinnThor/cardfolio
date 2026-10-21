@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
 const root = process.cwd();
@@ -44,8 +44,9 @@ requireText("out/_headers", [
   "X-Frame-Options: DENY",
   "Permissions-Policy:",
   "Content-Security-Policy:",
-  "connect-src 'self' https://api.tcgdex.net https://api.cardtrader.com",
-  "img-src 'self' https://assets.tcgdex.net https://cardtrader.com",
+  "connect-src 'self' https://api.tcgdex.net https://api.cardtrader.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
+  "img-src 'self' https://assets.tcgdex.net https://cardtrader.com https://*.google-analytics.com https://*.googletagmanager.com",
+  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
   "frame-ancestors 'none'",
   "object-src 'none'",
 ]);
@@ -122,6 +123,24 @@ if (existsSync(cardtraderWorkflowPath)) {
   const uploadStep = workflow.slice(workflow.indexOf("Upload redacted audit artifacts"));
   if (/\.cardtrader\/discovery\.json/.test(uploadStep)) {
     failures.push("CardTrader discovery must never upload the raw discovery snapshot.");
+  }
+}
+
+/* Google Analytics is loaded by script only after the visitor agreed; no page may reference it up front. */
+function htmlFiles(directory) {
+  const found = [];
+  for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) found.push(...htmlFiles(path));
+    else if (entry.name.endsWith(".html")) found.push(path);
+  }
+  return found;
+}
+if (existsSync(join(root, "out"))) {
+  for (const file of htmlFiles(join(root, "out"))) {
+    if (/googletagmanager\.com|google-analytics\.com|G-R8KEXRSCBR/.test(readFileSync(file, "utf8"))) {
+      failures.push(`${file.slice(root.length + 1)} references Google Analytics before consent.`);
+    }
   }
 }
 

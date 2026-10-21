@@ -438,3 +438,12 @@
 - **Display.** In the CardTrader guide each matched card shows "12 Angebote · Verkäufer aus DE, IT". Counts are a weekly snapshot, not live.
 - **Not done.** Live offers (rate limit, needs a token), shipping methods (per seller and destination), and any use of the cart or purchase endpoints.
 
+## 2026-10-21 — Google Analytics 4 behind an opt-in banner
+
+- **Decision.** The owner chose Google Analytics 4 (property 559982761, measurement id `G-R8KEXRSCBR`, stream for yourcardbinder.com) over a cookieless alternative. It runs only after the visitor agrees.
+- **Consent.** `ConsentManager` (root layout) asks once: "Ablehnen" and "Erlauben" are equally prominent; the footer link "Cookie-Einstellungen" asks again; the answer is kept in `localStorage` (`cardfolio-analytics-consent`) for 12 months and is read after mount, so the static pages are identical for everyone. Withdrawal stops measuring (`ga-disable-<id>`, consent update) and deletes the `_ga*` cookies.
+- **Loading.** `enableAnalytics` injects `gtag.js` only after consent, with advertising storage, ad user data, personalisation, Google signals and the automatic page view off; `ConsentManager` sends a `page_view` per route (path only). No HTML references Google: `check-release-gates.mjs` scans `out/**/*.html` and fails otherwise.
+- **CSP.** `script-src` adds `https://www.googletagmanager.com`; `connect-src` adds `*.google-analytics.com`, `*.analytics.google.com`, `*.googletagmanager.com`; `img-src` adds `*.google-analytics.com`, `*.googletagmanager.com`.
+- **Texts.** Privacy section 8 and the related bullets, the browser-storage table, the recipients paragraph and the help page now describe this (wording approved by the owner before the merge). The privacy text states that Google Analytics data is kept for two months: the owner still has to set that in the Google Analytics account (user-data retention is 14 months by default), and to accept the data processing terms there.
+- **Tests.** The e2e suite starts with the question answered ("denied") through a shared fixture; `consent.spec.ts` covers the banner, the absence of any Google request before consent, withdrawal and the English pages.
+

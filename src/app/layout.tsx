@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import type { ReactNode } from "react";
 import "./globals.css";
 
+import { ConsentManager } from "@/components/consent/ConsentManager";
 import { OG_IMAGE, SITE_ORIGIN } from "@/config/site";
 import { FIXED_ENGLISH_PREFIX, FIXED_GERMAN_PREFIXES } from "@/i18n/fixed-locale";
 
@@ -53,7 +54,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script dangerouslySetInnerHTML={{ __html: localeScript }} />
       </head>
-      <body><Providers>{children}</Providers></body>
+      <body><Providers>{children}<ConsentManager /></Providers></body>
     </html>
   );
 }

@@ -167,7 +167,7 @@ export const LEGAL: readonly LegalDocument[] = [
       title: "Datenschutzerklärung",
       metaTitle: "Datenschutzerklärung · Your Card Binder",
       description: "Welche Daten beim Besuch von Your Card Binder verarbeitet werden, wo sie gespeichert sind und welche Rechte du hast.",
-      intro: "Diese Erklärung beschreibt, welche personenbezogenen Daten beim Besuch von Your Card Binder verarbeitet werden, wozu, auf welcher Rechtsgrundlage und welche Rechte du hast. Sie beschreibt den tatsächlichen Stand der Website: Your Card Binder hat kein Konto, setzt keine Cookies und nutzt keine Analyse- oder Werbedienste.",
+      intro: "Diese Erklärung beschreibt, welche personenbezogenen Daten beim Besuch von Your Card Binder verarbeitet werden, wozu, auf welcher Rechtsgrundlage und welche Rechte du hast. Sie beschreibt den tatsächlichen Stand der Website: Your Card Binder hat kein Konto und setzt ohne deine Einwilligung keine Cookies. Nur wenn du zustimmst, wird Google Analytics geladen. Werbedienste nutzt Your Card Binder nicht.",
       sections: [
         {
           heading: "1. Das Wichtigste in Kürze",
@@ -175,7 +175,7 @@ export const LEGAL: readonly LegalDocument[] = [
             { type: "ul", items: [
               "Es gibt kein Benutzerkonto, keine Anmeldung und keine Datenbank mit Nutzerdaten auf einem Server von Your Card Binder.",
               "Deine Binder, Karten und Einstellungen liegen ausschließlich in deinem Browser und werden nicht an Your Card Binder übertragen.",
-              "Your Card Binder setzt keine Cookies und lädt keine Analyse-, Tracking-, Werbe- oder Chat-Skripte.",
+              "Ohne deine Einwilligung setzt Your Card Binder keine Cookies und lädt keine Analyse-, Tracking-, Werbe- oder Chat-Skripte. Nur wenn du im Banner zustimmst, wird Google Analytics geladen (Abschnitt 8).",
               "Beim Aufruf der Seite verarbeitet der Hosting-Anbieter Cloudflare technisch notwendige Verbindungsdaten.",
               "Kartendaten und Kartenbilder lädt dein Browser direkt von TCGdex, ersatzweise Bilder von CardTrader; dabei erhält der jeweilige Anbieter deine IP-Adresse.",
               "Erst wenn du auf einen Link zu Cardmarket, TCGplayer oder Amazon klickst, verlässt du Your Card Binder und der jeweilige Anbieter verarbeitet Daten nach eigener Erklärung.",
@@ -206,6 +206,7 @@ export const LEGAL: readonly LegalDocument[] = [
               ["IndexedDB „cardfolio“", "Deine Binder mit Namen, Seiten und Plätzen, ausgewählte Karten, Besitzstatus, Kaufeinstellungen (Sprache, Mindestzustand, Region), Geschenk-Projekte und zuletzt geladene Kartendaten", "Damit deine Binder beim nächsten Besuch wieder da sind. Bis du sie löschst, die Website-Daten im Browser entfernst oder der Browser den Speicher aufräumt."],
               ["localStorage „cardfolio-theme“", "Helle oder dunkle Darstellung", "Merkt deine Wahl. Bis du die Website-Daten löschst."],
               ["localStorage „cardfolio-locale“", "Gewählte Sprache (Deutsch oder Englisch)", "Merkt deine Wahl. Bis du die Website-Daten löschst."],
+              ["localStorage „cardfolio-analytics-consent“", "Deine Wahl zu Google Analytics (erlaubt oder abgelehnt) und der Zeitpunkt der Wahl", "Damit das Banner nicht bei jedem Besuch erscheint. Zwölf Monate, danach wird erneut gefragt. Unbedingt erforderlich, um deine Wahl umzusetzen (§ 25 Abs. 2 Nr. 2 TDDDG)."],
               ["sessionStorage „cardfolio-gift-summary“", "Der fertige Geschenk-Vorschlag mit ausgewählten Karten, Einstellungen und, falls eingegeben, deiner Widmung", "Damit der Vorschlag beim Wechsel zum Einkauf und zurück erhalten bleibt. Nur für diesen Browser-Tab, höchstens sechs Stunden, und bis der Tab geschlossen wird."],
               ["BroadcastChannel „cardfolio-binder-sync“", "Nur ein Hinweis, dass sich ein Binder geändert hat", "Gleicht mehrere offene Tabs derselben Website ab. Wird nicht gespeichert und verlässt den Browser nicht."],
             ] },
@@ -236,8 +237,13 @@ export const LEGAL: readonly LegalDocument[] = [
           ],
         },
         {
-          heading: "8. Keine Cookies, keine Analyse, keine Werbung",
-          blocks: [{ type: "p", text: "Your Card Binder setzt keine eigenen Cookies, verwendet keine Webanalyse, keine Werbenetzwerke, keine Social-Media-Plugins, keine eingebetteten Videos oder Karten und keine Schriftarten von Drittanbietern. Die Schriftarten werden von der eigenen Domain geladen. Es findet kein Profiling und keine automatisierte Entscheidungsfindung im Sinne von Art. 22 DSGVO statt. Da keine Cookies oder ähnliche Technologien für Analyse oder Werbung eingesetzt werden, gibt es kein Einwilligungsbanner." }],
+          heading: "8. Cookies und Webanalyse mit Google Analytics (nur mit deiner Einwilligung)",
+          blocks: [
+            { type: "p", text: "Wenn du es erlaubst, nutzt Your Card Binder Google Analytics 4, einen Webanalysedienst der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland (Muttergesellschaft: Google LLC, USA). Ohne deine Erlaubnis wird Google Analytics nicht geladen: Es wird keine Verbindung zu Google aufgebaut und es werden keine Google-Cookies gesetzt." },
+            { type: "p", text: "Zweck ist die statistische Auswertung der Nutzung, also welche Seiten aufgerufen werden, auf welchem Weg Besucher kommen und welche Geräte, Browser und Länder genutzt werden, um Inhalte und Funktionen zu verbessern. Dabei setzt Google Analytics die Cookies „_ga“ und „_ga_R8KEXRSCBR“ (Speicherdauer bis zu zwei Jahre) mit einer zufälligen Kennung und überträgt Seitenaufrufe, Herkunft sowie Geräte- und Browserangaben an Google. Deine IP-Adresse wird dabei technisch an Google übertragen; Google Analytics 4 speichert sie nach Angaben von Google nicht. Werbefunktionen, Google Signals und personalisierte Werbung sind ausgeschaltet. Die Auswertungsdaten werden bei Google Analytics zwei Monate gespeichert." },
+            { type: "p", text: "Rechtsgrundlage ist deine Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG). Du entscheidest im Banner beim ersten Besuch, ablehnen ist genauso einfach wie erlauben. Du kannst deine Entscheidung jederzeit mit Wirkung für die Zukunft ändern: Öffne „Cookie-Einstellungen“ im Seitenfuß und wähle „Ablehnen“. Dann stoppt die Messung, und die Google-Analytics-Cookies dieser Website werden gelöscht. Deine Wahl wird in deinem Browser gespeichert und nach zwölf Monaten erneut abgefragt." },
+            { type: "p", text: "Google kann Daten in die USA übermitteln (siehe Abschnitt 10). Your Card Binder verwendet darüber hinaus keine Werbenetzwerke, keine Social-Media-Plugins, keine eingebetteten Videos oder Karten und keine Schriftarten von Drittanbietern. Die Schriftarten werden von der eigenen Domain geladen. Es findet kein Profiling und keine automatisierte Entscheidungsfindung im Sinne von Art. 22 DSGVO statt." },
+          ],
         },
         {
           heading: "9. Kontakt per E-Mail",
@@ -246,7 +252,7 @@ export const LEGAL: readonly LegalDocument[] = [
         {
           heading: "10. Empfänger und Übermittlung in Drittländer",
           blocks: [
-            { type: "p", text: "Empfänger der Verbindungsdaten sind Cloudflare (Hosting), TCGdex (Kartendaten und Bilder), CardTrader (ersatzweise Bilder) und, nach deinem Klick, der jeweilige Marktplatz oder Shop. Eine Übermittlung in Staaten außerhalb der EU und des EWR kann dabei nicht ausgeschlossen werden, zum Beispiel an Cloudflare in den USA oder an Marktplätze mit Sitz außerhalb der EU. Cloudflare stützt sich nach eigenen Angaben auf das EU-US Data Privacy Framework und Standardvertragsklauseln. Bei den übrigen Anbietern gelten deren eigene Garantien." },
+            { type: "p", text: "Empfänger der Verbindungsdaten sind Cloudflare (Hosting), TCGdex (Kartendaten und Bilder), CardTrader (ersatzweise Bilder), Google (Webanalyse, nur wenn du zustimmst) und, nach deinem Klick, der jeweilige Marktplatz oder Shop. Eine Übermittlung in Staaten außerhalb der EU und des EWR kann dabei nicht ausgeschlossen werden, zum Beispiel an Cloudflare in den USA oder an Marktplätze mit Sitz außerhalb der EU. Cloudflare und Google stützen sich nach eigenen Angaben auf das EU-US Data Privacy Framework und Standardvertragsklauseln. Bei den übrigen Anbietern gelten deren eigene Garantien." },
             { type: "p", text: "Der Quellcode und die öffentlichen Katalogdaten von Your Card Binder liegen in einem öffentlichen GitHub-Repository. Beim Besuch von Your Card Binder findet keine Verbindung zu GitHub statt, und deine Binder gelangen nicht dorthin." },
           ],
         },
@@ -284,7 +290,7 @@ export const LEGAL: readonly LegalDocument[] = [
       title: "Privacy policy",
       metaTitle: "Privacy policy · Your Card Binder",
       description: "Which data is processed when you visit Your Card Binder, where it is stored and which rights you have.",
-      intro: "This policy describes which personal data is processed when you visit Your Card Binder, why, on which legal basis, and which rights you have. It describes the actual state of the website: Your Card Binder has no account, sets no cookies and uses no analytics or advertising services.",
+      intro: "This policy describes which personal data is processed when you visit Your Card Binder, why, on which legal basis, and which rights you have. It describes the actual state of the website: Your Card Binder has no account and sets no cookies without your consent. Google Analytics is loaded only if you agree. Your Card Binder uses no advertising services.",
       sections: [
         {
           heading: "1. The short version",
@@ -292,7 +298,7 @@ export const LEGAL: readonly LegalDocument[] = [
             { type: "ul", items: [
               "There is no user account, no login and no database of user data on a Your Card Binder server.",
               "Your binders, cards and settings live only in your browser and are not transmitted to Your Card Binder.",
-              "Your Card Binder sets no cookies and loads no analytics, tracking, advertising or chat scripts.",
+              "Without your consent Your Card Binder sets no cookies and loads no analytics, tracking, advertising or chat scripts. Google Analytics is loaded only if you agree in the banner (Section 8).",
               "When you open the site, the hosting provider Cloudflare processes technically necessary connection data.",
               "Your browser loads card data and card images directly from TCGdex, and some images from CardTrader instead; the respective provider receives your IP address in the process.",
               "Only when you click a link to Cardmarket, TCGplayer or Amazon do you leave Your Card Binder, and that provider processes data under its own policy.",
@@ -323,6 +329,7 @@ export const LEGAL: readonly LegalDocument[] = [
               ["IndexedDB “cardfolio”", "Your binders with names, pages and slots, selected cards, ownership status, purchase settings (language, minimum condition, region), gift projects and recently loaded card data", "So your binders are still there on your next visit. Until you delete them, clear the site data in your browser or the browser clears the storage."],
               ["localStorage “cardfolio-theme”", "Light or dark display", "Remembers your choice. Until you clear site data."],
               ["localStorage “cardfolio-locale”", "Selected language (German or English)", "Remembers your choice. Until you clear site data."],
+              ["localStorage “cardfolio-analytics-consent”", "Your choice about Google Analytics (allowed or declined) and when you made it", "So the banner does not appear on every visit. Twelve months, then you are asked again. Strictly necessary to apply your choice (Section 25(2) no. 2 of the German TDDDG)."],
               ["sessionStorage “cardfolio-gift-summary”", "The finished gift proposal with selected cards, settings and, if entered, your greeting", "Keeps the proposal when you switch to the purchase view and back. This browser tab only, at most six hours, and until the tab is closed."],
               ["BroadcastChannel “cardfolio-binder-sync”", "Only a note that a binder has changed", "Keeps several open tabs of the same site in step. Not stored and does not leave the browser."],
             ] },
@@ -353,8 +360,13 @@ export const LEGAL: readonly LegalDocument[] = [
           ],
         },
         {
-          heading: "8. No cookies, no analytics, no advertising",
-          blocks: [{ type: "p", text: "Your Card Binder sets no cookies of its own and uses no web analytics, advertising networks, social media plugins, embedded videos or maps, or third-party fonts. Fonts are loaded from the site's own domain. There is no profiling and no automated decision-making within the meaning of Art. 22 GDPR. Since no cookies or similar technologies are used for analytics or advertising, there is no consent banner." }],
+          heading: "8. Cookies and web analytics with Google Analytics (only with your consent)",
+          blocks: [
+            { type: "p", text: "If you allow it, Your Card Binder uses Google Analytics 4, a web analytics service of Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Ireland (parent company: Google LLC, USA). Without your permission Google Analytics is not loaded: no connection to Google is made and no Google cookies are set." },
+            { type: "p", text: "The purpose is statistical analysis of usage, that is which pages are viewed, how visitors arrive and which devices, browsers and countries are used, in order to improve content and features. Google Analytics sets the cookies “_ga” and “_ga_R8KEXRSCBR” (lifetime up to two years) with a random identifier and transmits page views, origin and device and browser details to Google. Your IP address is technically transmitted to Google; according to Google, Google Analytics 4 does not store it. Advertising features, Google signals and personalised advertising are switched off. Analytics data is kept at Google Analytics for two months." },
+            { type: "p", text: "The legal basis is your consent (Art. 6(1)(a) GDPR, Section 25(1) of the German TDDDG). You decide in the banner on your first visit; declining is as easy as allowing. You can change your decision at any time with effect for the future: open “Cookie settings” in the footer and choose “Decline”. Measuring then stops and this website's Google Analytics cookies are deleted. Your choice is stored in your browser and asked again after twelve months." },
+            { type: "p", text: "Google may transfer data to the USA (see Section 10). Your Card Binder otherwise uses no advertising networks, social media plugins, embedded videos or maps, or third-party fonts. Fonts are loaded from the site's own domain. There is no profiling and no automated decision-making within the meaning of Art. 22 GDPR." },
+          ],
         },
         {
           heading: "9. Contact by email",
@@ -363,7 +375,7 @@ export const LEGAL: readonly LegalDocument[] = [
         {
           heading: "10. Recipients and transfers to third countries",
           blocks: [
-            { type: "p", text: "Recipients of connection data are Cloudflare (hosting), TCGdex (card data and images), CardTrader (images as a fallback) and, after your click, the respective marketplace or shop. A transfer to countries outside the EU and the EEA cannot be ruled out, for example to Cloudflare in the USA or to marketplaces based outside the EU. Cloudflare states that it relies on the EU–US Data Privacy Framework and Standard Contractual Clauses. For the other providers their own safeguards apply." },
+            { type: "p", text: "Recipients of connection data are Cloudflare (hosting), TCGdex (card data and images), CardTrader (images as a fallback), Google (web analytics, only if you agree) and, after your click, the respective marketplace or shop. A transfer to countries outside the EU and the EEA cannot be ruled out, for example to Cloudflare in the USA or to marketplaces based outside the EU. Cloudflare and Google state that they rely on the EU–US Data Privacy Framework and Standard Contractual Clauses. For the other providers their own safeguards apply." },
             { type: "p", text: "Your Card Binder's source code and public catalogue data are kept in a public GitHub repository. Visiting Your Card Binder makes no connection to GitHub, and your binders do not get there." },
           ],
         },

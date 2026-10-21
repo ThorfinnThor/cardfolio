@@ -53,7 +53,7 @@ export default function HelpPage() {
             <li>Kartenbilder werden direkt von <code>assets.tcgdex.net</code> geladen und nicht von Your Card Binder kopiert oder in Backups gespeichert.</li>
             <li>Marketplace-Seiten werden nur nach einem eigenen Klick geöffnet. Your Card Binder meldet sich dort nicht an und führt keinen Kauf aus.</li>
           </ul>
-          <p>Der aktuelle P0-Build verwendet keine Analyse-, Werbe- oder Chat-Skripte und setzt keine eigenen Login-Cookies.</p>
+          <p>Ohne deine Einwilligung lädt Your Card Binder keine Analyse-, Werbe- oder Chat-Skripte und setzt keine Cookies. Nur wenn du im Banner zustimmst, wird Google Analytics geladen.</p>
         </section>
 
         <section id="grenzen" className={styles.section}>
