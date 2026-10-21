@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { MissingCardsPanel } from "@/components/foundation/MissingCardsPanel";
 import { cardtraderCardmarketMappings } from "@/data/marketplace/cardtrader-cardmarket-products";
+import { prepareCardtraderHandoff } from "@/data/marketplace/cardtrader-handoff";
 import type { MarketplaceProductIdentityMapping } from "@/domain/marketplace-product-identity";
 import type { TcgplayerCardMapping } from "@/domain/tcgplayer-export";
 import type { MissingItem } from "@/domain/types";
@@ -10,6 +11,11 @@ import type { MissingItem } from "@/domain/types";
 vi.mock("@/data/marketplace/cardtrader-cardmarket-products", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/data/marketplace/cardtrader-cardmarket-products")>();
   return { ...actual, cardtraderCardmarketMappings: vi.fn(actual.cardtraderCardmarketMappings) };
+});
+
+vi.mock("@/data/marketplace/cardtrader-handoff", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/data/marketplace/cardtrader-handoff")>();
+  return { ...actual, prepareCardtraderHandoff: vi.fn(actual.prepareCardtraderHandoff) };
 });
 
 afterEach(() => cleanup());
@@ -394,4 +400,59 @@ describe("MissingCardsPanel", () => {
     expect(screen.queryByText("Vorausgefüllte Suchlinks")).not.toBeInTheDocument();
     expect(vi.mocked(cardtraderCardmarketMappings)).toHaveBeenCalledWith(expect.any(Array), { alreadyMapped: new Set(["basep-1"]) });
   });
+
+  describe("CardTrader as a marketplace", () => {
+    const handoff = {
+      entries: [
+        { identityKey: "pikachu", blueprintId: 111, url: "https://www.cardtrader.com/en/cards/111?share_code=yourcardbinder", unitPriceMinor: 250 },
+        { identityKey: "bulbasaur" },
+      ],
+      linkedCount: 1,
+      pricedCount: 1,
+      pricedTotalMinor: 500,
+      pricedQuantity: 2,
+    };
+
+    function openCardTrader(extra: Record<string, unknown> = {}) {
+      render(<MissingCardsPanel {...props()} cardmarketEnabled cardtraderEnabled {...extra} />);
+      fireEvent.click(screen.getByRole("button", { name: "Andere Region · Versand prüfen" }));
+      fireEvent.click(screen.getByRole("button", { name: "CardTrader" }));
+    }
+
+    it("shows the list with a page per matched card, a price hint and the referral notice", async () => {
+      vi.mocked(prepareCardtraderHandoff).mockResolvedValue(handoff);
+      openCardTrader();
+
+      expect(screen.getByRole("heading", { name: "3 Karten bei CardTrader kaufen" })).toBeInTheDocument();
+      const optimizer = screen.getByRole("link", { name: /Shop Optimizer öffnen/ });
+      expect(optimizer).toHaveAttribute("href", "https://www.cardtrader.com/en/wishlists/new?share_code=yourcardbinder");
+      expect(optimizer).toHaveAttribute("rel", "noopener noreferrer");
+      expect(screen.getByText(/Werbelink: Cardfolio kann bei einem Kauf eine Provision erhalten/)).toBeInTheDocument();
+
+      expect(await screen.findByRole("link", { name: "Bei CardTrader ansehen: Pikachu" })).toHaveAttribute("href", "https://www.cardtrader.com/en/cards/111?share_code=yourcardbinder");
+      expect(screen.getByText("Keine sichere Zuordnung")).toBeInTheDocument();
+      expect(screen.getByText("1 von 2 zugeordnet")).toBeInTheDocument();
+      expect(screen.getByText(/Richtwert: ab ca\./)).toHaveTextContent("2 von 3 Karten");
+      expect(screen.getByText(/ohne Versand/)).toBeInTheDocument();
+    });
+
+    it("keeps the price hint out when no card has a price", async () => {
+      vi.mocked(prepareCardtraderHandoff).mockResolvedValue({ entries: [{ identityKey: "pikachu" }, { identityKey: "bulbasaur" }], linkedCount: 0, pricedCount: 0, pricedTotalMinor: 0, pricedQuantity: 0 });
+      openCardTrader();
+      expect(await screen.findAllByText("Keine sichere Zuordnung")).toHaveLength(2);
+      expect(screen.queryByText(/Richtwert/)).not.toBeInTheDocument();
+    });
+
+    it("compares the two providers without naming a winner or quoting end prices", () => {
+      vi.mocked(prepareCardtraderHandoff).mockResolvedValue(handoff);
+      render(<MissingCardsPanel {...props()} cardmarketEnabled cardtraderEnabled />);
+      fireEvent.click(screen.getByRole("button", { name: "Andere Region · Versand prüfen" }));
+      const comparison = screen.getByLabelText("Cardmarket und CardTrader im Vergleich");
+      expect(comparison).toHaveTextContent("Shopping Wizard");
+      expect(comparison).toHaveTextContent("Shop Optimizer");
+      expect(comparison).toHaveTextContent("hängt vom Versand und von den Verkäufern ab");
+      expect(comparison.textContent).not.toMatch(/€/);
+    });
+  });
 });
+

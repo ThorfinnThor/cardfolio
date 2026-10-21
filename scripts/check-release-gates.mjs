@@ -60,7 +60,7 @@ requireText("src/config/feature-flags.ts", [
   'smartSearch: process.env.NEXT_PUBLIC_FEATURE_SMART_SEARCH !== "false"',
   "tcgplayerPrefill: false",
   "cardtraderPreview: true",
-  "cardtraderCatalog: false",
+  "cardtraderCatalog: true",
   "cardtraderSupplements: true",
   "cardtraderImages: true",
   "cardtraderPrices: true",

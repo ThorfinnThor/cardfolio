@@ -4,7 +4,7 @@ Stand: 20. Oktober 2026
 
 ## Ergebnis
 
-**Update 20. Oktober 2026:** CardTrader hat schriftlich bestätigt, dass Bilder, Preise und alle über die API verfügbaren Informationen für den beschriebenen Einsatz genutzt werden dürfen (Wortlaut siehe Abschnitt „Antwort von CardTrader“). Daraufhin sind `cardtraderImages` und `cardtraderPrices` aktiv, und der Workflow `cardtrader-sync.yml` schreibt Blueprints, Bild-Pfade, Cardmarket-/TCGplayer-Produkt-IDs und günstigste Angebotspreise nach `public/data/cardtrader/`. `cardtraderSupplements` ist seit 2026-10-21 aktiv (geprüfte Ergänzungskarten: Radiant Collection, Miscellaneous Promos); `cardtraderCatalog` (CardTrader als Marktplatz-Modus) bleibt aus. `cardtraderWishlist` und `cardtraderCommerce` bleiben **aus**: Wunschliste und Kauf brauchen zuerst ein geprüftes Konzept für den Token des Nutzers. Der Betreiber hat am 2026-10-21 erklärt, volle Erlaubnis von CardTrader zu haben; die Originalnachricht ist noch abzulegen.
+**Update 20. Oktober 2026:** CardTrader hat schriftlich bestätigt, dass Bilder, Preise und alle über die API verfügbaren Informationen für den beschriebenen Einsatz genutzt werden dürfen (Wortlaut siehe Abschnitt „Antwort von CardTrader“). Daraufhin sind `cardtraderImages` und `cardtraderPrices` aktiv, und der Workflow `cardtrader-sync.yml` schreibt Blueprints, Bild-Pfade, Cardmarket-/TCGplayer-Produkt-IDs und günstigste Angebotspreise nach `public/data/cardtrader/`. `cardtraderSupplements` ist seit 2026-10-21 aktiv (geprüfte Ergänzungskarten: Radiant Collection, Miscellaneous Promos); `cardtraderCatalog` (CardTrader als Marktplatz neben Cardmarket und TCGplayer, nur Links mit Partnercode) ist seit 2026-10-21 aktiv. `cardtraderWishlist` und `cardtraderCommerce` bleiben **aus**: Wunschliste und Kauf brauchen zuerst ein geprüftes Konzept für den Token des Nutzers. Der Betreiber hat am 2026-10-21 erklärt, volle Erlaubnis von CardTrader zu haben; die Originalnachricht ist noch abzulegen.
 
 Stand davor (Vorbereitung): Die providerneutrale Katalogschnittstelle, Laufzeitschemas, konservative Mappinglogik und reproduzierbare Audit-Werkzeuge waren vorbereitet, alle UI-Flags aus.
 
@@ -109,7 +109,7 @@ Die [CardTrader-Nutzungsbedingungen](https://static.cardtrader.com/en/pages/term
 | Private Wishlist | **No-Go** | Von der Antwort nicht gedeckt; erst Testkonto-Lauf, Nutzerbestätigung, kein Token im Browser/Backup |
 | Warenkorb/Kauf | **dauerhaft ausgeschlossen** | Cardfolio ruft diese Endpunkte nicht auf; `cardtraderCommerce` bleibt `false` |
 
-`cardtraderImages`, `cardtraderPrices`, `cardtraderProductIds` und `cardtraderSupplements` sind aktiv. `cardtraderCatalog`, `cardtraderWishlist` und `cardtraderCommerce` sind fest deaktiviert (`scripts/check-release-gates.mjs` prüft das). Eine Erlaubnis für einen Datentyp öffnet keinen anderen automatisch.
+`cardtraderImages`, `cardtraderPrices`, `cardtraderProductIds`, `cardtraderSupplements` und `cardtraderCatalog` (CardTrader als Marktplatz neben Cardmarket und TCGplayer, nur Links, kein API-Schreibzugriff) sind aktiv. `cardtraderWishlist` und `cardtraderCommerce` sind fest deaktiviert (`scripts/check-release-gates.mjs` prüft das). Eine Erlaubnis für einen Datentyp öffnet keinen anderen automatisch.
 
 ## Reproduzierbarer Discovery- und Mappinglauf
 
@@ -203,7 +203,7 @@ Folgerungen: Bilder mit Wasserzeichen dürfen angezeigt werden; Cardfolio lädt 
 - [ ] Bei unklarer oder nur mündlicher Antwort nachfragen; sie gilt bis dahin als No-Go.
 - [x] Gedrosselter Read-only-Lauf für `/marketplace/products` (Workflow-Läufe vom 2026-10-20).
 - [x] Währung (nur EUR), Filter (nicht gradiert, kein Urlaubsverkäufer, nicht signiert/verändert, keine Erstausgabe), Sprache (en/de) und Zustandsstufen sind im Sync umgesetzt; Ausreißer (Einzel-Angebote ohne Gegenangebot) werden als „günstigstes Angebot“ gekennzeichnet. TTL/Stale: Momentaufnahme je Wochenlauf, offen: sichtbares Datum an der Preisangabe.
-- [x] `cardtraderImages` und `cardtraderPrices` aktiviert; `cardtraderCatalog`, Wishlist und Commerce unverändert aus.
+- [x] `cardtraderImages` und `cardtraderPrices` aktiviert; Wishlist und Commerce unverändert aus (`cardtraderCatalog` folgte am 2026-10-21 als reine Link-Auswahl).
 
 Eine Erlaubnis für eine Datenart öffnet keine andere automatisch. Wishlist-Schreibzugriffe
 sind nicht freigegeben und bleiben deaktiviert.
