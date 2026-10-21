@@ -43,7 +43,7 @@ export function MarketplaceComparison() {
 
 const GUIDE_STEPS = [
   { step: 1, label: "Karten prüfen" },
-  { step: 2, label: "Liste anlegen" },
+  { step: 2, label: "Karten hinzufügen" },
   { step: 3, label: "Shop Optimizer" },
   { step: 4, label: "Kauf prüfen" },
 ] as const;
@@ -172,34 +172,36 @@ export function CardTraderMarketplacePanel({ items, wishlistEnabled = false }: {
 
           {guideStep === 2 ? <>
             <span className={styles.cardmarketGuideKicker}>Schritt 2</span>
-            <h5>Liste bei CardTrader anlegen</h5>
-            {wishlistEnabled && plan ? <>
-              <p>Your Card Binder kann die Liste in deinem CardTrader-Konto anlegen. Dafür brauchst du dein <b>persönliches API-Token</b> von CardTrader. <a href={CARDTRADER_API_DOCS_URL} target="_blank" rel="noopener noreferrer">So erzeugst du es <ExternalLink aria-hidden="true" size={13} /></a></p>
-              <ul className={styles.tokenFacts}>
-                <li>Das Token bleibt nur in diesem Fenster. Es wird nicht gespeichert, nicht in Sicherungen übernommen und nicht an uns gesendet.</li>
-                <li>Gesendet wird direkt an CardTrader: eine <b>private</b> Liste „{wishlistName}“ mit {plan.request.deck.deck_items_attributes.length === 1 ? "1 Kartenseite" : `${plan.request.deck.deck_items_attributes.length} Kartenseiten`} ({cards(plan.quantity)}), jeweils mit Menge und Sprache.</li>
-                {plan.skippedPositions ? <li>{plan.skippedPositions === 1 ? "1 Position" : `${plan.skippedPositions} Positionen`} ohne sichere Zuordnung {plan.skippedPositions === 1 ? "steht" : "stehen"} nicht auf der Liste.</li> : null}
-                <li>Es wird nichts gekauft und nichts in einen Warenkorb gelegt.</li>
-              </ul>
-              <label className={styles.tokenField} htmlFor="cardtrader-token">
-                <span>CardTrader-Token</span>
-                <input id="cardtrader-token" type="password" autoComplete="off" autoCapitalize="off" spellCheck={false} value={token} onChange={(event) => setToken(event.target.value)} />
-              </label>
-              {wishlistError ? <p className={styles.error} role="alert">{wishlistError}</p> : null}
-              <div className={styles.cardmarketGuideActions}>
-                <button type="button" className={styles.cardmarketBackButton} onClick={() => setGuideStep(1)}><ArrowLeft aria-hidden="true" size={16} /> Zurück</button>
-                <button type="button" className={styles.secondaryAction} onClick={() => { setToken(""); setGuideStep(3); }}>Ohne Wunschliste weiter</button>
-                <button type="button" className={styles.cardmarketFinalAction} disabled={!token.trim() || wishlistState === "sending"} onClick={() => void createWishlist()}>
-                  {wishlistState === "sending" ? "Wird angelegt …" : `Wunschliste mit ${cards(plan.quantity)} anlegen`}
-                </button>
-              </div>
-            </> : <>
-              <p>{plan ? "Du fügst die Karten im Shop Optimizer selbst hinzu. Die Seiten aus Schritt 1 zeigen dir zu jeder Karte Set, Nummer und alle Angebote." : "Keine der Karten ist sicher einer CardTrader-Karte zugeordnet. Suche sie bei CardTrader selbst oder nutze einen anderen Anbieter."}</p>
-              <div className={styles.cardmarketGuideActions}>
-                <button type="button" className={styles.cardmarketBackButton} onClick={() => setGuideStep(1)}><ArrowLeft aria-hidden="true" size={16} /> Zurück</button>
-                <button type="button" onClick={() => setGuideStep(3)}>Weiter <ArrowRight aria-hidden="true" size={17} /></button>
-              </div>
-            </>}
+            <h5>Karten bei CardTrader hinzufügen</h5>
+            <p>{plan ? "Öffne im nächsten Schritt den Shop Optimizer und füge deine Karten dort hinzu. Die Seiten aus Schritt 1 zeigen dir zu jeder Karte Set, Nummer und alle Angebote." : "Keine der Karten ist sicher einer CardTrader-Karte zugeordnet. Suche sie bei CardTrader selbst oder nutze einen anderen Anbieter."}</p>
+            {wishlistEnabled && plan ? (
+              <details className={styles.advancedCardmarket}>
+                <summary>Für Fortgeschrittene: Liste automatisch anlegen</summary>
+                <div className={styles.advancedCardmarketBody}>
+                  <p>Mit deinem <b>persönlichen API-Token</b> von CardTrader kann Your Card Binder die Liste in deinem Konto anlegen. <a href={CARDTRADER_API_DOCS_URL} target="_blank" rel="noopener noreferrer">So erhältst du es <ExternalLink aria-hidden="true" size={13} /></a></p>
+                  <ul className={styles.tokenFacts}>
+                    <li>Das Token bleibt nur in diesem Fenster. Es wird nicht gespeichert, nicht in Sicherungen übernommen und nicht an uns gesendet.</li>
+                    <li>Gesendet wird direkt an CardTrader: eine <b>private</b> Liste „{wishlistName}“ mit {plan.request.deck.deck_items_attributes.length === 1 ? "1 Kartenseite" : `${plan.request.deck.deck_items_attributes.length} Kartenseiten`} ({cards(plan.quantity)}), jeweils mit Menge und Sprache.</li>
+                    {plan.skippedPositions ? <li>{plan.skippedPositions === 1 ? "1 Position" : `${plan.skippedPositions} Positionen`} ohne sichere Zuordnung {plan.skippedPositions === 1 ? "steht" : "stehen"} nicht auf der Liste.</li> : null}
+                    <li>Es wird nichts gekauft und nichts in einen Warenkorb gelegt.</li>
+                  </ul>
+                  <label className={styles.tokenField} htmlFor="cardtrader-token">
+                    <span>CardTrader-Token</span>
+                    <input id="cardtrader-token" type="password" autoComplete="off" autoCapitalize="off" spellCheck={false} value={token} onChange={(event) => setToken(event.target.value)} />
+                  </label>
+                  {wishlistError ? <p className={styles.error} role="alert">{wishlistError}</p> : null}
+                  <div className={styles.cardmarketGuideActions}>
+                    <button type="button" className={styles.secondaryAction} disabled={!token.trim() || wishlistState === "sending"} onClick={() => void createWishlist()}>
+                      {wishlistState === "sending" ? "Wird angelegt …" : `Wunschliste mit ${cards(plan.quantity)} anlegen`}
+                    </button>
+                  </div>
+                </div>
+              </details>
+            ) : null}
+            <div className={styles.cardmarketGuideActions}>
+              <button type="button" className={styles.cardmarketBackButton} onClick={() => { setToken(""); setGuideStep(1); }}><ArrowLeft aria-hidden="true" size={16} /> Zurück</button>
+              <button type="button" onClick={() => { setToken(""); setGuideStep(3); }}>Weiter <ArrowRight aria-hidden="true" size={17} /></button>
+            </div>
           </> : null}
 
           {guideStep === 3 ? <>

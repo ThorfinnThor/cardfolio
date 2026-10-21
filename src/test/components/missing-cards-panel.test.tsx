@@ -447,7 +447,7 @@ describe("MissingCardsPanel", () => {
       expect(screen.queryByRole("link", { name: /Shop Optimizer öffnen/ })).not.toBeInTheDocument();
 
       fireEvent.click(screen.getByRole("button", { name: /^Weiter/ }));
-      expect(screen.getByRole("heading", { name: "Liste bei CardTrader anlegen" })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Karten bei CardTrader hinzufügen" })).toBeInTheDocument();
       expect(screen.queryByLabelText("CardTrader-Token")).not.toBeInTheDocument();
       fireEvent.click(screen.getByRole("button", { name: /^Weiter/ }));
 
@@ -500,7 +500,7 @@ describe("MissingCardsPanel", () => {
         fireEvent.change(screen.getByLabelText("CardTrader-Token"), { target: { value: token } });
         fireEvent.click(screen.getByRole("button", { name: "Wunschliste mit 2 Karten anlegen" }));
         expect(await screen.findByRole("alert")).toHaveTextContent("CardTrader hat das Token abgelehnt");
-        fireEvent.click(screen.getByRole("button", { name: "Ohne Wunschliste weiter" }));
+        fireEvent.click(screen.getByRole("button", { name: /^Weiter/ }));
         expect(screen.getByRole("heading", { name: "Shop Optimizer öffnen und Verkäufer wählen" })).toBeInTheDocument();
         expect(screen.queryByText(/liegt jetzt in deinem CardTrader-Konto/)).not.toBeInTheDocument();
       });
