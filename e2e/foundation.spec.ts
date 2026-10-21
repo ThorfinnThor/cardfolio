@@ -331,13 +331,13 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   await openMissingCards(page, 1);
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   // The full list is a disclosure below the region chooser.
-  await missingCards.getByText("Vollständige Fehlkartenliste anzeigen (1)").click();
+  await missingCards.getByText("Alle fehlenden Karten als Liste (1)").click();
   await expect(missingCards.getByText("Ivysaur", { exact: true })).toBeVisible();
   await missingCards.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" }).click();
   await expect(missingCards.getByRole("heading", { name: /Karten gemeinsam übertragen/ })).toBeVisible();
   const bulkHandoff = missingCards.getByRole("link", { name: "1 Karte kopieren & Cardmarket öffnen" });
   await expect(bulkHandoff).toHaveAttribute("href", "https://www.cardmarket.com/de/Pokemon/Wants");
-  await missingCards.getByText("Importliste ansehen oder als Datei speichern").click();
+  await missingCards.getByText("Falls etwas nicht klappt").click();
   await missingCards.getByText(/Wichtige Hinweise anzeigen/).click();
   await expect(missingCards.getByText(/vollständiger Kartenname, Fähigkeiten und Attacken/)).toBeVisible();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue("1x Ivysaur Vine Whip Poisonpowder");
@@ -914,9 +914,8 @@ test("sets, edits and persists the minimum condition for marketplace handoff", a
   expect(optimizer.origin + optimizer.pathname).toBe("https://www.cardtrader.com/en/wishlists/new");
   expect(optimizer.searchParams.get("share_code")).toBe("yourcardbinder");
   await expect(missingCards.getByText(/Werbelink: Cardfolio kann bei einem Kauf eine Provision erhalten/)).toBeVisible();
-  await missingCards.getByRole("button", { name: "Anderen Anbieter wählen" }).click();
   await missingCards.getByRole("button", { name: "Cardmarket", exact: true }).click();
-  await missingCards.getByText("Importliste ansehen oder als Datei speichern").click();
+  await missingCards.getByText("Falls etwas nicht klappt").click();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue("1x Ivysaur Vine Whip Poisonpowder");
   await expect(missingCards.getByText("Zustand: Gebraucht", { exact: true })).toBeVisible();
 });
@@ -1007,13 +1006,12 @@ test("finds and displays an exact full collector number", async ({ page }) => {
   expect(tcgplayerUrl.searchParams.get("c")).toBe("1 Charizard [BS] 004/102");
   expect(tcgplayerUrl.searchParams.get("productline")).toBe("Pokemon");
 
-  await missingCards.getByRole("button", { name: "Anderen Anbieter wählen" }).click();
   await missingCards.getByRole("button", { name: "Cardmarket", exact: true }).click();
   await expect(missingCards.getByRole("link", { name: "1 Karte kopieren & Cardmarket öffnen" })).toHaveAttribute(
     "href",
     "https://www.cardmarket.com/de/Pokemon/Wants",
   );
-  await missingCards.getByText("Nur falls Cardmarket eine Karte nicht erkennt: Einzelsuchen (1)").click();
+  await missingCards.getByText("Falls etwas nicht klappt").click();
   // Base Set Charizard has exactly one Cardmarket product id in the CardTrader data, so it gets a direct product page
   // (the id was opened by hand on 2026-10-21) instead of a prefilled search.
   await expect(missingCards.getByRole("link", { name: /Produktseite öffnen/ })).toHaveAttribute(
@@ -1041,13 +1039,12 @@ test("exports the verified Tornupto and Blaine's Charizard identities to TCGplay
   await expect(missingCards.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue(
     "1 Blaine's Charizard [G2] 002/132\n1 Typhlosion (17) [N1] 017/111",
   );
-  await missingCards.getByText("Vollständige Fehlkartenliste anzeigen (2)").click();
+  await missingCards.getByText("Alle fehlenden Karten als Liste (2)").click();
   await expect(missingCards.getByRole("region", { name: "Neo Genesis · DE" }).getByText("Nr. 17/111")).toBeVisible();
   await expect(missingCards.getByRole("region", { name: "Gym Challenge · EN" }).getByText("Nr. 2/132")).toBeVisible();
 
-  await missingCards.getByRole("button", { name: "Anderen Anbieter wählen" }).click();
   await missingCards.getByRole("button", { name: "Cardmarket", exact: true }).click();
-  await missingCards.getByText("Importliste ansehen oder als Datei speichern").click();
+  await missingCards.getByText("Falls etwas nicht klappt").click();
   await expect(missingCards.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue(
     "1x Blaine's Charizard Roaring Flames Flame Jet\n1x Typhlosion Fire Recharge Flame Burst",
   );

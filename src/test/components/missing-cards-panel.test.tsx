@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, cleanup, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, cleanup, waitFor, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { MissingCardsPanel } from "@/components/foundation/MissingCardsPanel";
@@ -177,7 +177,7 @@ describe("MissingCardsPanel", () => {
     expect(new URL(handoffLink.getAttribute("href") ?? "").searchParams.get("c")).toBe("1 Bulbasaur [BS] 044/102");
     expect(screen.getByText(/Printing: Unlimited · Zustand: alle Zustände einschließlich Damaged/)).toBeInTheDocument();
     expect(screen.getByText("Bereits vorbereitete Karten anzeigen (1)").closest("details")).not.toHaveAttribute("open");
-    expect(screen.getByText("Vollständige Fehlkartenliste anzeigen (2)").closest("details")).not.toHaveAttribute("open");
+    expect(screen.getByText("Alle fehlenden Karten als Liste (2)").closest("details")).not.toHaveAttribute("open");
 
     fireEvent.click(screen.getByRole("button", { name: "TCGplayer kopieren" }));
     fireEvent.click(screen.getByRole("button", { name: "TCGplayer TXT" }));
@@ -203,12 +203,12 @@ describe("MissingCardsPanel", () => {
     );
 
     fireEvent.click(screen.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" }));
-    expect(screen.getByText("Cardmarket ausgewählt")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Cardmarket" })).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByText("Für Europa und UK ist Cardmarket normalerweise der einfachste Start.")).toBeInTheDocument();
     expect(onCardmarketPrepare).toHaveBeenCalledWith(items);
 
     fireEvent.click(screen.getByRole("button", { name: "USA & Kanada · TCGplayer empfohlen" }));
-    expect(screen.getByText("TCGplayer ausgewählt")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "TCGplayer" })).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByText("Für USA und Kanada ist TCGplayer normalerweise der einfachste Start.")).toBeInTheDocument();
   });
 
@@ -253,25 +253,24 @@ describe("MissingCardsPanel", () => {
     expect(screen.getByRole("heading", { name: "Ergebnis prüfen und gemeinsam kaufen" })).toBeInTheDocument();
     expect(screen.getByText("Schritt 4 von 4")).toBeInTheDocument();
 
-    const fallback = screen.getByText("Nur falls Cardmarket eine Karte nicht erkennt: Einzelsuchen (2)").closest("details");
+    const fallback = screen.getByText("Falls etwas nicht klappt").closest("details");
     expect(fallback).not.toHaveAttribute("open");
-    fireEvent.click(screen.getByText("Nur falls Cardmarket eine Karte nicht erkennt: Einzelsuchen (2)"));
+    fireEvent.click(screen.getByText("Falls etwas nicht klappt"));
+    expect(screen.getByRole("heading", { name: "Einzelne Karten suchen (2)" })).toBeInTheDocument();
     expect(screen.getByText("Direkte Produktseiten")).toBeInTheDocument();
     expect(screen.getByText("Vorausgefüllte Suchlinks")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Produktseite öffnen/ })).toHaveAttribute("href", "https://www.cardmarket.com/en/Pokemon/Cards/Pikachu");
     const searchLinks = screen.getAllByRole("link", { name: /Karte suchen/ });
     expect(searchLinks).toHaveLength(1);
     expect(new URL(searchLinks[0].getAttribute("href") ?? "").searchParams.get("searchString")).toBe("Bulbasaur Base Set 044");
-    expect(screen.getByText("Importliste ansehen oder als Datei speichern").closest("details")).not.toHaveAttribute("open");
-
-    fireEvent.click(screen.getByText("Importliste ansehen oder als Datei speichern"));
+    expect(screen.getByRole("heading", { name: "Importliste kopieren oder als Datei speichern" })).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: "Cardmarket-Decklistenvorschau" })).toHaveValue(
       "2x Pikachu Static Growl Thundershock\n1x Bulbasaur Leech Seed",
     );
     expect(screen.getByRole("link", { name: "Cardmarket-Hilfe" })).toHaveAttribute("rel", "noopener noreferrer");
     expect(screen.getByRole("link", { name: "Cardmarket-Kartenübersicht öffnen" })).toHaveAttribute("rel", "noopener noreferrer");
     expect(screen.getByText("Alle Karten sind für den Decklistenimport vorbereitet")).toBeInTheDocument();
-    expect(screen.getByText("Vollständige Fehlkartenliste anzeigen (2)").closest("details")).not.toHaveAttribute("open");
+    expect(screen.getByText("Alle fehlenden Karten als Liste (2)").closest("details")).not.toHaveAttribute("open");
 
     fireEvent.click(screen.getByRole("button", { name: "Deckliste kopieren" }));
     fireEvent.click(screen.getByRole("button", { name: "Deckliste TXT" }));
@@ -318,7 +317,7 @@ describe("MissingCardsPanel", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Europa & UK · Cardmarket empfohlen" }));
 
-    fireEvent.click(screen.getByText("Importliste ansehen oder als Datei speichern"));
+    fireEvent.click(screen.getByText("Falls etwas nicht klappt"));
     expect(screen.getByText("1 Karte fehlt im Importtext")).toBeInTheDocument();
     expect(screen.getByText("Vor dem Import prüfen")).toBeInTheDocument();
     expect(screen.getByText(/Variantenangaben prüfen/)).toBeInTheDocument();
@@ -335,7 +334,6 @@ describe("MissingCardsPanel", () => {
     expect(screen.getByRole("heading", { name: "TCGplayer Mass Entry" })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: /Karten gemeinsam übertragen/ })).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "Anderen Anbieter wählen" }));
     fireEvent.click(screen.getByRole("button", { name: "Cardmarket" }));
     expect(screen.queryByRole("heading", { name: "TCGplayer Mass Entry" })).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "2 Karten gemeinsam übertragen" })).toBeInTheDocument();
@@ -387,7 +385,7 @@ describe("MissingCardsPanel", () => {
     fireEvent.click(screen.getByRole("link", { name: "2 Karten kopieren & Cardmarket öffnen" }));
     fireEvent.click(screen.getByRole("button", { name: /Karten sind eingefügt/ }));
     fireEvent.click(screen.getByRole("button", { name: /Zustand ist eingestellt/ }));
-    fireEvent.click(screen.getByText(/Nur falls Cardmarket eine Karte nicht erkennt: Einzelsuchen/));
+    fireEvent.click(screen.getByText("Falls etwas nicht klappt"));
 
     await waitFor(() => expect(screen.getAllByRole("link", { name: /Produktseite öffnen/ })).toHaveLength(2));
     const links = screen.getAllByRole("link", { name: /Produktseite öffnen/ });
@@ -418,6 +416,15 @@ describe("MissingCardsPanel", () => {
       fireEvent.click(screen.getByRole("button", { name: "Andere Region · Versand prüfen" }));
       fireEvent.click(screen.getByRole("button", { name: "CardTrader" }));
     }
+
+    it("lists CardTrader next to Cardmarket from the start, without an extra click", () => {
+      render(<MissingCardsPanel {...props()} cardmarketEnabled cardtraderEnabled />);
+
+      const choices = screen.getByRole("group", { name: "Marketplace auswählen" });
+      expect(within(choices).getByRole("button", { name: "Cardmarket" })).toBeInTheDocument();
+      expect(within(choices).getByRole("button", { name: "CardTrader" })).toHaveAttribute("aria-pressed", "false");
+      expect(screen.queryByRole("button", { name: "Anderen Anbieter wählen" })).not.toBeInTheDocument();
+    });
 
     it("shows the list with a page per matched card, a price hint and the referral notice", async () => {
       vi.mocked(prepareCardtraderHandoff).mockResolvedValue(handoff);

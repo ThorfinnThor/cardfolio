@@ -22,7 +22,7 @@ export default function NotFound() {
         <ul>
           <li><Link href={homePath("de")}>Zur Startseite und zum Binder-Werkzeug</Link></li>
           <li><Link href={guideIndexPath("de")}>Ratgeber zu Binder, Zustand und Kauf</Link></li>
-          <li><Link href={speciesIndexPath("de")}>Pokémon-Binder nach Lieblingsfigur</Link></li>
+          <li><Link href={speciesIndexPath("de")}>Binder nach Lieblings-Pokémon gestalten</Link></li>
         </ul>
       </section>
     </ContentFrame>

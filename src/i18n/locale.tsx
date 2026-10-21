@@ -299,10 +299,13 @@ const translations: Record<string, string> = {
   "Kopierte Karten bei Cardmarket einfügen": "Paste the copied cards into Cardmarket",
   "Karten sind eingefügt": "Cards are pasted",
   "Liste erneut kopieren & Cardmarket öffnen": "Copy list again & open Cardmarket",
-  "Importliste ansehen oder als Datei speichern": "View import list or save as a file",
+  "Falls etwas nicht klappt": "If something does not work",
+  "Importliste kopieren oder als Datei speichern": "Copy the import list or save it as a file",
+  "Einzelne Karten suchen": "Search single cards",
   "Wichtige Hinweise anzeigen": "Show important information",
-  "Vollständige Fehlkartenliste anzeigen": "Show full missing-card list",
-  "Nur falls Cardmarket eine Karte nicht erkennt": "Only if Cardmarket does not recognise a card",
+  "Alle fehlenden Karten als Liste": "All missing cards as a list",
+  "Anbieter": "Marketplace",
+  "Cardmarket oder CardTrader? Der Unterschied": "Cardmarket or CardTrader? The difference",
   "Alle Karten sind für den Decklistenimport vorbereitet": "All cards are prepared for deck-list import",
   "Mass Entry vorbereiten": "Prepare Mass Entry",
   "Karten sicher öffnen": "Open cards safely",
@@ -591,6 +594,8 @@ Object.assign(translations, {
 });
 
 const patterns: Array<[RegExp, (...matches: string[]) => string]> = [
+  [/^Einzelne Karten suchen \((\d+)\)$/, (count) => `Search single cards (${count})`],
+  [/^Alle fehlenden Karten als Liste \((\d+)\)$/, (count) => `All missing cards as a list (${count})`],
   [/^(\d+) Karten bei CardTrader kaufen$/, (count) => `Buy ${count} cards at CardTrader`],
   [/^1 Karte bei CardTrader kaufen$/, () => "Buy 1 card at CardTrader"],
   [/^(\d+) Positionen · gekauft wird erst bei CardTrader$/, (count) => `${count} items · you only buy at CardTrader`],
