@@ -120,7 +120,6 @@
 .summaryHeader { border-bottom: 1px solid var(--cf-line); padding-bottom: 14px; }
 .summaryHeader h2 { margin: 8px 0 4px; color: var(--cf-text); font-family: var(--cf-font-display); font-size: clamp(1.45rem, 3vw, 2rem); font-weight: 600; line-height: 1.15; overflow-wrap: anywhere; }
 .summaryHeader > p:last-child { margin: 0; color: var(--cf-muted); font-size: 13px; }
-.greetingPreview { margin: 0; border-left: 3px solid var(--cf-accent); color: var(--cf-text2); padding: 8px 12px; font-size: 14px; white-space: pre-wrap; overflow-wrap: anywhere; }
 .summaryDisclosure { margin: 0; color: var(--cf-muted); font-size: 11px; line-height: 1.55; }
 .summaryCards { display: grid; gap: 12px; }
 .summaryCards > summary { width: fit-content; color: var(--cf-accent-text); font-size: 15px; font-weight: 700; cursor: pointer; }
@@ -129,9 +128,6 @@
 .summaryCardIdentity { display: grid; gap: 3px; min-width: 0; }
 .summaryCardIdentity strong { color: var(--cf-text); font-size: 13px; font-weight: 650; }
 .summaryCardIdentity small { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 11px; line-height: 1.35; overflow-wrap: anywhere; }
-.greetingField { display: grid; gap: 9px; color: var(--cf-text2); font-size: 16px; font-weight: 700; }
-.greetingField span { color: var(--cf-muted); font-size: 13px; font-weight: 500; }
-.greetingField textarea { width: 100%; resize: vertical; border: 1px solid var(--cf-line2); border-radius: 7px; background: var(--cf-field); color: var(--cf-text); padding: 13px; font: inherit; font-size: 16px; }
 .purchaseOptions { display: grid; gap: 16px; }
 .purchaseCard { display: flex; flex-direction: column; justify-content: space-between; gap: 22px; min-width: 0; border: 0; border-top: 1px solid var(--cf-line); background: transparent; padding: 26px 0 0; }
 .purchaseCardFeatured { border-top: 0; padding-top: 0; }
@@ -251,6 +247,7 @@
 .inspectorText h3 { margin: 0; color: var(--cf-text); font-family: var(--cf-font-display); font-size: 22px; font-weight: 600; line-height: 1.2; overflow-wrap: anywhere; }
 .inspectorText p { margin: 0; color: var(--cf-text2); font-size: 14px; line-height: 1.45; }
 .inspectorText small { display: block; margin-top: 2px; color: var(--cf-muted); font-size: 12px; line-height: 1.4; }
+.inspectorPosition { color: var(--cf-accent-text) !important; font-family: var(--cf-font-mono); font-size: 13px; font-weight: 650; }
 .inspectorStatus { display: flex; align-items: flex-start; gap: 7px; color: var(--cf-ok-text) !important; font-weight: 650; }
 .inspectorStatus[data-status="invalid"] { color: var(--cf-miss-text) !important; }
 .inspectorStatus svg { flex: 0 0 auto; margin-top: 2px; }
@@ -332,7 +329,7 @@
   .printSummary, .printSummary * { visibility: visible !important; }
   .printSummary { position: absolute; inset: 0; width: 100%; border: 0; background: #fff; color: #111; padding: 0; }
   .printSummary :global(*) { box-shadow: none !important; }
-  .greetingField, .purchaseOptions, .summaryActions, .header, .progressLine, .printSummary .localHint, .summaryCardImage, .summaryCardImageFallback { display: none !important; }
+  .purchaseOptions, .summaryActions, .header, .progressLine, .printSummary .localHint, .summaryCardImage, .summaryCardImageFallback { display: none !important; }
   .summaryCards ol { grid-template-columns: 1fr; }
   .screenOnly { display: none !important; }
   .printOnly { display: inline !important; }

@@ -122,13 +122,14 @@ export function GiftBinderSpread({ pages, inspectedKey, onInspect, onSwap }: Gif
   const lastStart = Math.max(Math.floor((pages.length - 1) / step) * step, 0);
   const start = Math.min(twoPages ? view - (view % 2) : view, lastStart);
 
-  // Bring a card the buyer is asked to fix, or just opened, into view (adjusting state while rendering).
-  const [shownFor, setShownFor] = useState<string>();
-  if (inspectedKey !== shownFor) {
-    setShownFor(inspectedKey);
-    const pageIndex = inspectedKey ? pages.findIndex((page) => page.some((pocket) => pocket.key === inspectedKey)) : -1;
+  // Bring a card the buyer is asked to fix, or just opened, into view, and keep following it when it is moved
+  // to another page with the position buttons (adjusting state while rendering).
+  const inspectedPage = inspectedKey ? pages.findIndex((page) => page.some((pocket) => pocket.key === inspectedKey)) : -1;
+  const [shown, setShown] = useState<{ key?: string; page: number }>({ page: -1 });
+  if (inspectedKey !== shown.key || inspectedPage !== shown.page) {
+    setShown({ key: inspectedKey, page: inspectedPage });
     const visible = twoPages ? [start, start + 1] : [start];
-    if (pageIndex >= 0 && !visible.includes(pageIndex)) setView(pageIndex);
+    if (inspectedPage >= 0 && !visible.includes(inspectedPage)) setView(inspectedPage);
   }
 
   function dragStart(event: DragStartEvent) {

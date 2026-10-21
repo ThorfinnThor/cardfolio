@@ -215,7 +215,6 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
   const [excludedKeys, setExcludedKeys] = useState<Set<string>>(new Set());
   const [submitting, setSubmitting] = useState(false);
   const [giftProject, setGiftProject] = useState<GiftProject | undefined>(resumed?.project);
-  const [greeting, setGreeting] = useState(resumed?.greeting ?? "");
   const stepMounted = useRef(false);
   const cardsDetails = useRef<HTMLDetailsElement>(null);
   // How many cards exist for the chosen Pokémon, so a size that cannot be met is not offered.
@@ -285,8 +284,8 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
   }, []);
 
   useEffect(() => {
-    if (step === "summary" && selection && giftProject) saveGiftResume({ selection, preferences, project: giftProject, greeting });
-  }, [step, selection, giftProject, preferences, greeting]);
+    if (step === "summary" && selection && giftProject) saveGiftResume({ selection, preferences, project: giftProject });
+  }, [step, selection, giftProject, preferences]);
 
   const updatePreferences = <K extends keyof GiftPreferences>(key: K, value: GiftPreferences[K]) => {
     setPreferences((current) => ({ ...current, [key]: value }));
@@ -537,7 +536,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
   // No further card exists (the catalogue is the limit): continue with what there is instead of a dead end.
   const shortfall = Boolean(selection?.selected.length) && missingSelectionCount > 0 && availableCandidates.length === 0;
   const canContinue = Boolean(selection) && (missingSelectionCount === 0 || shortfall) && invalidOrderCandidates.length === 0;
-  const printSummary = selection && giftProject ? createGiftPrintSummary({ project: giftProject, selection, greeting }) : undefined;
+  const printSummary = selection && giftProject ? createGiftPrintSummary({ project: giftProject, selection }) : undefined;
   const inspected = selection?.selected.find((candidate) => candidate.card.key === inspectedKey);
 
   function inspectCandidate(cardKey: string) {
@@ -612,7 +611,6 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     const lines = [
       printSummary.title,
       printSummary.recipientName ? `Für: ${printSummary.recipientName}` : undefined,
-      printSummary.greeting,
       `${printSummary.subject} · ${printSummary.cardCount} Karten`,
       pricingEnabled ? `Geschätzter Kartenwert: ${formatMoney(printSummary.cardPurchase.estimatedValueMinor, printSummary.cardPurchase.currency)}` : "Preisprüfung: deaktiviert",
       pricingEnabled ? `Geschätzte Preisspanne: ${formatRange(printSummary.cardPurchase.estimatedRange, printSummary.cardPurchase.currency) ?? "nicht vollständig verfügbar"}` : undefined,
@@ -639,6 +637,8 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     const hasRecommendation = !issue && !confirmedVariantKeys.has(key);
     const variantOpen = variantBoxKey === key;
     const source = plainPriceSource(candidate.price.source);
+    const position = (selection?.selected.findIndex((entry) => entry.card.key === key) ?? -1) + 1;
+    const total = selection?.selected.length ?? 0;
     const range = formatRange(candidate.price.range, preferences.currency);
     const note = plainVariantNote(candidate.variant);
     return <section className={styles.inspector} id={`${candidateElementId(key)}-details`} aria-label={`Details zu ${candidate.card.name}`} data-requires-review={Boolean(issue)}>
@@ -647,6 +647,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
         <div className={styles.inspectorText}>
           <h3>{candidate.card.name}</h3>
           <p>{candidate.card.setName} · Nr. {candidate.card.collectorNumber}</p>
+          {position > 0 ? <p className={styles.inspectorPosition} role="status">{`Platz ${position} von ${total} · Seite ${Math.ceil(position / 9)}`}</p> : null}
           {pricingEnabled ? <p><strong>{candidate.price.amountMinor === undefined ? "Preis noch offen" : `ca. ${formatMoney(candidate.price.amountMinor, preferences.currency)}`}</strong>{source && candidate.price.amountMinor !== undefined ? <small> laut {source}, Stand {formatDate(candidate.price.sourceUpdatedAt ?? candidate.price.fetchedAt)}{range ? ` · Spanne ${range}` : ""}</small> : null}</p> : null}
           <p className={styles.inspectorStatus} data-status={issue ? "invalid" : "ready"}>
             {issue ? <><CircleAlert aria-hidden="true" size={16} /> {issue}</> : <><Check aria-hidden="true" size={16} /> Bestellangaben vollständig · Zustand: {conditionProfile(candidate.preferences.minimumCondition).shortLabel}{note ? ` · ${note}` : ""}</>}
@@ -866,7 +867,6 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
               <h2 id="gift-summary-title">{printSummary.title}</h2>
               <p>{printSummary.recipientName ? `Für ${printSummary.recipientName} · ` : ""}{printSummary.subject} · {printSummary.cardCount} Karten</p>
             </header>
-            {printSummary.greeting ? <blockquote className={styles.greetingPreview}>{printSummary.greeting}</blockquote> : null}
             <dl className={styles.summaryMeta}>
               <div><dt>{pricingEnabled ? "Geschätzter Kartenwert" : "Preisprüfung"}</dt><dd>{pricingEnabled ? `${totals.unpriced > 0 ? "mind. " : ""}${formatMoney(totals.totalMinor, printSummary.cardPurchase.currency)}` : "Deaktiviert"}</dd></div>
               {pricingEnabled ? <div><dt>Geschätzte Preisspanne</dt><dd>{formatRange(printSummary.cardPurchase.estimatedRange, printSummary.cardPurchase.currency) ?? "Nicht vollständig verfügbar"}</dd></div> : <div><dt>Budget</dt><dd>Keine Budgetzusage</dd></div>}
@@ -890,10 +890,6 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
             </details>
             <p className={styles.localHint}>Die Bildschirmansicht zeigt verfügbare Katalogbilder. Druckansicht und Textdatei enthalten nur Kartenangaben und keine Pokémon-Kartenbilder oder Logos. Persönliche Fotos werden nicht hochgeladen.</p>
           </article>
-
-          <label className={styles.greetingField}>Grußtext für die lokale Druckansicht <span>(optional, nur in diesem Browser)</span>
-            <textarea value={greeting} maxLength={500} rows={3} onChange={(event) => setGreeting(event.target.value)} placeholder="Viel Freude mit deinem Binder!" />
-          </label>
 
           <div className={styles.summaryActions}>
             <button type="button" className={styles.secondaryButton} onClick={() => window.print()}><Printer aria-hidden="true" size={16} /> Drucken / als PDF speichern</button>

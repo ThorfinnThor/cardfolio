@@ -16,7 +16,6 @@ export interface GiftPrintSummary {
   generatedAt: string;
   title: string;
   recipientName?: string;
-  greeting?: string;
   subject: string;
   cardCount: number;
   cards: GiftPrintSummaryCard[];
@@ -42,7 +41,6 @@ export interface GiftPrintSummary {
 export interface GiftPrintSummaryInput {
   project: GiftProject;
   selection: GiftSelectionResult;
-  greeting?: string;
   binderOffer?: BinderOffer;
   generatedAt?: string;
 }
@@ -72,7 +70,6 @@ export function createGiftPrintSummary(input: GiftPrintSummaryInput): GiftPrintS
     generatedAt,
     title: optionalText(input.project.name, 100) ?? "Geschenk-Binder",
     recipientName: optionalText(input.project.preferences.recipientName, 100),
-    greeting: optionalText(input.greeting, 500),
     subject: input.project.preferences.subjectQuery,
     cardCount: input.selection.selected.length,
     cards: input.selection.selected.map((candidate) => ({

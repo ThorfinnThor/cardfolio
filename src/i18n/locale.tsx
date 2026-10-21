@@ -568,6 +568,7 @@ Object.assign(translations, {
 });
 
 const patterns: Array<[RegExp, (...matches: string[]) => string]> = [
+  [/^Platz (\d+) von (\d+) · Seite (\d+)$/, (position, total, page) => `Position ${position} of ${total} · Page ${page}`],
   [/^Geschenk · (.+)$/, (subject) => `Gift · ${subject}`],
   [/^Alle passenden Karten ansehen \((\d+)\)$/, (count) => `View all matching cards (${count})`],
   [/^Alle (\d+) Karten ansehen$/, (count) => `View all ${count} cards`],

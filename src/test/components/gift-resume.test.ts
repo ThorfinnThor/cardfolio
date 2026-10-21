@@ -8,7 +8,6 @@ const preferences: GiftPreferences = { recipientKind: "friend", subjectQuery: "E
 function resume(): GiftResume {
   return {
     preferences,
-    greeting: "Viel Freude!",
     project: createGiftProject("Geschenk · Evoli", preferences),
     selection: {
       selected: [{
@@ -32,7 +31,6 @@ describe("gift plan resume", () => {
   it("stores the finished plan for this tab and reads it back", () => {
     saveGiftResume(resume());
     const back = readGiftResume();
-    expect(back?.greeting).toBe("Viel Freude!");
     expect(back?.selection.selected[0].card.name).toBe("Evoli");
     expect(back?.project.name).toBe("Geschenk · Evoli");
   });
