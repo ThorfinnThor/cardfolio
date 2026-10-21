@@ -602,6 +602,22 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     }
   }
 
+  /** Hands the current proposal over to the normal binder editor, where every slot can be filled with any card. */
+  async function editFreelyInBinder() {
+    if (!selection || submitting) return;
+    setSubmitting(true);
+    setError(undefined);
+    try {
+      if (recommendedOrderCandidates.length > 0) acceptRecommendedVariants();
+      await onCreateBinder(selection, preferences);
+      openBinder();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Der Binder konnte nicht angelegt werden.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   function addCandidateByKey(cardKey: string) {
     if (!selection || selection.selected.length >= preferences.targetCardCount) return;
     const candidate = candidateByKey.get(cardKey);
@@ -865,6 +881,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
               </li>;
             })}</ul>
           </div> : null}
+          <p className={styles.freeChoiceHint}>Du möchtest Karten frei mischen, zum Beispiel von mehreren Pokémon oder aus bestimmten Sets? <button type="button" onClick={() => void editFreelyInBinder()} disabled={submitting}>Als Binder öffnen und Karten frei wählen</button></p>
           <div className={styles.actions} id="gift-next-actions"><button type="button" className={styles.secondaryButton} onClick={() => setStep("details")}><ArrowLeft size={16} /> Wünsche ändern</button><button type="button" className={canContinue ? styles.primaryButton : styles.guidanceButton} aria-label={continueLabel} disabled={submitting} onClick={() => void continueToShopping()}>{submitting ? <><LoaderCircle className={styles.spin} aria-hidden="true" size={16} /> Wird gespeichert…</> : <>{continueLabel} <ArrowRight size={18} /></>}</button></div>
         </div>
       ) : null}

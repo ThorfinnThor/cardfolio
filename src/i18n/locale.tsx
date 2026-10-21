@@ -572,6 +572,8 @@ const translations: Record<string, string> = {
   "Öffne den Shop Optimizer. Dort legst du eine Liste an und wählst später, wie die Verkäufer ausgesucht werden.": "Open the Shop Optimizer. There you create a list and later choose how the sellers are picked.",
   "Füge deine Karten hinzu. Unten findest du zu jeder Karte die Seite bei CardTrader mit Set, Nummer und allen Angeboten.": "Add your cards. Below you find the CardTrader page of every card with set, number and all offers.",
   "Seiten bei CardTrader": "Pages at CardTrader",
+  "Du möchtest Karten frei mischen, zum Beispiel von mehreren Pokémon oder aus bestimmten Sets?": "Want to mix cards freely, for example from several Pokémon or from specific sets?",
+  "Als Binder öffnen und Karten frei wählen": "Open as a binder and choose cards freely",
   "TCGplayer-Anleitung": "TCGplayer guide",
   "Karten laden": "Load cards",
   "Printing & Zustand": "Printing & condition",
