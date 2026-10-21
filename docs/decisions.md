@@ -431,3 +431,10 @@
 - **Balance.** `GiftCardCandidate.subjectKey` (optional, not persisted) lets the deterministic engine prefer the Pokémon with fewer picks so far, after artwork/price/finish and before set and year diversity. A Pokémon with too few cards simply gives its slots to the others; a note names Pokémon without any match.
 - **Not changed.** Quick-pick chips still replace the text; the card language switch translates every popular name in the list.
 
+## 2026-10-21 — Offer counts and seller countries per card
+
+- **Source.** The weekly CardTrader sync already reads `/marketplace/products` (the 25 cheapest listings per blueprint). `scripts/cardtrader-offers.mjs` now also counts the usable listings per language and collects the sellers' ISO country codes, cheapest first (at most six). Nothing else about a seller is kept: no name, id or listing id.
+- **Format.** `prices/<expansion>.json` gains `o` (`[English, German, capped]`, capped = 1 when the API returned its limit of 25) and `c` (`"DE,IT"`). Old files without the keys stay valid.
+- **Display.** In the CardTrader guide each matched card shows "mind. 12 Angebote · Verkäufer aus DE, IT"; "mind." appears when the limit was reached, because the real number may be higher. Counts are a weekly snapshot, not live.
+- **Not done.** Live offers (rate limit, needs a token), shipping methods (per seller and destination), and any use of the cart or purchase endpoints.
+

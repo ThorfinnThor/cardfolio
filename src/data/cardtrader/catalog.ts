@@ -37,6 +37,10 @@ export const priceFileSchema = z.object({
   currency: z.literal("EUR"),
   slots: z.array(z.string()).length(10),
   p: z.record(z.string(), z.array(z.number().int().nonnegative()).length(10)),
+  /** Offers per blueprint: [English, German, 1 when the API's 25-listing limit was reached]. Absent in older files. */
+  o: z.record(z.string(), z.tuple([z.number().int().nonnegative(), z.number().int().nonnegative(), z.union([z.literal(0), z.literal(1)])])).optional(),
+  /** Seller countries of those offers, cheapest first, as "DE,IT". Absent in older files. */
+  c: z.record(z.string(), z.string().regex(/^[A-Z]{2}(?:,[A-Z]{2})*$/)).optional(),
 });
 export const indexFileSchema = z.record(z.string().regex(/^(?:en|de):.+$/), z.number().int().positive());
 
@@ -63,6 +67,15 @@ export function cardtraderImageUrl(path: string): string {
 export interface CardTraderMatch {
   expansionId: number;
   blueprint: CardTraderBlueprint;
+}
+
+export interface CardTraderOffers {
+  /** Offers in the card's language, among the 25 cheapest the API returns for the card. */
+  count: number;
+  /** True when the API's 25-listing limit was reached, so there may be more. */
+  atLeast: boolean;
+  /** ISO country codes of the sellers, cheapest offer first. */
+  countries: string[];
 }
 
 export interface CardTraderPrice {
@@ -149,6 +162,17 @@ export class CardTraderCatalog {
     const amountMinor = slots[offset + PRICE_CONDITIONS.indexOf(minimum)];
     if (amountMinor && amountMinor > 0) return { amountMinor, condition: minimum };
     return undefined;
+  }
+
+  /** How many offers exist in the card's language and from which countries, from the weekly snapshot. */
+  async offers(match: CardTraderMatch, language: CardLanguage): Promise<CardTraderOffers | undefined> {
+    const file = await this.priceFile(match.expansionId);
+    const key = String(match.blueprint.id);
+    const entry = file?.o?.[key];
+    if (!entry) return undefined;
+    const count = entry[language === "de" ? 1 : 0];
+    if (count <= 0) return undefined;
+    return { count, atLeast: entry[2] === 1, countries: file?.c?.[key]?.split(",") ?? [] };
   }
 }
 

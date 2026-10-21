@@ -9,12 +9,14 @@
  * Output (stable ordering, rewritten only when the content changed):
  *   index.json                  catalog key ("en:base1") -> CardTrader expansion id
  *   expansions/<id>.json        Pokémon Singles blueprints: collector number, name, rarity, image, product ids
- *   prices/<id>.json            cheapest EUR price per blueprint, language and minimum condition
+ *   prices/<id>.json            cheapest EUR price per blueprint, language and minimum condition (p); offer counts
+ *                               per language with a "capped at 25" flag (o); seller country codes, cheapest first (c)
  *   manifest.json               counts, source, attribution
  */
 import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { asCollection } from "./cardtrader-response.mjs";
+import { summarizeOffers } from "./cardtrader-offers.mjs";
 
 const API_BASE = "https://api.cardtrader.com/api/v2";
 const IMAGE_PREFIX = "https://cardtrader.com/uploads/blueprints/image/";
@@ -71,9 +73,11 @@ const PRICE_SLOTS = 10;
 
 function aggregatePrices(listings, blueprintIds) {
   const prices = {};
+  const offers = {};
   const stats = { listings: 0, used: 0, skipped: { graded: 0, vacation: 0, special: 0, edition: 0, currency: 0, language: 0, condition: 0, price: 0, other: 0 } };
   for (const [blueprintId, entries] of Object.entries(listings)) {
     if (!blueprintIds.has(Number(blueprintId)) || !Array.isArray(entries)) continue;
+    const usable = [];
     for (const listing of entries) {
       stats.listings += 1;
       const properties = listing.properties_hash ?? {};
@@ -94,9 +98,12 @@ function aggregatePrices(listings, blueprintIds) {
         if (slots[index] === 0 || cents < slots[index]) slots[index] = cents;
       }
       stats.used += 1;
+      usable.push(listing);
     }
+    const summary = summarizeOffers(usable, entries.length);
+    if (summary) offers[blueprintId] = summary;
   }
-  return { prices, stats };
+  return { prices, offers, stats };
 }
 
 /* Same shape the app validates (src/data/cardtrader/catalog.ts): numeric folder, plain file name. */
@@ -161,9 +168,12 @@ for (const expansionId of expansionIds) {
   if (!skipPrices) {
     await wait(300);
     const listings = await get(`/marketplace/products?${new URLSearchParams({ expansion_id: expansionId })}`);
-    const { prices, stats } = aggregatePrices(Array.isArray(listings) ? {} : listings, new Set(blueprints.map((blueprint) => blueprint.id)));
+    const { prices, offers, stats } = aggregatePrices(Array.isArray(listings) ? {} : listings, new Set(blueprints.map((blueprint) => blueprint.id)));
     const ordered = Object.fromEntries(Object.keys(prices).sort((a, b) => Number(a) - Number(b)).map((key) => [key, prices[key]]));
-    const body = `{"id":${expansionId},"currency":"EUR","slots":["en:nm","en:ex","en:lp","en:pl","en:any","de:nm","de:ex","de:lp","de:pl","de:any"],"p":{\n${Object.entries(ordered).map(([key, slots]) => `${JSON.stringify(key)}:${JSON.stringify(slots)}`).join(",\n")}\n}}\n`;
+    const offerKeys = Object.keys(offers).filter((key) => ordered[key]).sort((a, b) => Number(a) - Number(b));
+    const offerCounts = offerKeys.map((key) => `${JSON.stringify(key)}:${JSON.stringify([...offers[key].counts, offers[key].capped])}`).join(",\n");
+    const offerCountries = offerKeys.filter((key) => offers[key].countries.length).map((key) => `${JSON.stringify(key)}:${JSON.stringify(offers[key].countries.join(","))}`).join(",\n");
+    const body = `{"id":${expansionId},"currency":"EUR","slots":["en:nm","en:ex","en:lp","en:pl","en:any","de:nm","de:ex","de:lp","de:pl","de:any"],"p":{\n${Object.entries(ordered).map(([key, slots]) => `${JSON.stringify(key)}:${JSON.stringify(slots)}`).join(",\n")}\n},"o":{\n${offerCounts}\n},"c":{\n${offerCountries}\n}}\n`;
     written[(await writeIfChanged(join(outDir, "prices", `${expansionId}.json`), body)) ? "changed" : "unchanged"] += 1;
     manifest.priced += Object.keys(ordered).length;
     manifest.listingsUsed += stats.used;
