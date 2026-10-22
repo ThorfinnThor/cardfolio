@@ -30,6 +30,9 @@ export const GIFT_THEME_PRESETS: readonly GiftThemePreset[] = [
   { id: "sleeping", label: "Schlafende Pokémon", description: "Kuschelige, träumende Motive", query: "Schlafend", mappedTags: ["sleeping"] },
   { id: "flying", label: "Fliegende Pokémon", description: "Pokémon im Flug am Himmel", query: "Fliegend", mappedTags: ["flying"] },
   { id: "food", label: "Süßes & Essen", description: "Kuchen, Beeren und Leckereien", query: "Essen", mappedTags: ["food-visible"] },
+  { id: "swimming", label: "Schwimmende Pokémon", description: "Pokémon mitten im Wasser beim Schwimmen und Tauchen", query: "Schwimmend", mappedTags: ["swimming"] },
+  { id: "friends", label: "Pokémon-Freunde", description: "Mehrere Pokémon zusammen auf einer Karte", query: "Pokémon zusammen", mappedTags: ["multiple-pokemon"] },
+  { id: "sunset", label: "Sonnenuntergang", description: "Warmes Abendlicht und glühender Himmel", query: "Sonnenuntergang", mappedTags: ["sunset-sunrise"] },
 ] as const;
 
 export function giftThemePreset(id: string | undefined): GiftThemePreset | undefined {
