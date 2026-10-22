@@ -37,6 +37,7 @@ import {
   type SlotLocation,
   type SupportedBinderLayout,
 } from "@/domain/binder-actions";
+import { recordBackup } from "@/data/backup/backup-reminder";
 import { deriveBinderStats } from "@/domain/binder-stats";
 import { sortCatalogSearchItems, type CatalogResultSort } from "@/domain/catalog-sort";
 import { formatCollectorNumber, parseCatalogSearch } from "@/domain/catalog-search";
@@ -1761,6 +1762,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
       link.download = `cardfolio-backup-${new Date().toISOString().slice(0, 10)}.json`;
       link.click();
       URL.revokeObjectURL(url);
+      recordBackup();
     } catch (error) {
       handleStorageError(error, "Backup konnte nicht aus dem lokalen Speicher erstellt werden.");
     }

@@ -582,6 +582,10 @@ const translations: Record<string, string> = {
   "Stelle im Druckdialog „Skalierung 100 %“ und „Ränder: keine“ ein, damit die Zettel 63 × 88 mm groß bleiben.": "In the print dialog set “Scale 100%” and “Margins: none” so the slips stay 63 × 88 mm.",
   "Drucken": "Print",
   "Fortschritt nach Set": "Progress by set",
+  "Sicherung empfohlen": "Backup recommended",
+  "Sichere deine Binder": "Back up your binders",
+  "Deine Binder liegen nur in diesem Browser. Du hast noch kein Backup gemacht. Eine Datei reicht, um sie später wiederherzustellen.": "Your binders only live in this browser. You have not made a backup yet. One file is enough to restore them later.",
+  "In 7 Tagen erinnern": "Remind me in 7 days",
   "Wüste": "Desert",
   "Sand, Dünen und Kakteen": "Sand, dunes and cacti",
   "Höhle": "Cave",
@@ -665,6 +669,7 @@ Object.assign(translations, {
 
 const patterns: Array<[RegExp, (...matches: string[]) => string]> = [
   [/^(\d+) Platzhalter auf (\d+) Seiten?$/, (count, sheets) => `${count} placeholder${count === "1" ? "" : "s"} on ${sheets} page${sheets === "1" ? "" : "s"}`],
+  [/^Deine Binder liegen nur in diesem Browser\. Das letzte Backup ist (\d+) Tage her\. Eine Datei reicht, um sie später wiederherzustellen\.$/, (days) => `Your binders only live in this browser. The last backup was ${days} days ago. One file is enough to restore them later.`],
   [/^Fortschritt nach Set \((\d+)\)$/, (count) => `Progress by set (${count})`],
   [/^(\d+) von (\d+) vorhanden$/, (owned, planned) => `${owned} of ${planned} owned`],
   [/^(\d+) von (\d+) Karten des Sets geplant$/, (planned, total) => `${planned} of ${total} cards of the set planned`],
