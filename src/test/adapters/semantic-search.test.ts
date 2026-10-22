@@ -31,12 +31,12 @@ describe("semantic search index adapter", () => {
   it("validates the shipped curated artwork-review index and provenance", async () => {
     const file = resolve(process.cwd(), "public/data/semantic/gift-theme-reviews-v1.json");
     const parsed = artworkReviewIndexSchema.parse(JSON.parse(await readFile(file, "utf8")));
-    expect(parsed.reviews).toHaveLength(5935);
-    expect(parsed.reviews.filter((review) => review.verdict === "dominant")).toHaveLength(918);
-    expect(parsed.reviews.filter((review) => review.verdict === "secondary")).toHaveLength(2625);
-    expect(parsed.reviews.filter((review) => review.verdict === "incorrect")).toHaveLength(2308);
-    expect(parsed.reviews.filter((review) => review.verdict === "unsure")).toHaveLength(84);
-    expect(parsed.reviews.filter((review) => review.source === "ai-assisted")).toHaveLength(5607);
+    expect(parsed.reviews).toHaveLength(7702);
+    expect(parsed.reviews.filter((review) => review.verdict === "dominant")).toHaveLength(1092);
+    expect(parsed.reviews.filter((review) => review.verdict === "secondary")).toHaveLength(3153);
+    expect(parsed.reviews.filter((review) => review.verdict === "incorrect")).toHaveLength(3311);
+    expect(parsed.reviews.filter((review) => review.verdict === "unsure")).toHaveLength(146);
+    expect(parsed.reviews.filter((review) => review.source === "ai-assisted")).toHaveLength(7374);
     expect(parsed.reviews.filter((review) => review.source === "human")).toHaveLength(328);
     for (const theme of GIFT_THEME_PRESETS) {
       const dominantCards = new Set(parsed.reviews

@@ -526,3 +526,8 @@
 - **New themes.** "Unterwasserwelt" (61 cards, tag `underwater` only; "Meer & Wasser" still covers surface and underwater together) and "Gemütlich zuhause" (21, tag `indoors`). Themes now total 21.
 - **Dropped.** "Mensch & Pokémon" (5 of 180 reviewed cards qualified; people appear mostly on Trainer cards, which never count) and "Ruinen & Gebäude" (2 cards).
 - **Result.** 20 of 21 themes offer four pages (36+ cards); only "Gemütlich zuhause" offers two. Counts: `docs/theme-card-counts-2026-10-22.md`.
+
+## 2026-10-22 — Sixth review round: wider card pools per theme
+
+- **Data.** 1,767 further decisions (7,702 reviews in total, 1,092 `dominant`) for 12 tags (fire, city, flowers, sunset, cave, food, sleeping, mountains, sky, desert, night, flying), same process (strict first pass, independent second pass, own look; three weak flower cards struck by hand). The beach pool was exhausted. One reviewer ran two shell calls although told not to; they only listed files and counted verdicts.
+- **Result.** More choice inside every theme (cards to swap, budget variation); no new theme. Counts: `docs/theme-card-counts-2026-10-22.md`.
