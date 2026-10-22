@@ -447,3 +447,11 @@
 - **Texts.** Privacy section 8 and the related bullets, the browser-storage table, the recipients paragraph and the help page now describe this (wording approved by the owner before the merge). The privacy text states what the account is set to: event data is deleted after 2 months, user-level data 14 months after the last activity (the "reset on new activity" switch is on; corrected on 2026-10-21 from "14 months at the latest", which was wrong with that switch on). The owner can shorten user-data retention to 2 months in the Google Analytics account and then tighten the sentence, and still has to accept the data processing terms there.
 - **Tests.** The e2e suite starts with the question answered ("denied") through a shared fixture; `consent.spec.ts` covers the banner, the absence of any Google request before consent, withdrawal and the English pages.
 
+## 2026-10-22 — SEO and GEO upgrade
+
+- **Crawlers.** `src/app/robots.ts` allows everything except `/data/` and `/artwork-review/` and names the sitemap (Cloudflare adds its content-signal comments in front). `public/llms.txt` lists the tool and every guide; a test keeps it in sync with `GUIDES`. The sitemap carries `lastModified` for guides. The root metadata allows full snippets and large image previews.
+- **Guides.** `guide-extras.ts` adds a published date, an answer-first "Kurz gesagt" summary and three FAQs per guide and language. The page shows them (summary at the top, questions at the end) and publishes the same questions as FAQPage data; Article data now has `datePublished`, image, `abstract`, a Person author and a publisher logo. The named author is `GUIDE_AUTHOR` in `src/config/site.ts` (the provider named in the legal notice); change it there.
+- **Home and Pokémon pages.** The home page adds Organization, WebSite and its existing FAQ as FAQPage; Pokémon pages get image and author and link three guides.
+- **Performance.** Links from content pages to the app no longer prefetch its bundle (`prefetch={false}`): a guide page dropped from about 2.2 MB to 1.1 MB of raw transfer in a local test. Live Lighthouse before this change: mobile 97 (LCP 2.5 s), desktop 100, TBT 0, CLS 0.
+- **Not done.** External citations in the guides (only links that were verified would be acceptable) and backlinks, which `docs/seo-backlink-plan.md` describes.
+

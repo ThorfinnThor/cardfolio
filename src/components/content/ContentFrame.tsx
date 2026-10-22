@@ -50,7 +50,7 @@ export function ContentFrame({ language, alternatePath, crumbs, children }: {
           <nav className={styles.nav} aria-label={language === "de" ? "Hauptnavigation" : "Main navigation"}>
             <Link href={guideIndexPath(language)}>{nav.guides}</Link>
             <Link href={speciesIndexPath(language)}>{nav.species}</Link>
-            <Link href={appPath()}>{nav.myBinders}</Link>
+            <Link href={appPath()} prefetch={false}>{nav.myBinders}</Link>
             <Link href={nav.help_path}>{nav.help}</Link>
             <Link className={styles.lang} href={alternatePath ?? homePath(other)} hrefLang={other} lang={other}>{other.toUpperCase()}</Link>
           </nav>

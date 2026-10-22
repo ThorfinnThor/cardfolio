@@ -1,0 +1,46 @@
+# Your Card Binder
+
+> Your Card Binder helps you put together a Pokémon binder as a gift or for your own collection: pick a favourite Pokémon (or up to four), see the cards as a binder page and get the shopping list prepared for Cardmarket, CardTrader or TCGplayer. No account; binders stay in your browser. Independent project, not affiliated with Nintendo, Creatures, GAME FREAK or The Pokémon Company.
+
+## Tool
+
+- [Your Card Binder (Deutsch)](https://yourcardbinder.com/): Pokémon-Binder als Geschenk zusammenstellen
+- [Your Card Binder (English)](https://yourcardbinder.com/en/): put together a Pokémon binder as a gift
+
+## Ratgeber (Deutsch)
+
+- [Pokémon-Karten verschenken: So gelingt ein Geschenk, das passt](https://yourcardbinder.com/ratgeber/pokemon-karten-verschenken/): Ein Binder mit den Lieblingskarten ist ein persönliches Geschenk. Worauf es bei Auswahl, Sprache, Zustand und Binder ankommt, und wie du die Karten besorgst.
+- [Pokémon-Binder: Welche Größe und wie viele Taschen?](https://yourcardbinder.com/ratgeber/binder-groesse-taschen/): Ein Binder-Blatt hat zwei Seiten, und Taschen werden pro Seite gezählt. So rechnest du aus, wie viele Karten in einen Binder passen und welche Größe zu deiner Sammlung passt.
+- [Kartenzustand bei Pokémon-Karten: Was Near Mint, Excellent und Played bedeuten](https://yourcardbinder.com/ratgeber/pokemon-kartenzustand/): Marktplätze bewerten den Zustand von Karten mit festen Stufen. Was sie bedeuten, wie Cardmarket und TCGplayer sie benennen und welcher Mindestzustand sich für ein Geschenk eignet.
+- [Cardmarket oder TCGplayer: Wo kaufst du deine Pokémon-Karten?](https://yourcardbinder.com/ratgeber/cardmarket-oder-tcgplayer/): Cardmarket und TCGplayer sind Marktplätze für Sammelkarten. Was sie unterscheidet, worauf du bei Versand und Gesamtpreis achtest und wo Your Card Binder die Liste übergibt.
+- [Pokémon-Karten: Sprache, Holo, Reverse Holo und Edition erklärt](https://yourcardbinder.com/ratgeber/kartensprache-und-ausfuehrung/): Dieselbe Kartennummer gibt es in mehreren Sprachen und Ausführungen. Was Holo, Reverse Holo, 1st Edition und Shadowless bedeuten und warum sie beim Kauf wichtig sind.
+- [Personalisiertes Pokémon-Geschenk: Ein Binder, der zur Person passt](https://yourcardbinder.com/ratgeber/personalisiertes-pokemon-geschenk/): Persönlich wird ein Pokémon-Geschenk durch die Auswahl der Karten, nicht durch Aufdrucke. So stellst du einen Binder für eine bestimmte Person zusammen.
+- [Pokémon-Geschenk zum Geburtstag: Ideen für Kinder, Jugendliche und Erwachsene](https://yourcardbinder.com/ratgeber/pokemon-geburtstagsgeschenk/): Ein Pokémon-Binder passt zu Kindern, Jugendlichen und erwachsenen Fans. Ideen nach Alter, ein Zeitplan für die Lieferung und Wege, die Zahl der Karten zu wählen.
+- [Pokémon-Weihnachtsgeschenk: Früh planen, Karten richtig besorgen](https://yourcardbinder.com/ratgeber/pokemon-weihnachtsgeschenk/): Pokémon-Karten zu Weihnachten zu verschenken braucht etwas Vorlauf. Ein Zeitplan, Ideen wie ein Karten-Adventskalender und was du bei Lieferzeiten beachtest.
+- [Eine Pokémon-Sammlung starten: So fängst du an, ohne dich zu verzetteln](https://yourcardbinder.com/ratgeber/pokemon-sammlung-starten/): Der Start einer Pokémon-Sammlung gelingt mit einem klaren Fokus. Fünf Schritte vom ersten Pokémon über den Binder bis zum Zustand der Karten.
+- [Der Start einer Leidenschaft: Pokémon-Karten für Kinder und Einsteiger](https://yourcardbinder.com/ratgeber/pokemon-karten-fuer-kinder/): Ein erster Binder macht aus losen Karten eine Sammlung. Was Kinder und Einsteiger brauchen, wie Eltern beim Kauf helfen und woran sie echte Karten erkennen.
+- [Cardmarket oder CardTrader: Welcher Marktplatz passt zu deinen Pokémon-Karten?](https://yourcardbinder.com/ratgeber/cardmarket-oder-cardtrader/): Cardmarket und CardTrader sind europäische Marktplätze für Sammelkarten. Was sie unterscheidet, wann welcher passt und worauf du beim Versand achtest.
+
+## Guides (English)
+
+- [Giving Pokémon cards as a gift: how to get it right](https://yourcardbinder.com/en/guides/gift-pokemon-cards/): A binder with someone's favourite cards is a personal gift. What matters for the choice, language, condition and binder, and how to get the cards.
+- [Pokémon binders: which size and how many pockets?](https://yourcardbinder.com/en/guides/binder-pocket-sizes/): A binder sheet has two sides, and pockets are counted per page. How to work out how many cards fit in a binder and which size suits your collection.
+- [Pokémon card condition: what Near Mint, Excellent and Played mean](https://yourcardbinder.com/en/guides/pokemon-card-condition/): Marketplaces grade card condition in fixed steps. What they mean, how Cardmarket and TCGplayer name them, and which minimum condition suits a gift.
+- [Cardmarket or TCGplayer: where should you buy your Pokémon cards?](https://yourcardbinder.com/en/guides/cardmarket-or-tcgplayer/): Cardmarket and TCGplayer are marketplaces for trading cards. What sets them apart, what to check for shipping and total price, and where Your Card Binder hands over the list.
+- [Pokémon cards: language, holo, reverse holo and edition explained](https://yourcardbinder.com/en/guides/card-language-and-finish/): The same card number exists in several languages and finishes. What holo, reverse holo, 1st Edition and Shadowless mean and why they matter when you buy.
+- [Personalised Pokémon gift: a binder that fits the person](https://yourcardbinder.com/en/guides/personalised-pokemon-gift/): A Pokémon gift gets personal through the choice of cards, not through printing. How to put together a binder for one specific person.
+- [Pokémon gift for a birthday: ideas for kids, teens and adults](https://yourcardbinder.com/en/guides/pokemon-birthday-gift/): A Pokémon binder suits kids, teens and adult fans. Ideas by age, a delivery timeline and ways to decide how many cards to give.
+- [Pokémon Christmas gift: plan early, source the cards properly](https://yourcardbinder.com/en/guides/pokemon-christmas-gift/): Giving Pokémon cards at Christmas needs some lead time. A timeline, ideas such as a card advent calendar and what to keep in mind about delivery times.
+- [Starting a Pokémon collection: how to begin without scattering](https://yourcardbinder.com/en/guides/start-a-pokemon-collection/): Starting a Pokémon collection works best with a clear focus. Five steps from the first Pokémon through the binder to the condition of the cards.
+- [The start of a passion: Pokémon cards for kids and beginners](https://yourcardbinder.com/en/guides/pokemon-cards-for-kids/): A first binder turns loose cards into a collection. What kids and beginners need, how parents can help with buying and how to recognise genuine cards.
+- [Cardmarket or CardTrader: which marketplace suits your Pokémon cards?](https://yourcardbinder.com/en/guides/cardmarket-or-cardtrader/): Cardmarket and CardTrader are European marketplaces for trading cards. What sets them apart, when each one fits and what to watch for with shipping.
+
+## Pokémon binder pages
+
+- [Binder nach Lieblings-Pokémon gestalten](https://yourcardbinder.com/pokemon-binder/): eine Seite pro Pokémon mit Kartenzahl, Jahren und Sammeltipps
+- [Design a binder around your favourite Pokémon](https://yourcardbinder.com/en/pokemon-binder/): one page per Pokémon with card count, years and collecting tips
+
+## Optional
+
+- [Kaufanleitung Cardmarket mit Bildern](https://yourcardbinder.com/anleitung/cardmarket/)
+- [Sitemap](https://yourcardbinder.com/sitemap.xml)

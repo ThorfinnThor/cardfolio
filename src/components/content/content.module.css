@@ -111,3 +111,12 @@
   .articleAside { position: static; }
   .articleAside .toc { display: none; }
 }
+
+.answer { display: grid; gap: 6px; margin: 18px 0 0; border: 1px solid var(--cf-line2); border-left: 5px solid var(--cf-accent); border-radius: 10px; background: var(--cf-surface); padding: 14px 16px; }
+.answer strong { color: var(--cf-accent-text); font-family: var(--cf-font-mono); font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; }
+.answer p { margin: 0; color: var(--cf-text); font-size: 1rem; line-height: 1.6; }
+.guideFaq { display: grid; gap: 16px; margin: 0; }
+.guideFaq div { display: grid; gap: 4px; }
+.guideFaq dt, .guideFaq dd { margin: 0; }
+.guideFaq h3 { margin: 0; font-size: 1.02rem; line-height: 1.35; }
+.guideFaq dd { color: var(--cf-text2); line-height: 1.65; }

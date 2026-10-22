@@ -71,7 +71,7 @@ export function LandingPage({ language, alternatePath }: { language: PageLanguag
           <p className={styles.lead}>{copy.metaDescription}</p>
           <div className={styles.heroActions}>
             <ToolLink href={TOOL_START_PATH} language={language} className={styles.cta}>{copy.cta}</ToolLink>
-            <Link className={styles.secondary} href={appPath()}>{hero.collector}</Link>
+            <Link className={styles.secondary} href={appPath()} prefetch={false}>{hero.collector}</Link>
           </div>
           <p className={styles.meta}>{hero.reassurance}</p>
         </div>

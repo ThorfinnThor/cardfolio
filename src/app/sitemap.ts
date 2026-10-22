@@ -7,11 +7,11 @@ import { guideIndexPath, guidePath, homePath, speciesIndexPath, speciesPath } fr
 
 export const dynamic = "force-static";
 
-function pair(de: string, en: string): MetadataRoute.Sitemap {
+function pair(de: string, en: string, lastModified?: string): MetadataRoute.Sitemap {
   const languages = { de: absoluteUrl(de), en: absoluteUrl(en), "x-default": absoluteUrl(de) };
   return [
-    { url: absoluteUrl(de), alternates: { languages } },
-    { url: absoluteUrl(en), alternates: { languages } },
+    { url: absoluteUrl(de), alternates: { languages }, ...(lastModified ? { lastModified } : {}) },
+    { url: absoluteUrl(en), alternates: { languages }, ...(lastModified ? { lastModified } : {}) },
   ];
 }
 
@@ -21,10 +21,11 @@ function pair(de: string, en: string): MetadataRoute.Sitemap {
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const species = publishedSpecies();
+  const latestGuideUpdate = GUIDES.map((guide) => guide.updated).sort().at(-1);
   return [
     ...pair(homePath("de"), homePath("en")),
-    ...pair(guideIndexPath("de"), guideIndexPath("en")),
-    ...GUIDES.flatMap((guide) => pair(guidePath("de", guide), guidePath("en", guide))),
+    ...pair(guideIndexPath("de"), guideIndexPath("en"), latestGuideUpdate),
+    ...GUIDES.flatMap((guide) => pair(guidePath("de", guide), guidePath("en", guide), guide.updated)),
     ...pair(speciesIndexPath("de"), speciesIndexPath("en")),
     ...species.flatMap(({ entry }) => pair(speciesPath("de", entry), speciesPath("en", entry))),
     { url: absoluteUrl("/anleitung/cardmarket/") },

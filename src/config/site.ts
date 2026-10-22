@@ -45,3 +45,6 @@ export function pageUrlMetadata(
 export function absoluteUrl(path: string): string {
   return `${SITE_ORIGIN}${path}`;
 }
+
+/** Named author of the guides (the provider named in the legal notice). Change it here, it is used in the byline and the structured data. */
+export const GUIDE_AUTHOR = { name: "Schayan Yousefian", role: { de: "Autor", en: "Author" } } as const;
