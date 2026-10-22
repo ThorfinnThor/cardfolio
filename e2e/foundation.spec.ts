@@ -1104,3 +1104,17 @@ test("offers a CardTrader supplement card that TCGdex does not list, with its ow
   await expect(page.getByRole("article", { name: "Pikachu, Slot 1" })).toContainText("Radiant Collection · RC7/RC25");
 });
 
+
+test("opens a gift proposal that arrives in a link and lets the family change it", async ({ page }) => {
+  await mockCatalog(page);
+  const proposal = { v: 1, s: "Pikachu, Glurak", n: 9, l: "de", c: "EUR", b: 5000, k: [
+    ["base1-58", "de", { finish: "normal", edition: "unlimited", printing: "shadowed" }],
+    ["base1-4", "de", { finish: "holo", edition: "unlimited", printing: "shadowed" }],
+  ] };
+  await page.goto(`/geschenk/#vorschlag=${Buffer.from(JSON.stringify(proposal)).toString("base64url")}`);
+
+  await expect(page.getByText(/Dieser Vorschlag wurde per Link geteilt/)).toBeVisible({ timeout: 20000 });
+  await expect(page.getByText(/^[1-9] \/ 9$/).first()).toBeVisible();
+  expect(new URL(page.url()).hash).toBe("");
+  await expect(page.getByRole("button", { name: /Vorschlag als Link teilen/ })).toBeVisible();
+});

@@ -349,3 +349,8 @@
 .multiHint button { border: 0; background: transparent; padding: 0; color: var(--cf-accent-text); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }
 
 .editionHint { margin: 0; color: var(--cf-text2); font-size: .8rem; line-height: 1.45; }
+
+.shareBox { display: grid; gap: 6px; margin-top: 4px; padding: 12px 14px; border: 1px solid var(--cf-line); border-radius: 10px; background: var(--cf-surface); }
+.shareBox p { margin: 0; color: var(--cf-text2); font-size: .86rem; line-height: 1.5; }
+.shareBox input { width: 100%; min-width: 0; padding: 8px 10px; border: 1px solid var(--cf-line); border-radius: 8px; background: transparent; color: inherit; font: inherit; font-size: .8rem; }
+.shareBox small { color: var(--cf-text2); }
