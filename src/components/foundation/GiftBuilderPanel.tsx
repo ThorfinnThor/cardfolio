@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, Check, CircleAlert, Download, LoaderCircle, Printer, RefreshCw, Search, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, CircleAlert, Download, LoaderCircle, Printer, RefreshCw, Search, Share2, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type { GiftCandidateLoader } from "@/data/gift/gift-candidate-loader";
@@ -17,6 +17,7 @@ import {
 } from "@/domain/gift-builder";
 import type { GiftPriceRange } from "@/domain/gift-builder";
 import { createGiftPrintSummary } from "@/domain/gift-print-summary";
+import { giftShareUrl, parseGiftShare, type GiftShare } from "@/domain/gift-share";
 import { GIFT_THEME_PRESETS, giftThemePreset } from "@/domain/gift-theme-presets";
 import { conditionProfile, conditionProfiles } from "@/domain/purchase-preferences";
 import { ConditionGuide } from "./ConditionGuide";
@@ -209,7 +210,9 @@ function safeCandidate(candidate: GiftCardCandidate, pricingEnabled: boolean, cu
 export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "pokemon", initialSubjectQuery = initialPreferences.subjectQuery, pricingEnabled, budgetGuaranteeEnabled = false, onCancel, onCreateBinder, onOpenBinder, onCardsPurchase }: GiftBuilderPanelProps) {
   const engine = useMemo(() => new DeterministicGiftSelectionEngine({ spendBudget: true }), []);
   // A finished plan comes back after a detour to the purchase view or the browser's back button.
-  const [resumed] = useState(() => readGiftResume());
+  // A proposal that arrives in the link wins over a plan kept for this tab.
+  const [shared] = useState(() => parseGiftShare(window.location.hash));
+  const [resumed] = useState(() => shared ? undefined : readGiftResume());
   const [step, setStepDirect] = useState<GiftStep>(resumed ? "summary" : "details");
   const setStep = useStepHistory("gift", step, setStepDirect);
   const [preferences, setPreferences] = useState<GiftPreferences>(() => resumed?.preferences ?? { ...initialPreferences, subjectQuery: initialSubjectQuery });
@@ -234,6 +237,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
   const [excludedKeys, setExcludedKeys] = useState<Set<string>>(new Set());
   const [submitting, setSubmitting] = useState(false);
   const [giftProject, setGiftProject] = useState<GiftProject | undefined>(resumed?.project);
+  const [shareState, setShareState] = useState<{ url: string; copied: boolean; skipped: number }>();
   const stepMounted = useRef(false);
   const cardsDetails = useRef<HTMLDetailsElement>(null);
   // How many cards exist for the chosen Pokémon, so a size that cannot be met is not offered.
@@ -305,6 +309,103 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
   useEffect(() => {
     if (step === "summary" && selection && giftProject) saveGiftResume({ selection, preferences, project: giftProject });
   }, [step, selection, giftProject, preferences]);
+
+  // Opens a proposal from a shared link: the cards of the link first, in its order, and the alternatives in the background.
+  useEffect(() => {
+    if (!shared) return;
+    window.history.replaceState(window.history.state, "", `${window.location.pathname}${window.location.search}`);
+    const wanted: GiftPreferences = {
+      ...initialPreferences,
+      subjectQuery: shared.subject,
+      targetCardCount: shared.targetCardCount,
+      currency: shared.currency,
+      preferredLanguage: shared.preferredLanguage,
+      budgetMinor: shared.budgetMinor ?? initialPreferences.budgetMinor,
+      budgetTolerancePercent: 0,
+    };
+    const theme = giftThemePreset(shared.themeId);
+    queueMicrotask(() => {
+      setPreferences(wanted);
+      setPokemonQuery(shared.subject);
+      if (theme) { setDiscoveryMode("theme"); setSelectedThemeId(theme.id); }
+      setLoading(true);
+    });
+    const briefsOfLink: CatalogSearchItem[] = shared.cards.map((card) => ({ ref: { provider: "tcgdex", id: card.id, language: card.language }, name: "", collectorNumber: "" }));
+    const variants = new Map(shared.cards.map((card) => [`${card.id}:${card.language}`, card.variant]));
+    (async () => {
+      try {
+        const hydrated = await loader.hydrateCandidates(briefsOfLink, {
+          currency: wanted.currency,
+          variantFor: (card) => {
+            const wishedVariant = variants.get(`${card.ref.id}:${card.ref.language}`);
+            return wishedVariant && !variantSelectionIssue(wishedVariant as VariantSelection, card.availableVariants) ? { ...wishedVariant } : defaultVariant(card);
+          },
+          concurrency: 4,
+          preferences: { minimumCondition: "excellent" },
+        });
+        const safe = hydrated.map((candidate) => safeCandidate(candidate, pricingEnabled, wanted.currency));
+        if (!safe.length) { setError("Der geteilte Vorschlag konnte nicht geladen werden. Bitte frage nach einem neuen Link."); return; }
+        setCandidates(safe);
+        setBriefs(safe.map(({ card }) => ({ ref: card.ref, name: card.name, collectorNumber: card.collectorNumber, imageBaseUrl: card.imageBaseUrl, setId: card.setId, setName: card.setName })));
+        setConfirmedVariantKeys(new Set(safe.filter(giftCandidateHasVerifiedFinish).map((candidate) => candidate.card.key)));
+        setSelection(summarizeSelection(safe, wanted));
+        setEraNote(safe.length < shared.cards.length
+          ? `Dieser Vorschlag wurde per Link geteilt. ${shared.cards.length - safe.length} Karte${shared.cards.length - safe.length === 1 ? "" : "n"} konnten nicht geladen werden.`
+          : "Dieser Vorschlag wurde per Link geteilt. Du kannst Karten tauschen, entfernen oder verschieben und deinen Vorschlag wieder per Link weitergeben.");
+        setStep("candidates");
+        // More cards of the same wish, so a card can be swapped; failing here only means fewer alternatives.
+        try {
+          const pool = theme && smartSearch
+            ? (await smartSearch.search({ text: theme.query, language: "en", limit: 40, matchQuality: "dominant" })).map((hit): CatalogSearchItem => ({ ref: hit.ref, name: theme.label, collectorNumber: "" }))
+            : await loader.loadCandidatePool({ subjectQuery: wanted.subjectQuery, language: wanted.preferredLanguage ?? "en", maximum: 40, pageSize: 24, scan: 480 });
+          const known = new Set(safe.map((candidate) => candidate.card.key));
+          const extra = pool.filter((item) => item.ref.provider === "tcgdex" && !known.has(`${item.ref.provider}:${item.ref.id}:${item.ref.language}`)).slice(0, 30);
+          const more = (await loader.hydrateCandidates(extra, { currency: wanted.currency, variantFor: defaultVariant, concurrency: 4, preferences: { minimumCondition: "excellent" } }))
+            .map((candidate) => safeCandidate(candidate, pricingEnabled, wanted.currency))
+            .filter((candidate) => giftCandidateHasArtwork(candidate) && (theme || matchesGiftSubject(candidate.card, wanted.subjectQuery)));
+          if (more.length) {
+            setCandidates((current) => [...current, ...more.filter((candidate) => !current.some((entry) => entry.card.key === candidate.card.key))]);
+            setBriefs((current) => [...current, ...more.map(({ card }) => ({ ref: card.ref, name: card.name, collectorNumber: card.collectorNumber, imageBaseUrl: card.imageBaseUrl, setId: card.setId, setName: card.setName }))]);
+          }
+        } catch {
+          // The shared cards stay usable without alternatives.
+        }
+      } catch (cause) {
+        setError(friendlyError(cause, "Der geteilte Vorschlag konnte nicht geladen werden. Prüfe die Verbindung und öffne den Link erneut."));
+      } finally {
+        setLoading(false);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- runs once on mount
+  }, []);
+
+  async function shareProposal() {
+    if (!selection) return;
+    const shareable = selection.selected.filter((candidate) => candidate.card.ref.provider === "tcgdex");
+    if (!shareable.length) return;
+    const share: GiftShare = {
+      subject: preferences.subjectQuery,
+      ...(discoveryMode === "theme" && selectedThemeId ? { themeId: selectedThemeId } : {}),
+      targetCardCount: preferences.targetCardCount,
+      preferredLanguage: language,
+      currency: preferences.currency,
+      budgetMinor: preferences.budgetMinor,
+      cards: shareable.map((candidate) => ({
+        id: candidate.card.ref.id,
+        language: candidate.card.ref.language,
+        variant: { finish: candidate.variant.finish, edition: candidate.variant.edition, printing: candidate.variant.printing },
+      })),
+    };
+    const url = giftShareUrl(window.location.origin, window.location.pathname, share);
+    let copied = false;
+    try {
+      await navigator.clipboard.writeText(url);
+      copied = true;
+    } catch {
+      // The link is still shown for copying by hand.
+    }
+    setShareState({ url, copied, skipped: selection.selected.length - shareable.length });
+  }
 
   const updatePreferences = <K extends keyof GiftPreferences>(key: K, value: GiftPreferences[K]) => {
     setPreferences((current) => ({ ...current, [key]: value }));
@@ -912,7 +1013,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
             <div><strong>{shortfall ? `Mehr als ${selection.selected.length} Karten gibt es dafür nicht` : "Keine weitere passende Karte verfügbar"}</strong><span>{discoveryMode === "theme" ? `Alle ${briefs.length} bestätigten Treffer für „${preferences.subjectQuery}“ sind bereits ausgewählt oder wurden entfernt.` : `Alle ${briefs.length} passenden Karten sind bereits ausgewählt oder wurden entfernt.`} {excludedKeys.size > 0 ? "Eine entfernte Karte kannst du unten erneut hinzufügen." : "Für einen anderen Vorschlag kannst du die Wünsche ändern."}</span></div>
             {shortfall && language === "de" && discoveryMode === "pokemon" ? <button type="button" onClick={searchInEnglish}>Auch englische Karten suchen<ArrowRight aria-hidden="true" size={16} /></button> : <button type="button" onClick={() => setStep("details")}>{discoveryMode === "theme" ? "Motiv ändern" : "Wünsche ändern"}<ArrowRight aria-hidden="true" size={16} /></button>}
           </section> : null}
-          <div className={styles.selectionTools} id="gift-selection-tools"><button type="button" className={styles.secondaryButton} onClick={addCandidate} disabled={selection.selected.length >= preferences.targetCardCount || availableCandidates.length === 0}>+ Karte hinzufügen</button><button type="button" className={styles.secondaryButton} onClick={() => setShowAll((current) => !current)}>{showAll ? "Trefferliste schließen" : `Alle passenden Karten ansehen (${briefs.length})`}</button></div>
+          <div className={styles.selectionTools} id="gift-selection-tools"><button type="button" className={styles.secondaryButton} onClick={addCandidate} disabled={selection.selected.length >= preferences.targetCardCount || availableCandidates.length === 0}>+ Karte hinzufügen</button><button type="button" className={styles.secondaryButton} onClick={() => void shareProposal()}><Share2 aria-hidden="true" size={15} /> Vorschlag als Link teilen</button><button type="button" className={styles.secondaryButton} onClick={() => setShowAll((current) => !current)}>{showAll ? "Trefferliste schließen" : `Alle passenden Karten ansehen (${briefs.length})`}</button></div>
           {showAll ? <div className={styles.allResults}>
             <p>{discoveryMode === "theme" ? `Die Liste enthält Artwork-Treffer zum Motiv „${preferences.subjectQuery}“ aus dem englischen Kartenkatalog.` : "Die Liste enthält Namens-Treffer. Karten, auf denen das Pokémon nur im Artwork vorkommt, sind nicht enthalten."}</p>
             {selection.selected.length >= preferences.targetCardCount ? <p className={styles.resultHint} role="status">Die Zielanzahl ist erreicht. Entferne zuerst oben eine Karte, um hier eine andere hinzuzufügen.</p> : null}
@@ -931,6 +1032,12 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
                 <button type="button" disabled={disabled} onClick={() => addCandidateByKey(cardKey)}>{buttonLabel}</button>
               </li>;
             })}</ul>
+          </div> : null}
+          {shareState ? <div className={styles.shareBox} role="status">
+            <strong>{shareState.copied ? "Link kopiert" : "Link zum Kopieren"}</strong>
+            <p>Schick ihn Familie oder Freunden. Wer ihn öffnet, sieht genau diese Karten und kann sie tauschen. Im Link stehen nur Karten und Wünsche, keine Namen und keine Widmung. Er wird nicht auf einem Server gespeichert.</p>
+            <input readOnly aria-label="Link zum Vorschlag" value={shareState.url} onFocus={(event) => event.currentTarget.select()} />
+            {shareState.skipped > 0 ? <small>{shareState.skipped} Karte{shareState.skipped === 1 ? "" : "n"} aus einer Zusatzquelle fehlen im Link.</small> : null}
           </div> : null}
           <p className={styles.freeChoiceHint}>Du möchtest Karten frei mischen, zum Beispiel von mehreren Pokémon oder aus bestimmten Sets? <button type="button" onClick={() => void editFreelyInBinder()} disabled={submitting}>Als Binder öffnen und Karten frei wählen</button></p>
           <div className={styles.actions} id="gift-next-actions"><button type="button" className={styles.secondaryButton} onClick={() => setStep("details")}><ArrowLeft size={16} /> Wünsche ändern</button><button type="button" className={canContinue ? styles.primaryButton : styles.guidanceButton} aria-label={continueLabel} disabled={submitting} onClick={() => void continueToShopping()}>{submitting ? <><LoaderCircle className={styles.spin} aria-hidden="true" size={16} /> Wird gespeichert…</> : <>{continueLabel} <ArrowRight size={18} /></>}</button></div>
