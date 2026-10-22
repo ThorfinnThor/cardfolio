@@ -163,9 +163,9 @@ function diverseOrder(candidates: GiftCardCandidate[]): GiftCardCandidate[] {
   while (remaining.length) {
     remaining.sort((left, right) =>
       Number(!giftCandidateHasArtwork(left)) - Number(!giftCandidateHasArtwork(right))
+      || (subjectCounts.get(left.subjectKey ?? "") ?? 0) - (subjectCounts.get(right.subjectKey ?? "") ?? 0)
       || Number(!giftCandidateHasPrice(left)) - Number(!giftCandidateHasPrice(right))
       || Number(!giftCandidateHasVerifiedFinish(left)) - Number(!giftCandidateHasVerifiedFinish(right))
-      || (subjectCounts.get(left.subjectKey ?? "") ?? 0) - (subjectCounts.get(right.subjectKey ?? "") ?? 0)
       || (setCounts.get(left.card.setId) ?? 0) - (setCounts.get(right.card.setId) ?? 0)
       || (left.releaseYear === undefined ? 1 : yearCounts.get(left.releaseYear) ?? 0)
         - (right.releaseYear === undefined ? 1 : yearCounts.get(right.releaseYear) ?? 0)
@@ -207,9 +207,9 @@ function diverseSelectionWithinBudget(
     const share = Math.floor((ceiling - total) / (target - selected.length));
     const ranked = [...remaining].sort((left, right) =>
       Number(!giftCandidateHasArtwork(left)) - Number(!giftCandidateHasArtwork(right))
+      || (subjectCounts.get(left.subjectKey ?? "") ?? 0) - (subjectCounts.get(right.subjectKey ?? "") ?? 0)
       || Number(!giftCandidateHasPrice(left)) - Number(!giftCandidateHasPrice(right))
       || Number(!giftCandidateHasVerifiedFinish(left)) - Number(!giftCandidateHasVerifiedFinish(right))
-      || (subjectCounts.get(left.subjectKey ?? "") ?? 0) - (subjectCounts.get(right.subjectKey ?? "") ?? 0)
       || (setCounts.get(left.card.setId) ?? 0) - (setCounts.get(right.card.setId) ?? 0)
       || (left.releaseYear === undefined ? 1 : yearCounts.get(left.releaseYear) ?? 0)
         - (right.releaseYear === undefined ? 1 : yearCounts.get(right.releaseYear) ?? 0)

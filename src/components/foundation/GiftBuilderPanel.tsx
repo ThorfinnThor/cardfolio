@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowLeft, ArrowRight, Check, CircleAlert, Download, LoaderCircle, Printer, RefreshCw, Search, X } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type { GiftCandidateLoader } from "@/data/gift/gift-candidate-loader";
 import { FEATURES } from "@/config/feature-flags";
@@ -109,6 +109,18 @@ function defaultVariant(card: CardSnapshot): VariantSelection {
   };
 }
 
+/**
+ * Early sets exist as 1st edition and Unlimited. The catalogue picture can show the 1st edition while the price and the
+ * order are for Unlimited (the 1st edition can be far more expensive), so the card says which one is meant.
+ */
+function isUnlimitedOfFirstEditionSet(candidate: GiftCardCandidate): boolean {
+  return candidate.card.availableVariants?.firstEdition === true && candidate.variant.edition !== "first-edition";
+}
+
+function variantLabel(candidate: GiftCardCandidate): string | undefined {
+  return [plainVariantNote(candidate.variant), isUnlimitedOfFirstEditionSet(candidate) ? "Unlimited" : undefined].filter(Boolean).join(" · ") || undefined;
+}
+
 function candidateElementId(cardKey: string): string {
   return `gift-candidate-${cardKey.replace(/[^a-z0-9_-]/gi, "-")}`;
 }
@@ -209,6 +221,9 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
   const [error, setError] = useState<string>();
   const [showAll, setShowAll] = useState(false);
   const [eraNote, setEraNote] = useState<string>();
+  const [notice, setNotice] = useState<string>();
+  /** Cards whose artwork could not be loaded anywhere; they are swapped out and never offered again. */
+  const [brokenImageKeys, setBrokenImageKeys] = useState<ReadonlySet<string>>(() => new Set());
   const [inspectedKey, setInspectedKey] = useState<string>();
   const [variantBoxKey, setVariantBoxKey] = useState<string>();
   const [confirmedVariantKeys, setConfirmedVariantKeys] = useState<Set<string>>(new Set());
@@ -227,8 +242,8 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     [selection],
   );
   const availableCandidates = useMemo(
-    () => candidates.filter((candidate) => !selectedCardKeys.has(candidate.card.key) && !excludedKeys.has(candidate.card.key)),
-    [candidates, excludedKeys, selectedCardKeys],
+    () => candidates.filter((candidate) => !selectedCardKeys.has(candidate.card.key) && !excludedKeys.has(candidate.card.key) && !brokenImageKeys.has(candidate.card.key)),
+    [brokenImageKeys, candidates, excludedKeys, selectedCardKeys],
   );
   const candidateByKey = useMemo(() => new Map(candidates.map((candidate) => [candidate.card.key, candidate])), [candidates]);
   const planSize = selection?.selected.length || preferences.targetCardCount;
@@ -314,9 +329,12 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
 
   async function createProposal(override?: GiftPreferences) {
     // The budget the buyer typed is the limit; the hidden 5 % tolerance of older versions is not applied.
-    const wanted: GiftPreferences = { ...(override ?? preferences), budgetTolerancePercent: 0 };
+    let wanted: GiftPreferences = { ...(override ?? preferences), budgetTolerancePercent: 0 };
+    let themeNote: string | undefined;
     setLoading(true);
     setError(undefined);
+    setNotice(undefined);
+    setBrokenImageKeys(new Set());
     setSelection(undefined);
     setInspectedKey(undefined);
     setVariantBoxKey(undefined);
@@ -350,8 +368,15 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
         return;
       }
       if (theme && pool.length < wanted.targetCardCount) {
-        setError(`Für „${theme.label}“ sind erst ${pool.length} dominante Artwork-Treffer geprüft. Für diesen Binder werden ${wanted.targetCardCount} benötigt; unbestätigte Treffer werden nicht mehr automatisch ergänzt.`);
-        return;
+        // Unconfirmed hits are never added. A smaller page that is full is better than an error.
+        if (pool.length < 9) {
+          setNotice(`Für „${theme.label}“ haben wir noch nicht genug geprüfte Karten für eine ganze Seite. Wähle ein anderes Motiv oder ein Lieblings-Pokémon.`);
+          return;
+        }
+        const smaller = largestPlanSize(pool.length);
+        wanted = { ...wanted, targetCardCount: smaller };
+        themeNote = `Für „${theme.label}“ gibt es aktuell ${pool.length} geprüfte Karten. Wir zeigen dir deshalb eine Seite mit ${smaller} Karten.`;
+        setPreferences((current) => ({ ...current, targetCardCount: smaller }));
       }
       const hydrated = await loader.hydrateCandidates(pool, {
         currency: wanted.currency,
@@ -394,7 +419,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
         price: { ...candidate.price, confidence: "approximate" as const, issues: [...candidate.price.issues, "estimate-only-no-budget-guarantee"] },
       } : candidate);
       let result = engine.select({ candidates: selectionCandidates, preferences: wanted });
-      let note: string | undefined;
+      let note: string | undefined = themeNote;
       if ((wanted.style === "vintage" || wanted.style === "modern") && result.selected.length < wanted.targetCardCount) {
         // Too few cards of the wished era: top up with the best of the others instead of showing a half page.
         const mixed = engine.select({ candidates: selectionCandidates, preferences: { ...wanted, style: "mixed" } });
@@ -477,6 +502,19 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     setExcludedKeys(nextExcluded);
     setSelection(summarizeSelection(selection.selected.map((candidate) => candidate.card.key === cardKey ? replacement : candidate), preferences, selection.issues));
   }
+
+  const markImageUnavailable = useCallback((cardKey: string) => {
+    setBrokenImageKeys((current) => (current.has(cardKey) ? current : new Set(current).add(cardKey)));
+  }, []);
+
+  // A card without any loadable picture looks unfinished: swap it for another card, one at a time.
+  useEffect(() => {
+    if (!selection || brokenImageKeys.size === 0) return;
+    const broken = selection.selected.find((candidate) => brokenImageKeys.has(candidate.card.key));
+    if (broken) queueMicrotask(() => replaceCandidate(broken.card.key));
+    // replaceCandidate reads the current state; the broken set and the selection are the triggers.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [brokenImageKeys, selection]);
 
   function swapCandidates(fromKey: string, toKey: string) {
     if (!selection || fromKey === toKey) return;
@@ -667,7 +705,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     const position = (selection?.selected.findIndex((entry) => entry.card.key === key) ?? -1) + 1;
     const total = selection?.selected.length ?? 0;
     const range = formatRange(candidate.price.range, preferences.currency);
-    const note = plainVariantNote(candidate.variant);
+    const note = variantLabel(candidate);
     return <section className={styles.inspector} id={`${candidateElementId(key)}-details`} aria-label={`Details zu ${candidate.card.name}`} data-requires-review={Boolean(issue)}>
       <div className={styles.inspectorHead}>
         <CardArtwork card={candidate.card} className={styles.inspectorImage} fallback={<span className={styles.imageFallback}>Bild nicht verfügbar</span>} />
@@ -676,6 +714,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
           <p>{candidate.card.setName} · Nr. {candidate.card.collectorNumber}</p>
           {position > 0 ? <p className={styles.inspectorPosition} role="status">{`Platz ${position} von ${total} · Seite ${Math.ceil(position / 9)}`}</p> : null}
           {pricingEnabled ? <p><strong>{candidate.price.amountMinor === undefined ? "Preis noch offen" : `ca. ${formatMoney(candidate.price.amountMinor, preferences.currency)}`}</strong>{source && candidate.price.amountMinor !== undefined ? <small> laut {source}, Stand {formatDate(candidate.price.sourceUpdatedAt ?? candidate.price.fetchedAt)}{range ? ` · Spanne ${range}` : ""}</small> : null}</p> : null}
+          {isUnlimitedOfFirstEditionSet(candidate) ? <p className={styles.editionHint}>Die Abbildung kann eine 1. Edition zeigen. Preis und Bestellung gelten für die Unlimited-Ausführung; die 1. Edition kann deutlich teurer sein.</p> : null}
           <p className={styles.inspectorStatus} data-status={issue ? "invalid" : "ready"}>
             {issue ? <><CircleAlert aria-hidden="true" size={16} /> {issue}</> : <><Check aria-hidden="true" size={16} /> Bestellangaben vollständig · Zustand: {conditionProfile(candidate.preferences.minimumCondition).shortLabel}{note ? ` · ${note}` : ""}</>}
           </p>
@@ -708,7 +747,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
   const cheapCards = totals.priced > 0 && totals.priced * 2 >= (selection?.selected.length ?? 0) && totals.totalMinor / totals.priced < CHEAP_CARD_MINOR;
   const spreadPages: SpreadPocket[][] = pages.map((pageCards) => pageCards.map((candidate) => {
     const issue = variantSelectionIssue(candidate.variant, variantAvailabilityForCard(candidate.card));
-    const note = plainVariantNote(candidate.variant);
+    const note = variantLabel(candidate);
     return {
       key: candidate.card.key,
       card: candidate.card,
@@ -736,6 +775,8 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
       </div>
 
       <ol className={styles.progressLine} aria-label="Schritte zum Geschenk-Binder">{GIFT_FLOW.map((item, index) => <li key={item.label} aria-current={index === GIFT_STEPS.indexOf(step) ? "step" : undefined}><span>{index + 1}</span>{item.label}</li>)}</ol>
+
+      {notice ? <p className={styles.gateNotice} role="status">{notice}</p> : null}
 
       {error ? <div className={styles.error} role="alert"><strong>Vorschlag konnte nicht geladen werden</strong><span>{error}</span>{FEATURES.artworkReview && discoveryMode === "theme" ? <a className={styles.secondaryButton} href="/artwork-review/">Artwork lokal prüfen</a> : null}<button type="button" className={styles.secondaryButton} onClick={() => void createProposal()}><RefreshCw size={15} /> Erneut versuchen</button></div> : null}
 
@@ -843,7 +884,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
             <div><strong>{selection.selected.length} / {preferences.targetCardCount}</strong><span>Karten</span></div>
             <div><strong>{pricingEnabled ? `${totals.unpriced > 0 ? "mind. " : ""}${formatMoney(totals.totalMinor, preferences.currency)}` : "Preisprüfung aus"}</strong><span>{pricingEnabled ? totals.unpriced > 0 ? `für ${totals.priced} von ${selection.selected.length} Karten` : "geschätzter Wert" : "keine Budgetzusage"}</span></div>
           </div>
-          <GiftBinderSpread pages={spreadPages} inspectedKey={inspectedKey} onInspect={inspectCandidate} onSwap={swapCandidates} />
+          <GiftBinderSpread pages={spreadPages} inspectedKey={inspectedKey} onInspect={inspectCandidate} onSwap={swapCandidates} onImageUnavailable={markImageUnavailable} />
           {inspected ? renderInspector(inspected) : null}
           {!pricingEnabled ? <p className={styles.gateNotice} role="status">Die Preisprüfung ist derzeit noch deaktiviert. Karten können trotzdem ausgewählt und als normaler Binder gespeichert werden; es gibt keine Budgetzusage.</p> : null}
           {pricingEnabled && !budgetGuaranteeEnabled ? <p className={styles.gateNotice} role="status">Schätzwert – den endgültigen Preis siehst du beim Kartenanbieter.</p> : null}
@@ -877,8 +918,9 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
               const alreadySelected = selection.selected.some((entry) => entry.card.key === cardKey);
               const wasRemoved = excludedKeys.has(cardKey);
               const targetReached = selection.selected.length >= preferences.targetCardCount;
-              const disabled = !candidate || alreadySelected || targetReached;
-              const buttonLabel = !candidate ? "Nicht verfügbar" : alreadySelected ? "Ausgewählt" : targetReached ? "Zuerst Karte entfernen" : wasRemoved ? "Erneut hinzufügen" : "Hinzufügen";
+              const hasNoImage = brokenImageKeys.has(cardKey);
+              const disabled = !candidate || alreadySelected || targetReached || hasNoImage;
+              const buttonLabel = !candidate ? "Nicht verfügbar" : hasNoImage ? "Kein Bild" : alreadySelected ? "Ausgewählt" : targetReached ? "Zuerst Karte entfernen" : wasRemoved ? "Erneut hinzufügen" : "Hinzufügen";
               return <li key={`${item.ref.language}-${item.ref.id}`}>
                 {candidate ? <CardArtwork card={candidate.card} className={styles.resultImage} fallback={<span className={styles.resultImageFallback}>Kein Bild</span>} /> : <span className={styles.resultImageFallback}>Kein Bild</span>}
                 <span className={styles.resultIdentity}><strong>{item.name}</strong><small>{item.setName ? `${item.setName} · ` : ""}{item.ref.language.toUpperCase()} · Nr. {item.collectorNumber}</small></span>
@@ -910,7 +952,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
               <summary id="summary-cards-heading">{`Alle ${printSummary.cardCount} Karten ansehen`}</summary>
               <ol>{printSummary.cards.map((card, index) => {
                 const candidate = selection.selected[index];
-                const note = candidate ? plainVariantNote(candidate.variant) : undefined;
+                const note = candidate ? variantLabel(candidate) : undefined;
                 return <li key={candidate?.card.key ?? `${card.name}-${card.setName}-${card.collectorNumber}-${index}`}>
                   {candidate ? <CardArtwork card={candidate.card} className={styles.summaryCardImage} fallback={<span className={styles.summaryCardImageFallback}>Kein Bild</span>} /> : <span className={styles.summaryCardImageFallback}>Kein Bild</span>}
                   <span className={styles.summaryCardIdentity}>

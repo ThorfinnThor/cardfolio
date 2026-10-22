@@ -14,7 +14,7 @@ import {
   type DragStartEvent,
 } from "@dnd-kit/core";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useState, useSyncExternalStore } from "react";
+import { useCallback, useState, useSyncExternalStore } from "react";
 
 import type { CardSnapshot } from "@/domain/types";
 
@@ -34,6 +34,8 @@ interface GiftBinderSpreadProps {
   inspectedKey?: string;
   onInspect: (key: string) => void;
   onSwap: (fromKey: string, toKey: string) => void;
+  /** Called when no image of a card can be loaded; the proposal then swaps the card for another one. */
+  onImageUnavailable?: (key: string) => void;
 }
 
 const POCKETS_PER_PAGE = 9;
@@ -55,9 +57,10 @@ function useTwoPages(): boolean {
   return useSyncExternalStore(subscribeToWidth, widthSnapshot, () => false);
 }
 
-function Pocket({ pocket, index, open, onInspect }: { pocket: SpreadPocket; index: number; open: boolean; onInspect: (key: string) => void }) {
+function Pocket({ pocket, index, open, onInspect, onImageUnavailable }: { pocket: SpreadPocket; index: number; open: boolean; onInspect: (key: string) => void; onImageUnavailable?: (key: string) => void }) {
   const drag = useDraggable({ id: pocket.key, data: { card: pocket.card } });
   const drop = useDroppable({ id: pocket.key });
+  const onUnavailable = useCallback(() => onImageUnavailable?.(pocket.key), [onImageUnavailable, pocket.key]);
   const setNodeRef = (node: HTMLElement | null) => {
     drag.setNodeRef(node);
     drop.setNodeRef(node);
@@ -79,7 +82,7 @@ function Pocket({ pocket, index, open, onInspect }: { pocket: SpreadPocket; inde
         onClick={() => onInspect(pocket.key)}
         {...drag.listeners}
       >
-        <CardArtwork card={pocket.card} className={styles.cardImage} fallback={<span className={styles.imageFallback}>Bild nicht verfügbar</span>} />
+        <CardArtwork card={pocket.card} className={styles.cardImage} fallback={<span className={styles.imageFallback}>Bild nicht verfügbar</span>} onUnavailable={onUnavailable} />
       </button>
       <span className={styles.tileIndex} aria-hidden="true">{index + 1}</span>
       {pocket.flag ? <span className={styles.tileFlag} data-kind={pocket.flag.invalid ? "invalid" : undefined}>{pocket.flag.text}</span> : null}
@@ -88,14 +91,14 @@ function Pocket({ pocket, index, open, onInspect }: { pocket: SpreadPocket; inde
   );
 }
 
-function BinderPage({ pockets, firstIndex, label, inspectedKey, onInspect }: { pockets: readonly SpreadPocket[]; firstIndex: number; label: string; inspectedKey?: string; onInspect: (key: string) => void }) {
+function BinderPage({ pockets, firstIndex, label, inspectedKey, onInspect, onImageUnavailable }: { pockets: readonly SpreadPocket[]; firstIndex: number; label: string; inspectedKey?: string; onInspect: (key: string) => void; onImageUnavailable?: (key: string) => void }) {
   return (
     <section className={styles.binderPage} aria-label={label}>
       <div className={styles.pockets}>
         {Array.from({ length: POCKETS_PER_PAGE }, (_, slot) => {
           const pocket = pockets[slot];
           return pocket
-            ? <Pocket key={pocket.key} pocket={pocket} index={firstIndex + slot} open={inspectedKey === pocket.key} onInspect={onInspect} />
+            ? <Pocket key={pocket.key} pocket={pocket} index={firstIndex + slot} open={inspectedKey === pocket.key} onInspect={onInspect} onImageUnavailable={onImageUnavailable} />
             : <div className={styles.pocketEmpty} key={`empty-${slot}`} aria-hidden="true" />;
         })}
       </div>
@@ -107,7 +110,7 @@ function BinderPage({ pockets, firstIndex, label, inspectedKey, onInspect }: { p
  * An open binder: leather cover, rings, plastic pockets. Cards are dragged onto each other to swap their
  * places; a tap opens the card. Two pages sit side by side on wide screens, one page on phones.
  */
-export function GiftBinderSpread({ pages, inspectedKey, onInspect, onSwap }: GiftBinderSpreadProps) {
+export function GiftBinderSpread({ pages, inspectedKey, onInspect, onSwap, onImageUnavailable }: GiftBinderSpreadProps) {
   const wide = useTwoPages();
   // A one-page plan is shown as one centred page; two pages side by side only when there are two to show.
   const twoPages = wide && pages.length > 1;
@@ -155,10 +158,10 @@ export function GiftBinderSpread({ pages, inspectedKey, onInspect, onSwap }: Gif
         <div className={styles.binder} data-spread={twoPages ? "double" : "single"}>
           {twoPages ? <span className={styles.binderRings} aria-hidden="true"><i /><i /><i /></span> : null}
           {twoPages ? (left
-            ? <BinderPage key={`page-${leftIndex}`} pockets={left} firstIndex={(leftIndex ?? 0) * POCKETS_PER_PAGE} label={`Seite ${(leftIndex ?? 0) + 1}`} inspectedKey={inspectedKey} onInspect={onInspect} />
+            ? <BinderPage key={`page-${leftIndex}`} pockets={left} firstIndex={(leftIndex ?? 0) * POCKETS_PER_PAGE} label={`Seite ${(leftIndex ?? 0) + 1}`} inspectedKey={inspectedKey} onInspect={onInspect} onImageUnavailable={onImageUnavailable} />
             : <div className={styles.innerCover} aria-hidden="true"><span>Your Card Binder</span></div>) : null}
           {right
-            ? <BinderPage key={`page-${rightIndex}`} pockets={right} firstIndex={rightIndex * POCKETS_PER_PAGE} label={`Seite ${rightIndex + 1}`} inspectedKey={inspectedKey} onInspect={onInspect} />
+            ? <BinderPage key={`page-${rightIndex}`} pockets={right} firstIndex={rightIndex * POCKETS_PER_PAGE} label={`Seite ${rightIndex + 1}`} inspectedKey={inspectedKey} onInspect={onInspect} onImageUnavailable={onImageUnavailable} />
             : twoPages ? <div className={styles.blankPage} aria-hidden="true" /> : null}
         </div>
         <DragOverlay dropAnimation={null}>
