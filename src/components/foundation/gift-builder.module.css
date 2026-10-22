@@ -343,3 +343,7 @@
 .freeChoiceHint { margin: 4px 0 0; color: var(--cf-text2); font-size: .86rem; line-height: 1.5; }
 .freeChoiceHint button { border: 0; background: transparent; padding: 0; color: var(--cf-accent-text); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }
 .freeChoiceHint button:disabled { opacity: .6; cursor: wait; }
+
+.multiHint { margin: 6px 0 0; color: var(--cf-text2); font-size: .84rem; line-height: 1.5; }
+.multiHint strong { color: var(--cf-text); }
+.multiHint button { border: 0; background: transparent; padding: 0; color: var(--cf-accent-text); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }

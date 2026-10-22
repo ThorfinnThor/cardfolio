@@ -748,7 +748,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
                 setDiscoveryMode("pokemon");
                 setPokemonHelp(false);
                 updatePreferences("subjectQuery", pokemonQuery);
-              }} />Ein Lieblings-Pokémon</label>
+              }} />Ein oder mehrere Lieblings-Pokémon</label>
               <label className={styles.choice}><input type="radio" name="gift-discovery" checked={startChoice === "help"} onChange={() => {
                 setDiscoveryMode("pokemon");
                 setPokemonHelp(true);
@@ -760,8 +760,13 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
           {discoveryMode === "pokemon" && !pokemonHelp ? <div className={styles.subjectSearchRow}>
             <div className={styles.subjectField}>
               <label htmlFor="gift-subject">Lieblings-Pokémon</label>
-              <span className={styles.inputWithIcon}><Search aria-hidden="true" size={17} /><input id="gift-subject" required aria-describedby="gift-subject-hint" value={pokemonQuery} onChange={(event) => choosePokemon(event.target.value)} placeholder={language === "de" ? "Zum Beispiel Pikachu oder Pikachu, Glurak" : "For example Pikachu or Pikachu, Charizard"} /></span>
-              <small id="gift-subject-hint">{language === "de" ? "Suche mit dem deutschen Namen, zum Beispiel Glurak. Mehrere Pokémon trennst du mit Komma, bis zu vier." : "Search with the English name, for example Charizard. Separate several Pokémon with a comma, up to four."}</small>
+              <span className={styles.inputWithIcon}><Search aria-hidden="true" size={17} /><input id="gift-subject" required aria-describedby="gift-subject-hint gift-subject-multi" value={pokemonQuery} onChange={(event) => choosePokemon(event.target.value)} placeholder={language === "de" ? "Zum Beispiel Pikachu oder Pikachu, Glurak" : "For example Pikachu or Pikachu, Charizard"} /></span>
+              <small id="gift-subject-hint">{language === "de" ? "Suche mit dem deutschen Namen, zum Beispiel Glurak." : "Search with the English name, for example Charizard."}</small>
+              <p id="gift-subject-multi" className={styles.multiHint}>
+                <strong>{language === "de" ? "Auch mehrere Pokémon möglich:" : "Several Pokémon are possible:"}</strong>{" "}
+                {language === "de" ? "Trenne die Namen mit einem Komma, bis zu vier." : "Separate the names with a comma, up to four."}{" "}
+                <button type="button" onClick={() => choosePokemon(language === "de" ? "Pikachu, Glurak" : "Pikachu, Charizard")}>{language === "de" ? "Beispiel: Pikachu, Glurak" : "Example: Pikachu, Charizard"}</button>
+              </p>
             </div>
             <label className={styles.languageChoice}>Kartensprache
               <select value={language} onChange={(event) => changeLanguage(event.target.value as GiftLanguage)}>
