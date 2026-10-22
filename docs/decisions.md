@@ -519,3 +519,10 @@
 
 - **Data.** 1,567 further decisions (4,641 reviews in total, 790 `dominant`) for 16 tags, same process as before (strict first pass, independent second pass, own look). The mountain rule was loosened slightly (rocky landscapes count, caves and single boulders do not) because the strict wording produced nothing; six more weak cards were struck by hand.
 - **Result.** 13 themes now offer four pages (36 cards or more); Wald (34), Wiese & Felder (35), Berge & Felsen (28) and Himmel & Wolken (27) offer two. Counts per theme: `docs/theme-card-counts-2026-10-22.md`.
+
+## 2026-10-22 — Fourth and fifth review round: thin themes filled up, two new themes
+
+- **Data.** 1,294 further decisions (5,935 reviews in total, 918 `dominant`): Unterwasser, Drinnen and a candidate "Mensch & Pokémon" in round four; Drinnen, Wald, Wiese, Berge and Himmel again in round five. Same process as before (strict first pass, independent second pass, own look; one grass card struck by hand).
+- **New themes.** "Unterwasserwelt" (61 cards, tag `underwater` only; "Meer & Wasser" still covers surface and underwater together) and "Gemütlich zuhause" (21, tag `indoors`). Themes now total 21.
+- **Dropped.** "Mensch & Pokémon" (5 of 180 reviewed cards qualified; people appear mostly on Trainer cards, which never count) and "Ruinen & Gebäude" (2 cards).
+- **Result.** 20 of 21 themes offer four pages (36+ cards); only "Gemütlich zuhause" offers two. Counts: `docs/theme-card-counts-2026-10-22.md`.
