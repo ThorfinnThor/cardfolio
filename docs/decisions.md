@@ -514,3 +514,8 @@
 - **New themes.** "Schwimmende Pokémon" (57 cards), "Pokémon-Freunde" (42, several Pokémon on one card), "Sonnenuntergang" (23). Themes now total 19.
 - **Not offered.** "Ruinen & Gebäude" kept only 2 cards. "Berge & Felsen" gained none (60 reviewed, 1 proposed and it was a Stadium card).
 - **Overview.** `docs/theme-card-counts-2026-10-22.md` lists cards per theme and the largest page selection each one offers.
+
+## 2026-10-22 — Third review round: themes towards 36 cards
+
+- **Data.** 1,567 further decisions (4,641 reviews in total, 790 `dominant`) for 16 tags, same process as before (strict first pass, independent second pass, own look). The mountain rule was loosened slightly (rocky landscapes count, caves and single boulders do not) because the strict wording produced nothing; six more weak cards were struck by hand.
+- **Result.** 13 themes now offer four pages (36 cards or more); Wald (34), Wiese & Felder (35), Berge & Felsen (28) and Himmel & Wolken (27) offer two. Counts per theme: `docs/theme-card-counts-2026-10-22.md`.
