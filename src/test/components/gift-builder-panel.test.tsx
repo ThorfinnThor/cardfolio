@@ -494,6 +494,16 @@ describe("GiftBuilderPanel", () => {
     expect(labels.length - glurak).toBeGreaterThanOrEqual(4);
   });
 
+  it("tells the buyer that several Pokémon can be entered and fills in an example", () => {
+    const loader = { loadCandidatePool: vi.fn(async () => []), hydrateCandidates: vi.fn() };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+    expect(screen.getByText("Ein oder mehrere Lieblings-Pokémon")).toBeInTheDocument();
+    expect(screen.getByText("Auch mehrere Pokémon möglich:")).toBeInTheDocument();
+    expect(screen.getByLabelText("Lieblings-Pokémon")).toHaveAccessibleDescription(/mehrere Pokémon möglich/);
+    fireEvent.click(screen.getByRole("button", { name: "Beispiel: Pikachu, Glurak" }));
+    expect((screen.getByLabelText("Lieblings-Pokémon") as HTMLInputElement).value).toBe("Pikachu, Glurak");
+  });
+
   it("translates every popular Pokémon of a list when the card language changes", async () => {
     const loader = { loadCandidatePool: vi.fn(async () => []), hydrateCandidates: vi.fn() };
     render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
