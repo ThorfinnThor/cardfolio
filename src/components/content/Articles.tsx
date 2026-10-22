@@ -1,7 +1,9 @@
 import Link from "next/link";
 
-import { SITE_NAME, absoluteUrl, type PageLanguage } from "@/config/site";
+import { OPERATOR } from "@/config/operator";
+import { GUIDE_AUTHOR, OG_IMAGE, SITE_NAME, absoluteUrl, type PageLanguage } from "@/config/site";
 import { GUIDES, guideById, type Guide, type GuideBlock } from "@/content/guides";
+import { guideExtras } from "@/content/guide-extras";
 import { LANDING } from "@/content/landing";
 import type { PublishedSpecies } from "@/content/pokemon-stats";
 import { TOOL_START_PATH, guideIndexPath, guidePath, homePath, speciesIndexPath, speciesPath } from "@/content/routes";
@@ -68,24 +70,51 @@ function ToolCta({ language, label }: { language: PageLanguage; label: string })
 
 export function GuideArticle({ guide, language }: { guide: Guide; language: PageLanguage }) {
   const text = guide[language];
+  const extras = guideExtras(guide.id);
+  const extra = extras[language];
   const copy = LANDING[language];
   const updatedLabel = language === "de" ? "Zuletzt aktualisiert" : "Last updated";
   const relatedHeading = language === "de" ? "Weiterlesen" : "Keep reading";
+  const faqHeading = language === "de" ? "Häufige Fragen" : "Frequently asked questions";
+  const answerLabel = language === "de" ? "Kurz gesagt" : "In short";
+  const byLabel = language === "de" ? "Von" : "By";
+  const toc = [
+    ...text.sections.map((section, index) => ({ id: sectionId(index), label: section.heading })),
+    { id: "faq", label: faqHeading },
+    { id: "weiterlesen", label: relatedHeading },
+  ];
+  const author = { "@type": "Person", name: GUIDE_AUTHOR.name, url: absoluteUrl("/") };
+  const publisher = { "@type": "Organization", name: SITE_NAME, url: absoluteUrl("/"), logo: { "@type": "ImageObject", url: absoluteUrl(OG_IMAGE.url) } };
   return (
     <>
       <header className={styles.header}>
         <p className={styles.eyebrow}>{language === "de" ? "Ratgeber" : "Guide"}</p>
         <h1>{text.title}</h1>
         <p className={styles.lead}>{text.intro}</p>
-        <p className={styles.meta}>{updatedLabel}: <time dateTime={guide.updated}>{formatDate(language, guide.updated)}</time></p>
+        <p className={styles.meta}>{byLabel} <span>{GUIDE_AUTHOR.name}</span> · {updatedLabel}: <time dateTime={guide.updated}>{formatDate(language, guide.updated)}</time></p>
+        <aside className={styles.answer} aria-label={answerLabel}>
+          <strong>{answerLabel}</strong>
+          <p>{extra.answer}</p>
+        </aside>
       </header>
-      <ArticleLayout language={language} toc={[...text.sections.map((section, index) => ({ id: sectionId(index), label: section.heading })), { id: "weiterlesen", label: relatedHeading }]}>
+      <ArticleLayout language={language} toc={toc}>
         {text.sections.map((section, index) => (
           <section key={section.heading} id={sectionId(index)} className={styles.section}>
             <h2>{section.heading}</h2>
             {section.blocks.map((block, blockIndex) => <Block key={blockIndex} block={block} />)}
           </section>
         ))}
+        <section id="faq" className={styles.section}>
+          <h2>{faqHeading}</h2>
+          <dl className={styles.guideFaq}>
+            {extra.faq.map((item) => (
+              <div key={item.q}>
+                <dt><h3>{item.q}</h3></dt>
+                <dd>{item.a}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
         <section id="weiterlesen" className={styles.section}>
           <h2>{relatedHeading}</h2>
           <ul>
@@ -102,11 +131,21 @@ export function GuideArticle({ guide, language }: { guide: Guide; language: Page
         "@type": "Article",
         headline: text.title,
         description: text.description,
+        abstract: extra.answer,
         inLanguage: language,
+        datePublished: extras.published,
         dateModified: guide.updated,
+        image: [absoluteUrl(OG_IMAGE.url)],
+        isAccessibleForFree: true,
         mainEntityOfPage: absoluteUrl(guidePath(language, guide)),
-        author: { "@type": "Organization", name: SITE_NAME, url: absoluteUrl("/") },
-        publisher: { "@type": "Organization", name: SITE_NAME, url: absoluteUrl("/") },
+        author,
+        publisher,
+      }} />
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        inLanguage: language,
+        mainEntity: extra.faq.map((item) => ({ "@type": "Question", name: item.q, acceptedAnswer: { "@type": "Answer", text: item.a } })),
       }} />
     </>
   );
@@ -251,7 +290,12 @@ export function SpeciesArticle({ published, language, all }: { published: Publis
             ))}
           </ul>
         ) : null}
-        <p><Link href={guidePath(language, guideById("gift")!)}>{guideById("gift")![language].title}</Link></p>
+        <ul>
+          {["gift", "personalized-gift", "start-collection"].flatMap((id) => {
+            const guide = guideById(id);
+            return guide ? [<li key={id}><Link href={guidePath(language, guide)}>{guide[language].title}</Link></li>] : [];
+          })}
+        </ul>
       </section>
 
       </ArticleLayout>
@@ -262,9 +306,11 @@ export function SpeciesArticle({ published, language, all }: { published: Publis
         headline: de ? `${name}-Binder: Karten sammeln und verschenken` : `${name} binder: collecting and gifting the cards`,
         inLanguage: language,
         dateModified: stats.dataDate,
+        image: [absoluteUrl(OG_IMAGE.url)],
+        isAccessibleForFree: true,
         mainEntityOfPage: absoluteUrl(speciesPath(language, entry)),
-        author: { "@type": "Organization", name: SITE_NAME, url: absoluteUrl("/") },
-        publisher: { "@type": "Organization", name: SITE_NAME, url: absoluteUrl("/") },
+        author: { "@type": "Person", name: GUIDE_AUTHOR.name, url: absoluteUrl("/") },
+        publisher: { "@type": "Organization", name: SITE_NAME, url: absoluteUrl("/"), logo: { "@type": "ImageObject", url: absoluteUrl(OG_IMAGE.url) } },
       }} />
     </>
   );
@@ -361,6 +407,32 @@ export function LandingSections({ language, species }: { language: PageLanguage;
         applicationCategory: "LifestyleApplication",
         operatingSystem: "Any (web browser)",
         offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
+      }} />
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": absoluteUrl("/#organization"),
+            name: SITE_NAME,
+            url: absoluteUrl("/"),
+            logo: { "@type": "ImageObject", url: absoluteUrl(OG_IMAGE.url) },
+            email: OPERATOR.email,
+          },
+          {
+            "@type": "WebSite",
+            "@id": absoluteUrl("/#website"),
+            name: SITE_NAME,
+            url: absoluteUrl("/"),
+            inLanguage: language,
+            publisher: { "@id": absoluteUrl("/#organization") },
+          },
+          {
+            "@type": "FAQPage",
+            inLanguage: language,
+            mainEntity: copy.faq.map((item) => ({ "@type": "Question", name: item.q, acceptedAnswer: { "@type": "Answer", text: item.a } })),
+          },
+        ],
       }} />
     </>
   );

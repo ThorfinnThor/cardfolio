@@ -39,6 +39,8 @@ export const metadata: Metadata = {
   title: "Your Card Binder",
   description: "Pokémon-Binder als Geschenk zusammenstellen: Lieblings-Pokémon wählen, Karten ansehen und die Kaufliste für Cardmarket oder TCGplayer vorbereiten.",
   openGraph: { images: [OG_IMAGE] },
+  // Allows full snippets and large previews in search results and AI answers; pages that set their own robots (noindex) keep it.
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large", "max-video-preview": -1 } },
 };
 
 /* Applies the stored or system colour mode before the first paint to avoid a light/dark flash. */

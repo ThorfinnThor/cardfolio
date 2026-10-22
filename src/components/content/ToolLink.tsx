@@ -13,6 +13,8 @@ export function ToolLink({ href, language, className, children }: { href: string
     <Link
       href={href}
       className={className}
+      // The tool is a large bundle; fetching it in the background would compete with the text the visitor came to read.
+      prefetch={false}
       onClick={() => {
         try {
           window.localStorage.setItem(LOCALE_STORAGE_KEY, language);
