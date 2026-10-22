@@ -32,6 +32,8 @@ export const GIFT_THEME_PRESETS: readonly GiftThemePreset[] = [
   { id: "food", label: "Süßes & Essen", description: "Kuchen, Beeren und Leckereien", query: "Essen", mappedTags: ["food-visible"] },
   { id: "swimming", label: "Schwimmende Pokémon", description: "Pokémon mitten im Wasser beim Schwimmen und Tauchen", query: "Schwimmend", mappedTags: ["swimming"] },
   { id: "friends", label: "Pokémon-Freunde", description: "Mehrere Pokémon zusammen auf einer Karte", query: "Pokémon zusammen", mappedTags: ["multiple-pokemon"] },
+  { id: "underwater", label: "Unterwasserwelt", description: "Korallen, Blasen und Pokémon tief unter dem Meer", query: "Unterwasser", mappedTags: ["underwater"] },
+  { id: "indoors", label: "Gemütlich zuhause", description: "Pokémon in Zimmern, Küchen und Bibliotheken", query: "drinnen", mappedTags: ["indoors"] },
   { id: "sunset", label: "Sonnenuntergang", description: "Warmes Abendlicht und glühender Himmel", query: "Sonnenuntergang", mappedTags: ["sunset-sunrise"] },
 ] as const;
 
