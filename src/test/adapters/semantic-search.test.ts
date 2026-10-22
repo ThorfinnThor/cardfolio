@@ -32,12 +32,12 @@ describe("semantic search index adapter", () => {
     const file = resolve(process.cwd(), "public/data/semantic/gift-theme-reviews-v1.json");
     const parsed = artworkReviewIndexSchema.parse(JSON.parse(await readFile(file, "utf8")));
     expect(parsed.reviews).toHaveLength(7702);
-    expect(parsed.reviews.filter((review) => review.verdict === "dominant")).toHaveLength(1092);
-    expect(parsed.reviews.filter((review) => review.verdict === "secondary")).toHaveLength(3153);
+    expect(parsed.reviews.filter((review) => review.verdict === "dominant")).toHaveLength(1063);
+    expect(parsed.reviews.filter((review) => review.verdict === "secondary")).toHaveLength(3182);
     expect(parsed.reviews.filter((review) => review.verdict === "incorrect")).toHaveLength(3311);
     expect(parsed.reviews.filter((review) => review.verdict === "unsure")).toHaveLength(146);
-    expect(parsed.reviews.filter((review) => review.source === "ai-assisted")).toHaveLength(7374);
-    expect(parsed.reviews.filter((review) => review.source === "human")).toHaveLength(328);
+    expect(parsed.reviews.filter((review) => review.source === "ai-assisted")).toHaveLength(7399);
+    expect(parsed.reviews.filter((review) => review.source === "human")).toHaveLength(303);
     for (const theme of GIFT_THEME_PRESETS) {
       const dominantCards = new Set(parsed.reviews
         .filter((review) => review.verdict === "dominant" && theme.mappedTags.includes(review.tag))
