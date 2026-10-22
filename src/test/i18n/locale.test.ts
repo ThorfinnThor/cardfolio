@@ -54,5 +54,16 @@ describe("interface locale", () => {
     expect(translateGermanText("Stelle Sprache und Mindestzustand (Sehr gut) ein, prüfe Gesamtpreis und Versand und zahle erst dort.")).toContain("minimum condition (Sehr gut)");
     expect(translateGermanText("Versand wird pro Verkäufer berechnet.")).toBe("Shipping is charged per seller.");
   });
+
+  it("translates every gift theme label and the page-count choices", async () => {
+    const { GIFT_THEME_PRESETS } = await import("@/domain/gift-theme-presets");
+    for (const theme of GIFT_THEME_PRESETS) {
+      expect(translateGermanText(theme.label), theme.label).not.toBe("");
+      expect(translateGermanText(theme.description), theme.description).not.toMatch(/ und | der | die /);
+    }
+    expect(translateGermanText("Wald")).toBe("Forest");
+    expect(translateGermanText("1 Seite · 9 Karten")).toBe("1 page · 9 cards");
+    expect(translateGermanText("4 Seiten · 36 Karten")).toBe("4 pages · 36 cards");
+  });
 });
 
