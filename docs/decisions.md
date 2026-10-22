@@ -485,3 +485,10 @@
 - **Not offered.** "Sonnenauf-/untergang" (6) and "Ruinen & Gebäude" (0 after dropping Trainer/Stadium cards) had too few reliable cards; their reviews are stored for later.
 - **Yield.** After both passes only about 15 % of the proposed cards survive; more cards per theme need more review rounds, not a looser rule.
 
+
+## 2026-10-22 — Backup reminder (binders live only in this browser)
+
+- **Why.** Binders are stored in the browser only (local-first). Clearing site data or switching devices loses them; a quiet reminder to export the backup file is the only protection a server-less product can offer.
+- **Rule.** `backupReminderDue`: nothing planned → no reminder; snoozed → no reminder; no backup yet → remind once the oldest binder is 3 days old; otherwise remind only if a binder changed since the last backup **and** the backup is at least 30 days old. "Backup exportieren" runs the normal export; "In 7 Tagen erinnern" snoozes for a week.
+- **Storage.** Key `cardfolio-backup-reminder` holds only two timestamps (last backup, snoozed until). No binder content, no card names. The export records the time through `recordBackup`; other tabs update through the `ycb:backup-recorded` event.
+- **Open.** The privacy policy's browser-storage table needs a row for this key; legal text waits for the owner's approval.

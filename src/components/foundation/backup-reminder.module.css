@@ -1,0 +1,8 @@
+.reminder { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px; margin: 0 0 18px; border: 1px solid color-mix(in srgb, var(--cf-accent) 55%, var(--cf-line2)); border-radius: 12px; background: var(--cf-accent-soft); padding: 14px 16px; color: var(--cf-text); }
+.reminder > svg { color: var(--cf-accent-text); }
+.reminder strong { font-size: .95rem; }
+.reminder p { margin: 3px 0 0; color: var(--cf-text2); font-size: .84rem; line-height: 1.5; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.actions button { min-height: 40px; border: 1px solid var(--cf-line2); border-radius: 9px; background: var(--cf-surface); color: var(--cf-text2); padding: 8px 14px; font: inherit; font-size: .84rem; font-weight: 700; cursor: pointer; }
+.actions .primary { border-color: transparent; background: var(--cf-accent); color: var(--cf-on-accent); }
+@media (max-width: 720px) { .reminder { grid-template-columns: auto minmax(0, 1fr); } .actions { grid-column: 1 / -1; } }

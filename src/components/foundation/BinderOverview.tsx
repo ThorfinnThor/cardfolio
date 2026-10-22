@@ -9,6 +9,7 @@ import type { Binder } from "@/domain/types";
 import { useLocale, type AppLocale } from "@/i18n/locale";
 
 import { catalogLabel, coverLeather } from "./binder-cover";
+import { BackupReminder } from "./BackupReminder";
 import styles from "./binder-overview.module.css";
 
 interface BinderOverviewProps {
@@ -161,6 +162,7 @@ export function BinderOverview({
 
       {binders.length && !giftOnly ? (
         <div>
+          <BackupReminder binders={binders} onExport={onExport} />
           <div className={styles.shelfHeader}>
             <div><span className={styles.sectionKicker}>Deine Sammlung</span><h2>Hier kannst du weitergestalten</h2></div>
             <p className={styles.orderHint}>Eigene Reihenfolge · mit den Pfeilen anpassen</p>
