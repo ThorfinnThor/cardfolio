@@ -117,4 +117,27 @@ describe("Gift price provider", () => {
     expect(noEur.confidence).toBe("unknown");
     expect(german.confidence).toBe("unknown");
   });
+
+  describe("1st edition", () => {
+    const pricing = {
+      cardmarket: { unit: "EUR", updated: "2026-10-01T09:00:00.000Z", low: 1, trend: 2, avg30: 3, avg: 4 },
+      firstEdition: { cardmarket: { unit: "EUR", updated: "2026-10-01T09:00:00.000Z", low: 100, trend: 3330.71, "trend-holo": 0, avg30: 3300, avg: 3400, "avg-holo": null } },
+    };
+
+    it("prices the 1st edition from its own Cardmarket product, not from the Unlimited one", async () => {
+      const quote = await provider.getPrice({ ...base, currency: "EUR", rawPricing: pricing, variant: { finish: "normal", edition: "first-edition", printing: "shadowless" } });
+      expect(quote).toMatchObject({ source: "tcgdex-cardmarket", amountMinor: 333_071, metric: "trend" });
+    });
+
+    it("falls back to the plain product price for a holo-only 1st edition that has no separate foil price", async () => {
+      const quote = await provider.getPrice({ ...base, currency: "EUR", rawPricing: pricing, variant: { finish: "holo", edition: "first-edition", printing: "shadowless" } });
+      expect(quote).toMatchObject({ amountMinor: 333_071, metric: "trend" });
+    });
+
+    it("gives no price rather than the Unlimited price when the 1st-edition product is missing", async () => {
+      const quote = await provider.getPrice({ ...base, currency: "EUR", rawPricing: { cardmarket: pricing.cardmarket }, variant: { finish: "normal", edition: "first-edition", printing: "shadowless" } });
+      expect(quote).toMatchObject({ confidence: "unknown", issues: ["missing-cardmarket-provider"] });
+    });
+  });
 });
+

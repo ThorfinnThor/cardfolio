@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { withFirstEditionPricing } from "@/data/catalog/tcgdex";
 import { parseTCGdexPriceEstimates } from "@/data/pricing/tcgdex-pricing";
 
 const fetchedAt = "2026-09-27T10:00:00.000Z";
@@ -133,5 +134,25 @@ describe("TCGdex pricing normalization", () => {
       variant: { finish: "normal", edition: "unspecified" },
       printingMatch: "candidate",
     }).issues).toEqual([expect.objectContaining({ code: "invalid-fetch-time" })]);
+  });
+});
+
+
+describe("withFirstEditionPricing", () => {
+  const unlimited = { cardmarket: { unit: "EUR", trend: 1 } };
+  const firstEdition = { cardmarket: { unit: "EUR", idProduct: 660167, trend: 22.4 } };
+
+  it("adds the Cardmarket block of the stamped 1st-edition variant, in English and German", () => {
+    for (const stamp of ["1st-edition", "1. Auflage"]) {
+      const result = withFirstEditionPricing(unlimited, [{ stamp: null, pricing: unlimited }, { stamp: [stamp], pricing: firstEdition }]) as Record<string, unknown>;
+      expect(result.cardmarket).toEqual(unlimited.cardmarket);
+      expect(result.firstEdition).toEqual({ cardmarket: firstEdition.cardmarket });
+    }
+  });
+
+  it("leaves the pricing untouched without a 1st-edition variant or without its price", () => {
+    expect(withFirstEditionPricing(unlimited, undefined)).toBe(unlimited);
+    expect(withFirstEditionPricing(unlimited, [{ stamp: ["pre-release"], pricing: firstEdition }])).toBe(unlimited);
+    expect(withFirstEditionPricing(unlimited, [{ stamp: ["1st-edition"], pricing: { tcgplayer: null } }])).toBe(unlimited);
   });
 });
