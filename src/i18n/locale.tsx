@@ -575,6 +575,10 @@ const translations: Record<string, string> = {
   "Füge deine Karten hinzu. Unten findest du zu jeder Karte die Seite bei CardTrader mit Set, Nummer und allen Angeboten.": "Add your cards. Below you find the CardTrader page of every card with set, number and all offers.",
   "Seiten bei CardTrader": "Pages at CardTrader",
   "Fortschritt nach Set": "Progress by set",
+  "Sicherung empfohlen": "Backup recommended",
+  "Sichere deine Binder": "Back up your binders",
+  "Deine Binder liegen nur in diesem Browser. Du hast noch kein Backup gemacht. Eine Datei reicht, um sie später wiederherzustellen.": "Your binders only live in this browser. You have not made a backup yet. One file is enough to restore them later.",
+  "In 7 Tagen erinnern": "Remind me in 7 days",
   "Wüste": "Desert",
   "Sand, Dünen und Kakteen": "Sand, dunes and cacti",
   "Höhle": "Cave",
@@ -657,6 +661,7 @@ Object.assign(translations, {
 });
 
 const patterns: Array<[RegExp, (...matches: string[]) => string]> = [
+  [/^Deine Binder liegen nur in diesem Browser\. Das letzte Backup ist (\d+) Tage her\. Eine Datei reicht, um sie später wiederherzustellen\.$/, (days) => `Your binders only live in this browser. The last backup was ${days} days ago. One file is enough to restore them later.`],
   [/^Fortschritt nach Set \((\d+)\)$/, (count) => `Progress by set (${count})`],
   [/^(\d+) von (\d+) vorhanden$/, (owned, planned) => `${owned} of ${planned} owned`],
   [/^(\d+) von (\d+) Karten des Sets geplant$/, (planned, total) => `${planned} of ${total} cards of the set planned`],
