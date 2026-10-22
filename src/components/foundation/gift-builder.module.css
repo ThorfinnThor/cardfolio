@@ -347,3 +347,5 @@
 .multiHint { margin: 6px 0 0; color: var(--cf-text2); font-size: .84rem; line-height: 1.5; }
 .multiHint strong { color: var(--cf-text); }
 .multiHint button { border: 0; background: transparent; padding: 0; color: var(--cf-accent-text); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }
+
+.editionHint { margin: 0; color: var(--cf-text2); font-size: .8rem; line-height: 1.45; }

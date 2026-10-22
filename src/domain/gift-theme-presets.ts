@@ -15,6 +15,7 @@ export interface GiftThemePreset {
  */
 export const GIFT_THEME_PRESETS: readonly GiftThemePreset[] = [
   { id: "sea", label: "Meer & Wasser", description: "Küste, Seen und Unterwasserwelten", query: "Meer", mappedTags: ["water-surface", "underwater"] },
+  { id: "beach", label: "Am Strand", description: "Sand, Meer und Küste", query: "Strand", mappedTags: ["beach"] },
   { id: "forest", label: "Wald", description: "Wälder, Bäume und Dschungel", query: "Wald", mappedTags: ["forest"] },
   { id: "meadow", label: "Wiese & Felder", description: "Grüne Landschaften und offene Felder", query: "Wiese", mappedTags: ["grassland-field"] },
   { id: "mountains", label: "Berge & Felsen", description: "Gipfel, Klippen und Steinlandschaften", query: "Berge", mappedTags: ["mountain-rocks"] },

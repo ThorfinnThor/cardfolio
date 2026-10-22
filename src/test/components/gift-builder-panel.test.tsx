@@ -296,7 +296,7 @@ describe("GiftBuilderPanel", () => {
     expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("deutlich unter deinem Budget") && status.textContent.includes("Obergrenze"))).toBe(true);
   });
 
-  it("builds a proposal from one of ten semantic artwork themes", async () => {
+  it("builds a proposal from one of the semantic artwork themes", async () => {
     const loader = {
       loadCandidatePool: vi.fn(async () => []),
       hydrateCandidates: vi.fn(async () => Array.from({ length: 9 }, (_, index) => candidateWithArtwork(index + 1))),
@@ -336,6 +336,23 @@ describe("GiftBuilderPanel", () => {
     expect(screen.getByText(/Artwork-Treffer zum Motiv „Meer & Wasser“/i)).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Erneut hinzufügen" }));
     expect(screen.getByText("9 / 9")).toBeInTheDocument();
+  });
+
+  it("explains a theme with too few reviewed cards in plain words instead of showing an error", async () => {
+    const loader = { loadCandidatePool: vi.fn(async () => []), hydrateCandidates: vi.fn(async () => []) };
+    const smartSearch = {
+      search: vi.fn(async () => Array.from({ length: 5 }, (_, index) => ({
+        ref: { provider: "tcgdex" as const, id: `gift-ui-${index + 1}`, language: "en" as const },
+        score: 100,
+        reasonCode: "semantic" as const,
+      }))),
+    };
+    render(<GiftBuilderPanel initialDiscoveryMode="theme" loader={loader} smartSearch={smartSearch} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+    fireEvent.click(screen.getByRole("radio", { name: /Am Strand/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    expect(await screen.findByText(/Für „Am Strand“ haben wir noch nicht genug geprüfte Karten für eine ganze Seite/)).toBeInTheDocument();
+    expect(screen.queryByText("Vorschlag konnte nicht geladen werden")).not.toBeInTheDocument();
+    expect(smartSearch.search).toHaveBeenCalledWith(expect.objectContaining({ text: "Strand", matchQuality: "dominant" }));
   });
 
   it("shows price estimates without claiming that the gift is under budget", async () => {
@@ -468,6 +485,47 @@ describe("GiftBuilderPanel", () => {
       expect.objectContaining({ selected: expect.arrayContaining([expect.any(Object)]) }),
       expect.objectContaining({ subjectQuery: "Pikachu" }),
     );
+  });
+
+  it("swaps a card whose picture cannot be loaded for another card instead of showing a gap", async () => {
+    const pool = Array.from({ length: 12 }, (_, index) => candidateWithArtwork(index + 1));
+    const loader = {
+      loadCandidatePool: vi.fn(async () => pool.map((candidate) => ({ ref: candidate.card.ref, name: candidate.card.name, collectorNumber: candidate.card.collectorNumber }))),
+      hydrateCandidates: vi.fn(async () => pool),
+    };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+    fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await screen.findAllByText("9 / 9");
+
+    const labels = () => screen.getAllByRole("button", { name: /: Details ansehen$/ }).map((button) => button.getAttribute("aria-label") ?? "");
+    const before = labels();
+    expect(before).toHaveLength(9);
+    const [name, set] = before[0]!.replace(": Details ansehen", "").split(", ");
+    const picture = screen.getAllByRole("img").find((image) => image.getAttribute("alt")?.startsWith(`${name}, ${set}`));
+    expect(picture).toBeDefined();
+    // The catalogue picture fails (and no CardTrader picture exists), so the card is swapped silently.
+    fireEvent.error(picture!);
+    await waitFor(() => expect(labels()).not.toContain(before[0]));
+    expect(labels()).toHaveLength(9);
+  });
+
+  it("names the Unlimited version for early-set cards whose picture may show the 1st edition", async () => {
+    const pool = Array.from({ length: 9 }, (_, index) => {
+      const value = candidateWithArtwork(index + 1);
+      return { ...value, card: { ...value.card, availableVariants: { normal: true, holo: false, reverse: false, firstEdition: true, shadowless: false } }, variant: { finish: "normal" as const, edition: "unlimited" as const, printing: "shadowed" as const } };
+    });
+    const loader = {
+      loadCandidatePool: vi.fn(async () => pool.map((candidate) => ({ ref: candidate.card.ref, name: candidate.card.name, collectorNumber: candidate.card.collectorNumber }))),
+      hydrateCandidates: vi.fn(async () => pool),
+    };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+    fireEvent.change(screen.getByRole("combobox", { name: /Kartensprache/i }), { target: { value: "en" } });
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await screen.findAllByText("9 / 9");
+    expect(screen.getAllByText("Unlimited").length).toBeGreaterThanOrEqual(9);
+    fireEvent.click(screen.getAllByRole("button", { name: /: Details ansehen$/ })[0]!);
+    expect(await screen.findByText(/Die Abbildung kann eine 1\. Edition zeigen/)).toBeInTheDocument();
   });
 
   it("builds one page from several Pokémon and shows both", async () => {

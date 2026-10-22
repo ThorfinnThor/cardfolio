@@ -1,7 +1,14 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-02T13:10:25.751Z",
+  "generatedAt": "2026-10-22T08:56:08.357Z",
   "reviews": [
+    {
+      "cardId": "30th-002",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
     {
       "cardId": "30th-032",
       "tag": "sky-clouds",
@@ -270,6 +277,13 @@
     },
     {
       "cardId": "base2-35",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "base2-35",
       "tag": "water-surface",
       "verdict": "secondary",
       "reviewedAt": "2026-10-02T11:31:32.460Z"
@@ -383,6 +397,13 @@
       "reviewedAt": "2026-10-02T11:37:45.513Z"
     },
     {
+      "cardId": "base4-39",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "base4-44",
       "tag": "forest",
       "verdict": "secondary",
@@ -411,6 +432,13 @@
       "tag": "mountain-rocks",
       "verdict": "dominant",
       "reviewedAt": "2026-10-02T11:36:27.071Z"
+    },
+    {
+      "cardId": "base4-63",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "base4-65",
@@ -499,6 +527,13 @@
       "reviewedAt": "2026-10-02T10:00:00.000Z"
     },
     {
+      "cardId": "bw1-38",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "bw1-51",
       "tag": "night",
       "verdict": "dominant",
@@ -541,16 +576,58 @@
       "reviewedAt": "2026-10-02T11:34:57.826Z"
     },
     {
+      "cardId": "dp1-69",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "dp2-44",
       "tag": "water-surface",
       "verdict": "dominant",
       "reviewedAt": "2026-10-02T11:31:09.206Z"
     },
     {
+      "cardId": "dp5-67",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "dp6-89",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "dp7-52",
       "tag": "water-surface",
       "verdict": "secondary",
       "reviewedAt": "2026-10-02T11:31:53.176Z"
+    },
+    {
+      "cardId": "dpp-DP48",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "ecard1-131",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "ecard3-46",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "ecard3-77",
@@ -565,6 +642,20 @@
       "reviewedAt": "2026-10-02T11:37:53.835Z"
     },
     {
+      "cardId": "ex10-28",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "ex10-37",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "ex13-58",
       "tag": "mountain-rocks",
       "verdict": "dominant",
@@ -575,6 +666,69 @@
       "tag": "grassland-field",
       "verdict": "unsure",
       "reviewedAt": "2026-10-02T11:35:41.377Z"
+    },
+    {
+      "cardId": "ex14-41",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "ex14-72",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "ex16-20",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "ex16-43",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "ex6-19",
+      "tag": "beach",
+      "verdict": "dominant",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "ex6-65",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "ex8-57",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "gym2-44",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "hgss1-11",
+      "tag": "beach",
+      "verdict": "dominant",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "hgss2-10",
@@ -673,6 +827,20 @@
       "reviewedAt": "2026-10-02T11:51:02.399Z"
     },
     {
+      "cardId": "me02-101",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "me02-102",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "me02-102",
       "tag": "water-surface",
       "verdict": "incorrect",
@@ -725,6 +893,20 @@
       "tag": "sky-clouds",
       "verdict": "secondary",
       "reviewedAt": "2026-10-02T11:52:22.944Z"
+    },
+    {
+      "cardId": "me02.5-018",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "me02.5-101",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me02.5-120",
@@ -833,6 +1015,13 @@
       "tag": "city",
       "verdict": "incorrect",
       "reviewedAt": "2026-10-02T11:51:38.674Z"
+    },
+    {
+      "cardId": "me02.5-293",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me02.5-293",
@@ -1093,6 +1282,13 @@
       "reviewedAt": "2026-10-02T11:51:19.720Z"
     },
     {
+      "cardId": "me05-018",
+      "tag": "beach",
+      "verdict": "dominant",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "me05-038",
       "tag": "fire-lava",
       "verdict": "incorrect",
@@ -1145,6 +1341,13 @@
       "tag": "city",
       "verdict": "unsure",
       "reviewedAt": "2026-10-02T11:52:01.555Z"
+    },
+    {
+      "cardId": "me05-088",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me05-096",
@@ -1213,10 +1416,59 @@
       "reviewedAt": "2026-10-02T11:38:09.764Z"
     },
     {
+      "cardId": "pop7-13",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "pop9-12",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "pop9-3",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "ru1-6",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sm1-37",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sm1-57",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "sm1-59",
       "tag": "water-surface",
       "verdict": "dominant",
       "reviewedAt": "2026-10-02T11:32:41.201Z"
+    },
+    {
+      "cardId": "sm1-75",
+      "tag": "beach",
+      "verdict": "dominant",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "sm10-118",
@@ -1225,10 +1477,59 @@
       "reviewedAt": "2026-10-02T11:34:35.965Z"
     },
     {
+      "cardId": "sm10-53",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sm11-52",
+      "tag": "beach",
+      "verdict": "dominant",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sm11-74",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sm12-126",
+      "tag": "beach",
+      "verdict": "dominant",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sm12-127",
+      "tag": "beach",
+      "verdict": "dominant",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "sm12-15",
       "tag": "grassland-field",
       "verdict": "dominant",
       "reviewedAt": "2026-10-02T11:35:43.267Z"
+    },
+    {
+      "cardId": "sm12-198",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sm2-26",
+      "tag": "beach",
+      "verdict": "dominant",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "sm2-39",
@@ -1237,16 +1538,107 @@
       "reviewedAt": "2026-10-02T11:32:19.330Z"
     },
     {
+      "cardId": "sm2-55",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sm3-111",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sm3-70",
+      "tag": "beach",
+      "verdict": "dominant",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sm3-9",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sm5-95",
+      "tag": "beach",
+      "verdict": "dominant",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sm6-37",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sm6-66",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "sm9-4",
       "tag": "forest",
       "verdict": "dominant",
       "reviewedAt": "2026-10-02T11:34:40.872Z"
     },
     {
+      "cardId": "sm9-65",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sm9-84",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "smp-SM119",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "smp-SM152",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "smp-SM57",
       "tag": "fire-lava",
       "verdict": "secondary",
       "reviewedAt": "2026-10-02T11:37:59.890Z"
+    },
+    {
+      "cardId": "smp-SM72",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sv01-165",
+      "tag": "beach",
+      "verdict": "dominant",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "sv01-219",
@@ -1359,6 +1751,13 @@
       "source": "ai-assisted"
     },
     {
+      "cardId": "sv03.5-098",
+      "tag": "beach",
+      "verdict": "dominant",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "sv03.5-113",
       "tag": "flowers",
       "verdict": "dominant",
@@ -1370,6 +1769,13 @@
       "tag": "flowers",
       "verdict": "secondary",
       "reviewedAt": "2026-10-02T13:05:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sv03.5-170",
+      "tag": "beach",
+      "verdict": "dominant",
+      "reviewedAt": "2026-10-22T09:00:00Z",
       "source": "ai-assisted"
     },
     {
@@ -1583,6 +1989,27 @@
       "source": "ai-assisted"
     },
     {
+      "cardId": "sv08-067",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sv08-079",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sv08-195",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "sv08-237",
       "tag": "snow-ice",
       "verdict": "incorrect",
@@ -1628,6 +2055,13 @@
       "reviewedAt": "2026-10-02T11:35:57.005Z"
     },
     {
+      "cardId": "sv08.5-018",
+      "tag": "beach",
+      "verdict": "dominant",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "sv08.5-035",
       "tag": "night",
       "verdict": "dominant",
@@ -1638,6 +2072,13 @@
       "tag": "water-surface",
       "verdict": "incorrect",
       "reviewedAt": "2026-10-02T11:32:43.278Z"
+    },
+    {
+      "cardId": "sv08.5-053",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "sv08.5-168",
@@ -1731,6 +2172,13 @@
       "reviewedAt": "2026-10-02T11:38:12.890Z"
     },
     {
+      "cardId": "sv09-086",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "sv09-113",
       "tag": "mountain-rocks",
       "verdict": "secondary",
@@ -1741,6 +2189,20 @@
       "tag": "forest",
       "verdict": "incorrect",
       "reviewedAt": "2026-10-02T11:34:45.146Z"
+    },
+    {
+      "cardId": "sv09-137",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sv09-138",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "sv09-181",
@@ -1801,6 +2263,20 @@
       "tag": "underwater",
       "verdict": "incorrect",
       "reviewedAt": "2026-10-02T11:47:09.416Z"
+    },
+    {
+      "cardId": "sv10-062",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sv10-063",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "sv10-116",
@@ -1910,10 +2386,31 @@
       "reviewedAt": "2026-10-02T11:52:28.501Z"
     },
     {
+      "cardId": "sv10.5b-020",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "sv10.5b-021",
       "tag": "grassland-field",
       "verdict": "unsure",
       "reviewedAt": "2026-10-02T11:36:00.867Z"
+    },
+    {
+      "cardId": "sv10.5b-030",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sv10.5b-129",
+      "tag": "beach",
+      "verdict": "dominant",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "sv10.5b-136",
@@ -1990,6 +2487,13 @@
       "reviewedAt": "2026-10-02T11:47:06.756Z"
     },
     {
+      "cardId": "sv10.5w-053",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "sv10.5w-057",
       "tag": "city",
       "verdict": "dominant",
@@ -2025,6 +2529,13 @@
       "source": "ai-assisted"
     },
     {
+      "cardId": "sv10.5w-090",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "sv10.5w-091",
       "tag": "mountain-rocks",
       "verdict": "incorrect",
@@ -2055,6 +2566,13 @@
       "tag": "sky-clouds",
       "verdict": "dominant",
       "reviewedAt": "2026-10-02T13:05:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "sv10.5w-153",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
       "source": "ai-assisted"
     },
     {
@@ -2220,6 +2738,20 @@
       "reviewedAt": "2026-10-02T11:47:39.759Z"
     },
     {
+      "cardId": "swsh1-44",
+      "tag": "beach",
+      "verdict": "dominant",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "swsh1-62",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "swsh10-169",
       "tag": "fire-lava",
       "verdict": "secondary",
@@ -2282,6 +2814,13 @@
       "tag": "sky-clouds",
       "verdict": "secondary",
       "reviewedAt": "2026-10-02T12:54:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "swsh12-130",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
       "source": "ai-assisted"
     },
     {
@@ -2354,6 +2893,13 @@
       "reviewedAt": "2026-10-02T11:56:20.620Z"
     },
     {
+      "cardId": "swsh2-82",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "swsh2-85",
       "tag": "forest",
       "verdict": "secondary",
@@ -2370,6 +2916,13 @@
       "tag": "grassland-field",
       "verdict": "secondary",
       "reviewedAt": "2026-10-02T11:36:02.575Z"
+    },
+    {
+      "cardId": "swsh5-113",
+      "tag": "beach",
+      "verdict": "dominant",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "swsh5-123",
@@ -2458,6 +3011,20 @@
       "source": "ai-assisted"
     },
     {
+      "cardId": "swsh8-151",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "swsh8-20",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "swsh8-214",
       "tag": "night",
       "verdict": "dominant",
@@ -2539,6 +3106,13 @@
       "reviewedAt": "2026-10-02T11:34:54.244Z"
     },
     {
+      "cardId": "xy1-37",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
       "cardId": "xy12-101",
       "tag": "fire-lava",
       "verdict": "dominant",
@@ -2603,6 +3177,62 @@
       "tag": "grassland-field",
       "verdict": "dominant",
       "reviewedAt": "2026-10-02T11:35:48.980Z"
+    },
+    {
+      "cardId": "xy3-76",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "xy5-31",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "xy5-32",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "xy5-70",
+      "tag": "beach",
+      "verdict": "dominant",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "xy6-50",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "xy6-52",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "xy7-45",
+      "tag": "beach",
+      "verdict": "incorrect",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
+    },
+    {
+      "cardId": "xy8-114",
+      "tag": "beach",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T09:00:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "xy8-31",

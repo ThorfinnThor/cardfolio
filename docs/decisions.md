@@ -455,3 +455,11 @@
 - **Performance.** Links from content pages to the app no longer prefetch its bundle (`prefetch={false}`): a guide page dropped from about 2.2 MB to 1.1 MB of raw transfer in a local test. Live Lighthouse before this change: mobile 97 (LCP 2.5 s), desktop 100, TBT 0, CLS 0.
 - **Not done.** External citations in the guides (only links that were verified would be acceptable) and backlinks, which `docs/seo-backlink-plan.md` describes.
 
+## 2026-10-22 — Gift proposals without gaps, a beach theme, clearer prices
+
+- **No cards without a picture.** `GiftBinderSpread` reports a card whose picture cannot be loaded anywhere (TCGdex, fallback, CardTrader); `GiftBuilderPanel` swaps it for another card, one at a time, and never offers it again in that proposal ("Kein Bild" in the full list).
+- **Themes never end in an error.** With fewer reviewed hits than the page needs, the page shrinks to the largest full size (9, 18 or 36); below 9 a plain notice asks for another theme or a Pokémon. Unconfirmed hits are still never added.
+- **New theme "Am Strand".** 90 beach-tagged cards were checked visually (a subagent proposed 23 as dominant, five were struck after a second look because the artwork shows no beach), leaving 18 `dominant` reviews, enough for an 18-card page. They are marked `ai-assisted` like the earlier AI-assisted reviews and can be corrected in the local artwork review tool.
+- **Several Pokémon.** The balance between the Pokémon now ranks right after "has artwork" and before price and finish, so a Pokémon whose cards lack prices is no longer crowded out.
+- **Edition and price.** For early sets the picture can show the 1st edition while price and order are for Unlimited. Such cards now carry the label "Unlimited", and the details say so and that the 1st edition can be far more expensive.
+
