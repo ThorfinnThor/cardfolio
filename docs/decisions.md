@@ -507,3 +507,10 @@
 - **Guided first visit.** `GuidedStart` appears on /app/ while there is no binder: "Ich verschenke ihn" (gift builder), "Ich baue eine Sammlung auf" (starter sets, other set, empty binder) and "Ich bin ein Kind" (/kinder/). Collectors who clicked "Ich sammle selbst" or have binders see the full start tabs as before.
 - **Children's wish list.** `/kinder/` (German only, `noindex`): the child picks a Pokémon, sees nine cards without prices, can swap each, and gets a share link (`/geschenk/#vorschlag=…`, see the share-link entry) for the parents. Nothing is bought or stored; no new storage key. Prices appear only for the parents, in the gift builder.
 - **Variant glossary.** `VariantGlossary` (Normal, Holo, Reverse Holo, 1st Edition, Unlimited, Shadowless) sits below every variant form.
+
+## 2026-10-22 — Second review round: more cards per theme and three new themes
+
+- **Data.** 1,248 new artwork decisions (3,074 reviews in total, 536 `dominant`) for 14 tags: 106 contact sheets, a first strict AI pass, a second independent AI pass over every `dominant` proposal, then my own look at the survivors (Trainer and Stadium cards never count; three weak cards struck by hand: a Magneton, an Omanyte that is not in a cave, a plain Electrike). All new decisions are `ai-assisted`.
+- **New themes.** "Schwimmende Pokémon" (57 cards), "Pokémon-Freunde" (42, several Pokémon on one card), "Sonnenuntergang" (23). Themes now total 19.
+- **Not offered.** "Ruinen & Gebäude" kept only 2 cards. "Berge & Felsen" gained none (60 reviewed, 1 proposed and it was a Stadium card).
+- **Overview.** `docs/theme-card-counts-2026-10-22.md` lists cards per theme and the largest page selection each one offers.
