@@ -1,0 +1,88 @@
+{
+ "cards": 1579,
+ "tagger": "Claude Sonnet subagents (4 in parallel) looking at contact sheets; no API or model service",
+ "sheets": "132 contact sheets, 12 artwork crops each (4x3); whole card for secret rares and full-art rule boxes",
+ "wallClock": {
+  "start": "2026-09-29T23:54:41Z",
+  "end": "2026-09-30T00:02:27Z",
+  "minutes": 7.8
+ },
+ "agentMinutes": 24.4,
+ "subagentTokens": 703449,
+ "schemaFixesAfterMerge": [
+  {
+   "id": "hgss1-97",
+   "field": "pokemon_count",
+   "was": "3",
+   "now": "3+",
+   "why": "out-of-vocabulary \"3\""
+  },
+  {
+   "id": "sv01-165",
+   "field": "pokemon_count",
+   "was": "3",
+   "now": "3+",
+   "why": "out-of-vocabulary \"3\""
+  },
+  {
+   "id": "sv03.5-033",
+   "field": "place",
+   "was": "night",
+   "now": "unclear",
+   "why": "\"night\" given as place; caption says misty landscape"
+  },
+  {
+   "id": "sv03.5-130",
+   "field": "time",
+   "was": "storm",
+   "now": "unclear",
+   "why": "\"storm\" given as time (weather already storm)"
+  },
+  {
+   "id": "sv03.5-135",
+   "field": "time",
+   "was": "storm",
+   "now": "unclear",
+   "why": "\"storm\" given as time (weather already storm)"
+  },
+  {
+   "id": "sv03.5-145",
+   "field": "time",
+   "was": "storm",
+   "now": "unclear",
+   "why": "\"storm\" given as time (weather already storm)"
+  },
+  {
+   "id": "sv03.5-151",
+   "field": "time",
+   "was": "space",
+   "now": "unclear",
+   "why": "\"space\" given as time"
+  },
+  {
+   "id": "sv03.5-177",
+   "field": "caption",
+   "was": "0",
+   "now": "A person and several Machop-family Pok\u00e9mon moving boxes in a building under construction.",
+   "why": "caption and confidence swapped"
+  },
+  {
+   "id": "sv03.5-177",
+   "field": "confidence",
+   "was": "A person and several Machop-family Pok\u00e9mon moving boxes in a building under construction.",
+   "now": "medium",
+   "why": "caption and confidence swapped"
+  }
+ ],
+ "imageHandling": "high.webp fetched into memory, cropped, composited into a sheet in a temp dir outside the repo, sheet deleted after each 4-sheet batch; temp dir removed at the end",
+ "notes": [
+  "sv03.5-163 high.webp returns 404; the agent used high.png for that card"
+ ],
+ "extrapolation": {
+  "cardsWithImageEn": 21990,
+  "cardsPerAgentMinute": 64.7,
+  "agentHours": 5.7,
+  "wallHoursWith4Agents": 1.4,
+  "subagentTokensEstimate": 9796608
+ }
+}

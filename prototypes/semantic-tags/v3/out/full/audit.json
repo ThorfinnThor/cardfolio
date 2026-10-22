@@ -1,0 +1,3737 @@
+{
+ "generatedAt": "2026-10-01T12:22:12.360Z",
+ "completedSets": 149,
+ "expectedCards": 19635,
+ "resultRows": 19635,
+ "schemaErrors": [],
+ "tagCounts": {
+  "beach": 242,
+  "water-surface": 1635,
+  "underwater": 1011,
+  "forest": 3523,
+  "grassland-field": 3063,
+  "mountain-rocks": 3434,
+  "cave": 653,
+  "desert": 440,
+  "snow-ice": 826,
+  "city": 1486,
+  "indoors": 1437,
+  "ruins-building": 1523,
+  "sky-clouds": 4388,
+  "night": 1259,
+  "sunset-sunrise": 505,
+  "fire-lava": 1046,
+  "flowers": 1857,
+  "food-visible": 414,
+  "human-present": 1665,
+  "multiple-pokemon": 2112,
+  "sleeping": 320,
+  "flying": 3113,
+  "swimming": 1605
+ },
+ "relationFlags": [
+  {
+   "id": "ecard3-77",
+   "type": "underwater-and-water-surface"
+  },
+  {
+   "id": "ex5-12",
+   "type": "swimming-without-water"
+  },
+  {
+   "id": "ex5-94",
+   "type": "swimming-without-water"
+  },
+  {
+   "id": "ex7-12",
+   "type": "swimming-without-water"
+  },
+  {
+   "id": "dpp-DP48",
+   "type": "beach-without-water-surface"
+  },
+  {
+   "id": "dp2-44",
+   "type": "underwater-and-water-surface"
+  }
+ ],
+ "omissionFlags": [
+  {
+   "id": "base1-9",
+   "tag": "multiple-pokemon",
+   "caption": "Magneton, three linked magnets, on an orange sparkling background."
+  },
+  {
+   "id": "base1-15",
+   "tag": "flowers",
+   "caption": "Venusaur facing forward with its flower blooming, on a green glittery background."
+  },
+  {
+   "id": "base1-19",
+   "tag": "multiple-pokemon",
+   "caption": "Three Dugtrio pop out of brown earth with white flowers and hills behind."
+  },
+  {
+   "id": "base1-44",
+   "tag": "sky-clouds",
+   "caption": "Bulbasaur among pink flowers and leaves with a cloud of spores on its bulb."
+  },
+  {
+   "id": "base1-89",
+   "tag": "multiple-pokemon",
+   "caption": "Three pink stars glow on an orange background."
+  },
+  {
+   "id": "base1-90",
+   "tag": "fire-lava",
+   "caption": "A potion spray bottle with glowing flame-like light on orange rays."
+  },
+  {
+   "id": "base1-97",
+   "tag": "fire-lava",
+   "caption": "Fire energy symbol on a brown-orange glowing background."
+  },
+  {
+   "id": "base1-98",
+   "tag": "fire-lava",
+   "caption": "Fire energy symbol on a red-orange glowing background."
+  },
+  {
+   "id": "base2-1",
+   "tag": "night",
+   "caption": "Clefairy standing on a rock against a glittering night-colored background."
+  },
+  {
+   "id": "base2-15",
+   "tag": "flowers",
+   "caption": "Vileplume with a big red flower on a sparkly green background."
+  },
+  {
+   "id": "basep-13",
+   "tag": "flowers",
+   "caption": "Venusaur roars with its flower blooming on a starry dark background."
+  },
+  {
+   "id": "base3-11",
+   "tag": "multiple-pokemon",
+   "caption": "Magneton, three linked magnets, on a dark sparkly background."
+  },
+  {
+   "id": "base3-60",
+   "tag": "multiple-pokemon",
+   "caption": "Two dice tumble on a dark green surface against black."
+  },
+  {
+   "id": "base4-9",
+   "tag": "multiple-pokemon",
+   "caption": "Three magnet creatures linked together against a glittering backdrop."
+  },
+  {
+   "id": "base4-18",
+   "tag": "flowers",
+   "caption": "Big toad-like creature with a large flower on its back."
+  },
+  {
+   "id": "base4-23",
+   "tag": "multiple-pokemon",
+   "caption": "Three mole creatures emerging from dirt with white flowers and hills behind."
+  },
+  {
+   "id": "base4-34",
+   "tag": "grassland-field",
+   "caption": "Butterfly creature fluttering over pink flowers in a sunlit meadow."
+  },
+  {
+   "id": "base4-37",
+   "tag": "multiple-pokemon",
+   "caption": "Three-headed bird running across a pale desert-like plain."
+  },
+  {
+   "id": "base4-57",
+   "tag": "snow-ice",
+   "caption": "Round frog creature with swirl belly on a blue icy watery backdrop."
+  },
+  {
+   "id": "base4-72",
+   "tag": "multiple-pokemon",
+   "caption": "Two-headed bird running over desert with cacti under a blue sky."
+  },
+  {
+   "id": "base4-96",
+   "tag": "multiple-pokemon",
+   "caption": "Tangle of blue vines with two eyes peeking through."
+  },
+  {
+   "id": "base4-126",
+   "tag": "fire-lava",
+   "caption": "Fire energy symbol on a red-orange gradient."
+  },
+  {
+   "id": "base5-2",
+   "tag": "night",
+   "caption": "Gray cobra creature rearing up on grass at night-like dark backdrop."
+  },
+  {
+   "id": "base5-6",
+   "tag": "multiple-pokemon",
+   "caption": "Three brown mole creatures bursting through the floor of a dim room."
+  },
+  {
+   "id": "base5-7",
+   "tag": "cave",
+   "caption": "Bat creature with open mouth flying through a green cave-like backdrop."
+  },
+  {
+   "id": "base5-11",
+   "tag": "multiple-pokemon",
+   "caption": "Three magnet creatures with a dark shadow on a starry backdrop."
+  },
+  {
+   "id": "base5-23",
+   "tag": "multiple-pokemon",
+   "caption": "Three mole creatures breaking through the floor of a room with dressers and windows."
+  },
+  {
+   "id": "base5-28",
+   "tag": "multiple-pokemon",
+   "caption": "Three magnet creatures beside a dark silhouette on a swirling olive backdrop."
+  },
+  {
+   "id": "base5-64",
+   "tag": "fire-lava",
+   "caption": "Flame-maned horse creature with a blurred green background."
+  },
+  {
+   "id": "base5-69",
+   "tag": "city",
+   "caption": "Red-white ball creature glowing before blurred city lights at night."
+  },
+  {
+   "id": "base5-78",
+   "tag": "sky-clouds",
+   "caption": "Blue robot creature in green gas and red cloud."
+  },
+  {
+   "id": "base5-79",
+   "tag": "flying",
+   "caption": "Red flying propeller robots swarming against a dark starry background."
+  },
+  {
+   "id": "gym1-8",
+   "tag": "multiple-pokemon",
+   "caption": "Three magnet creatures crackling with electricity on a sparkling backdrop."
+  },
+  {
+   "id": "gym1-45",
+   "tag": "flowers",
+   "caption": "Black creature with drooling mouth and a large mushroom-like flower on its head."
+  },
+  {
+   "id": "gym1-46",
+   "tag": "flowers",
+   "caption": "Flower-headed plant creature on a mottled autumn-colored background."
+  },
+  {
+   "id": "gym1-79",
+   "tag": "multiple-pokemon",
+   "caption": "Tangled blue vine creature with two eyes on a purple backdrop."
+  },
+  {
+   "id": "gym1-109",
+   "tag": "multiple-pokemon",
+   "caption": "Two girls and a maid in front of a European-style building."
+  },
+  {
+   "id": "gym1-128",
+   "tag": "fire-lava",
+   "caption": "Fire energy on a red gradient background."
+  },
+  {
+   "id": "neo4-16",
+   "tag": "multiple-pokemon",
+   "caption": "Two glowing energy orbs with bright rays on black."
+  },
+  {
+   "id": "neo4-47",
+   "tag": "snow-ice",
+   "caption": "A pale icy Pokemon crouching in sunlit grass."
+  },
+  {
+   "id": "neo4-65",
+   "tag": "sky-clouds",
+   "caption": "Gastly floating in purple gas clouds."
+  },
+  {
+   "id": "neo4-98",
+   "tag": "flying",
+   "caption": "A mechanical energy device with colorful energy orbs flying past."
+  },
+  {
+   "id": "neo4-103",
+   "tag": "multiple-pokemon",
+   "caption": "Two Team Rocket members beside a dark tower under a pink moon."
+  },
+  {
+   "id": "lc-35",
+   "tag": "flying",
+   "caption": "Rhydon stomping with rocks flying around it."
+  },
+  {
+   "id": "lc-104",
+   "tag": "flying",
+   "caption": "A Weedle-like Pokemon with a Poke Ball flying toward it on purple."
+  },
+  {
+   "id": "ecard1-6",
+   "tag": "fire-lava",
+   "caption": "Charizard flying with wings spread and a flame at its tail on a starry background."
+  },
+  {
+   "id": "ecard1-33",
+   "tag": "cave",
+   "caption": "Alakazam meditating in a leafy cave-like setting with purple glow."
+  },
+  {
+   "id": "ecard1-36",
+   "tag": "flying",
+   "caption": "Blastoise bursting forward with dark shards flying."
+  },
+  {
+   "id": "ecard1-56",
+   "tag": "sky-clouds",
+   "caption": "Mewtwo floating with arms spread amid lightning and dark storm clouds."
+  },
+  {
+   "id": "ecard1-66",
+   "tag": "flying",
+   "caption": "Tyranitar roaring amid jagged rocks and flying boulders."
+  },
+  {
+   "id": "ecard1-75",
+   "tag": "sky-clouds",
+   "caption": "Dragonair coiling against a cloud-patterned green background."
+  },
+  {
+   "id": "ecard1-81",
+   "tag": "sky-clouds",
+   "caption": "Hitmonlee stretching out in swirling dust clouds."
+  },
+  {
+   "id": "ecard1-91",
+   "tag": "sky-clouds",
+   "caption": "Two Pokemon clashing in a dust cloud with rocks flying."
+  },
+  {
+   "id": "ecard1-91",
+   "tag": "flying",
+   "caption": "Two Pokemon clashing in a dust cloud with rocks flying."
+  },
+  {
+   "id": "ecard1-105",
+   "tag": "fire-lava",
+   "caption": "Cyndaquil curled up asleep amid a bursting flame pattern."
+  },
+  {
+   "id": "ecard1-129",
+   "tag": "multiple-pokemon",
+   "caption": "Shellder and another Pokemon on a dark abstract pattern."
+  },
+  {
+   "id": "ecard1-131",
+   "tag": "human-present",
+   "caption": "A Squirtle figure on sand beside the water."
+  },
+  {
+   "id": "ecard1-136",
+   "tag": "human-present",
+   "caption": "A Vulpix figure on dry grass before a brick wall."
+  },
+  {
+   "id": "ecard1-139",
+   "tag": "multiple-pokemon",
+   "caption": "Two blurred Poke Balls on a pink and blue swirl."
+  },
+  {
+   "id": "ecard1-141",
+   "tag": "multiple-pokemon",
+   "caption": "Three glowing energy orbs above shimmering ripples."
+  },
+  {
+   "id": "ecard1-161",
+   "tag": "fire-lava",
+   "caption": "A fire energy symbol on an orange-red background."
+  },
+  {
+   "id": "gym2-4",
+   "tag": "flowers",
+   "caption": "Venusaur grinning with a flower on its back against a sparkling background"
+  },
+  {
+   "id": "gym2-16",
+   "tag": "multiple-pokemon",
+   "caption": "Alakazam holding two spoons with lightning crackling between them"
+  },
+  {
+   "id": "gym2-22",
+   "tag": "multiple-pokemon",
+   "caption": "Three Dugtrio emerging from rocky ground with mountains behind"
+  },
+  {
+   "id": "gym2-48",
+   "tag": "sky-clouds",
+   "caption": "Koffing floating with yellow gas clouds around it"
+  },
+  {
+   "id": "gym2-67",
+   "tag": "sunset-sunrise",
+   "caption": "Diglett peeking out of the ground near a green field at dusk"
+  },
+  {
+   "id": "gym2-79",
+   "tag": "sky-clouds",
+   "caption": "Koffing grinning with smaller Koffing and white gas clouds around"
+  },
+  {
+   "id": "neo1-7",
+   "tag": "multiple-pokemon",
+   "caption": "Jumpluff floating with two large white puffs among dark trees"
+  },
+  {
+   "id": "neo1-10",
+   "tag": "flowers",
+   "caption": "Meganium with a pink flower collar on a sparkling background"
+  },
+  {
+   "id": "neo1-11",
+   "tag": "flowers",
+   "caption": "Meganium roaring beside a pink flower with fireworks behind"
+  },
+  {
+   "id": "neo1-85",
+   "tag": "flying",
+   "caption": "Energy symbols flying through a dark purple space"
+  },
+  {
+   "id": "neo3-22",
+   "tag": "sunset-sunrise",
+   "caption": "Raikou running up stone steps beside a shrine at dusk"
+  },
+  {
+   "id": "neo3-32",
+   "tag": "swimming",
+   "caption": "Two Mantine-like Pokemon swimming in glowing yellow and blue light"
+  },
+  {
+   "id": "neo3-37",
+   "tag": "swimming",
+   "caption": "Seaking swimming over a blue pattern of white leaf shapes"
+  },
+  {
+   "id": "neo3-44",
+   "tag": "flying",
+   "caption": "Geodude punching with a giant fist and flying rocks"
+  },
+  {
+   "id": "ex2-15",
+   "tag": "sky-clouds",
+   "caption": "A fiery dog Pokémon stands on a rock under stylised golden clouds."
+  },
+  {
+   "id": "ex2-21",
+   "tag": "flying",
+   "caption": "A yellow spiny Pokémon digs through flying rocks in a canyon."
+  },
+  {
+   "id": "ex2-42",
+   "tag": "flowers",
+   "caption": "A flower-headed Pokémon rises before ancient ruins with columns."
+  },
+  {
+   "id": "ex2-43",
+   "tag": "flowers",
+   "caption": "A flower-headed fossil Pokémon floats in a hazy sandy landscape."
+  },
+  {
+   "id": "ex2-73",
+   "tag": "flying",
+   "caption": "A dazed duck Pokémon tumbles among flying rocks in an orange canyon."
+  },
+  {
+   "id": "np-9",
+   "tag": "flying",
+   "caption": "A yellow fighting bird Pokémon kicks, sending rocks flying."
+  },
+  {
+   "id": "ex3-17",
+   "tag": "multiple-pokemon",
+   "caption": "Three magnet Pokémon sit in a cluttered workshop with boxes and machines."
+  },
+  {
+   "id": "ex3-19",
+   "tag": "fire-lava",
+   "caption": "A teal dragon Pokémon breathes a flame on a rocky outcrop."
+  },
+  {
+   "id": "ex3-26",
+   "tag": "sky-clouds",
+   "caption": "A purple Dratini peers out from orange clouds."
+  },
+  {
+   "id": "ex3-35",
+   "tag": "multiple-pokemon",
+   "caption": "Three magnet Pokémon in front of toy-like blocks."
+  },
+  {
+   "id": "ex3-77",
+   "tag": "forest",
+   "caption": "A small bird Pokémon breathes fire in a dark stormy forest."
+  },
+  {
+   "id": "ex3-95",
+   "tag": "fire-lava",
+   "caption": "A red magma Pokémon with a purple crystal against a dark red background."
+  },
+  {
+   "id": "ex3-98",
+   "tag": "fire-lava",
+   "caption": "A Charmander sits with its flame tail against a dark sparkly background."
+  },
+  {
+   "id": "ex4-1",
+   "tag": "desert",
+   "caption": "A green cactus Pokémon looms against a dark circuit-like background."
+  },
+  {
+   "id": "ex4-5",
+   "tag": "swimming",
+   "caption": "A blue shark Pokémon swims forward against a dark sparkly background."
+  },
+  {
+   "id": "ex4-24",
+   "tag": "desert",
+   "caption": "A green cactus Pokémon glows in a beam of light."
+  },
+  {
+   "id": "ex4-33",
+   "tag": "multiple-pokemon",
+   "caption": "A clay doll Pokémon beside a full moon and two burning fires."
+  },
+  {
+   "id": "ex4-70",
+   "tag": "fire-lava",
+   "caption": "A hooded Team Magma grunt stands before a setting sun and orange clouds."
+  },
+  {
+   "id": "ex4-72",
+   "tag": "multiple-pokemon",
+   "caption": "Two Poké Balls shown with motion blur on a pink background."
+  },
+  {
+   "id": "ex4-82",
+   "tag": "fire-lava",
+   "caption": "A hooded female Team Magma member stands before red mountains at sunset."
+  },
+  {
+   "id": "ex4-86",
+   "tag": "multiple-pokemon",
+   "caption": "A blue emblem and two dark orbs against a green swirl."
+  },
+  {
+   "id": "ex4-87",
+   "tag": "mountain-rocks",
+   "caption": "A red mountain emblem and two dark orbs against a hazy background."
+  },
+  {
+   "id": "ex4-87",
+   "tag": "multiple-pokemon",
+   "caption": "A red mountain emblem and two dark orbs against a hazy background."
+  },
+  {
+   "id": "ex4-88",
+   "tag": "multiple-pokemon",
+   "caption": "Two glowing orbs with rainbow bursts of light."
+  },
+  {
+   "id": "ecard2-10",
+   "tag": "fire-lava",
+   "caption": "Entei in a swirl of wind and flames of its mane."
+  },
+  {
+   "id": "ecard2-18",
+   "tag": "flying",
+   "caption": "Jynx dashes down a town street with ice shards flying."
+  },
+  {
+   "id": "ecard2-32",
+   "tag": "flying",
+   "caption": "Scizor charges forward with flying rock debris."
+  },
+  {
+   "id": "ecard2-61",
+   "tag": "city",
+   "caption": "Smoochum sits by a window overlooking a city skyline."
+  },
+  {
+   "id": "ecard2-72",
+   "tag": "flying",
+   "caption": "Cubone stands on rocks with flying bones under a colorful sunset sky."
+  },
+  {
+   "id": "ecard2-73",
+   "tag": "snow-ice",
+   "caption": "Doduo stands on a small ice-blue patch against an orange pattern."
+  },
+  {
+   "id": "ecard2-126",
+   "tag": "multiple-pokemon",
+   "caption": "A cheerful juggler tosses Poké Balls while two kids watch."
+  },
+  {
+   "id": "ecard2-133",
+   "tag": "multiple-pokemon",
+   "caption": "A red-haired man holds two Poké Balls amid pink streaks."
+  },
+  {
+   "id": "ecard2-144",
+   "tag": "flowers",
+   "caption": "A rainbow flower-like energy orb on black."
+  },
+  {
+   "id": "ecard2-145",
+   "tag": "multiple-pokemon",
+   "caption": "Three star-marked orbs glowing in a cloudy light."
+  },
+  {
+   "id": "ecard3-3",
+   "tag": "ruins-building",
+   "caption": "Close-up of a white furry Arcanine with a tiny castle behind."
+  },
+  {
+   "id": "ecard3-7",
+   "tag": "sky-clouds",
+   "caption": "Dewgong rests before beige rocky cliffs and clouds."
+  },
+  {
+   "id": "ecard3-20",
+   "tag": "sky-clouds",
+   "caption": "Several big Magnemite spheres float among debris and clouds."
+  },
+  {
+   "id": "ecard3-20",
+   "tag": "multiple-pokemon",
+   "caption": "Several big Magnemite spheres float among debris and clouds."
+  },
+  {
+   "id": "ecard3-32",
+   "tag": "sky-clouds",
+   "caption": "Umbreon crouches in tall grass before a giant blue moon and clouds."
+  },
+  {
+   "id": "ecard3-54",
+   "tag": "human-present",
+   "caption": "Eevee sits before a yellow wall with stick-figure paintings."
+  },
+  {
+   "id": "ecard3-142",
+   "tag": "multiple-pokemon",
+   "caption": "Two star orbs glowing in a dark beam of light."
+  },
+  {
+   "id": "ex1-4",
+   "tag": "multiple-pokemon",
+   "caption": "Camerupt walks with its two rocky humps."
+  },
+  {
+   "id": "ex1-7",
+   "tag": "flying",
+   "caption": "Gardevoir hovers gracefully against a green background."
+  },
+  {
+   "id": "ex1-80",
+   "tag": "multiple-pokemon",
+   "caption": "A dark energy orb glows with two floating spheres in a swirl."
+  },
+  {
+   "id": "ex1-81",
+   "tag": "multiple-pokemon",
+   "caption": "Three energy orbs float above glowing pools with ripples."
+  },
+  {
+   "id": "ex1-95",
+   "tag": "flowers",
+   "caption": "A rainbow flower-like energy orb on black."
+  },
+  {
+   "id": "ex1-108",
+   "tag": "fire-lava",
+   "caption": "A fire energy orb glowing on an orange background."
+  },
+  {
+   "id": "ex5-16",
+   "tag": "flowers",
+   "caption": "A flower-headed green Pokémon figurine stands on mossy ground."
+  },
+  {
+   "id": "ex5-25",
+   "tag": "sky-clouds",
+   "caption": "A swirly cloud Pokémon amid falling snowflakes on snowy ground."
+  },
+  {
+   "id": "ex5-33",
+   "tag": "multiple-pokemon",
+   "caption": "A three-headed orange bird Pokémon stands in tall grass."
+  },
+  {
+   "id": "ex5-35",
+   "tag": "flowers",
+   "caption": "A sad blue flower Pokémon figurine stands on a dark forest floor."
+  },
+  {
+   "id": "ex5-81",
+   "tag": "sky-clouds",
+   "caption": "A fox Pokémon sniffs grass before rocky hills and clouds."
+  },
+  {
+   "id": "ex5-100",
+   "tag": "flowers",
+   "caption": "A blue Pokémon with a huge red flower on its head."
+  },
+  {
+   "id": "ex6-5",
+   "tag": "multiple-pokemon",
+   "caption": "A palm-tree Pokémon with three heads raises a tail with a spiked club."
+  },
+  {
+   "id": "ex6-21",
+   "tag": "multiple-pokemon",
+   "caption": "A three-headed bird Pokémon runs before a purple stormy sky."
+  },
+  {
+   "id": "ex6-22",
+   "tag": "multiple-pokemon",
+   "caption": "Three mole Pokémon burst from a glowing lava-cracked ground."
+  },
+  {
+   "id": "ex6-27",
+   "tag": "multiple-pokemon",
+   "caption": "Three magnet Pokémon float in a glowing burst of light."
+  },
+  {
+   "id": "ex6-33",
+   "tag": "multiple-pokemon",
+   "caption": "Several pink egg Pokémon with worried faces sit in grass."
+  },
+  {
+   "id": "ex6-62",
+   "tag": "multiple-pokemon",
+   "caption": "A two-headed bird Pokémon races over red rocks under a blue sky."
+  },
+  {
+   "id": "ex6-63",
+   "tag": "sky-clouds",
+   "caption": "A gas ghost Pokémon floats in a glowing pink cloud."
+  },
+  {
+   "id": "ex6-112",
+   "tag": "flowers",
+   "caption": "A big blue Pokémon with a flower on its back opens its mouth."
+  },
+  {
+   "id": "ex7-14",
+   "tag": "night",
+   "caption": "A white Pokémon flies past a rainbow in a starry sky."
+  },
+  {
+   "id": "ex7-39",
+   "tag": "multiple-pokemon",
+   "caption": "Three magnet Pokémon crackle with green lightning."
+  },
+  {
+   "id": "ex7-88",
+   "tag": "multiple-pokemon",
+   "caption": "Two uniformed trainers hold Poké Balls in a dim corridor."
+  },
+  {
+   "id": "ex7-96",
+   "tag": "snow-ice",
+   "caption": "A blue ice bird Pokémon swoops in a dark red starry space."
+  },
+  {
+   "id": "ex7-97",
+   "tag": "fire-lava",
+   "caption": "A lion-like fire Pokémon stands against a green-yellow glow."
+  },
+  {
+   "id": "ex7-107",
+   "tag": "swimming",
+   "caption": "A blue mudfish Pokémon swims through a starry space background."
+  },
+  {
+   "id": "ex7-111",
+   "tag": "multiple-pokemon",
+   "caption": "Two uniformed Team Rocket members pose against a red background."
+  },
+  {
+   "id": "ex8-7",
+   "tag": "night",
+   "caption": "A silver one-eyed ghost Pokémon reaches out with large white hands at night"
+  },
+  {
+   "id": "ex8-30",
+   "tag": "human-present",
+   "caption": "A toy-like gray elephant figure on dirt ground"
+  },
+  {
+   "id": "ex8-51",
+   "tag": "multiple-pokemon",
+   "caption": "A purple gas Pokémon with two heads floats among puffs of smoke"
+  },
+  {
+   "id": "ex8-65",
+   "tag": "flying",
+   "caption": "A yellow sumo Pokémon punches rocks flying across a green field"
+  },
+  {
+   "id": "ex8-69",
+   "tag": "human-present",
+   "caption": "A blue toy-like elephant figure on grass and dirt"
+  },
+  {
+   "id": "ex8-93",
+   "tag": "multiple-pokemon",
+   "caption": "Three star energy orbs glow on a purple background"
+  },
+  {
+   "id": "ex9-13",
+   "tag": "snow-ice",
+   "caption": "A pale masked ice Pokémon grins in misty white haze"
+  },
+  {
+   "id": "ex9-14",
+   "tag": "sky-clouds",
+   "caption": "A red armored Pokémon roars amid clouds and orange glow"
+  },
+  {
+   "id": "ex9-19",
+   "tag": "sky-clouds",
+   "caption": "A gray rhino Pokémon charges through a cloud of dust"
+  },
+  {
+   "id": "ex9-31",
+   "tag": "sky-clouds",
+   "caption": "A sumo Pokémon with a blue belly poses before a dark cloudy sky"
+  },
+  {
+   "id": "ex9-44",
+   "tag": "desert",
+   "caption": "A green cactus Pokémon rolls past orange rocks"
+  },
+  {
+   "id": "ex9-45",
+   "tag": "multiple-pokemon",
+   "caption": "Two brown long-beaked bird Pokémon against a pink feathery background"
+  },
+  {
+   "id": "ex9-78",
+   "tag": "flowers",
+   "caption": "A green berry among purple flowers"
+  },
+  {
+   "id": "ex9-89",
+   "tag": "sky-clouds",
+   "caption": "A star energy symbol glows among colorful clouds"
+  },
+  {
+   "id": "ex9-98",
+   "tag": "snow-ice",
+   "caption": "A crystalline ice golem Pokémon on a dark blue sparkling background"
+  },
+  {
+   "id": "pop2-6",
+   "tag": "flowers",
+   "caption": "A big green flower-backed Pokémon crouches in dense brown foliage"
+  },
+  {
+   "id": "ex10-3",
+   "tag": "flowers",
+   "caption": "Three flower Pokémon dance together among green leaves"
+  },
+  {
+   "id": "ex10-49",
+   "tag": "sky-clouds",
+   "caption": "A green bird Pokémon spreads its wings before cacti and pink clouds"
+  },
+  {
+   "id": "ex10-58",
+   "tag": "flowers",
+   "caption": "A flower Pokémon towers over a small blue Pokémon in a forest"
+  },
+  {
+   "id": "ex10-65",
+   "tag": "multiple-pokemon",
+   "caption": "A rock snake Pokémon rises before two erupting volcanoes"
+  },
+  {
+   "id": "ex10-86",
+   "tag": "multiple-pokemon",
+   "caption": "Two women in headphones and an Ampharos at a radio microphone"
+  },
+  {
+   "id": "ex10-92",
+   "tag": "fire-lava",
+   "caption": "A red crystal with white flame-like wings on a dark background"
+  },
+  {
+   "id": "ex10-98",
+   "tag": "multiple-pokemon",
+   "caption": "Three star energy orbs glow on a purple background"
+  },
+  {
+   "id": "ex10-106",
+   "tag": "flowers",
+   "caption": "A green serpent Pokémon with a red flower on its neck on a starry background"
+  },
+  {
+   "id": "ex10-110",
+   "tag": "fire-lava",
+   "caption": "An orange fire Pokémon roars with a burst of flames"
+  },
+  {
+   "id": "ex11-13",
+   "tag": "sky-clouds",
+   "caption": "Rayquaza coils in the air with glowing yellow lightning and gray clouds."
+  },
+  {
+   "id": "ex11-26",
+   "tag": "sky-clouds",
+   "caption": "Castform in rain form sits on a brick wall under rain clouds."
+  },
+  {
+   "id": "ex11-31",
+   "tag": "ruins-building",
+   "caption": "Sunny Castform with a bright sun, blue sky and small tower."
+  },
+  {
+   "id": "ex11-34",
+   "tag": "ruins-building",
+   "caption": "Castform on a meadow with yellow flowers and a distant tower."
+  },
+  {
+   "id": "ex11-35",
+   "tag": "human-present",
+   "caption": "Ditto figure sitting on mossy ground with a small rock."
+  },
+  {
+   "id": "ex11-36",
+   "tag": "human-present",
+   "caption": "Bulbasaur figure standing on mossy forest floor."
+  },
+  {
+   "id": "ex11-37",
+   "tag": "fire-lava",
+   "caption": "Charmander figure standing on moss with a flame on its tail."
+  },
+  {
+   "id": "ex11-37",
+   "tag": "human-present",
+   "caption": "Charmander figure standing on moss with a flame on its tail."
+  },
+  {
+   "id": "ex11-38",
+   "tag": "human-present",
+   "caption": "Mr. Mime figure sitting on moss beside a rock."
+  },
+  {
+   "id": "ex11-39",
+   "tag": "human-present",
+   "caption": "Pikachu figure standing on mossy ground."
+  },
+  {
+   "id": "ex11-40",
+   "tag": "human-present",
+   "caption": "Squirtle figure on gravel with small green leaves."
+  },
+  {
+   "id": "ex11-44",
+   "tag": "flying",
+   "caption": "Hariyama thrusts its hands forward amid flying leaves."
+  },
+  {
+   "id": "ex11-47",
+   "tag": "flying",
+   "caption": "Gardevoir-like Pokémon with flying petals against sky and river landscape."
+  },
+  {
+   "id": "ex11-51",
+   "tag": "ruins-building",
+   "caption": "Pupitar peers down through green leaves with a dim tower behind."
+  },
+  {
+   "id": "ex11-61",
+   "tag": "fire-lava",
+   "caption": "Charmander figure on moss with a flame on its tail."
+  },
+  {
+   "id": "ex11-61",
+   "tag": "human-present",
+   "caption": "Charmander figure on moss with a flame on its tail."
+  },
+  {
+   "id": "ex11-62",
+   "tag": "human-present",
+   "caption": "Geodude figure flexing its arms on a rock."
+  },
+  {
+   "id": "ex11-63",
+   "tag": "human-present",
+   "caption": "Pikachu figure standing on mossy ground."
+  },
+  {
+   "id": "ex11-64",
+   "tag": "human-present",
+   "caption": "Squirtle figure standing on a bed of smooth stones."
+  },
+  {
+   "id": "ex11-72",
+   "tag": "sky-clouds",
+   "caption": "Koffing figure puffing smoke clouds over a paper model town."
+  },
+  {
+   "id": "ex11-72",
+   "tag": "human-present",
+   "caption": "Koffing figure puffing smoke clouds over a paper model town."
+  },
+  {
+   "id": "ex11-82",
+   "tag": "flowers",
+   "caption": "Sunlit turtle Pokémon with a flower on its shell in a glowing golden scene."
+  },
+  {
+   "id": "ex11-89",
+   "tag": "multiple-pokemon",
+   "caption": "Two Poké Balls spinning against a pink rainbow background."
+  },
+  {
+   "id": "ex12-4",
+   "tag": "forest",
+   "caption": "Delcatty stands on a fallen log in a dark jungle."
+  },
+  {
+   "id": "ex12-8",
+   "tag": "swimming",
+   "caption": "Lapras swims forward against a yellow-blue holo background."
+  },
+  {
+   "id": "ex12-58",
+   "tag": "human-present",
+   "caption": "Magby figure sitting on a brown rock."
+  },
+  {
+   "id": "ex12-61",
+   "tag": "human-present",
+   "caption": "Seedot figure sitting on dry dirt."
+  },
+  {
+   "id": "ex12-69",
+   "tag": "sky-clouds",
+   "caption": "Stylized Wailord breaches from the water amid white clouds and yellow sky."
+  },
+  {
+   "id": "ex12-71",
+   "tag": "human-present",
+   "caption": "Wynaut figure standing on a mound of dirt."
+  },
+  {
+   "id": "pop3-12",
+   "tag": "human-present",
+   "caption": "Mr. Mime figure sitting on mossy ground."
+  },
+  {
+   "id": "ex13-11",
+   "tag": "fire-lava",
+   "caption": "Latias streaks through the air with flames trailing behind."
+  },
+  {
+   "id": "ex13-14",
+   "tag": "sky-clouds",
+   "caption": "Pidgeotto dives with wings wide amid lightning and swirling clouds."
+  },
+  {
+   "id": "ex13-17",
+   "tag": "flowers",
+   "caption": "Vileplume shows its big red flower petals from behind."
+  },
+  {
+   "id": "ex13-57",
+   "tag": "flying",
+   "caption": "Anorith swims or hovers among pink crystals on a green background."
+  },
+  {
+   "id": "ex13-61",
+   "tag": "fire-lava",
+   "caption": "Crawdaunt-like Pokémon lunges amid orange flames and white spray."
+  },
+  {
+   "id": "ex13-82",
+   "tag": "flying",
+   "caption": "Blue flying-type Pokémon with extended fins on a teal swirly background."
+  },
+  {
+   "id": "ex13-88",
+   "tag": "multiple-pokemon",
+   "caption": "Two scientists and a man in a suit with a Raichu in an office."
+  },
+  {
+   "id": "ex13-102",
+   "tag": "fire-lava",
+   "caption": "Red Gyarados roars amid orange flames on a holo background."
+  },
+  {
+   "id": "pop4-17",
+   "tag": "flying",
+   "caption": "Deoxys lunges amid lightning and flying debris under a stormy purple sky."
+  },
+  {
+   "id": "ex14-64",
+   "tag": "fire-lava",
+   "caption": "Squirtle in a colourful burst of splashes, flames and sun."
+  },
+  {
+   "id": "ex14-78",
+   "tag": "multiple-pokemon",
+   "caption": "Two Poke Balls spinning against a pink and blue blur."
+  },
+  {
+   "id": "ex14-80",
+   "tag": "multiple-pokemon",
+   "caption": "Two orange berries with water droplets among green leaves."
+  },
+  {
+   "id": "ex14-88",
+   "tag": "multiple-pokemon",
+   "caption": "Swirling rainbow pattern with lightning behind two glass spheres."
+  },
+  {
+   "id": "ex15-4",
+   "tag": "flowers",
+   "caption": "Meganium curled on a log with a big pink flower and clouds behind."
+  },
+  {
+   "id": "ex15-20",
+   "tag": "cave",
+   "caption": "Mantine gliding through a black-outlined cave-like frame with lightning sparks."
+  },
+  {
+   "id": "ex15-40",
+   "tag": "sky-clouds",
+   "caption": "Swellow flying over a canyon with fiery orange clouds."
+  },
+  {
+   "id": "ex15-50",
+   "tag": "sky-clouds",
+   "caption": "Horsea swimming in rippling blue water under a dark cloud."
+  },
+  {
+   "id": "ex15-87",
+   "tag": "multiple-pokemon",
+   "caption": "Three glass orbs with dark stars in a triangle."
+  },
+  {
+   "id": "ex15-90",
+   "tag": "sky-clouds",
+   "caption": "Altaria flying through fluffy pink clouds above white waves."
+  },
+  {
+   "id": "ex16-1",
+   "tag": "sunset-sunrise",
+   "caption": "Aggron roaring at dusk before dark hills and sparkles."
+  },
+  {
+   "id": "ex16-2",
+   "tag": "sky-clouds",
+   "caption": "Altaria floating on a fluffy cloud against a sparkly dark backdrop."
+  },
+  {
+   "id": "ex16-30",
+   "tag": "sunset-sunrise",
+   "caption": "Glalie hovering in front of dark pine trees at dusk."
+  },
+  {
+   "id": "ex16-60",
+   "tag": "multiple-pokemon",
+   "caption": "Two brown owl-like Pokemon with a large gray hat, in a dim rocky nook."
+  },
+  {
+   "id": "ex16-63",
+   "tag": "sunset-sunrise",
+   "caption": "Slakoth lying upside down in a flowery meadow at dusk."
+  },
+  {
+   "id": "ex16-81",
+   "tag": "ruins-building",
+   "caption": "Smiling man in sunglasses and Hawaiian shirt waving inside a building."
+  },
+  {
+   "id": "ex16-95",
+   "tag": "multiple-pokemon",
+   "caption": "Metagross lunging with another metallic body behind on a dark starry background."
+  },
+  {
+   "id": "ex16-99",
+   "tag": "snow-ice",
+   "caption": "Walrein standing with icy fur on a teal sparkly background."
+  },
+  {
+   "id": "ex16-100",
+   "tag": "fire-lava",
+   "caption": "Flareon with a fluffy flame-like mane on a sparkly background."
+  },
+  {
+   "id": "pop5-8",
+   "tag": "multiple-pokemon",
+   "caption": "Three glass orbs with dark stars against a dark purple background."
+  },
+  {
+   "id": "pop5-10",
+   "tag": "cave",
+   "caption": "Charmander with a flaming tail in a dark cave-like scene with lightning."
+  },
+  {
+   "id": "pop5-13",
+   "tag": "forest",
+   "caption": "Pikachu standing in dark woods with a glow around it."
+  },
+  {
+   "id": "dpp-DP35",
+   "tag": "sky-clouds",
+   "caption": "Porygon-Z floating among clouds in a starry sky."
+  },
+  {
+   "id": "dpp-DP41",
+   "tag": "human-present",
+   "caption": "Toxicroak crouching among ruined fences on a dark starry ground, with a trainer portrait in the corner."
+  },
+  {
+   "id": "dpp-DP42",
+   "tag": "human-present",
+   "caption": "Carnivine hovering over a dark garden, with a trainer portrait in the corner."
+  },
+  {
+   "id": "dpp-DP43",
+   "tag": "human-present",
+   "caption": "Probopass with floating magnets on a black background, with a trainer portrait in the corner."
+  },
+  {
+   "id": "dpp-DP45",
+   "tag": "human-present",
+   "caption": "Charizard breathing fire against a dark starry background, with a trainer portrait in the corner."
+  },
+  {
+   "id": "dpp-DP46",
+   "tag": "human-present",
+   "caption": "Garchomp roaring amid purple swirls, with a trainer portrait in the corner."
+  },
+  {
+   "id": "dpp-DP47",
+   "tag": "human-present",
+   "caption": "Rayquaza roaring with a green body against a magenta background, with a trainer portrait in the corner."
+  },
+  {
+   "id": "dpp-DP55",
+   "tag": "flying",
+   "caption": "Coloured energy orbs flying over a glowing pink grid."
+  },
+  {
+   "id": "dp1-5",
+   "tag": "flying",
+   "caption": "A fiery monkey Pokémon leaps with flames streaming from its head amid flying shards."
+  },
+  {
+   "id": "dp1-40",
+   "tag": "snow-ice",
+   "caption": "A dark ice weasel Pokémon slashes through grass with a blur of motion."
+  },
+  {
+   "id": "dp1-45",
+   "tag": "flowers",
+   "caption": "A pink and yellow blossom Pokémon glows against a red floral-patterned background."
+  },
+  {
+   "id": "dp1-54",
+   "tag": "multiple-pokemon",
+   "caption": "Three linked magnets crackle with lightning against a stormy purple sky and distant peaks."
+  },
+  {
+   "id": "dp1-66",
+   "tag": "multiple-pokemon",
+   "caption": "Two Unown float against a bright yellow and orange background."
+  },
+  {
+   "id": "dp1-71",
+   "tag": "flying",
+   "caption": "A tree-like brown Pokémon tumbles forward with water drops flying off."
+  },
+  {
+   "id": "dp1-79",
+   "tag": "multiple-pokemon",
+   "caption": "A three-bodied bee Pokémon hovers above a sunlit meadow under blue sky."
+  },
+  {
+   "id": "dp1-96",
+   "tag": "flowers",
+   "caption": "A green flower Pokémon holds a red and a blue rose before a pale misty background."
+  },
+  {
+   "id": "dp1-106",
+   "tag": "multiple-pokemon",
+   "caption": "Three glowing energy orbs hover above rippling coloured water."
+  },
+  {
+   "id": "dp1-106",
+   "tag": "flying",
+   "caption": "Three glowing energy orbs hover above rippling coloured water."
+  },
+  {
+   "id": "dp1-107",
+   "tag": "fire-lava",
+   "caption": "A fire energy orb speeds over a neon grid between a bird and a monkey Pokémon."
+  },
+  {
+   "id": "dp1-109",
+   "tag": "fire-lava",
+   "caption": "A red capsule floats in a burst of orange flames and rays."
+  },
+  {
+   "id": "dp1-121",
+   "tag": "flying",
+   "caption": "A fiery monkey Pokémon flies forward trailing flames against a starry background."
+  },
+  {
+   "id": "dp2-4",
+   "tag": "multiple-pokemon",
+   "caption": "A small blue Pokémon floats with two tiny companions-like tails against a teal sparkly background."
+  },
+  {
+   "id": "dp2-5",
+   "tag": "flowers",
+   "caption": "A pink egg-carrying Pokémon floats near a tree trunk with blossoms behind."
+  },
+  {
+   "id": "dp2-13",
+   "tag": "flowers",
+   "caption": "A green Pokémon with a large pink flower around its neck stands on a glittering background."
+  },
+  {
+   "id": "dp2-18",
+   "tag": "multiple-pokemon",
+   "caption": "A yellow and blue Pokémon floats with two small companions on a pink swirl background."
+  },
+  {
+   "id": "dp2-19",
+   "tag": "snow-ice",
+   "caption": "A white and black snow Pokémon stands in a burst of pale purple light rays."
+  },
+  {
+   "id": "dp2-46",
+   "tag": "multiple-pokemon",
+   "caption": "A two-headed bird Pokémon sprints along with motion streaks behind it."
+  },
+  {
+   "id": "dp2-54",
+   "tag": "sunset-sunrise",
+   "caption": "A duck-billed fire Pokémon sits beside a lake at dusk with a flame at its tail."
+  },
+  {
+   "id": "dp2-76",
+   "tag": "snow-ice",
+   "caption": "A pink round Pokémon glows against a bright blue background with snow-like sparkles."
+  },
+  {
+   "id": "dp2-80",
+   "tag": "multiple-pokemon",
+   "caption": "A two-headed bird Pokémon perches on a rock above a canyon."
+  },
+  {
+   "id": "dp2-110",
+   "tag": "sunset-sunrise",
+   "caption": "A green and black Dusk Ball sits in a purple swirl."
+  },
+  {
+   "id": "dp2-115",
+   "tag": "multiple-pokemon",
+   "caption": "Two people in white Team Galactic uniforms stand side by side against a blue sky."
+  },
+  {
+   "id": "dp2-123",
+   "tag": "fire-lava",
+   "caption": "A red fire Pokémon thrusts its cannon arm against a dark starry background."
+  },
+  {
+   "id": "dp2-124",
+   "tag": "human-present",
+   "caption": "Four legendary Pokémon float on a dark starry background in a trainer card illustration."
+  },
+  {
+   "id": "dp3-17",
+   "tag": "flowers",
+   "caption": "A green flower Pokémon holds a red bloom under a starry night sky."
+  },
+  {
+   "id": "dp3-20",
+   "tag": "flowers",
+   "caption": "A large blue-green toad Pokémon with a flower on its back sits in glowing green light."
+  },
+  {
+   "id": "dp3-24",
+   "tag": "forest",
+   "caption": "Three mole Pokémon heads poke out of a dirt mound on a forest path."
+  },
+  {
+   "id": "dp3-24",
+   "tag": "multiple-pokemon",
+   "caption": "Three mole Pokémon heads poke out of a dirt mound on a forest path."
+  },
+  {
+   "id": "dp3-56",
+   "tag": "ruins-building",
+   "caption": "A purple sludge Pokémon oozes in front of a glass-windowed building."
+  },
+  {
+   "id": "dp3-62",
+   "tag": "flowers",
+   "caption": "A flower Pokémon holds red and blue roses in snow with mountains behind."
+  },
+  {
+   "id": "dp3-121",
+   "tag": "fire-lava",
+   "caption": "A red capsule floats in a burst of orange flames and rays."
+  },
+  {
+   "id": "dp4-103",
+   "tag": "multiple-pokemon",
+   "caption": "Cresselia and another Pokemon in a burst of sparkling light"
+  },
+  {
+   "id": "dp5-5",
+   "tag": "sky-clouds",
+   "caption": "Glaceon crouching in a cloud of frost"
+  },
+  {
+   "id": "dp5-30",
+   "tag": "sunset-sunrise",
+   "caption": "Torterra walking with a tree on its back at dusk"
+  },
+  {
+   "id": "dp5-61",
+   "tag": "multiple-pokemon",
+   "caption": "Drifloon holding two heart balloons above a town plaza"
+  },
+  {
+   "id": "dp5-80",
+   "tag": "sunset-sunrise",
+   "caption": "A Dusk Ball in a purple swirl"
+  },
+  {
+   "id": "dp5-81",
+   "tag": "fire-lava",
+   "caption": "Fire, water and grass energy orbs floating over rippling water"
+  },
+  {
+   "id": "dp5-98",
+   "tag": "snow-ice",
+   "caption": "Glaceon breathing icy mist against a red burst"
+  },
+  {
+   "id": "dp6-6",
+   "tag": "fire-lava",
+   "caption": "Heatran crawling with flames on its legs"
+  },
+  {
+   "id": "dp6-17",
+   "tag": "night",
+   "caption": "Yanmega flying with long wings in a sparkling night"
+  },
+  {
+   "id": "dp6-20",
+   "tag": "flowers",
+   "caption": "Bellossom dancing amid pink and orange blossoms of light"
+  },
+  {
+   "id": "dp6-41",
+   "tag": "sky-clouds",
+   "caption": "Torkoal crouching in a rocky hollow with smoke clouds"
+  },
+  {
+   "id": "dp6-140",
+   "tag": "multiple-pokemon",
+   "caption": "Azelf hovering with another Pokemon in a burst of light"
+  },
+  {
+   "id": "pop8-9",
+   "tag": "night",
+   "caption": "A robotic arm working on a Poke Ball in a night lab"
+  },
+  {
+   "id": "dp7-14",
+   "tag": "flowers",
+   "caption": "A cherry blossom Pokémon smiles surrounded by drifting petals in bright colors."
+  },
+  {
+   "id": "dp7-17",
+   "tag": "ruins-building",
+   "caption": "A curled-up ghost Pokémon against a purple building-like pattern."
+  },
+  {
+   "id": "dp7-56",
+   "tag": "snow-ice",
+   "caption": "Two cherry Pokémon hang from a leaf with rays and icy peaks behind."
+  },
+  {
+   "id": "dp7-57",
+   "tag": "multiple-pokemon",
+   "caption": "Three-bodied bee Pokémon with small wings against a green and blue streaked background."
+  },
+  {
+   "id": "dp7-59",
+   "tag": "fire-lava",
+   "caption": "A skull-masked ghost Pokémon floats through a stormy night with purple flames."
+  },
+  {
+   "id": "dp7-62",
+   "tag": "sky-clouds",
+   "caption": "A grinning Gastly floats in purple smoky clouds."
+  },
+  {
+   "id": "dp7-76",
+   "tag": "fire-lava",
+   "caption": "A purple spiky Pokémon crouches against a yellow flame-like background."
+  },
+  {
+   "id": "dp7-84",
+   "tag": "fire-lava",
+   "caption": "A Starly and a Chimchar beside a red flame orb on a neon grid."
+  },
+  {
+   "id": "dp7-85",
+   "tag": "flying",
+   "caption": "A Great Ball flies with sparkling trails on a green background."
+  },
+  {
+   "id": "dp7-101",
+   "tag": "fire-lava",
+   "caption": "A Charmander stands holding its tail flame against a dark green background."
+  },
+  {
+   "id": "pl1-1",
+   "tag": "sky-clouds",
+   "caption": "A yellow Ampharos leaps through sparkling clouds and dark air."
+  },
+  {
+   "id": "pl1-3",
+   "tag": "fire-lava",
+   "caption": "A red fire bird Pokémon and a clawed steel Pokémon clash in a dark blue scene."
+  },
+  {
+   "id": "pl1-7",
+   "tag": "human-present",
+   "caption": "A dark blue Dialga in a lightning storm with a man glaring in the corner."
+  },
+  {
+   "id": "pl1-12",
+   "tag": "human-present",
+   "caption": "A dark Dialga with glowing pink lightning and a man in the corner."
+  },
+  {
+   "id": "pl1-15",
+   "tag": "night",
+   "caption": "A sky-form Shaymin flies through a purple starry sky."
+  },
+  {
+   "id": "pl1-17",
+   "tag": "human-present",
+   "caption": "A Weavile leaps across a rocky bridge under a full moon with a man in the corner."
+  },
+  {
+   "id": "pl1-30",
+   "tag": "human-present",
+   "caption": "A Gyarados roars in a stormy night sea with a building on shore and a man in the corner."
+  },
+  {
+   "id": "pl1-40",
+   "tag": "human-present",
+   "caption": "A blue Toxicroak crouches on dark ground with a man's hair at the corner."
+  },
+  {
+   "id": "pl1-41",
+   "tag": "human-present",
+   "caption": "A bell Pokémon floats at night by ruined pillars with a girl in the corner."
+  },
+  {
+   "id": "pl1-47",
+   "tag": "human-present",
+   "caption": "A Crobat flies in a dim room with crates and a man in the corner."
+  },
+  {
+   "id": "pl1-50",
+   "tag": "human-present",
+   "caption": "A Houndoom snarls on a dark hillside at night with a man at the corner."
+  },
+  {
+   "id": "pl1-64",
+   "tag": "flying",
+   "caption": "A white Vigoroth leaps with flying stones among autumn trees."
+  },
+  {
+   "id": "pl1-70",
+   "tag": "fire-lava",
+   "caption": "A Chimchar leaps with a flame beneath autumn trees."
+  },
+  {
+   "id": "pl1-77",
+   "tag": "human-present",
+   "caption": "A blue Honchkrow perches among ruins and a satellite dish with a man at the corner."
+  },
+  {
+   "id": "pl1-80",
+   "tag": "human-present",
+   "caption": "A pink Lickitung figure sticks out its long tongue on dark ground."
+  },
+  {
+   "id": "pl1-82",
+   "tag": "human-present",
+   "caption": "A small Mareep figure sits on rock with an orange orb above."
+  },
+  {
+   "id": "pl1-88",
+   "tag": "human-present",
+   "caption": "A Glameow leaps in a messy room with a red-haired girl at the corner."
+  },
+  {
+   "id": "pl1-94",
+   "tag": "human-present",
+   "caption": "A Skuntank prowls rocks under a full moon with a girl at the corner."
+  },
+  {
+   "id": "pl1-103",
+   "tag": "human-present",
+   "caption": "A red Wurmple figure crawls on a dark green leaf."
+  },
+  {
+   "id": "pl1-106",
+   "tag": "multiple-pokemon",
+   "caption": "A metal Galactic headquarters room with a glowing floor circle and two machines."
+  },
+  {
+   "id": "pl1-109",
+   "tag": "desert",
+   "caption": "A detective in a trench coat stands in a desert-colored plain with red towers."
+  },
+  {
+   "id": "pl1-110",
+   "tag": "multiple-pokemon",
+   "caption": "Two orange berries among leaves above a sparkling pond."
+  },
+  {
+   "id": "pl1-121",
+   "tag": "flowers",
+   "caption": "A glowing rainbow-colored flower-like pattern on a black background."
+  },
+  {
+   "id": "pl1-122",
+   "tag": "human-present",
+   "caption": "A dark Dialga roars with a man at the corner."
+  },
+  {
+   "id": "pl1-125",
+   "tag": "human-present",
+   "caption": "A dark Palkia in pink and black with a man at the corner."
+  },
+  {
+   "id": "pl1-126",
+   "tag": "flowers",
+   "caption": "A close-up of a white Shaymin with a red flower in a sparkling swirl."
+  },
+  {
+   "id": "pl2-2",
+   "tag": "human-present",
+   "caption": "A gray Rhyperior hunches in a dark arena with a pink-haired man at the corner."
+  },
+  {
+   "id": "pl2-3",
+   "tag": "human-present",
+   "caption": "A white Darkrai flies amid lightning over a dark city at night with a man at the corner."
+  },
+  {
+   "id": "pl2-4",
+   "tag": "human-present",
+   "caption": "A Buizel leaps over a blue grid floor with a white-haired man at the corner."
+  },
+  {
+   "id": "pl2-6",
+   "tag": "human-present",
+   "caption": "A white Froslass drifts in an icy blue haze with a woman at the corner."
+  },
+  {
+   "id": "pl2-8",
+   "tag": "human-present",
+   "caption": "A Lucario leaps through a scaffold with a pink-haired girl at the corner."
+  },
+  {
+   "id": "pl2-9",
+   "tag": "human-present",
+   "caption": "A Luxray leaps past a pagoda-like tower with a blond man at the corner."
+  },
+  {
+   "id": "pl2-10",
+   "tag": "human-present",
+   "caption": "A purple Mismagius floats in a stone hall with a pink-haired girl at the corner."
+  },
+  {
+   "id": "pl2-11",
+   "tag": "human-present",
+   "caption": "A blue Rampardos roars in an arena with a man in a red helmet at the corner."
+  },
+  {
+   "id": "pl2-12",
+   "tag": "human-present",
+   "caption": "A Roserade holds red and blue berries with an orange-haired girl at the corner."
+  },
+  {
+   "id": "pl2-16",
+   "tag": "human-present",
+   "caption": "A large bell Pokémon hangs in a room with a man in glasses at the corner."
+  },
+  {
+   "id": "pl2-17",
+   "tag": "human-present",
+   "caption": "A pink Drapion lunges across a floor with a green-haired man at the corner."
+  },
+  {
+   "id": "pl2-18",
+   "tag": "human-present",
+   "caption": "An Espeon leaps before a blue grid with a man in glasses at the corner."
+  },
+  {
+   "id": "pl2-20",
+   "tag": "human-present",
+   "caption": "A Gallade slices with green blades before a blue grid with a man at the corner."
+  },
+  {
+   "id": "pl2-23",
+   "tag": "human-present",
+   "caption": "A Golem crouches in a burst of golden light with an old man at the corner."
+  },
+  {
+   "id": "pl2-24",
+   "tag": "human-present",
+   "caption": "A blue Heracross lunges with a green-haired man at the corner."
+  },
+  {
+   "id": "pl2-27",
+   "tag": "human-present",
+   "caption": "A Mamoswine charges in a cold blue setting with a girl at the corner."
+  },
+  {
+   "id": "pl2-28",
+   "tag": "human-present",
+   "caption": "A Mr. Mime presses invisible walls on a stage with a man at the corner."
+  },
+  {
+   "id": "pl2-31",
+   "tag": "human-present",
+   "caption": "A Raichu dashes in front of a tower with a blond man at the corner."
+  },
+  {
+   "id": "pl2-32",
+   "tag": "human-present",
+   "caption": "A Rhyperior charges with a gray-haired man at the corner."
+  },
+  {
+   "id": "pl2-35",
+   "tag": "human-present",
+   "caption": "A Vespiquen perches on its honeycomb while a green-haired man is at the corner."
+  },
+  {
+   "id": "pl2-37",
+   "tag": "human-present",
+   "caption": "A Yanmega flies with a green-haired man at the corner."
+  },
+  {
+   "id": "pl2-38",
+   "tag": "human-present",
+   "caption": "An Alakazam holds spoons with a man in glasses at the corner."
+  },
+  {
+   "id": "pl2-39",
+   "tag": "human-present",
+   "caption": "An Electrode glows before buildings with lit windows at night with a man at the corner."
+  },
+  {
+   "id": "pl2-40",
+   "tag": "human-present",
+   "caption": "A purple Gengar grins among stone arches with a pink-haired girl at the corner."
+  },
+  {
+   "id": "pl2-42",
+   "tag": "sky-clouds",
+   "caption": "A Hippowdon roars in a dust cloud with a gray-haired man at the corner."
+  },
+  {
+   "id": "pl2-42",
+   "tag": "human-present",
+   "caption": "A Hippowdon roars in a dust cloud with a gray-haired man at the corner."
+  },
+  {
+   "id": "pl2-43",
+   "tag": "human-present",
+   "caption": "An Entei strikes amid flames with a red-haired person at the corner."
+  },
+  {
+   "id": "pl2-46",
+   "tag": "human-present",
+   "caption": "A Machamp flexes with a pink-haired girl at the corner."
+  },
+  {
+   "id": "pl2-47",
+   "tag": "human-present",
+   "caption": "A Rapidash rears in a blaze of flames with a red-haired person at the corner."
+  },
+  {
+   "id": "pl2-48",
+   "tag": "human-present",
+   "caption": "A red Scizor strikes with a green-haired man at the corner."
+  },
+  {
+   "id": "pl2-51",
+   "tag": "human-present",
+   "caption": "A blue Steelix glows with a red-haired man at the corner."
+  },
+  {
+   "id": "pl2-54",
+   "tag": "human-present",
+   "caption": "A blue Wailmer spouts water in a sandy golden haze with an old man at the corner."
+  },
+  {
+   "id": "pl2-55",
+   "tag": "human-present",
+   "caption": "A purple Aerodactyl screeches with a man in a red helmet at the corner."
+  },
+  {
+   "id": "pl2-56",
+   "tag": "human-present",
+   "caption": "A purple Ambipom holds a Pokémon-like tail hand aloft on rocky ground with a blue-haired person at the corner."
+  },
+  {
+   "id": "pl2-60",
+   "tag": "human-present",
+   "caption": "A fluffy fox Pokémon dashes with flames behind and a red-haired person at the corner."
+  },
+  {
+   "id": "pl2-61",
+   "tag": "human-present",
+   "caption": "A purple spiky Pokémon breaks out of a rocky hole with a teal-haired person at the corner."
+  },
+  {
+   "id": "pl2-62",
+   "tag": "human-present",
+   "caption": "A Gliscor glides with a gray-haired man at the corner."
+  },
+  {
+   "id": "pl2-65",
+   "tag": "human-present",
+   "caption": "A Houndoom snarls in front of flames with a red-haired person at the corner."
+  },
+  {
+   "id": "pl2-76",
+   "tag": "human-present",
+   "caption": "A blue Quagsire dives with a white-haired man at the corner."
+  },
+  {
+   "id": "pl2-85",
+   "tag": "human-present",
+   "caption": "A Turtwig peeks over a fence with flowers and a girl at the corner."
+  },
+  {
+   "id": "pl2-87",
+   "tag": "cave",
+   "caption": "A Weezing with two heads in a smoky cave-like setting."
+  },
+  {
+   "id": "pl2-87",
+   "tag": "multiple-pokemon",
+   "caption": "A Weezing with two heads in a smoky cave-like setting."
+  },
+  {
+   "id": "pl2-103",
+   "tag": "human-present",
+   "caption": "An Alakazam holds spoons in a dark starry setting with a man in glasses at the corner."
+  },
+  {
+   "id": "pl2-104",
+   "tag": "human-present",
+   "caption": "A Floatzel twists in a blue star-filled scene with a white-haired man at the corner."
+  },
+  {
+   "id": "pl2-106",
+   "tag": "human-present",
+   "caption": "A green Gallade strikes in a starry purple scene with a man in glasses at the corner."
+  },
+  {
+   "id": "pl2-108",
+   "tag": "human-present",
+   "caption": "A fiery Infernape springs forward with a red-haired person at the corner."
+  },
+  {
+   "id": "pl2-109",
+   "tag": "human-present",
+   "caption": "A black and blue Luxray leaps in a starry purple scene with a blond man at the corner."
+  },
+  {
+   "id": "pl2-110",
+   "tag": "human-present",
+   "caption": "A purple Mismagius swoops in a sparkling blue scene with a girl at the corner."
+  },
+  {
+   "id": "bw1-20",
+   "tag": "flying",
+   "caption": "Emboar stands amid flying embers and fire on a dark red background."
+  },
+  {
+   "id": "bw1-53",
+   "tag": "flying",
+   "caption": "Whirlipede rolls past a rocky cliff with flying debris under blue sky."
+  },
+  {
+   "id": "bw1-92",
+   "tag": "multiple-pokemon",
+   "caption": "Two energy orbs with cables glow on a red background."
+  },
+  {
+   "id": "bw1-93",
+   "tag": "flying",
+   "caption": "A glowing energy orb hovers above a device on a tiled floor."
+  },
+  {
+   "id": "bwp-BW06",
+   "tag": "night",
+   "caption": "Snivy glides through a sparkling night-like tangle of vines and leaves."
+  },
+  {
+   "id": "bwp-BW41",
+   "tag": "sky-clouds",
+   "caption": "Thundurus hovers on a storm cloud with lightning and dark orbs."
+  },
+  {
+   "id": "bwp-BW42",
+   "tag": "sky-clouds",
+   "caption": "Tornadus rides a white cloud with swirling winds."
+  },
+  {
+   "id": "bwp-BW62",
+   "tag": "multiple-pokemon",
+   "caption": "Kyurem and another Pokemon clash amid shards of light."
+  },
+  {
+   "id": "bwp-BW63",
+   "tag": "fire-lava",
+   "caption": "A dragon and Pokemon collide in flames and sparkling ice."
+  },
+  {
+   "id": "bwp-BW85",
+   "tag": "flying",
+   "caption": "Lucario smashes a red house with flying debris beside a grassy hill."
+  },
+  {
+   "id": "bw2-19",
+   "tag": "fire-lava",
+   "caption": "Simisear dances on a dirt path in a forest with small flames above its head."
+  },
+  {
+   "id": "bw2-30",
+   "tag": "flying",
+   "caption": "Beartic roars among flying shards of ice."
+  },
+  {
+   "id": "bw2-31",
+   "tag": "mountain-rocks",
+   "caption": "Beartic walks across a snowy mountain in a blizzard."
+  },
+  {
+   "id": "bw2-33",
+   "tag": "flowers",
+   "caption": "Joltik crawls among large leaves and fluffy flower heads."
+  },
+  {
+   "id": "bw2-35",
+   "tag": "sky-clouds",
+   "caption": "Thundurus hovers on a cloud with spiked orbs on a tiled background."
+  },
+  {
+   "id": "bw2-39",
+   "tag": "flying",
+   "caption": "Whirlipede rolls past a crashing wave with flying rock debris."
+  },
+  {
+   "id": "bw2-59",
+   "tag": "flying",
+   "caption": "Sawk chops flying logs on a dirt path by boulders and a waterfall."
+  },
+  {
+   "id": "bw2-62",
+   "tag": "flying",
+   "caption": "Krokorok bursts through the ground with flying debris on a yellow background."
+  },
+  {
+   "id": "bw2-89",
+   "tag": "sky-clouds",
+   "caption": "Tornadus rides a white cloud with a swirling tail on a tiled background."
+  },
+  {
+   "id": "bw2-98",
+   "tag": "sky-clouds",
+   "caption": "Tornadus crosses its arms amid swirling grey clouds."
+  },
+  {
+   "id": "pl3-22",
+   "tag": "flying",
+   "caption": "Claydol hovers in a sandy rocky landscape."
+  },
+  {
+   "id": "pl3-32",
+   "tag": "sky-clouds",
+   "caption": "Lunatone floats before clouds in a starry night sky."
+  },
+  {
+   "id": "pl3-138",
+   "tag": "multiple-pokemon",
+   "caption": "Three teleportation machines glow inside a metal room."
+  },
+  {
+   "id": "pl4-16",
+   "tag": "flying",
+   "caption": "Gengar hovers over rippling water in a forest."
+  },
+  {
+   "id": "pl4-58",
+   "tag": "ruins-building",
+   "caption": "Burmy hangs before a red-roofed city building."
+  },
+  {
+   "id": "hgss1-116",
+   "tag": "fire-lava",
+   "caption": "Fire Energy in building, sunset, flight."
+  },
+  {
+   "id": "bw3-27",
+   "tag": "sky-clouds",
+   "caption": "Vanillite floats amid snow and icy clouds."
+  },
+  {
+   "id": "bw4-31",
+   "tag": "snow-ice",
+   "caption": "Vanillite poses outside an ice cream shop beside a child."
+  },
+  {
+   "id": "bw4-84",
+   "tag": "flying",
+   "caption": "Minccino leaps through pink geometric shapes and flying debris."
+  },
+  {
+   "id": "bw4-92",
+   "tag": "multiple-pokemon",
+   "caption": "Two pale energy spheres glow against a dark tiled background."
+  },
+  {
+   "id": "bw5-12",
+   "tag": "ruins-building",
+   "caption": "Flareon stands on a wooden platform inside a warm building."
+  },
+  {
+   "id": "bw5-35",
+   "tag": "flying",
+   "caption": "Ducklett flaps along a wooden floor with feathers flying."
+  },
+  {
+   "id": "bw5-49",
+   "tag": "sky-clouds",
+   "caption": "Slowking stands beside a lighthouse under moonlit clouds."
+  },
+  {
+   "id": "bw5-51",
+   "tag": "ruins-building",
+   "caption": "Yamask floats beneath stars with a distant tower behind."
+  },
+  {
+   "id": "bw5-61",
+   "tag": "sky-clouds",
+   "caption": "Umbreon leaps beneath a crescent moon through storm clouds."
+  },
+  {
+   "id": "bw5-67",
+   "tag": "flying",
+   "caption": "Scraggy kicks amid flying rocks in a canyon."
+  },
+  {
+   "id": "bw6-19",
+   "tag": "ruins-building",
+   "caption": "Ninetales stands on green tiles inside a dim building."
+  },
+  {
+   "id": "bw6-60",
+   "tag": "ruins-building",
+   "caption": "Cubone runs across a reflective floor inside a bright building."
+  },
+  {
+   "id": "bw6-98",
+   "tag": "snow-ice",
+   "caption": "Hydreigon flies through a swirling icy-blue vortex."
+  },
+  {
+   "id": "bw7-131",
+   "tag": "flying",
+   "caption": "A Poké Ball flies through white light against black rings."
+  },
+  {
+   "id": "bw7-135",
+   "tag": "multiple-pokemon",
+   "caption": "Several Poké Balls sit inside glowing switching capsules."
+  },
+  {
+   "id": "bw8-125",
+   "tag": "multiple-pokemon",
+   "caption": "Two uniformed people stand outside an industrial building."
+  },
+  {
+   "id": "bw9-103",
+   "tag": "multiple-pokemon",
+   "caption": "Three mechanical energy capsules spin through bright light."
+  },
+  {
+   "id": "bw10-80",
+   "tag": "multiple-pokemon",
+   "caption": "Two energy capsules swing through red light."
+  },
+  {
+   "id": "xyp-XY102",
+   "tag": "snow-ice",
+   "caption": "Aurorus fills the frame amid icy cosmic light."
+  },
+  {
+   "id": "xyp-XY45",
+   "tag": "flying",
+   "caption": "Gallade strikes through flying rocks and green light."
+  },
+  {
+   "id": "bw11-112",
+   "tag": "multiple-pokemon",
+   "caption": "Two mechanical devices transfer a glowing energy orb."
+  },
+  {
+   "id": "bw11-113",
+   "tag": "multiple-pokemon",
+   "caption": "Two white energy orbs float against a dark grid."
+  },
+  {
+   "id": "bw11-114",
+   "tag": "human-present",
+   "caption": "Reshiram appears as a golden embossed figure."
+  },
+  {
+   "id": "bw11-115",
+   "tag": "human-present",
+   "caption": "Zekrom appears as a golden embossed figure."
+  },
+  {
+   "id": "xy0-35",
+   "tag": "flying",
+   "caption": "A red and white ball flies through golden light."
+  },
+  {
+   "id": "xy1-123",
+   "tag": "human-present",
+   "caption": "Professor's Letter appears."
+  },
+  {
+   "id": "xy1-133",
+   "tag": "fire-lava",
+   "caption": "Fire Energy appears."
+  },
+  {
+   "id": "sv01-005",
+   "tag": "desert",
+   "caption": "A cactus Pokémon in front of a colorful house with flowers."
+  },
+  {
+   "id": "sv01-006",
+   "tag": "desert",
+   "caption": "A scarecrow Pokémon beside glowing green light among cacti."
+  },
+  {
+   "id": "sv01-013",
+   "tag": "grassland-field",
+   "caption": "A green cat Pokémon walking in a flowery meadow."
+  },
+  {
+   "id": "sv01-015",
+   "tag": "flowers",
+   "caption": "A masked cat Pokémon leaping with a pink flower in a sparkling scene."
+  },
+  {
+   "id": "sv01-029",
+   "tag": "multiple-pokemon",
+   "caption": "A two-headed pepper Pokémon breathing fire in a dry landscape."
+  },
+  {
+   "id": "sv01-059",
+   "tag": "forest",
+   "caption": "A white whale-like Pokémon in a snowy forest."
+  },
+  {
+   "id": "sv01-080",
+   "tag": "sky-clouds",
+   "caption": "Miraidon stands amid dark storm clouds and lightning bolts"
+  },
+  {
+   "id": "sv01-084",
+   "tag": "ruins-building",
+   "caption": "Ralts stands before a grand castle-like city building"
+  },
+  {
+   "id": "sv01-087",
+   "tag": "city",
+   "caption": "Shuppet floats by a glowing lantern on a dark street"
+  },
+  {
+   "id": "sv01-096",
+   "tag": "flying",
+   "caption": "Klefki hovers among keys in a room with wings of light"
+  },
+  {
+   "id": "sv01-108",
+   "tag": "flying",
+   "caption": "Primeape throws a powerful punch with flying debris"
+  },
+  {
+   "id": "sv01-120",
+   "tag": "desert",
+   "caption": "Sandaconda coils inside a rocky cave near a cactus"
+  },
+  {
+   "id": "sv01-123",
+   "tag": "sky-clouds",
+   "caption": "Great Tusk charges in a cloud of dust"
+  },
+  {
+   "id": "sv01-126",
+   "tag": "ruins-building",
+   "caption": "Grimer oozes along a path beside a blue building"
+  },
+  {
+   "id": "sv01-129",
+   "tag": "flying",
+   "caption": "Spiritomb hovers in a snowy forest"
+  },
+  {
+   "id": "sv01-133",
+   "tag": "sky-clouds",
+   "caption": "Bisharp stands in a windswept rainy landscape under storm clouds"
+  },
+  {
+   "id": "sv01-141",
+   "tag": "flying",
+   "caption": "Varoom hovers over rubble beneath a golden sky and cliffs"
+  },
+  {
+   "id": "sv01-146",
+   "tag": "flying",
+   "caption": "Zangoose claws forward with sparks flying"
+  },
+  {
+   "id": "sv01-149",
+   "tag": "ruins-building",
+   "caption": "Staravia soars past a tower over a town"
+  },
+  {
+   "id": "sv01-166",
+   "tag": "ruins-building",
+   "caption": "Arven stands with a big backpack before a tower and sky"
+  },
+  {
+   "id": "sv01-172",
+   "tag": "fire-lava",
+   "caption": "A fire orb hovers above a device in blue swirling light"
+  },
+  {
+   "id": "sv01-172",
+   "tag": "flying",
+   "caption": "A fire orb hovers above a device in blue swirling light"
+  },
+  {
+   "id": "sv01-173",
+   "tag": "multiple-pokemon",
+   "caption": "Pipes move a lightning orb between two lamps"
+  },
+  {
+   "id": "sv01-177",
+   "tag": "ruins-building",
+   "caption": "A woman stands on a bridge before rocky hills"
+  },
+  {
+   "id": "sv01-183",
+   "tag": "ruins-building",
+   "caption": "A girl in a hoodie stands by stairs outside a building"
+  },
+  {
+   "id": "sv01-194",
+   "tag": "multiple-pokemon",
+   "caption": "Two balls and a device float in blue light streaks"
+  },
+  {
+   "id": "sv01-195",
+   "tag": "multiple-pokemon",
+   "caption": "Two grinning young people in helmets pose by a wall"
+  },
+  {
+   "id": "sv01-202",
+   "tag": "city",
+   "caption": "Scovillain breathes fire in a busy food street"
+  },
+  {
+   "id": "sv01-202",
+   "tag": "food-visible",
+   "caption": "Scovillain breathes fire in a busy food street"
+  },
+  {
+   "id": "sv01-242",
+   "tag": "multiple-pokemon",
+   "caption": "Two Team Star grunts pose in helmets"
+  },
+  {
+   "id": "swsh1-7",
+   "tag": "desert",
+   "caption": "A cactus Pokémon with big pink flowers under a colorful sky."
+  },
+  {
+   "id": "swsh1-64",
+   "tag": "forest",
+   "caption": "A white moth Pokémon flying in a snowy night forest."
+  },
+  {
+   "id": "swsh1-78",
+   "tag": "multiple-pokemon",
+   "caption": "A small two-toned Pokémon eating a seed near a rock wall."
+  },
+  {
+   "id": "swsh1-106",
+   "tag": "flying",
+   "caption": "A draft horse Pokémon charging through flying rocks."
+  },
+  {
+   "id": "swsh1-123",
+   "tag": "flying",
+   "caption": "A blue toxic frog Pokémon striking amid flying debris."
+  },
+  {
+   "id": "swsh1-125",
+   "tag": "ruins-building",
+   "caption": "A fox Pokémon and a companion sneaking by a lit building at dusk."
+  },
+  {
+   "id": "swsh1-125",
+   "tag": "sunset-sunrise",
+   "caption": "A fox Pokémon and a companion sneaking by a lit building at dusk."
+  },
+  {
+   "id": "swsh1-141",
+   "tag": "sleeping",
+   "caption": "A sleeping Snorlax with spiky armor in a swirl of leaves."
+  },
+  {
+   "id": "swsh1-160",
+   "tag": "multiple-pokemon",
+   "caption": "Two energy orbs linked by a cable in a dark tunnel."
+  },
+  {
+   "id": "swsh1-178",
+   "tag": "ruins-building",
+   "caption": "An old professor standing before a large house with trees."
+  },
+  {
+   "id": "swsh1-183",
+   "tag": "multiple-pokemon",
+   "caption": "A Poké Ball capsule machine linked to another on a striped floor."
+  },
+  {
+   "id": "swsh1-184",
+   "tag": "multiple-pokemon",
+   "caption": "Two pink-masked gang members posing on a city street."
+  },
+  {
+   "id": "swsh1-190",
+   "tag": "multiple-pokemon",
+   "caption": "A cheerful two-toned hamster Pokémon on a bright blue background."
+  },
+  {
+   "id": "swsh10.5-078",
+   "tag": "human-present",
+   "caption": "Professor's Research appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh10.5-084",
+   "tag": "human-present",
+   "caption": "Professor's Research appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh11-163",
+   "tag": "ruins-building",
+   "caption": "Mirage Gate appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh12.5-153",
+   "tag": "fire-lava",
+   "caption": "Fire Energy appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh12-156",
+   "tag": "forest",
+   "caption": "Forest Seal Stone appears among rocky mountains."
+  },
+  {
+   "id": "swsh3.5-66",
+   "tag": "food-visible",
+   "caption": "Suspicious Food Tin appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh3-174",
+   "tag": "fire-lava",
+   "caption": "Heat Fire Energy appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh6-138",
+   "tag": "fire-lava",
+   "caption": "Fire-Resistant Gloves appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh6-163",
+   "tag": "snow-ice",
+   "caption": "Ice Rider Calyrex V appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh6-202",
+   "tag": "snow-ice",
+   "caption": "Ice Rider Calyrex VMAX appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh6-203",
+   "tag": "snow-ice",
+   "caption": "Ice Rider Calyrex VMAX appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh7-150",
+   "tag": "snow-ice",
+   "caption": "Lucky Ice Pop appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh7-153",
+   "tag": "flying",
+   "caption": "Rapid Strike Scroll of the Flying Dragon appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh7-159",
+   "tag": "snow-ice",
+   "caption": "Snow Leaf Badge appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh7-230",
+   "tag": "cave",
+   "caption": "Crystal Cave appears against an abstract backdrop."
+  },
+  {
+   "id": "swsh8-284",
+   "tag": "fire-lava",
+   "caption": "Fire Energy appears against an abstract backdrop."
+  },
+  {
+   "id": "sv03.5-024",
+   "tag": "flying",
+   "caption": "Arbok opens its huge mouth amid flying leaves"
+  },
+  {
+   "id": "sv03.5-036",
+   "tag": "forest",
+   "caption": "Clefable floats above a stream in a starry night forest"
+  },
+  {
+   "id": "sv03.5-040",
+   "tag": "flying",
+   "caption": "Wigglytuff charges forward with flying dust"
+  },
+  {
+   "id": "sv03.5-042",
+   "tag": "sky-clouds",
+   "caption": "Golbat swoops under the moon amid purple clouds"
+  },
+  {
+   "id": "sv03.5-054",
+   "tag": "grassland-field",
+   "caption": "Psyduck stands by a pond and flower meadow"
+  },
+  {
+   "id": "sv03.5-084",
+   "tag": "multiple-pokemon",
+   "caption": "Two-headed Doduo runs between rocky cliffs under blue sky"
+  },
+  {
+   "id": "sv03.5-135",
+   "tag": "sky-clouds",
+   "caption": "Jolteon stands amid lightning and bright clouds"
+  },
+  {
+   "id": "sv03.5-138",
+   "tag": "cave",
+   "caption": "Omanyte rests in a blue underwater cave with bubbles"
+  },
+  {
+   "id": "sv03.5-143",
+   "tag": "grassland-field",
+   "caption": "Snorlax sleeps in a forest meadow among white flowers"
+  },
+  {
+   "id": "sv03.5-150",
+   "tag": "ruins-building",
+   "caption": "Mewtwo stands with arms spread in shattered ruins"
+  },
+  {
+   "id": "sv03.5-177",
+   "tag": "ruins-building",
+   "caption": "A man and many Machop and Machoke move boxes in a house"
+  },
+  {
+   "id": "sv03.5-178",
+   "tag": "grassland-field",
+   "caption": "Two Tangela hang from trees in a sunny meadow"
+  },
+  {
+   "id": "sv03.5-206",
+   "tag": "multiple-pokemon",
+   "caption": "Two balls and a device on a golden sparkling background"
+  }
+ ],
+ "visualSamples": {
+  "beach": {
+   "positives": [
+    {
+     "id": "xy6-52",
+     "caption": "Dragonite appears on a beach."
+    },
+    {
+     "id": "xy6-50",
+     "caption": "Dragonair swims on a beach."
+    },
+    {
+     "id": "sv10.5b-102",
+     "caption": "The illustrated subject swims on a beach with other Pokémon."
+    },
+    {
+     "id": "sv10.5b-101",
+     "caption": "The illustrated subject swims on a beach with other Pokémon."
+    },
+    {
+     "id": "pl2-80",
+     "caption": "A pink Shellos stands on a sandy beach next to the sea."
+    },
+    {
+     "id": "sm12-198",
+     "caption": "Mallow & Lana appears on a beach with a human and other Pokémon."
+    },
+    {
+     "id": "swsh2-82",
+     "caption": "Palossand appears on a beach."
+    },
+    {
+     "id": "smp-SM152",
+     "caption": "Tapu Lele appears on a beach."
+    }
+   ],
+   "omissions": []
+  },
+  "water-surface": {
+   "positives": [
+    {
+     "id": "swsh4.5-22",
+     "caption": "Buizel swims by the water."
+    },
+    {
+     "id": "ex14-59",
+     "caption": "Numel standing on red earth by a sea with small islands and a volcano."
+    },
+    {
+     "id": "ex14-35",
+     "caption": "Ivysaur on sand near the sea with cliffs and crystals."
+    },
+    {
+     "id": "sm4-15",
+     "caption": "Staryu swims by the water with other Pokémon."
+    },
+    {
+     "id": "sv09-087",
+     "caption": "The illustrated subject swims on a beach with a person and other Pokémon."
+    },
+    {
+     "id": "xyp-XY60",
+     "caption": "Gyarados rises from water near a human figure."
+    },
+    {
+     "id": "sv08-073",
+     "caption": "The illustrated subject swims in a forest with other Pokémon and visible food."
+    },
+    {
+     "id": "swsh6-101",
+     "caption": "Qwilfish swims by the water."
+    }
+   ],
+   "omissions": []
+  },
+  "underwater": {
+   "positives": [
+    {
+     "id": "sv03.5-121",
+     "caption": "Starmie floats among blue coral at the seabed"
+    },
+    {
+     "id": "swsh5-9",
+     "caption": "Carnivine appears underwater."
+    },
+    {
+     "id": "xy7-26",
+     "caption": "Jolteon swims underwater."
+    },
+    {
+     "id": "sv03.5-120",
+     "caption": "Staryu sits among colorful seaweed and coral"
+    },
+    {
+     "id": "swsh12-115",
+     "caption": "Toxapex swims underwater."
+    },
+    {
+     "id": "swshp-SWSH250",
+     "caption": "Lumineon V swims underwater."
+    },
+    {
+     "id": "smp-SM03",
+     "caption": "Popplio swims underwater."
+    },
+    {
+     "id": "swsh12-114",
+     "caption": "Mareanie swims underwater."
+    }
+   ],
+   "omissions": []
+  },
+  "forest": {
+   "positives": [
+    {
+     "id": "sv10.5w-006",
+     "caption": "The illustrated subject flies in a forest."
+    },
+    {
+     "id": "dp1-64",
+     "caption": "A large dark bird flies over treetops while two small birds fly above."
+    },
+    {
+     "id": "sv10.5w-074",
+     "caption": "The illustrated subject appears in a forest with other Pokémon."
+    },
+    {
+     "id": "sv01-016",
+     "caption": "A small spider with a string ball walking through a purple forest."
+    },
+    {
+     "id": "sm8-11",
+     "caption": "Hoppip appears in a forest."
+    },
+    {
+     "id": "sm4-2",
+     "caption": "Kakuna appears in a forest with other Pokémon."
+    },
+    {
+     "id": "pl4-78",
+     "caption": "Treecko clings to a branch amid forest leaves."
+    },
+    {
+     "id": "sv08-211",
+     "caption": "The illustrated subject appears in a forest with other Pokémon and visible food."
+    }
+   ],
+   "omissions": [
+    {
+     "id": "dp3-24",
+     "tag": "forest",
+     "caption": "Three mole Pokémon heads poke out of a dirt mound on a forest path."
+    },
+    {
+     "id": "sv01-059",
+     "tag": "forest",
+     "caption": "A white whale-like Pokémon in a snowy forest."
+    },
+    {
+     "id": "swsh1-64",
+     "tag": "forest",
+     "caption": "A white moth Pokémon flying in a snowy night forest."
+    },
+    {
+     "id": "ex3-77",
+     "tag": "forest",
+     "caption": "A small bird Pokémon breathes fire in a dark stormy forest."
+    }
+   ]
+  },
+  "grassland-field": {
+   "positives": [
+    {
+     "id": "swsh4-83",
+     "caption": "Wooper appears in a grassy field."
+    },
+    {
+     "id": "sv10.5w-095",
+     "caption": "The illustrated subject swims underwater with other Pokémon."
+    },
+    {
+     "id": "swsh4-33",
+     "caption": "Oshawott appears in a grassy field."
+    },
+    {
+     "id": "swsh4-23",
+     "caption": "Charmander appears in a grassy field."
+    },
+    {
+     "id": "ex7-11",
+     "caption": "A blue cottonball Pokémon floats among puffs above a flowery meadow."
+    },
+    {
+     "id": "ex7-75",
+     "caption": "A brown scout Pokémon rests in grass, photographed like a figurine."
+    },
+    {
+     "id": "dp4-86",
+     "caption": "Swablu on a grassy bank by a stream with fluffy clouds"
+    },
+    {
+     "id": "sm10-77",
+     "caption": "Misdreavus appears in a grassy field."
+    }
+   ],
+   "omissions": [
+    {
+     "id": "sv03.5-054",
+     "tag": "grassland-field",
+     "caption": "Psyduck stands by a pond and flower meadow"
+    },
+    {
+     "id": "sv03.5-178",
+     "tag": "grassland-field",
+     "caption": "Two Tangela hang from trees in a sunny meadow"
+    },
+    {
+     "id": "sv01-013",
+     "tag": "grassland-field",
+     "caption": "A green cat Pokémon walking in a flowery meadow."
+    },
+    {
+     "id": "sv03.5-143",
+     "tag": "grassland-field",
+     "caption": "Snorlax sleeps in a forest meadow among white flowers"
+    }
+   ]
+  },
+  "mountain-rocks": {
+   "positives": [
+    {
+     "id": "sv08-155",
+     "caption": "The illustrated subject flies in a forest."
+    },
+    {
+     "id": "sv08-125",
+     "caption": "The illustrated subject flies among rocky cliffs."
+    },
+    {
+     "id": "sv10.5w-117",
+     "caption": "The illustrated subject appears in a forest with other Pokémon."
+    },
+    {
+     "id": "sv10.5b-045",
+     "caption": "The illustrated subject rests asleep in a forest."
+    },
+    {
+     "id": "sv10.5w-107",
+     "caption": "The illustrated subject swims underwater with other Pokémon."
+    },
+    {
+     "id": "sv10-244",
+     "caption": "The illustrated subject appears among rocky cliffs."
+    },
+    {
+     "id": "sv10-216",
+     "caption": "The illustrated subject flies among rocky cliffs with a person and other Pokémon."
+    },
+    {
+     "id": "dp7-79",
+     "caption": "A green gecko Pokémon leans on a rock face with trees beyond."
+    }
+   ],
+   "omissions": [
+    {
+     "id": "bw2-31",
+     "tag": "mountain-rocks",
+     "caption": "Beartic walks across a snowy mountain in a blizzard."
+    },
+    {
+     "id": "ex4-87",
+     "tag": "mountain-rocks",
+     "caption": "A red mountain emblem and two dark orbs against a hazy background."
+    }
+   ]
+  },
+  "cave": {
+   "positives": [
+    {
+     "id": "xy5-78",
+     "caption": "Nosepass appears inside a cave."
+    },
+    {
+     "id": "sv08.5-094",
+     "caption": "The illustrated subject flies among rocky cliffs."
+    },
+    {
+     "id": "sm11-65",
+     "caption": "Eelektrik appears in a cave."
+    },
+    {
+     "id": "ecard3-117",
+     "caption": "Many Zubat flap about a rocky cave."
+    },
+    {
+     "id": "sv08.5-093",
+     "caption": "The illustrated subject appears among rocky cliffs with a person."
+    },
+    {
+     "id": "xy5-82",
+     "caption": "Trapinch appears inside a cave."
+    },
+    {
+     "id": "swsh7-86",
+     "caption": "Roggenrola appears among rocky mountains."
+    },
+    {
+     "id": "sm1-70",
+     "caption": "Boldore appears among rocky mountains."
+    }
+   ],
+   "omissions": [
+    {
+     "id": "ecard1-33",
+     "tag": "cave",
+     "caption": "Alakazam meditating in a leafy cave-like setting with purple glow."
+    },
+    {
+     "id": "pl2-87",
+     "tag": "cave",
+     "caption": "A Weezing with two heads in a smoky cave-like setting."
+    },
+    {
+     "id": "pop5-10",
+     "tag": "cave",
+     "caption": "Charmander with a flaming tail in a dark cave-like scene with lightning."
+    },
+    {
+     "id": "ex15-20",
+     "tag": "cave",
+     "caption": "Mantine gliding through a black-outlined cave-like frame with lightning sparks."
+    }
+   ]
+  },
+  "desert": {
+   "positives": [
+    {
+     "id": "sm7-110",
+     "caption": "Dunsparce appears in a desert."
+    },
+    {
+     "id": "sv01-082",
+     "caption": "Drowzee sits on sandy desert ground beside a rock pillar"
+    },
+    {
+     "id": "sv03-152",
+     "caption": "The illustrated subject appears inside a cave."
+    },
+    {
+     "id": "xy7-40",
+     "caption": "Regirock appears in a desert."
+    },
+    {
+     "id": "sv06-101",
+     "caption": "The illustrated subject appears in a forest with a person."
+    },
+    {
+     "id": "sv10-052",
+     "caption": "The illustrated subject appears in a grassy field with a person."
+    },
+    {
+     "id": "sm12-107",
+     "caption": "Trapinch appears in a desert."
+    },
+    {
+     "id": "sm3-62",
+     "caption": "Palossand appears in a desert."
+    }
+   ],
+   "omissions": [
+    {
+     "id": "pl1-109",
+     "tag": "desert",
+     "caption": "A detective in a trench coat stands in a desert-colored plain with red towers."
+    },
+    {
+     "id": "sv01-005",
+     "tag": "desert",
+     "caption": "A cactus Pokémon in front of a colorful house with flowers."
+    },
+    {
+     "id": "sv01-006",
+     "tag": "desert",
+     "caption": "A scarecrow Pokémon beside glowing green light among cacti."
+    },
+    {
+     "id": "sv01-120",
+     "tag": "desert",
+     "caption": "Sandaconda coils inside a rocky cave near a cactus"
+    }
+   ]
+  },
+  "snow-ice": {
+   "positives": [
+    {
+     "id": "ex5-73",
+     "caption": "A hooded Pokémon stands in an icy cave with crystals."
+    },
+    {
+     "id": "bw8-25",
+     "caption": "Articuno flies through sparkling shards of ice."
+    },
+    {
+     "id": "sm9-111",
+     "caption": "Alolan Ninetales appears in snow and ice."
+    },
+    {
+     "id": "sv02-091",
+     "caption": "The illustrated subject appears in snow and ice."
+    },
+    {
+     "id": "sv10.5b-028",
+     "caption": "The illustrated subject swims underwater."
+    },
+    {
+     "id": "swsh8-145",
+     "caption": "Claydol flies among rocky mountains."
+    },
+    {
+     "id": "sv02-058",
+     "caption": "The illustrated subject appears in a grassy field."
+    },
+    {
+     "id": "sv02-090",
+     "caption": "The illustrated subject appears in snow and ice."
+    }
+   ],
+   "omissions": [
+    {
+     "id": "dp7-56",
+     "tag": "snow-ice",
+     "caption": "Two cherry Pokémon hang from a leaf with rays and icy peaks behind."
+    },
+    {
+     "id": "xyp-XY102",
+     "tag": "snow-ice",
+     "caption": "Aurorus fills the frame amid icy cosmic light."
+    },
+    {
+     "id": "swsh7-150",
+     "tag": "snow-ice",
+     "caption": "Lucky Ice Pop appears against an abstract backdrop."
+    },
+    {
+     "id": "ecard2-73",
+     "tag": "snow-ice",
+     "caption": "Doduo stands on a small ice-blue patch against an orange pattern."
+    }
+   ]
+  },
+  "city": {
+   "positives": [
+    {
+     "id": "sv08-087",
+     "caption": "The illustrated subject swims underwater with other Pokémon."
+    },
+    {
+     "id": "sv08-097",
+     "caption": "The illustrated subject flies among rocky cliffs with other Pokémon."
+    },
+    {
+     "id": "xy7-64",
+     "caption": "Porygon swims beside open water."
+    },
+    {
+     "id": "sv09-180",
+     "caption": "The illustrated subject appears among rocky cliffs with a person."
+    },
+    {
+     "id": "sm6-83",
+     "caption": "Flabébé appears in a city."
+    },
+    {
+     "id": "xy8-116",
+     "caption": "Doduo appears in a city and other Pokémon."
+    },
+    {
+     "id": "bw9-87",
+     "caption": "Rattata stands inside a frozen city plaza."
+    },
+    {
+     "id": "swsh10-149",
+     "caption": "Kamado appears in a city with a human."
+    }
+   ],
+   "omissions": [
+    {
+     "id": "sv01-202",
+     "tag": "city",
+     "caption": "Scovillain breathes fire in a busy food street"
+    },
+    {
+     "id": "base5-69",
+     "tag": "city",
+     "caption": "Red-white ball creature glowing before blurred city lights at night."
+    },
+    {
+     "id": "sv01-087",
+     "tag": "city",
+     "caption": "Shuppet floats by a glowing lantern on a dark street"
+    },
+    {
+     "id": "ecard2-61",
+     "tag": "city",
+     "caption": "Smoochum sits by a window overlooking a city skyline."
+    }
+   ]
+  },
+  "indoors": {
+   "positives": [
+    {
+     "id": "sv10-180",
+     "caption": "The illustrated subject appears on a city street with a person."
+    },
+    {
+     "id": "sv04.5-013",
+     "caption": "The illustrated subject appears on a city street with a person and other Pokémon and visible food."
+    },
+    {
+     "id": "me02.5-203",
+     "caption": "The illustrated subject appears on a city street."
+    },
+    {
+     "id": "sv08-162",
+     "caption": "The illustrated subject appears among rocky cliffs."
+    },
+    {
+     "id": "sv08-178",
+     "caption": "The illustrated subject appears in a forest with a person."
+    },
+    {
+     "id": "pl2-RT1",
+     "caption": "A Rotom in a fan sits in a bright room by a window."
+    },
+    {
+     "id": "sm10-94",
+     "caption": "Rhydon appears indoors with a human."
+    },
+    {
+     "id": "sv10-127",
+     "caption": "The illustrated subject appears among rocky cliffs with a person and other Pokémon."
+    }
+   ],
+   "omissions": []
+  },
+  "ruins-building": {
+   "positives": [
+    {
+     "id": "sv04-059",
+     "caption": "The illustrated subject appears in a forest with other Pokémon."
+    },
+    {
+     "id": "sv10-174",
+     "caption": "The illustrated subject appears on a city street with a person."
+    },
+    {
+     "id": "swsh12-125",
+     "caption": "Klinklang swims in a city."
+    },
+    {
+     "id": "sv04.5-088",
+     "caption": "The illustrated subject appears on a city street with a person."
+    },
+    {
+     "id": "swsh8-130",
+     "caption": "Dragapult flies in a city with other Pokémon."
+    },
+    {
+     "id": "sv04-044",
+     "caption": "The illustrated subject appears in snow and ice."
+    },
+    {
+     "id": "bw5-82",
+     "caption": "Blissey stands on a station platform beside buildings under blue sky."
+    },
+    {
+     "id": "bw5-98",
+     "caption": "A professor studies a device outside with Pokémon near a house."
+    }
+   ],
+   "omissions": [
+    {
+     "id": "dp3-56",
+     "tag": "ruins-building",
+     "caption": "A purple sludge Pokémon oozes in front of a glass-windowed building."
+    },
+    {
+     "id": "bw5-12",
+     "tag": "ruins-building",
+     "caption": "Flareon stands on a wooden platform inside a warm building."
+    },
+    {
+     "id": "ecard3-3",
+     "tag": "ruins-building",
+     "caption": "Close-up of a white furry Arcanine with a tiny castle behind."
+    },
+    {
+     "id": "sv01-183",
+     "tag": "ruins-building",
+     "caption": "A girl in a hoodie stands by stairs outside a building"
+    }
+   ]
+  },
+  "sky-clouds": {
+   "positives": [
+    {
+     "id": "30th-087",
+     "caption": "Artwork shows a forest, open grassland, open sky."
+    },
+    {
+     "id": "sm8-13",
+     "caption": "Skiploom flies beneath a cloudy sky with other Pokémon."
+    },
+    {
+     "id": "sv10.5w-113",
+     "caption": "The illustrated subject swims underwater with other Pokémon."
+    },
+    {
+     "id": "bw8-72",
+     "caption": "Donphan charges among rocky cliffs beneath blue sky."
+    },
+    {
+     "id": "bw8-64",
+     "caption": "Trubbish stands in grass beneath a cloudy sky."
+    },
+    {
+     "id": "sv10.5w-173",
+     "caption": "The illustrated subject swims underwater."
+    },
+    {
+     "id": "sm1-69",
+     "caption": "Roggenrola appears among rocky mountains."
+    },
+    {
+     "id": "sv08.5-114",
+     "caption": "The illustrated subject appears in a forest with a person."
+    }
+   ],
+   "omissions": [
+    {
+     "id": "ecard1-91",
+     "tag": "sky-clouds",
+     "caption": "Two Pokemon clashing in a dust cloud with rocks flying."
+    },
+    {
+     "id": "gym2-48",
+     "tag": "sky-clouds",
+     "caption": "Koffing floating with yellow gas clouds around it"
+    },
+    {
+     "id": "gym2-79",
+     "tag": "sky-clouds",
+     "caption": "Koffing grinning with smaller Koffing and white gas clouds around"
+    },
+    {
+     "id": "dp5-5",
+     "tag": "sky-clouds",
+     "caption": "Glaceon crouching in a cloud of frost"
+    }
+   ]
+  },
+  "night": {
+   "positives": [
+    {
+     "id": "swsh8-157",
+     "caption": "Gengar VMAX appears indoors with a human."
+    },
+    {
+     "id": "me02-035",
+     "caption": "The illustrated subject appears on a city street."
+    },
+    {
+     "id": "col1-56",
+     "caption": "Eevee in a city, a building, a cloudy sky, night, flight."
+    },
+    {
+     "id": "sv08.5-166",
+     "caption": "The illustrated subject swims underwater with other Pokémon."
+    },
+    {
+     "id": "xyp-XY178",
+     "caption": "Absol stands on a rocky hill beneath a red moon."
+    },
+    {
+     "id": "xy7-4",
+     "caption": "Bellossom appears at night."
+    },
+    {
+     "id": "me04-049",
+     "caption": "Artwork shows a city, an indoor setting, a building or ruins."
+    },
+    {
+     "id": "swsh8-156",
+     "caption": "Gengar V appears indoors with a human."
+    }
+   ],
+   "omissions": [
+    {
+     "id": "ex8-7",
+     "tag": "night",
+     "caption": "A silver one-eyed ghost Pokémon reaches out with large white hands at night"
+    },
+    {
+     "id": "pop8-9",
+     "tag": "night",
+     "caption": "A robotic arm working on a Poke Ball in a night lab"
+    },
+    {
+     "id": "base5-2",
+     "tag": "night",
+     "caption": "Gray cobra creature rearing up on grass at night-like dark backdrop."
+    },
+    {
+     "id": "base2-1",
+     "tag": "night",
+     "caption": "Clefairy standing on a rock against a glittering night-colored background."
+    }
+   ]
+  },
+  "sunset-sunrise": {
+   "positives": [
+    {
+     "id": "pop7-4",
+     "caption": "Latios soaring under dark clouds with an orange horizon"
+    },
+    {
+     "id": "sv02-218",
+     "caption": "The illustrated subject appears among rocky cliffs."
+    },
+    {
+     "id": "swsh3-84",
+     "caption": "Diglett appears among rocky mountains."
+    },
+    {
+     "id": "ecard1-95",
+     "caption": "Bulbasaur howling before a huge radiating sun."
+    },
+    {
+     "id": "gym2-52",
+     "caption": "Electrode in an orange cloudy sky beside a utility pole with wires"
+    },
+    {
+     "id": "xy8-119",
+     "caption": "Hoothoot flies in a city."
+    },
+    {
+     "id": "me01-183",
+     "caption": "The illustrated subject appears on a city street with a person."
+    },
+    {
+     "id": "ex1-82",
+     "caption": "Grovyle and Oddish near a glowing energy orb under a fiery sky."
+    }
+   ],
+   "omissions": [
+    {
+     "id": "ex16-1",
+     "tag": "sunset-sunrise",
+     "caption": "Aggron roaring at dusk before dark hills and sparkles."
+    },
+    {
+     "id": "ex16-30",
+     "tag": "sunset-sunrise",
+     "caption": "Glalie hovering in front of dark pine trees at dusk."
+    },
+    {
+     "id": "gym2-67",
+     "tag": "sunset-sunrise",
+     "caption": "Diglett peeking out of the ground near a green field at dusk"
+    },
+    {
+     "id": "dp2-54",
+     "tag": "sunset-sunrise",
+     "caption": "A duck-billed fire Pokémon sits beside a lake at dusk with a flame at its tail."
+    }
+   ]
+  },
+  "fire-lava": {
+   "positives": [
+    {
+     "id": "dp5-41",
+     "caption": "Monferno with a flame tail standing on a rocky slope"
+    },
+    {
+     "id": "sv08.5-017",
+     "caption": "The illustrated subject appears among rocky cliffs."
+    },
+    {
+     "id": "sv10.5w-098",
+     "caption": "The illustrated subject appears among rocky cliffs with other Pokémon."
+    },
+    {
+     "id": "sv10.5w-018",
+     "caption": "The illustrated subject appears inside a cave."
+    },
+    {
+     "id": "me05-105",
+     "caption": "Artwork shows fire or lava."
+    },
+    {
+     "id": "ex1-28",
+     "caption": "Combusken kicks with a fiery burst before mountains and meadow."
+    },
+    {
+     "id": "sv10.5w-099",
+     "caption": "The illustrated subject appears in a forest with other Pokémon and visible food."
+    },
+    {
+     "id": "me05-104",
+     "caption": "Artwork shows fire or lava."
+    }
+   ],
+   "omissions": [
+    {
+     "id": "base5-64",
+     "tag": "fire-lava",
+     "caption": "Flame-maned horse creature with a blurred green background."
+    },
+    {
+     "id": "pl1-3",
+     "tag": "fire-lava",
+     "caption": "A red fire bird Pokémon and a clawed steel Pokémon clash in a dark blue scene."
+    },
+    {
+     "id": "bwp-BW63",
+     "tag": "fire-lava",
+     "caption": "A dragon and Pokemon collide in flames and sparkling ice."
+    },
+    {
+     "id": "ex16-100",
+     "tag": "fire-lava",
+     "caption": "Flareon with a fluffy flame-like mane on a sparkly background."
+    }
+   ]
+  },
+  "flowers": {
+   "positives": [
+    {
+     "id": "lc-21",
+     "caption": "Butterfree fluttering over pink flowers under a blue sky."
+    },
+    {
+     "id": "sv10.5b-121",
+     "caption": "The illustrated subject rests asleep underwater with a person and other Pokémon."
+    },
+    {
+     "id": "me02.5-282",
+     "caption": "The illustrated subject appears among flowers with other Pokémon."
+    },
+    {
+     "id": "bw3-31",
+     "caption": "Jellicent swims underwater with a smaller Frillish near aquatic flowers."
+    },
+    {
+     "id": "sv05-205",
+     "caption": "The illustrated subject swims underwater."
+    },
+    {
+     "id": "dp4-72",
+     "caption": "Jigglypuff in grass with white flowers"
+    },
+    {
+     "id": "sv05-197",
+     "caption": "The illustrated subject appears on a city street with a person and other Pokémon and visible food."
+    },
+    {
+     "id": "swsh8-29",
+     "caption": "Vulpix appears in a grassy field."
+    }
+   ],
+   "omissions": [
+    {
+     "id": "ex13-17",
+     "tag": "flowers",
+     "caption": "Vileplume shows its big red flower petals from behind."
+    },
+    {
+     "id": "dp1-45",
+     "tag": "flowers",
+     "caption": "A pink and yellow blossom Pokémon glows against a red floral-patterned background."
+    },
+    {
+     "id": "ex6-112",
+     "tag": "flowers",
+     "caption": "A big blue Pokémon with a flower on its back opens its mouth."
+    },
+    {
+     "id": "basep-13",
+     "tag": "flowers",
+     "caption": "Venusaur roars with its flower blooming on a starry dark background."
+    }
+   ]
+  },
+  "food-visible": {
+   "positives": [
+    {
+     "id": "sv03-097",
+     "caption": "The illustrated subject appears inside a room with visible food."
+    },
+    {
+     "id": "neo3-16",
+     "caption": "Celebi floating on a yellow background with berries and leaves"
+    },
+    {
+     "id": "sv05-167",
+     "caption": "The illustrated subject appears in a forest with a person and other Pokémon and visible food."
+    },
+    {
+     "id": "pl2-12",
+     "caption": "A Roserade holds red and blue berries with an orange-haired girl at the corner."
+    },
+    {
+     "id": "dp7-38",
+     "caption": "A duck Pokémon flies holding a leek near mountains and clouds."
+    },
+    {
+     "id": "sv10-158",
+     "caption": "The illustrated subject appears in a forest with a person and other Pokémon and visible food."
+    },
+    {
+     "id": "sv05-130",
+     "caption": "The illustrated subject appears in a grassy field with a person and other Pokémon and visible food."
+    },
+    {
+     "id": "swsh2-112",
+     "caption": "Koffing appears indoors with visible food."
+    }
+   ],
+   "omissions": [
+    {
+     "id": "sv01-202",
+     "tag": "food-visible",
+     "caption": "Scovillain breathes fire in a busy food street"
+    },
+    {
+     "id": "swsh3.5-66",
+     "tag": "food-visible",
+     "caption": "Suspicious Food Tin appears against an abstract backdrop."
+    }
+   ]
+  },
+  "human-present": {
+   "positives": [
+    {
+     "id": "xy8-102",
+     "caption": "Floette appears in a grassy field with people and other Pokémon."
+    },
+    {
+     "id": "xy12-107",
+     "caption": "Brock's Grit appears with people."
+    },
+    {
+     "id": "xy2-105",
+     "caption": "Pokémon Center Lady appears with people."
+    },
+    {
+     "id": "swsh6-134",
+     "caption": "Doctor appears in a forest with a human."
+    },
+    {
+     "id": "sv02-260",
+     "caption": "The illustrated subject appears on a city street with a person."
+    },
+    {
+     "id": "swsh5-151",
+     "caption": "Single Strike Urshifu V appears with a human."
+    },
+    {
+     "id": "xy2-104",
+     "caption": "Lysandre appears with people."
+    },
+    {
+     "id": "bw11-RC20",
+     "caption": "A fashionable woman poses against a sparkling background."
+    }
+   ],
+   "omissions": [
+    {
+     "id": "swsh10.5-078",
+     "tag": "human-present",
+     "caption": "Professor's Research appears against an abstract backdrop."
+    },
+    {
+     "id": "pl1-103",
+     "tag": "human-present",
+     "caption": "A red Wurmple figure crawls on a dark green leaf."
+    },
+    {
+     "id": "swsh10.5-084",
+     "tag": "human-present",
+     "caption": "Professor's Research appears against an abstract backdrop."
+    },
+    {
+     "id": "dp2-124",
+     "tag": "human-present",
+     "caption": "Four legendary Pokémon float on a dark starry background in a trainer card illustration."
+    }
+   ]
+  },
+  "multiple-pokemon": {
+   "positives": [
+    {
+     "id": "xy7-41",
+     "caption": "Golurk appears beside open water and other Pokémon."
+    },
+    {
+     "id": "xy5-32",
+     "caption": "Staryu appears on a beach with other Pokémon."
+    },
+    {
+     "id": "xy9-98b",
+     "caption": "Delinquent appears with people and other Pokémon."
+    },
+    {
+     "id": "me05-041",
+     "caption": "Artwork shows a forest, open grassland, rocky terrain."
+    },
+    {
+     "id": "sv06.5-071",
+     "caption": "The illustrated subject swims in a forest with other Pokémon."
+    },
+    {
+     "id": "sv06-210",
+     "caption": "The illustrated subject flies in a forest with other Pokémon."
+    },
+    {
+     "id": "sv10.5w-119",
+     "caption": "The illustrated subject swims underwater with other Pokémon."
+    },
+    {
+     "id": "sv03.5-014",
+     "caption": "Kakuna hangs among blue flowers with another Kakuna behind"
+    }
+   ],
+   "omissions": [
+    {
+     "id": "base1-19",
+     "tag": "multiple-pokemon",
+     "caption": "Three Dugtrio pop out of brown earth with white flowers and hills behind."
+    },
+    {
+     "id": "ex9-45",
+     "tag": "multiple-pokemon",
+     "caption": "Two brown long-beaked bird Pokémon against a pink feathery background"
+    },
+    {
+     "id": "ex1-4",
+     "tag": "multiple-pokemon",
+     "caption": "Camerupt walks with its two rocky humps."
+    },
+    {
+     "id": "ex6-5",
+     "tag": "multiple-pokemon",
+     "caption": "A palm-tree Pokémon with three heads raises a tail with a spiked club."
+    }
+   ]
+  },
+  "sleeping": {
+   "positives": [
+    {
+     "id": "det1-18",
+     "caption": "Slaking sleeps in a grassy field."
+    },
+    {
+     "id": "sv10-015",
+     "caption": "The illustrated subject rests asleep on a city street with a person and other Pokémon."
+    },
+    {
+     "id": "sv05-166",
+     "caption": "The illustrated subject rests asleep in a forest with a person and other Pokémon."
+    },
+    {
+     "id": "swsh4-131",
+     "caption": "Snorlax sleeps in a grassy field."
+    },
+    {
+     "id": "dp1-37",
+     "caption": "A large Snorlax sleeps with its eyes closed in a sunny landscape."
+    },
+    {
+     "id": "xy7-55",
+     "caption": "Cottonee sleeps."
+    },
+    {
+     "id": "sv03-118",
+     "caption": "The illustrated subject rests asleep beneath a cloudy sky with other Pokémon."
+    },
+    {
+     "id": "sv04-175",
+     "caption": "The illustrated subject rests asleep in snow and ice."
+    }
+   ],
+   "omissions": [
+    {
+     "id": "swsh1-141",
+     "tag": "sleeping",
+     "caption": "A sleeping Snorlax with spiky armor in a swirl of leaves."
+    }
+   ]
+  },
+  "flying": {
+   "positives": [
+    {
+     "id": "xy9-84",
+     "caption": "Spritzee flies in a grassy field."
+    },
+    {
+     "id": "xy8-129",
+     "caption": "Rufflet flies in a forest."
+    },
+    {
+     "id": "bw10-30",
+     "caption": "Kyurem flies through silver and rainbow energy."
+    },
+    {
+     "id": "gym1-83",
+     "caption": "Small bird flying low over a green slope under a cloudy blue sky."
+    },
+    {
+     "id": "30th-109",
+     "caption": "Artwork shows open sky, a flying Pokémon."
+    },
+    {
+     "id": "swsh3-15",
+     "caption": "Steenee flies beneath a cloudy sky."
+    },
+    {
+     "id": "xy6-65",
+     "caption": "Spearow flies in a city."
+    },
+    {
+     "id": "sv03-217",
+     "caption": "The illustrated subject swims underwater."
+    }
+   ],
+   "omissions": [
+    {
+     "id": "dp1-121",
+     "tag": "flying",
+     "caption": "A fiery monkey Pokémon flies forward trailing flames against a starry background."
+    },
+    {
+     "id": "ex13-82",
+     "tag": "flying",
+     "caption": "Blue flying-type Pokémon with extended fins on a teal swirly background."
+    },
+    {
+     "id": "ecard2-72",
+     "tag": "flying",
+     "caption": "Cubone stands on rocks with flying bones under a colorful sunset sky."
+    },
+    {
+     "id": "lc-104",
+     "tag": "flying",
+     "caption": "A Weedle-like Pokemon with a Poke Ball flying toward it on purple."
+    }
+   ]
+  },
+  "swimming": {
+   "positives": [
+    {
+     "id": "sv01-047",
+     "caption": "A sea weasel Pokémon swimming past coral underwater."
+    },
+    {
+     "id": "sv03-127",
+     "caption": "The illustrated subject swims underwater with other Pokémon."
+    },
+    {
+     "id": "swsh8-79",
+     "caption": "Inteleon VMAX swims by the water."
+    },
+    {
+     "id": "sv08-085",
+     "caption": "The illustrated subject swims in a forest with other Pokémon."
+    },
+    {
+     "id": "sv10-047",
+     "caption": "The illustrated subject swims underwater with a person and other Pokémon."
+    },
+    {
+     "id": "sv08-091",
+     "caption": "The illustrated subject swims among rocky cliffs."
+    },
+    {
+     "id": "ex3-53",
+     "caption": "A red crawfish Pokémon wades in a shallow stream."
+    },
+    {
+     "id": "sv09-134",
+     "caption": "The illustrated subject swims underwater with a person and other Pokémon."
+    }
+   ],
+   "omissions": [
+    {
+     "id": "neo3-37",
+     "tag": "swimming",
+     "caption": "Seaking swimming over a blue pattern of white leaf shapes"
+    },
+    {
+     "id": "neo3-32",
+     "tag": "swimming",
+     "caption": "Two Mantine-like Pokemon swimming in glowing yellow and blue light"
+    },
+    {
+     "id": "ex7-107",
+     "tag": "swimming",
+     "caption": "A blue mudfish Pokémon swims through a starry space background."
+    },
+    {
+     "id": "ex12-8",
+     "tag": "swimming",
+     "caption": "Lapras swims forward against a yellow-blue holo background."
+    }
+   ]
+  }
+ }
+}

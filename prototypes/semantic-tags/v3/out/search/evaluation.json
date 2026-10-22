@@ -1,0 +1,4188 @@
+{
+  "generatedAt": "2026-10-01T12:24:00.615Z",
+  "cards": 19635,
+  "queryCount": 30,
+  "requestedTopSlots": 240,
+  "populatedTopSlots": 237,
+  "unfilledTopSlots": 3,
+  "emptyQueries": [],
+  "size": {
+    "cards": 19635,
+    "tags": 23,
+    "rawBytes": 1334506,
+    "rawMiB": 1.273,
+    "gzipBytes": 268027,
+    "gzipMiB": 0.256,
+    "bytesPerCardRaw": 68,
+    "bytesPerCardGzip": 13.7
+  },
+  "evaluations": [
+    {
+      "number": 1,
+      "group": "original",
+      "query": "at the beach",
+      "mappedTags": [
+        "beach"
+      ],
+      "mappedGroups": [
+        {
+          "source": "beach",
+          "anyOfTags": [
+            "beach"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 242,
+      "top": [
+        {
+          "id": "base1-42",
+          "score": 120,
+          "tags": [
+            "beach",
+            "water-surface"
+          ],
+          "caption": "Wartortle stands on a sandy beach under a dark blue sky.",
+          "name": "Wartortle",
+          "localId": "42",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/42"
+        },
+        {
+          "id": "base2-35",
+          "score": 120,
+          "tags": [
+            "beach",
+            "water-surface",
+            "sunset-sunrise"
+          ],
+          "caption": "Exeggutor sits on a shore with a palm tree and a red setting sun over the sea.",
+          "name": "Exeggutor",
+          "localId": "35",
+          "setId": "base2",
+          "setName": "Jungle",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base2/35"
+        },
+        {
+          "id": "base3-51",
+          "score": 120,
+          "tags": [
+            "beach",
+            "water-surface",
+            "sky-clouds"
+          ],
+          "caption": "Krabby scuttles on a sandy beach under a blue sky with clouds.",
+          "name": "Krabby",
+          "localId": "51",
+          "setId": "base3",
+          "setName": "Fossil",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base3/51"
+        },
+        {
+          "id": "base4-39",
+          "score": 120,
+          "tags": [
+            "beach",
+            "water-surface",
+            "sunset-sunrise",
+            "multiple-pokemon"
+          ],
+          "caption": "Coconut creature sitting on a beach at sunset with a small crab.",
+          "name": "Exeggutor",
+          "localId": "39",
+          "setId": "base4",
+          "setName": "Base Set 2",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base4/39"
+        },
+        {
+          "id": "base4-63",
+          "score": 120,
+          "tags": [
+            "beach",
+            "water-surface"
+          ],
+          "caption": "Blue turtle creature standing on a sandy beach beside the sea.",
+          "name": "Wartortle",
+          "localId": "63",
+          "setId": "base4",
+          "setName": "Base Set 2",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base4/63"
+        },
+        {
+          "id": "bw1-38",
+          "score": 120,
+          "tags": [
+            "beach",
+            "water-surface",
+            "swimming"
+          ],
+          "caption": "Alomomola swims near a sandy shore with gentle waves.",
+          "name": "Alomomola",
+          "localId": "38",
+          "setId": "bw1",
+          "setName": "Black & White",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw1/38"
+        },
+        {
+          "id": "bw1-61",
+          "score": 120,
+          "tags": [
+            "beach",
+            "water-surface"
+          ],
+          "caption": "Throh stands on a sandy beach with waves crashing behind.",
+          "name": "Throh",
+          "localId": "61",
+          "setId": "bw1",
+          "setName": "Black & White",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw1/61"
+        },
+        {
+          "id": "bw1-69",
+          "score": 120,
+          "tags": [
+            "beach",
+            "water-surface",
+            "mountain-rocks",
+            "sky-clouds"
+          ],
+          "caption": "Scrafty stands on a sandy shore by rocky hills and sea.",
+          "name": "Scrafty",
+          "localId": "69",
+          "setId": "bw1",
+          "setName": "Black & White",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw1/69"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "group": "original",
+      "query": "in the forest",
+      "mappedTags": [
+        "forest"
+      ],
+      "mappedGroups": [
+        {
+          "source": "forest",
+          "anyOfTags": [
+            "forest"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 3523,
+      "top": [
+        {
+          "id": "swsh1-143",
+          "score": 150,
+          "tags": [
+            "forest",
+            "flying"
+          ],
+          "caption": "A round owl Pokémon clutching a sunlit branch in the forest.",
+          "name": "Hoothoot",
+          "localId": "143",
+          "setId": "swsh1",
+          "setName": "Sword & Shield",
+          "serie": "swsh",
+          "image": "https://assets.tcgdex.net/en/swsh/swsh1/143"
+        },
+        {
+          "id": "base1-30",
+          "score": 120,
+          "tags": [
+            "forest"
+          ],
+          "caption": "Ivysaur glares in front of dark forest foliage.",
+          "name": "Ivysaur",
+          "localId": "30",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/30"
+        },
+        {
+          "id": "base1-54",
+          "score": 120,
+          "tags": [
+            "forest"
+          ],
+          "caption": "Metapod glows in front of dark bamboo-like forest trunks.",
+          "name": "Metapod",
+          "localId": "54",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/54"
+        },
+        {
+          "id": "base1-58",
+          "score": 120,
+          "tags": [
+            "forest"
+          ],
+          "caption": "Pikachu sparks in a purple-lit forest with green plants.",
+          "name": "Pikachu",
+          "localId": "58",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/58"
+        },
+        {
+          "id": "base2-26",
+          "score": 120,
+          "tags": [
+            "forest",
+            "flying"
+          ],
+          "caption": "Scyther swoops in a blurred swirl of forest trunks.",
+          "name": "Scyther",
+          "localId": "26",
+          "setId": "base2",
+          "setName": "Jungle",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base2/26"
+        },
+        {
+          "id": "base2-30",
+          "score": 120,
+          "tags": [
+            "forest"
+          ],
+          "caption": "Victreebel stands before misty forest trees.",
+          "name": "Victreebel",
+          "localId": "30",
+          "setId": "base2",
+          "setName": "Jungle",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base2/30"
+        },
+        {
+          "id": "base2-38",
+          "score": 120,
+          "tags": [
+            "forest",
+            "food-visible"
+          ],
+          "caption": "Lickitung licks a bunch of bananas in a jungle.",
+          "name": "Lickitung",
+          "localId": "38",
+          "setId": "base2",
+          "setName": "Jungle",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base2/38"
+        },
+        {
+          "id": "base2-60",
+          "score": 120,
+          "tags": [
+            "forest"
+          ],
+          "caption": "Pikachu stands in a leafy forest clearing with small sparks.",
+          "name": "Pikachu",
+          "localId": "60",
+          "setId": "base2",
+          "setName": "Jungle",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base2/60"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "group": "original",
+      "query": "at night",
+      "mappedTags": [
+        "night"
+      ],
+      "mappedGroups": [
+        {
+          "source": "night",
+          "anyOfTags": [
+            "night"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 1259,
+      "top": [
+        {
+          "id": "base5-69",
+          "score": 150,
+          "tags": [
+            "night"
+          ],
+          "caption": "Red-white ball creature glowing before blurred city lights at night.",
+          "name": "Voltorb",
+          "localId": "69",
+          "setId": "base5",
+          "setName": "Team Rocket",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base5/69"
+        },
+        {
+          "id": "base5-77",
+          "score": 150,
+          "tags": [
+            "city",
+            "night"
+          ],
+          "caption": "Robotic garbage machine with a crescent moon over a town at night.",
+          "name": "Nightly Garbage Run",
+          "localId": "77",
+          "setId": "base5",
+          "setName": "Team Rocket",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base5/77"
+        },
+        {
+          "id": "bw1-51",
+          "score": 150,
+          "tags": [
+            "forest",
+            "night",
+            "flying"
+          ],
+          "caption": "Swoobat flies in front of a full moon over pine trees at night.",
+          "name": "Swoobat",
+          "localId": "51",
+          "setId": "bw1",
+          "setName": "Black & White",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw1/51"
+        },
+        {
+          "id": "bw11-51",
+          "score": 150,
+          "tags": [
+            "city",
+            "night",
+            "flying"
+          ],
+          "caption": "Zekrom flies above a silhouetted city at night.",
+          "name": "Zekrom",
+          "localId": "51",
+          "setId": "bw11",
+          "setName": "Legendary Treasures",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw11/51"
+        },
+        {
+          "id": "bw4-18",
+          "score": 150,
+          "tags": [
+            "night",
+            "flowers"
+          ],
+          "caption": "Litwick rests among flowers beneath dark trees at night.",
+          "name": "Litwick",
+          "localId": "18",
+          "setId": "bw4",
+          "setName": "Next Destinies",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw4/18"
+        },
+        {
+          "id": "bw4-35",
+          "score": 150,
+          "tags": [
+            "water-surface",
+            "night",
+            "multiple-pokemon",
+            "swimming"
+          ],
+          "caption": "Jellicent swims at night with a smaller Frillish and distant ship.",
+          "name": "Jellicent",
+          "localId": "35",
+          "setId": "bw4",
+          "setName": "Next Destinies",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw4/35"
+        },
+        {
+          "id": "bw4-46",
+          "score": 150,
+          "tags": [
+            "city",
+            "night"
+          ],
+          "caption": "Luxray prowls through a city street at night.",
+          "name": "Luxray",
+          "localId": "46",
+          "setId": "bw4",
+          "setName": "Next Destinies",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw4/46"
+        },
+        {
+          "id": "bw4-55",
+          "score": 150,
+          "tags": [
+            "city",
+            "night"
+          ],
+          "caption": "Ralts stands in a park with illuminated buildings at night.",
+          "name": "Ralts",
+          "localId": "55",
+          "setId": "bw4",
+          "setName": "Next Destinies",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw4/55"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "group": "original",
+      "query": "in the snow",
+      "mappedTags": [
+        "snow-ice"
+      ],
+      "mappedGroups": [
+        {
+          "source": "snow",
+          "anyOfTags": [
+            "snow-ice"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 826,
+      "top": [
+        {
+          "id": "bw2-29",
+          "score": 150,
+          "tags": [
+            "snow-ice",
+            "flowers"
+          ],
+          "caption": "Cubchoo sits in the snow among yellow flowers.",
+          "name": "Cubchoo",
+          "localId": "29",
+          "setId": "bw2",
+          "setName": "Emerging Powers",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw2/29"
+        },
+        {
+          "id": "base1-57",
+          "score": 120,
+          "tags": [
+            "grassland-field",
+            "mountain-rocks",
+            "snow-ice",
+            "night"
+          ],
+          "caption": "Pidgey stands in a dark field under a bright moon with snowy mountains.",
+          "name": "Pidgey",
+          "localId": "57",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/57"
+        },
+        {
+          "id": "base3-35",
+          "score": 120,
+          "tags": [
+            "snow-ice"
+          ],
+          "caption": "Golduck swipes its claws while emerging from snowy ground.",
+          "name": "Golduck",
+          "localId": "35",
+          "setId": "base3",
+          "setName": "Fossil",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base3/35"
+        },
+        {
+          "id": "basep-29",
+          "score": 120,
+          "tags": [
+            "water-surface",
+            "snow-ice"
+          ],
+          "caption": "Marill bounces on an icy lake with a bubble.",
+          "name": "Marill",
+          "localId": "29",
+          "setId": "basep",
+          "setName": "Wizards Black Star Promos",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/basep/29"
+        },
+        {
+          "id": "bw1-14",
+          "score": 120,
+          "tags": [
+            "mountain-rocks",
+            "snow-ice",
+            "flowers"
+          ],
+          "caption": "Sawsbuck stands by a flowering bush with a snowy mountain behind.",
+          "name": "Sawsbuck",
+          "localId": "14",
+          "setId": "bw1",
+          "setName": "Black & White",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw1/14"
+        },
+        {
+          "id": "bw1-66",
+          "score": 120,
+          "tags": [
+            "mountain-rocks",
+            "snow-ice",
+            "sky-clouds",
+            "flowers"
+          ],
+          "caption": "Purrloin poses by a flowering bush with a snowy mountain behind.",
+          "name": "Purrloin",
+          "localId": "66",
+          "setId": "bw1",
+          "setName": "Black & White",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw1/66"
+        },
+        {
+          "id": "bw10-16",
+          "score": 120,
+          "tags": [
+            "water-surface",
+            "snow-ice"
+          ],
+          "caption": "Blastoise rises through turbulent icy water.",
+          "name": "Blastoise",
+          "localId": "16",
+          "setId": "bw10",
+          "setName": "Plasma Blast",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw10/16"
+        },
+        {
+          "id": "bw10-17",
+          "score": 120,
+          "tags": [
+            "water-surface",
+            "snow-ice",
+            "swimming"
+          ],
+          "caption": "Lapras swims through icy water.",
+          "name": "Lapras",
+          "localId": "17",
+          "setId": "bw10",
+          "setName": "Plasma Blast",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw10/17"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "group": "original",
+      "query": "underwater",
+      "mappedTags": [
+        "underwater"
+      ],
+      "mappedGroups": [
+        {
+          "source": "underwater",
+          "anyOfTags": [
+            "underwater"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 1011,
+      "top": [
+        {
+          "id": "base3-49",
+          "score": 150,
+          "tags": [
+            "underwater",
+            "swimming"
+          ],
+          "caption": "Horsea spits ink underwater among seaweed.",
+          "name": "Horsea",
+          "localId": "49",
+          "setId": "base3",
+          "setName": "Fossil",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base3/49"
+        },
+        {
+          "id": "base4-36",
+          "score": 150,
+          "tags": [
+            "underwater",
+            "snow-ice",
+            "swimming"
+          ],
+          "caption": "Seal creature swimming underwater with bubbles and icebergs.",
+          "name": "Dewgong",
+          "localId": "36",
+          "setId": "base4",
+          "setName": "Base Set 2",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base4/36"
+        },
+        {
+          "id": "bw10-29",
+          "score": 150,
+          "tags": [
+            "underwater",
+            "multiple-pokemon",
+            "swimming"
+          ],
+          "caption": "Ducklett swims underwater with small fish.",
+          "name": "Ducklett",
+          "localId": "29",
+          "setId": "bw10",
+          "setName": "Plasma Blast",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw10/29"
+        },
+        {
+          "id": "bw11-33",
+          "score": 150,
+          "tags": [
+            "underwater",
+            "multiple-pokemon",
+            "swimming"
+          ],
+          "caption": "Piplup swims underwater with several small Pokémon.",
+          "name": "Piplup",
+          "localId": "33",
+          "setId": "bw11",
+          "setName": "Legendary Treasures",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw11/33"
+        },
+        {
+          "id": "bw3-31",
+          "score": 150,
+          "tags": [
+            "underwater",
+            "flowers",
+            "multiple-pokemon",
+            "swimming"
+          ],
+          "caption": "Jellicent swims underwater with a smaller Frillish near aquatic flowers.",
+          "name": "Jellicent",
+          "localId": "31",
+          "setId": "bw3",
+          "setName": "Noble Victories",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw3/31"
+        },
+        {
+          "id": "bw3-38",
+          "score": 150,
+          "tags": [
+            "underwater",
+            "swimming"
+          ],
+          "caption": "Tynamo swims underwater among bubbles and aquatic plants.",
+          "name": "Tynamo",
+          "localId": "38",
+          "setId": "bw3",
+          "setName": "Noble Victories",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw3/38"
+        },
+        {
+          "id": "bw4-30",
+          "score": 150,
+          "tags": [
+            "underwater",
+            "multiple-pokemon",
+            "swimming"
+          ],
+          "caption": "Basculin swims underwater with several other Basculin among coral.",
+          "name": "Basculin",
+          "localId": "30",
+          "setId": "bw4",
+          "setName": "Next Destinies",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw4/30"
+        },
+        {
+          "id": "bw4-34",
+          "score": 150,
+          "tags": [
+            "underwater",
+            "multiple-pokemon",
+            "swimming"
+          ],
+          "caption": "Frillish swims underwater with another Frillish in filtered light.",
+          "name": "Frillish",
+          "localId": "34",
+          "setId": "bw4",
+          "setName": "Next Destinies",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw4/34"
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "group": "original",
+      "query": "in space",
+      "mappedTags": [],
+      "mappedGroups": [],
+      "unmappedTerms": [
+        "space"
+      ],
+      "totalMatches": 32,
+      "top": [
+        {
+          "id": "ex10-100",
+          "score": 160,
+          "tags": [],
+          "caption": "A star energy orb over a glowing grid in space",
+          "name": "Warp Energy",
+          "localId": "100",
+          "setId": "ex10",
+          "setName": "Unseen Forces",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex10/100"
+        },
+        {
+          "id": "neo2-75",
+          "score": 160,
+          "tags": [],
+          "caption": "Ancient box glowing with light among energy symbols in space",
+          "name": "Energy Ark",
+          "localId": "75",
+          "setId": "neo2",
+          "setName": "Neo Discovery",
+          "serie": "neo",
+          "image": "https://assets.tcgdex.net/en/neo/neo2/75"
+        },
+        {
+          "id": "xyp-XY147",
+          "score": 160,
+          "tags": [
+            "multiple-pokemon",
+            "flying"
+          ],
+          "caption": "Hoopa floats in space surrounded by several Pokémon.",
+          "name": "Hoopa",
+          "localId": "XY147",
+          "setId": "xyp",
+          "setName": "XY Black Star Promos",
+          "serie": "xy",
+          "image": "https://assets.tcgdex.net/en/xy/xyp/XY147"
+        },
+        {
+          "id": "basep-9",
+          "score": 130,
+          "tags": [
+            "flying"
+          ],
+          "caption": "Mew floats on a dark sparkly space-like background.",
+          "name": "Mew",
+          "localId": "9",
+          "setId": "basep",
+          "setName": "Wizards Black Star Promos",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/basep/9"
+        },
+        {
+          "id": "bw7-69",
+          "score": 130,
+          "tags": [
+            "sleeping",
+            "flying"
+          ],
+          "caption": "Musharna sleeps curled up while floating in purple space.",
+          "name": "Musharna",
+          "localId": "69",
+          "setId": "bw7",
+          "setName": "Boundaries Crossed",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw7/69"
+        },
+        {
+          "id": "dp4-104",
+          "score": 130,
+          "tags": [],
+          "caption": "Darkrai lunging in a colorful cosmic space",
+          "name": "Darkrai",
+          "localId": "104",
+          "setId": "dp4",
+          "setName": "Great Encounters",
+          "serie": "dp",
+          "image": "https://assets.tcgdex.net/en/dp/dp4/104"
+        },
+        {
+          "id": "ecard3-2",
+          "score": 130,
+          "tags": [],
+          "caption": "Alakazam stands in a dark greenish space with a red orb.",
+          "name": "Alakazam",
+          "localId": "2",
+          "setId": "ecard3",
+          "setName": "Skyridge",
+          "serie": "ecard",
+          "image": "https://assets.tcgdex.net/en/ecard/ecard3/2"
+        },
+        {
+          "id": "ex13-103",
+          "score": 130,
+          "tags": [],
+          "caption": "Mewtwo-like Pokémon reaches out on a starry space background.",
+          "name": "Mewtwo Star",
+          "localId": "103",
+          "setId": "ex13",
+          "setName": "Holon Phantoms",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex13/103"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "group": "original",
+      "query": "on a mountain",
+      "mappedTags": [
+        "mountain-rocks"
+      ],
+      "mappedGroups": [
+        {
+          "source": "mountain",
+          "anyOfTags": [
+            "mountain-rocks"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 3434,
+      "top": [
+        {
+          "id": "bw6-89",
+          "score": 150,
+          "tags": [
+            "mountain-rocks",
+            "ruins-building",
+            "sky-clouds"
+          ],
+          "caption": "Gabite stands on a mountain before ornate stone ruins.",
+          "name": "Gabite",
+          "localId": "89",
+          "setId": "bw6",
+          "setName": "Dragons Exalted",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw6/89"
+        },
+        {
+          "id": "dp6-29",
+          "score": 150,
+          "tags": [
+            "mountain-rocks",
+            "night"
+          ],
+          "caption": "Groudon striding on a mountain slope at night",
+          "name": "Groudon",
+          "localId": "29",
+          "setId": "dp6",
+          "setName": "Legends Awakened",
+          "serie": "dp",
+          "image": "https://assets.tcgdex.net/en/dp/dp6/29"
+        },
+        {
+          "id": "xy0-28",
+          "score": 150,
+          "tags": [
+            "mountain-rocks",
+            "sky-clouds",
+            "flying"
+          ],
+          "caption": "Skitty leaps on a mountain ledge beneath blue sky.",
+          "name": "Skitty",
+          "localId": "28",
+          "setId": "xy0",
+          "setName": "Kalos Starter Set",
+          "serie": "xy",
+          "image": "https://assets.tcgdex.net/en/xy/xy0/28"
+        },
+        {
+          "id": "base1-28",
+          "score": 120,
+          "tags": [
+            "grassland-field",
+            "mountain-rocks",
+            "sky-clouds"
+          ],
+          "caption": "Growlithe looks up on a green field with blue mountains and clouds behind.",
+          "name": "Growlithe",
+          "localId": "28",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/28"
+        },
+        {
+          "id": "base1-37",
+          "score": 120,
+          "tags": [
+            "mountain-rocks"
+          ],
+          "caption": "Nidoking crouches in front of red-orange rocky canyon walls.",
+          "name": "Nidorino",
+          "localId": "37",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/37"
+        },
+        {
+          "id": "base1-39",
+          "score": 120,
+          "tags": [
+            "forest",
+            "grassland-field",
+            "mountain-rocks"
+          ],
+          "caption": "Porygon on a green field with polygon trees and mountains.",
+          "name": "Porygon",
+          "localId": "39",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/39"
+        },
+        {
+          "id": "base1-56",
+          "score": 120,
+          "tags": [
+            "mountain-rocks"
+          ],
+          "caption": "Onix arches its rocky body before a rocky yellow hillside.",
+          "name": "Onix",
+          "localId": "56",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/56"
+        },
+        {
+          "id": "base1-57",
+          "score": 120,
+          "tags": [
+            "grassland-field",
+            "mountain-rocks",
+            "snow-ice",
+            "night"
+          ],
+          "caption": "Pidgey stands in a dark field under a bright moon with snowy mountains.",
+          "name": "Pidgey",
+          "localId": "57",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/57"
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "group": "original",
+      "query": "in a city",
+      "mappedTags": [
+        "city"
+      ],
+      "mappedGroups": [
+        {
+          "source": "city",
+          "anyOfTags": [
+            "city"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 1486,
+      "top": [
+        {
+          "id": "bw4-71",
+          "score": 150,
+          "tags": [
+            "city",
+            "ruins-building"
+          ],
+          "caption": "Nuzleaf stands beside an ornate gate in a city park.",
+          "name": "Nuzleaf",
+          "localId": "71",
+          "setId": "bw4",
+          "setName": "Next Destinies",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw4/71"
+        },
+        {
+          "id": "col1-56",
+          "score": 150,
+          "tags": [
+            "city",
+            "ruins-building",
+            "sky-clouds",
+            "night",
+            "flying"
+          ],
+          "caption": "Eevee in a city, a building, a cloudy sky, night, flight.",
+          "name": "Eevee",
+          "localId": "56",
+          "setId": "col1",
+          "setName": "Call of Legends",
+          "serie": "col",
+          "image": "https://assets.tcgdex.net/en/col/col1/56"
+        },
+        {
+          "id": "col1-94",
+          "score": 150,
+          "tags": [
+            "city",
+            "ruins-building",
+            "night"
+          ],
+          "caption": "Darkness Energy in a city, a building, night.",
+          "name": "Darkness Energy",
+          "localId": "94",
+          "setId": "col1",
+          "setName": "Call of Legends",
+          "serie": "col",
+          "image": "https://assets.tcgdex.net/en/col/col1/94"
+        },
+        {
+          "id": "col1-95",
+          "score": 150,
+          "tags": [
+            "city",
+            "ruins-building"
+          ],
+          "caption": "Metal Energy in a city, a building.",
+          "name": "Metal Energy",
+          "localId": "95",
+          "setId": "col1",
+          "setName": "Call of Legends",
+          "serie": "col",
+          "image": "https://assets.tcgdex.net/en/col/col1/95"
+        },
+        {
+          "id": "det1-11",
+          "score": 150,
+          "tags": [
+            "city",
+            "ruins-building"
+          ],
+          "caption": "Mr. Mime appears in a city.",
+          "name": "Mr. Mime",
+          "localId": "11",
+          "setId": "det1",
+          "setName": "Detective Pikachu",
+          "serie": "sm",
+          "image": "https://assets.tcgdex.net/en/sm/det1/11"
+        },
+        {
+          "id": "det1-13",
+          "score": 150,
+          "tags": [
+            "city",
+            "human-present"
+          ],
+          "caption": "Machamp appears in a city with a human.",
+          "name": "Machamp",
+          "localId": "13",
+          "setId": "det1",
+          "setName": "Detective Pikachu",
+          "serie": "sm",
+          "image": "https://assets.tcgdex.net/en/sm/det1/13"
+        },
+        {
+          "id": "det1-16",
+          "score": 150,
+          "tags": [
+            "city"
+          ],
+          "caption": "Lickitung appears in a city.",
+          "name": "Lickitung",
+          "localId": "16",
+          "setId": "det1",
+          "setName": "Detective Pikachu",
+          "serie": "sm",
+          "image": "https://assets.tcgdex.net/en/sm/det1/16"
+        },
+        {
+          "id": "det1-6",
+          "score": 150,
+          "tags": [
+            "city",
+            "indoors"
+          ],
+          "caption": "Arcanine appears in a city.",
+          "name": "Arcanine",
+          "localId": "6",
+          "setId": "det1",
+          "setName": "Detective Pikachu",
+          "serie": "sm",
+          "image": "https://assets.tcgdex.net/en/sm/det1/6"
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "group": "original",
+      "query": "sleeping",
+      "mappedTags": [
+        "sleeping"
+      ],
+      "mappedGroups": [
+        {
+          "source": "sleeping",
+          "anyOfTags": [
+            "sleeping"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 320,
+      "top": [
+        {
+          "id": "col1-4",
+          "score": 150,
+          "tags": [
+            "forest",
+            "city",
+            "ruins-building",
+            "night",
+            "sleeping"
+          ],
+          "caption": "Espeon in a forest, a city, a building, night, sleeping.",
+          "name": "Espeon",
+          "localId": "4",
+          "setId": "col1",
+          "setName": "Call of Legends",
+          "serie": "col",
+          "image": "https://assets.tcgdex.net/en/col/col1/4"
+        },
+        {
+          "id": "ecard1-101",
+          "score": 150,
+          "tags": [
+            "grassland-field",
+            "sleeping"
+          ],
+          "caption": "Clefairy sleeping in tall blue-toned grass.",
+          "name": "Clefairy",
+          "localId": "101",
+          "setId": "ecard1",
+          "setName": "Expedition Base Set",
+          "serie": "ecard",
+          "image": "https://assets.tcgdex.net/en/ecard/ecard1/101"
+        },
+        {
+          "id": "ecard1-94",
+          "score": 150,
+          "tags": [
+            "grassland-field",
+            "sleeping"
+          ],
+          "caption": "Bulbasaur sleeping on its back in a flowery meadow.",
+          "name": "Bulbasaur",
+          "localId": "94",
+          "setId": "ecard1",
+          "setName": "Expedition Base Set",
+          "serie": "ecard",
+          "image": "https://assets.tcgdex.net/en/ecard/ecard1/94"
+        },
+        {
+          "id": "ex14-33",
+          "score": 150,
+          "tags": [
+            "water-surface",
+            "mountain-rocks",
+            "sleeping"
+          ],
+          "caption": "Sleeping green Pokemon on a rocky cliff above the sea with trees.",
+          "name": "Gulpin",
+          "localId": "33",
+          "setId": "ex14",
+          "setName": "Crystal Guardians",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex14/33"
+        },
+        {
+          "id": "ex6-53",
+          "score": 150,
+          "tags": [
+            "night",
+            "sleeping"
+          ],
+          "caption": "A sleeping cocoon Pokémon hangs from a branch against a dark night sky.",
+          "name": "Bellsprout",
+          "localId": "53",
+          "setId": "ex6",
+          "setName": "FireRed & LeafGreen",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex6/53"
+        },
+        {
+          "id": "hgss1-80",
+          "score": 150,
+          "tags": [
+            "grassland-field",
+            "sky-clouds",
+            "flowers",
+            "sleeping"
+          ],
+          "caption": "Sentret in grassland, cloudy sky, flowers, sleeping.",
+          "name": "Sentret",
+          "localId": "80",
+          "setId": "hgss1",
+          "setName": "HeartGold SoulSilver",
+          "serie": "hgss",
+          "image": "https://assets.tcgdex.net/en/hgss/hgss1/80"
+        },
+        {
+          "id": "hgss3-27",
+          "score": 150,
+          "tags": [
+            "forest",
+            "flowers",
+            "sleeping"
+          ],
+          "caption": "Gloom in a forest, flowers, sleeping.",
+          "name": "Gloom",
+          "localId": "27",
+          "setId": "hgss3",
+          "setName": "Undaunted",
+          "serie": "hgss",
+          "image": "https://assets.tcgdex.net/en/hgss/hgss3/27"
+        },
+        {
+          "id": "hgss3-55",
+          "score": 150,
+          "tags": [
+            "indoors",
+            "sleeping"
+          ],
+          "caption": "Makuhita in an indoor scene, sleeping.",
+          "name": "Makuhita",
+          "localId": "55",
+          "setId": "hgss3",
+          "setName": "Undaunted",
+          "serie": "hgss",
+          "image": "https://assets.tcgdex.net/en/hgss/hgss3/55"
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "group": "original",
+      "query": "eating food",
+      "mappedTags": [
+        "food-visible"
+      ],
+      "mappedGroups": [
+        {
+          "source": "food",
+          "anyOfTags": [
+            "food-visible"
+          ]
+        }
+      ],
+      "unmappedTerms": [
+        "eating"
+      ],
+      "totalMatches": 6,
+      "top": [
+        {
+          "id": "swsh1-140",
+          "score": 250,
+          "tags": [
+            "forest",
+            "food-visible"
+          ],
+          "caption": "A big Snorlax eating fruit beneath apple trees.",
+          "name": "Snorlax",
+          "localId": "140",
+          "setId": "swsh1",
+          "setName": "Sword & Shield",
+          "serie": "swsh",
+          "image": "https://assets.tcgdex.net/en/swsh/swsh1/140"
+        },
+        {
+          "id": "ex7-104",
+          "score": 240,
+          "tags": [
+            "food-visible"
+          ],
+          "caption": "A huge Snorlax-like Pokémon munches on a berry.",
+          "name": "Rocket's Snorlax ex",
+          "localId": "104",
+          "setId": "ex7",
+          "setName": "Team Rocket Returns",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex7/104"
+        },
+        {
+          "id": "pl2-81",
+          "score": 240,
+          "tags": [
+            "forest",
+            "food-visible"
+          ],
+          "caption": "A Snorlax eats red berries among trees.",
+          "name": "Snorlax",
+          "localId": "81",
+          "setId": "pl2",
+          "setName": "Rising Rivals",
+          "serie": "pl",
+          "image": "https://assets.tcgdex.net/en/pl/pl2/81"
+        },
+        {
+          "id": "neo2-65",
+          "score": 235,
+          "tags": [
+            "forest",
+            "food-visible"
+          ],
+          "caption": "Teddiursa eating honey near tree stumps with honey pots",
+          "name": "Teddiursa",
+          "localId": "65",
+          "setId": "neo2",
+          "setName": "Neo Discovery",
+          "serie": "neo",
+          "image": "https://assets.tcgdex.net/en/neo/neo2/65"
+        },
+        {
+          "id": "bw11-RC15",
+          "score": 225,
+          "tags": [
+            "forest",
+            "flowers",
+            "food-visible",
+            "multiple-pokemon"
+          ],
+          "caption": "Teddiursa eats honey with another among forest flowers.",
+          "name": "Teddiursa",
+          "localId": "RC15",
+          "setId": "bw11",
+          "setName": "Legendary Treasures",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw11/RC15"
+        },
+        {
+          "id": "pl2-33",
+          "score": 225,
+          "tags": [
+            "indoors",
+            "food-visible"
+          ],
+          "caption": "A Snorlax eats apples in a kitchen.",
+          "name": "Snorlax",
+          "localId": "33",
+          "setId": "pl2",
+          "setName": "Rising Rivals",
+          "serie": "pl",
+          "image": "https://assets.tcgdex.net/en/pl/pl2/33"
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "group": "original",
+      "query": "flying in the sky",
+      "mappedTags": [
+        "flying",
+        "sky-clouds"
+      ],
+      "mappedGroups": [
+        {
+          "source": "flying",
+          "anyOfTags": [
+            "flying"
+          ]
+        },
+        {
+          "source": "sky",
+          "anyOfTags": [
+            "sky-clouds"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 1839,
+      "top": [
+        {
+          "id": "basep-21",
+          "score": 240,
+          "tags": [
+            "mountain-rocks",
+            "sky-clouds",
+            "fire-lava",
+            "flying"
+          ],
+          "caption": "Moltres flies over an erupting volcano with lava and stormy clouds.",
+          "name": "Moltres",
+          "localId": "21",
+          "setId": "basep",
+          "setName": "Wizards Black Star Promos",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/basep/21"
+        },
+        {
+          "id": "basep-45",
+          "score": 240,
+          "tags": [
+            "grassland-field",
+            "sky-clouds",
+            "flying"
+          ],
+          "caption": "Scyther flies above a green hill under a bright sky.",
+          "name": "Scyther",
+          "localId": "45",
+          "setId": "basep",
+          "setName": "Wizards Black Star Promos",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/basep/45"
+        },
+        {
+          "id": "basep-5",
+          "score": 240,
+          "tags": [
+            "mountain-rocks",
+            "sky-clouds",
+            "flying"
+          ],
+          "caption": "Cartoon Dragonite flies carrying a bag over mountains and clouds.",
+          "name": "Dragonite",
+          "localId": "5",
+          "setId": "basep",
+          "setName": "Wizards Black Star Promos",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/basep/5"
+        },
+        {
+          "id": "bw1-73",
+          "score": 240,
+          "tags": [
+            "mountain-rocks",
+            "sky-clouds",
+            "flying"
+          ],
+          "caption": "Mandibuzz flies between rocky cliffs under a bright sky.",
+          "name": "Mandibuzz",
+          "localId": "73",
+          "setId": "bw1",
+          "setName": "Black & White",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw1/73"
+        },
+        {
+          "id": "bw1-85",
+          "score": 240,
+          "tags": [
+            "forest",
+            "sky-clouds",
+            "flying"
+          ],
+          "caption": "Tranquill flies above green trees under a bright sky.",
+          "name": "Tranquill",
+          "localId": "85",
+          "setId": "bw1",
+          "setName": "Black & White",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw1/85"
+        },
+        {
+          "id": "bw10-2",
+          "score": 240,
+          "tags": [
+            "water-surface",
+            "snow-ice",
+            "sky-clouds",
+            "flying"
+          ],
+          "caption": "Masquerain flies above icy water beneath blue sky.",
+          "name": "Masquerain",
+          "localId": "2",
+          "setId": "bw10",
+          "setName": "Plasma Blast",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw10/2"
+        },
+        {
+          "id": "bw11-23",
+          "score": 240,
+          "tags": [
+            "city",
+            "ruins-building",
+            "sky-clouds",
+            "flying"
+          ],
+          "caption": "Victini flies above stone buildings beneath blue sky.",
+          "name": "Victini",
+          "localId": "23",
+          "setId": "bw11",
+          "setName": "Legendary Treasures",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw11/23"
+        },
+        {
+          "id": "bw11-32",
+          "score": 240,
+          "tags": [
+            "city",
+            "sky-clouds",
+            "flying"
+          ],
+          "caption": "Articuno flies above a modern city beneath clouds.",
+          "name": "Articuno",
+          "localId": "32",
+          "setId": "bw11",
+          "setName": "Legendary Treasures",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw11/32"
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "group": "original",
+      "query": "near a volcano",
+      "mappedTags": [],
+      "mappedGroups": [],
+      "unmappedTerms": [
+        "volcano"
+      ],
+      "totalMatches": 81,
+      "top": [
+        {
+          "id": "basep-21",
+          "score": 130,
+          "tags": [
+            "mountain-rocks",
+            "sky-clouds",
+            "fire-lava",
+            "flying"
+          ],
+          "caption": "Moltres flies over an erupting volcano with lava and stormy clouds.",
+          "name": "Moltres",
+          "localId": "21",
+          "setId": "basep",
+          "setName": "Wizards Black Star Promos",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/basep/21"
+        },
+        {
+          "id": "dp4-18",
+          "score": 130,
+          "tags": [
+            "mountain-rocks",
+            "sunset-sunrise",
+            "fire-lava"
+          ],
+          "caption": "Houndoom standing before an erupting volcano at dusk",
+          "name": "Houndoom",
+          "localId": "18",
+          "setId": "dp4",
+          "setName": "Great Encounters",
+          "serie": "dp",
+          "image": "https://assets.tcgdex.net/en/dp/dp4/18"
+        },
+        {
+          "id": "ex10-113",
+          "score": 130,
+          "tags": [
+            "multiple-pokemon"
+          ],
+          "caption": "A maned volcano beast Pokémon leaps amid white smoke and green glow",
+          "name": "Entei ☆",
+          "localId": "113",
+          "setId": "ex10",
+          "setName": "Unseen Forces",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex10/113"
+        },
+        {
+          "id": "ex12-26",
+          "score": 130,
+          "tags": [
+            "grassland-field",
+            "mountain-rocks",
+            "sky-clouds"
+          ],
+          "caption": "Spinda stands in a meadow with a smoking volcano and clouds behind.",
+          "name": "Spinda",
+          "localId": "26",
+          "setId": "ex12",
+          "setName": "Legend Maker",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex12/26"
+        },
+        {
+          "id": "ex14-59",
+          "score": 130,
+          "tags": [
+            "water-surface"
+          ],
+          "caption": "Numel standing on red earth by a sea with small islands and a volcano.",
+          "name": "Numel",
+          "localId": "59",
+          "setId": "ex14",
+          "setName": "Crystal Guardians",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex14/59"
+        },
+        {
+          "id": "ex3-24",
+          "score": 130,
+          "tags": [
+            "mountain-rocks",
+            "fire-lava"
+          ],
+          "caption": "A camel Pokémon with an erupting volcano on its back stands among hills.",
+          "name": "Camerupt",
+          "localId": "24",
+          "setId": "ex3",
+          "setName": "Dragon",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex3/24"
+        },
+        {
+          "id": "ex3-72",
+          "score": 130,
+          "tags": [
+            "mountain-rocks",
+            "sky-clouds"
+          ],
+          "caption": "A red slug Pokémon stands in front of a volcano and sky.",
+          "name": "Slugma",
+          "localId": "72",
+          "setId": "ex3",
+          "setName": "Dragon",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex3/72"
+        },
+        {
+          "id": "ex5-17",
+          "score": 130,
+          "tags": [
+            "mountain-rocks",
+            "flying"
+          ],
+          "caption": "A small bell-shaped Pokémon floats before a volcano and tree branch.",
+          "name": "Chimecho",
+          "localId": "17",
+          "setId": "ex5",
+          "setName": "Hidden Legends",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex5/17"
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "group": "original",
+      "query": "in the rain",
+      "mappedTags": [],
+      "mappedGroups": [],
+      "unmappedTerms": [
+        "rain"
+      ],
+      "totalMatches": 25,
+      "top": [
+        {
+          "id": "neo4-49",
+          "score": 160,
+          "tags": [
+            "flowers"
+          ],
+          "caption": "Machoke lying in the rain beside a pink flower.",
+          "name": "Light Machoke",
+          "localId": "49",
+          "setId": "neo4",
+          "setName": "Neo Destiny",
+          "serie": "neo",
+          "image": "https://assets.tcgdex.net/en/neo/neo4/49"
+        },
+        {
+          "id": "neo4-85",
+          "score": 160,
+          "tags": [],
+          "caption": "Totodile laughing with its mouth open in the rain.",
+          "name": "Totodile",
+          "localId": "85",
+          "setId": "neo4",
+          "setName": "Neo Destiny",
+          "serie": "neo",
+          "image": "https://assets.tcgdex.net/en/neo/neo4/85"
+        },
+        {
+          "id": "dp2-77",
+          "score": 130,
+          "tags": [
+            "forest",
+            "flowers"
+          ],
+          "caption": "A green leaf Pokémon stands in rain among hydrangea flowers.",
+          "name": "Chikorita",
+          "localId": "77",
+          "setId": "dp2",
+          "setName": "Mysterious Treasures",
+          "serie": "dp",
+          "image": "https://assets.tcgdex.net/en/dp/dp2/77"
+        },
+        {
+          "id": "dp3-96",
+          "score": 130,
+          "tags": [
+            "flying"
+          ],
+          "caption": "A small green bird Pokémon flies through rain streaks.",
+          "name": "Natu",
+          "localId": "96",
+          "setId": "dp3",
+          "setName": "Secret Wonders",
+          "serie": "dp",
+          "image": "https://assets.tcgdex.net/en/dp/dp3/96"
+        },
+        {
+          "id": "dp6-49",
+          "score": 130,
+          "tags": [
+            "flowers"
+          ],
+          "caption": "Castform in rain form surrounded by pink blossoms",
+          "name": "Castform Rain Form",
+          "localId": "49",
+          "setId": "dp6",
+          "setName": "Legends Awakened",
+          "serie": "dp",
+          "image": "https://assets.tcgdex.net/en/dp/dp6/49"
+        },
+        {
+          "id": "ecard1-99",
+          "score": 130,
+          "tags": [],
+          "caption": "Chikorita walking in driving rain beneath its big leaf.",
+          "name": "Chikorita",
+          "localId": "99",
+          "setId": "ecard1",
+          "setName": "Expedition Base Set",
+          "serie": "ecard",
+          "image": "https://assets.tcgdex.net/en/ecard/ecard1/99"
+        },
+        {
+          "id": "ecard3-36",
+          "score": 130,
+          "tags": [
+            "city"
+          ],
+          "caption": "Electrode cries in heavy rain in front of dark houses.",
+          "name": "Electrode",
+          "localId": "36",
+          "setId": "ecard3",
+          "setName": "Skyridge",
+          "serie": "ecard",
+          "image": "https://assets.tcgdex.net/en/ecard/ecard3/36"
+        },
+        {
+          "id": "ex11-26",
+          "score": 130,
+          "tags": [],
+          "caption": "Castform in rain form sits on a brick wall under rain clouds.",
+          "name": "Rain Castform",
+          "localId": "26",
+          "setId": "ex11",
+          "setName": "Delta Species",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex11/26"
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "group": "original",
+      "query": "in a desert",
+      "mappedTags": [
+        "desert"
+      ],
+      "mappedGroups": [
+        {
+          "source": "desert",
+          "anyOfTags": [
+            "desert"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 440,
+      "top": [
+        {
+          "id": "bw7-78",
+          "score": 150,
+          "tags": [
+            "mountain-rocks",
+            "desert",
+            "ruins-building",
+            "sky-clouds"
+          ],
+          "caption": "Sandshrew stands in a desert village beneath blue sky.",
+          "name": "Sandshrew",
+          "localId": "78",
+          "setId": "bw7",
+          "setName": "Boundaries Crossed",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw7/78"
+        },
+        {
+          "id": "ecard3-8",
+          "score": 150,
+          "tags": [
+            "desert"
+          ],
+          "caption": "Flareon sits in a desert with reeds and dunes.",
+          "name": "Flareon",
+          "localId": "8",
+          "setId": "ecard3",
+          "setName": "Skyridge",
+          "serie": "ecard",
+          "image": "https://assets.tcgdex.net/en/ecard/ecard3/8"
+        },
+        {
+          "id": "ex2-30",
+          "score": 150,
+          "tags": [
+            "desert",
+            "sky-clouds"
+          ],
+          "caption": "A blue round Pokémon stands in a desert with palm trees.",
+          "name": "Azumarill",
+          "localId": "30",
+          "setId": "ex2",
+          "setName": "Sandstorm",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex2/30"
+        },
+        {
+          "id": "ex2-54",
+          "score": 150,
+          "tags": [
+            "desert",
+            "sky-clouds"
+          ],
+          "caption": "A blue Pokémon stands among cacti in a desert under blue sky.",
+          "name": "Wynaut",
+          "localId": "54",
+          "setId": "ex2",
+          "setName": "Sandstorm",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex2/54"
+        },
+        {
+          "id": "ex8-47",
+          "score": 150,
+          "tags": [
+            "desert"
+          ],
+          "caption": "A sun Pokémon floats in a desert with cacti and red sun",
+          "name": "Solrock",
+          "localId": "47",
+          "setId": "ex8",
+          "setName": "Deoxys",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex8/47"
+        },
+        {
+          "id": "g1-39",
+          "score": 150,
+          "tags": [
+            "desert",
+            "multiple-pokemon"
+          ],
+          "caption": "Dugtrio appears in a desert and other Pokémon.",
+          "name": "Dugtrio",
+          "localId": "39",
+          "setId": "g1",
+          "setName": "Generations",
+          "serie": "xy",
+          "image": "https://assets.tcgdex.net/en/xy/g1/39"
+        },
+        {
+          "id": "pl1-42",
+          "score": 150,
+          "tags": [
+            "desert",
+            "night"
+          ],
+          "caption": "A cactus Pokémon stands in a desert under a crescent moon and stars.",
+          "name": "Cacturne",
+          "localId": "42",
+          "setId": "pl1",
+          "setName": "Platinum",
+          "serie": "pl",
+          "image": "https://assets.tcgdex.net/en/pl/pl1/42"
+        },
+        {
+          "id": "pop2-13",
+          "score": 150,
+          "tags": [
+            "mountain-rocks",
+            "desert"
+          ],
+          "caption": "A green cactus Pokémon in a desert with rock spires",
+          "name": "Cacnea",
+          "localId": "13",
+          "setId": "pop2",
+          "setName": "POP Series 2",
+          "serie": "pop",
+          "image": "https://assets.tcgdex.net/en/pop/pop2/13"
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "group": "original",
+      "query": "at sunset",
+      "mappedTags": [
+        "sunset-sunrise"
+      ],
+      "mappedGroups": [
+        {
+          "source": "sunset",
+          "anyOfTags": [
+            "sunset-sunrise"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 505,
+      "top": [
+        {
+          "id": "base4-38",
+          "score": 150,
+          "tags": [
+            "water-surface",
+            "sky-clouds",
+            "sunset-sunrise",
+            "swimming"
+          ],
+          "caption": "Blue serpent emerging from a lake at sunset under purple clouds.",
+          "name": "Dratini",
+          "localId": "38",
+          "setId": "base4",
+          "setName": "Base Set 2",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base4/38"
+        },
+        {
+          "id": "base4-39",
+          "score": 150,
+          "tags": [
+            "beach",
+            "water-surface",
+            "sunset-sunrise",
+            "multiple-pokemon"
+          ],
+          "caption": "Coconut creature sitting on a beach at sunset with a small crab.",
+          "name": "Exeggutor",
+          "localId": "39",
+          "setId": "base4",
+          "setName": "Base Set 2",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base4/39"
+        },
+        {
+          "id": "bw11-91",
+          "score": 150,
+          "tags": [
+            "sunset-sunrise"
+          ],
+          "caption": "Cobalion stands before a silhouetted landscape at sunset.",
+          "name": "Cobalion",
+          "localId": "91",
+          "setId": "bw11",
+          "setName": "Legendary Treasures",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw11/91"
+        },
+        {
+          "id": "bw3-23",
+          "score": 150,
+          "tags": [
+            "water-surface",
+            "sunset-sunrise"
+          ],
+          "caption": "Palpitoad splashes beside a pond at sunset.",
+          "name": "Palpitoad",
+          "localId": "23",
+          "setId": "bw3",
+          "setName": "Noble Victories",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw3/23"
+        },
+        {
+          "id": "bw6-108",
+          "score": 150,
+          "tags": [
+            "city",
+            "sunset-sunrise",
+            "flying"
+          ],
+          "caption": "Audino floats above city rooftops at sunset.",
+          "name": "Audino",
+          "localId": "108",
+          "setId": "bw6",
+          "setName": "Dragons Exalted",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw6/108"
+        },
+        {
+          "id": "ex4-82",
+          "score": 150,
+          "tags": [
+            "mountain-rocks",
+            "sunset-sunrise",
+            "human-present"
+          ],
+          "caption": "A hooded female Team Magma member stands before red mountains at sunset.",
+          "name": "Team Magma Conspirator",
+          "localId": "82",
+          "setId": "ex4",
+          "setName": "Team Magma vs Team Aqua",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex4/82"
+        },
+        {
+          "id": "ex7-70",
+          "score": 150,
+          "tags": [
+            "beach",
+            "water-surface",
+            "sunset-sunrise"
+          ],
+          "caption": "A duck Pokémon sits on a beach beside the sea at sunset.",
+          "name": "Psyduck",
+          "localId": "70",
+          "setId": "ex7",
+          "setName": "Team Rocket Returns",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex7/70"
+        },
+        {
+          "id": "lc-72",
+          "score": 150,
+          "tags": [
+            "water-surface",
+            "sunset-sunrise"
+          ],
+          "caption": "Dratini floating on a calm lake at sunset.",
+          "name": "Dratini",
+          "localId": "72",
+          "setId": "lc",
+          "setName": "Legendary Collection",
+          "serie": "lc",
+          "image": "https://assets.tcgdex.net/en/lc/lc/72"
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "group": "original",
+      "query": "with flowers",
+      "mappedTags": [
+        "flowers"
+      ],
+      "mappedGroups": [
+        {
+          "source": "flowers",
+          "anyOfTags": [
+            "flowers"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 1857,
+      "top": [
+        {
+          "id": "bw1-72",
+          "score": 150,
+          "tags": [
+            "forest",
+            "flowers"
+          ],
+          "caption": "Vullaby stands in a sunlit forest with flowers at its feet.",
+          "name": "Vullaby",
+          "localId": "72",
+          "setId": "bw1",
+          "setName": "Black & White",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw1/72"
+        },
+        {
+          "id": "bw2-34",
+          "score": 150,
+          "tags": [
+            "forest",
+            "flowers"
+          ],
+          "caption": "Galvantula stands by a stream with flowers and trees behind.",
+          "name": "Galvantula",
+          "localId": "34",
+          "setId": "bw2",
+          "setName": "Emerging Powers",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw2/34"
+        },
+        {
+          "id": "bw5-15",
+          "score": 150,
+          "tags": [
+            "grassland-field",
+            "flowers"
+          ],
+          "caption": "Torchic stands in a sunny meadow filled with flowers.",
+          "name": "Torchic",
+          "localId": "15",
+          "setId": "bw5",
+          "setName": "Dark Explorers",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw5/15"
+        },
+        {
+          "id": "bw7-8",
+          "score": 150,
+          "tags": [
+            "grassland-field",
+            "flowers",
+            "flying"
+          ],
+          "caption": "Heracross flies above a green meadow dotted with flowers.",
+          "name": "Heracross",
+          "localId": "8",
+          "setId": "bw7",
+          "setName": "Boundaries Crossed",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw7/8"
+        },
+        {
+          "id": "bwp-BW87",
+          "score": 150,
+          "tags": [
+            "flowers"
+          ],
+          "caption": "Leafeon sits against a green background patterned with flowers.",
+          "name": "Leafeon",
+          "localId": "BW87",
+          "setId": "bwp",
+          "setName": "BW Black Star Promos",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bwp/BW87"
+        },
+        {
+          "id": "dp5-43",
+          "score": 150,
+          "tags": [
+            "flowers"
+          ],
+          "caption": "Red Pokemon curled up in a crayon-style scene with flowers",
+          "name": "Pachirisu",
+          "localId": "43",
+          "setId": "dp5",
+          "setName": "Majestic Dawn",
+          "serie": "dp",
+          "image": "https://assets.tcgdex.net/en/dp/dp5/43"
+        },
+        {
+          "id": "pl2-85",
+          "score": 150,
+          "tags": [
+            "sky-clouds",
+            "flowers"
+          ],
+          "caption": "A Turtwig peeks over a fence with flowers and a girl at the corner.",
+          "name": "Turtwig GL",
+          "localId": "85",
+          "setId": "pl2",
+          "setName": "Rising Rivals",
+          "serie": "pl",
+          "image": "https://assets.tcgdex.net/en/pl/pl2/85"
+        },
+        {
+          "id": "sv01-005",
+          "score": 150,
+          "tags": [
+            "ruins-building",
+            "flowers"
+          ],
+          "caption": "A cactus Pokémon in front of a colorful house with flowers.",
+          "name": "Cacnea",
+          "localId": "005",
+          "setId": "sv01",
+          "setName": "Scarlet & Violet",
+          "serie": "sv",
+          "image": "https://assets.tcgdex.net/en/sv/sv01/005"
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "group": "original",
+      "query": "in a cave",
+      "mappedTags": [
+        "cave"
+      ],
+      "mappedGroups": [
+        {
+          "source": "cave",
+          "anyOfTags": [
+            "cave"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 653,
+      "top": [
+        {
+          "id": "dp2-111",
+          "score": 150,
+          "tags": [
+            "cave",
+            "human-present",
+            "multiple-pokemon"
+          ],
+          "caption": "An excavator digs out a fossil in a cave with several Pokémon watching.",
+          "name": "Fossil Excavator",
+          "localId": "111",
+          "setId": "dp2",
+          "setName": "Mysterious Treasures",
+          "serie": "dp",
+          "image": "https://assets.tcgdex.net/en/dp/dp2/111"
+        },
+        {
+          "id": "dp2-66",
+          "score": 150,
+          "tags": [
+            "cave"
+          ],
+          "caption": "A single Unown floats in a cave with rock walls and lanterns.",
+          "name": "Unown M",
+          "localId": "66",
+          "setId": "dp2",
+          "setName": "Mysterious Treasures",
+          "serie": "dp",
+          "image": "https://assets.tcgdex.net/en/dp/dp2/66"
+        },
+        {
+          "id": "dp3-69",
+          "score": 150,
+          "tags": [
+            "cave"
+          ],
+          "caption": "A single Unown floats in a cave with rocks and lanterns.",
+          "name": "Unown N",
+          "localId": "69",
+          "setId": "dp3",
+          "setName": "Secret Wonders",
+          "serie": "dp",
+          "image": "https://assets.tcgdex.net/en/dp/dp3/69"
+        },
+        {
+          "id": "dp3-70",
+          "score": 150,
+          "tags": [
+            "cave"
+          ],
+          "caption": "A single Unown floats in a cave with warm lights.",
+          "name": "Unown O",
+          "localId": "70",
+          "setId": "dp3",
+          "setName": "Secret Wonders",
+          "serie": "dp",
+          "image": "https://assets.tcgdex.net/en/dp/dp3/70"
+        },
+        {
+          "id": "dp3-71",
+          "score": 150,
+          "tags": [
+            "cave"
+          ],
+          "caption": "A single Unown floats in a cave with rocks and lamps.",
+          "name": "Unown X",
+          "localId": "71",
+          "setId": "dp3",
+          "setName": "Secret Wonders",
+          "serie": "dp",
+          "image": "https://assets.tcgdex.net/en/dp/dp3/71"
+        },
+        {
+          "id": "dp4-57",
+          "score": 150,
+          "tags": [
+            "cave"
+          ],
+          "caption": "Unown floating in a cave with glowing lanterns",
+          "name": "Unown G",
+          "localId": "57",
+          "setId": "dp4",
+          "setName": "Great Encounters",
+          "serie": "dp",
+          "image": "https://assets.tcgdex.net/en/dp/dp4/57"
+        },
+        {
+          "id": "dp5-33",
+          "score": 150,
+          "tags": [
+            "cave"
+          ],
+          "caption": "Unown floating in a cave tunnel with lanterns",
+          "name": "Unown P",
+          "localId": "33",
+          "setId": "dp5",
+          "setName": "Majestic Dawn",
+          "serie": "dp",
+          "image": "https://assets.tcgdex.net/en/dp/dp5/33"
+        },
+        {
+          "id": "dp5-82",
+          "score": 150,
+          "tags": [
+            "cave",
+            "human-present",
+            "multiple-pokemon"
+          ],
+          "caption": "Fossil excavator digging in a cave with Pokemon beside him",
+          "name": "Fossil Excavator",
+          "localId": "82",
+          "setId": "dp5",
+          "setName": "Majestic Dawn",
+          "serie": "dp",
+          "image": "https://assets.tcgdex.net/en/dp/dp5/82"
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "group": "original",
+      "query": "two pokemon playing together",
+      "mappedTags": [
+        "multiple-pokemon"
+      ],
+      "mappedGroups": [
+        {
+          "source": "two pokemon",
+          "anyOfTags": [
+            "multiple-pokemon"
+          ]
+        }
+      ],
+      "unmappedTerms": [
+        "playing"
+      ],
+      "totalMatches": 8,
+      "top": [
+        {
+          "id": "neo1-102",
+          "score": 235,
+          "tags": [
+            "multiple-pokemon"
+          ],
+          "caption": "Pokemon marching and playing music under a big tree",
+          "name": "Pokémon March",
+          "localId": "102",
+          "setId": "neo1",
+          "setName": "Neo Genesis",
+          "serie": "neo",
+          "image": "https://assets.tcgdex.net/en/neo/neo1/102"
+        },
+        {
+          "id": "bw8-8",
+          "score": 225,
+          "tags": [
+            "forest",
+            "multiple-pokemon"
+          ],
+          "caption": "Two Pansage play among orange autumn leaves.",
+          "name": "Sewaddle",
+          "localId": "8",
+          "setId": "bw8",
+          "setName": "Plasma Storm",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw8/8"
+        },
+        {
+          "id": "bwp-BW95",
+          "score": 225,
+          "tags": [
+            "water-surface",
+            "mountain-rocks",
+            "sky-clouds",
+            "multiple-pokemon",
+            "swimming"
+          ],
+          "caption": "Bidoof, Bibarel, Oshawott and Wailord play in a river beneath a rainbow and mountains.",
+          "name": "Champions Festival",
+          "localId": "BW95",
+          "setId": "bwp",
+          "setName": "BW Black Star Promos",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bwp/BW95"
+        },
+        {
+          "id": "ecard2-48",
+          "score": 225,
+          "tags": [
+            "grassland-field",
+            "sky-clouds",
+            "multiple-pokemon"
+          ],
+          "caption": "Two Furret play on a grassy hill under a cloudy sky.",
+          "name": "Furret",
+          "localId": "48",
+          "setId": "ecard2",
+          "setName": "Aquapolis",
+          "serie": "ecard",
+          "image": "https://assets.tcgdex.net/en/ecard/ecard2/48"
+        },
+        {
+          "id": "ex1-62",
+          "score": 225,
+          "tags": [
+            "forest",
+            "multiple-pokemon"
+          ],
+          "caption": "Two Phanpy play among autumn trees.",
+          "name": "Phanpy",
+          "localId": "62",
+          "setId": "ex1",
+          "setName": "Ruby & Sapphire",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex1/62"
+        },
+        {
+          "id": "pop2-10",
+          "score": 225,
+          "tags": [
+            "grassland-field",
+            "ruins-building",
+            "sky-clouds",
+            "multiple-pokemon"
+          ],
+          "caption": "Pokémon play on a lawn before a clock tower under cloudy sky",
+          "name": "Pokémon Park",
+          "localId": "10",
+          "setId": "pop2",
+          "setName": "POP Series 2",
+          "serie": "pop",
+          "image": "https://assets.tcgdex.net/en/pop/pop2/10"
+        },
+        {
+          "id": "sv01-160",
+          "score": 225,
+          "tags": [
+            "forest",
+            "grassland-field",
+            "multiple-pokemon"
+          ],
+          "caption": "Two Tandemaus play in a sunny clearing with big mushrooms",
+          "name": "Tandemaus",
+          "localId": "160",
+          "setId": "sv01",
+          "setName": "Scarlet & Violet",
+          "serie": "sv",
+          "image": "https://assets.tcgdex.net/en/sv/sv01/160"
+        },
+        {
+          "id": "sv01-208",
+          "score": 225,
+          "tags": [
+            "forest",
+            "multiple-pokemon"
+          ],
+          "caption": "Pachirisu play together in sunlit woods",
+          "name": "Pachirisu",
+          "localId": "208",
+          "setId": "sv01",
+          "setName": "Scarlet & Violet",
+          "serie": "sv",
+          "image": "https://assets.tcgdex.net/en/sv/sv01/208"
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "group": "original",
+      "query": "a pokemon with a human trainer",
+      "mappedTags": [
+        "human-present"
+      ],
+      "mappedGroups": [
+        {
+          "source": "trainer",
+          "anyOfTags": [
+            "human-present"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 1665,
+      "top": [
+        {
+          "id": "base3-58",
+          "score": 180,
+          "tags": [
+            "human-present",
+            "multiple-pokemon"
+          ],
+          "caption": "An old man cuddles Pikachu, Poliwhirl, Cubone and other Pokemon.",
+          "name": "Mr. Fuji",
+          "localId": "58",
+          "setId": "base3",
+          "setName": "Fossil",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base3/58"
+        },
+        {
+          "id": "bw5-91",
+          "score": 180,
+          "tags": [
+            "forest",
+            "flowers",
+            "human-present",
+            "multiple-pokemon"
+          ],
+          "caption": "A person rests by a tree with Pokémon and daisies.",
+          "name": "Cheren",
+          "localId": "91",
+          "setId": "bw5",
+          "setName": "Dark Explorers",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw5/91"
+        },
+        {
+          "id": "bw9-102",
+          "score": 180,
+          "tags": [
+            "snow-ice",
+            "human-present",
+            "multiple-pokemon"
+          ],
+          "caption": "A masked person stands before two Pokémon in snow.",
+          "name": "Shadow Triad",
+          "localId": "102",
+          "setId": "bw9",
+          "setName": "Plasma Freeze",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw9/102"
+        },
+        {
+          "id": "cel25-13",
+          "score": 180,
+          "tags": [
+            "indoors",
+            "human-present",
+            "multiple-pokemon"
+          ],
+          "caption": "Cosmog appears indoors with a human and other Pokémon.",
+          "name": "Cosmog",
+          "localId": "13",
+          "setId": "cel25",
+          "setName": "Celebrations",
+          "serie": "swsh",
+          "image": "https://assets.tcgdex.net/en/swsh/cel25/13"
+        },
+        {
+          "id": "cel25-17",
+          "score": 180,
+          "tags": [
+            "mountain-rocks",
+            "fire-lava",
+            "human-present",
+            "multiple-pokemon"
+          ],
+          "caption": "Groudon appears among rocky mountains with a human and other Pokémon.",
+          "name": "Groudon",
+          "localId": "17",
+          "setId": "cel25",
+          "setName": "Celebrations",
+          "serie": "swsh",
+          "image": "https://assets.tcgdex.net/en/swsh/cel25/17"
+        },
+        {
+          "id": "cel25-21",
+          "score": 180,
+          "tags": [
+            "forest",
+            "grassland-field",
+            "sky-clouds",
+            "flowers",
+            "human-present",
+            "multiple-pokemon",
+            "flying"
+          ],
+          "caption": "Solgaleo flies in a forest with a human and other Pokémon.",
+          "name": "Solgaleo",
+          "localId": "21",
+          "setId": "cel25",
+          "setName": "Celebrations",
+          "serie": "swsh",
+          "image": "https://assets.tcgdex.net/en/swsh/cel25/21"
+        },
+        {
+          "id": "col1-76",
+          "score": 180,
+          "tags": [
+            "indoors",
+            "human-present",
+            "multiple-pokemon"
+          ],
+          "caption": "Cheerleader's Cheer in an indoor scene, a person, multiple Pokémon.",
+          "name": "Cheerleader's Cheer",
+          "localId": "76",
+          "setId": "col1",
+          "setName": "Call of Legends",
+          "serie": "col",
+          "image": "https://assets.tcgdex.net/en/col/col1/76"
+        },
+        {
+          "id": "col1-79",
+          "score": 180,
+          "tags": [
+            "indoors",
+            "human-present",
+            "multiple-pokemon"
+          ],
+          "caption": "Interviewer's Questions in an indoor scene, a person, multiple Pokémon.",
+          "name": "Interviewer's Questions",
+          "localId": "79",
+          "setId": "col1",
+          "setName": "Call of Legends",
+          "serie": "col",
+          "image": "https://assets.tcgdex.net/en/col/col1/79"
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "group": "original",
+      "query": "in a kitchen",
+      "mappedTags": [],
+      "mappedGroups": [],
+      "unmappedTerms": [
+        "kitchen"
+      ],
+      "totalMatches": 7,
+      "top": [
+        {
+          "id": "pl2-33",
+          "score": 160,
+          "tags": [
+            "indoors",
+            "food-visible"
+          ],
+          "caption": "A Snorlax eats apples in a kitchen.",
+          "name": "Snorlax",
+          "localId": "33",
+          "setId": "pl2",
+          "setName": "Rising Rivals",
+          "serie": "pl",
+          "image": "https://assets.tcgdex.net/en/pl/pl2/33"
+        },
+        {
+          "id": "pl2-RT3",
+          "score": 160,
+          "tags": [
+            "indoors",
+            "food-visible"
+          ],
+          "caption": "A red Rotom in a washer-like body in a kitchen with a dish on top.",
+          "name": "Heat Rotom",
+          "localId": "RT3",
+          "setId": "pl2",
+          "setName": "Rising Rivals",
+          "serie": "pl",
+          "image": "https://assets.tcgdex.net/en/pl/pl2/RT3"
+        },
+        {
+          "id": "swsh1-90",
+          "score": 160,
+          "tags": [
+            "indoors",
+            "food-visible"
+          ],
+          "caption": "A teapot Pokémon floating in a kitchen.",
+          "name": "Polteageist",
+          "localId": "90",
+          "setId": "swsh1",
+          "setName": "Sword & Shield",
+          "serie": "swsh",
+          "image": "https://assets.tcgdex.net/en/swsh/swsh1/90"
+        },
+        {
+          "id": "bw4-15",
+          "score": 130,
+          "tags": [
+            "indoors",
+            "food-visible"
+          ],
+          "caption": "Pansear holds food while sitting in a warm kitchen.",
+          "name": "Pansear",
+          "localId": "15",
+          "setId": "bw4",
+          "setName": "Next Destinies",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw4/15"
+        },
+        {
+          "id": "sm6-112",
+          "score": 120,
+          "tags": [],
+          "caption": "Metal Frying Pan appears.",
+          "name": "Metal Frying Pan",
+          "localId": "112",
+          "setId": "sm6",
+          "setName": "Forbidden Light",
+          "serie": "sm",
+          "image": "https://assets.tcgdex.net/en/sm/sm6/112"
+        },
+        {
+          "id": "sm6-144",
+          "score": 120,
+          "tags": [],
+          "caption": "Metal Frying Pan appears.",
+          "name": "Metal Frying Pan",
+          "localId": "144",
+          "setId": "sm6",
+          "setName": "Forbidden Light",
+          "serie": "sm",
+          "image": "https://assets.tcgdex.net/en/sm/sm6/144"
+        },
+        {
+          "id": "swsh8-228",
+          "score": 120,
+          "tags": [
+            "city",
+            "indoors",
+            "ruins-building",
+            "food-visible",
+            "human-present"
+          ],
+          "caption": "Cook appears in a city with a human and visible food.",
+          "name": "Cook",
+          "localId": "228",
+          "setId": "swsh8",
+          "setName": "Fusion Strike",
+          "serie": "swsh",
+          "image": "https://assets.tcgdex.net/en/swsh/swsh8/228"
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "group": "new",
+      "query": "pokemon near a bridge",
+      "mappedTags": [],
+      "mappedGroups": [],
+      "unmappedTerms": [
+        "bridge"
+      ],
+      "totalMatches": 31,
+      "top": [
+        {
+          "id": "bw1-60",
+          "score": 130,
+          "tags": [
+            "mountain-rocks",
+            "ruins-building"
+          ],
+          "caption": "Conkeldurr carries a red beam in a rocky canyon with a bridge.",
+          "name": "Gurdurr",
+          "localId": "60",
+          "setId": "bw1",
+          "setName": "Black & White",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw1/60"
+        },
+        {
+          "id": "bw11-43",
+          "score": 130,
+          "tags": [
+            "water-surface",
+            "city",
+            "ruins-building",
+            "flying"
+          ],
+          "caption": "Kyurem flies beside a bridge above city water.",
+          "name": "Kyurem",
+          "localId": "43",
+          "setId": "bw11",
+          "setName": "Legendary Treasures",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw11/43"
+        },
+        {
+          "id": "bw3-87",
+          "score": 130,
+          "tags": [
+            "water-surface",
+            "mountain-rocks",
+            "ruins-building",
+            "sky-clouds"
+          ],
+          "caption": "Fraxure stands on a wooden bridge before waterfalls and cliffs.",
+          "name": "Fraxure",
+          "localId": "87",
+          "setId": "bw3",
+          "setName": "Noble Victories",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw3/87"
+        },
+        {
+          "id": "bw4-25",
+          "score": 130,
+          "tags": [
+            "water-surface",
+            "city",
+            "ruins-building",
+            "sky-clouds",
+            "swimming"
+          ],
+          "caption": "Lapras swims beneath a large bridge near a city.",
+          "name": "Lapras",
+          "localId": "25",
+          "setId": "bw4",
+          "setName": "Next Destinies",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw4/25"
+        },
+        {
+          "id": "bw4-80",
+          "score": 130,
+          "tags": [
+            "water-surface",
+            "city",
+            "ruins-building",
+            "sky-clouds"
+          ],
+          "caption": "Meowth sits at a harbor beside a large ship and bridge.",
+          "name": "Meowth",
+          "localId": "80",
+          "setId": "bw4",
+          "setName": "Next Destinies",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw4/80"
+        },
+        {
+          "id": "bw4-91",
+          "score": 130,
+          "tags": [
+            "water-surface",
+            "city",
+            "ruins-building"
+          ],
+          "caption": "A suspension bridge spans misty water beside a small boat.",
+          "name": "Skyarrow Bridge",
+          "localId": "91",
+          "setId": "bw4",
+          "setName": "Next Destinies",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw4/91"
+        },
+        {
+          "id": "bw6-112",
+          "score": 130,
+          "tags": [
+            "city",
+            "ruins-building",
+            "flying"
+          ],
+          "caption": "Braviary flies beside a tall steel bridge and city buildings.",
+          "name": "Braviary",
+          "localId": "112",
+          "setId": "bw6",
+          "setName": "Dragons Exalted",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw6/112"
+        },
+        {
+          "id": "bw6-26",
+          "score": 130,
+          "tags": [
+            "water-surface",
+            "city",
+            "ruins-building",
+            "swimming"
+          ],
+          "caption": "Wailord swims beneath a large steel bridge near a city.",
+          "name": "Wailord",
+          "localId": "26",
+          "setId": "bw6",
+          "setName": "Dragons Exalted",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw6/26"
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "group": "new",
+      "query": "water at night",
+      "mappedTags": [
+        "water-surface",
+        "underwater",
+        "night"
+      ],
+      "mappedGroups": [
+        {
+          "source": "water",
+          "anyOfTags": [
+            "water-surface",
+            "underwater"
+          ]
+        },
+        {
+          "source": "night",
+          "anyOfTags": [
+            "night"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 216,
+      "top": [
+        {
+          "id": "bw8-53",
+          "score": 270,
+          "tags": [
+            "water-surface",
+            "night",
+            "flying"
+          ],
+          "caption": "Zubat flies above dark water at night.",
+          "name": "Zubat",
+          "localId": "53",
+          "setId": "bw8",
+          "setName": "Plasma Storm",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw8/53"
+        },
+        {
+          "id": "base1-18",
+          "score": 240,
+          "tags": [
+            "water-surface",
+            "night",
+            "swimming"
+          ],
+          "caption": "Dragonair rises from a lake under a purple aurora night sky.",
+          "name": "Dragonair",
+          "localId": "18",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/18"
+        },
+        {
+          "id": "base4-22",
+          "score": 240,
+          "tags": [
+            "water-surface",
+            "night",
+            "swimming"
+          ],
+          "caption": "Blue serpent rising from a lake under a starry aurora sky.",
+          "name": "Dragonair",
+          "localId": "22",
+          "setId": "base4",
+          "setName": "Base Set 2",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base4/22"
+        },
+        {
+          "id": "ecard1-132",
+          "score": 240,
+          "tags": [
+            "water-surface",
+            "night"
+          ],
+          "caption": "Squirtle gazing up at star-speckled night sky beside swirling waves.",
+          "name": "Squirtle",
+          "localId": "132",
+          "setId": "ecard1",
+          "setName": "Expedition Base Set",
+          "serie": "ecard",
+          "image": "https://assets.tcgdex.net/en/ecard/ecard1/132"
+        },
+        {
+          "id": "ex15-9",
+          "score": 240,
+          "tags": [
+            "water-surface",
+            "forest",
+            "mountain-rocks",
+            "night"
+          ],
+          "caption": "Pinsir on rocks beside pine trees and a dark night sea.",
+          "name": "Pinsir δ",
+          "localId": "9",
+          "setId": "ex15",
+          "setName": "Dragon Frontiers",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex15/9"
+        },
+        {
+          "id": "ex8-21",
+          "score": 240,
+          "tags": [
+            "water-surface",
+            "night",
+            "swimming"
+          ],
+          "caption": "A pelican Pokémon floats on rippling water under a painterly starry sky",
+          "name": "Pelipper",
+          "localId": "21",
+          "setId": "ex8",
+          "setName": "Deoxys",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex8/21"
+        },
+        {
+          "id": "hgss1-119",
+          "score": 240,
+          "tags": [
+            "water-surface",
+            "night"
+          ],
+          "caption": "Psychic Energy in surface water, night.",
+          "name": "Psychic Energy",
+          "localId": "119",
+          "setId": "hgss1",
+          "setName": "HeartGold SoulSilver",
+          "serie": "hgss",
+          "image": "https://assets.tcgdex.net/en/hgss/hgss1/119"
+        },
+        {
+          "id": "hgss1-42",
+          "score": 240,
+          "tags": [
+            "water-surface",
+            "grassland-field",
+            "night"
+          ],
+          "caption": "Flaaffy in surface water, grassland, night.",
+          "name": "Flaaffy",
+          "localId": "42",
+          "setId": "hgss1",
+          "setName": "HeartGold SoulSilver",
+          "serie": "hgss",
+          "image": "https://assets.tcgdex.net/en/hgss/hgss1/42"
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "group": "new",
+      "query": "pokemon near mountains",
+      "mappedTags": [
+        "mountain-rocks"
+      ],
+      "mappedGroups": [
+        {
+          "source": "mountains",
+          "anyOfTags": [
+            "mountain-rocks"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 3434,
+      "top": [
+        {
+          "id": "base1-28",
+          "score": 120,
+          "tags": [
+            "grassland-field",
+            "mountain-rocks",
+            "sky-clouds"
+          ],
+          "caption": "Growlithe looks up on a green field with blue mountains and clouds behind.",
+          "name": "Growlithe",
+          "localId": "28",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/28"
+        },
+        {
+          "id": "base1-37",
+          "score": 120,
+          "tags": [
+            "mountain-rocks"
+          ],
+          "caption": "Nidoking crouches in front of red-orange rocky canyon walls.",
+          "name": "Nidorino",
+          "localId": "37",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/37"
+        },
+        {
+          "id": "base1-39",
+          "score": 120,
+          "tags": [
+            "forest",
+            "grassland-field",
+            "mountain-rocks"
+          ],
+          "caption": "Porygon on a green field with polygon trees and mountains.",
+          "name": "Porygon",
+          "localId": "39",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/39"
+        },
+        {
+          "id": "base1-56",
+          "score": 120,
+          "tags": [
+            "mountain-rocks"
+          ],
+          "caption": "Onix arches its rocky body before a rocky yellow hillside.",
+          "name": "Onix",
+          "localId": "56",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/56"
+        },
+        {
+          "id": "base1-57",
+          "score": 120,
+          "tags": [
+            "grassland-field",
+            "mountain-rocks",
+            "snow-ice",
+            "night"
+          ],
+          "caption": "Pidgey stands in a dark field under a bright moon with snowy mountains.",
+          "name": "Pidgey",
+          "localId": "57",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/57"
+        },
+        {
+          "id": "base1-61",
+          "score": 120,
+          "tags": [
+            "mountain-rocks"
+          ],
+          "caption": "Rattata looks up on a twisting vine with a small mountain behind.",
+          "name": "Rattata",
+          "localId": "61",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/61"
+        },
+        {
+          "id": "base2-40",
+          "score": 120,
+          "tags": [
+            "mountain-rocks"
+          ],
+          "caption": "Nidorina stands on rocky ground before jagged rock spires.",
+          "name": "Nidorina",
+          "localId": "40",
+          "setId": "base2",
+          "setName": "Jungle",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base2/40"
+        },
+        {
+          "id": "base3-37",
+          "score": 120,
+          "tags": [
+            "grassland-field",
+            "mountain-rocks"
+          ],
+          "caption": "Graveler sits on grass with red rocky cliffs behind.",
+          "name": "Graveler",
+          "localId": "37",
+          "setId": "base3",
+          "setName": "Fossil",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base3/37"
+        }
+      ]
+    },
+    {
+      "number": 24,
+      "group": "new",
+      "query": "a pokemon holding an object",
+      "mappedTags": [],
+      "mappedGroups": [],
+      "unmappedTerms": [
+        "holding"
+      ],
+      "totalMatches": 157,
+      "top": [
+        {
+          "id": "base1-1",
+          "score": 130,
+          "tags": [],
+          "caption": "Alakazam holding spoons on a sparkling blue background.",
+          "name": "Alakazam",
+          "localId": "1",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/1"
+        },
+        {
+          "id": "base1-27",
+          "score": 130,
+          "tags": [],
+          "caption": "Farfetch'd holding a leek on a swirly green and yellow background.",
+          "name": "Farfetch'd",
+          "localId": "27",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/27"
+        },
+        {
+          "id": "base1-3",
+          "score": 130,
+          "tags": [],
+          "caption": "Chansey holding its egg on a glittering background.",
+          "name": "Chansey",
+          "localId": "3",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/3"
+        },
+        {
+          "id": "base1-32",
+          "score": 130,
+          "tags": [],
+          "caption": "Kadabra holding a spoon against a black background with red glow.",
+          "name": "Kadabra",
+          "localId": "32",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/32"
+        },
+        {
+          "id": "base4-3",
+          "score": 130,
+          "tags": [],
+          "caption": "Round pink-white creature holding an egg in its pouch.",
+          "name": "Chansey",
+          "localId": "3",
+          "setId": "base4",
+          "setName": "Base Set 2",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base4/3"
+        },
+        {
+          "id": "base4-40",
+          "score": 130,
+          "tags": [],
+          "caption": "Duck creature holding a leek against a green and blue painted backdrop.",
+          "name": "Farfetch'd",
+          "localId": "40",
+          "setId": "base4",
+          "setName": "Base Set 2",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base4/40"
+        },
+        {
+          "id": "base4-46",
+          "score": 130,
+          "tags": [],
+          "caption": "Yellow psychic creature holding a spoon against black with red lights.",
+          "name": "Kadabra",
+          "localId": "46",
+          "setId": "base4",
+          "setName": "Base Set 2",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base4/46"
+        },
+        {
+          "id": "base4-52",
+          "score": 130,
+          "tags": [
+            "grassland-field"
+          ],
+          "caption": "Bone-holding creature swinging its bone in a grassy field with a tree.",
+          "name": "Marowak",
+          "localId": "52",
+          "setId": "base4",
+          "setName": "Base Set 2",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base4/52"
+        }
+      ]
+    },
+    {
+      "number": 25,
+      "group": "new",
+      "query": "pokemon in a field of grass with clouds",
+      "mappedTags": [
+        "sky-clouds",
+        "grassland-field"
+      ],
+      "mappedGroups": [
+        {
+          "source": "clouds",
+          "anyOfTags": [
+            "sky-clouds"
+          ]
+        },
+        {
+          "source": "grass",
+          "anyOfTags": [
+            "grassland-field"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 1811,
+      "top": [
+        {
+          "id": "base1-22",
+          "score": 240,
+          "tags": [
+            "grassland-field",
+            "sky-clouds"
+          ],
+          "caption": "Pidgeotto with spread tail feathers over a misty green meadow and cloudy sky.",
+          "name": "Pidgeotto",
+          "localId": "22",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/22"
+        },
+        {
+          "id": "base1-28",
+          "score": 240,
+          "tags": [
+            "grassland-field",
+            "mountain-rocks",
+            "sky-clouds"
+          ],
+          "caption": "Growlithe looks up on a green field with blue mountains and clouds behind.",
+          "name": "Growlithe",
+          "localId": "28",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/28"
+        },
+        {
+          "id": "base1-55",
+          "score": 240,
+          "tags": [
+            "grassland-field",
+            "sky-clouds"
+          ],
+          "caption": "Nidoran crouches on a dry grassy plain with blue sky and trees behind.",
+          "name": "Nidoran♂",
+          "localId": "55",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/55"
+        },
+        {
+          "id": "base3-55",
+          "score": 240,
+          "tags": [
+            "grassland-field",
+            "sky-clouds"
+          ],
+          "caption": "Slowpoke on a wide green meadow under a blue sky with small clouds.",
+          "name": "Slowpoke",
+          "localId": "55",
+          "setId": "base3",
+          "setName": "Fossil",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base3/55"
+        },
+        {
+          "id": "base4-33",
+          "score": 240,
+          "tags": [
+            "grassland-field",
+            "sky-clouds"
+          ],
+          "caption": "Fiery dog creature standing on a grassy plain under blue sky.",
+          "name": "Arcanine",
+          "localId": "33",
+          "setId": "base4",
+          "setName": "Base Set 2",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base4/33"
+        },
+        {
+          "id": "basep-53",
+          "score": 240,
+          "tags": [
+            "grassland-field",
+            "sky-clouds"
+          ],
+          "caption": "Suicune runs with flowing purple mane across a green field beneath a bright sky.",
+          "name": "Suicune",
+          "localId": "53",
+          "setId": "basep",
+          "setName": "Wizards Black Star Promos",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/basep/53"
+        },
+        {
+          "id": "bw1-115",
+          "score": 240,
+          "tags": [
+            "forest",
+            "grassland-field",
+            "sky-clouds"
+          ],
+          "caption": "Pikachu runs across a meadow with trees and hills under a bright sky.",
+          "name": "Pikachu",
+          "localId": "115",
+          "setId": "bw1",
+          "setName": "Black & White",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw1/115"
+        },
+        {
+          "id": "bw1-15",
+          "score": 240,
+          "tags": [
+            "grassland-field",
+            "mountain-rocks",
+            "sky-clouds",
+            "flowers"
+          ],
+          "caption": "Tepig on a meadow with yellow flowers, distant mountains and clouds.",
+          "name": "Tepig",
+          "localId": "15",
+          "setId": "bw1",
+          "setName": "Black & White",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw1/15"
+        }
+      ]
+    },
+    {
+      "number": 26,
+      "group": "new",
+      "query": "against a dark background",
+      "mappedTags": [],
+      "mappedGroups": [],
+      "unmappedTerms": [
+        "dark",
+        "background"
+      ],
+      "totalMatches": 295,
+      "top": [
+        {
+          "id": "base1-92",
+          "score": 290,
+          "tags": [],
+          "caption": "Teal energy flakes swirl against a dark background.",
+          "name": "Energy Removal",
+          "localId": "92",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/92"
+        },
+        {
+          "id": "bw3-84",
+          "score": 290,
+          "tags": [
+            "mountain-rocks",
+            "flying"
+          ],
+          "caption": "Cobalion hovers amid floating rocks against a dark background.",
+          "name": "Cobalion",
+          "localId": "84",
+          "setId": "bw3",
+          "setName": "Noble Victories",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw3/84"
+        },
+        {
+          "id": "bwp-BW27",
+          "score": 290,
+          "tags": [],
+          "caption": "Litwick floats against a dark background with pink sparkles.",
+          "name": "Litwick",
+          "localId": "BW27",
+          "setId": "bwp",
+          "setName": "BW Black Star Promos",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bwp/BW27"
+        },
+        {
+          "id": "dpp-DP56",
+          "score": 290,
+          "tags": [],
+          "caption": "Arceus close-up against a dark background with green light.",
+          "name": "Arceus",
+          "localId": "DP56",
+          "setId": "dpp",
+          "setName": "DP Black Star Promos",
+          "serie": "dp",
+          "image": "https://assets.tcgdex.net/en/dp/dpp/DP56"
+        },
+        {
+          "id": "ex10-105",
+          "score": 290,
+          "tags": [
+            "flying"
+          ],
+          "caption": "A dark silver seabird Pokémon spreads its wings against a dark background",
+          "name": "Lugia ex",
+          "localId": "105",
+          "setId": "ex10",
+          "setName": "Unseen Forces",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex10/105"
+        },
+        {
+          "id": "ex14-11",
+          "score": 290,
+          "tags": [],
+          "caption": "Giant purple Swalot with open mouth against a dark background.",
+          "name": "Swalot",
+          "localId": "11",
+          "setId": "ex14",
+          "setName": "Crystal Guardians",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex14/11"
+        },
+        {
+          "id": "ex15-100",
+          "score": 290,
+          "tags": [
+            "fire-lava",
+            "flying"
+          ],
+          "caption": "Shiny Charizard flying and breathing flames against a dark background.",
+          "name": "Charizard ☆ δ",
+          "localId": "100",
+          "setId": "ex15",
+          "setName": "Dragon Frontiers",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex15/100"
+        },
+        {
+          "id": "ex16-10",
+          "score": 290,
+          "tags": [],
+          "caption": "Kabutops raising its scythe-like arms against a dark background.",
+          "name": "Kabutops",
+          "localId": "10",
+          "setId": "ex16",
+          "setName": "Power Keepers",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex16/10"
+        }
+      ]
+    },
+    {
+      "number": 27,
+      "group": "new",
+      "query": "near a building",
+      "mappedTags": [
+        "ruins-building"
+      ],
+      "mappedGroups": [
+        {
+          "source": "building",
+          "anyOfTags": [
+            "ruins-building"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 1523,
+      "top": [
+        {
+          "id": "sm10-16",
+          "score": 150,
+          "tags": [
+            "ruins-building"
+          ],
+          "caption": "Tangela appears near a building.",
+          "name": "Tangela",
+          "localId": "16",
+          "setId": "sm10",
+          "setName": "Unbroken Bonds",
+          "serie": "sm",
+          "image": "https://assets.tcgdex.net/en/sm/sm10/16"
+        },
+        {
+          "id": "sm10-168",
+          "score": 150,
+          "tags": [
+            "ruins-building"
+          ],
+          "caption": "Dust Island appears near a building.",
+          "name": "Dust Island",
+          "localId": "168",
+          "setId": "sm10",
+          "setName": "Unbroken Bonds",
+          "serie": "sm",
+          "image": "https://assets.tcgdex.net/en/sm/sm10/168"
+        },
+        {
+          "id": "sm11-183",
+          "score": 150,
+          "tags": [
+            "ruins-building",
+            "night"
+          ],
+          "caption": "Type: Null appears near a building.",
+          "name": "Type: Null",
+          "localId": "183",
+          "setId": "sm11",
+          "setName": "Unified Minds",
+          "serie": "sm",
+          "image": "https://assets.tcgdex.net/en/sm/sm11/183"
+        },
+        {
+          "id": "sm11-198",
+          "score": 150,
+          "tags": [
+            "ruins-building"
+          ],
+          "caption": "Great Potion appears near a building.",
+          "name": "Great Potion",
+          "localId": "198",
+          "setId": "sm11",
+          "setName": "Unified Minds",
+          "serie": "sm",
+          "image": "https://assets.tcgdex.net/en/sm/sm11/198"
+        },
+        {
+          "id": "sm11-200",
+          "score": 150,
+          "tags": [
+            "ruins-building",
+            "human-present"
+          ],
+          "caption": "Hapu appears near a building with a human.",
+          "name": "Hapu",
+          "localId": "200",
+          "setId": "sm11",
+          "setName": "Unified Minds",
+          "serie": "sm",
+          "image": "https://assets.tcgdex.net/en/sm/sm11/200"
+        },
+        {
+          "id": "sm11-58",
+          "score": 150,
+          "tags": [
+            "ruins-building"
+          ],
+          "caption": "Magnemite appears near a building.",
+          "name": "Magnemite",
+          "localId": "58",
+          "setId": "sm11",
+          "setName": "Unified Minds",
+          "serie": "sm",
+          "image": "https://assets.tcgdex.net/en/sm/sm11/58"
+        },
+        {
+          "id": "sm12-171",
+          "score": 150,
+          "tags": [
+            "ruins-building"
+          ],
+          "caption": "Teddiursa appears near a building.",
+          "name": "Teddiursa",
+          "localId": "171",
+          "setId": "sm12",
+          "setName": "Cosmic Eclipse",
+          "serie": "sm",
+          "image": "https://assets.tcgdex.net/en/sm/sm12/171"
+        },
+        {
+          "id": "sm12-221",
+          "score": 150,
+          "tags": [
+            "ruins-building",
+            "multiple-pokemon"
+          ],
+          "caption": "Arceus & Dialga & Palkia GX appears near a building with other Pokémon.",
+          "name": "Arceus & Dialga & Palkia GX",
+          "localId": "221",
+          "setId": "sm12",
+          "setName": "Cosmic Eclipse",
+          "serie": "sm",
+          "image": "https://assets.tcgdex.net/en/sm/sm12/221"
+        }
+      ]
+    },
+    {
+      "number": 28,
+      "group": "new",
+      "query": "pokemon swimming",
+      "mappedTags": [
+        "swimming"
+      ],
+      "mappedGroups": [
+        {
+          "source": "swimming",
+          "anyOfTags": [
+            "swimming"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 1605,
+      "top": [
+        {
+          "id": "dpp-DP13",
+          "score": 150,
+          "tags": [
+            "underwater",
+            "swimming"
+          ],
+          "caption": "Brown Pokemon swimming in deep blue water with sparkles.",
+          "name": "Buizel",
+          "localId": "DP13",
+          "setId": "dpp",
+          "setName": "DP Black Star Promos",
+          "serie": "dp",
+          "image": "https://assets.tcgdex.net/en/dp/dpp/DP13"
+        },
+        {
+          "id": "hgss1-24",
+          "score": 150,
+          "tags": [
+            "water-surface",
+            "cave",
+            "multiple-pokemon",
+            "swimming"
+          ],
+          "caption": "Lapras in surface water, cave, multiple Pokémon, swimming.",
+          "name": "Lapras",
+          "localId": "24",
+          "setId": "hgss1",
+          "setName": "HeartGold SoulSilver",
+          "serie": "hgss",
+          "image": "https://assets.tcgdex.net/en/hgss/hgss1/24"
+        },
+        {
+          "id": "hgss1-45",
+          "score": 150,
+          "tags": [
+            "water-surface",
+            "multiple-pokemon",
+            "swimming"
+          ],
+          "caption": "Mantine in surface water, multiple Pokémon, swimming.",
+          "name": "Mantine",
+          "localId": "45",
+          "setId": "hgss1",
+          "setName": "HeartGold SoulSilver",
+          "serie": "hgss",
+          "image": "https://assets.tcgdex.net/en/hgss/hgss1/45"
+        },
+        {
+          "id": "hgss1-50",
+          "score": 150,
+          "tags": [
+            "underwater",
+            "multiple-pokemon",
+            "swimming"
+          ],
+          "caption": "Qwilfish in underwater, multiple Pokémon, swimming.",
+          "name": "Qwilfish",
+          "localId": "50",
+          "setId": "hgss1",
+          "setName": "HeartGold SoulSilver",
+          "serie": "hgss",
+          "image": "https://assets.tcgdex.net/en/hgss/hgss1/50"
+        },
+        {
+          "id": "hgss1-52",
+          "score": 150,
+          "tags": [
+            "water-surface",
+            "multiple-pokemon",
+            "swimming"
+          ],
+          "caption": "Slowbro in surface water, multiple Pokémon, swimming.",
+          "name": "Slowbro",
+          "localId": "52",
+          "setId": "hgss1",
+          "setName": "HeartGold SoulSilver",
+          "serie": "hgss",
+          "image": "https://assets.tcgdex.net/en/hgss/hgss1/52"
+        },
+        {
+          "id": "hgss2-45",
+          "score": 150,
+          "tags": [
+            "water-surface",
+            "grassland-field",
+            "sky-clouds",
+            "multiple-pokemon",
+            "swimming"
+          ],
+          "caption": "Buizel in surface water, grassland, a cloudy sky, multiple Pokémon, swimming.",
+          "name": "Buizel",
+          "localId": "45",
+          "setId": "hgss2",
+          "setName": "Unleashed",
+          "serie": "hgss",
+          "image": "https://assets.tcgdex.net/en/hgss/hgss2/45"
+        },
+        {
+          "id": "hgss2-49",
+          "score": 150,
+          "tags": [
+            "underwater",
+            "multiple-pokemon",
+            "swimming"
+          ],
+          "caption": "Horsea in an underwater scene, multiple Pokémon, swimming.",
+          "name": "Horsea",
+          "localId": "49",
+          "setId": "hgss2",
+          "setName": "Unleashed",
+          "serie": "hgss",
+          "image": "https://assets.tcgdex.net/en/hgss/hgss2/49"
+        },
+        {
+          "id": "hgss2-59",
+          "score": 150,
+          "tags": [
+            "underwater",
+            "multiple-pokemon",
+            "swimming"
+          ],
+          "caption": "Remoraid in an underwater scene, multiple Pokémon, swimming.",
+          "name": "Remoraid",
+          "localId": "59",
+          "setId": "hgss2",
+          "setName": "Unleashed",
+          "serie": "hgss",
+          "image": "https://assets.tcgdex.net/en/hgss/hgss2/59"
+        }
+      ]
+    },
+    {
+      "number": 29,
+      "group": "new",
+      "query": "pokemon near fire",
+      "mappedTags": [
+        "fire-lava"
+      ],
+      "mappedGroups": [
+        {
+          "source": "fire",
+          "anyOfTags": [
+            "fire-lava"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 1046,
+      "top": [
+        {
+          "id": "base1-36",
+          "score": 120,
+          "tags": [
+            "fire-lava"
+          ],
+          "caption": "Magmar surrounded by flames on a red-black fiery background.",
+          "name": "Magmar",
+          "localId": "36",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/36"
+        },
+        {
+          "id": "base1-46",
+          "score": 120,
+          "tags": [
+            "grassland-field",
+            "fire-lava"
+          ],
+          "caption": "Charmander stands on grass with flames and rocks behind.",
+          "name": "Charmander",
+          "localId": "46",
+          "setId": "base1",
+          "setName": "Base Set",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base1/46"
+        },
+        {
+          "id": "base3-27",
+          "score": 120,
+          "tags": [
+            "fire-lava",
+            "flying"
+          ],
+          "caption": "Moltres spreads its wings amid swirling flames.",
+          "name": "Moltres",
+          "localId": "27",
+          "setId": "base3",
+          "setName": "Fossil",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base3/27"
+        },
+        {
+          "id": "base3-39",
+          "score": 120,
+          "tags": [
+            "fire-lava"
+          ],
+          "caption": "Magmar with a flaming tail in a dark, smoky, lava-lit scene.",
+          "name": "Magmar",
+          "localId": "39",
+          "setId": "base3",
+          "setName": "Fossil",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base3/39"
+        },
+        {
+          "id": "base4-35",
+          "score": 120,
+          "tags": [
+            "fire-lava"
+          ],
+          "caption": "Red lizard creature slashing near a burning flame on rocks.",
+          "name": "Charmeleon",
+          "localId": "35",
+          "setId": "base4",
+          "setName": "Base Set 2",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base4/35"
+        },
+        {
+          "id": "base4-51",
+          "score": 120,
+          "tags": [
+            "fire-lava"
+          ],
+          "caption": "Fiery creature standing amid flames and dark embers.",
+          "name": "Magmar",
+          "localId": "51",
+          "setId": "base4",
+          "setName": "Base Set 2",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base4/51"
+        },
+        {
+          "id": "base4-69",
+          "score": 120,
+          "tags": [
+            "grassland-field",
+            "fire-lava"
+          ],
+          "caption": "Orange lizard standing on grass with flames burning in the distance.",
+          "name": "Charmander",
+          "localId": "69",
+          "setId": "base4",
+          "setName": "Base Set 2",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base4/69"
+        },
+        {
+          "id": "base5-21",
+          "score": 120,
+          "tags": [
+            "fire-lava"
+          ],
+          "caption": "Orange dragon turned away with flame at its tail against a dim sky.",
+          "name": "Dark Charizard",
+          "localId": "21",
+          "setId": "base5",
+          "setName": "Team Rocket",
+          "serie": "base",
+          "image": "https://assets.tcgdex.net/en/base/base5/21"
+        }
+      ]
+    },
+    {
+      "number": 30,
+      "group": "new",
+      "query": "pokemon among flowers at night",
+      "mappedTags": [
+        "flowers",
+        "night"
+      ],
+      "mappedGroups": [
+        {
+          "source": "flowers",
+          "anyOfTags": [
+            "flowers"
+          ]
+        },
+        {
+          "source": "night",
+          "anyOfTags": [
+            "night"
+          ]
+        }
+      ],
+      "unmappedTerms": [],
+      "totalMatches": 145,
+      "top": [
+        {
+          "id": "bw4-18",
+          "score": 240,
+          "tags": [
+            "night",
+            "flowers"
+          ],
+          "caption": "Litwick rests among flowers beneath dark trees at night.",
+          "name": "Litwick",
+          "localId": "18",
+          "setId": "bw4",
+          "setName": "Next Destinies",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bw4/18"
+        },
+        {
+          "id": "col1-43",
+          "score": 240,
+          "tags": [
+            "grassland-field",
+            "sky-clouds",
+            "night",
+            "flowers"
+          ],
+          "caption": "Flaaffy in grassland, a cloudy sky, night, flowers.",
+          "name": "Flaaffy",
+          "localId": "43",
+          "setId": "col1",
+          "setName": "Call of Legends",
+          "serie": "col",
+          "image": "https://assets.tcgdex.net/en/col/col1/43"
+        },
+        {
+          "id": "ex2-38",
+          "score": 240,
+          "tags": [
+            "night",
+            "flowers"
+          ],
+          "caption": "A blue firefly Pokémon floats by a tree and flowers under a starry sky.",
+          "name": "Illumise",
+          "localId": "38",
+          "setId": "ex2",
+          "setName": "Sandstorm",
+          "serie": "ex",
+          "image": "https://assets.tcgdex.net/en/ex/ex2/38"
+        },
+        {
+          "id": "hgss1-19",
+          "score": 240,
+          "tags": [
+            "forest",
+            "ruins-building",
+            "night",
+            "flowers"
+          ],
+          "caption": "Farfetch'd in forest, building, night, flowers.",
+          "name": "Farfetch'd",
+          "localId": "19",
+          "setId": "hgss1",
+          "setName": "HeartGold SoulSilver",
+          "serie": "hgss",
+          "image": "https://assets.tcgdex.net/en/hgss/hgss1/19"
+        },
+        {
+          "id": "hgssp-HGSS03",
+          "score": 240,
+          "tags": [
+            "forest",
+            "night",
+            "flowers"
+          ],
+          "caption": "Pikachu in a forest, night, flowers.",
+          "name": "Pikachu",
+          "localId": "HGSS03",
+          "setId": "hgssp",
+          "setName": "HGSS Black Star Promos",
+          "serie": "hgss",
+          "image": "https://assets.tcgdex.net/en/hgss/hgssp/HGSS03"
+        },
+        {
+          "id": "pl1-14",
+          "score": 240,
+          "tags": [
+            "night",
+            "flowers"
+          ],
+          "caption": "A hedgehog Pokémon stands in a flower field under a moon and starry sky.",
+          "name": "Shaymin",
+          "localId": "14",
+          "setId": "pl1",
+          "setName": "Platinum",
+          "serie": "pl",
+          "image": "https://assets.tcgdex.net/en/pl/pl1/14"
+        },
+        {
+          "id": "bwp-BW97",
+          "score": 225,
+          "tags": [
+            "grassland-field",
+            "night",
+            "flowers",
+            "multiple-pokemon"
+          ],
+          "caption": "Eevee and Pikachu run through a flowery meadow under a starry night sky.",
+          "name": "Eevee",
+          "localId": "BW97",
+          "setId": "bwp",
+          "setName": "BW Black Star Promos",
+          "serie": "bw",
+          "image": "https://assets.tcgdex.net/en/bw/bwp/BW97"
+        },
+        {
+          "id": "dp1-77",
+          "score": 225,
+          "tags": [
+            "night",
+            "flowers"
+          ],
+          "caption": "A pink fairy Pokémon waves before a crescent moon and pink flowers.",
+          "name": "Clefairy",
+          "localId": "77",
+          "setId": "dp1",
+          "setName": "Diamond & Pearl",
+          "serie": "dp",
+          "image": "https://assets.tcgdex.net/en/dp/dp1/77"
+        }
+      ]
+    }
+  ]
+}

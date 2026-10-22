@@ -1,0 +1,894 @@
+[
+  {
+    "id": "col1-1",
+    "tags": [
+      "forest",
+      "flowers"
+    ],
+    "caption": "Clefable in a forest, flowers."
+  },
+  {
+    "id": "col1-2",
+    "tags": [
+      "flying"
+    ],
+    "caption": "Deoxys in flight."
+  },
+  {
+    "id": "col1-3",
+    "tags": [],
+    "caption": "Dialga in an abstract or unclassified setting."
+  },
+  {
+    "id": "col1-4",
+    "tags": [
+      "forest",
+      "city",
+      "ruins-building",
+      "night",
+      "sleeping"
+    ],
+    "caption": "Espeon in a forest, a city, a building, night, sleeping."
+  },
+  {
+    "id": "col1-5",
+    "tags": [
+      "water-surface",
+      "mountain-rocks",
+      "sky-clouds"
+    ],
+    "caption": "Forretress in surface water, rocky terrain, a cloudy sky."
+  },
+  {
+    "id": "col1-6",
+    "tags": [
+      "fire-lava"
+    ],
+    "caption": "Groudon in fire."
+  },
+  {
+    "id": "col1-7",
+    "tags": [
+      "water-surface",
+      "swimming"
+    ],
+    "caption": "Gyarados in surface water, swimming."
+  },
+  {
+    "id": "col1-8",
+    "tags": [
+      "water-surface",
+      "grassland-field",
+      "sky-clouds"
+    ],
+    "caption": "Hitmontop in surface water, grassland, a cloudy sky."
+  },
+  {
+    "id": "col1-9",
+    "tags": [
+      "sky-clouds",
+      "flying"
+    ],
+    "caption": "Ho-Oh in a cloudy sky, flight."
+  },
+  {
+    "id": "col1-10",
+    "tags": [
+      "forest",
+      "mountain-rocks",
+      "cave",
+      "night",
+      "fire-lava"
+    ],
+    "caption": "Houndoom in a forest, rocky terrain, a cave, night, fire."
+  },
+  {
+    "id": "col1-11",
+    "tags": [
+      "flying"
+    ],
+    "caption": "Jirachi floats against a red circular abstract background."
+  },
+  {
+    "id": "col1-12",
+    "tags": [
+      "water-surface",
+      "sky-clouds",
+      "swimming"
+    ],
+    "caption": "Kyogre in surface water, a cloudy sky, swimming."
+  },
+  {
+    "id": "col1-13",
+    "tags": [],
+    "caption": "Leafeon stands against a blue and yellow abstract background."
+  },
+  {
+    "id": "col1-14",
+    "tags": [
+      "forest",
+      "grassland-field",
+      "mountain-rocks",
+      "sky-clouds"
+    ],
+    "caption": "Lucario in a forest, grassland, rocky terrain, a cloudy sky."
+  },
+  {
+    "id": "col1-15",
+    "tags": [
+      "sky-clouds",
+      "flying"
+    ],
+    "caption": "Lugia in a cloudy sky, flight."
+  },
+  {
+    "id": "col1-16",
+    "tags": [
+      "sky-clouds",
+      "sunset-sunrise",
+      "fire-lava"
+    ],
+    "caption": "Magmortar in a cloudy sky, sunset, fire."
+  },
+  {
+    "id": "col1-17",
+    "tags": [
+      "forest",
+      "mountain-rocks",
+      "snow-ice",
+      "indoors",
+      "ruins-building",
+      "night",
+      "fire-lava"
+    ],
+    "caption": "Ninetales in a forest, rocky terrain, snow and ice, an indoor scene, a building, night, fire."
+  },
+  {
+    "id": "col1-18",
+    "tags": [
+      "forest"
+    ],
+    "caption": "Pachirisu in a forest."
+  },
+  {
+    "id": "col1-19",
+    "tags": [
+      "water-surface",
+      "sky-clouds",
+      "swimming"
+    ],
+    "caption": "Palkia in surface water, a cloudy sky, swimming."
+  },
+  {
+    "id": "col1-20",
+    "tags": [
+      "sky-clouds",
+      "flying"
+    ],
+    "caption": "Rayquaza in a cloudy sky, flight."
+  },
+  {
+    "id": "col1-21",
+    "tags": [
+      "forest",
+      "indoors",
+      "ruins-building",
+      "multiple-pokemon"
+    ],
+    "caption": "Smeargle in a forest, an indoor scene, a building, multiple Pokémon."
+  },
+  {
+    "id": "col1-22",
+    "tags": [
+      "grassland-field",
+      "sky-clouds",
+      "night",
+      "sunset-sunrise"
+    ],
+    "caption": "Umbreon in grassland, a cloudy sky, night, sunset."
+  },
+  {
+    "id": "col1-23",
+    "tags": [
+      "forest",
+      "grassland-field"
+    ],
+    "caption": "Ampharos in a forest, grassland."
+  },
+  {
+    "id": "col1-24",
+    "tags": [
+      "ruins-building",
+      "sky-clouds",
+      "sunset-sunrise"
+    ],
+    "caption": "Cleffa in a building, a cloudy sky, sunset."
+  },
+  {
+    "id": "col1-25",
+    "tags": [
+      "water-surface",
+      "city",
+      "ruins-building",
+      "swimming"
+    ],
+    "caption": "Feraligatr in surface water, a city, a building, swimming."
+  },
+  {
+    "id": "col1-26",
+    "tags": [
+      "forest",
+      "grassland-field",
+      "flowers"
+    ],
+    "caption": "Granbull in a forest, grassland, flowers."
+  },
+  {
+    "id": "col1-27",
+    "tags": [
+      "grassland-field",
+      "city",
+      "ruins-building",
+      "sky-clouds",
+      "flowers"
+    ],
+    "caption": "Meganium in grassland, a city, a building, a cloudy sky, flowers."
+  },
+  {
+    "id": "col1-28",
+    "tags": [
+      "flying"
+    ],
+    "caption": "Mismagius floats against a bright yellow abstract background."
+  },
+  {
+    "id": "col1-29",
+    "tags": [
+      "forest",
+      "mountain-rocks"
+    ],
+    "caption": "Mr. Mime in a forest, rocky terrain."
+  },
+  {
+    "id": "col1-30",
+    "tags": [
+      "water-surface",
+      "forest",
+      "grassland-field",
+      "sky-clouds",
+      "flying",
+      "swimming"
+    ],
+    "caption": "Pidgeot in surface water, a forest, grassland, a cloudy sky, flight, swimming."
+  },
+  {
+    "id": "col1-31",
+    "tags": [
+      "sky-clouds",
+      "flying"
+    ],
+    "caption": "Skarmory in a cloudy sky, flight."
+  },
+  {
+    "id": "col1-32",
+    "tags": [
+      "water-surface",
+      "grassland-field",
+      "sky-clouds",
+      "food-visible"
+    ],
+    "caption": "Slowking in surface water, grassland, a cloudy sky, visible food."
+  },
+  {
+    "id": "col1-33",
+    "tags": [
+      "forest"
+    ],
+    "caption": "Snorlax in a forest."
+  },
+  {
+    "id": "col1-34",
+    "tags": [
+      "forest"
+    ],
+    "caption": "Tangrowth in a forest."
+  },
+  {
+    "id": "col1-35",
+    "tags": [
+      "fire-lava"
+    ],
+    "caption": "Typhlosion stands amid a bright fiery abstract scene."
+  },
+  {
+    "id": "col1-36",
+    "tags": [
+      "grassland-field",
+      "mountain-rocks",
+      "desert",
+      "sky-clouds"
+    ],
+    "caption": "Tyrogue in grassland, rocky terrain, a desert, a cloudy sky."
+  },
+  {
+    "id": "col1-37",
+    "tags": [
+      "mountain-rocks",
+      "cave"
+    ],
+    "caption": "Ursaring in rocky terrain, a cave."
+  },
+  {
+    "id": "col1-38",
+    "tags": [
+      "indoors",
+      "ruins-building"
+    ],
+    "caption": "Weezing floats in an orange-lit indoor structure."
+  },
+  {
+    "id": "col1-39",
+    "tags": [
+      "forest"
+    ],
+    "caption": "Zangoose in a forest."
+  },
+  {
+    "id": "col1-40",
+    "tags": [
+      "water-surface",
+      "forest",
+      "grassland-field",
+      "sky-clouds",
+      "sunset-sunrise",
+      "flowers"
+    ],
+    "caption": "Bayleef in surface water, a forest, grassland, a cloudy sky, sunset, flowers."
+  },
+  {
+    "id": "col1-41",
+    "tags": [
+      "water-surface",
+      "forest",
+      "swimming"
+    ],
+    "caption": "Croconaw in surface water, a forest, swimming."
+  },
+  {
+    "id": "col1-42",
+    "tags": [
+      "mountain-rocks",
+      "snow-ice",
+      "sky-clouds"
+    ],
+    "caption": "Donphan in rocky terrain, snow and ice, a cloudy sky."
+  },
+  {
+    "id": "col1-43",
+    "tags": [
+      "grassland-field",
+      "sky-clouds",
+      "night",
+      "flowers"
+    ],
+    "caption": "Flaaffy in grassland, a cloudy sky, night, flowers."
+  },
+  {
+    "id": "col1-44",
+    "tags": [
+      "sunset-sunrise",
+      "fire-lava"
+    ],
+    "caption": "Flareon in sunset, fire."
+  },
+  {
+    "id": "col1-45",
+    "tags": [
+      "sky-clouds",
+      "flying"
+    ],
+    "caption": "Jolteon in a cloudy sky, flight."
+  },
+  {
+    "id": "col1-46",
+    "tags": [
+      "grassland-field",
+      "sky-clouds",
+      "sunset-sunrise",
+      "fire-lava"
+    ],
+    "caption": "Magby in grassland, a cloudy sky, sunset, fire."
+  },
+  {
+    "id": "col1-47",
+    "tags": [
+      "forest",
+      "cave"
+    ],
+    "caption": "Mime Jr. in a forest, a cave."
+  },
+  {
+    "id": "col1-48",
+    "tags": [
+      "forest",
+      "sky-clouds",
+      "flying"
+    ],
+    "caption": "Pidgeotto in a forest, a cloudy sky, flight."
+  },
+  {
+    "id": "col1-49",
+    "tags": [
+      "forest",
+      "grassland-field",
+      "fire-lava",
+      "flowers"
+    ],
+    "caption": "Quilava in a forest, grassland, fire, flowers."
+  },
+  {
+    "id": "col1-50",
+    "tags": [
+      "forest",
+      "sky-clouds"
+    ],
+    "caption": "Riolu in a forest, a cloudy sky."
+  },
+  {
+    "id": "col1-51",
+    "tags": [
+      "forest"
+    ],
+    "caption": "Seviper in a forest."
+  },
+  {
+    "id": "col1-52",
+    "tags": [
+      "water-surface",
+      "swimming"
+    ],
+    "caption": "Vaporeon in surface water, swimming."
+  },
+  {
+    "id": "col1-53",
+    "tags": [
+      "forest",
+      "grassland-field",
+      "flowers"
+    ],
+    "caption": "Chikorita in a forest, grassland, flowers."
+  },
+  {
+    "id": "col1-54",
+    "tags": [
+      "indoors",
+      "ruins-building"
+    ],
+    "caption": "Clefairy stands in a warmly lit indoor room."
+  },
+  {
+    "id": "col1-55",
+    "tags": [
+      "forest",
+      "grassland-field",
+      "fire-lava"
+    ],
+    "caption": "Cyndaquil in a forest, grassland, fire."
+  },
+  {
+    "id": "col1-56",
+    "tags": [
+      "city",
+      "ruins-building",
+      "sky-clouds",
+      "night",
+      "flying"
+    ],
+    "caption": "Eevee in a city, a building, a cloudy sky, night, flight."
+  },
+  {
+    "id": "col1-57",
+    "tags": [
+      "flying"
+    ],
+    "caption": "Hitmonchan in flight."
+  },
+  {
+    "id": "col1-58",
+    "tags": [
+      "mountain-rocks",
+      "snow-ice",
+      "sky-clouds",
+      "night",
+      "sunset-sunrise",
+      "flying"
+    ],
+    "caption": "Hitmonlee in rocky terrain, snow and ice, a cloudy sky, night, sunset, flight."
+  },
+  {
+    "id": "col1-59",
+    "tags": [
+      "mountain-rocks",
+      "sky-clouds",
+      "sunset-sunrise",
+      "fire-lava"
+    ],
+    "caption": "Houndour in rocky terrain, a cloudy sky, sunset, fire."
+  },
+  {
+    "id": "col1-60",
+    "tags": [
+      "indoors",
+      "ruins-building"
+    ],
+    "caption": "Koffing floats in a dim industrial interior."
+  },
+  {
+    "id": "col1-61",
+    "tags": [
+      "water-surface",
+      "swimming"
+    ],
+    "caption": "Magikarp in surface water, swimming."
+  },
+  {
+    "id": "col1-62",
+    "tags": [
+      "fire-lava"
+    ],
+    "caption": "Magmar in fire."
+  },
+  {
+    "id": "col1-63",
+    "tags": [
+      "grassland-field",
+      "sky-clouds",
+      "night"
+    ],
+    "caption": "Mareep in grassland, a cloudy sky, night."
+  },
+  {
+    "id": "col1-64",
+    "tags": [
+      "flying"
+    ],
+    "caption": "Mawile in flight."
+  },
+  {
+    "id": "col1-65",
+    "tags": [
+      "water-surface",
+      "forest",
+      "mountain-rocks"
+    ],
+    "caption": "Misdreavus in surface water, a forest, rocky terrain."
+  },
+  {
+    "id": "col1-66",
+    "tags": [
+      "grassland-field",
+      "desert",
+      "sky-clouds",
+      "sunset-sunrise"
+    ],
+    "caption": "Phanpy in grassland, a desert, a cloudy sky, sunset."
+  },
+  {
+    "id": "col1-67",
+    "tags": [
+      "forest",
+      "grassland-field",
+      "sky-clouds",
+      "flying"
+    ],
+    "caption": "Pidgey in a forest, grassland, a cloudy sky, flight."
+  },
+  {
+    "id": "col1-68",
+    "tags": [
+      "grassland-field",
+      "flowers"
+    ],
+    "caption": "Pineco in grassland, flowers."
+  },
+  {
+    "id": "col1-69",
+    "tags": [
+      "underwater",
+      "mountain-rocks",
+      "swimming"
+    ],
+    "caption": "Relicanth in an underwater scene, rocky terrain, swimming."
+  },
+  {
+    "id": "col1-70",
+    "tags": [
+      "water-surface",
+      "cave",
+      "ruins-building",
+      "swimming"
+    ],
+    "caption": "Slowpoke in surface water, a cave, a building, swimming."
+  },
+  {
+    "id": "col1-71",
+    "tags": [
+      "grassland-field",
+      "sky-clouds",
+      "flowers"
+    ],
+    "caption": "Snubbull in grassland, a cloudy sky, flowers."
+  },
+  {
+    "id": "col1-72",
+    "tags": [
+      "water-surface",
+      "forest"
+    ],
+    "caption": "Tangela in surface water, a forest."
+  },
+  {
+    "id": "col1-73",
+    "tags": [
+      "forest",
+      "grassland-field"
+    ],
+    "caption": "Teddiursa in a forest, grassland."
+  },
+  {
+    "id": "col1-74",
+    "tags": [
+      "water-surface",
+      "forest",
+      "swimming"
+    ],
+    "caption": "Totodile in surface water, a forest, swimming."
+  },
+  {
+    "id": "col1-75",
+    "tags": [
+      "forest",
+      "grassland-field",
+      "snow-ice"
+    ],
+    "caption": "Vulpix in a forest, grassland, snow and ice."
+  },
+  {
+    "id": "col1-76",
+    "tags": [
+      "indoors",
+      "human-present",
+      "multiple-pokemon"
+    ],
+    "caption": "Cheerleader's Cheer in an indoor scene, a person, multiple Pokémon."
+  },
+  {
+    "id": "col1-77",
+    "tags": [
+      "indoors",
+      "ruins-building",
+      "human-present"
+    ],
+    "caption": "Copycat in an indoor scene, a building, a person."
+  },
+  {
+    "id": "col1-78",
+    "tags": [],
+    "caption": "Dual Ball in an abstract or unclassified setting."
+  },
+  {
+    "id": "col1-79",
+    "tags": [
+      "indoors",
+      "human-present",
+      "multiple-pokemon"
+    ],
+    "caption": "Interviewer's Questions in an indoor scene, a person, multiple Pokémon."
+  },
+  {
+    "id": "col1-80",
+    "tags": [],
+    "caption": "Lost Remover in an abstract or unclassified setting."
+  },
+  {
+    "id": "col1-81",
+    "tags": [
+      "water-surface",
+      "mountain-rocks",
+      "sky-clouds"
+    ],
+    "caption": "Lost World in surface water, rocky terrain, a cloudy sky."
+  },
+  {
+    "id": "col1-82",
+    "tags": [
+      "indoors",
+      "human-present"
+    ],
+    "caption": "Professor Elm stands in an indoor laboratory."
+  },
+  {
+    "id": "col1-83",
+    "tags": [
+      "indoors",
+      "human-present"
+    ],
+    "caption": "Professor Oak stands in an indoor office."
+  },
+  {
+    "id": "col1-84",
+    "tags": [],
+    "caption": "Research Record in an abstract or unclassified setting."
+  },
+  {
+    "id": "col1-85",
+    "tags": [
+      "ruins-building",
+      "flowers",
+      "human-present",
+      "multiple-pokemon"
+    ],
+    "caption": "Sage's Training in a building, flowers, a person, multiple Pokémon."
+  },
+  {
+    "id": "col1-86",
+    "tags": [],
+    "caption": "Darkness Energy in an abstract or unclassified setting."
+  },
+  {
+    "id": "col1-87",
+    "tags": [],
+    "caption": "Metal Energy in an abstract or unclassified setting."
+  },
+  {
+    "id": "col1-88",
+    "tags": [
+      "forest",
+      "flying"
+    ],
+    "caption": "Grass Energy in a forest, flight."
+  },
+  {
+    "id": "col1-89",
+    "tags": [
+      "ruins-building",
+      "sky-clouds",
+      "sunset-sunrise",
+      "fire-lava",
+      "flying"
+    ],
+    "caption": "Fire Energy in a building, a cloudy sky, sunset, fire, flight."
+  },
+  {
+    "id": "col1-90",
+    "tags": [
+      "underwater",
+      "swimming"
+    ],
+    "caption": "Water Energy in an underwater scene, swimming."
+  },
+  {
+    "id": "col1-91",
+    "tags": [
+      "ruins-building",
+      "sky-clouds",
+      "sunset-sunrise"
+    ],
+    "caption": "Lightning Energy in a building, a cloudy sky, sunset."
+  },
+  {
+    "id": "col1-92",
+    "tags": [
+      "sky-clouds"
+    ],
+    "caption": "Psychic Energy in a cloudy sky."
+  },
+  {
+    "id": "col1-93",
+    "tags": [
+      "mountain-rocks",
+      "sky-clouds",
+      "sunset-sunrise"
+    ],
+    "caption": "Fighting Energy in rocky terrain, a cloudy sky, sunset."
+  },
+  {
+    "id": "col1-94",
+    "tags": [
+      "city",
+      "ruins-building",
+      "night"
+    ],
+    "caption": "Darkness Energy in a city, a building, night."
+  },
+  {
+    "id": "col1-95",
+    "tags": [
+      "city",
+      "ruins-building"
+    ],
+    "caption": "Metal Energy in a city, a building."
+  },
+  {
+    "id": "col1-SL1",
+    "tags": [
+      "flying"
+    ],
+    "caption": "Deoxys in flight."
+  },
+  {
+    "id": "col1-SL10",
+    "tags": [
+      "flying"
+    ],
+    "caption": "Rayquaza in flight."
+  },
+  {
+    "id": "col1-SL11",
+    "tags": [
+      "water-surface",
+      "swimming"
+    ],
+    "caption": "Suicune in surface water, swimming."
+  },
+  {
+    "id": "col1-SL2",
+    "tags": [],
+    "caption": "Dialga in an abstract or unclassified setting."
+  },
+  {
+    "id": "col1-SL3",
+    "tags": [
+      "fire-lava"
+    ],
+    "caption": "Entei in fire."
+  },
+  {
+    "id": "col1-SL4",
+    "tags": [
+      "fire-lava"
+    ],
+    "caption": "Groudon in fire."
+  },
+  {
+    "id": "col1-SL5",
+    "tags": [
+      "water-surface",
+      "flying"
+    ],
+    "caption": "Ho-Oh in surface water, flight."
+  },
+  {
+    "id": "col1-SL6",
+    "tags": [
+      "underwater",
+      "swimming"
+    ],
+    "caption": "Kyogre in an underwater scene, swimming."
+  },
+  {
+    "id": "col1-SL7",
+    "tags": [
+      "underwater",
+      "swimming"
+    ],
+    "caption": "Lugia in an underwater scene, swimming."
+  },
+  {
+    "id": "col1-SL8",
+    "tags": [
+      "water-surface",
+      "swimming"
+    ],
+    "caption": "Palkia in surface water, swimming."
+  },
+  {
+    "id": "col1-SL9",
+    "tags": [
+      "mountain-rocks",
+      "sky-clouds",
+      "night"
+    ],
+    "caption": "Raikou in rocky terrain, a cloudy sky, night."
+  }
+]

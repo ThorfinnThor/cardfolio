@@ -1,0 +1,15 @@
+{
+  "name": "cardfolio-semantic-search-prototype",
+  "private": true,
+  "type": "module",
+  "description": "Standalone prototype: CLIP image embeddings of TCGdex EN card images + text query evaluation. Not part of the app build.",
+  "scripts": {
+    "cards": "node fetch-cards.mjs",
+    "embed": "node embed.mjs",
+    "query": "node query.mjs",
+    "all": "node fetch-cards.mjs && node embed.mjs && node query.mjs"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "^3.7.0"
+  }
+}

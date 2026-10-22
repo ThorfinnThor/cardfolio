@@ -1,0 +1,181 @@
+{
+ "cards": 1579,
+ "measure": "positiveAgreement = 2*both/(2*both+onlyA+onlyB) (Dice on positives); kappa = Cohen",
+ "tags": {
+  "beach": {
+   "both": 29,
+   "onlyA": 0,
+   "onlyB": 2,
+   "positiveAgreement": 0.967,
+   "kappa": 0.966
+  },
+  "water-surface": {
+   "both": 125,
+   "onlyA": 6,
+   "onlyB": 12,
+   "positiveAgreement": 0.933,
+   "kappa": 0.927
+  },
+  "underwater": {
+   "both": 66,
+   "onlyA": 2,
+   "onlyB": 0,
+   "positiveAgreement": 0.985,
+   "kappa": 0.984
+  },
+  "forest": {
+   "both": 206,
+   "onlyA": 38,
+   "onlyB": 24,
+   "positiveAgreement": 0.869,
+   "kappa": 0.846
+  },
+  "grassland-field": {
+   "both": 143,
+   "onlyA": 14,
+   "onlyB": 27,
+   "positiveAgreement": 0.875,
+   "kappa": 0.86
+  },
+  "mountain-rocks": {
+   "both": 140,
+   "onlyA": 16,
+   "onlyB": 35,
+   "positiveAgreement": 0.846,
+   "kappa": 0.828
+  },
+  "cave": {
+   "both": 18,
+   "onlyA": 0,
+   "onlyB": 4,
+   "positiveAgreement": 0.9,
+   "kappa": 0.899
+  },
+  "desert": {
+   "both": 22,
+   "onlyA": 1,
+   "onlyB": 1,
+   "positiveAgreement": 0.957,
+   "kappa": 0.956
+  },
+  "snow-ice": {
+   "both": 16,
+   "onlyA": 1,
+   "onlyB": 4,
+   "positiveAgreement": 0.865,
+   "kappa": 0.863
+  },
+  "city": {
+   "both": 22,
+   "onlyA": 2,
+   "onlyB": 2,
+   "positiveAgreement": 0.917,
+   "kappa": 0.915
+  },
+  "indoors": {
+   "both": 37,
+   "onlyA": 3,
+   "onlyB": 5,
+   "positiveAgreement": 0.902,
+   "kappa": 0.9
+  },
+  "ruins-building": {
+   "both": 19,
+   "onlyA": 1,
+   "onlyB": 9,
+   "positiveAgreement": 0.792,
+   "kappa": 0.789
+  },
+  "sky-clouds": {
+   "both": 181,
+   "onlyA": 13,
+   "onlyB": 53,
+   "positiveAgreement": 0.846,
+   "kappa": 0.822
+  },
+  "space": {
+   "both": 1,
+   "onlyA": 1,
+   "onlyB": 0,
+   "positiveAgreement": 0.667,
+   "kappa": 0.666
+  },
+  "night": {
+   "both": 33,
+   "onlyA": 4,
+   "onlyB": 13,
+   "positiveAgreement": 0.795,
+   "kappa": 0.79
+  },
+  "sunset-sunrise": {
+   "both": 26,
+   "onlyA": 5,
+   "onlyB": 3,
+   "positiveAgreement": 0.867,
+   "kappa": 0.864
+  },
+  "storm-weather": {
+   "both": 11,
+   "onlyA": 2,
+   "onlyB": 15,
+   "positiveAgreement": 0.564,
+   "kappa": 0.559
+  },
+  "fire-lava": {
+   "both": 52,
+   "onlyA": 9,
+   "onlyB": 13,
+   "positiveAgreement": 0.825,
+   "kappa": 0.818
+  },
+  "flowers": {
+   "both": 101,
+   "onlyA": 5,
+   "onlyB": 9,
+   "positiveAgreement": 0.935,
+   "kappa": 0.93
+  },
+  "food-visible": {
+   "both": 26,
+   "onlyA": 1,
+   "onlyB": 4,
+   "positiveAgreement": 0.912,
+   "kappa": 0.911
+  },
+  "human-present": {
+   "both": 83,
+   "onlyA": 1,
+   "onlyB": 0,
+   "positiveAgreement": 0.994,
+   "kappa": 0.994
+  },
+  "multiple-pokemon": {
+   "both": 57,
+   "onlyA": 14,
+   "onlyB": 15,
+   "positiveAgreement": 0.797,
+   "kappa": 0.788
+  },
+  "sleeping": {
+   "both": 6,
+   "onlyA": 0,
+   "onlyB": 3,
+   "positiveAgreement": 0.8,
+   "kappa": 0.799
+  },
+  "flying": {
+   "both": 85,
+   "onlyA": 20,
+   "onlyB": 25,
+   "positiveAgreement": 0.791,
+   "kappa": 0.775
+  },
+  "swimming": {
+   "both": 58,
+   "onlyA": 6,
+   "onlyB": 17,
+   "positiveAgreement": 0.835,
+   "kappa": 0.827
+  }
+ }
+}

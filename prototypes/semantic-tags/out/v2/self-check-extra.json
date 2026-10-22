@@ -1,0 +1,13 @@
+{
+ "note": "6 queries NOT used for tuning; existing fields only; same strict rule (borderline = miss, empty slots = miss)",
+ "correctTotal": 28,
+ "slots": 48,
+ "perQuery": {
+  "pokemon on a bridge": {"correct": 1, "misses": ["sm1-28 (bridge in the background, Psyduck not on it)", "sm1-122 (human on a bridge, no Pokémon)", "only 3 results in total"]},
+  "pokemon in water at night": {"correct": 4, "misses": ["ex1-14 (holo foil, not night)", "hgss1-8 (perched by a lake, not in water)", "sv03.5-121 (underwater, not night)", "ex1-37 (not clearly night)"]},
+  "pokemon on a rock": {"correct": 3, "misses": ["base1-37 (canyon)", "base1-56 (Onix's body is rock)", "bw1-11, bw1-22, bw1-23 (rocky ground or background, not on a rock)"]},
+  "a pokemon holding an object": {"correct": 6, "misses": ["dp1-96 (rose hands, not an object)", "ex1-76 (nothing held)"]},
+  "pokemon in a field of grass with clouds": {"correct": 7, "misses": ["bw1-90 (dust cloud, no grass field)"]},
+  "pokemon in a dark place": {"correct": 7, "misses": ["swsh1-149 (bright ice cave)"]}
+ }
+}
