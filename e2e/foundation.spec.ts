@@ -1118,3 +1118,25 @@ test("opens a gift proposal that arrives in a link and lets the family change it
   expect(new URL(page.url()).hash).toBe("");
   await expect(page.getByRole("button", { name: /Vorschlag als Link teilen/ })).toBeVisible();
 });
+
+test("guides a first visit to a small starter set and offers the children's page", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/app/");
+
+  await expect(page.getByRole("heading", { name: /Neu hier\? Wofür brauchst du den Binder/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Ich bin ein Kind/ })).toHaveAttribute("href", "/kinder/");
+  await page.getByRole("button", { name: /Ich baue eine Sammlung auf/ }).click();
+  await expect(page.getByRole("list", { name: "Sets zum Start" }).getByRole("button")).toHaveCount(5);
+  await page.getByRole("button", { name: /Celebrations/ }).click();
+  await expect(page.getByRole("heading", { name: "Binder mit einem Set erstellen" })).toBeVisible();
+});
+
+test("lets a child pick a Pokémon and shows the wish list page without prices", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/kinder/");
+
+  await expect(page.getByRole("heading", { name: "Dein Pokémon-Wunschzettel" })).toBeVisible();
+  await expect(page.getByRole("list", { name: "Pokémon auswählen" }).getByRole("button").first()).toBeVisible();
+  await expect(page.getByText("Hier wird nichts gekauft")).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});

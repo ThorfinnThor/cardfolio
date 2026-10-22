@@ -15,6 +15,7 @@ import {
 } from "@/domain/variant-selection";
 
 import { ConditionGuide } from "./ConditionGuide";
+import { VariantGlossary } from "./VariantGlossary";
 import styles from "./foundation-workspace.module.css";
 
 interface VariantFieldsProps {
@@ -143,6 +144,7 @@ export function VariantFields({
           </div>
         </details>
       </div>
+      <VariantGlossary />
       <p className={styles.variantHint}>
         {areFinishesVerified(availability)
           ? "Die angezeigte Standardausführung ist im Katalog bestätigt."
