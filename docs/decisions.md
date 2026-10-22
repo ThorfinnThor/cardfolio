@@ -478,3 +478,10 @@
 - **Cache.** The gift candidate cache version went from 2 to 3 so entries without the 1st-edition block are not reused.
 - **Unchanged.** Buyers can still switch a card to Unlimited; then the card says "Unlimited" and explains that the picture may show a 1st edition.
 
+## 2026-10-22 — More reviewed theme cards and five new themes
+
+- **Data.** 1,308 new artwork decisions (1,826 reviews in total, 325 `dominant`). Process: unreviewed cards per tag (ordered by how few tags they carry), contact sheets of 12 cards, a first strict AI pass, then a second independent AI pass over every proposed `dominant` card (it rejected about half), then my own look at the survivors. Trainer and Stadium cards never count as `dominant` (a Pokémon gift should show Pokémon); one cave pick that showed a grass field was struck by hand. All new decisions are `ai-assisted` and can be corrected in the local artwork review tool.
+- **Dominant cards per theme.** Meer & Wasser 32, Am Strand 23, Feuer & Lava 29, Nacht 26, Schnee & Eis 23, Stadt 22, Blumen 20, Wiese & Felder 19, Berge & Felsen 18, Wald 17, Himmel & Wolken 13, plus new: Wüste 16, Höhle 17, Schlafende Pokémon 18, Fliegende Pokémon 16, Süßes & Essen 10. Themes with fewer than 18 offer one page of 9 (the page shrinks instead of failing).
+- **Not offered.** "Sonnenauf-/untergang" (6) and "Ruinen & Gebäude" (0 after dropping Trainer/Stadium cards) had too few reliable cards; their reviews are stored for later.
+- **Yield.** After both passes only about 15 % of the proposed cards survive; more cards per theme need more review rounds, not a looser rule.
+

@@ -25,6 +25,11 @@ export const GIFT_THEME_PRESETS: readonly GiftThemePreset[] = [
   { id: "city", label: "Stadt", description: "Straßen, Orte und urbane Szenen", query: "Stadt", mappedTags: ["city"] },
   { id: "sky", label: "Himmel & Wolken", description: "Weite Himmel und Wolkenlandschaften", query: "Himmel", mappedTags: ["sky-clouds"] },
   { id: "flowers", label: "Blumen", description: "Blüten, Gärten und farbige Natur", query: "Blumen", mappedTags: ["flowers"] },
+  { id: "desert", label: "Wüste", description: "Sand, Dünen und Kakteen", query: "Wüste", mappedTags: ["desert"] },
+  { id: "cave", label: "Höhle", description: "Grotten, Felswände und Kristalle", query: "Höhle", mappedTags: ["cave"] },
+  { id: "sleeping", label: "Schlafende Pokémon", description: "Kuschelige, träumende Motive", query: "Schlafend", mappedTags: ["sleeping"] },
+  { id: "flying", label: "Fliegende Pokémon", description: "Pokémon im Flug am Himmel", query: "Fliegend", mappedTags: ["flying"] },
+  { id: "food", label: "Süßes & Essen", description: "Kuchen, Beeren und Leckereien", query: "Essen", mappedTags: ["food-visible"] },
 ] as const;
 
 export function giftThemePreset(id: string | undefined): GiftThemePreset | undefined {
