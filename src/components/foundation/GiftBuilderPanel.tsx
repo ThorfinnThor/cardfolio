@@ -23,7 +23,7 @@ import { ConditionGuide } from "./ConditionGuide";
 import { giftSubjectOf, matchesGiftSubject, parseGiftSubjects, separateRepeatedCards } from "@/domain/gift-subject";
 import type { SmartSearchAdapter } from "@/domain/semantic-card-search";
 import type { CardSnapshot, CatalogSearchItem, PurchasePreferences, VariantSelection } from "@/domain/types";
-import { createInitialVariantSelection, isVariantSelectionValid, variantAvailabilityForCard, variantSelectionIssue } from "@/domain/variant-selection";
+import { FIRST_EDITION_SET_IDS, createInitialVariantSelection, isVariantSelectionValid, variantAvailabilityForCard, variantSelectionIssue } from "@/domain/variant-selection";
 
 import { CardArtwork } from "./CardArtwork";
 import { GiftBinderSpread, type SpreadPocket } from "./GiftBinderSpread";
@@ -99,14 +99,18 @@ function friendlyError(cause: unknown, fallback: string): string {
   return technical ? "Einige Kartendaten konnten gerade nicht gelesen werden. Bitte versuche es noch einmal." : cause.message;
 }
 
-function defaultVariant(card: CardSnapshot): VariantSelection {
+export function defaultVariant(card: CardSnapshot): VariantSelection {
   const availability = variantAvailabilityForCard(card);
   const initial = createInitialVariantSelection(availability);
-  if (initial.finish !== "unspecified") return initial;
-  return {
-    ...initial,
-    finish: availability.normal ? "normal" : availability.holo ? "holo" : "reverse",
-  };
+  const finish = initial.finish !== "unspecified"
+    ? initial.finish
+    : availability.normal ? "normal" : availability.holo ? "holo" : "reverse";
+  if (FIRST_EDITION_SET_IDS.has(card.setId)) {
+    // The catalogue shows the 1st edition scan of these sets, so the card that is shown (and priced) is the 1st edition.
+    const printing = availability.printingPolicy === "standard-only" ? "shadowed" : "shadowless";
+    return { ...initial, finish: availability.printingPolicy === "english-base-set-machamp" ? "holo" : finish, edition: "first-edition", printing };
+  }
+  return { ...initial, finish };
 }
 
 /**

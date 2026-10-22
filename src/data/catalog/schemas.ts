@@ -26,6 +26,8 @@ export const tcgdexCardSchema = z.object({
   abilities: z.array(z.object({ name: z.string().nullish() })).nullish(),
   attacks: z.array(z.object({ name: z.string().nullish() })).nullish(),
   pricing: z.unknown().optional(),
+  /** Per-variant details; only the stamp and the Cardmarket block of a 1st-edition variant are read. */
+  variants_detailed: z.array(z.object({ stamp: z.array(z.string()).nullish(), pricing: z.unknown().optional() }).passthrough()).nullish(),
   variants: z
     .object({
       firstEdition: z.boolean(),

@@ -471,3 +471,10 @@
 - **Full guide.** New guide "Pokémon-Karten bei TCGplayer kaufen" (DE/EN, with answer and FAQ), linked from the in-app guide and the marketplace guide; `npm run llms:generate` regenerates `public/llms.txt`.
 - **Not done.** Screenshots of TCGplayer's interface (its cookie banner cannot be dismissed without accepting cookies); the in-app EN translation of the new step texts is partial.
 
+## 2026-10-22 — The card that is shown is the card that is priced (1st edition)
+
+- **Why.** TCGdex shows the 1st-edition scan for every set that has a 1st edition (checked for base1, base2, base3, base5, gym1, gym2, neo1–neo4), but the gift builder defaulted to Unlimited and priced that: a Base Set Ponyta showed 0,93 € while the 1st edition costs around 22 €.
+- **Rule.** For the sets in `FIRST_EDITION_SET_IDS` the default variant is the 1st edition (shadowless in the English Base Set; Base Set Machamp holo only), and it is priced with the 1st edition's own Cardmarket product. TCGdex lists it under `variants_detailed` (stamp `1st-edition`, German `1. Auflage`); `withFirstEditionPricing` carries that block as `rawPricing.firstEdition.cardmarket`, and the gift price provider uses it for `edition: "first-edition"`. A holo-only 1st edition has no separate foil price, so the plain product price is used; with no 1st-edition block the card gets no price (never the Unlimited one).
+- **Cache.** The gift candidate cache version went from 2 to 3 so entries without the 1st-edition block are not reused.
+- **Unchanged.** Buyers can still switch a card to Unlimited; then the card says "Unlimited" and explains that the picture may show a 1st edition.
+

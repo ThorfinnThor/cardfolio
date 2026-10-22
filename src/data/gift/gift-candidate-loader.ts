@@ -46,7 +46,7 @@ export function spreadSample<T>(items: readonly T[], count: number): T[] {
   if (items.length <= count) return [...items];
   return Array.from({ length: count }, (_, index) => items[Math.floor((index * items.length) / count)]);
 }
-const GIFT_CANDIDATE_CACHE_VERSION = 2;
+const GIFT_CANDIDATE_CACHE_VERSION = 3;
 
 function abortReason(signal?: AbortSignal): unknown {
   return signal?.reason ?? new DOMException("Operation aborted", "AbortError");

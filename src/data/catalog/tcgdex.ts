@@ -269,10 +269,24 @@ export class TCGdexCatalogAdapter implements CatalogAdapter {
     };
     return {
       card: snapshot,
-      rawPricing: card.pricing,
+      rawPricing: withFirstEditionPricing(card.pricing, card.variants_detailed),
       releaseYear: releaseYear(set.releaseDate),
     };
   }
+}
+
+const FIRST_EDITION_STAMPS = new Set(["1st-edition", "1. Auflage"]);
+
+/**
+ * Early sets list the 1st edition as its own Cardmarket product with its own price. The gift builder shows the 1st
+ * edition scan for those sets and prices exactly that card, so the 1st-edition Cardmarket block travels with the
+ * pricing as `firstEdition.cardmarket`.
+ */
+export function withFirstEditionPricing(pricing: unknown, variants: ReadonlyArray<{ stamp?: string[] | null; pricing?: unknown }> | null | undefined): unknown {
+  const variant = variants?.find((item) => item.stamp?.some((stamp) => FIRST_EDITION_STAMPS.has(stamp)));
+  const cardmarket = variant?.pricing && typeof variant.pricing === "object" ? (variant.pricing as { cardmarket?: unknown }).cardmarket : undefined;
+  if (!cardmarket || typeof cardmarket !== "object") return pricing;
+  return { ...(pricing && typeof pricing === "object" ? pricing as object : {}), firstEdition: { cardmarket } };
 }
 
 export function catalogQueryKey(query: CatalogQuery): readonly unknown[] {

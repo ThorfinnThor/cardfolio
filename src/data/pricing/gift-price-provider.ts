@@ -47,20 +47,24 @@ function unknown(request: GiftPriceRequest, issues: string[]): GiftPriceQuote {
 }
 
 function cardmarket(request: GiftPriceRequest, pricing: JsonRecord): GiftPriceQuote {
-  const provider = record(pricing.cardmarket);
+  const firstEdition = request.variant.edition === "first-edition";
+  // A 1st edition is its own Cardmarket product; without its block there is no honest price for the card.
+  const provider = firstEdition ? record(record(pricing.firstEdition)?.cardmarket) : record(pricing.cardmarket);
   if (!provider) return unknown(request, ["missing-cardmarket-provider"]);
   if (provider.unit !== "EUR") return unknown(request, ["unexpected-cardmarket-currency"]);
   if (!validTimestamp(provider.updated)) return unknown(request, ["invalid-cardmarket-timestamp"]);
-  if (request.variant.edition !== "unlimited" || !["normal", "holo"].includes(request.variant.finish)) {
+  if (!["unlimited", "first-edition"].includes(request.variant.edition) || !["normal", "holo"].includes(request.variant.finish)) {
     return unknown(request, ["unsupported-cardmarket-variant"]);
   }
-  const suffix = request.variant.finish === "holo" ? "-holo" : "";
-  const metrics = [
+  const metricsFor = (suffix: string) => [
     { name: "low", amount: minor(provider[`low${suffix}`]) },
     { name: "trend", amount: minor(provider[`trend${suffix}`]) },
     { name: "avg30", amount: minor(provider[`avg30${suffix}`]) },
     { name: "avg", amount: minor(provider[`avg${suffix}`]) },
   ];
+  let metrics = metricsFor(request.variant.finish === "holo" ? "-holo" : "");
+  // A holo-only 1st edition has no separate foil price; its product price is the plain one.
+  if (firstEdition && metrics.every((item) => item.amount === undefined)) metrics = metricsFor("");
   const central = metrics.find((item) => item.name === "trend" && item.amount !== undefined)
     ?? metrics.find((item) => item.name === "avg30" && item.amount !== undefined)
     ?? metrics.find((item) => item.name === "avg" && item.amount !== undefined);
