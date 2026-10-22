@@ -30,7 +30,8 @@
     "semantic:coverage:summary": "node scripts/semantic-index.mjs coverage-summary",
     "semantic:evaluate": "vitest run src/test/domain/semantic-card-search.benchmark.test.ts --reporter=verbose",
     "release:evidence": "node scripts/release-evidence.mjs",
-    "release:check": "node scripts/check-release-gates.mjs"
+    "release:check": "node scripts/check-release-gates.mjs",
+    "llms:generate": "node scripts/generate-llms-txt.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

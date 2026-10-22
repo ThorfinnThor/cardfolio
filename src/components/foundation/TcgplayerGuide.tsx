@@ -7,11 +7,13 @@ import type { TcgplayerMassEntryExport } from "@/domain/tcgplayer-export";
 
 import styles from "./missing-cards-panel.module.css";
 
+const TCGPLAYER_GUIDE_PATH = "/ratgeber/tcgplayer-pokemon-karten-kaufen/";
+
 const GUIDE_STEPS = [
   { step: 1, label: "Liste öffnen" },
-  { step: 2, label: "Karten laden" },
+  { step: 2, label: "Liste prüfen" },
   { step: 3, label: "Printing & Zustand" },
-  { step: 4, label: "Kauf prüfen" },
+  { step: 4, label: "Add to Cart" },
 ] as const;
 
 type Step = (typeof GUIDE_STEPS)[number]["step"];
@@ -75,29 +77,30 @@ export function TcgplayerGuide({ exported, onCopy }: { exported: TcgplayerMassEn
 
         {step === 2 ? <>
           <span className={styles.cardmarketGuideKicker}>Schritt 2</span>
-          <h5>Karten in Mass Entry laden</h5>
+          <h5>Liste in Mass Entry prüfen</h5>
           <ol className={styles.cardmarketInstructionList}>
             {exported.massEntryPrefilled
-              ? <li>Die Karten stehen bereits <b>vorausgefüllt</b> im Textfeld von Mass Entry. Sonst klicke in das Feld und füge sie mit <b>Strg+V</b> beziehungsweise <b>⌘V</b> ein.</li>
-              : <li>Klicke in das Textfeld von Mass Entry und füge die Liste mit <b>Strg+V</b> beziehungsweise <b>⌘V</b> ein.</li>}
-            <li>Lass TCGplayer die Karten suchen. Dabei werden Karte, Set und Nummer übernommen.</li>
+              ? <li>Die Karten stehen bereits <b>vorausgefüllt</b> im Feld <b>„Items“</b>. Sonst klicke in das Feld und füge sie mit <b>Strg+V</b> beziehungsweise <b>⌘V</b> ein.</li>
+              : <li>Klicke in das Feld <b>„Items“</b> und füge die Liste mit <b>Strg+V</b> beziehungsweise <b>⌘V</b> ein.</li>}
+            <li>Bei <b>„Select Product Line“</b> muss <b>Pokemon</b> stehen, und jede Karte sollte als eigene Zeile erscheinen.</li>
           </ol>
+          <small>TCGplayer zeigt die Seite auf Englisch. Mit „Show Set/Series Codes“ siehst du die Set-Kürzel, falls eine Zeile nicht erkannt wird.</small>
           <div className={styles.cardmarketGuideActions}>
             <button type="button" className={styles.cardmarketBackButton} onClick={() => setStep(1)}><ArrowLeft aria-hidden="true" size={16} /> Zurück</button>
             <a href={exported.massEntryUrl} target="_blank" rel="noopener noreferrer" onClick={() => onCopy?.(exported)}>
               Liste erneut kopieren &amp; TCGplayer öffnen <ExternalLink aria-hidden="true" size={16} />
             </a>
-            <button type="button" onClick={() => setStep(3)}>Karten sind geladen <ArrowRight aria-hidden="true" size={17} /></button>
+            <button type="button" onClick={() => setStep(3)}>Die Liste stimmt <ArrowRight aria-hidden="true" size={17} /></button>
           </div>
         </> : null}
 
         {step === 3 ? <>
           <span className={styles.cardmarketGuideKicker}>Schritt 3</span>
-          <h5>Printing und Zustand einstellen</h5>
+          <h5>Printing und Condition einstellen</h5>
           <div className={styles.cardmarketConditionWarning} role="alert">
             <div>
               <strong>Mass Entry übernimmt nur Karte, Set und Nummer</strong>
-              <p>Printing und Zustand stellst du bei TCGplayer selbst mit den Filtern ein. Holofoil, 1st Edition Holofoil und Unlimited Holofoil sind getrennte Optionen.</p>
+              <p>Öffne bei TCGplayer den Bereich <b>„Item Options“</b> und setze Haken bei <b>Printing</b> und <b>Condition</b>. Holofoil, 1st Edition Holofoil und Unlimited Holofoil sind getrennte Optionen.</p>
             </div>
             <div className={styles.optionTally}>
               <span><small>Printing laut deiner Auswahl</small>{printings.map(([label, count]) => <b key={label}>{label} · {count === 1 ? "1 Karte" : `${count} Karten`}</b>)}</span>
@@ -106,19 +109,19 @@ export function TcgplayerGuide({ exported, onCopy }: { exported: TcgplayerMassEn
           </div>
           <div className={styles.cardmarketGuideActions}>
             <button type="button" className={styles.cardmarketBackButton} onClick={() => setStep(2)}><ArrowLeft aria-hidden="true" size={16} /> Zurück</button>
-            <button type="button" onClick={() => setStep(4)}>Filter sind eingestellt <ArrowRight aria-hidden="true" size={17} /></button>
+            <button type="button" onClick={() => setStep(4)}>Optionen sind gesetzt <ArrowRight aria-hidden="true" size={17} /></button>
           </div>
         </> : null}
 
         {step === 4 ? <>
           <span className={styles.cardmarketGuideKicker}>Schritt 4</span>
-          <h5>Ergebnis prüfen und in den Warenkorb legen</h5>
+          <h5>„Add to Cart“ klicken und das Ergebnis prüfen</h5>
           <ol className={styles.cardmarketInstructionList}>
-            <li>Prüfe, ob alle <b>{exported.readyCount === 1 ? "1 Karte" : `${exported.readyCount} Karten`}</b> gefunden wurden.</li>
-            <li>Kontrolliere Kartenname, Set, vollständige Nummer, Sprache, Printing und Zustand.</li>
-            <li>Erst danach lässt du TCGplayer die Angebote in den Warenkorb legen und bezahlst dort.</li>
+            <li>Klicke bei TCGplayer auf <b>„Add to Cart“</b>. TCGplayer sucht dann nach eigener Beschreibung die günstigsten passenden Angebote im Marktplatz.</li>
+            <li>Prüfe, ob für alle <b>{exported.readyCount === 1 ? "1 Karte" : `${exported.readyCount} Karten`}</b> ein Angebot gefunden wurde, und kontrolliere Kartenname, Set, vollständige Nummer, Sprache, Printing und Zustand.</li>
+            <li>Sieh dir <b>Versandkosten und Lieferart</b> an, bevor du bezahlst. Bezahlt wird bei TCGplayer.</li>
           </ol>
-          <small>Your Card Binder legt nichts in deinen Warenkorb. Preise, Versand und die endgültige Kartenauswahl bestätigst du erst bei TCGplayer.</small>
+          <small>Your Card Binder legt nichts in deinen Warenkorb. TCGplayer zeigt bei einem Standort in Deutschland nur Verkäufer, die dorthin liefern. <a href={TCGPLAYER_GUIDE_PATH}>Ausführliche Anleitung mit allen Begriffen</a></small>
           <div className={styles.cardmarketGuideActions}>
             <button type="button" className={styles.cardmarketBackButton} onClick={() => setStep(3)}><ArrowLeft aria-hidden="true" size={16} /> Zurück</button>
           </div>

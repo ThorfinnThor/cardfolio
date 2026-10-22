@@ -231,6 +231,25 @@ export const GUIDE_EXTRAS: Readonly<Record<string, GuideExtras>> = {
       ],
     },
   },
+  "tcgplayer-howto": {
+    published: "2026-10-22",
+    de: {
+      answer: "Bei TCGplayer fügst du deine Kartenliste mit der Funktion Mass Entry auf einmal ein. Your Card Binder öffnet sie vorausgefüllt, du wählst bei „Item Options“ Printing und Condition und klickst auf „Add to Cart“. Die Oberfläche ist englisch, bezahlt wird bei TCGplayer.",
+      faq: [
+        { q: "Liefert TCGplayer nach Deutschland?", a: "Bei einem Standort in Deutschland zeigt TCGplayer nur Verkäufer an, die dorthin liefern, und verweist auf internationale Versandpartner mit gebündelter Lieferung und Sendungsverfolgung. Versandkosten siehst du vor dem Bezahlen." },
+        { q: "Was ist Mass Entry?", a: "Mass Entry ist TCGplayers Funktion, mit der du eine ganze Kartenliste auf einmal einfügst. Pro Zeile stehen Anzahl, Name, Set-Code und Nummer, zum Beispiel „1 Charizard [BS] 004/102“." },
+        { q: "Welchen Zustand wähle ich bei TCGplayer?", a: "TCGplayer kennt Near Mint, Lightly Played, Moderately Played, Heavily Played und Damaged. Für ein Geschenk passt meist Near Mint, optional zusammen mit Lightly Played." },
+      ],
+    },
+    en: {
+      answer: "At TCGplayer you paste your card list all at once with the Mass Entry function. Your Card Binder opens it pre-filled, you choose Printing and Condition under “Item Options” and click “Add to Cart”. The interface is in English, and you pay at TCGplayer.",
+      faq: [
+        { q: "Does TCGplayer ship to Germany?", a: "With a location in Germany, TCGplayer only shows sellers that ship there and points to international shipping partners with consolidated, tracked delivery. You see shipping costs before you pay." },
+        { q: "What is Mass Entry?", a: "Mass Entry is TCGplayer's function for pasting a whole card list at once. Each line holds quantity, name, set code and number, for example “1 Charizard [BS] 004/102”." },
+        { q: "Which condition do I choose at TCGplayer?", a: "TCGplayer has Near Mint, Lightly Played, Moderately Played, Heavily Played and Damaged. For a gift, Near Mint usually fits, optionally together with Lightly Played." },
+      ],
+    },
+  },
 };
 
 /** The extras of a guide; every guide has them (a test enforces it). */
