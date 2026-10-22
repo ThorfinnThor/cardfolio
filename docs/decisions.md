@@ -531,3 +531,9 @@
 
 - **Data.** 1,767 further decisions (7,702 reviews in total, 1,092 `dominant`) for 12 tags (fire, city, flowers, sunset, cave, food, sleeping, mountains, sky, desert, night, flying), same process (strict first pass, independent second pass, own look; three weak flower cards struck by hand). The beach pool was exhausted. One reviewer ran two shell calls although told not to; they only listed files and counted verdicts.
 - **Result.** More choice inside every theme (cards to swap, budget variation); no new theme. Counts: `docs/theme-card-counts-2026-10-22.md`.
+
+## 2026-10-22 — No Trainer, Stadium or Energy cards in themed pages
+
+- **Found by a live check.** The Wald page showed "Forest of Vitality" and "Wally's Compassion", the Nacht page "Acerola's Mischief", the Feuer page "Magma Basin": Trainer cards that older `dominant` reviews still contained (the Pokémon-only rule was applied to the new rounds only).
+- **Change.** All 29 `dominant` reviews on non-Pokémon cards (24 Trainer and 1 Energy from the owner's earlier local reviews, 4 Trainer from AI passes) were set to `secondary` with source `ai-assisted`. The owner's earlier decisions can be restored in the local artwork review tool if wanted.
+- **Counts.** 1,063 `dominant` reviews remain (7,702 reviews in total).

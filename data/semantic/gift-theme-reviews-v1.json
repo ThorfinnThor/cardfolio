@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-22T15:22:41.517Z",
+  "generatedAt": "2026-10-22T16:33:43.838Z",
   "reviews": [
     {
       "cardId": "30th-001",
@@ -1791,8 +1791,9 @@
     {
       "cardId": "basep-42",
       "tag": "night",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:37:08.195Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "basep-42",
@@ -19463,8 +19464,9 @@
     {
       "cardId": "me01-183",
       "tag": "night",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:49:53.753Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me01-183",
@@ -19482,20 +19484,23 @@
     {
       "cardId": "me01-186",
       "tag": "flowers",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:56:39.002Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me01-186",
       "tag": "forest",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:47:51.205Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me01-186",
       "tag": "grassland-field",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:48:36.449Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me01-186",
@@ -19744,8 +19749,9 @@
     {
       "cardId": "me02-119",
       "tag": "fire-lava",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:50:32.437Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me02-129",
@@ -20095,8 +20101,9 @@
     {
       "cardId": "me02.5-188",
       "tag": "forest",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:48:09.016Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me02.5-194",
@@ -20115,8 +20122,9 @@
     {
       "cardId": "me02.5-197",
       "tag": "mountain-rocks",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:49:35.011Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me02.5-197",
@@ -20159,8 +20167,9 @@
     {
       "cardId": "me02.5-210",
       "tag": "night",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:50:12.208Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me02.5-210",
@@ -20302,8 +20311,9 @@
     {
       "cardId": "me02.5-293",
       "tag": "water-surface",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:46:57.471Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me03-015",
@@ -20465,8 +20475,9 @@
     {
       "cardId": "me03-069",
       "tag": "snow-ice",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:51:24.153Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me03-070",
@@ -20568,8 +20579,9 @@
     {
       "cardId": "me03-109",
       "tag": "forest",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:47:46.527Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me03-119",
@@ -20870,8 +20882,9 @@
     {
       "cardId": "me04-080",
       "tag": "night",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:50:07.791Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me04-080",
@@ -20888,8 +20901,9 @@
     {
       "cardId": "me04-086",
       "tag": "fire-lava",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:50:45.931Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me04-090",
@@ -20984,8 +20998,9 @@
     {
       "cardId": "me04-111",
       "tag": "night",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:49:46.891Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me04-114",
@@ -21003,8 +21018,9 @@
     {
       "cardId": "me04-114",
       "tag": "water-surface",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:46:56.979Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me04-116",
@@ -21030,14 +21046,16 @@
     {
       "cardId": "me04-120",
       "tag": "flowers",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:56:30.615Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me04-120",
       "tag": "forest",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:47:45.169Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me04-120",
@@ -21403,8 +21421,9 @@
     {
       "cardId": "me05-077",
       "tag": "mountain-rocks",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:49:30.782Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me05-077",
@@ -21501,8 +21520,9 @@
     {
       "cardId": "me05-111",
       "tag": "water-surface",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:46:56.447Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "me05-112",
@@ -36340,8 +36360,8 @@
     {
       "cardId": "sv03.5-196",
       "tag": "flowers",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T13:05:00Z",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
       "source": "ai-assisted"
     },
     {
@@ -36382,8 +36402,8 @@
     {
       "cardId": "sv03.5-203",
       "tag": "flowers",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T12:54:00Z",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
       "source": "ai-assisted"
     },
     {
@@ -41654,8 +41674,8 @@
     {
       "cardId": "sv10-180",
       "tag": "city",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T13:05:00Z",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
       "source": "ai-assisted"
     },
     {
@@ -42250,8 +42270,9 @@
     {
       "cardId": "sv10.5b-170",
       "tag": "city",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:51:55.265Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "sv10.5b-170",
@@ -44262,14 +44283,16 @@
     {
       "cardId": "swsh10-212",
       "tag": "city",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:52:06.942Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "swsh10-213",
       "tag": "snow-ice",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:51:26.644Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "swsh10-214",
@@ -47677,8 +47700,9 @@
     {
       "cardId": "swsh7-164",
       "tag": "mountain-rocks",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:36:33.944Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "swsh7-168",
@@ -48680,15 +48704,16 @@
     {
       "cardId": "swsh9-167",
       "tag": "sky-clouds",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T12:54:00Z",
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
       "source": "ai-assisted"
     },
     {
       "cardId": "swsh9-185",
       "tag": "fire-lava",
-      "verdict": "dominant",
-      "reviewedAt": "2026-10-02T11:50:56.040Z"
+      "verdict": "secondary",
+      "reviewedAt": "2026-10-22T23:59:00Z",
+      "source": "ai-assisted"
     },
     {
       "cardId": "swshp-SWSH002",
