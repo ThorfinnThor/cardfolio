@@ -1,0 +1,33 @@
+.backdrop { position: fixed; inset: 0; z-index: 1100; display: grid; place-items: center; overflow: auto; background: rgb(20 26 51 / 55%); padding: 16px; }
+.dialog { display: grid; gap: 14px; width: min(520px, 100%); border: 1px solid var(--cf-line2); border-radius: 14px; background: var(--cf-surface); color: var(--cf-text); padding: 20px; box-shadow: 0 18px 48px var(--cf-sh-deep); }
+.dialog header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.dialog h2 { margin: 0; font-family: var(--cf-font-display); font-size: 1.15rem; font-weight: 650; }
+.dialog p { margin: 0; color: var(--cf-text2); font-size: .88rem; line-height: 1.55; }
+.dialog fieldset { display: grid; gap: 8px; margin: 0; border: 1px solid var(--cf-line); border-radius: 10px; padding: 10px 14px 12px; }
+.dialog legend { padding: 0 6px; color: var(--cf-muted); font-size: .75rem; font-weight: 650; }
+.dialog label { display: flex; align-items: center; gap: 9px; font-size: .9rem; }
+.count { color: var(--cf-text); font-weight: 650; }
+.hint { font-size: .8rem; }
+.close { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-surface); color: var(--cf-text2); cursor: pointer; }
+.actions { display: flex; justify-content: flex-end; gap: 10px; }
+.actions button { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; border-radius: 10px; padding: 9px 16px; font: inherit; font-weight: 700; cursor: pointer; }
+.secondary { border: 1px solid var(--cf-line2); background: var(--cf-surface); color: var(--cf-text2); }
+.primary { border: 0; background: var(--cf-accent); color: var(--cf-on-accent); }
+.primary:disabled { opacity: .5; cursor: not-allowed; }
+
+/* The sheets exist only for printing. */
+.printRoot { display: none; }
+.sheet { box-sizing: border-box; display: grid; grid-template-columns: repeat(3, 63mm); grid-auto-rows: 88mm; gap: 6mm; justify-content: center; align-content: center; width: 210mm; height: 297mm; page-break-after: always; break-after: page; page: placeholders; background: #fff; color: #000; }
+.sheet:last-child { page-break-after: auto; break-after: auto; }
+.card { box-sizing: border-box; display: grid; align-content: start; gap: 4px; width: 63mm; height: 88mm; border: .3mm dashed #666; border-radius: 3mm; padding: 5mm; font-family: Arial, Helvetica, sans-serif; font-size: 3.3mm; line-height: 1.3; overflow: hidden; }
+.card small { color: #555; font-size: 2.9mm; }
+.card strong { margin-top: 3mm; font-size: 5mm; line-height: 1.2; }
+.card em { color: #333; font-size: 3mm; font-style: normal; }
+.card p { align-self: end; margin: auto 0 0; color: #666; font-size: 2.9mm; }
+.card[data-kind="free"] p { align-self: center; margin: 22mm 0 0; text-align: center; font-size: 3.5mm; }
+
+@page placeholders { size: A4 portrait; margin: 0; }
+@media print {
+  :global(html.printing-placeholders) body > *:not([data-placeholder-print]) { display: none !important; }
+  .printRoot { display: block; }
+}

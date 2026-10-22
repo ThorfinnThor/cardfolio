@@ -895,6 +895,17 @@ test("sets, edits and persists the minimum condition for marketplace handoff", a
   await preview.getByLabel("Mindestzustand beim Kauf").selectOption("near-mint");
   await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
 
+  // Placeholders for the card that is planned but not owned yet: text only, visible only when printing.
+  await page.getByRole("button", { name: "Platzhalter drucken" }).click();
+  await expect(page.getByRole("dialog", { name: "Platzhalter drucken" })).toBeVisible();
+  await expect(page.getByRole("status").filter({ hasText: "Platzhalter auf 1 Seite" })).toBeVisible();
+  await expect(page.locator("[data-placeholder-print]")).toBeHidden();
+  await page.emulateMedia({ media: "print" });
+  await expect(page.locator("[data-placeholder-print]")).toBeVisible();
+  await expect(page.locator("[data-placeholder-print]")).toContainText("Ivysaur");
+  await expect(page.locator("[data-placeholder-print] img")).toHaveCount(0);
+  await page.emulateMedia({ media: "screen" });
+  await page.getByRole("button", { name: "Schließen", exact: true }).first().click();
   await expect(page.getByText("Fortschritt nach Set (1)")).toBeVisible();
   await page.getByRole("article", { name: "Ivysaur, Slot 1" }).click();
   await expect(page.getByRole("definition").filter({ hasText: "Wie neu" })).toBeVisible();

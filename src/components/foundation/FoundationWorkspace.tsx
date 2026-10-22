@@ -2,7 +2,7 @@
 
 import { LegalLinksInline } from "@/components/content/AppLegalFooter";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import { ListChecks, Archive, ArrowLeft, ArrowRight, BookOpen, CircleHelp, Copy, DatabaseBackup, ListFilter, Menu, Pencil, Search, Trash2, X } from "lucide-react";
+import { ListChecks, Archive, ArrowLeft, ArrowRight, BookOpen, CircleHelp, Copy, DatabaseBackup, ListFilter, Menu, Pencil, Printer, Search, Trash2, X } from "lucide-react";
 import Link from "next/link";
 import { type ChangeEvent, type FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -74,6 +74,7 @@ import { catalogLabel, coverLeather } from "./binder-cover";
 import { BinderOverview } from "./BinderOverview";
 import { BinderSetProgress } from "./BinderSetProgress";
 import { GiftBuilderPanel } from "./GiftBuilderPanel";
+import { PlaceholderPrint } from "./PlaceholderPrint";
 import { clearGiftResume, readGiftResume } from "./gift-resume";
 import { SetBinderWizard } from "./SetBinderWizard";
 import { BinderGrid } from "./BinderGrid";
@@ -494,6 +495,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
   const [giftDiscoveryMode, setGiftDiscoveryMode] = useState<"pokemon" | "theme">("pokemon");
   const [giftSubjectQuery, setGiftSubjectQuery] = useState("Pikachu");
   const [setBinderWizardOpen, setSetBinderWizardOpen] = useState(false);
+  const [placeholdersOpen, setPlaceholdersOpen] = useState(false);
   const [catalogSelection, setCatalogSelection] = useState<CatalogSearchItem[]>([]);
   const [celebratedEntryId, setCelebratedEntryId] = useState<string>();
 
@@ -1974,10 +1976,13 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
         ) : null}
         <div className={styles.sidebarBottom}>
           <button type="button" aria-label="Backup exportieren" className={styles.navItem} onClick={() => void exportBackup()} disabled={!binders.length}><DatabaseBackup size={18} /> <span>Backup exportieren</span></button>
+          <button type="button" aria-label="Platzhalter drucken" className={styles.navItem} onClick={() => setPlaceholdersOpen(true)} disabled={!activeBinder}><Printer size={18} /> <span>Platzhalter drucken</span></button>
           <Link className={styles.navItem} href="/anleitung/cardmarket/" target="_blank" rel="noopener noreferrer" aria-label="Kauf-Anleitung (öffnet in neuem Tab)"><ListChecks size={18} /> <span>Kauf-Anleitung</span></Link>
           <Link className={styles.navItem} href="/help/" aria-label="Hilfe"><CircleHelp size={18} /> <span>Hilfe</span></Link>
         </div>
       </aside>}
+
+      {placeholdersOpen && activeBinder ? <PlaceholderPrint binder={activeBinder} cards={cards} onClose={() => setPlaceholdersOpen(false)} /> : null}
 
       <div className={styles.mainColumn}>
         {giftChrome ? <header className={styles.giftBar}>

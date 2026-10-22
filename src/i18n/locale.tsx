@@ -574,6 +574,13 @@ const translations: Record<string, string> = {
   "Öffne den Shop Optimizer. Dort legst du eine Liste an und wählst später, wie die Verkäufer ausgesucht werden.": "Open the Shop Optimizer. There you create a list and later choose how the sellers are picked.",
   "Füge deine Karten hinzu. Unten findest du zu jeder Karte die Seite bei CardTrader mit Set, Nummer und allen Angeboten.": "Add your cards. Below you find the CardTrader page of every card with set, number and all offers.",
   "Seiten bei CardTrader": "Pages at CardTrader",
+  "Platzhalter drucken": "Print placeholders",
+  "Kartengroße Zettel (63 × 88 mm, neun pro A4-Seite) für die Taschen deines Binders, bis die echte Karte da ist. Sie zeigen nur Seite, Platz, Name, Set und Nummer, keine Kartenbilder.": "Card-sized slips (63 × 88 mm, nine per A4 page) for your binder's pockets until the real card arrives. They show only page, slot, name, set and number, no card pictures.",
+  "Was soll gedruckt werden?": "What should be printed?",
+  "Freie Plätze (leer, nur mit Position)": "Free slots (blank, position only)",
+  "Nichts zu drucken. Wähle oben mindestens eine Art oder plane Karten im Binder.": "Nothing to print. Choose at least one kind above or plan cards in the binder.",
+  "Stelle im Druckdialog „Skalierung 100 %“ und „Ränder: keine“ ein, damit die Zettel 63 × 88 mm groß bleiben.": "In the print dialog set “Scale 100%” and “Margins: none” so the slips stay 63 × 88 mm.",
+  "Drucken": "Print",
   "Fortschritt nach Set": "Progress by set",
   "Vorschlag als Link teilen": "Share proposal as a link",
   "Link kopiert": "Link copied",
@@ -669,6 +676,7 @@ Object.assign(translations, {
 });
 
 const patterns: Array<[RegExp, (...matches: string[]) => string]> = [
+  [/^(\d+) Platzhalter auf (\d+) Seiten?$/, (count, sheets) => `${count} placeholder${count === "1" ? "" : "s"} on ${sheets} page${sheets === "1" ? "" : "s"}`],
   [/^Dieser Vorschlag wurde per Link geteilt\. (\d+) Karten? konnten? nicht geladen werden\.$/, (count) => `This proposal was shared by link. ${count} ${count === "1" ? "card" : "cards"} could not be loaded.`],
   [/^(\d+) Karten? aus einer Zusatzquelle fehlen? im Link\.$/, (count) => `${count} ${count === "1" ? "card" : "cards"} from an additional source ${count === "1" ? "is" : "are"} missing in the link.`],
   [/^Deine Binder liegen nur in diesem Browser\. Das letzte Backup ist (\d+) Tage her\. Eine Datei reicht, um sie später wiederherzustellen\.$/, (days) => `Your binders only live in this browser. The last backup was ${days} days ago. One file is enough to restore them later.`],
