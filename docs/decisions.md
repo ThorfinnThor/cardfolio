@@ -492,3 +492,11 @@
 - **Rule.** `backupReminderDue`: nothing planned → no reminder; snoozed → no reminder; no backup yet → remind once the oldest binder is 3 days old; otherwise remind only if a binder changed since the last backup **and** the backup is at least 30 days old. "Backup exportieren" runs the normal export; "In 7 Tagen erinnern" snoozes for a week.
 - **Storage.** Key `cardfolio-backup-reminder` holds only two timestamps (last backup, snoozed until). No binder content, no card names. The export records the time through `recordBackup`; other tabs update through the `ycb:backup-recorded` event.
 - **Open.** The privacy policy's browser-storage table needs a row for this key; legal text waits for the owner's approval.
+
+## 2026-10-22 — Share a gift proposal by link, without a server
+
+- **Why.** A gift is often decided with family. A proposal that travels inside a link needs no account, no server and no stored data.
+- **Format.** `https://yourcardbinder.com/geschenk/#vorschlag=<base64url JSON>`. The fragment is never sent to a server. Content: version, the wish (subject text, optional theme id, page size, language, currency, budget) and for every card its TCGdex id, language and variant. No recipient name, no dedication, no binder id. `src/domain/gift-share.ts` validates strictly (zod; ids match `[A-Za-z0-9._-]{1,40}`, at most 36 cards, at most 6,000 characters of fragment; duplicates removed); anything malformed is ignored and the builder starts normally.
+- **Sender.** "Vorschlag als Link teilen" in the candidates step copies the link and shows it for manual copying. Supplement cards from CardTrader (provider `cardtrader`) are left out and the box says how many.
+- **Receiver.** `/geschenk/#vorschlag=…` opens the builder, loads the cards of the link in their order with live prices (`hydrateCandidates`), removes the fragment from the address bar and starts in the candidates step; alternatives for swapping load in the background and may be missing. The receiver can edit and share again. A shared link wins over a plan kept in the tab's sessionStorage.
+- **Not stored.** The link is never written to localStorage or to a server; nothing new needs a privacy-table row.

@@ -575,6 +575,14 @@ const translations: Record<string, string> = {
   "Füge deine Karten hinzu. Unten findest du zu jeder Karte die Seite bei CardTrader mit Set, Nummer und allen Angeboten.": "Add your cards. Below you find the CardTrader page of every card with set, number and all offers.",
   "Seiten bei CardTrader": "Pages at CardTrader",
   "Fortschritt nach Set": "Progress by set",
+  "Vorschlag als Link teilen": "Share proposal as a link",
+  "Link kopiert": "Link copied",
+  "Link zum Kopieren": "Link to copy",
+  "Link zum Vorschlag": "Link to the proposal",
+  "Schick ihn Familie oder Freunden. Wer ihn öffnet, sieht genau diese Karten und kann sie tauschen. Im Link stehen nur Karten und Wünsche, keine Namen und keine Widmung. Er wird nicht auf einem Server gespeichert.": "Send it to family or friends. Whoever opens it sees exactly these cards and can swap them. The link contains only cards and wishes, no names and no dedication. It is not stored on a server.",
+  "Dieser Vorschlag wurde per Link geteilt. Du kannst Karten tauschen, entfernen oder verschieben und deinen Vorschlag wieder per Link weitergeben.": "This proposal was shared by link. You can swap, remove or move cards and pass your own proposal on by link again.",
+  "Der geteilte Vorschlag konnte nicht geladen werden. Bitte frage nach einem neuen Link.": "The shared proposal could not be loaded. Please ask for a new link.",
+
   "Sicherung empfohlen": "Backup recommended",
   "Sichere deine Binder": "Back up your binders",
   "Deine Binder liegen nur in diesem Browser. Du hast noch kein Backup gemacht. Eine Datei reicht, um sie später wiederherzustellen.": "Your binders only live in this browser. You have not made a backup yet. One file is enough to restore them later.",
@@ -661,6 +669,8 @@ Object.assign(translations, {
 });
 
 const patterns: Array<[RegExp, (...matches: string[]) => string]> = [
+  [/^Dieser Vorschlag wurde per Link geteilt\. (\d+) Karten? konnten? nicht geladen werden\.$/, (count) => `This proposal was shared by link. ${count} ${count === "1" ? "card" : "cards"} could not be loaded.`],
+  [/^(\d+) Karten? aus einer Zusatzquelle fehlen? im Link\.$/, (count) => `${count} ${count === "1" ? "card" : "cards"} from an additional source ${count === "1" ? "is" : "are"} missing in the link.`],
   [/^Deine Binder liegen nur in diesem Browser\. Das letzte Backup ist (\d+) Tage her\. Eine Datei reicht, um sie später wiederherzustellen\.$/, (days) => `Your binders only live in this browser. The last backup was ${days} days ago. One file is enough to restore them later.`],
   [/^Fortschritt nach Set \((\d+)\)$/, (count) => `Progress by set (${count})`],
   [/^(\d+) von (\d+) vorhanden$/, (owned, planned) => `${owned} of ${planned} owned`],

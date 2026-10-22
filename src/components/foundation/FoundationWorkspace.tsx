@@ -505,6 +505,14 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
   // The landing page and the guides link to /geschenk/?start=1 so the visitor lands in step 1, not on a second hero.
   useEffect(() => {
     if (!giftShell) return;
+    // A link with a shared proposal opens the builder; the builder reads and clears the fragment.
+    if (/^#vorschlag=/.test(window.location.hash)) {
+      clearGiftResume();
+      setGiftBuilderOpen(true);
+      setBinderManagerOpen(true);
+      setMissingOpen(false);
+      return;
+    }
     const params = new URLSearchParams(window.location.search);
     if (params.get("start") !== "1") return;
     params.delete("start");
