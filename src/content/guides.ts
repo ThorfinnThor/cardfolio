@@ -310,8 +310,8 @@ export const GUIDES: readonly Guide[] = [
   },
   {
     id: "marketplaces",
-    updated: "2026-10-21",
-    related: ["cardmarket-vs-cardtrader", "condition", "language-and-finish"],
+    updated: "2026-10-22",
+    related: ["cardmarket-vs-cardtrader", "tcgplayer-howto", "condition", "language-and-finish"],
     de: {
       slug: "cardmarket-oder-tcgplayer",
       title: "Cardmarket oder TCGplayer: Wo kaufst du deine Pokémon-Karten?",
@@ -1143,6 +1143,151 @@ export const GUIDES: readonly Guide[] = [
           blocks: [
             { type: "p", text: "Your Card Binder prepares the list for both marketplaces and guides you through the process in four steps. You order, pay and buy only at the marketplace itself." },
             { type: "p", text: "Your Card Binder may receive a commission on purchases made through CardTrader links. Your price stays the same. Your Card Binder has no business relationship with either marketplace apart from this partner programme." },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    id: "tcgplayer-howto",
+    updated: "2026-10-22",
+    related: ["marketplaces", "condition", "language-and-finish"],
+    de: {
+      slug: "tcgplayer-pokemon-karten-kaufen",
+      title: "Pokémon-Karten bei TCGplayer kaufen: Schritt für Schritt mit Mass Entry",
+      metaTitle: "Pokémon-Karten bei TCGplayer kaufen: Anleitung",
+      description: "So kommt deine Kartenliste von Your Card Binder zu TCGplayer: Mass Entry öffnen, Printing und Zustand wählen, Add to Cart und was du bei Versand nach Deutschland prüfst.",
+      intro: "TCGplayer ist ein Marktplatz mit dem Schwerpunkt USA, dessen Oberfläche englisch ist. Mit der Funktion Mass Entry fügst du eine ganze Kartenliste auf einmal ein, statt jede Karte einzeln zu suchen. Diese Anleitung zeigt die vier Schritte und die Begriffe, die dich dort erwarten.",
+      sections: [
+        {
+          heading: "Das solltest du vorab wissen",
+          blocks: [
+            { type: "ul", items: [
+              "Die Oberfläche ist englisch, die Preise stehen in US-Dollar.",
+              "Bei einem Standort in Deutschland zeigt TCGplayer nur Verkäufer an, die dorthin liefern, und weist auf internationale Versandpartner hin, die Bestellungen gebündelt und mit Sendungsverfolgung liefern.",
+              "TCGplayer führt die Karten vor allem in englischer Sprache. Für deutsche Karten ist Cardmarket meist die bessere Wahl.",
+              "Your Card Binder legt nichts in deinen Warenkorb und kauft nichts. Das passiert erst bei TCGplayer, wenn du es selbst auslöst.",
+            ] },
+          ],
+        },
+        {
+          heading: "Schritt 1: Liste kopieren und Mass Entry öffnen",
+          blocks: [
+            { type: "p", text: "In Your Card Binder wählst du bei der Frage nach dem Marktplatz TCGplayer. Der große Button kopiert alle vorbereiteten Karten und öffnet Mass Entry. Passt die Liste in die Adresse, steht sie dort schon vorausgefüllt im Feld „Items“, sonst fügst du sie mit Strg+V beziehungsweise ⌘V ein." },
+            { type: "p", text: "Jede Zeile hat das Format „Anzahl Name [Set-Code] Nummer“, zum Beispiel „1 Charizard [BS] 004/102“. Your Card Binder schreibt nur Zeilen, deren Zuordnung geprüft ist; Karten ohne sichere Zuordnung bleiben draußen und werden aufgelistet." },
+          ],
+        },
+        {
+          heading: "Schritt 2: Die Liste in Mass Entry prüfen",
+          blocks: [
+            { type: "ul", items: [
+              "Bei „Select Product Line“ muss „Pokemon“ stehen.",
+              "Im Feld „Items“ sollte jede Karte als eigene Zeile stehen.",
+              "Mit „Show Set/Series Codes“ siehst du die Kürzel der Sets, falls eine Zeile nicht erkannt wird.",
+            ] },
+            { type: "p", text: "Mass Entry übernimmt Name, Set und Nummer. Alles Weitere stellst du im nächsten Schritt ein." },
+          ],
+        },
+        {
+          heading: "Schritt 3: Printing und Condition einstellen",
+          blocks: [
+            { type: "p", text: "Im Bereich „Item Options“ legst du für die ganze Liste fest, welche Ausführung und welcher Zustand infrage kommen. Mehrere Haken sind möglich." },
+            { type: "table", caption: "Optionen bei TCGplayer und was sie bedeuten", head: ["Bereich", "Option bei TCGplayer", "Bedeutung"], rows: [
+              ["Printing", "Normal, Holofoil, Reverse Holofoil", "Moderne Sets: Karte ohne Glanz, mit Glanz im Bild oder mit Glanz im Rest der Karte"],
+              ["Printing", "1st Edition, 1st Edition Holofoil, Unlimited, Unlimited Holofoil", "Frühe Sets: die 1. Edition ist oft deutlich teurer als Unlimited"],
+              ["Condition", "Near Mint", "Wie neu"],
+              ["Condition", "Lightly Played, Moderately Played", "Leichte bis mittlere Gebrauchsspuren"],
+              ["Condition", "Heavily Played, Damaged", "Starke Spuren oder Schäden; für Geschenke nicht empfohlen"],
+            ] },
+            { type: "p", text: "Your Card Binder zeigt dir im Ablauf, welche Printing- und Zustandsangaben du für deine Karten gewählt hast. TCGplayer kennt keine Stufe „Excellent“; Near Mint plus Lightly Played kommt ihr am nächsten." },
+          ],
+        },
+        {
+          heading: "Schritt 4: Add to Cart und das Ergebnis prüfen",
+          blocks: [
+            { type: "p", text: "TCGplayer beschreibt die Funktion so: Du sagst, wie du die Karten haben möchtest, und TCGplayer sucht die günstigsten passenden Angebote im Marktplatz. Mit „Add to Cart“ werden sie in den Warenkorb gelegt." },
+            { type: "ul", items: [
+              "Prüfe, ob zu jeder Zeile ein Angebot gefunden wurde.",
+              "Kontrolliere Kartenname, Set, vollständige Nummer, Sprache, Printing und Zustand.",
+              "Sieh dir Versandkosten und Lieferart an, bevor du bezahlst. Bei mehreren Verkäufern entstehen mehrere Sendungen oder Versandkosten.",
+              "Bezahlt wird bei TCGplayer. Preise und Versand bestätigst du dort.",
+            ] },
+          ],
+        },
+        {
+          heading: "Wenn eine Karte nicht gefunden wird",
+          blocks: [
+            { type: "p", text: "Prüfe die Zeile auf Tippfehler und den Set-Code. Bei Karten, die Your Card Binder nicht sicher zuordnen konnte, findest du unter „Falls etwas nicht klappt“ einen Text zum Kopieren und, wo bekannt, direkte Produktseiten bei TCGplayer. Dort wählst du das passende Angebot selbst aus." },
+          ],
+        },
+      ],
+    },
+    en: {
+      slug: "buy-pokemon-cards-on-tcgplayer",
+      title: "Buying Pokémon cards on TCGplayer: step by step with Mass Entry",
+      metaTitle: "Buying Pokémon cards on TCGplayer: guide",
+      description: "How your card list from Your Card Binder gets to TCGplayer: open Mass Entry, choose printing and condition, Add to Cart, and what to check for shipping to Germany.",
+      intro: "TCGplayer is a marketplace focused on the USA, and its interface is in English. With the Mass Entry function you paste a whole card list at once instead of searching for each card. This guide shows the four steps and the terms you will meet there.",
+      sections: [
+        {
+          heading: "What to know in advance",
+          blocks: [
+            { type: "ul", items: [
+              "The interface is in English and prices are in US dollars.",
+              "With a location in Germany, TCGplayer only shows sellers that ship there and points to international shipping partners that deliver orders consolidated and tracked.",
+              "TCGplayer lists cards mostly in English. For German cards, Cardmarket is usually the better choice.",
+              "Your Card Binder puts nothing in your cart and buys nothing. That only happens at TCGplayer when you trigger it yourself.",
+            ] },
+          ],
+        },
+        {
+          heading: "Step 1: copy the list and open Mass Entry",
+          blocks: [
+            { type: "p", text: "In Your Card Binder you choose TCGplayer when asked for the marketplace. The big button copies all prepared cards and opens Mass Entry. If the list fits into the address, it is already filled in the “Items” field; otherwise paste it with Ctrl+V or ⌘V." },
+            { type: "p", text: "Each line has the format “quantity name [set code] number”, for example “1 Charizard [BS] 004/102”. Your Card Binder only writes lines whose match has been verified; cards without a reliable match stay out and are listed." },
+          ],
+        },
+        {
+          heading: "Step 2: check the list in Mass Entry",
+          blocks: [
+            { type: "ul", items: [
+              "“Select Product Line” must say “Pokemon”.",
+              "The “Items” field should show each card as its own line.",
+              "“Show Set/Series Codes” lists the set abbreviations if a line is not recognised.",
+            ] },
+            { type: "p", text: "Mass Entry takes over name, set and number. You set everything else in the next step." },
+          ],
+        },
+        {
+          heading: "Step 3: set printing and condition",
+          blocks: [
+            { type: "p", text: "In the “Item Options” area you decide for the whole list which finish and which condition qualify. Several ticks are possible." },
+            { type: "table", caption: "Options at TCGplayer and what they mean", head: ["Area", "Option at TCGplayer", "Meaning"], rows: [
+              ["Printing", "Normal, Holofoil, Reverse Holofoil", "Modern sets: card without shine, with shine in the picture or with shine on the rest of the card"],
+              ["Printing", "1st Edition, 1st Edition Holofoil, Unlimited, Unlimited Holofoil", "Early sets: the 1st edition is often much more expensive than Unlimited"],
+              ["Condition", "Near Mint", "Like new"],
+              ["Condition", "Lightly Played, Moderately Played", "Light to moderate wear"],
+              ["Condition", "Heavily Played, Damaged", "Heavy wear or damage; not recommended for gifts"],
+            ] },
+            { type: "p", text: "Your Card Binder shows in the guide which printing and condition you chose for your cards. TCGplayer has no “Excellent” grade; Near Mint plus Lightly Played comes closest." },
+          ],
+        },
+        {
+          heading: "Step 4: Add to Cart and check the result",
+          blocks: [
+            { type: "p", text: "TCGplayer describes the function like this: you say how you want the cards, and TCGplayer finds the best matching prices across the marketplace. “Add to Cart” puts them into the cart." },
+            { type: "ul", items: [
+              "Check that an offer was found for every line.",
+              "Check card name, set, full number, language, printing and condition.",
+              "Look at shipping costs and delivery type before you pay. With several sellers there are several parcels or shipping costs.",
+              "You pay at TCGplayer. You confirm prices and shipping there.",
+            ] },
+          ],
+        },
+        {
+          heading: "If a card is not found",
+          blocks: [
+            { type: "p", text: "Check the line for typos and the set code. For cards Your Card Binder could not match reliably, you find a text to copy under “Falls etwas nicht klappt” and, where known, direct product pages at TCGplayer. There you choose the matching offer yourself." },
           ],
         },
       ],

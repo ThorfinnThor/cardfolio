@@ -4,9 +4,15 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { MissingCardsPanel } from "@/components/foundation/MissingCardsPanel";
 import { cardtraderCardmarketMappings } from "@/data/marketplace/cardtrader-cardmarket-products";
 import { prepareCardtraderHandoff } from "@/data/marketplace/cardtrader-handoff";
+import { cardtraderTcgplayerLinks } from "@/data/marketplace/cardtrader-tcgplayer-products";
 import type { MarketplaceProductIdentityMapping } from "@/domain/marketplace-product-identity";
 import type { TcgplayerCardMapping } from "@/domain/tcgplayer-export";
 import type { MissingItem } from "@/domain/types";
+
+vi.mock("@/data/marketplace/cardtrader-tcgplayer-products", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/data/marketplace/cardtrader-tcgplayer-products")>();
+  return { ...actual, cardtraderTcgplayerLinks: vi.fn(async () => []) };
+});
 
 vi.mock("@/data/marketplace/cardtrader-cardmarket-products", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/data/marketplace/cardtrader-cardmarket-products")>();
@@ -150,7 +156,7 @@ describe("MissingCardsPanel", () => {
     expect(onConditionsChange).toHaveBeenLastCalledWith([conditionItems[0]], "played");
   });
 
-  it("opens a prefilled TCGplayer handoff and keeps excluded candidates visible", () => {
+  it("opens a prefilled TCGplayer handoff and keeps excluded candidates visible", async () => {
     const onTcgplayerCopy = vi.fn();
     const onTcgplayerTextExport = vi.fn();
     render(
@@ -163,9 +169,12 @@ describe("MissingCardsPanel", () => {
       />,
     );
 
+    vi.mocked(cardtraderTcgplayerLinks).mockResolvedValueOnce([{ identityKey: "pikachu", label: "2× Pikachu", details: "Wizards Black Star Promos · Nr. 1", url: "https://www.tcgplayer.com/product/1234" }]);
     fireEvent.click(screen.getByRole("button", { name: "Andere Region · Versand prüfen" }));
     fireEvent.click(screen.getByRole("button", { name: "TCGplayer" }));
     expect(screen.getByRole("heading", { name: "TCGplayer Mass Entry" })).toBeInTheDocument();
+    expect(await screen.findByText("Einzelne Karten bei TCGplayer öffnen (1)")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "TCGplayer-Produktseite öffnen: 2× Pikachu" })).toHaveAttribute("href", "https://www.tcgplayer.com/product/1234");
     expect(screen.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue("1 Bulbasaur [BS] 044/102");
     expect(screen.getByText(/2× Pikachu · Wizards Black Star Promos · 001/)).toBeInTheDocument();
     expect(screen.getByText(/Kandidat: Für diese Karte wurde im aktuellen TCGplayer-Katalog/)).toBeInTheDocument();
@@ -182,12 +191,12 @@ describe("MissingCardsPanel", () => {
 
     fireEvent.click(handoffLink);
     expect(onTcgplayerCopy).toHaveBeenCalledTimes(1);
-    expect(screen.getByRole("heading", { name: "Karten in Mass Entry laden" })).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: /Karten sind geladen/ }));
-    expect(screen.getByRole("heading", { name: "Printing und Zustand einstellen" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Liste in Mass Entry prüfen" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /Die Liste stimmt/ }));
+    expect(screen.getByRole("heading", { name: "Printing und Condition einstellen" })).toBeInTheDocument();
     expect(screen.getByText("Unlimited · 1 Karte")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: /Filter sind eingestellt/ }));
-    expect(screen.getByRole("heading", { name: "Ergebnis prüfen und in den Warenkorb legen" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /Optionen sind gesetzt/ }));
+    expect(screen.getByRole("heading", { name: "„Add to Cart“ klicken und das Ergebnis prüfen" })).toBeInTheDocument();
     expect(screen.getByText("Schritt 4 von 4")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "TCGplayer kopieren" }));

@@ -1011,6 +1011,8 @@ test("finds and displays an exact full collector number", async ({ page }) => {
   await expect(missingCards.getByRole("textbox", { name: "TCGplayer Mass-Entry-Vorschau" })).toHaveValue(
     "1 Charizard [BS] 004/102",
   );
+  // Base Set Charizard carries TCGplayer product 42382 in the CardTrader data (opened by hand on 2026-10-22).
+  await expect(missingCards.getByRole("link", { name: "TCGplayer-Produktseite öffnen: 1× Charizard" })).toHaveAttribute("href", "https://www.tcgplayer.com/product/42382");
   const tcgplayerLink = missingCards.getByRole("link", { name: "1 Karte kopieren & TCGplayer öffnen" });
   const tcgplayerUrl = new URL(await tcgplayerLink.getAttribute("href") ?? "");
   expect(tcgplayerUrl.searchParams.get("c")).toBe("1 Charizard [BS] 004/102");

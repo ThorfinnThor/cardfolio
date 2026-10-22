@@ -7,6 +7,7 @@ import { FEATURES } from "@/config/feature-flags";
 import { CardTraderMarketplacePanel, MarketplaceComparison } from "./CardTraderMarketplacePanel";
 import { TcgplayerGuide } from "./TcgplayerGuide";
 import { cardtraderCardmarketMappings } from "@/data/marketplace/cardtrader-cardmarket-products";
+import { cardtraderTcgplayerLinks, type TcgplayerProductLink } from "@/data/marketplace/cardtrader-tcgplayer-products";
 import { loadCardmarketProductMappingCatalog } from "@/data/marketplace/cardmarket-product-mappings";
 import { loadCardmarketDecklistIdentityCatalog, type CardmarketDecklistIdentityCatalog } from "@/data/marketplace/cardmarket-decklist-identities";
 import { loadTcgplayerCardMappings } from "@/data/marketplace/tcgplayer-card-mappings";
@@ -203,6 +204,18 @@ export function MissingCardsPanel({
     // The signature stands for the visible items; the list itself changes identity on every render pass.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardtraderIdentitySignature, marketplaceChoice, reviewedCardmarketMappings]);
+  const [tcgplayerLinks, setTcgplayerLinks] = useState<{ signature: string; links: TcgplayerProductLink[] }>();
+  useEffect(() => {
+    if (!FEATURES.cardtraderProductIds || marketplaceChoice !== "tcgplayer") return;
+    let cancelled = false;
+    void cardtraderTcgplayerLinks(visibleItems).then((links) => {
+      if (!cancelled) setTcgplayerLinks({ signature: cardtraderIdentitySignature, links });
+    });
+    return () => { cancelled = true; };
+    // The signature stands for the visible items; the list itself changes identity on every render pass.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cardtraderIdentitySignature, marketplaceChoice]);
+  const tcgplayerProductLinks = tcgplayerLinks?.signature === cardtraderIdentitySignature ? tcgplayerLinks.links : [];
   const visibleQuantity = visibleItems.reduce((total, item) => total + item.quantity, 0);
   const visibleGroups = useMemo(() => groupMissingItemsBySet(visibleItems), [visibleItems]);
   const tcgplayerExport = useMemo(
@@ -474,6 +487,22 @@ export function MissingCardsPanel({
             </details>
           ) : null}
             </div>
+            {tcgplayerProductLinks.length ? (
+              <div className={styles.fallbackSection}>
+                <h4>Einzelne Karten bei TCGplayer öffnen ({tcgplayerProductLinks.length})</h4>
+                <p className={styles.reviewExplanation}>Diese Links brauchst du nur für Karten, die Mass Entry nicht gefunden hat. Wähle dort das passende Angebot selbst aus und prüfe Printing und Zustand.</p>
+                <section className={styles.cardmarketProductSection} aria-label="Direkte Produktseiten bei TCGplayer">
+                  <ul>
+                    {tcgplayerProductLinks.map((link) => (
+                      <li key={link.identityKey}>
+                        <span><strong>{link.label}</strong><small>{link.details}</small></span>
+                        <a aria-label={`TCGplayer-Produktseite öffnen: ${link.label}`} href={link.url} target="_blank" rel="noopener noreferrer">Produktseite öffnen <ExternalLink aria-hidden="true" size={14} /></a>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              </div>
+            ) : null}
             </div>
           </details>
         </section>
