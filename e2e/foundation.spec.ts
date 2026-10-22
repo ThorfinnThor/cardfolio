@@ -895,6 +895,7 @@ test("sets, edits and persists the minimum condition for marketplace handoff", a
   await preview.getByLabel("Mindestzustand beim Kauf").selectOption("near-mint");
   await preview.getByRole("button", { name: "Mit diesen Angaben einsetzen" }).click();
 
+  await expect(page.getByText("Fortschritt nach Set (1)")).toBeVisible();
   await page.getByRole("article", { name: "Ivysaur, Slot 1" }).click();
   await expect(page.getByRole("definition").filter({ hasText: "Wie neu" })).toBeVisible();
   await page.getByRole("button", { name: "Version & Zustand festlegen" }).click();

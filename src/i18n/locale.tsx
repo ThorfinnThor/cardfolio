@@ -574,6 +574,7 @@ const translations: Record<string, string> = {
   "Öffne den Shop Optimizer. Dort legst du eine Liste an und wählst später, wie die Verkäufer ausgesucht werden.": "Open the Shop Optimizer. There you create a list and later choose how the sellers are picked.",
   "Füge deine Karten hinzu. Unten findest du zu jeder Karte die Seite bei CardTrader mit Set, Nummer und allen Angeboten.": "Add your cards. Below you find the CardTrader page of every card with set, number and all offers.",
   "Seiten bei CardTrader": "Pages at CardTrader",
+  "Fortschritt nach Set": "Progress by set",
   "Wüste": "Desert",
   "Sand, Dünen und Kakteen": "Sand, dunes and cacti",
   "Höhle": "Cave",
@@ -656,6 +657,9 @@ Object.assign(translations, {
 });
 
 const patterns: Array<[RegExp, (...matches: string[]) => string]> = [
+  [/^Fortschritt nach Set \((\d+)\)$/, (count) => `Progress by set (${count})`],
+  [/^(\d+) von (\d+) vorhanden$/, (owned, planned) => `${owned} of ${planned} owned`],
+  [/^(\d+) von (\d+) Karten des Sets geplant$/, (planned, total) => `${planned} of ${total} cards of the set planned`],
   [/^Einzelne Karten bei TCGplayer öffnen \((\d+)\)$/, (count) => `Open single cards at TCGplayer (${count})`],
   [/^(\d+) Angebote?(?: · Verkäufer aus (.+))?$/, (count, countries) => `${count} ${count === "1" ? "offer" : "offers"}${countries ? ` · sellers from ${countries}` : ""}`],
   [/^(\d+) Karten? kopieren & TCGplayer öffnen$/, (count) => `Copy ${count} ${count === "1" ? "card" : "cards"} & open TCGplayer`],
