@@ -5,11 +5,13 @@ import { useState, type ChangeEvent, type CSSProperties, type FormEvent } from "
 
 import { deriveBinderStats } from "@/domain/binder-stats";
 import { MAX_BINDERS } from "@/domain/binder-actions";
+import { STARTER_SETS } from "@/domain/starter-sets";
 import type { Binder } from "@/domain/types";
 import { useLocale, type AppLocale } from "@/i18n/locale";
 
 import { catalogLabel, coverLeather } from "./binder-cover";
 import { BackupReminder } from "./BackupReminder";
+import { GuidedStart } from "./GuidedStart";
 import styles from "./binder-overview.module.css";
 
 interface BinderOverviewProps {
@@ -28,7 +30,7 @@ interface BinderOverviewProps {
   onGiftStart?: () => void;
   onGiftExampleStart?: (subjectQuery: string) => void;
   onThemeStart?: () => void;
-  onSetStart?: () => void;
+  onSetStart?: (setId?: string) => void;
   /** Lean variant for the /geschenk/ entry: gift start only, no collector tools. */
   giftOnly?: boolean;
   /** A saved gift binder that still has cards to buy: the start page offers to continue there. */
@@ -96,6 +98,13 @@ export function BinderOverview({
         </div>
       </div>
 
+      {!giftOnly && !showStartTabs && binders.length === 0 ? <GuidedStart
+        disabled={binders.length >= MAX_BINDERS}
+        onGift={() => onGiftStart?.()}
+        onSet={(setId) => onSetStart?.(setId)}
+        onFree={() => { setCollectorModes(true); setStartMode("manual"); }}
+      /> : null}
+
       <ol className={styles.simpleSteps} aria-label="So entsteht dein Geschenk-Binder">
         <li><strong>1</strong><span>Pokémon oder Motiv wählen</span></li>
         <li><strong>2</strong><span>Karten und Seite ansehen</span></li>
@@ -148,6 +157,10 @@ export function BinderOverview({
         <h1 id="binder-heading">Ein komplettes Pokémon-Set planen.</h1>
         <p>Wähle ein Set, die Kartensprache und ob Secret Rares dazugehören. Your Card Binder plant Seiten und freie Plätze automatisch.</p>
         <button type="button" className={styles.heroButton} onClick={() => onSetStart?.()} disabled={binders.length >= MAX_BINDERS} aria-label="Mit einem Set starten"><BookOpen aria-hidden="true" size={21} /> Mit einem Set starten <ArrowRight aria-hidden="true" size={20} /></button>
+        <h2 className={styles.starterHeading}>Oder nimm einen beliebten Start</h2>
+        <ul className={styles.starterSets} aria-label="Beliebte Sets">
+          {STARTER_SETS.map((starter) => <li key={starter.id}><button type="button" onClick={() => onSetStart?.(starter.id)} disabled={binders.length >= MAX_BINDERS}><strong>{starter.title}</strong><span>{starter.blurb}</span></button></li>)}
+        </ul>
       </section> : null}
 
       {startMode === "manual" ? <section className={styles.startPanel} id="start-panel" role="tabpanel" aria-labelledby="start-tab-manual">

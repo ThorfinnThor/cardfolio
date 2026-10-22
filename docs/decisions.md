@@ -500,3 +500,10 @@
 - **Sender.** "Vorschlag als Link teilen" in the candidates step copies the link and shows it for manual copying. Supplement cards from CardTrader (provider `cardtrader`) are left out and the box says how many.
 - **Receiver.** `/geschenk/#vorschlag=…` opens the builder, loads the cards of the link in their order with live prices (`hydrateCandidates`), removes the fragment from the address bar and starts in the candidates step; alternatives for swapping load in the background and may be missing. The receiver can edit and share again. A shared link wins over a plan kept in the tab's sessionStorage.
 - **Not stored.** The link is never written to localStorage or to a server; nothing new needs a privacy-table row.
+
+## 2026-10-22 — Easier start for beginners and children
+
+- **Starter sets.** `src/domain/starter-sets.ts` lists five sets that make a good first binder and exist in German: Celebrations (cel25, 25 cards), Base Set (base1), 151 (sv03.5), Pokémon GO (swsh10.5), Jungle (base2). The set start page and the guided start show them as tiles; a tile opens the set wizard with the set selected and checked. A Pokédex-order template was not built: TCGdex filters by `dexId` (`?dexId=eq:25`) but one request per Pokémon would be needed, and the catalogue contract stays unchanged.
+- **Guided first visit.** `GuidedStart` appears on /app/ while there is no binder: "Ich verschenke ihn" (gift builder), "Ich baue eine Sammlung auf" (starter sets, other set, empty binder) and "Ich bin ein Kind" (/kinder/). Collectors who clicked "Ich sammle selbst" or have binders see the full start tabs as before.
+- **Children's wish list.** `/kinder/` (German only, `noindex`): the child picks a Pokémon, sees nine cards without prices, can swap each, and gets a share link (`/geschenk/#vorschlag=…`, see the share-link entry) for the parents. Nothing is bought or stored; no new storage key. Prices appear only for the parents, in the gift builder.
+- **Variant glossary.** `VariantGlossary` (Normal, Holo, Reverse Holo, 1st Edition, Unlimited, Shadowless) sits below every variant form.

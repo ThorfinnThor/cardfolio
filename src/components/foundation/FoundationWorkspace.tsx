@@ -495,6 +495,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
   const [giftDiscoveryMode, setGiftDiscoveryMode] = useState<"pokemon" | "theme">("pokemon");
   const [giftSubjectQuery, setGiftSubjectQuery] = useState("Pikachu");
   const [setBinderWizardOpen, setSetBinderWizardOpen] = useState(false);
+  const [setWizardInitialId, setSetWizardInitialId] = useState<string>();
   const [placeholdersOpen, setPlaceholdersOpen] = useState(false);
   const [catalogSelection, setCatalogSelection] = useState<CatalogSearchItem[]>([]);
   const [celebratedEntryId, setCelebratedEntryId] = useState<string>();
@@ -2038,6 +2039,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
           <SetBinderWizard
             catalog={catalog}
             sets={catalogSetIndex()}
+            initialSetId={setWizardInitialId}
             onCancel={() => setSetBinderWizardOpen(false)}
             onCreate={createSetBinder}
           />
@@ -2071,7 +2073,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
             onGiftStart={() => { clearGiftResume(); setGiftDiscoveryMode("pokemon"); setGiftSubjectQuery("Pikachu"); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
             onGiftExampleStart={(subjectQuery) => { clearGiftResume(); setGiftDiscoveryMode("pokemon"); setGiftSubjectQuery(subjectQuery); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
             onThemeStart={() => { clearGiftResume(); setGiftDiscoveryMode("theme"); setGiftBuilderOpen(true); setBinderManagerOpen(true); setMissingOpen(false); }}
-            onSetStart={() => { setSetBinderWizardOpen(true); setGiftBuilderOpen(false); setBinderManagerOpen(true); setMissingOpen(false); }}
+            onSetStart={(setId) => { setSetWizardInitialId(setId); setSetBinderWizardOpen(true); setGiftBuilderOpen(false); setBinderManagerOpen(true); setMissingOpen(false); }}
             giftOnly={giftShell}
             continueGift={continueGift}
             onContinueGift={(binder) => { setActiveId(binder.id); setActivePageIndex(0); setGiftBuilderOpen(false); setBinderManagerOpen(false); setMissingBeginner(true); setMissingOpen(true); setSearchOpen(false); }}

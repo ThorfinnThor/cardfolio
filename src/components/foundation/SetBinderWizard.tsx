@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowLeft, Check, LoaderCircle, Search } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { catalogSetAssetUrl, type CatalogSetAsset, type CatalogSetIndexEntry } from "@/domain/catalog-set";
 import { createSetBinderPlan, type SetBinderPlan } from "@/domain/set-binder-plan";
@@ -13,6 +13,8 @@ import styles from "./foundation-workspace.module.css";
 interface SetBinderWizardProps {
   catalog: CatalogAdapter;
   sets: readonly CatalogSetIndexEntry[];
+  /** A set chosen on the start page: selected and checked right away. */
+  initialSetId?: string;
   onCancel: () => void;
   onCreate: (plan: SetBinderPlan, name: string) => Promise<void>;
 }
@@ -57,12 +59,12 @@ function SetArtwork({ entry, language }: { entry: CatalogSetIndexEntry; language
   );
 }
 
-export function SetBinderWizard({ catalog, sets, onCancel, onCreate }: SetBinderWizardProps) {
+export function SetBinderWizard({ catalog, sets, initialSetId, onCancel, onCreate }: SetBinderWizardProps) {
   const [query, setQuery] = useState("");
   const [language, setLanguage] = useState<CardLanguage>("de");
   const [scope, setScope] = useState<"official-numbered" | "complete-catalog">("complete-catalog");
   const [variantStrategy, setVariantStrategy] = useState<"one-per-card" | "all-confirmed-finishes">("one-per-card");
-  const [selectedId, setSelectedId] = useState<string>();
+  const [selectedId, setSelectedId] = useState<string | undefined>(initialSetId);
   const [plan, setPlan] = useState<SetBinderPlan>();
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
@@ -121,6 +123,11 @@ export function SetBinderWizard({ catalog, sets, onCancel, onCreate }: SetBinder
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    if (initialSetId) queueMicrotask(() => void loadSet());
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- runs once for the set chosen on the start page
+  }, []);
 
   async function create() {
     if (!plan || !name.trim()) return;
