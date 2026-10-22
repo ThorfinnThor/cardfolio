@@ -71,6 +71,7 @@ import { persistPageSelection, persistPageSelectionUndo, persistReversiblePageSe
 
 import { catalogLabel, coverLeather } from "./binder-cover";
 import { BinderOverview } from "./BinderOverview";
+import { BinderSetProgress } from "./BinderSetProgress";
 import { GiftBuilderPanel } from "./GiftBuilderPanel";
 import { PlaceholderPrint } from "./PlaceholderPrint";
 import { clearGiftResume, readGiftResume } from "./gift-resume";
@@ -2268,6 +2269,8 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
             <div><strong>{Math.max(stats.capacity - stats.planned, 0)}</strong><span>Freie Plätze</span><small>auf {activeBinder.pages.length} {activeBinder.pages.length === 1 ? "Seite" : "Seiten"}</small></div>
             <div><strong>{stats.planned}</strong><span>Geplant</span><small>von {stats.capacity} Slots</small></div>
           </section>}
+
+          {missingOpen && missingBeginner ? null : <BinderSetProgress binder={activeBinder} cards={cards} />}
 
           {missingOpen ? (
             <MissingCardsPanel

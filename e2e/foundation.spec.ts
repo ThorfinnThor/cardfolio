@@ -906,6 +906,7 @@ test("sets, edits and persists the minimum condition for marketplace handoff", a
   await expect(page.locator("[data-placeholder-print] img")).toHaveCount(0);
   await page.emulateMedia({ media: "screen" });
   await page.getByRole("button", { name: "Schließen", exact: true }).first().click();
+  await expect(page.getByText("Fortschritt nach Set (1)")).toBeVisible();
   await page.getByRole("article", { name: "Ivysaur, Slot 1" }).click();
   await expect(page.getByRole("definition").filter({ hasText: "Wie neu" })).toBeVisible();
   await page.getByRole("button", { name: "Version & Zustand festlegen" }).click();

@@ -581,6 +581,7 @@ const translations: Record<string, string> = {
   "Nichts zu drucken. Wähle oben mindestens eine Art oder plane Karten im Binder.": "Nothing to print. Choose at least one kind above or plan cards in the binder.",
   "Stelle im Druckdialog „Skalierung 100 %“ und „Ränder: keine“ ein, damit die Zettel 63 × 88 mm groß bleiben.": "In the print dialog set “Scale 100%” and “Margins: none” so the slips stay 63 × 88 mm.",
   "Drucken": "Print",
+  "Fortschritt nach Set": "Progress by set",
   "Wüste": "Desert",
   "Sand, Dünen und Kakteen": "Sand, dunes and cacti",
   "Höhle": "Cave",
@@ -664,6 +665,9 @@ Object.assign(translations, {
 
 const patterns: Array<[RegExp, (...matches: string[]) => string]> = [
   [/^(\d+) Platzhalter auf (\d+) Seiten?$/, (count, sheets) => `${count} placeholder${count === "1" ? "" : "s"} on ${sheets} page${sheets === "1" ? "" : "s"}`],
+  [/^Fortschritt nach Set \((\d+)\)$/, (count) => `Progress by set (${count})`],
+  [/^(\d+) von (\d+) vorhanden$/, (owned, planned) => `${owned} of ${planned} owned`],
+  [/^(\d+) von (\d+) Karten des Sets geplant$/, (planned, total) => `${planned} of ${total} cards of the set planned`],
   [/^Einzelne Karten bei TCGplayer öffnen \((\d+)\)$/, (count) => `Open single cards at TCGplayer (${count})`],
   [/^(\d+) Angebote?(?: · Verkäufer aus (.+))?$/, (count, countries) => `${count} ${count === "1" ? "offer" : "offers"}${countries ? ` · sellers from ${countries}` : ""}`],
   [/^(\d+) Karten? kopieren & TCGplayer öffnen$/, (count) => `Copy ${count} ${count === "1" ? "card" : "cards"} & open TCGplayer`],
