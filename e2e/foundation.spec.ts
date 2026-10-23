@@ -1152,3 +1152,11 @@ test("offers Pokémon types and special cards next to the picture themes", async
   await expect(page.getByRole("radio", { name: /Klassische Holos/ })).toBeAttached();
   expect((await (await page.request.get("/data/semantic/curated-collections-v1.json")).json()).collections["type-fire"].length).toBeGreaterThanOrEqual(18);
 });
+
+test("a guide about a picture theme opens the builder with that theme chosen", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/geschenk/?start=1&motiv=type-fire");
+
+  await expect(page.getByRole("radio", { name: /Feuer-Pokémon/ })).toBeChecked();
+  expect(new URL(page.url()).search).toBe("");
+});

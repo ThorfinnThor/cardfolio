@@ -8,6 +8,11 @@ export const TOOL_PATH = "/geschenk/";
 /** Opens the gift tool straight in step 1, so a visitor who clicked "Geschenk-Binder gestalten" does not meet a second hero. */
 export const TOOL_START_PATH = "/geschenk/?start=1";
 
+/** Opens the gift builder in step 1 with a picture theme or card group already chosen. */
+export function toolStartPathForTheme(themeId: string): string {
+  return `${TOOL_START_PATH}&motiv=${encodeURIComponent(themeId)}`;
+}
+
 /** The full app (collector navigation, saved binders). Never reuse `/` for it: the home page is the public landing page. */
 export function appPath(): string {
   return "/app/";

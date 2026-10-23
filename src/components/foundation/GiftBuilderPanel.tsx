@@ -52,6 +52,8 @@ export interface GiftBuilderPanelProps {
   smartSearch?: Pick<SmartSearchAdapter, "search">;
   initialDiscoveryMode?: "pokemon" | "theme";
   initialSubjectQuery?: string;
+  /** A picture theme or card group to preselect; unknown ids are ignored. */
+  initialThemeId?: string;
   pricingEnabled: boolean;
   budgetGuaranteeEnabled?: boolean;
   onCancel: () => void;
@@ -209,7 +211,7 @@ function safeCandidate(candidate: GiftCardCandidate, pricingEnabled: boolean, cu
   };
 }
 
-export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "pokemon", initialSubjectQuery = initialPreferences.subjectQuery, pricingEnabled, budgetGuaranteeEnabled = false, onCancel, onCreateBinder, onOpenBinder, onCardsPurchase }: GiftBuilderPanelProps) {
+export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "pokemon", initialSubjectQuery = initialPreferences.subjectQuery, initialThemeId, pricingEnabled, budgetGuaranteeEnabled = false, onCancel, onCreateBinder, onOpenBinder, onCardsPurchase }: GiftBuilderPanelProps) {
   const engine = useMemo(() => new DeterministicGiftSelectionEngine({ spendBudget: true }), []);
   // A finished plan comes back after a detour to the purchase view or the browser's back button.
   // A proposal that arrives in the link wins over a plan kept for this tab.
@@ -219,10 +221,11 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
   const setStep = useStepHistory("gift", step, setStepDirect);
   const [preferences, setPreferences] = useState<GiftPreferences>(() => resumed?.preferences ?? { ...initialPreferences, subjectQuery: initialSubjectQuery });
   const [pokemonQuery, setPokemonQuery] = useState(resumed?.preferences.subjectQuery ?? initialSubjectQuery);
-  const [discoveryMode, setDiscoveryMode] = useState<GiftDiscoveryMode>(initialDiscoveryMode);
+  const knownInitialTheme = giftThemePreset(initialThemeId) ?? giftCollectionPreset(initialThemeId);
+  const [discoveryMode, setDiscoveryMode] = useState<GiftDiscoveryMode>(knownInitialTheme ? "theme" : initialDiscoveryMode);
   const [pokemonHelp, setPokemonHelp] = useState(false);
   const [orderCondition, setOrderCondition] = useState<PurchasePreferences["minimumCondition"]>("excellent");
-  const [selectedThemeId, setSelectedThemeId] = useState<string>();
+  const [selectedThemeId, setSelectedThemeId] = useState<string | undefined>(knownInitialTheme?.id);
   const [briefs, setBriefs] = useState<CatalogSearchItem[]>([]);
   const [candidates, setCandidates] = useState<GiftCardCandidate[]>([]);
   const [selection, setSelection] = useState<GiftSelectionResult | undefined>(resumed?.selection);

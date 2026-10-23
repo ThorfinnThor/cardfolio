@@ -1,11 +1,13 @@
 /**
- * Rewrites public/llms.txt from the guides in src/content/guides.ts (titles, slugs and descriptions).
+ * Rewrites public/llms.txt from the published guides in src/content/guides.ts and motif-guides.ts (titles, slugs and descriptions).
  * Run it after adding or renaming a guide: `npm run llms:generate`. A test fails when the file is out of date.
  */
 import { readFileSync, writeFileSync } from "node:fs";
 
-const source = readFileSync("src/content/guides.ts", "utf8");
-const blocks = source.split(/\n  \{\n    id: "/).slice(1);
+// The motif pages live in their own file; a page with `live: false` is prepared but not published yet.
+const blocks = ["src/content/guides.ts", "src/content/motif-guides.ts"]
+  .flatMap((file) => readFileSync(file, "utf8").split(/\n  \{\n    id: "/).slice(1))
+  .filter((block) => !/\n    live: false,\n/.test(block));
 const pattern = (language) => new RegExp(`${language}: \\{\\n      slug: "([^"]+)",\\n      title: "([^"]+)",\\n      metaTitle: "[^"]*",\\n      description: "([^"]+)"`);
 const german = [];
 const english = [];

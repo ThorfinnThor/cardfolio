@@ -9,7 +9,7 @@ import sitemap from "@/app/sitemap";
 import { GuideArticle, LandingSections } from "@/components/content/Articles";
 import { GUIDE_AUTHOR, OG_IMAGE, type PageLanguage, absoluteUrl } from "@/config/site";
 import { GUIDE_EXTRAS } from "@/content/guide-extras";
-import { GUIDES } from "@/content/guides";
+import { ALL_GUIDES, GUIDES } from "@/content/guides";
 import { publishedSpecies } from "@/content/pokemon-stats";
 import { guidePath } from "@/content/routes";
 
@@ -21,8 +21,8 @@ function jsonLd(markup: string): Array<Record<string, unknown>> {
 
 describe("guide answers and FAQs", () => {
   it("exist for every guide, in both languages, with matching question counts", () => {
-    expect(Object.keys(GUIDE_EXTRAS).sort()).toEqual(GUIDES.map((guide) => guide.id).sort());
-    for (const guide of GUIDES) {
+    expect(Object.keys(GUIDE_EXTRAS).sort()).toEqual(ALL_GUIDES.map((guide) => guide.id).sort());
+    for (const guide of ALL_GUIDES) {
       const extras = GUIDE_EXTRAS[guide.id]!;
       expect(extras.de.faq.length, guide.id).toBe(extras.en.faq.length);
       expect(extras.de.faq.length, guide.id).toBeGreaterThanOrEqual(3);
