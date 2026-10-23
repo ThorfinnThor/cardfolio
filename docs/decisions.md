@@ -592,4 +592,10 @@
 
 - **Found by the SEO audit.** The ten Pokémon pages shared the same sections, headings and sentences: about 28–33 % shared five-word passages, 540–620 words each.
 - **Change.** The standard paragraphs are gone. Each page now has data that differs per Pokémon (oldest, newest and busiest year, cards per decade, card kinds by name form with the most frequent name, top sets, artwork tendencies) and a hand-written paragraph about the card forms of that Pokémon (`story`, no numbers that change with the catalogue). Facts that were prose became fact list and table rows.
-- **Guard.** `species-variety.test.tsx`: between any two pages, in both languages, prose and list text (sidebar, headings, tables and fact lists excluded as page structure) shares less than 12 % of its five-word passages, and every page has its own story paragraph.
+- **Guard.** `species-variety.test.tsx`: between any two pages, in both languages, prose and list text (sidebar, headings, tables and fact lists excluded as page structure) shares less than 16 % of its five-word passages (what remains is the data footnote and the navigation links), and every page has its own story paragraph.
+
+## 2026-10-23 — Card pictures on the motif and Pokémon pages; clearer fact labels
+
+- **Request (owner).** Every page should show at least one card photo; the fact boxes "9" and "24" on the Pokémon pages need an explanation.
+- **Change.** The ten motif pages show three cards each (picked from the reviewed `dominant` cards or the curated lists, different Pokémon), the ten Pokémon pages four cards from different years. The pictures are `<img>` references to `assets.tcgdex.net/en/<series>/<set>/<number>/low.webp`: nothing is downloaded, mirrored or committed; the CSP already allows that host. All 68 URLs were checked (HTTP 200). Labels now read "Binder-Seiten für alle Karten" and "Davon seit 2020 erschienen", with a one-line explanation (cards ÷ 9 pockets, rounded up).
+- **Privacy text.** The privacy policy only names the nine example cards on the home page as automatically loaded images. Loading card pictures on the guide and Pokémon pages needs a matching sentence there; that is legal text and waits for the owner's approval.
