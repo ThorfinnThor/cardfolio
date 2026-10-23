@@ -123,6 +123,7 @@ export function GuideArticle({ guide, language }: { guide: Guide; language: Page
               return related ? [<li key={id}><Link href={guidePath(language, related)}>{related[language].title}</Link></li>] : [];
             })}
             {language === "de" ? <li><Link href="/anleitung/cardmarket/">{copy.buyingGuideLabel}</Link>. {copy.buyingGuideText}</li> : null}
+            {language === "de" && (guide.id === "tcgplayer-howto" || guide.id === "marketplaces") ? <li><Link href="/anleitung/tcgplayer/">Kauf-Anleitung für TCGplayer mit Bildern</Link>. Von der Liste zum Warenkorb bei TCGplayer, mit Screenshots von Mass Entry.</li> : null}
           </ul>
         </section>
       </ArticleLayout>

@@ -28,7 +28,7 @@ function words(markup: string): number {
 
 /** Every route the site publishes, as paths with trailing slash. */
 function knownPaths(): Set<string> {
-  const paths = new Set<string>(["/", "/en/", "/geschenk/", "/app/", "/help/", "/anleitung/cardmarket/", "/impressum/", "/datenschutz/", "/en/legal-notice/", "/en/privacy/"]);
+  const paths = new Set<string>(["/", "/en/", "/geschenk/", "/app/", "/help/", "/anleitung/cardmarket/", "/anleitung/tcgplayer/", "/impressum/", "/datenschutz/", "/en/legal-notice/", "/en/privacy/"]);
   for (const language of LANGUAGES) {
     paths.add(guideIndexPath(language));
     paths.add(speciesIndexPath(language));

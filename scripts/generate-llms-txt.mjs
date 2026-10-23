@@ -41,6 +41,7 @@ ${english.map((guide) => line("/en/guides/", guide)).join("")}
 ## Optional
 
 - [Kaufanleitung Cardmarket mit Bildern](https://yourcardbinder.com/anleitung/cardmarket/)
+- [Kaufanleitung TCGplayer mit Bildern](https://yourcardbinder.com/anleitung/tcgplayer/)
 - [Sitemap](https://yourcardbinder.com/sitemap.xml)
 `;
 writeFileSync("public/llms.txt", text);
