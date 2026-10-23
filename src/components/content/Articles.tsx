@@ -5,7 +5,7 @@ import { GUIDE_AUTHOR, OG_IMAGE, SITE_NAME, absoluteUrl, type PageLanguage } fro
 import { GUIDES, guideById, type Guide, type GuideBlock } from "@/content/guides";
 import { guideExtras } from "@/content/guide-extras";
 import { LANDING } from "@/content/landing";
-import type { PublishedSpecies } from "@/content/pokemon-stats";
+import type { CardKind, PublishedSpecies } from "@/content/pokemon-stats";
 import { TOOL_START_PATH, guideIndexPath, guidePath, homePath, speciesIndexPath, speciesPath, toolStartPathForTheme } from "@/content/routes";
 import { SEMANTIC_TAG_LABELS, type SemanticTag } from "@/domain/semantic-card-search";
 
@@ -177,6 +177,11 @@ export function GuideIndex({ language }: { language: PageLanguage }) {
   );
 }
 
+const KIND_LABELS: Record<PageLanguage, Record<CardKind, string>> = {
+  de: { plain: "Standardkarte", mega: "Mega-Entwicklung", pair: "Mit Partner-Pokémon", v: "V, VMAX, VSTAR, V-UNION", gx: "GX", ex: "ex und EX", delta: "Delta Species (δ)", named: "Mit Besitzer oder Zusatz" },
+  en: { plain: "Plain card", mega: "Mega Evolution", pair: "With a partner Pokémon", v: "V, VMAX, VSTAR, V-UNION", gx: "GX", ex: "ex and EX", delta: "Delta Species (δ)", named: "With an owner or prefix" },
+};
+
 function themeLabel(language: PageLanguage, tag: SemanticTag): string {
   return language === "de" ? SEMANTIC_TAG_LABELS[tag] : THEME_LABELS_EN[tag];
 }
@@ -189,6 +194,7 @@ export function SpeciesArticle({ published, language, all }: { published: Publis
   const pages = Math.ceil(stats.cardCount / POCKETS_PER_PAGE);
   const relatedSpecies = entry.related.flatMap((slug) => all.filter((candidate) => candidate.entry.slug === slug));
   const n = (value: number) => formatNumber(language, value);
+  const recent = stats.decades.filter((row) => row.decade >= 2020).reduce((sum, row) => sum + row.cards, 0);
 
   return (
     <>
@@ -202,9 +208,10 @@ export function SpeciesArticle({ published, language, all }: { published: Publis
         toc={[
           { id: "glance", label: de ? "Auf einen Blick" : "At a glance" },
           { id: "about", label: de ? `Über ${name}` : `About ${name}` },
-          { id: "numbers", label: de ? "In Zahlen" : "By the numbers" },
-          ...(stats.topThemes.length > 0 ? [{ id: "themes", label: de ? "Häufige Motive" : "Common artwork themes" }] : []),
-          { id: "plan", label: de ? "Binder planen" : "Planning the binder" },
+          { id: "timeline", label: de ? "Erscheinungsjahre" : "Release years" },
+          { id: "kinds", label: de ? "Kartenarten" : "Kinds of cards" },
+          ...(stats.topThemes.length > 0 ? [{ id: "themes", label: de ? "Motive" : "Artwork" }] : []),
+          { id: "plan", label: de ? "In der Praxis" : "In practice" },
           { id: "examples", label: de ? "Beispielkarten" : "Example cards" },
           { id: "weiterlesen", label: de ? "Weiterlesen" : "Keep reading" },
         ]}
@@ -218,22 +225,41 @@ export function SpeciesArticle({ published, language, all }: { published: Publis
           <div><dt>{de ? "Karten im Katalog" : "Cards in the catalogue"}</dt><dd>{n(stats.cardCount)}</dd></div>
           <div><dt>{de ? "Verschiedene Sets" : "Different sets"}</dt><dd>{n(stats.setCount)}</dd></div>
           <div><dt>{de ? "Zeitraum" : "Period"}</dt><dd>{stats.firstYear}–{stats.lastYear}</dd></div>
+          <div><dt>{de ? "Älteste Karte" : "Oldest card"}</dt><dd>{stats.oldest.name}, {stats.oldest.setName}</dd></div>
+          <div><dt>{de ? "Neueste Karte" : "Newest card"}</dt><dd>{stats.newest.name}, {stats.newest.setName}</dd></div>
+          <div><dt>{de ? "Stärkstes Jahr" : "Busiest year"}</dt><dd>{stats.busiestYear.year} ({n(stats.busiestYear.cards)})</dd></div>
+          <div><dt>{de ? "Seiten bei 9 Taschen" : "Pages at 9 pockets"}</dt><dd>{n(pages)}</dd></div>
+          <div><dt>{de ? "Seit 2020" : "Since 2020"}</dt><dd>{n(recent)}</dd></div>
         </dl>
-        <p>{de ? "Entwicklung" : "Family"}: {entry.family[language]}.</p>
+        <p>{de ? "Entwicklung" : "Family"}: {entry.family[language]}. {de ? `Stand ${formatDate(language, stats.dataDate)}; gezählt sind englische Karten mit „${entry.cardName}“ im Namen.` : `As of ${formatDate(language, stats.dataDate)}; English cards with “${entry.cardName}” in the name are counted.`}</p>
       </section>
 
       <section id="about" className={styles.section}>
         <h2>{de ? `Über ${name}` : `About ${name}`}</h2>
         <p>{entry.about[language][1]}</p>
+        <p>{entry.story[language]}</p>
       </section>
 
-      <section id="numbers" className={styles.section}>
-        <h2>{de ? `${name} im Sammelkartenspiel in Zahlen` : `${name} in the trading card game by the numbers`}</h2>
-        <p>
-          {de
-            ? `Im Katalog (englische Karten, Datenstand ${formatDate(language, stats.dataDate)}) tragen ${n(stats.cardCount)} Karten „${entry.cardName}“ im Namen. Sie verteilen sich auf ${n(stats.setCount)} Sets aus ${n(stats.seriesCount)} Serien und stammen aus den Jahren ${stats.firstYear} bis ${stats.lastYear}. Gezählt werden alle Karten, auf denen der Name vorkommt, also auch Varianten wie ex-Karten oder Karten mit mehreren Pokémon.`
-            : `In the catalogue (English cards, data as of ${formatDate(language, stats.dataDate)}) ${n(stats.cardCount)} cards have “${entry.cardName}” in the name. They are spread over ${n(stats.setCount)} sets from ${n(stats.seriesCount)} series and date from ${stats.firstYear} to ${stats.lastYear}. All cards containing the name are counted, including variants such as ex cards or cards showing several Pokémon.`}
-        </p>
+      <section id="timeline" className={styles.section}>
+        <h2>{de ? `Wann ${name}-Karten erschienen sind` : `When the ${name} cards were released`}</h2>
+        <div className={styles.tableWrap}>
+          <table className={styles.table}>
+            <caption>{de ? `${name}-Karten nach Jahrzehnt` : `${name} cards by decade`}</caption>
+            <thead><tr><th scope="col">{de ? "Jahrzehnt" : "Decade"}</th><th scope="col">{de ? "Karten" : "Cards"}</th></tr></thead>
+            <tbody>{stats.decades.map((row) => <tr key={row.decade}><th scope="row">{de ? `${row.decade}er` : `${row.decade}s`}</th><td>{row.cards}</td></tr>)}</tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="kinds" className={styles.section}>
+        <h2>{de ? `Welche Kartenarten es von ${name} gibt` : `Which kinds of ${name} cards exist`}</h2>
+        <div className={styles.tableWrap}>
+          <table className={styles.table}>
+            <caption>{de ? `${name}-Karten nach Namensform` : `${name} cards by name form`}</caption>
+            <thead><tr><th scope="col">{de ? "Art" : "Kind"}</th><th scope="col">{de ? "Karten" : "Cards"}</th><th scope="col">{de ? "Häufigster Name" : "Most frequent name"}</th></tr></thead>
+            <tbody>{stats.kinds.map((row) => <tr key={row.kind}><th scope="row">{KIND_LABELS[language][row.kind]}</th><td>{row.cards}</td><td>{row.example}</td></tr>)}</tbody>
+          </table>
+        </div>
         <div className={styles.tableWrap}>
           <table className={styles.table}>
             <caption>{de ? `Die fünf Sets mit den meisten ${name}-Karten` : `The five sets with the most ${name} cards`}</caption>
@@ -245,33 +271,22 @@ export function SpeciesArticle({ published, language, all }: { published: Publis
 
       {stats.topThemes.length > 0 ? (
         <section id="themes" className={styles.section}>
-          <h2>{de ? "Häufige Motive auf den Karten" : "Common artwork themes"}</h2>
+          <h2>{de ? `Was auf den ${name}-Karten zu sehen ist (automatisch erkannt)` : `What the ${name} cards show (detected automatically)`}</h2>
           <ul>
             {stats.topThemes.map(({ tag, cards }) => (
-              <li key={tag}>{themeLabel(language, tag)}: {cards} {de ? "von" : "of"} {stats.cardCount} {de ? "Karten" : "cards"} ({Math.round((cards / stats.cardCount) * 100)} %)</li>
+              <li key={tag}>{themeLabel(language, tag)}: {cards} {de ? "von" : "of"} {stats.cardCount} ({Math.round((cards / stats.cardCount) * 100)} %)</li>
             ))}
           </ul>
-          <p>{de ? "Diese Merkmale wurden automatisch aus dem Bild erkannt und nicht einzeln geprüft. Sie zeigen eine Tendenz, ersetzen aber nicht den Blick auf die konkrete Karte." : "These features were detected automatically from the image and not checked one by one. They show a tendency but do not replace looking at the actual card."}</p>
         </section>
       ) : null}
 
       <section id="plan" className={styles.section}>
-        <h2>{de ? `So planst du einen ${name}-Binder` : `How to plan a ${name} binder`}</h2>
-        <p>
-          {de
-            ? `Alle ${n(stats.cardCount)} Karten würden bei neun Taschen pro Seite etwa ${n(pages)} Seiten füllen. Für ein Geschenk ist das zu viel: Eine einzige Seite mit neun verschiedenen Motiven wirkt sofort fertig, und die Sammlung lässt sich später erweitern.`
-            : `At nine pockets per page, all ${n(stats.cardCount)} cards would fill about ${n(pages)} pages. For a gift that is far too much: a single page of nine different designs looks finished at once, and the collection can be extended later.`}
-        </p>
+        <h2>{de ? `Ein ${name}-Binder in der Praxis` : `A ${name} binder in practice`}</h2>
         <p>{entry.collectingNote[language]}</p>
-        <p>
-          {de ? "Welche Binder-Größe passt, steht im " : "Which binder size fits is covered in the "}
-          <Link href={guidePath(language, guideById("binder-size")!)}>{guideById("binder-size")![language].title}</Link>.
-        </p>
       </section>
 
       <section id="examples" className={styles.section}>
         <h2>{de ? `Beispielkarten mit ${name}` : `Example cards featuring ${name}`}</h2>
-        <p>{de ? "Eine Auswahl über die Jahre, höchstens eine Karte pro Set:" : "A selection across the years, at most one card per set:"}</p>
         <ul>
           {stats.examples.map((card) => <li key={card.id}>{card.name} · {card.setName} · Nr. {card.number} · {card.year}</li>)}
         </ul>
@@ -292,10 +307,8 @@ export function SpeciesArticle({ published, language, all }: { published: Publis
           </ul>
         ) : null}
         <ul>
-          {["gift", "personalized-gift", "start-collection"].flatMap((id) => {
-            const guide = guideById(id);
-            return guide ? [<li key={id}><Link href={guidePath(language, guide)}>{guide[language].title}</Link></li>] : [];
-          })}
+          <li><Link href={guidePath(language, guideById("gift")!)}>{de ? "Ratgeber: Pokémon-Karten verschenken" : "Guide: giving Pokémon cards as a gift"}</Link></li>
+          <li><Link href={guidePath(language, guideById("binder-size")!)}>{de ? "Ratgeber: die passende Binder-Größe" : "Guide: choosing the binder size"}</Link></li>
         </ul>
       </section>
 

@@ -18,6 +18,8 @@ export interface SpeciesEntry {
   about: Record<PageLanguage, readonly [string, string]>;
   /** One sentence on what to watch for when collecting this Pokémon. */
   collectingNote: Record<PageLanguage, string>;
+  /** A short paragraph about the card forms of this Pokémon, written without numbers that change with the catalogue. */
+  story: Record<PageLanguage, string>;
   related: readonly string[];
 }
 
@@ -43,6 +45,10 @@ export const SPECIES: readonly SpeciesEntry[] = [
       de: "Bei Pikachu lohnt es sich, nach Artwork statt nach Set zu wählen, weil viele Drucke fast gleich aussehen.",
       en: "With Pikachu it pays to choose by artwork rather than by set, because many printings look almost the same.",
     },
+    story: {
+      de: "Neben der Standardkarte gibt es Pikachu mit eigenem Namen und eigener Szene, etwa „Ash's Pikachu“, „Surfing Pikachu“ oder „Flying Pikachu“. Die vier V-UNION-Karten gehören zusammen: Erst nebeneinander gelegt ergeben sie ein großes Bild. Wer abwechslungsreich sammeln will, greift zu diesen Namensvarianten statt zur dritten Standardkarte.",
+      en: "Besides the standard card there is Pikachu with its own name and scene, such as “Ash's Pikachu”, “Surfing Pikachu” or “Flying Pikachu”. The four V-UNION cards belong together: laid side by side they form one large picture. If you want to collect with variety, go for these name variants instead of the third standard card.",
+    },
     related: ["evoli", "glurak", "mew"],
   },
   {
@@ -65,6 +71,10 @@ export const SPECIES: readonly SpeciesEntry[] = [
     collectingNote: {
       de: "Prüfe bei älteren Glurak-Karten immer Edition und Finish, denn dieselbe Nummer gibt es in mehreren Ausführungen.",
       en: "With older Charizard cards always check edition and finish, because the same number exists in several versions.",
+    },
+    story: {
+      de: "Fast jede Kartengeneration hat ihr eigenes Glurak aufgelegt: EX, GX, V, VSTAR und zuletzt Mega Glurak X ex. Dazu kommen Partnerkarten wie „Reshiram & Charizard GX“. Entscheide vorab, ob alle Karten einer Generation entstammen sollen oder bewusst aus mehreren. Ein Glurak-Binder wird schnell teurer als einer mit anderen Pokémon, weil die Karten stark nachgefragt sind.",
+      en: "Almost every card generation has printed its own Charizard: EX, GX, V, VSTAR and most recently Mega Charizard X ex. There are also partner cards such as “Reshiram & Charizard GX”. Decide in advance whether all cards should come from one generation or deliberately from several. A Charizard binder quickly becomes more expensive than one with other Pokémon, because the cards are in high demand.",
     },
     related: ["pikachu", "rayquaza", "garados"],
   },
@@ -92,6 +102,10 @@ export const SPECIES: readonly SpeciesEntry[] = [
       de: "Die Entwicklungen zählen in Your Card Binder als eigene Pokémon; ein Evoli-Binder enthält also nur Karten, auf denen Evoli selbst im Namen steht.",
       en: "The evolutions count as separate Pokémon in Your Card Binder, so an Eevee binder only contains cards with Eevee itself in the name.",
     },
+    story: {
+      de: "Evoli hat vergleichsweise wenige Sonderformen: Die allermeisten Karten tragen schlicht den Namen Eevee. Deshalb entscheidet hier vor allem das Artwork. Die Karte „Eevee & Snorlax GX“ gehört auch auf die Seite von Relaxo. Wer die Seite erweitern möchte, ergänzt Evoli-Entwicklungen wie Nachtara oder Aquana.",
+      en: "Eevee has comparatively few special forms: the vast majority of cards simply carry the name Eevee. The artwork therefore decides most here. The card “Eevee & Snorlax GX” also belongs on the Snorlax page. To extend the page, add Eevee evolutions such as Umbreon or Vaporeon.",
+    },
     related: ["pikachu", "mew", "relaxo"],
   },
   {
@@ -114,6 +128,10 @@ export const SPECIES: readonly SpeciesEntry[] = [
     collectingNote: {
       de: "Achte auf den Namen: „Mew“ und „Mewtu“ sind verschiedene Pokémon und stehen in Your Card Binder nicht im selben Binder.",
       en: "Watch the name: “Mew” and “Mewtwo” are different Pokémon and do not share a binder in Your Card Binder.",
+    },
+    story: {
+      de: "Mew teilt sich mehrere Karten mit Mewtu: „Mewtwo & Mew GX“ zählt für beide Seiten. Wer zwei Binder oder zwei Seiten für beide plant, sollte diese Karten nur einmal einplanen. Daneben gibt es Mew als ex, V, VMAX und als EX aus der XY-Zeit.",
+      en: "Mew shares several cards with Mewtwo: “Mewtwo & Mew GX” counts for both pages. If you plan two binders or two pages for the pair, include these cards only once. Besides these there is Mew as ex, V, VMAX and as EX from the XY era.",
     },
     related: ["mewtu", "evoli", "pikachu"],
   },
@@ -138,6 +156,10 @@ export const SPECIES: readonly SpeciesEntry[] = [
       de: "Mega-Formen und Karten mit mehreren Pokémon erscheinen im selben Binder, sobald „Mewtu“ im Kartennamen steht.",
       en: "Mega forms and cards showing several Pokémon appear in the same binder as soon as “Mewtwo” is in the card name.",
     },
+    story: {
+      de: "Bei Mewtu fallen zwei Reihen auf: die vier V-UNION-Karten, die erst zusammengelegt ein Bild ergeben, und „Team Rocket's Mewtwo ex“ aus der Rückkehr der Team-Rocket-Karten. Auch „Mewtwo & Mew GX“ gehört dazu und zählt ebenso für die Mew-Seite.",
+      en: "Two series stand out with Mewtwo: the four V-UNION cards, which only form a picture when laid together, and “Team Rocket's Mewtwo ex” from the return of the Team Rocket cards. “Mewtwo & Mew GX” belongs here too and also counts for the Mew page.",
+    },
     related: ["mew", "gengar", "lucario"],
   },
   {
@@ -160,6 +182,10 @@ export const SPECIES: readonly SpeciesEntry[] = [
     collectingNote: {
       de: "Karten von Nebulak und Alpollo gehören nicht zu einem Gengar-Binder, auch wenn sie zur selben Entwicklungsreihe zählen.",
       en: "Gastly and Haunter cards do not belong in a Gengar binder, even though they are part of the same evolution line.",
+    },
+    story: {
+      de: "Gengar tritt oft mit Partner oder Besitzer auf, etwa „Gengar & Mimikyu GX“ oder „Sabrina's Gengar“. Dazu kommen Mega Gengar ex und das düstere „Dark Gengar“ aus der Team-Rocket-Zeit. Als Geist-Pokémon passt Gengar gut zu Binder-Seiten mit dunkler Stimmung.",
+      en: "Gengar often appears with a partner or owner, such as “Gengar & Mimikyu GX” or “Sabrina's Gengar”. There are also Mega Gengar ex and the gloomy “Dark Gengar” from the Team Rocket era. As a Ghost Pokémon, Gengar fits binder pages with a dark mood.",
     },
     related: ["mewtu", "relaxo", "lucario"],
   },
@@ -184,6 +210,10 @@ export const SPECIES: readonly SpeciesEntry[] = [
       de: "Riolu-Karten sind eigene Pokémon und zählen nicht zum Lucario-Binder.",
       en: "Riolu cards are separate Pokémon and do not count towards the Lucario binder.",
     },
+    story: {
+      de: "Lucario kam erst mit der vierten Generation, deshalb beginnt die Kartenliste nicht in den Neunzigern. Besonders bei den Mega-Karten ist die Schreibweise wichtig: „M Lucario EX“ stammt aus der XY-Zeit, „Mega Lucario ex“ aus den neuen Sets. Sie sehen verschieden aus und gehören in unterschiedliche Seiten.",
+      en: "Lucario arrived with the fourth generation, so its card list does not begin in the nineties. For the Mega cards the spelling matters: “M Lucario EX” is from the XY era, “Mega Lucario ex” from the new sets. They look different and belong on different pages.",
+    },
     related: ["mewtu", "gengar", "rayquaza"],
   },
   {
@@ -206,6 +236,10 @@ export const SPECIES: readonly SpeciesEntry[] = [
     collectingNote: {
       de: "Mampfaxo ist ein eigenes Pokémon; im Relaxo-Binder erscheinen nur Karten mit „Relaxo“ im Namen.",
       en: "Munchlax is a separate Pokémon; only cards with “Snorlax” in the name appear in the Snorlax binder.",
+    },
+    story: {
+      de: "Die meisten Relaxo-Karten tragen schlicht den Namen Snorlax; Sonderformen sind „Hop's Snorlax“, „Rocket's Snorlax“ und „Eevee & Snorlax GX“, das auch auf die Evoli-Seite gehört. Weil Relaxo meist schlafend gezeichnet ist, passt es in einen ruhigen Binder.",
+      en: "Most Snorlax cards simply carry the name Snorlax; special forms are “Hop's Snorlax”, “Rocket's Snorlax” and “Eevee & Snorlax GX”, which also belongs on the Eevee page. Because Snorlax is usually drawn asleep, it suits a calm binder.",
     },
     related: ["evoli", "gengar", "pikachu"],
   },
@@ -230,6 +264,10 @@ export const SPECIES: readonly SpeciesEntry[] = [
       de: "Mega-Rayquaza und Rayquaza-ex-Karten tragen den Namen im Titel und erscheinen daher im selben Binder.",
       en: "Mega Rayquaza and Rayquaza ex cards carry the name in the title and therefore appear in the same binder.",
     },
+    story: {
+      de: "Das δ im Namen markiert Karten der Delta-Species-Zeit, in der Pokémon mit ungewohntem Typ erschienen. Rayquaza gibt es außerdem als EX, GX, V, VMAX und als M Rayquaza EX. Weil kein Rayquaza-Eintrag aus den Neunzigern stammt, fehlt die Frühzeit der Karten.",
+      en: "The δ in the name marks cards of the Delta Species era, when Pokémon appeared with an unusual type. Rayquaza also exists as EX, GX, V, VMAX and as M Rayquaza EX. Since no Rayquaza card dates from the nineties, the earliest period of the game is missing.",
+    },
     related: ["glurak", "garados", "lucario"],
   },
   {
@@ -252,6 +290,10 @@ export const SPECIES: readonly SpeciesEntry[] = [
     collectingNote: {
       de: "Karpador-Karten gehören nicht zum Garados-Binder, obwohl beide oft gemeinsam gesammelt werden.",
       en: "Magikarp cards do not belong in the Gyarados binder, although the two are often collected together.",
+    },
+    story: {
+      de: "Zu den Besonderheiten zählen „Dark Gyarados“ aus der Team-Rocket-Zeit um 2000 und „Misty's Gyarados“ aus den Gym-Sets. Die späteren Formen sind EX, GX, V und VMAX. Wer einen Wasser-Binder plant, kann Garados mit Karten aus dem Motiv Meer & Wasser kombinieren.",
+      en: "Special cases include “Dark Gyarados” from the Team Rocket era around 2000 and “Misty's Gyarados” from the Gym sets. The later forms are EX, GX, V and VMAX. If you plan a water binder, you can combine Gyarados with cards from the Sea & water theme.",
     },
     related: ["glurak", "rayquaza", "relaxo"],
   },

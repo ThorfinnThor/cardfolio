@@ -588,3 +588,8 @@
 
 - **What was done.** With the owner's explicit OK and in their signed-in browser: Mass Entry with three Base Set cards, "Add to Cart", looked at the cart, removed every item again. The cart was empty before and after; the checkout was never opened, nothing was bought. No screenshots were taken or published (they would show prices and the account banner).
 - **Observed.** The cart groups by seller (two sellers, two packages, separate shipping). For each card TCGplayer chose a listing within the conditions ticked under Options; with the preset conditions (Near Mint, Lightly Played, Moderately Played) it chose Moderately Played copies. The how-to now says so and tells visitors to untick conditions they do not accept before pressing Add to Cart.
+## 2026-10-23 — Pokémon pages rewritten so they do not read like one template
+
+- **Found by the SEO audit.** The ten Pokémon pages shared the same sections, headings and sentences: about 28–33 % shared five-word passages, 540–620 words each.
+- **Change.** The standard paragraphs are gone. Each page now has data that differs per Pokémon (oldest, newest and busiest year, cards per decade, card kinds by name form with the most frequent name, top sets, artwork tendencies) and a hand-written paragraph about the card forms of that Pokémon (`story`, no numbers that change with the catalogue). Facts that were prose became fact list and table rows.
+- **Guard.** `species-variety.test.tsx`: between any two pages, in both languages, prose and list text (sidebar, headings, tables and fact lists excluded as page structure) shares less than 12 % of its five-word passages, and every page has its own story paragraph.
