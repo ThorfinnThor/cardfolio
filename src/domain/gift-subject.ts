@@ -79,3 +79,27 @@ export function separateRepeatedCards<T extends { card: CardSnapshot }>(candidat
   }
   return { distinct, repeats, ordered: [...distinct, ...repeats] };
 }
+
+/** "Mega Emboar ex" and "Emboar V" are the same Pokémon for a page that should show variety. */
+export function pokemonKeyOf(name: string): string {
+  return name
+    .replace(/^(Mega|M|Dark|Light|Hisuian|Alolan|Galarian|Paldean|Team Rocket's|Ethan's|Misty's|Blaine's|Sabrina's|Brock's|Erika's|Lt\. Surge's)\s+/i, "")
+    .replace(/\s+(ex|EX|GX|V|VMAX|VSTAR|V-UNION|BREAK|LV\.X|δ|Star|☆|C|G|FB|SP)(\s+.*)?$/i, "")
+    .trim()
+    .toLocaleLowerCase("en");
+}
+
+/**
+ * Themed pages (a sea, a type, a rarity) should show different Pokémon, not three Altaria. Keeps the first card of
+ * every Pokémon in order; when that leaves fewer than `minimum` cards, the whole list is returned unchanged.
+ */
+export function onePerPokemon<T extends { card: CardSnapshot }>(candidates: readonly T[], minimum: number): T[] {
+  const seen = new Set<string>();
+  const unique = candidates.filter((candidate) => {
+    const key = pokemonKeyOf(candidate.card.name);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  return unique.length >= minimum ? unique : [...candidates];
+}

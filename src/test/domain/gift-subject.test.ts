@@ -83,3 +83,21 @@ describe("repeated cards", () => {
     expect(result.ordered).toEqual([first, other, unknown1, unknown2, reprint]);
   });
 });
+
+describe("onePerPokemon", () => {
+  const card = (name: string) => ({ card: { name } as unknown as CardSnapshot });
+
+  it("keeps the first card of every Pokémon, whatever the card suffix says", async () => {
+    const { onePerPokemon, pokemonKeyOf } = await import("@/domain/gift-subject");
+    expect(pokemonKeyOf("Mega Emboar ex")).toBe("emboar");
+    expect(pokemonKeyOf("Hisuian Typhlosion VSTAR")).toBe("typhlosion");
+    const list = [card("Altaria"), card("Altaria C"), card("Pikachu"), card("Pikachu ex"), card("Mew")];
+    expect(onePerPokemon(list, 3).map((entry) => entry.card.name)).toEqual(["Altaria", "Pikachu", "Mew"]);
+  });
+
+  it("returns the whole list when too few different Pokémon remain", async () => {
+    const { onePerPokemon } = await import("@/domain/gift-subject");
+    const list = [card("Eevee"), card("Eevee ex"), card("Eevee V")];
+    expect(onePerPokemon(list, 3)).toHaveLength(3);
+  });
+});

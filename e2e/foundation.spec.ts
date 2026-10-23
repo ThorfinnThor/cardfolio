@@ -1140,3 +1140,15 @@ test("lets a child pick a Pokémon and shows the wish list page without prices",
   await expect(page.getByText("Hier wird nichts gekauft")).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 });
+
+test("offers Pokémon types and special cards next to the picture themes", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/geschenk/?start=1");
+  await page.getByRole("radio", { name: "Ein Bildmotiv" }).check();
+
+  await expect(page.getByRole("heading", { name: "Nach Pokémon-Typ" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Besondere Karten" })).toBeVisible();
+  await expect(page.getByRole("radio", { name: /Feuer-Pokémon/ })).toBeAttached();
+  await expect(page.getByRole("radio", { name: /Klassische Holos/ })).toBeAttached();
+  expect((await (await page.request.get("/data/semantic/curated-collections-v1.json")).json()).collections["type-fire"].length).toBeGreaterThanOrEqual(18);
+});

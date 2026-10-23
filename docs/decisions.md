@@ -538,12 +538,23 @@
 - **Change.** All 29 `dominant` reviews on non-Pokémon cards (24 Trainer and 1 Energy from the owner's earlier local reviews, 4 Trainer from AI passes) were set to `secondary` with source `ai-assisted`. The owner's earlier decisions can be restored in the local artwork review tool if wanted.
 - **Counts.** 1,063 `dominant` reviews remain (7,702 reviews in total).
 
+## 2026-10-23 — Themes by Pokémon type and special cards, one Pokémon per themed page
+
+- **Why.** New picture motifs are rare in the card artwork: a pilot over 363 already-scenic cards found only 6 that fit storm, space, autumn, jungle, waterfall or crystals (about 2 %), too few for a page. The 23 picture tags of the search index are all in use. Card properties give exact, large pools instead.
+- **What.** 15 new themes in two groups in the theme picker: "Nach Pokémon-Typ" (11 types) and "Besondere Karten" (illustration rares, shiny cards, Mega Pokémon, classic holos 1999–2002). Membership comes from TCGdex fields (type, rarity, set, holo print), built by the script `scripts/build-curated-collections.mjs` into `public/data/semantic/curated-collections-v1.json` (up to 150 cards each, showiest rarity first, at most 2–3 cards per Pokémon, no TCG Pocket cards). No picture recognition is involved, so every card has the property. The file is validated with zod on load.
+- **Gift builder.** A collection theme uses the same flow as picture themes (pool, price check, budget, swap, share link with the theme id `t`).
+- **One Pokémon per themed page.** For picture themes and collections the proposal shows each Pokémon once (`onePerPokemon`) as long as enough different Pokémon exist; otherwise nothing changes.
+- **The "dimmed" binder page.** Screenshots in the in-app browser showed the page dimmed for several seconds after opening. Checked in a normal browser (computed styles at 1, 4, 8 and 14 s): nothing covers the cards, everything is fully opaque from the first second. The effect comes from the pane running as a background page, not from the app.
+
+
 ## 2026-10-23 — Strict quality audit of every themed card
 
 - **Why.** The owner wants every card on a themed page to fit the theme. A live look showed weak fits (a Porygon on the meadow page, repeated Altaria on a sky page).
 - **What.** All 1,063 `dominant` cards were looked at once more by a strict third reviewer (22 tags, about 100 contact sheets). 239 cards were flagged. The 178 that came from AI passes were set to `secondary`. The 61 flagged cards that came from the owner's own local reviews were **kept** (their decisions are not overridden by an AI pass); they can be re-checked in the local artwork review tool.
 - **Result.** 885 `dominant` reviews remain; themes with fewer than 36 cards offer two pages until a further review round fills them. Counts: `docs/theme-card-counts-2026-10-22.md`.
+
 ## 2026-10-23 — Next.js 16.4.0 to 16.4.3 (security patch)
 
 - **Why.** CI (`npm audit --omit=dev --audit-level=high`) started to fail for every branch: advisories for Next.js 16.0.0–16.4.0 (image optimization with SVG, Server Actions, `use cache`). The app is a static export without image optimization, Server Actions or `use cache`, so it was not affected in practice, but the gate blocks every merge and the patch is a plain patch release.
 - **Change.** `next` and `eslint-config-next` to 16.4.3 (exact versions, lockfile updated). Integration check: typecheck, lint, 592 unit tests, production build, release check and all 57 e2e tests pass; `npm audit` reports 0 vulnerabilities.
+
