@@ -29,6 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...pair(speciesIndexPath("de"), speciesIndexPath("en")),
     ...species.flatMap(({ entry }) => pair(speciesPath("de", entry), speciesPath("en", entry))),
     { url: absoluteUrl("/anleitung/cardmarket/") },
+    { url: absoluteUrl("/anleitung/tcgplayer/") },
     { url: absoluteUrl("/help/") },
   ];
 }

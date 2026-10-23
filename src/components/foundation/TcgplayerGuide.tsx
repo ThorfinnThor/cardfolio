@@ -8,6 +8,7 @@ import type { TcgplayerMassEntryExport } from "@/domain/tcgplayer-export";
 import styles from "./missing-cards-panel.module.css";
 
 const TCGPLAYER_GUIDE_PATH = "/ratgeber/tcgplayer-pokemon-karten-kaufen/";
+const TCGPLAYER_HOWTO_PATH = "/anleitung/tcgplayer/";
 
 const GUIDE_STEPS = [
   { step: 1, label: "Liste öffnen" },
@@ -121,7 +122,7 @@ export function TcgplayerGuide({ exported, onCopy }: { exported: TcgplayerMassEn
             <li>Prüfe, ob für alle <b>{exported.readyCount === 1 ? "1 Karte" : `${exported.readyCount} Karten`}</b> ein Angebot gefunden wurde, und kontrolliere Kartenname, Set, vollständige Nummer, Sprache, Printing und Zustand.</li>
             <li>Sieh dir <b>Versandkosten und Lieferart</b> an, bevor du bezahlst. Bezahlt wird bei TCGplayer.</li>
           </ol>
-          <small>Your Card Binder legt nichts in deinen Warenkorb. TCGplayer zeigt bei einem Standort in Deutschland nur Verkäufer, die dorthin liefern. <a href={TCGPLAYER_GUIDE_PATH}>Ausführliche Anleitung mit allen Begriffen</a></small>
+          <small>Your Card Binder legt nichts in deinen Warenkorb. TCGplayer zeigt bei einem Standort in Deutschland nur Verkäufer, die dorthin liefern. <a href={TCGPLAYER_HOWTO_PATH}>Anleitung mit Bildern</a> · <a href={TCGPLAYER_GUIDE_PATH}>Ausführliche Anleitung mit allen Begriffen</a></small>
           <div className={styles.cardmarketGuideActions}>
             <button type="button" className={styles.cardmarketBackButton} onClick={() => setStep(3)}><ArrowLeft aria-hidden="true" size={16} /> Zurück</button>
           </div>

@@ -568,3 +568,10 @@
 
 - **Data.** 1,055 further decisions (8,757 reviews, 967 `dominant`) for Himmel (264 cards seen), Berge, Pokémon-Freunde and Zuhause, same process (strict first pass, independent second pass, own look; four weak mountain cards struck by hand; rotated half-card LEGEND pictures never count as "friends").
 - **Result.** Berge 49, Himmel 40, Pokémon-Freunde 82 (all four-page themes), Zuhause 25 (two pages). Strand (29) and Sonnenuntergang (32) cannot grow: every card tagged for them has already been looked at.
+
+## 2026-10-23 — Illustrated TCGplayer how-to (`/anleitung/tcgplayer/`)
+
+- **What.** A step-by-step page (German and English, like the Cardmarket one) with three annotated screenshots of TCGplayer's Mass Entry (list in Items, Item Options with printing and condition, Options and Add to Cart). Linked from the in-app TCGplayer guide, the marketplace guides, the sitemap and `llms.txt`.
+- **How the screenshots were made.** In the owner's signed-in browser session, desktop width, with the account banner (it showed the owner's email address) hidden before capture; no personal data is in the images (checked). Stored as `public/howto/tcgplayer/*.webp` with numbered yellow frames.
+- **Observed (2026-10-23, signed in, no cart action).** Mass Entry opens with product line "Pokemon" and the lines prefilled (sorted alphabetically); the Item Options dialog opens on desktop with all printings ticked and Near Mint, Lightly Played and Moderately Played as conditions (Heavily Played and Damaged off); buttons "Options", "Add to Cart", "Create a Shareable Link".
+- **Not done.** "Add to Cart" and the cart pages were not exercised: that would create a cart in the owner's account. The page says so and follows TCGplayer's own wording for step 5.
