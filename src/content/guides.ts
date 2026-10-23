@@ -1,5 +1,7 @@
 import type { PageLanguage } from "@/config/site";
 
+import { MOTIF_GUIDES } from "./motif-guides";
+
 export type GuideBlock =
   | { type: "p"; text: string }
   | { type: "ul"; items: readonly string[] }
@@ -28,9 +30,13 @@ export interface Guide {
   en: GuideText;
   /** Ids of guides worth reading next. */
   related: readonly string[];
+  /** Picture theme or card group of the gift builder that the call to action opens. */
+  themeId?: string;
+  /** `false` keeps a prepared page out of routes, sitemap, hub and llms.txt until its release wave. */
+  live?: boolean;
 }
 
-export const GUIDES: readonly Guide[] = [
+const BASE_GUIDES: readonly Guide[] = [
   {
     id: "gift",
     updated: "2026-10-21",
@@ -1294,6 +1300,12 @@ export const GUIDES: readonly Guide[] = [
     },
   },
 ];
+
+/** Every prepared guide, including motif pages that are not released yet (tests and the generator read this). */
+export const ALL_GUIDES: readonly Guide[] = [...BASE_GUIDES, ...MOTIF_GUIDES];
+
+/** The guides that are published. */
+export const GUIDES: readonly Guide[] = ALL_GUIDES.filter((guide) => guide.live !== false);
 
 export function guideById(id: string): Guide | undefined {
   return GUIDES.find((guide) => guide.id === id);

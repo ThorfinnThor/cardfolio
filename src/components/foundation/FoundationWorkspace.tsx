@@ -494,6 +494,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
   const [giftBuilderOpen, setGiftBuilderOpen] = useState(false);
   const [giftDiscoveryMode, setGiftDiscoveryMode] = useState<"pokemon" | "theme">("pokemon");
   const [giftSubjectQuery, setGiftSubjectQuery] = useState("Pikachu");
+  const [giftThemeId, setGiftThemeId] = useState<string>();
   const [setBinderWizardOpen, setSetBinderWizardOpen] = useState(false);
   const [setWizardInitialId, setSetWizardInitialId] = useState<string>();
   const [placeholdersOpen, setPlaceholdersOpen] = useState(false);
@@ -519,11 +520,15 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
     const params = new URLSearchParams(window.location.search);
     if (params.get("start") !== "1") return;
     params.delete("start");
+    // A guide about a picture theme links with ?motiv=<id>; the builder ignores ids it does not know.
+    const motiv = params.get("motiv") ?? undefined;
+    params.delete("motiv");
     const query = params.toString();
     window.history.replaceState(window.history.state, "", `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`);
     clearGiftResume();
     setGiftDiscoveryMode("pokemon");
     setGiftSubjectQuery("Pikachu");
+    setGiftThemeId(motiv);
     setGiftBuilderOpen(true);
     setBinderManagerOpen(true);
     setMissingOpen(false);
@@ -2049,6 +2054,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
             smartSearch={giftSmartSearch}
             initialDiscoveryMode={giftDiscoveryMode}
             initialSubjectQuery={giftSubjectQuery}
+            initialThemeId={giftThemeId}
             pricingEnabled={FEATURES.giftPriceEstimates}
             budgetGuaranteeEnabled={FEATURES.giftBudgetGuarantee}
             onCancel={() => { setGiftBuilderOpen(false); setBinderManagerOpen(true); }}

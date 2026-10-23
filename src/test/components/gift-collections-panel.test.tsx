@@ -46,4 +46,15 @@ describe("gift builder with a type collection", () => {
     expect(await screen.findAllByText("9 / 9")).not.toHaveLength(0);
     expect(smartSearch.search).not.toHaveBeenCalled();
   });
+  it("opens with the theme a guide linked to already chosen and ignores unknown ids", () => {
+    const loader = { loadCandidatePool: vi.fn(), hydrateCandidates: vi.fn() };
+    const smartSearch = { search: vi.fn(async () => []) };
+    const props = { loader, smartSearch, pricingEnabled: false, onCancel: vi.fn(), onCreateBinder: vi.fn(), onOpenBinder: vi.fn(), onCardsPurchase: vi.fn() };
+    const { unmount } = render(<GiftBuilderPanel {...props} initialThemeId="type-fire" />);
+    expect(screen.getByRole("radio", { name: /Feuer-Pokémon/ })).toBeChecked();
+    unmount();
+
+    render(<GiftBuilderPanel {...props} initialThemeId="does-not-exist" />);
+    expect(screen.queryByRole("heading", { name: "Nach Pokémon-Typ" })).not.toBeInTheDocument();
+  });
 });

@@ -25,10 +25,12 @@ const LABELS = {
  * Article body on the left, a sticky sidebar on the right (table of contents and, optionally, the way into
  * the tool). On narrow screens the sidebar drops below the text and the table of contents is hidden.
  */
-export function ArticleLayout({ language, toc, withCta = true, children }: {
+export function ArticleLayout({ language, toc, withCta = true, ctaHref = TOOL_START_PATH, children }: {
   language: PageLanguage;
   toc: readonly TocItem[];
   withCta?: boolean;
+  /** Where the sidebar button leads; defaults to the start of the tool. */
+  ctaHref?: string;
   children: ReactNode;
 }) {
   const label = LABELS[language];
@@ -43,7 +45,7 @@ export function ArticleLayout({ language, toc, withCta = true, children }: {
         {withCta ? (
           <div className={styles.asideCta}>
             <p>{label.ctaText}</p>
-            <ToolLink href={TOOL_START_PATH} language={language} className={styles.cta}>{LANDING[language].cta}</ToolLink>
+            <ToolLink href={ctaHref} language={language} className={styles.cta}>{LANDING[language].cta}</ToolLink>
           </div>
         ) : null}
       </aside>

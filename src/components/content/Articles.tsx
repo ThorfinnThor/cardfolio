@@ -6,7 +6,7 @@ import { GUIDES, guideById, type Guide, type GuideBlock } from "@/content/guides
 import { guideExtras } from "@/content/guide-extras";
 import { LANDING } from "@/content/landing";
 import type { PublishedSpecies } from "@/content/pokemon-stats";
-import { TOOL_START_PATH, guideIndexPath, guidePath, homePath, speciesIndexPath, speciesPath } from "@/content/routes";
+import { TOOL_START_PATH, guideIndexPath, guidePath, homePath, speciesIndexPath, speciesPath, toolStartPathForTheme } from "@/content/routes";
 import { SEMANTIC_TAG_LABELS, type SemanticTag } from "@/domain/semantic-card-search";
 
 import styles from "./content.module.css";
@@ -97,7 +97,7 @@ export function GuideArticle({ guide, language }: { guide: Guide; language: Page
           <p>{extra.answer}</p>
         </aside>
       </header>
-      <ArticleLayout language={language} toc={toc}>
+      <ArticleLayout language={language} toc={toc} ctaHref={guide.themeId ? toolStartPathForTheme(guide.themeId) : TOOL_START_PATH}>
         {text.sections.map((section, index) => (
           <section key={section.heading} id={sectionId(index)} className={styles.section}>
             <h2>{section.heading}</h2>

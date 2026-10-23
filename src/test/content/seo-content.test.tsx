@@ -6,7 +6,7 @@ import { GuideArticle, GuideIndex, LandingSections, SpeciesArticle, SpeciesIndex
 import { ContentFrame } from "@/components/content/ContentFrame";
 import { type PageLanguage } from "@/config/site";
 import { DISCLAIMER } from "@/content/disclaimer";
-import { GUIDES } from "@/content/guides";
+import { ALL_GUIDES, GUIDES } from "@/content/guides";
 import { guideMetadata, homeMetadata, speciesMetadata } from "@/content/page-meta";
 import { SPECIES } from "@/content/pokemon-species";
 import { MIN_CARDS, MIN_SETS, computeSpeciesStats, publishedSpecies } from "@/content/pokemon-stats";
@@ -113,7 +113,7 @@ describe("guides", () => {
 
   it("keep titles and descriptions within search result limits", () => {
     for (const language of LANGUAGES) {
-      for (const guide of GUIDES) {
+      for (const guide of ALL_GUIDES) {
         const meta = guideMetadata(language, guide);
         expect(String(meta.title).length, `${language}/${guide.id} title`).toBeLessThanOrEqual(75);
         expect(String(meta.description).length, `${language}/${guide.id} description`).toBeLessThanOrEqual(200);

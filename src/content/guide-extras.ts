@@ -3,6 +3,8 @@
  * long article text: the summary sits at the top of the page, the questions at the end, and the same
  * questions are published as FAQPage structured data. Every fact here repeats what the article already says.
  */
+import { MOTIF_GUIDE_EXTRAS } from "./motif-guide-extras";
+
 export interface GuideFaq {
   q: string;
   a: string;
@@ -21,7 +23,7 @@ export interface GuideExtras {
   en: GuideExtraText;
 }
 
-export const GUIDE_EXTRAS: Readonly<Record<string, GuideExtras>> = {
+const BASE_GUIDE_EXTRAS: Readonly<Record<string, GuideExtras>> = {
   gift: {
     published: "2026-10-20",
     de: {
@@ -251,6 +253,8 @@ export const GUIDE_EXTRAS: Readonly<Record<string, GuideExtras>> = {
     },
   },
 };
+
+export const GUIDE_EXTRAS: Readonly<Record<string, GuideExtras>> = { ...BASE_GUIDE_EXTRAS, ...MOTIF_GUIDE_EXTRAS };
 
 /** The extras of a guide; every guide has them (a test enforces it). */
 export function guideExtras(id: string): GuideExtras {

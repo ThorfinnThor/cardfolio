@@ -575,3 +575,11 @@
 - **How the screenshots were made.** In the owner's signed-in browser session, desktop width, with the account banner (it showed the owner's email address) hidden before capture; no personal data is in the images (checked). Stored as `public/howto/tcgplayer/*.webp` with numbered yellow frames.
 - **Observed (2026-10-23, signed in, no cart action).** Mass Entry opens with product line "Pokemon" and the lines prefilled (sorted alphabetically); the Item Options dialog opens on desktop with all printings ticked and Near Mint, Lightly Played and Moderately Played as conditions (Heavily Played and Damaged off); buttons "Options", "Add to Cart", "Create a Shareable Link".
 - **Not done.** "Add to Cart" and the cart pages were not exercised: that would create a cart in the owner's account. The page says so and follows TCGplayer's own wording for step 5.
+
+## 2026-10-23 — Motif pages for search (released in waves)
+
+- **Why.** Pages about picture themes and card groups ("Pokémon am Strand", "Illustration Rare", …) answer questions people search for and lead into the gift builder. The owner wants the sitemap to grow slowly and the pages not to read like one template.
+- **What.** Ten pages (German and English) in `src/content/motif-guides.ts` with their own questions, sections and tables; all numbers come from the card catalogue (TCGdex) and the reviewed theme data, checked on 2026-10-23. Only three are live (Illustration Rare, Nacht, Schnee & Eis); the other seven carry `live: false` and stay out of routes, sitemap, hub and `llms.txt` until a later wave. Releasing one is a one-line change plus `npm run llms:generate`.
+- **Quality gates (tests).** At least 400 words per page, no section heading shared with any other guide, at least seven different block outlines among the ten, and under 10 % shared five-word passages with every other guide. Titles ≤ 75 and descriptions ≤ 200 characters for all pages including unreleased ones.
+- **Call to action.** `/geschenk/?start=1&motiv=<id>` opens the builder with that theme or card group chosen; unknown ids are ignored; the parameter is removed from the address bar like `start`.
+- **Not claimed.** No prices, no rankings of value, no statements about how the art looks beyond what the review data confirms.
