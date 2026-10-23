@@ -584,6 +584,10 @@
 - **Call to action.** `/geschenk/?start=1&motiv=<id>` opens the builder with that theme or card group chosen; unknown ids are ignored; the parameter is removed from the address bar like `start`.
 - **Not claimed.** No prices, no rankings of value, no statements about how the art looks beyond what the review data confirms.
 
+## 2026-10-23 — TCGplayer cart behaviour observed (Add to Cart tested)
+
+- **What was done.** With the owner's explicit OK and in their signed-in browser: Mass Entry with three Base Set cards, "Add to Cart", looked at the cart, removed every item again. The cart was empty before and after; the checkout was never opened, nothing was bought. No screenshots were taken or published (they would show prices and the account banner).
+- **Observed.** The cart groups by seller (two sellers, two packages, separate shipping). For each card TCGplayer chose a listing within the conditions ticked under Options; with the preset conditions (Near Mint, Lightly Played, Moderately Played) it chose Moderately Played copies. The how-to now says so and tells visitors to untick conditions they do not accept before pressing Add to Cart.
 ## 2026-10-23 — Pokémon pages rewritten so they do not read like one template
 
 - **Found by the SEO audit.** The ten Pokémon pages shared the same sections, headings and sentences: about 28–33 % shared five-word passages, 540–620 words each.

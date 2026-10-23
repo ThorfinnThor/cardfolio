@@ -22,7 +22,7 @@ describe("TCGplayer how-to page", () => {
     expect(screen.getByRole("heading", { level: 1, name: /Karten bei TCGplayer kaufen/ })).toBeInTheDocument();
   });
 
-  it("shows three shipped screenshots and never claims an order was placed", () => {
+  it("shows three shipped screenshots and says that nothing was bought in the test", () => {
     render(<TcgplayerHowTo />);
 
     const images = screen.getAllByRole("img");
@@ -31,6 +31,6 @@ describe("TCGplayer how-to page", () => {
       const path = (image.getAttribute("src") ?? "").replace(/^\//, "");
       expect(existsSync(resolve(process.cwd(), "public", path)), path).toBe(true);
     }
-    expect(screen.getByText(/keine Bestellung ausgelöst/)).toBeInTheDocument();
+    expect(screen.getByText(/nichts gekauft, der Warenkorb wurde danach wieder geleert/)).toBeInTheDocument();
   });
 });
