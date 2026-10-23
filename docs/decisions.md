@@ -545,3 +545,9 @@
 - **Gift builder.** A collection theme uses the same flow as picture themes (pool, price check, budget, swap, share link with the theme id `t`).
 - **One Pokémon per themed page.** For picture themes and collections the proposal shows each Pokémon once (`onePerPokemon`) as long as enough different Pokémon exist; otherwise nothing changes.
 - **The "dimmed" binder page.** Screenshots in the in-app browser showed the page dimmed for several seconds after opening. Checked in a normal browser (computed styles at 1, 4, 8 and 14 s): nothing covers the cards, everything is fully opaque from the first second. The effect comes from the pane running as a background page, not from the app.
+
+## 2026-10-23 — Next.js 16.4.0 to 16.4.3 (security patch)
+
+- **Why.** CI (`npm audit --omit=dev --audit-level=high`) started to fail for every branch: advisories for Next.js 16.0.0–16.4.0 (image optimization with SVG, Server Actions, `use cache`). The app is a static export without image optimization, Server Actions or `use cache`, so it was not affected in practice, but the gate blocks every merge and the patch is a plain patch release.
+- **Change.** `next` and `eslint-config-next` to 16.4.3 (exact versions, lockfile updated). Integration check: typecheck, lint, 592 unit tests, production build, release check and all 57 e2e tests pass; `npm audit` reports 0 vulnerabilities.
+
