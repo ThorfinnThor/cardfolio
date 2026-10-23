@@ -354,3 +354,5 @@
 .shareBox p { margin: 0; color: var(--cf-text2); font-size: .86rem; line-height: 1.5; }
 .shareBox input { width: 100%; min-width: 0; padding: 8px 10px; border: 1px solid var(--cf-line); border-radius: 8px; background: transparent; color: inherit; font: inherit; font-size: .8rem; }
 .shareBox small { color: var(--cf-text2); }
+
+.themeGroupTitle { margin: 18px 0 8px; color: var(--cf-text); font-size: .95rem; font-weight: 750; }

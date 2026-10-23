@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type { GiftCandidateLoader } from "@/data/gift/gift-candidate-loader";
 import { FEATURES } from "@/config/feature-flags";
+import { curatedCollectionPool } from "@/data/catalog/curated-collections";
 import {
   DeterministicGiftSelectionEngine,
   giftCandidateHasArtwork,
@@ -18,10 +19,11 @@ import {
 import type { GiftPriceRange } from "@/domain/gift-builder";
 import { createGiftPrintSummary } from "@/domain/gift-print-summary";
 import { giftShareUrl, parseGiftShare, type GiftShare } from "@/domain/gift-share";
+import { GIFT_COLLECTION_PRESETS, giftCollectionPreset } from "@/domain/gift-collections";
 import { GIFT_THEME_PRESETS, giftThemePreset } from "@/domain/gift-theme-presets";
 import { conditionProfile, conditionProfiles } from "@/domain/purchase-preferences";
 import { ConditionGuide } from "./ConditionGuide";
-import { giftSubjectOf, matchesGiftSubject, parseGiftSubjects, separateRepeatedCards } from "@/domain/gift-subject";
+import { giftSubjectOf, matchesGiftSubject, onePerPokemon, parseGiftSubjects, separateRepeatedCards } from "@/domain/gift-subject";
 import type { SmartSearchAdapter } from "@/domain/semantic-card-search";
 import type { CardSnapshot, CatalogSearchItem, PurchasePreferences, VariantSelection } from "@/domain/types";
 import { FIRST_EDITION_SET_IDS, createInitialVariantSelection, isVariantSelectionValid, variantAvailabilityForCard, variantSelectionIssue } from "@/domain/variant-selection";
@@ -324,10 +326,11 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
       budgetTolerancePercent: 0,
     };
     const theme = giftThemePreset(shared.themeId);
+    const collection = giftCollectionPreset(shared.themeId);
     queueMicrotask(() => {
       setPreferences(wanted);
       setPokemonQuery(shared.subject);
-      if (theme) { setDiscoveryMode("theme"); setSelectedThemeId(theme.id); }
+      if (theme ?? collection) { setDiscoveryMode("theme"); setSelectedThemeId((theme ?? collection)!.id); }
       setLoading(true);
     });
     const briefsOfLink: CatalogSearchItem[] = shared.cards.map((card) => ({ ref: { provider: "tcgdex", id: card.id, language: card.language }, name: "", collectorNumber: "" }));
@@ -355,14 +358,16 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
         setStep("candidates");
         // More cards of the same wish, so a card can be swapped; failing here only means fewer alternatives.
         try {
-          const pool = theme && smartSearch
+          const pool = collection
+            ? await curatedCollectionPool(collection.id, 40)
+            : theme && smartSearch
             ? (await smartSearch.search({ text: theme.query, language: "en", limit: 40, matchQuality: "dominant" })).map((hit): CatalogSearchItem => ({ ref: hit.ref, name: theme.label, collectorNumber: "" }))
             : await loader.loadCandidatePool({ subjectQuery: wanted.subjectQuery, language: wanted.preferredLanguage ?? "en", maximum: 40, pageSize: 24, scan: 480 });
           const known = new Set(safe.map((candidate) => candidate.card.key));
           const extra = pool.filter((item) => item.ref.provider === "tcgdex" && !known.has(`${item.ref.provider}:${item.ref.id}:${item.ref.language}`)).slice(0, 30);
           const more = (await loader.hydrateCandidates(extra, { currency: wanted.currency, variantFor: defaultVariant, concurrency: 4, preferences: { minimumCondition: "excellent" } }))
             .map((candidate) => safeCandidate(candidate, pricingEnabled, wanted.currency))
-            .filter((candidate) => giftCandidateHasArtwork(candidate) && (theme || matchesGiftSubject(candidate.card, wanted.subjectQuery)));
+            .filter((candidate) => giftCandidateHasArtwork(candidate) && (theme || collection || matchesGiftSubject(candidate.card, wanted.subjectQuery)));
           if (more.length) {
             setCandidates((current) => [...current, ...more.filter((candidate) => !current.some((entry) => entry.card.key === candidate.card.key))]);
             setBriefs((current) => [...current, ...more.map(({ card }) => ({ ref: card.ref, name: card.name, collectorNumber: card.collectorNumber, imageBaseUrl: card.imageBaseUrl, setId: card.setId, setName: card.setName }))]);
@@ -451,7 +456,11 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
       const firstSample = Math.min(80, Math.max(40, wanted.targetCardCount * 3));
       for (const maximum of [firstSample, WIDE_SAMPLE]) {
       const theme = discoveryMode === "theme" ? giftThemePreset(selectedThemeId) : undefined;
-      const pool = theme && smartSearch
+      const collection = discoveryMode === "theme" ? giftCollectionPreset(selectedThemeId) : undefined;
+      const motif = theme ?? collection;
+      const pool = collection
+        ? await curatedCollectionPool(collection.id, maximum)
+        : theme && smartSearch
         ? (await smartSearch.search({
           text: theme.query,
           language: "en",
@@ -467,20 +476,20 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
           era: wanted.style === "vintage" || wanted.style === "modern" ? wanted.style : undefined,
         });
       if (!pool.length) {
-        setError(theme
+        setError(motif
           ? "Für dieses Motiv gibt es noch keine visuell bestätigten dominanten Artwork-Treffer. Prüfe zuerst Karten in der lokalen Artwork-Prüfung."
           : "Keine Karten mit diesem Namen gefunden. Prüfe Schreibweise oder Sprache.");
         return;
       }
-      if (theme && pool.length < wanted.targetCardCount) {
+      if (motif && pool.length < wanted.targetCardCount) {
         // Unconfirmed hits are never added. A smaller page that is full is better than an error.
         if (pool.length < 9) {
-          setNotice(`Für „${theme.label}“ haben wir noch nicht genug geprüfte Karten für eine ganze Seite. Wähle ein anderes Motiv oder ein Lieblings-Pokémon.`);
+          setNotice(`Für „${motif.label}“ haben wir noch nicht genug geprüfte Karten für eine ganze Seite. Wähle ein anderes Motiv oder ein Lieblings-Pokémon.`);
           return;
         }
         const smaller = largestPlanSize(pool.length);
         wanted = { ...wanted, targetCardCount: smaller };
-        themeNote = `Für „${theme.label}“ gibt es aktuell ${pool.length} geprüfte Karten. Wir zeigen dir deshalb eine Seite mit ${smaller} Karten.`;
+        themeNote = `Für „${motif.label}“ gibt es aktuell ${pool.length} geprüfte Karten. Wir zeigen dir deshalb eine Seite mit ${smaller} Karten.`;
         setPreferences((current) => ({ ...current, targetCardCount: smaller }));
       }
       const hydrated = await loader.hydrateCandidates(pool, {
@@ -499,14 +508,16 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
           || left.card.key.localeCompare(right.card.key));
       // Only the Pokémon itself (not "Evolith" for "Evoli"), and cards that look different first: reprints with
       // the same attacks come last and are only used when too few different cards exist.
-      const subjects = theme ? [] : parseGiftSubjects(wanted.subjectQuery);
+      const subjects = motif ? [] : parseGiftSubjects(wanted.subjectQuery);
       const tagged = subjects.length > 1
         ? safe.map((candidate) => ({ ...candidate, subjectKey: giftSubjectOf(candidate.card, wanted.subjectQuery) }))
         : safe;
-      const relevant = theme ? safe : tagged.filter((candidate) => matchesGiftSubject(candidate.card, wanted.subjectQuery));
+      const relevant = motif ? safe : tagged.filter((candidate) => matchesGiftSubject(candidate.card, wanted.subjectQuery));
       const subjectPool = relevant.length >= wanted.targetCardCount ? relevant : tagged;
       const { distinct, ordered } = separateRepeatedCards(subjectPool);
-      const selectionPool = distinct.length >= wanted.targetCardCount ? distinct : ordered;
+      const selectionPool = distinct.length >= wanted.targetCardCount
+        ? (motif ? onePerPokemon(distinct, wanted.targetCardCount) : distinct)
+        : ordered;
       setBriefs(ordered.map(({ card }) => ({
         ref: card.ref,
         name: card.name,
@@ -532,7 +543,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
         note = `Es gibt nicht genug ${wanted.style === "vintage" ? "alte" : "moderne"} Karten. Den Rest haben wir mit ${wanted.style === "vintage" ? "neueren" : "älteren"} Karten aufgefüllt.`;
         result = summarizeSelection(filled, wanted, result.issues);
       }
-      if (result.budgetStatus === "over" && !theme && maximum < WIDE_SAMPLE && pool.length >= maximum) continue;
+      if (result.budgetStatus === "over" && !motif && maximum < WIDE_SAMPLE && pool.length >= maximum) continue;
       if (subjects.length > 1) {
         const missing = subjects.filter((name) => !result.selected.some((candidate) => candidate.subjectKey === name.toLocaleLowerCase("de")));
         if (missing.length) {
@@ -800,6 +811,23 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
     URL.revokeObjectURL(url);
   }
 
+  function renderThemeChoice(theme: { id: string; label: string; description: string }) {
+    return <label className={styles.themeChoice} key={theme.id}>
+      <input
+        type="radio"
+        name="gift-theme"
+        checked={selectedThemeId === theme.id}
+        onChange={() => {
+          setSelectedThemeId(theme.id);
+          updatePreferences("subjectQuery", theme.label);
+          updatePreferences("preferredLanguage", "en");
+        }}
+      />
+      <strong>{theme.label}</strong>
+      <span>{theme.description}</span>
+    </label>;
+  }
+
   function renderInspector(candidate: GiftCardCandidate) {
     const key = candidate.card.key;
     const availability = variantAvailabilityForCard(candidate.card);
@@ -942,22 +970,11 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
           </fieldset> : <fieldset className={styles.themePicker}>
             <legend>Wähle ein Motiv für die Seite</legend>
             <p>Zum Beispiel Meer, Wald oder Schnee. Wir zeigen Karten, auf denen das Motiv im Bild zu sehen ist.</p>
-            <div className={styles.themeGrid}>
-              {GIFT_THEME_PRESETS.map((theme) => <label className={styles.themeChoice} key={theme.id}>
-                <input
-                  type="radio"
-                  name="gift-theme"
-                  checked={selectedThemeId === theme.id}
-                  onChange={() => {
-                    setSelectedThemeId(theme.id);
-                    updatePreferences("subjectQuery", theme.label);
-                    updatePreferences("preferredLanguage", "en");
-                  }}
-                />
-                <strong>{theme.label}</strong>
-                <span>{theme.description}</span>
-              </label>)}
-            </div>
+            <div className={styles.themeGrid}>{GIFT_THEME_PRESETS.map(renderThemeChoice)}</div>
+            <h3 className={styles.themeGroupTitle}>Nach Pokémon-Typ</h3>
+            <div className={styles.themeGrid}>{GIFT_COLLECTION_PRESETS.filter((preset) => preset.group === "type").map(renderThemeChoice)}</div>
+            <h3 className={styles.themeGroupTitle}>Besondere Karten</h3>
+            <div className={styles.themeGrid}>{GIFT_COLLECTION_PRESETS.filter((preset) => preset.group === "special").map(renderThemeChoice)}</div>
             <small>Motivseiten nutzen derzeit englische Kartenbilder. Du kannst später jede Karte austauschen.</small>
           </fieldset>}
           {discoveryMode === "pokemon" ? <fieldset className={styles.discoveryMode}>

@@ -537,3 +537,11 @@
 - **Found by a live check.** The Wald page showed "Forest of Vitality" and "Wally's Compassion", the Nacht page "Acerola's Mischief", the Feuer page "Magma Basin": Trainer cards that older `dominant` reviews still contained (the Pokémon-only rule was applied to the new rounds only).
 - **Change.** All 29 `dominant` reviews on non-Pokémon cards (24 Trainer and 1 Energy from the owner's earlier local reviews, 4 Trainer from AI passes) were set to `secondary` with source `ai-assisted`. The owner's earlier decisions can be restored in the local artwork review tool if wanted.
 - **Counts.** 1,063 `dominant` reviews remain (7,702 reviews in total).
+
+## 2026-10-23 — Themes by Pokémon type and special cards, one Pokémon per themed page
+
+- **Why.** New picture motifs are rare in the card artwork: a pilot over 363 already-scenic cards found only 6 that fit storm, space, autumn, jungle, waterfall or crystals (about 2 %), too few for a page. The 23 picture tags of the search index are all in use. Card properties give exact, large pools instead.
+- **What.** 15 new themes in two groups in the theme picker: "Nach Pokémon-Typ" (11 types) and "Besondere Karten" (illustration rares, shiny cards, Mega Pokémon, classic holos 1999–2002). Membership comes from TCGdex fields (type, rarity, set, holo print), built by the script `scripts/build-curated-collections.mjs` into `public/data/semantic/curated-collections-v1.json` (up to 150 cards each, showiest rarity first, at most 2–3 cards per Pokémon, no TCG Pocket cards). No picture recognition is involved, so every card has the property. The file is validated with zod on load.
+- **Gift builder.** A collection theme uses the same flow as picture themes (pool, price check, budget, swap, share link with the theme id `t`).
+- **One Pokémon per themed page.** For picture themes and collections the proposal shows each Pokémon once (`onePerPokemon`) as long as enough different Pokémon exist; otherwise nothing changes.
+- **The "dimmed" binder page.** Screenshots in the in-app browser showed the page dimmed for several seconds after opening. Checked in a normal browser (computed styles at 1, 4, 8 and 14 s): nothing covers the cards, everything is fully opaque from the first second. The effect comes from the pane running as a background page, not from the app.
