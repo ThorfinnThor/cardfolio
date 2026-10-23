@@ -32,8 +32,8 @@ describe("semantic search index adapter", () => {
     const file = resolve(process.cwd(), "public/data/semantic/gift-theme-reviews-v1.json");
     const parsed = artworkReviewIndexSchema.parse(JSON.parse(await readFile(file, "utf8")));
     expect(parsed.reviews).toHaveLength(7702);
-    expect(parsed.reviews.filter((review) => review.verdict === "dominant")).toHaveLength(1063);
-    expect(parsed.reviews.filter((review) => review.verdict === "secondary")).toHaveLength(3182);
+    expect(parsed.reviews.filter((review) => review.verdict === "dominant")).toHaveLength(885);
+    expect(parsed.reviews.filter((review) => review.verdict === "secondary")).toHaveLength(3360);
     expect(parsed.reviews.filter((review) => review.verdict === "incorrect")).toHaveLength(3311);
     expect(parsed.reviews.filter((review) => review.verdict === "unsure")).toHaveLength(146);
     expect(parsed.reviews.filter((review) => review.source === "ai-assisted")).toHaveLength(7399);

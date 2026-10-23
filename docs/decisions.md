@@ -537,3 +537,9 @@
 - **Found by a live check.** The Wald page showed "Forest of Vitality" and "Wally's Compassion", the Nacht page "Acerola's Mischief", the Feuer page "Magma Basin": Trainer cards that older `dominant` reviews still contained (the Pokémon-only rule was applied to the new rounds only).
 - **Change.** All 29 `dominant` reviews on non-Pokémon cards (24 Trainer and 1 Energy from the owner's earlier local reviews, 4 Trainer from AI passes) were set to `secondary` with source `ai-assisted`. The owner's earlier decisions can be restored in the local artwork review tool if wanted.
 - **Counts.** 1,063 `dominant` reviews remain (7,702 reviews in total).
+
+## 2026-10-23 — Strict quality audit of every themed card
+
+- **Why.** The owner wants every card on a themed page to fit the theme. A live look showed weak fits (a Porygon on the meadow page, repeated Altaria on a sky page).
+- **What.** All 1,063 `dominant` cards were looked at once more by a strict third reviewer (22 tags, about 100 contact sheets). 239 cards were flagged. The 178 that came from AI passes were set to `secondary`. The 61 flagged cards that came from the owner's own local reviews were **kept** (their decisions are not overridden by an AI pass); they can be re-checked in the local artwork review tool.
+- **Result.** 885 `dominant` reviews remain; themes with fewer than 36 cards offer two pages until a further review round fills them. Counts: `docs/theme-card-counts-2026-10-22.md`.
