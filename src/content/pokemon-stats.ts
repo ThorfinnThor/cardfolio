@@ -15,6 +15,18 @@ export interface SpeciesCard {
   number: string;
   setName: string;
   year: number;
+  /** Release date of the set, to order cards within one year. */
+  date: string;
+}
+
+/** How a card name is built; the kinds are told apart by the name alone. */
+export type CardKind = "plain" | "mega" | "pair" | "v" | "gx" | "ex" | "delta" | "named";
+
+export interface SpeciesKind {
+  kind: CardKind;
+  cards: number;
+  /** The most frequent card name of this kind. */
+  example: string;
 }
 
 export interface SpeciesStats {
@@ -25,6 +37,11 @@ export interface SpeciesStats {
   seriesCount: number;
   topSets: ReadonlyArray<{ setName: string; year: number; cards: number }>;
   topThemes: ReadonlyArray<{ tag: SemanticTag; cards: number }>;
+  decades: ReadonlyArray<{ decade: number; cards: number }>;
+  busiestYear: { year: number; cards: number };
+  oldest: SpeciesCard;
+  newest: SpeciesCard;
+  kinds: readonly SpeciesKind[];
   examples: readonly SpeciesCard[];
   dataDate: string;
 }
@@ -32,6 +49,7 @@ export interface SpeciesStats {
 interface SetInfo {
   name: string;
   year: number;
+  date: string;
   seriesId: string;
 }
 
@@ -50,7 +68,7 @@ function load() {
   };
   const sets = new Map<string, SetInfo>();
   for (const item of setFile.items) {
-    sets.set(item.id, { name: item.name, year: Number((item.releaseDate ?? "").slice(0, 4)), seriesId: item.series?.id ?? "" });
+    sets.set(item.id, { name: item.name, date: item.releaseDate ?? "", year: Number((item.releaseDate ?? "").slice(0, 4)), seriesId: item.series?.id ?? "" });
   }
   cache = { rows: index.cards, sets, dataDate: index.generatedAt };
   return cache;
@@ -80,6 +98,18 @@ function pickExamples(cards: SpeciesCard[], count: number): SpeciesCard[] {
   return picked.sort((a, b) => a.year - b.year);
 }
 
+/** Order of the rules matters: a "Mega Gengar ex" is a Mega card, a "Pikachu & Zekrom GX" is a pair. */
+export function cardKind(name: string, cardName: string): CardKind {
+  if (name.toLowerCase() === cardName.toLowerCase()) return "plain";
+  if (/^(Mega|M) /.test(name)) return "mega";
+  if (name.includes("&")) return "pair";
+  if (/(^|[\s-])(V|VMAX|VSTAR|V-UNION)(\s|$)/.test(name)) return "v";
+  if (/(^|\s)GX(\s|$)/.test(name)) return "gx";
+  if (/(^|[\s-])(ex|EX)(\s|$)/.test(name)) return "ex";
+  if (name.includes("δ")) return "delta";
+  return "named";
+}
+
 export function computeSpeciesStats(entry: SpeciesEntry): SpeciesStats | undefined {
   const { rows, sets, dataDate } = load();
   const matcher = nameMatcher(entry.cardName);
@@ -92,6 +122,7 @@ export function computeSpeciesStats(entry: SpeciesEntry): SpeciesStats | undefin
     number: row[4],
     setName: row[6],
     year: sets.get(row[5])?.year ?? 0,
+    date: sets.get(row[5])?.date ?? "",
   })).filter((card) => card.year > 0);
 
   const bySet = new Map<string, { setName: string; year: number; cards: number }>();
@@ -111,7 +142,35 @@ export function computeSpeciesStats(entry: SpeciesEntry): SpeciesStats | undefin
     if (count > 0) themeCounts.set(tag, count);
   });
 
+  const byDecade = new Map<number, number>();
+  const byYear = new Map<number, number>();
+  for (const card of cards) {
+    const decade = Math.floor(card.year / 10) * 10;
+    byDecade.set(decade, (byDecade.get(decade) ?? 0) + 1);
+    byYear.set(card.year, (byYear.get(card.year) ?? 0) + 1);
+  }
+  const chronological = [...cards].sort((a, b) => a.date.localeCompare(b.date) || a.setName.localeCompare(b.setName) || a.number.localeCompare(b.number, "en", { numeric: true }));
+  const busiest = [...byYear.entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0])[0]!;
+
+  const kindNames = new Map<CardKind, Map<string, number>>();
+  for (const card of cards) {
+    const kind = cardKind(card.name, entry.cardName);
+    const names = kindNames.get(kind) ?? new Map<string, number>();
+    names.set(card.name, (names.get(card.name) ?? 0) + 1);
+    kindNames.set(kind, names);
+  }
+  const kinds: SpeciesKind[] = [...kindNames.entries()].map(([kind, names]) => ({
+    kind,
+    cards: [...names.values()].reduce((sum, count) => sum + count, 0),
+    example: [...names.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0]![0],
+  })).sort((a, b) => b.cards - a.cards);
+
   return {
+    decades: [...byDecade.entries()].sort((a, b) => a[0] - b[0]).map(([decade, count]) => ({ decade, cards: count })),
+    busiestYear: { year: busiest[0], cards: busiest[1] },
+    oldest: chronological[0]!,
+    newest: chronological[chronological.length - 1]!,
+    kinds,
     cardCount: cards.length,
     setCount: bySet.size,
     firstYear: Math.min(...years),

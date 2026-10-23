@@ -583,3 +583,9 @@
 - **Quality gates (tests).** At least 400 words per page, no section heading shared with any other guide, at least seven different block outlines among the ten, and under 10 % shared five-word passages with every other guide. Titles ≤ 75 and descriptions ≤ 200 characters for all pages including unreleased ones.
 - **Call to action.** `/geschenk/?start=1&motiv=<id>` opens the builder with that theme or card group chosen; unknown ids are ignored; the parameter is removed from the address bar like `start`.
 - **Not claimed.** No prices, no rankings of value, no statements about how the art looks beyond what the review data confirms.
+
+## 2026-10-23 — Pokémon pages rewritten so they do not read like one template
+
+- **Found by the SEO audit.** The ten Pokémon pages shared the same sections, headings and sentences: about 28–33 % shared five-word passages, 540–620 words each.
+- **Change.** The standard paragraphs are gone. Each page now has data that differs per Pokémon (oldest, newest and busiest year, cards per decade, card kinds by name form with the most frequent name, top sets, artwork tendencies) and a hand-written paragraph about the card forms of that Pokémon (`story`, no numbers that change with the catalogue). Facts that were prose became fact list and table rows.
+- **Guard.** `species-variety.test.tsx`: between any two pages, in both languages, prose and list text (sidebar, headings, tables and fact lists excluded as page structure) shares less than 12 % of its five-word passages, and every page has its own story paragraph.
