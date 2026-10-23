@@ -537,3 +537,8 @@
 - **Found by a live check.** The Wald page showed "Forest of Vitality" and "Wally's Compassion", the Nacht page "Acerola's Mischief", the Feuer page "Magma Basin": Trainer cards that older `dominant` reviews still contained (the Pokémon-only rule was applied to the new rounds only).
 - **Change.** All 29 `dominant` reviews on non-Pokémon cards (24 Trainer and 1 Energy from the owner's earlier local reviews, 4 Trainer from AI passes) were set to `secondary` with source `ai-assisted`. The owner's earlier decisions can be restored in the local artwork review tool if wanted.
 - **Counts.** 1,063 `dominant` reviews remain (7,702 reviews in total).
+
+## 2026-10-23 — Next.js 16.4.0 to 16.4.3 (security patch)
+
+- **Why.** CI (`npm audit --omit=dev --audit-level=high`) started to fail for every branch: advisories for Next.js 16.0.0–16.4.0 (image optimization with SVG, Server Actions, `use cache`). The app is a static export without image optimization, Server Actions or `use cache`, so it was not affected in practice, but the gate blocks every merge and the patch is a plain patch release.
+- **Change.** `next` and `eslint-config-next` to 16.4.3 (exact versions, lockfile updated). Integration check: typecheck, lint, 592 unit tests, production build, release check and all 57 e2e tests pass; `npm audit` reports 0 vulnerabilities.
