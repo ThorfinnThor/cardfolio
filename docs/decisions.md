@@ -563,3 +563,8 @@
 
 - **Found by a live check.** The illustration theme showed "Roxie's Performance", a Trainer card (rarity lists contain Trainers).
 - **Change.** `scripts/build-curated-collections.mjs` asks rarity lists per Pokémon type (only Pokémon cards have a type) and, as a safety net, drops every chosen card whose TCGdex category is not Pokémon (two more were removed from the Mega and Fairy lists). All 1,000 cards were re-checked: 0 non-Pokémon.
+
+## 2026-10-23 — Refill round after the audit
+
+- **Data.** 1,055 further decisions (8,757 reviews, 967 `dominant`) for Himmel (264 cards seen), Berge, Pokémon-Freunde and Zuhause, same process (strict first pass, independent second pass, own look; four weak mountain cards struck by hand; rotated half-card LEGEND pictures never count as "friends").
+- **Result.** Berge 49, Himmel 40, Pokémon-Freunde 82 (all four-page themes), Zuhause 25 (two pages). Strand (29) and Sonnenuntergang (32) cannot grow: every card tagged for them has already been looked at.
