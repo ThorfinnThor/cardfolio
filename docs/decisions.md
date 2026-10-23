@@ -558,3 +558,8 @@
 - **Why.** CI (`npm audit --omit=dev --audit-level=high`) started to fail for every branch: advisories for Next.js 16.0.0–16.4.0 (image optimization with SVG, Server Actions, `use cache`). The app is a static export without image optimization, Server Actions or `use cache`, so it was not affected in practice, but the gate blocks every merge and the patch is a plain patch release.
 - **Change.** `next` and `eslint-config-next` to 16.4.3 (exact versions, lockfile updated). Integration check: typecheck, lint, 592 unit tests, production build, release check and all 57 e2e tests pass; `npm audit` reports 0 vulnerabilities.
 
+
+## 2026-10-23 — Collections contain Pokémon cards only
+
+- **Found by a live check.** The illustration theme showed "Roxie's Performance", a Trainer card (rarity lists contain Trainers).
+- **Change.** `scripts/build-curated-collections.mjs` asks rarity lists per Pokémon type (only Pokémon cards have a type) and, as a safety net, drops every chosen card whose TCGdex category is not Pokémon (two more were removed from the Mega and Fairy lists). All 1,000 cards were re-checked: 0 non-Pokémon.

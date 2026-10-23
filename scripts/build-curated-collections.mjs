@@ -82,14 +82,25 @@ async function byRarities(rarities, extraQuery = "") {
   return entries;
 }
 
+/** Only Pokémon cards have a type; asking per type keeps Trainer and Energy cards out of rarity lists. */
+async function pokemonByRarities(rarities, extraQuery = "") {
+  const entries = [];
+  for (const rarity of rarities) {
+    for (const type of TYPES) {
+      entries.push(...await list(`rarity=eq:${encodeURIComponent(rarity)}&types=eq:${type}${extraQuery}`));
+    }
+  }
+  return entries;
+}
+
 const collections = {};
 
 for (const type of TYPES) {
   collections[`type-${type.toLowerCase()}`] = collect(await byRarities(RARITY_PRIORITY, `&types=eq:${type}`), { maxPerPokemon: 3, cap: 120 });
 }
 
-collections.illustration = collect(await byRarities(["Special illustration rare", "Illustration rare"]), { maxPerPokemon: 2, cap: 150 });
-collections.shiny = collect(await byRarities(["Shiny Ultra Rare", "Shiny rare VMAX", "Shiny rare V", "Shiny rare"]), { maxPerPokemon: 2, cap: 150 });
+collections.illustration = collect(await pokemonByRarities(["Special illustration rare", "Illustration rare"]), { maxPerPokemon: 2, cap: 150 });
+collections.shiny = collect(await pokemonByRarities(["Shiny Ultra Rare", "Shiny rare VMAX", "Shiny rare V", "Shiny rare"]), { maxPerPokemon: 2, cap: 150 });
 collections.mega = collect(
   (await byRarities(RARITY_PRIORITY, "&name=Mega")).filter((entry) => /^Mega /i.test(entry.name)),
   { maxPerPokemon: 2, cap: 120 },
@@ -100,10 +111,20 @@ for (const setId of CLASSIC_SETS) {
   for (let index = 0; index < cards.length; index += 8) {
     const details = await Promise.all(cards.slice(index, index + 8).map((card) => detail(card.id)));
     // A holo-only print is a Holo Rare in these sets, whatever the rarity label says.
-    classics.push(...details.filter((card) => card?.variants?.holo === true && card.variants.normal !== true));
+    classics.push(...details.filter((card) => card?.category === "Pokemon" && card.variants?.holo === true && card.variants.normal !== true));
   }
 }
 collections.classics = collect(classics, { maxPerPokemon: 2, cap: 150 });
+
+/** Final safety net: a card that is not a Pokémon card never belongs in a Pokémon theme. */
+for (const [id, ids] of Object.entries(collections)) {
+  const kept = [];
+  for (let index = 0; index < ids.length; index += 8) {
+    const details = await Promise.all(ids.slice(index, index + 8).map((cardId) => detail(cardId)));
+    details.forEach((card, offset) => { if (card?.category === "Pokemon") kept.push(ids[index + offset]); });
+  }
+  collections[id] = kept;
+}
 
 for (const [id, ids] of Object.entries(collections)) {
   if (ids.length < 18) throw new Error(`Collection ${id} has only ${ids.length} cards.`);
