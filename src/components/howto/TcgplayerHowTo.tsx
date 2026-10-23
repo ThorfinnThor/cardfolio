@@ -114,9 +114,10 @@ function TcgplayerHowToEnglish() {
         <ul>
           <li>With a delivery address in Germany, TCGplayer shows only sellers that ship there or offers international shipping partners. Check shipping and the <b>final total in US dollars</b> before paying.</li>
           <li>Check for every card the <b>printing</b>, <b>condition</b> and <b>language</b>. TCGplayer shows the English card even for German cards.</li>
+          <li>The cart is grouped by <b>seller</b>. Cards from different sellers end up in separate packages, each with its own shipping cost.</li>
           <li>Payment happens on TCGplayer. Your Card Binder has no access to your account.</li>
         </ul>
-        <p className={styles.tip}><b>Note:</b> The cart screens are not shown here because we did not place any order. The text follows TCGplayer’s own wording.</p>
+        <p className={styles.tip}><b>Tested on 23 October 2026</b> with three Base Set cards (nothing was bought, the cart was emptied again): TCGplayer picked a listing for each card within the conditions ticked under Options. With the preset conditions, which include Moderately Played, it took Moderately Played copies. If you want better copies, untick the conditions you do not accept <b>before</b> you press Add to Cart.</p>
       </section>
 
       <footer className={styles.footer}>
@@ -182,9 +183,10 @@ export function TcgplayerHowTo() {
         <ul>
           <li>Bei einer Lieferadresse in Deutschland zeigt TCGplayer nur Verkäufer, die dorthin liefern, oder bietet internationale Versandpartner an. Prüfe den Versand und den <b>Endpreis in US-Dollar</b>, bevor du bezahlst.</li>
           <li>Prüfe bei jeder Karte <b>Printing</b>, <b>Zustand</b> und <b>Sprache</b>. TCGplayer zeigt auch für deutsche Karten die englische Karte.</li>
+          <li>Der Warenkorb ist nach <b>Verkäufern</b> gruppiert. Karten verschiedener Verkäufer landen in getrennten Paketen mit jeweils eigenen Versandkosten.</li>
           <li>Bezahlt wird bei TCGplayer. Your Card Binder hat keinen Zugriff auf dein Konto.</li>
         </ul>
-        <p className={styles.tip}><b>Hinweis:</b> Die Warenkorb-Seiten zeigen wir hier nicht, weil wir keine Bestellung ausgelöst haben. Der Text folgt TCGplayers eigener Beschreibung.</p>
+        <p className={styles.tip}><b>Getestet am 23. Oktober 2026</b> mit drei Karten aus dem Base Set (nichts gekauft, der Warenkorb wurde danach wieder geleert): TCGplayer wählte für jede Karte ein Angebot innerhalb der unter Options angehakten Zustände. Mit den voreingestellten Zuständen, zu denen Moderately Played gehört, nahm es Moderately-Played-Exemplare. Willst du bessere Exemplare, hake die Zustände, die du nicht akzeptierst, <b>vor</b> „Add to Cart“ ab.</p>
       </section>
 
       <footer className={styles.footer}>

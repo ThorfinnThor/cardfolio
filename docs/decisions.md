@@ -583,3 +583,8 @@
 - **Quality gates (tests).** At least 400 words per page, no section heading shared with any other guide, at least seven different block outlines among the ten, and under 10 % shared five-word passages with every other guide. Titles ≤ 75 and descriptions ≤ 200 characters for all pages including unreleased ones.
 - **Call to action.** `/geschenk/?start=1&motiv=<id>` opens the builder with that theme or card group chosen; unknown ids are ignored; the parameter is removed from the address bar like `start`.
 - **Not claimed.** No prices, no rankings of value, no statements about how the art looks beyond what the review data confirms.
+
+## 2026-10-23 — TCGplayer cart behaviour observed (Add to Cart tested)
+
+- **What was done.** With the owner's explicit OK and in their signed-in browser: Mass Entry with three Base Set cards, "Add to Cart", looked at the cart, removed every item again. The cart was empty before and after; the checkout was never opened, nothing was bought. No screenshots were taken or published (they would show prices and the account banner).
+- **Observed.** The cart groups by seller (two sellers, two packages, separate shipping). For each card TCGplayer chose a listing within the conditions ticked under Options; with the preset conditions (Near Mint, Lightly Played, Moderately Played) it chose Moderately Played copies. The how-to now says so and tells visitors to untick conditions they do not accept before pressing Add to Cart.
