@@ -637,3 +637,8 @@
   .giftBarLink { font-size: 13px; }
   .giftBrand { gap: 8px; font-size: 17px; }
 }
+
+.contextSet { display: flex; align-items: center; gap: 8px; }
+.contextSetLogo { display: grid; place-items: center; flex: none; width: 56px; height: 30px; overflow: hidden; }
+.contextSetLogo:empty { display: none; }
+.contextSetLogo img { display: block; width: 100%; height: 100%; object-fit: contain; }

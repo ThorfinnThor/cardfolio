@@ -245,7 +245,7 @@
 /* Missing list rows — slab-compact */
 .groupList { display: grid; gap: 14px; margin-top: 18px; }
 .missingGroup { min-width: 0; }
-.groupHeader { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--cf-line2); padding: 0 2px 7px; }
+.groupHeader { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--cf-line2); padding: 0 2px 7px; }
 .groupHeader h3 { margin: 0; color: var(--cf-accent-text); font-family: var(--cf-font-display); font-size: .95rem; font-weight: 600; }
 .groupHeader span { color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: .68rem; }
 .list { display: grid; gap: 0; margin: 18px 0 0; overflow: hidden; border: 1px solid var(--cf-line); border-radius: 10px; padding: 0; list-style: none; }
@@ -339,3 +339,8 @@
 .optionTally small { color: var(--cf-text2); font-size: .76rem; }
 .optionTally b { color: var(--cf-text); font-size: .9rem; }
 @media (max-width: 640px) { .optionTally { grid-template-columns: 1fr; } }
+
+.groupLogo { display: grid; place-items: center; flex: none; width: 52px; height: 30px; overflow: hidden; }
+.groupLogo:empty { display: none; }
+.groupLogo img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.groupHeader > span:last-child { margin-left: auto; }
