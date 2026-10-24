@@ -29,6 +29,7 @@ import {
   setCardPreferences,
   setCardPreferencesForEntries,
   setCardVariant,
+  setCopyDetails,
   setOwned,
   setPageNote,
   setPageTitle,
@@ -48,7 +49,7 @@ import type { PageSelectionUndoToken } from "@/domain/reversible-page-selection"
 import type { CardmarketHandoffPart } from "@/domain/cardmarket-handoff";
 import type { TcgplayerMassEntryExport } from "@/domain/tcgplayer-export";
 import { createGiftProject, giftSelectionToBinder, type GiftPriceRequest, type GiftPreferences, type GiftSelectionResult, type PriceProvider } from "@/domain/gift-builder";
-import type { Binder, CardLanguage, CardSnapshot, CatalogSearchItem, MissingItem, PlannedCard, PurchasePreferences, VariantSelection } from "@/domain/types";
+import type { Binder, CardLanguage, CardSnapshot, CatalogSearchItem, MissingItem, OwnedCondition, PlannedCard, PurchasePreferences, VariantSelection } from "@/domain/types";
 import { catalogSetAssetUrl, type CatalogSetIndexEntry } from "@/domain/catalog-set";
 import { setBinderPlanTarget, setBinderPlanToDraft, type SetBinderPlan } from "@/domain/set-binder-plan";
 import { FEATURES } from "@/config/feature-flags";
@@ -73,6 +74,8 @@ import { persistPageSelection, persistPageSelectionUndo, persistReversiblePageSe
 import { catalogLabel, coverLeather } from "./binder-cover";
 import { BinderOverview } from "./BinderOverview";
 import { BinderSetProgress } from "./BinderSetProgress";
+import { BinderValuePanel } from "./BinderValuePanel";
+import { CopyDetailsForm } from "./CopyDetailsForm";
 import { GiftBuilderPanel } from "./GiftBuilderPanel";
 import { PlaceholderPrint } from "./PlaceholderPrint";
 import { clearGiftResume, readGiftResume } from "./gift-resume";
@@ -1695,6 +1698,17 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
     }
   }
 
+  async function saveCopyDetails(entryId: string, details: { condition?: OwnedCondition; quantity?: number }) {
+    if (!activeBinder) return;
+    try {
+      setStorageStatus("saving");
+      await persistBinderChange(activeBinder.id, (binder) => setCopyDetails(binder, entryId, details));
+      setStorageStatus("saved");
+    } catch (error) {
+      handleStorageError(error, "Zustand und Menge konnten nicht gespeichert werden.");
+    }
+  }
+
   function requestVariantEdit(entry: PlannedCard, card?: CardSnapshot) {
     setMovingLocation(undefined);
     setVariantEdit({
@@ -2288,7 +2302,10 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
             <div><strong>{stats.planned}</strong><span>Geplant</span><small>von {stats.capacity} Slots</small></div>
           </section>}
 
-          {missingOpen && missingBeginner ? null : <BinderSetProgress binder={activeBinder} cards={cards} />}
+          {missingOpen && missingBeginner ? null : <>
+            {FEATURES.cardtraderPrices && !isGiftBinder ? <BinderValuePanel binder={activeBinder} cards={cards} /> : null}
+            <BinderSetProgress binder={activeBinder} cards={cards} />
+          </>}
 
           {missingOpen ? (
             <MissingCardsPanel
@@ -2810,6 +2827,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
                       <div><dt>Zustand</dt><dd>{conditionProfile(contextEntry.preferences.minimumCondition).label}</dd></div>
                       <div><dt>Status</dt><dd data-tone={contextEntry.owned ? "ok" : "miss"}>{contextEntry.owned ? "Vorhanden" : "Fehlt"}</dd></div>
                     </dl>
+                    {contextEntry.owned ? <CopyDetailsForm entry={contextEntry} onChange={(details) => void saveCopyDetails(contextEntry.id, details)} /> : null}
                     <div className={styles.contextActions}>
                       <button type="button" className={styles.primaryButton} onClick={() => void toggleOwned(contextEntry.id, !contextEntry.owned)}>{contextEntry.owned ? "Als fehlend markieren" : "Als vorhanden markieren"}</button>
                       <button type="button" className={styles.secondaryButton} onClick={() => requestVariantEdit(contextEntry, contextCard)}>Version &amp; Zustand festlegen</button>

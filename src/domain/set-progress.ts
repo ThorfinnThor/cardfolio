@@ -3,6 +3,8 @@ import type { Binder, CardSnapshot } from "./types";
 export interface SetProgress {
   /** Catalogue set id plus card language: the same set in German and English counts separately. */
   key: string;
+  /** Catalogue set id, for the set's logo. */
+  setId: string;
   setName: string;
   language: CardSnapshot["ref"]["language"];
   planned: number;
@@ -34,6 +36,7 @@ export function deriveSetProgress(binder: Binder, cards: ReadonlyMap<string, Car
     const key = `${card.setId}:${card.ref.language}`;
     const row = rows.get(key) ?? {
       key,
+      setId: card.setId,
       setName: card.setName,
       language: card.ref.language,
       planned: 0,

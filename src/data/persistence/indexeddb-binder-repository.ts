@@ -4,6 +4,7 @@ import { MAX_BINDERS } from "@/domain/binder-actions";
 import { validateBackup, validateBinder } from "@/domain/validation";
 
 import { type BinderRepository, type ImportMode, RevisionConflictError } from "./binder-repository";
+import { VALUE_HISTORY_PREFIX, valueHistoryKey } from "./value-history";
 import { openAppDatabase } from "./db";
 
 const BINDER_ORDER_SETTING = "binder-order";
@@ -153,6 +154,7 @@ export class IndexedDBBinderRepository implements BinderRepository {
     }
     await binderStore.delete(id);
     const settingsStore = transaction.objectStore("settings");
+    await settingsStore.delete(valueHistoryKey(id));
     const order = storedBinderOrder(await settingsStore.get(BINDER_ORDER_SETTING)).filter((binderId) => binderId !== id);
     await settingsStore.put(order, BINDER_ORDER_SETTING);
     await transaction.done;
@@ -160,7 +162,7 @@ export class IndexedDBBinderRepository implements BinderRepository {
 
   async exportBackup(ids?: UUID[]): Promise<LocalBackupV2> {
     const database = await openAppDatabase();
-    const transaction = database.transaction(["binders", "cards", "giftProjects"], "readonly");
+    const transaction = database.transaction(["binders", "cards", "giftProjects", "settings"], "readonly");
     const allBinders = await transaction.objectStore("binders").getAll();
     const binders = ids ? allBinders.filter((binder) => ids.includes(binder.id)) : allBinders;
     const requiredKeys = new Set(
@@ -173,6 +175,11 @@ export class IndexedDBBinderRepository implements BinderRepository {
     const giftProjects = ids
       ? allGiftProjects.filter((project) => project.binderId && ids.includes(project.binderId))
       : allGiftProjects;
+    const valueHistory: Record<string, unknown> = {};
+    for (const binder of binders) {
+      const stored = await transaction.objectStore("settings").get(valueHistoryKey(binder.id));
+      if (Array.isArray(stored) && stored.length > 0) valueHistory[binder.id] = stored;
+    }
     await transaction.done;
     return validateBackup({
       format: "cardfolio-backup",
@@ -181,6 +188,7 @@ export class IndexedDBBinderRepository implements BinderRepository {
       binders,
       cards,
       giftProjects,
+      ...(Object.keys(valueHistory).length > 0 ? { valueHistory } : {}),
     });
   }
 
@@ -209,10 +217,15 @@ export class IndexedDBBinderRepository implements BinderRepository {
       await binderStore.clear();
       await transaction.objectStore("cards").clear();
       await transaction.objectStore("giftProjects").clear();
+      for (const key of await settingsStore.getAllKeys()) if (String(key).startsWith(VALUE_HISTORY_PREFIX)) await settingsStore.delete(key);
     }
     for (const binder of binders) await binderStore.put(binder, binder.id);
     for (const card of backup.cards) await transaction.objectStore("cards").put(card, card.key);
     for (const project of giftProjects) await transaction.objectStore("giftProjects").put(project, project.id);
+    for (const [oldId, points] of Object.entries(backup.valueHistory ?? {})) {
+      const targetId = binderIds.get(oldId) ?? oldId;
+      if (binders.some((binder) => binder.id === targetId)) await settingsStore.put(points, valueHistoryKey(targetId));
+    }
     const existingOrder = mode === "replace-all"
       ? []
       : sortBinders(

@@ -60,6 +60,11 @@ export interface PurchasePreferences {
   minimumCondition: "near-mint" | "excellent" | "lightly-played" | "played" | "any";
 }
 
+/** The grade of a card the collector owns. "any" is a purchase preference only and is not a grade. */
+export type OwnedCondition = Exclude<PurchasePreferences["minimumCondition"], "any">;
+
+export const MAX_COPIES = 99;
+
 export interface PlannedCard {
   id: UUID;
   cardKey: CardKey;
@@ -68,7 +73,22 @@ export interface PlannedCard {
   variantReview?: "required";
   preferences: PurchasePreferences;
   owned: boolean;
+  /** Condition of the owned copy; when missing, the minimum condition wanted is used for the value. */
+  condition?: OwnedCondition;
+  /** Number of copies owned; missing means one. */
+  quantity?: number;
   addedAt: string;
+}
+
+/** One saved value of a binder: the day it was recorded and what the owned cards were worth that day. */
+export interface ValuePoint {
+  /** YYYY-MM-DD in UTC. */
+  date: string;
+  /** Total in euro cents of the priced owned cards. */
+  valueMinor: number;
+  /** Owned copies that have a price, and owned copies in total. */
+  pricedCopies: number;
+  ownedCopies: number;
 }
 
 export interface BinderPage {
@@ -134,6 +154,8 @@ export interface LocalBackupV2 {
   binders: Binder[];
   cards: CardSnapshot[];
   giftProjects: import("./gift-builder").GiftProject[];
+  /** Saved value history per binder id; absent in backups made before the value tracker. */
+  valueHistory?: Record<UUID, ValuePoint[]>;
 }
 
 export type LocalBackup = LocalBackupV1 | LocalBackupV2;

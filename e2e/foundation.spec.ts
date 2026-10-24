@@ -330,6 +330,17 @@ test("completes the local-first binder, ownership, missing-list, and backup flow
   await page.getByRole("article", { name: "Bulbasaur, Slot 2" }).click();
   await expect(page.getByRole("button", { name: "Als fehlend markieren" })).toBeVisible();
 
+  // A collector records the condition and the number of copies; both survive a reload.
+  await expect(page.getByRole("region", { name: "Sammlungswert" })).toBeVisible();
+  await page.getByRole("button", { name: "Eine Karte mehr" }).click();
+  await expect(page.getByRole("group", { name: "Menge" }).locator("output")).toHaveText("2");
+  await page.getByLabel("Zustand deiner Karte").selectOption("near-mint");
+  await expect(page.getByLabel("Zustand deiner Karte")).toHaveValue("near-mint");
+  await page.reload();
+  await page.getByRole("article", { name: "Bulbasaur, Slot 2" }).click();
+  await expect(page.getByRole("group", { name: "Menge" }).locator("output")).toHaveText("2");
+  await expect(page.getByLabel("Zustand deiner Karte")).toHaveValue("near-mint");
+
   await openMissingCards(page, 1);
   const missingCards = page.getByRole("region", { name: "Fehlende Karten" });
   // The full list is a disclosure below the region chooser.

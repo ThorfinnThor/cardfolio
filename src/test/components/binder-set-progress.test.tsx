@@ -19,6 +19,13 @@ describe("BinderSetProgress", () => {
     expect(screen.getByRole("img", { name: "50 Prozent vorhanden" })).toBeInTheDocument();
   });
 
+  it("shows the set logo from the TCGdex asset host", () => {
+    const cards = new Map([card("1")].map((item) => [item.key, item] as const));
+    const { container } = render(<BinderSetProgress binder={binderWith([planned("tcgdex:base1-1:en", true)])} cards={cards} />);
+    const image = container.querySelector("img");
+    expect(image?.getAttribute("src")).toMatch(/^https:\/\/assets\.tcgdex\.net\//);
+  });
+
   it("renders nothing for a binder without planned cards", () => {
     const { container } = render(<BinderSetProgress binder={binderWith([null, null])} cards={new Map()} />);
     expect(container).toBeEmptyDOMElement();
