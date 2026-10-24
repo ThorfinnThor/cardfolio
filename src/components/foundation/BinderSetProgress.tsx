@@ -6,6 +6,7 @@ import { deriveSetProgress } from "@/domain/set-progress";
 import type { Binder, CardSnapshot } from "@/domain/types";
 
 import styles from "./binder-set-progress.module.css";
+import { SetLogo } from "./SetLogo";
 
 /** Progress per set inside the open binder: owned of planned, and how much of the printed set is planned. */
 export function BinderSetProgress({ binder, cards }: { binder: Binder; cards: ReadonlyMap<string, CardSnapshot> }) {
@@ -17,6 +18,7 @@ export function BinderSetProgress({ binder, cards }: { binder: Binder; cards: Re
       <ul className={styles.list} aria-label="Fortschritt nach Set">
         {rows.map((row) => (
           <li key={row.key}>
+            <SetLogo setId={row.setId} language={row.language} className={styles.logo} />
             <span className={styles.name}><strong>{row.setName}</strong><small>{row.language === "de" ? "Deutsch" : "Englisch"}</small></span>
             <span className={styles.bar} role="img" aria-label={`${row.completionPercent} Prozent vorhanden`}><span style={{ width: `${row.completionPercent}%` }} /></span>
             <span className={styles.numbers}>

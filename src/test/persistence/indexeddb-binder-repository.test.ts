@@ -5,6 +5,7 @@ import { type PageSelectionDraft } from "@/domain/page-selection";
 import type { CardSnapshot } from "@/domain/types";
 import { RevisionConflictError } from "@/data/persistence/binder-repository";
 import { IndexedDBBinderRepository } from "@/data/persistence/indexeddb-binder-repository";
+import { loadValueHistory, saveValueHistory } from "@/data/persistence/value-history";
 import {
   persistPageSelection,
   persistPageSelectionUndo,
@@ -167,5 +168,26 @@ describe("IndexedDBBinderRepository", () => {
       persistPageSelectionUndo(repository, inserted.binder, inserted.undo),
     ).rejects.toBeInstanceOf(RevisionConflictError);
     expect((await repository.get(binder.id))?.description).toBe("Later edit");
+  });
+  it("keeps the value history in the backup, maps it to an imported copy and removes it with the binder", async () => {
+    const repository = new IndexedDBBinderRepository();
+    const empty = createBinder("History");
+    const binder = placeCard(empty, { pageId: empty.pages[0].id, slotIndex: 0 }, createPlannedCard(card.key));
+    await repository.create(binder, [card]);
+    const points = [{ date: "2026-10-01", valueMinor: 1200, pricedCopies: 1, ownedCopies: 1 }, { date: "2026-10-08", valueMinor: 1500, pricedCopies: 1, ownedCopies: 1 }];
+    await saveValueHistory(binder.id, points);
+
+    const backup = await repository.exportBackup([binder.id]);
+    expect(backup.valueHistory).toEqual({ [binder.id]: points });
+    expect((await repository.exportBackup([])).valueHistory).toBeUndefined();
+
+    await repository.importBackup(backup, "import-as-new");
+    const copy = (await repository.list()).find((item) => item.name === "History (Import)");
+    if (!copy) throw new Error("Imported copy is missing.");
+    expect(await loadValueHistory(copy.id)).toEqual(points);
+
+    await repository.remove(copy.id, copy.revision);
+    expect(await loadValueHistory(copy.id)).toEqual([]);
+    expect(await loadValueHistory(binder.id)).toEqual(points);
   });
 });

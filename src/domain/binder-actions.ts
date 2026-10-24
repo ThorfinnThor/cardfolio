@@ -7,6 +7,7 @@ import type {
   UUID,
   VariantSelection,
 } from "./types";
+import { MAX_COPIES, type OwnedCondition } from "./types";
 
 export interface SlotLocation {
   pageId: UUID;
@@ -289,6 +290,28 @@ export function removeCard(binder: Binder, location: SlotLocation): Binder {
   slots[location.slotIndex] = null;
   const pages = [...binder.pages];
   pages[pageIndex] = { ...page, slots };
+  return withUpdatedPages(binder, pages);
+}
+
+/** Records the condition and the number of copies of an owned card; omitted fields stay as they are. */
+export function setCopyDetails(binder: Binder, entryId: UUID, details: { condition?: OwnedCondition; quantity?: number }): Binder {
+  if (details.quantity !== undefined && (!Number.isInteger(details.quantity) || details.quantity < 1 || details.quantity > MAX_COPIES)) {
+    throw new Error(`Die Menge muss zwischen 1 und ${MAX_COPIES} liegen.`);
+  }
+  let found = false;
+  const pages = binder.pages.map((page) => ({
+    ...page,
+    slots: page.slots.map((entry) => {
+      if (entry?.id !== entryId) return entry;
+      found = true;
+      return {
+        ...entry,
+        ...(details.condition ? { condition: details.condition } : {}),
+        ...(details.quantity !== undefined ? { quantity: details.quantity } : {}),
+      };
+    }),
+  }));
+  if (!found) throw new Error("Planned card does not exist.");
   return withUpdatedPages(binder, pages);
 }
 

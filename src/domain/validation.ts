@@ -80,7 +80,16 @@ export const plannedCardSchema = z.object({
     minimumCondition: z.enum(["near-mint", "excellent", "lightly-played", "played", "any"]),
   }),
   owned: z.boolean(),
+  condition: z.enum(["near-mint", "excellent", "lightly-played", "played"]).optional(),
+  quantity: z.number().int().min(1).max(99).optional(),
   addedAt: isoDateSchema,
+});
+
+export const valuePointSchema = z.object({
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  valueMinor: z.number().int().nonnegative().max(1_000_000_000_00),
+  pricedCopies: z.number().int().nonnegative().max(100_000),
+  ownedCopies: z.number().int().nonnegative().max(100_000),
 });
 
 export const binderSchema = z
@@ -204,6 +213,7 @@ export const backupSchema = z.object({
   ...backupPayloadSchema,
   version: z.literal(2),
   giftProjects: z.array(giftProjectSchema).max(100),
+  valueHistory: z.record(uuidSchema, z.array(valuePointSchema).max(1000)).optional(),
 }).superRefine((backup, context) => {
   validateBackupReferences(backup, context);
   const ids = new Set<string>();

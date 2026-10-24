@@ -1,0 +1,8 @@
+.panel { display: grid; gap: 6px; margin: 0 0 20px; padding: 14px 16px; border: 1px solid var(--cf-line); border-radius: 10px; background: var(--cf-surface); }
+.panel h2 { margin: 0; color: var(--cf-text2); font-size: .85rem; font-weight: 650; }
+.value { display: flex; align-items: baseline; gap: 6px; margin: 0; color: var(--cf-text); }
+.value span { color: var(--cf-muted); font-size: .9rem; }
+.value strong { font-family: var(--cf-font-display); font-size: 1.7rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.coverage, .hint { margin: 0; color: var(--cf-text2); font-size: .82rem; }
+.note { margin: 4px 0 0; color: var(--cf-muted); font-size: .72rem; line-height: 1.4; }
+.chart { width: 100%; max-width: 320px; height: auto; color: var(--cf-ok); }
