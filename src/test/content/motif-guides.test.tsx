@@ -6,6 +6,7 @@ import { GuideArticle } from "@/components/content/Articles";
 import { type PageLanguage } from "@/config/site";
 import { ALL_GUIDES, GUIDES, type Guide, type GuideText } from "@/content/guides";
 import { MOTIF_GUIDES } from "@/content/motif-guides";
+import { cardPhoto, publishedSpecies } from "@/content/pokemon-stats";
 import { guidePath, toolStartPathForTheme } from "@/content/routes";
 import { giftCollectionPreset } from "@/domain/gift-collections";
 import { giftThemePreset } from "@/domain/gift-theme-presets";
@@ -112,6 +113,18 @@ describe("motif guides", () => {
           expect(overlap(mine.shingles, other.shingles), `${language}: ${motif.id} vs ${other.id}`).toBeLessThan(0.1);
         }
       }
+    }
+  });
+  it("show card pictures from assets.tcgdex.net on every motif page and every Pokémon page", () => {
+    for (const guide of MOTIF_GUIDES) {
+      expect(guide.photoIds?.length, guide.id).toBeGreaterThanOrEqual(3);
+      for (const id of guide.photoIds!) expect(cardPhoto(id)?.src, `${guide.id} ${id}`).toMatch(/^https:\/\/assets\.tcgdex\.net\/en\/[^/]+\/[^/]+\/[^/]+\/low\.webp$/);
+      const markup = renderToStaticMarkup(<GuideArticle guide={guide} language="de" />);
+      expect((markup.match(/<img /g) ?? []).length, guide.id).toBe(guide.photoIds!.length);
+    }
+    for (const { entry, stats } of publishedSpecies()) {
+      expect(stats.photos.length, entry.slug).toBeGreaterThanOrEqual(3);
+      for (const photo of stats.photos) expect(photo.src, entry.slug).toMatch(/^https:\/\/assets\.tcgdex\.net\//);
     }
   });
 });

@@ -29,6 +29,15 @@ export interface SpeciesKind {
   example: string;
 }
 
+/** A card picture, referenced on assets.tcgdex.net; nothing is copied or stored. */
+export interface CardPhoto {
+  id: string;
+  name: string;
+  setName: string;
+  year: number;
+  src: string;
+}
+
 export interface SpeciesStats {
   cardCount: number;
   setCount: number;
@@ -43,6 +52,8 @@ export interface SpeciesStats {
   newest: SpeciesCard;
   kinds: readonly SpeciesKind[];
   examples: readonly SpeciesCard[];
+  /** A few of the example cards with their pictures. */
+  photos: readonly CardPhoto[];
   dataDate: string;
 }
 
@@ -96,6 +107,20 @@ function pickExamples(cards: SpeciesCard[], count: number): SpeciesCard[] {
     }
   }
   return picked.sort((a, b) => a.year - b.year);
+}
+
+/** The picture of a card of the English catalogue, or undefined when the id is unknown. */
+export function cardPhoto(id: string): CardPhoto | undefined {
+  const { rows, sets } = load();
+  const row = rows.find((candidate) => candidate[0] === id);
+  if (!row) return undefined;
+  return {
+    id,
+    name: row[3],
+    setName: row[6],
+    year: sets.get(row[5])?.year ?? 0,
+    src: `https://assets.tcgdex.net/en/${encodeURIComponent(row[7])}/${encodeURIComponent(row[5])}/${encodeURIComponent(row[4])}/low.webp`,
+  };
 }
 
 /** Order of the rules matters: a "Mega Gengar ex" is a Mega card, a "Pikachu & Zekrom GX" is a pair. */
@@ -165,6 +190,8 @@ export function computeSpeciesStats(entry: SpeciesEntry): SpeciesStats | undefin
     example: [...names.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0]![0],
   })).sort((a, b) => b.cards - a.cards);
 
+  const examples = pickExamples(cards, 8);
+
   return {
     decades: [...byDecade.entries()].sort((a, b) => a[0] - b[0]).map(([decade, count]) => ({ decade, cards: count })),
     busiestYear: { year: busiest[0], cards: busiest[1] },
@@ -178,7 +205,12 @@ export function computeSpeciesStats(entry: SpeciesEntry): SpeciesStats | undefin
     seriesCount: series.size,
     topSets: [...bySet.values()].sort((a, b) => b.cards - a.cards || a.year - b.year).slice(0, 5),
     topThemes: [...themeCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 4).map(([tag, count]) => ({ tag, cards: count })),
-    examples: pickExamples(cards, 8),
+    examples,
+    photos: [0, 2, 5, 7].flatMap((position) => {
+      const card = examples[position];
+      const photo = card ? cardPhoto(card.id) : undefined;
+      return photo ? [photo] : [];
+    }),
     dataDate,
   };
 }

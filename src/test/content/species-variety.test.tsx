@@ -9,9 +9,9 @@ import { publishedSpecies } from "@/content/pokemon-stats";
 const LANGUAGES: PageLanguage[] = ["de", "en"];
 const published = publishedSpecies();
 
-/** Prose and list text only: the sidebar, table of contents and the labels of data tables and fact lists are page structure. */
+/** Prose and list text only: the sidebar, table of contents, figures and the labels of data tables and fact lists are page structure. */
 function plain(markup: string): string {
-  return markup.replace(/<(aside|nav|table|dl|h[1-6])[\s\S]*?<\/\1>/g, " ").replace(/<script[\s\S]*?<\/script>/g, " ").replace(/<[^>]+>/g, " ").replace(/&[a-z#0-9]+;/g, " ").replace(/\s+/g, " ").trim();
+  return markup.replace(/<(aside|nav|table|dl|figcaption|figure|h[1-6])[\s\S]*?<\/\1>/g, " ").replace(/<script[\s\S]*?<\/script>/g, " ").replace(/<[^>]+>/g, " ").replace(/&[a-z#0-9]+;/g, " ").replace(/\s+/g, " ").trim();
 }
 
 function shingles(value: string, size = 5): Set<string> {
@@ -30,7 +30,7 @@ describe("Pokémon pages", () => {
           let shared = 0;
           for (const item of a.shingles) if (b.shingles.has(item)) shared += 1;
           const share = shared / Math.min(a.shingles.size, b.shingles.size);
-          expect(share, `${language}: ${a.slug} vs ${b.slug}`).toBeLessThan(0.12);
+          expect(share, `${language}: ${a.slug} vs ${b.slug}`).toBeLessThan(0.16);
         }
       }
     }

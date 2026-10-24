@@ -10,6 +10,7 @@ export const MOTIF_GUIDES: readonly Guide[] = [
   {
     id: "motif-illustration",
     updated: "2026-10-23",
+    photoIds: ["me02-125", "me02.5-272", "sv01-247"],
     related: ["motif-shiny", "condition", "gift"],
     themeId: "illustration",
     de: {
@@ -112,6 +113,7 @@ export const MOTIF_GUIDES: readonly Guide[] = [
   {
     id: "motif-beach",
     updated: "2026-10-23",
+    photoIds: ["30th-043", "sm11-52", "sv08-090"],
     related: ["motif-sleeping", "gift", "binder-size"],
     themeId: "beach",
     live: false,
@@ -207,6 +209,7 @@ export const MOTIF_GUIDES: readonly Guide[] = [
   {
     id: "motif-night",
     updated: "2026-10-23",
+    photoIds: ["30th-154", "gym2-29", "sm12-83"],
     related: ["motif-sleeping", "condition", "gift"],
     themeId: "night",
     de: {
@@ -297,6 +300,7 @@ export const MOTIF_GUIDES: readonly Guide[] = [
   {
     id: "motif-snow",
     updated: "2026-10-23",
+    photoIds: ["30th-132", "dp3-87", "sm8-61"],
     related: ["christmas-gift", "gift", "binder-size"],
     themeId: "snow",
     de: {
@@ -379,6 +383,7 @@ export const MOTIF_GUIDES: readonly Guide[] = [
   {
     id: "motif-friends",
     updated: "2026-10-23",
+    photoIds: ["30th-044", "neo1-3", "sm12-157"],
     related: ["personalized-gift", "gift", "birthday-gift"],
     themeId: "friends",
     live: false,
@@ -476,6 +481,7 @@ export const MOTIF_GUIDES: readonly Guide[] = [
   {
     id: "motif-sleeping",
     updated: "2026-10-23",
+    photoIds: ["30th-043", "sm10-135", "swsh11-143"],
     related: ["motif-night", "gift", "birthday-gift"],
     themeId: "sleeping",
     live: false,
@@ -569,6 +575,7 @@ export const MOTIF_GUIDES: readonly Guide[] = [
   {
     id: "motif-shiny",
     updated: "2026-10-23",
+    photoIds: ["sv04.5-212", "sv04.5-093", "sv04.5-153"],
     related: ["motif-illustration", "condition", "marketplaces"],
     themeId: "shiny",
     live: false,
@@ -662,6 +669,7 @@ export const MOTIF_GUIDES: readonly Guide[] = [
   {
     id: "motif-mega",
     updated: "2026-10-23",
+    photoIds: ["me05-114", "me02.5-290", "me01-158"],
     related: ["motif-illustration", "motif-shiny", "marketplaces"],
     themeId: "mega",
     live: false,
@@ -759,6 +767,7 @@ export const MOTIF_GUIDES: readonly Guide[] = [
   {
     id: "motif-classics",
     updated: "2026-10-23",
+    photoIds: ["base1-1", "base4-4", "neo1-7"],
     related: ["condition", "marketplaces", "gift"],
     themeId: "classics",
     live: false,
@@ -856,6 +865,7 @@ export const MOTIF_GUIDES: readonly Guide[] = [
   {
     id: "motif-fire-type",
     updated: "2026-10-23",
+    photoIds: ["me02-125", "sv03.5-169", "swsh3-191"],
     related: ["motif-night", "gift", "personalized-gift"],
     themeId: "type-fire",
     live: false,

@@ -32,6 +32,8 @@ export interface Guide {
   related: readonly string[];
   /** Picture theme or card group of the gift builder that the call to action opens. */
   themeId?: string;
+  /** Ids of up to three catalogue cards shown as pictures at the top of the page. */
+  photoIds?: readonly string[];
   /** `false` keeps a prepared page out of routes, sitemap, hub and llms.txt until its release wave. */
   live?: boolean;
 }

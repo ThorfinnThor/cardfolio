@@ -5,7 +5,7 @@ import { GUIDE_AUTHOR, OG_IMAGE, SITE_NAME, absoluteUrl, type PageLanguage } fro
 import { GUIDES, guideById, type Guide, type GuideBlock } from "@/content/guides";
 import { guideExtras } from "@/content/guide-extras";
 import { LANDING } from "@/content/landing";
-import type { CardKind, PublishedSpecies } from "@/content/pokemon-stats";
+import { cardPhoto, type CardKind, type CardPhoto, type PublishedSpecies } from "@/content/pokemon-stats";
 import { TOOL_START_PATH, guideIndexPath, guidePath, homePath, speciesIndexPath, speciesPath, toolStartPathForTheme } from "@/content/routes";
 import { SEMANTIC_TAG_LABELS, type SemanticTag } from "@/domain/semantic-card-search";
 
@@ -64,6 +64,25 @@ export function Block({ block }: { block: GuideBlock }) {
   );
 }
 
+/** Card pictures loaded straight from assets.tcgdex.net; the first one is the largest contentful element, so it loads eagerly. */
+function PhotoStrip({ photos, caption, language }: { photos: readonly CardPhoto[]; caption: string; language: PageLanguage }) {
+  if (photos.length === 0) return null;
+  return (
+    <figure className={styles.photos}>
+      <div className={styles.photoRow}>
+        {photos.map((photo, index) => (
+          <figure key={photo.id}>
+            {/* eslint-disable-next-line @next/next/no-img-element -- static export without the image optimiser */}
+            <img src={photo.src} alt={`${photo.name}, ${photo.setName} (${photo.year})`} width={245} height={337} loading={index === 0 ? "eager" : "lazy"} decoding="async" />
+            <figcaption>{photo.name} · {photo.setName}</figcaption>
+          </figure>
+        ))}
+      </div>
+      <figcaption>{caption} {language === "de" ? "Kartenbilder von assets.tcgdex.net, die Rechte liegen bei den Rechteinhabern." : "Card pictures from assets.tcgdex.net; the rights belong to the rights holders."}</figcaption>
+    </figure>
+  );
+}
+
 function ToolCta({ language, label }: { language: PageLanguage; label: string }) {
   return <ToolLink href={TOOL_START_PATH} language={language} className={styles.cta}>{label}</ToolLink>;
 }
@@ -96,6 +115,11 @@ export function GuideArticle({ guide, language }: { guide: Guide; language: Page
           <strong>{answerLabel}</strong>
           <p>{extra.answer}</p>
         </aside>
+        <PhotoStrip
+          language={language}
+          photos={(guide.photoIds ?? []).flatMap((id) => cardPhoto(id) ?? [])}
+          caption={language === "de" ? "Drei Karten aus dieser Auswahl." : "Three cards from this selection."}
+        />
       </header>
       <ArticleLayout language={language} toc={toc} ctaHref={guide.themeId ? toolStartPathForTheme(guide.themeId) : TOOL_START_PATH}>
         {text.sections.map((section, index) => (
@@ -202,6 +226,7 @@ export function SpeciesArticle({ published, language, all }: { published: Publis
         <p className={styles.eyebrow}>{de ? "Pokémon-Binder" : "Pokémon binder"}</p>
         <h1>{de ? `${name}-Binder: Karten sammeln und verschenken` : `${name} binder: collecting and gifting the cards`}</h1>
         <p className={styles.lead}>{entry.about[language][0]}</p>
+        <PhotoStrip language={language} photos={stats.photos} caption={de ? `Vier ${name}-Karten aus verschiedenen Jahren.` : `Four ${name} cards from different years.`} />
       </header>
       <ArticleLayout
         language={language}
@@ -228,10 +253,10 @@ export function SpeciesArticle({ published, language, all }: { published: Publis
           <div><dt>{de ? "Älteste Karte" : "Oldest card"}</dt><dd>{stats.oldest.name}, {stats.oldest.setName}</dd></div>
           <div><dt>{de ? "Neueste Karte" : "Newest card"}</dt><dd>{stats.newest.name}, {stats.newest.setName}</dd></div>
           <div><dt>{de ? "Stärkstes Jahr" : "Busiest year"}</dt><dd>{stats.busiestYear.year} ({n(stats.busiestYear.cards)})</dd></div>
-          <div><dt>{de ? "Seiten bei 9 Taschen" : "Pages at 9 pockets"}</dt><dd>{n(pages)}</dd></div>
-          <div><dt>{de ? "Seit 2020" : "Since 2020"}</dt><dd>{n(recent)}</dd></div>
+          <div><dt>{de ? "Binder-Seiten für alle Karten" : "Binder pages for all cards"}</dt><dd>{n(pages)}</dd></div>
+          <div><dt>{de ? "Davon seit 2020 erschienen" : "Of these, released since 2020"}</dt><dd>{n(recent)}</dd></div>
         </dl>
-        <p>{de ? "Entwicklung" : "Family"}: {entry.family[language]}. {de ? `Stand ${formatDate(language, stats.dataDate)}; gezählt sind englische Karten mit „${entry.cardName}“ im Namen.` : `As of ${formatDate(language, stats.dataDate)}; English cards with “${entry.cardName}” in the name are counted.`}</p>
+        <p>{de ? "Entwicklung" : "Family"}: {entry.family[language]}. {de ? "Binder-Seiten: Kartenzahl ÷ 9 Taschen, aufgerundet." : "Binder pages: cards ÷ 9 pockets, rounded up."} {de ? `Stand ${formatDate(language, stats.dataDate)}; gezählt sind englische Karten mit „${entry.cardName}“ im Namen.` : `As of ${formatDate(language, stats.dataDate)}; English cards with “${entry.cardName}” in the name are counted.`}</p>
       </section>
 
       <section id="about" className={styles.section}>
