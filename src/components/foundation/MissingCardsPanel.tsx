@@ -21,6 +21,7 @@ import { cardmarketMinimumCondition, conditionProfile, conditionProfiles } from 
 import { suggestMarketplaceRegion } from "@/domain/marketplace-region";
 import type { MarketplaceProductIdentityMapping } from "@/domain/marketplace-product-identity";
 import { ConditionGuide } from "./ConditionGuide";
+import { SetLogo } from "./SetLogo";
 import { GiftPurchaseGuide } from "./GiftPurchaseGuide";
 import { GuidedFlow } from "./GuidedFlow";
 import { useStepHistory } from "./step-history";
@@ -829,7 +830,7 @@ function MissingItemGroups({
     <div className={styles.groupList}>
       {groups.map((group) => (
         <section className={styles.missingGroup} key={group.key} aria-labelledby={`missing-set-${group.key}`}>
-          <div className={styles.groupHeader}><h3 id={`missing-set-${group.key}`}>{group.setName} · {group.language.toUpperCase()}</h3><span>{group.positionCount} Positionen · {group.quantity} Exemplare</span></div>
+          <div className={styles.groupHeader}><SetLogo setId={group.setId} language={group.language} className={styles.groupLogo} /><h3 id={`missing-set-${group.key}`}>{group.setName} · {group.language.toUpperCase()}</h3><span>{group.positionCount} Positionen · {group.quantity} Exemplare</span></div>
           <ul className={styles.list}>
             {group.items.map((item) => (
               <li className={styles.item} key={item.identityKey}>

@@ -76,6 +76,7 @@ import { BinderOverview } from "./BinderOverview";
 import { BinderSetProgress } from "./BinderSetProgress";
 import { BinderValuePanel } from "./BinderValuePanel";
 import { CopyDetailsForm } from "./CopyDetailsForm";
+import { SetLogo } from "./SetLogo";
 import { GiftBuilderPanel } from "./GiftBuilderPanel";
 import { PlaceholderPrint } from "./PlaceholderPrint";
 import { clearGiftResume, readGiftResume } from "./gift-resume";
@@ -2808,7 +2809,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
                     <div className={styles.slabLabel} data-owned={contextEntry.owned}>
                       <div className={styles.contextIdentity}>
                         <strong>{contextCard?.name ?? "Kartendaten fehlen"}</strong>
-                        {contextCard ? <span>{contextCard.setName} · Nr. {formatCollectorNumber(contextCard.collectorNumber, contextCard.collectorTotal)}</span> : null}
+                        {contextCard ? <span className={styles.contextSet}><SetLogo setId={contextCard.setId} language={contextCard.ref.language} className={styles.contextSetLogo} />{contextCard.setName} · Nr. {formatCollectorNumber(contextCard.collectorNumber, contextCard.collectorTotal)}</span> : null}
                         <em>{contextEntry.owned ? "✓ Vorhanden" : "✕ Fehlt"} · {contextCard?.ref.language.toUpperCase() ?? "–"}</em>
                       </div>
                       <div className={styles.slabGrade} title={`Mindestzustand: ${conditionProfile(contextEntry.preferences.minimumCondition).label}`}>

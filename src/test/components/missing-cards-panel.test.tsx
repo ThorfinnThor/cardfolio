@@ -126,6 +126,13 @@ describe("MissingCardsPanel", () => {
     expect(panelProps.onCopy).toHaveBeenCalledWith([items[0]]);
   });
 
+  it("shows the set logo in the header of a set group", () => {
+    const { container } = render(<MissingCardsPanel {...props()} />);
+    const logos = [...container.querySelectorAll("section[aria-labelledby^='missing-set-'] img")].map((image) => image.getAttribute("src"));
+    expect(logos.length).toBeGreaterThan(0);
+    for (const src of logos) expect(src).toMatch(/^https:\/\/assets\.tcgdex\.net\//);
+  });
+
   it("explains when clipboard permission is missing and keeps file exports available", () => {
     const panelProps = { ...props(), copyState: "error" as const };
     render(<MissingCardsPanel {...panelProps} />);

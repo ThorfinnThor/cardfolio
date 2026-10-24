@@ -614,3 +614,8 @@
 - **History.** One point per day (UTC) and binder, kept in the `settings` store of the local IndexedDB (`valueHistory:<binderId>`), included in exports, mapped to the new id on "import as new", deleted with the binder. A flat stretch is folded to its two ends. Nothing leaves the browser. Stage 2 (a public weekly price series from the sync) is not started; it needs CardTrader's OK for republishing derived price series.
 - **Set progress.** The existing per-set progress shows the set logo (logo, else symbol, else nothing) from the TCGdex asset host, same as the set search.
 - **Privacy text.** The storage table of the privacy policy lists what IndexedDB holds; condition, quantity and value history are new content there. The owner approved the wording on 2026-10-24 and it is in the storage table (DE and EN): condition and quantity of the cards, value history (date and total value per binder, local only).
+
+## 2026-10-24 — Set logos in the missing list and the card details
+
+- **Change.** The shared `SetLogo` (logo, else symbol, else nothing; TCGdex asset host, nothing stored) now also appears in the header of every set group in the missing-cards list and next to the set name in the card details. Together with the set search, the set binder wizard and the per-set progress, that covers the places where a collector sees a set name in the tool.
+- **Not done.** The "top sets" tables on the Pokémon pages stay text: they are static pages and the logo component would pull the set catalogue into their bundle. German logos exist for only 38 of 144 sets; the component falls back to the English logo or the symbol.
