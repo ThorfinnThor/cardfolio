@@ -85,7 +85,7 @@ export function BinderOverview({
       {startMode === "gift" ? <><div className={styles.giftHero} id="start-panel" role={showStartTabs ? "tabpanel" : undefined} aria-labelledby={showStartTabs ? "start-tab-gift" : undefined} data-has-binders={binders.length > 0}>
         <div className={styles.giftHeroCopy}>
           <h1 id="binder-heading">Ein Binder voller Karten vom Lieblings-Pokémon.</h1>
-          <p>Such das Pokémon aus. Wir stellen neun passende Karten zu einer Binder-Seite zusammen und zeigen dir, wo du sie kaufst.</p>
+          <p>Such das Pokémon aus. Wir stellen passende Karten zu einer Binder-Seite zusammen und zeigen dir, wo du sie kaufst.</p>
           <button type="button" className={styles.heroButton} onClick={() => onGiftStart?.()} disabled={binders.length >= MAX_BINDERS}>
             <Gift aria-hidden="true" size={22} /> Geschenk-Binder gestalten <ArrowRight aria-hidden="true" size={21} />
           </button>

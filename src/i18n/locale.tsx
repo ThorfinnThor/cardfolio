@@ -165,7 +165,7 @@ const translations: Record<string, string> = {
   "Für alle Karten ist eine passende Standardausführung vorausgewählt.": "A suitable standard printing has been preselected for every card.",
   "Ein Geschenk, das persönlich wird": "A gift made personal",
   "Ein Binder voller Karten vom Lieblings-Pokémon.": "A binder filled with cards of their favourite Pokémon.",
-  "Such das Pokémon aus. Wir stellen neun passende Karten zu einer Binder-Seite zusammen und zeigen dir, wo du sie kaufst.": "Choose the Pokémon. We create a nine-card binder page and show you where to buy the cards.",
+  "Such das Pokémon aus. Wir stellen passende Karten zu einer Binder-Seite zusammen und zeigen dir, wo du sie kaufst.": "Choose the Pokémon. We put together matching cards for a binder page and show you where to buy them.",
   "So entsteht dein Geschenk-Binder": "How your gift binder comes together",
   "Ein Pokémon-Binder als persönliches Geschenk.": "A personal Pokémon card binder as a gift.",
   "Wähle ein Lieblings-Pokémon oder Bildmotiv. Wir schlagen passende Karten vor und führen dich bis zur Einkaufsliste.": "Choose a favourite Pokémon or an artwork theme. We suggest matching cards and guide you all the way to the shopping list.",
