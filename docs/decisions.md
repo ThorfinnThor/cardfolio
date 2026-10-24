@@ -593,3 +593,8 @@
 - **Found by the SEO audit.** The ten Pokémon pages shared the same sections, headings and sentences: about 28–33 % shared five-word passages, 540–620 words each.
 - **Change.** The standard paragraphs are gone. Each page now has data that differs per Pokémon (oldest, newest and busiest year, cards per decade, card kinds by name form with the most frequent name, top sets, artwork tendencies) and a hand-written paragraph about the card forms of that Pokémon (`story`, no numbers that change with the catalogue). Facts that were prose became fact list and table rows.
 - **Guard.** `species-variety.test.tsx`: between any two pages, in both languages, prose and list text (sidebar, headings, tables and fact lists excluded as page structure) shares less than 12 % of its five-word passages, and every page has its own story paragraph.
+
+## 2026-10-24 — zod patch (audit gate)
+
+- **Why.** `npm audit --omit=dev --audit-level=high` began to fail for every branch: zod < 4.6.6 (GHSA-mrhx-c7xc-m3w5, memory exhaustion when validating oversized constrained collections). Validation of our own bundled data is not exposed to attacker-sized input in a static app, but the gate blocks every merge and the fix is a patch release.
+- **Change.** `zod` 4.6.5 → 4.6.7 (range `^4.6.7`, lockfile updated). Integration check: typecheck, lint, 610 unit tests, build, release check, 59 e2e; `npm audit` reports 0 vulnerabilities.
