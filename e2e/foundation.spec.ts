@@ -1171,3 +1171,28 @@ test("a guide about a picture theme opens the builder with that theme chosen", a
   await expect(page.getByRole("radio", { name: /Feuer-Pokémon/ })).toBeChecked();
   expect(new URL(page.url()).search).toBe("");
 });
+
+test("quick add enters cards by collector number as owned, with their quantity", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/app/");
+  await createBinderFromStart(page, "Sammlung");
+
+  await page.getByRole("button", { name: "Schnell erfassen" }).click();
+  const panel = page.getByRole("region", { name: "Karten schnell erfassen" });
+  await panel.getByLabel("Englisch").check();
+  await panel.getByLabel("Set", { exact: true }).fill("Base Set");
+  await panel.getByRole("list", { name: "Gefundene Sets" }).getByRole("button", { name: /^Base Set\s*1999/ }).click();
+  await panel.getByLabel(/^Kartennummern/).fill("001x2 5");
+  await panel.getByRole("button", { name: "Karten prüfen" }).click();
+  await expect(panel.getByText("1 Karte wird eingetragen, 1 nicht gefunden.")).toBeVisible();
+  await panel.getByRole("button", { name: "1 Karte als vorhanden eintragen" }).click();
+
+  const card = page.getByRole("article", { name: /Bulbasaur, Slot 1/ });
+  await expect(card).toBeVisible();
+  await card.click();
+  await expect(page.getByRole("button", { name: "Als fehlend markieren" })).toBeVisible();
+  await expect(page.getByRole("group", { name: "Menge" }).locator("output")).toHaveText("2");
+  await page.reload();
+  await page.getByRole("article", { name: /Bulbasaur, Slot 1/ }).click();
+  await expect(page.getByRole("group", { name: "Menge" }).locator("output")).toHaveText("2");
+});

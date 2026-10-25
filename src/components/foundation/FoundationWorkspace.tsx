@@ -2,7 +2,7 @@
 
 import { LegalLinksInline } from "@/components/content/AppLegalFooter";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import { ListChecks, Archive, ArrowLeft, ArrowRight, BookOpen, CircleHelp, Copy, DatabaseBackup, ListFilter, Menu, Pencil, Printer, Search, Trash2, X } from "lucide-react";
+import { ListChecks, Archive, ArrowLeft, ArrowRight, BookOpen, CircleHelp, Copy, DatabaseBackup, ListFilter, ListPlus, Menu, Pencil, Printer, Search, Trash2, X } from "lucide-react";
 import Link from "next/link";
 import { type ChangeEvent, type FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -39,6 +39,7 @@ import {
   type SupportedBinderLayout,
 } from "@/domain/binder-actions";
 import { recordBackup } from "@/data/backup/backup-reminder";
+import { applyQuickAdd, planQuickAdd, type QuickAddChange, type QuickAddResult } from "@/domain/quick-add";
 import { deriveBinderStats } from "@/domain/binder-stats";
 import { sortCatalogSearchItems, type CatalogResultSort } from "@/domain/catalog-sort";
 import { formatCollectorNumber, parseCatalogSearch } from "@/domain/catalog-search";
@@ -75,6 +76,7 @@ import { catalogLabel, coverLeather } from "./binder-cover";
 import { BinderOverview } from "./BinderOverview";
 import { BinderSetProgress } from "./BinderSetProgress";
 import { BinderValuePanel } from "./BinderValuePanel";
+import { QuickAddPanel } from "./QuickAddPanel";
 import { CardPriceTrend } from "./CardPriceTrend";
 import { CopyDetailsForm } from "./CopyDetailsForm";
 import { SetLogo } from "./SetLogo";
@@ -466,6 +468,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
   const [searchSort, setSearchSort] = useState<CatalogResultSort>("relevance");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
+  const [quickAddOpen, setQuickAddOpen] = useState(false);
   const [searchPreview, setSearchPreview] = useState<SearchPreview>();
   const [pageSelectionRequest, setPageSelectionRequest] = useState<PageSelectionRequest>();
   const [pageSelectionReviewOpen, setPageSelectionReviewOpen] = useState(false);
@@ -1700,6 +1703,30 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
     }
   }
 
+  async function addCardsQuickly(changes: QuickAddChange[], condition?: OwnedCondition) {
+    if (!activeBinder) return;
+    try {
+      setStorageStatus("saving");
+      const snapshots: CardSnapshot[] = [];
+      let result: QuickAddResult | undefined;
+      await persistBinderChange(activeBinder.id, (binder) => {
+        // Planned again against the saved binder, in case it changed while the list was being checked.
+        result = applyQuickAdd(binder, planQuickAdd(binder, changes.map(({ card, quantity }) => ({ card, quantity }))), condition);
+        snapshots.push(...result.cards);
+        return result.binder;
+      }, snapshots);
+      setStorageStatus("saved");
+      setQuickAddOpen(false);
+      if (result) {
+        const parts = [result.added > 0 ? `${result.added} neu eingetragen` : undefined, result.updated > 0 ? `${result.updated} schon im Binder, Menge erhöht` : undefined].filter(Boolean);
+        setMessage(`Als vorhanden gespeichert: ${parts.join(", ")}.${result.reviewRequired > 0 ? ` Bei ${result.reviewRequired} Karten bitte die Version prüfen (Holo, Reverse oder Normal).` : ""}`);
+      }
+    } catch (error) {
+      handleStorageError(error, "Die Karten konnten nicht eingetragen werden.");
+      throw error;
+    }
+  }
+
   async function saveCopyDetails(entryId: string, details: { condition?: OwnedCondition; quantity?: number }) {
     if (!activeBinder) return;
     try {
@@ -2283,6 +2310,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
             <div className={styles.binderHeaderActions}>
               <button type="button" className={styles.secondaryButton} onClick={() => setBinderRename({ binderId: activeBinder.id, name: activeBinder.name })}><Pencil size={16} /> Binder umbenennen</button>
               <button type="button" className={styles.secondaryButton} onClick={() => openSearchForSlot()}><Search size={17} /> Karte hinzufügen</button>
+              {isGiftBinder ? null : <button type="button" className={styles.secondaryButton} aria-expanded={quickAddOpen} onClick={() => { setQuickAddOpen((open) => !open); setMissingOpen(false); setSearchOpen(false); }}><ListPlus size={17} /> Schnell erfassen</button>}
               <button type="button" aria-label={missingOpen ? "Zurück zum Binder" : `Fehlende Karten (${stats.missing})`} className={styles.primaryButton} onClick={() => { setMissingBeginner(giftShell || isGiftBinder); setMissingOpen((open) => !open); setSearchOpen(false); setCopyState("idle"); setTcgplayerCopyState("idle"); setCardmarketCopyState("idle"); }} disabled={Boolean(missingResult.error) || cardsBinderId !== activeId}>
                 <ListFilter size={17} /> {missingOpen ? "Zurück zum Binder" : `Karten kaufen (${stats.missing})`}
               </button>
@@ -2303,6 +2331,8 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
             <div><strong>{Math.max(stats.capacity - stats.planned, 0)}</strong><span>Freie Plätze</span><small>auf {activeBinder.pages.length} {activeBinder.pages.length === 1 ? "Seite" : "Seiten"}</small></div>
             <div><strong>{stats.planned}</strong><span>Geplant</span><small>von {stats.capacity} Slots</small></div>
           </section>}
+
+          {quickAddOpen && !missingOpen && !isGiftBinder ? <QuickAddPanel catalog={catalog} binder={activeBinder} onApply={addCardsQuickly} onClose={() => setQuickAddOpen(false)} /> : null}
 
           {missingOpen && missingBeginner ? null : <>
             {FEATURES.cardtraderPrices && !isGiftBinder ? <BinderValuePanel binder={activeBinder} cards={cards} /> : null}
