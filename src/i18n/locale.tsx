@@ -17,6 +17,8 @@ const translations: Record<string, string> = {
   "Für diese Karten liegt noch kein Preis vor.": "There is no price for these cards yet.",
   "ca.": "approx.",
   "1 Karte ohne eingetragenen Zustand: Es gilt der Mindestzustand.": "1 card without a recorded condition: the minimum condition is used.",
+  "Die Preisreihe füllt sich mit jedem Wochenpreis. Öffne den Binder später wieder, dann siehst du hier die Entwicklung.": "The price series fills up with every weekly price. Open the binder again later to see how it develops.",
+  "Preisverlauf": "Price history",
   "Der Verlauf beginnt heute. Öffne den Binder später wieder, dann siehst du hier die Entwicklung.": "The history starts today. Open the binder again later to see how the value develops.",
   "Richtwert: das günstigste CardTrader-Angebot im jeweiligen Zustand, ohne Versand, aus der wöchentlichen Preisliste. Kein Verkaufspreis und keine Anlageberatung. Der Verlauf liegt nur in diesem Browser.": "Estimate: the cheapest CardTrader listing in the respective condition, excluding shipping, from the weekly price list. Not a selling price and not investment advice. The history stays in this browser only.",
   "Zustand deiner Karte": "Condition of your card",
@@ -783,6 +785,9 @@ Object.assign(translations, {
 });
 
 const patterns: Array<[RegExp, (...matches: string[]) => string]> = [
+  [/^(Preisentwicklung deiner aktuellen Karten|Verlauf) seit (.+): ([+−].+)$/, (kind, date, change) => `${kind === "Verlauf" ? "History" : "Price movement of your current cards"} since ${date}: ${change}`],
+  [/^(\d+) von (\d+) Karten hatten in jeder Woche ein Angebot und zählen für die Kurve\.$/, (count, total) => `${count} of ${total} cards had a listing every week and count for the curve.`],
+  [/^Preis seit (.+): (.+) → (.+)$/, (date, from, to) => `Price since ${date}: ${from} → ${to}`],
   [/^(\d+) von (\d+) vorhandenen Karten bepreist$/, (priced, owned) => `${priced} of ${owned} owned cards priced`],
   [/^(\d+) Karten ohne eingetragenen Zustand: Es gilt der Mindestzustand\.$/, (count) => `${count} cards without a recorded condition: the minimum condition is used.`],
   [/^Seit (.+): ([+−].+)$/, (date, change) => `Since ${date}: ${change}`],

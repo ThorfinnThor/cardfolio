@@ -11,13 +11,19 @@
  *   expansions/<id>.json        Pokémon Singles blueprints: collector number, name, rarity, image, product ids
  *   prices/<id>.json            cheapest EUR price per blueprint, language and minimum condition (p); offer counts
  *                               per language (o); seller country codes, cheapest first (c)
+ *   history/<id>.json           the same prices week by week (four conditions, English and German); see
+ *                               cardtrader-history.mjs
  *   manifest.json               counts, source, attribution
  */
 import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { asCollection } from "./cardtrader-response.mjs";
 import { summarizeOffers } from "./cardtrader-offers.mjs";
+import { appendWeek, pricesOf, serializeHistory } from "./cardtrader-history.mjs";
 
+/* The date of the last sync before the history existed: the first history file starts from the price files of that run. */
+const HISTORY_BOOTSTRAP_DATE = "2026-10-21";
+const today = new Date().toISOString().slice(0, 10);
 const API_BASE = "https://api.cardtrader.com/api/v2";
 const IMAGE_PREFIX = "https://cardtrader.com/uploads/blueprints/image/";
 const SINGLES_CATEGORY_ID = 73;
@@ -174,6 +180,15 @@ for (const expansionId of expansionIds) {
     const offerCounts = offerKeys.map((key) => `${JSON.stringify(key)}:${JSON.stringify(offers[key].counts)}`).join(",\n");
     const offerCountries = offerKeys.filter((key) => offers[key].countries.length).map((key) => `${JSON.stringify(key)}:${JSON.stringify(offers[key].countries.join(","))}`).join(",\n");
     const body = `{"id":${expansionId},"currency":"EUR","slots":["en:nm","en:ex","en:lp","en:pl","en:any","de:nm","de:ex","de:lp","de:pl","de:any"],"p":{\n${Object.entries(ordered).map(([key, slots]) => `${JSON.stringify(key)}:${JSON.stringify(slots)}`).join(",\n")}\n},"o":{\n${offerCounts}\n},"c":{\n${offerCountries}\n}}\n`;
+    // The history starts from the previous price file (dated by HISTORY_BOOTSTRAP_DATE) and gains this week's prices.
+    const historyPath = join(outDir, "history", `${expansionId}.json`);
+    let history;
+    try { history = JSON.parse(await readFile(historyPath, "utf8")); } catch { /* no history yet */ }
+    if (!history) {
+      const earlier = pricesOf(await readFile(join(outDir, "prices", `${expansionId}.json`), "utf8").catch(() => ""));
+      if (earlier) history = appendWeek(undefined, expansionId, earlier, HISTORY_BOOTSTRAP_DATE);
+    }
+    written[(await writeIfChanged(historyPath, serializeHistory(appendWeek(history, expansionId, ordered, today)))) ? "changed" : "unchanged"] += 1;
     written[(await writeIfChanged(join(outDir, "prices", `${expansionId}.json`), body)) ? "changed" : "unchanged"] += 1;
     manifest.priced += Object.keys(ordered).length;
     manifest.listingsUsed += stats.used;
@@ -186,7 +201,7 @@ for (const expansionId of expansionIds) {
 }
 
 // Drop files of expansions that are no longer mapped, so the folder mirrors the review file.
-for (const folder of ["expansions", "prices"]) {
+for (const folder of ["expansions", "prices", "history"]) {
   try {
     for (const name of await readdir(join(outDir, folder))) {
       if (maxExpansions === 0 && !expansionIds.includes(name.replace(/\.json$/, ""))) await rm(join(outDir, folder, name));
@@ -199,7 +214,7 @@ await writeIfChanged(join(outDir, "index.json"), `${JSON.stringify(index, null, 
 await writeIfChanged(join(outDir, "manifest.json"), `${JSON.stringify({
   schemaVersion: 1,
   source: "https://www.cardtrader.com/en-EU/docs/api/full/reference",
-  permission: "Written confirmation from CardTrader support, 2026-10-20: images, prices and the other API data may be used; listing links included.",
+  permission: "Written confirmation from CardTrader support, 2026-10-20: images, prices and the other API data may be used; listing links included. Their wording: \"all the information available through our API\".",
   attribution: "Card images, product ids and prices via the CardTrader API (cardtrader.com).",
   imagePrefix: IMAGE_PREFIX,
   priceSlots: ["en:nm", "en:ex", "en:lp", "en:pl", "en:any", "de:nm", "de:ex", "de:lp", "de:pl", "de:any"],

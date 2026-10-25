@@ -6,3 +6,6 @@
 .coverage, .hint { margin: 0; color: var(--cf-text2); font-size: .82rem; }
 .note { margin: 4px 0 0; color: var(--cf-muted); font-size: .72rem; line-height: 1.4; }
 .chart { width: 100%; max-width: 320px; height: auto; color: var(--cf-ok); }
+.cardTrend { display: grid; gap: 4px; padding: 10px 11px; border: 1px solid var(--cf-line); border-radius: 8px; }
+.cardTrend strong { color: var(--cf-text2); font-size: .8rem; }
+.cardTrend small { color: var(--cf-muted); font-size: .72rem; }
