@@ -11,6 +11,27 @@ import { fixedLocaleForPath } from "./fixed-locale";
 const LOCALE_STORAGE_KEY = "cardfolio-locale";
 
 const translations: Record<string, string> = {
+  "Karten schnell erfassen": "Add cards quickly",
+  "Schnell erfassen": "Quick add",
+  "Karten per Nummer eintragen": "Enter cards by number",
+  "Schnell erfassen schließen": "Close quick add",
+  "Gefundene Sets": "Sets found",
+  "Set suchen, zum Beispiel Base Set oder 151": "Search a set, for example Base Set or 151",
+  "Kartennummern": "Card numbers",
+  "4 5 6 10-15 25x2\nFür mehrere Sets: eine Zeile pro Set, zum Beispiel  Jungle: 1 2 3": "4 5 6 10-15 25x2\nFor several sets: one line per set, for example  Jungle: 1 2 3",
+  "Nummern mit Leerzeichen, Komma oder Zeilenumbruch trennen. „10-15“ ist ein Bereich, „25x2“ sind zwei Exemplare, „004“ ist 4.": "Separate numbers with spaces, commas or line breaks. “10-15” is a range, “25x2” means two copies, “004” is 4.",
+  "Zustand (optional, für alle)": "Condition (optional, for all)",
+  "Nicht eintragen": "Do not record",
+  "Karten werden gesucht …": "Searching cards …",
+  "Konnte nicht geladen werden": "Could not be loaded",
+  "Nicht im Katalog gefunden": "Not found in the catalogue",
+  "Kein Set gewählt": "No set chosen",
+  "Wähle oben ein Set oder schreibe „Setname: Nummern“.": "Choose a set above or write “Set name: numbers”.",
+  "Dieses Set wurde nicht gefunden.": "This set was not found.",
+  "Wird eingetragen …": "Saving …",
+  "Gib mindestens eine Kartennummer ein, zum Beispiel „4 5 6 10-15 25x2“.": "Enter at least one card number, for example “4 5 6 10-15 25x2”.",
+  "Der Kartenkatalog hat nicht geantwortet. Versuche es später noch einmal.": "The card catalogue did not respond. Please try again later.",
+  "schon im Binder, wird als vorhanden markiert": "already in the binder, will be marked as owned",
   "Sammlungswert": "Collection value",
   "Markiere Karten als vorhanden, dann zeigt dir der Binder, was sie ungefähr wert sind.": "Mark cards as owned and the binder shows roughly what they are worth.",
   "Preise werden geladen …": "Loading prices …",
@@ -786,6 +807,14 @@ Object.assign(translations, {
 });
 
 const patterns: Array<[RegExp, (...matches: string[]) => string]> = [
+  [/^Set nicht eindeutig\. Meintest du: (.+)\?$/, (names) => `Set is not unique. Did you mean: ${names}?`],
+  [/^Nicht lesbar: (.+)$/, (items) => `Not readable: ${items}`],
+  [/^(\d+) Karten? (?:wird|werden) eingetragen(?:, (\d+) nicht gefunden)?\.$/, (count, missing) => `${count} ${count === "1" ? "card is" : "cards are"} being entered${missing ? `, ${missing} not found` : ""}.`],
+  [/^(\d+) Karten? als vorhanden eintragen$/, (count) => `Enter ${count} ${count === "1" ? "card" : "cards"} as owned`],
+  [/^schon im Binder \((\d+)×\), Menge wird erhöht$/, (count) => `already in the binder (${count}×), quantity will be raised`],
+  [/^Nr\. (.+)$/, (number) => `No. ${number}`],
+  [/^(\d{4}) · (\d+) Karten$/, (year, count) => `${year} · ${count} cards`],
+  [/^Als vorhanden gespeichert: (?:(\d+) neu eingetragen)?(?:, )?(?:(\d+) schon im Binder, Menge erhöht)?\.(?: Bei (\d+) Karten bitte die Version prüfen \(Holo, Reverse oder Normal\)\.)?$/, (added, updated, review) => `Saved as owned: ${[added ? `${added} newly entered` : "", updated ? `${updated} already in the binder, quantity raised` : ""].filter(Boolean).join(", ")}.${review ? ` For ${review} cards please check the version (holo, reverse or normal).` : ""}`],
   [/^(\d+) Karten mit einem Angebot über 5\.000 € sind nicht eingerechnet: Das sieht nach Platzhalterpreisen aus\.$/, (count) => `${count} cards with a listing above €5,000 are not counted: that looks like placeholder prices.`],
   [/^(Preisentwicklung deiner aktuellen Karten|Verlauf) seit (.+): ([+−].+)$/, (kind, date, change) => `${kind === "Verlauf" ? "History" : "Price movement of your current cards"} since ${date}: ${change}`],
   [/^(\d+) von (\d+) Karten hatten in jeder Woche ein Angebot und zählen für die Kurve\.$/, (count, total) => `${count} of ${total} cards had a listing every week and count for the curve.`],
