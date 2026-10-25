@@ -21,7 +21,7 @@ export interface ValueHistoryStore {
 const defaultStore: ValueHistoryStore = { load: loadValueHistory, save: saveValueHistory };
 const defaultProvider = new CardTraderGiftPriceProvider();
 
-type Status = { state: "idle" } | { state: "loading" } | { state: "ready"; valueMinor: number; pricedCopies: number; ownedCopies: number; unrecorded: number };
+type Status = { state: "idle" } | { state: "loading" } | { state: "ready"; valueMinor: number; pricedCopies: number; ownedCopies: number; unrecorded: number; unverified: number };
 
 const CHART_WIDTH = 260;
 const CHART_HEIGHT = 56;
@@ -87,7 +87,7 @@ export function BinderValuePanel({ binder, cards, provider = defaultProvider, st
       if (cancelled) return;
       setHistory(next);
       setMarket(weekly);
-      setStatus({ state: "ready", valueMinor: value.valueMinor, pricedCopies: value.pricedCopies, ownedCopies: value.ownedCopies, unrecorded: copies.filter((owned) => !owned.conditionRecorded).length });
+      setStatus({ state: "ready", valueMinor: value.valueMinor, pricedCopies: value.pricedCopies, ownedCopies: value.ownedCopies, unverified: value.unverifiedCopies, unrecorded: copies.filter((owned) => !owned.conditionRecorded).length });
     })();
     return () => { cancelled = true; controller.abort(); };
     // `signature` stands for the owned cards, their condition and quantity.
@@ -102,10 +102,11 @@ export function BinderValuePanel({ binder, cards, provider = defaultProvider, st
       {copies.length === 0 ? <p className={styles.hint}>Markiere Karten als vorhanden, dann zeigt dir der Binder, was sie ungefähr wert sind.</p> : null}
       {status.state === "loading" ? <p className={styles.hint} role="status">Preise werden geladen …</p> : null}
       {status.state === "ready" && copies.length > 0 ? (
-        status.pricedCopies === 0 ? <p className={styles.hint}>Für diese Karten liegt noch kein Preis vor.</p> : (
+        status.pricedCopies === 0 && status.unverified === 0 ? <p className={styles.hint}>Für diese Karten liegt noch kein Preis vor.</p> : (
           <>
             <p className={styles.value}><span>ca.</span> <strong>{formatMoney(status.valueMinor, "EUR")}</strong></p>
             <p className={styles.coverage}>{status.pricedCopies} von {status.ownedCopies} vorhandenen Karten bepreist</p>
+            {status.unverified > 0 ? <p className={styles.coverage}>{status.unverified === 1 ? "1 Karte mit einem Angebot über 5.000 € ist nicht eingerechnet: Das sieht nach einem Platzhalterpreis aus." : `${status.unverified} Karten mit einem Angebot über 5.000 € sind nicht eingerechnet: Das sieht nach Platzhalterpreisen aus.`}</p> : null}
             {status.unrecorded > 0 ? <p className={styles.coverage}>{status.unrecorded === 1 ? "1 Karte ohne eingetragenen Zustand: Es gilt der Mindestzustand." : `${status.unrecorded} Karten ohne eingetragenen Zustand: Es gilt der Mindestzustand.`}</p> : null}
             <ValueSparkline history={weeklyMarket ? market : history} />
             {change ? (

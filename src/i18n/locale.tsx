@@ -22,6 +22,7 @@ const translations: Record<string, string> = {
   "Der Verlauf beginnt heute. Öffne den Binder später wieder, dann siehst du hier die Entwicklung.": "The history starts today. Open the binder again later to see how the value develops.",
   "Richtwert: das günstigste CardTrader-Angebot im jeweiligen Zustand, ohne Versand, aus der wöchentlichen Preisliste. Kein Verkaufspreis und keine Anlageberatung. Der Verlauf liegt nur in diesem Browser.": "Estimate: the cheapest CardTrader listing in the respective condition, excluding shipping, from the weekly price list. Not a selling price and not investment advice. The history stays in this browser only.",
   "Zustand deiner Karte": "Condition of your card",
+  "1 Karte mit einem Angebot über 5.000 € ist nicht eingerechnet: Das sieht nach einem Platzhalterpreis aus.": "1 card with a listing above €5,000 is not counted: that looks like a placeholder price.",
   "Nicht eingetragen": "Not recorded",
   "Menge": "Quantity",
   "Eine Karte weniger": "One card fewer",
@@ -785,6 +786,7 @@ Object.assign(translations, {
 });
 
 const patterns: Array<[RegExp, (...matches: string[]) => string]> = [
+  [/^(\d+) Karten mit einem Angebot über 5\.000 € sind nicht eingerechnet: Das sieht nach Platzhalterpreisen aus\.$/, (count) => `${count} cards with a listing above €5,000 are not counted: that looks like placeholder prices.`],
   [/^(Preisentwicklung deiner aktuellen Karten|Verlauf) seit (.+): ([+−].+)$/, (kind, date, change) => `${kind === "Verlauf" ? "History" : "Price movement of your current cards"} since ${date}: ${change}`],
   [/^(\d+) von (\d+) Karten hatten in jeder Woche ein Angebot und zählen für die Kurve\.$/, (count, total) => `${count} of ${total} cards had a listing every week and count for the curve.`],
   [/^Preis seit (.+): (.+) → (.+)$/, (date, from, to) => `Price since ${date}: ${from} → ${to}`],

@@ -63,6 +63,13 @@ describe("BinderValuePanel", () => {
     expect(screen.getByRole("img", { name: /Wertverlauf von/ })).toBeInTheDocument();
   });
 
+  it("leaves out a placeholder price and says so", async () => {
+    const binder = binderWith([planned("tcgdex:base1-1:en"), planned("tcgdex:base1-2:en")]);
+    render(<BinderValuePanel binder={binder} cards={cards} provider={provider({ "tcgdex:base1-1:en": 500, "tcgdex:base1-2:en": 1_000_064 })} store={memoryStore()} marketHistory={async () => []} />);
+    expect(await screen.findByText(/5,00/)).toBeInTheDocument();
+    expect(screen.getByText("1 Karte mit einem Angebot über 5.000 € ist nicht eingerechnet: Das sieht nach einem Platzhalterpreis aus.")).toBeInTheDocument();
+  });
+
   it("says so instead of showing zero when no card has a price", async () => {
     const store = memoryStore();
     render(<BinderValuePanel binder={binderWith([planned("tcgdex:base1-1:en")])} cards={cards} provider={provider({})} store={store} />);

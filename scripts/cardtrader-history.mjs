@@ -65,3 +65,41 @@ export function pricesOf(text) {
     return undefined;
   }
 }
+
+/* A cheapest-listing price far above the next cheaper condition of the same card is a placeholder or a mistake (typically
+ * a single listing at 10,000.64 EUR), not a market price. The check needs a cheaper condition to compare with. */
+export const OUTLIER_RATIO = 20;
+export const OUTLIER_FLOOR_CENTS = 2000;
+
+/** The four condition prices of one language (best condition first) with implausible high values set to 0 (no price). */
+export function dropOutliers(values) {
+  return values.map((value, index) => {
+    if (!(value >= OUTLIER_FLOOR_CENTS)) return value;
+    const cheaper = values.slice(index + 1).filter((other) => other > 0);
+    return cheaper.length > 0 && value > OUTLIER_RATIO * Math.min(...cheaper) ? 0 : value;
+  });
+}
+
+/** The ten price slots of a weekly price file with outliers removed in both languages; the "any" slots stay as they are. */
+export function cleanSlots(slots) {
+  return [...dropOutliers(slots.slice(0, 4)), slots[4], ...dropOutliers(slots.slice(5, 9)), slots[9]];
+}
+
+/** The same cleaning for a stored history, week by week, so older weeks lose their outliers too. Idempotent. */
+export function cleanHistory(history) {
+  if (!history) return history;
+  const series = {};
+  for (const [id, entry] of Object.entries(history.s)) {
+    const cleaned = {};
+    for (const language of ["en", "de"]) {
+      const names = ["nm", "ex", "lp", "pl"].map((condition) => `${language}:${condition}`);
+      const columns = history.dates.map((_, week) => dropOutliers(names.map((name) => entry[name]?.[week] ?? 0)));
+      names.forEach((name, row) => {
+        const values = columns.map((column) => column[row]);
+        if (values.some((value) => value > 0)) cleaned[name] = values;
+      });
+    }
+    if (Object.keys(cleaned).length > 0) series[id] = cleaned;
+  }
+  return { ...history, s: series };
+}

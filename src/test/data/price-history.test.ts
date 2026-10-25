@@ -17,6 +17,7 @@ const HISTORY = {
     "3": { "en:nm": [0, 300, 310] },
   },
 };
+const HIGH = { ...HISTORY, s: { ...HISTORY.s, "2": { "en:nm": [5000, 600_000, 4500] } } };
 const FILES: Record<string, unknown> = { "index.json": { "en:base1": 1472 }, "expansions/1472.json": EXPANSION, "history/1472.json": HISTORY };
 const catalog = () => new CardTraderCatalog(async (file) => { if (!(file in FILES)) throw new Error(`404 ${file}`); return FILES[file]; });
 
@@ -47,6 +48,18 @@ describe("card price trend", () => {
     const alakazam = owned("001", "Alakazam", 1, "lightly-played");
     expect(await cardPriceTrend(alakazam.card, alakazam.entry.variant, "lightly-played", catalog())).toEqual([{ date: "2026-10-21", amountMinor: 800 }, { date: "2026-11-04", amountMinor: 900 }]);
     expect(await cardPriceTrend(alakazam.card, { ...alakazam.entry.variant, edition: "first-edition" }, "lightly-played", catalog())).toEqual([]);
+  });
+});
+
+describe("placeholder prices in the series", () => {
+  const withHigh = new CardTraderCatalog(async (file) => { if (file === "history/1472.json") return HIGH; if (!(file in FILES)) throw new Error("404"); return FILES[file]; });
+
+  it("show no trend for a card that once had a price above the trusted limit, and keep such a card out of the curve", async () => {
+    const charizard = owned("004", "Charizard");
+    expect(await cardPriceTrend(charizard.card, charizard.entry.variant, "near-mint", withHigh)).toEqual([]);
+    const points = await binderMarketHistory([owned("001", "Alakazam"), charizard], withHigh);
+    expect(points.map((point) => point.valueMinor)).toEqual([1000, 1100, 1200]);
+    expect(points[0]).toMatchObject({ pricedCopies: 1, ownedCopies: 2 });
   });
 });
 
