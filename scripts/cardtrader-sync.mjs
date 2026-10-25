@@ -19,7 +19,7 @@ import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { asCollection } from "./cardtrader-response.mjs";
 import { summarizeOffers } from "./cardtrader-offers.mjs";
-import { appendWeek, pricesOf, serializeHistory } from "./cardtrader-history.mjs";
+import { appendWeek, cleanHistory, cleanSlots, pricesOf, serializeHistory } from "./cardtrader-history.mjs";
 
 /* The date of the last sync before the history existed: the first history file starts from the price files of that run. */
 const HISTORY_BOOTSTRAP_DATE = "2026-10-21";
@@ -175,7 +175,8 @@ for (const expansionId of expansionIds) {
     await wait(300);
     const listings = await get(`/marketplace/products?${new URLSearchParams({ expansion_id: expansionId })}`);
     const { prices, offers, stats } = aggregatePrices(Array.isArray(listings) ? {} : listings, new Set(blueprints.map((blueprint) => blueprint.id)));
-    const ordered = Object.fromEntries(Object.keys(prices).sort((a, b) => Number(a) - Number(b)).map((key) => [key, prices[key]]));
+    // Implausible high prices (placeholder listings) are dropped before anything is written; see cardtrader-history.mjs.
+    const ordered = Object.fromEntries(Object.keys(prices).sort((a, b) => Number(a) - Number(b)).map((key) => [key, cleanSlots(prices[key])]).filter(([, slots]) => slots.some((value) => value > 0)));
     const offerKeys = Object.keys(offers).filter((key) => ordered[key]).sort((a, b) => Number(a) - Number(b));
     const offerCounts = offerKeys.map((key) => `${JSON.stringify(key)}:${JSON.stringify(offers[key].counts)}`).join(",\n");
     const offerCountries = offerKeys.filter((key) => offers[key].countries.length).map((key) => `${JSON.stringify(key)}:${JSON.stringify(offers[key].countries.join(","))}`).join(",\n");
@@ -188,7 +189,7 @@ for (const expansionId of expansionIds) {
       const earlier = pricesOf(await readFile(join(outDir, "prices", `${expansionId}.json`), "utf8").catch(() => ""));
       if (earlier) history = appendWeek(undefined, expansionId, earlier, HISTORY_BOOTSTRAP_DATE);
     }
-    written[(await writeIfChanged(historyPath, serializeHistory(appendWeek(history, expansionId, ordered, today)))) ? "changed" : "unchanged"] += 1;
+    written[(await writeIfChanged(historyPath, serializeHistory(appendWeek(cleanHistory(history), expansionId, ordered, today)))) ? "changed" : "unchanged"] += 1;
     written[(await writeIfChanged(join(outDir, "prices", `${expansionId}.json`), body)) ? "changed" : "unchanged"] += 1;
     manifest.priced += Object.keys(ordered).length;
     manifest.listingsUsed += stats.used;

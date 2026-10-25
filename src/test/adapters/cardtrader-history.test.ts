@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { appendWeek, MAX_WEEKS, pricesOf, serializeHistory } from "../../../scripts/cardtrader-history.mjs";
+import { appendWeek, cleanHistory, cleanSlots, dropOutliers, MAX_WEEKS, pricesOf, serializeHistory } from "../../../scripts/cardtrader-history.mjs";
 
 const slots = (en: [number, number, number, number], de: [number, number, number, number] = [0, 0, 0, 0]) => [...en, 999, ...de, 999];
 
@@ -47,5 +47,33 @@ describe("weekly price history (sync)", () => {
     expect(pricesOf('{"id":1,"p":{"7":[1,2,3,4,5,6,7,8,9,10]}}')).toEqual({ "7": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] });
     expect(pricesOf("not json")).toBeUndefined();
     expect(pricesOf("")).toBeUndefined();
+  });
+});
+
+describe("implausible prices (sync)", () => {
+  it("drops a price far above the next cheaper condition and keeps plausible gaps and cheap cards", () => {
+    expect(dropOutliers([1_000_064, 35, 35, 35])).toEqual([0, 35, 35, 35]);
+    expect(dropOutliers([0, 1_008_598, 29, 29])).toEqual([0, 0, 29, 29]);
+    expect(dropOutliers([10_302, 5_409, 3_830, 3_079])).toEqual([10_302, 5_409, 3_830, 3_079]);
+    // Below the floor a big ratio is normal (a 3 EUR near mint card next to a 10 cent played one).
+    expect(dropOutliers([300, 10, 10, 10])).toEqual([300, 10, 10, 10]);
+  });
+
+  it("has nothing to compare a lone listing with, so it stays", () => {
+    expect(dropOutliers([1_500_128, 1_500_128, 1_500_128, 1_500_128])).toEqual([1_500_128, 1_500_128, 1_500_128, 1_500_128]);
+    expect(dropOutliers([1_000_064, 0, 0, 0])).toEqual([1_000_064, 0, 0, 0]);
+  });
+
+  it("cleans both languages of the ten slots and leaves the any-slots alone", () => {
+    expect(cleanSlots([1_000_064, 35, 35, 35, 28, 900_000, 30, 30, 30, 30])).toEqual([0, 35, 35, 35, 28, 0, 30, 30, 30, 30]);
+  });
+
+  it("cleans a stored history week by week and is idempotent", () => {
+    const history = appendWeek(appendWeek(undefined, 1, { "7": [1_000_064, 35, 35, 35, 28, 0, 0, 0, 0, 0] }, "2026-10-21"), 1, { "7": [100, 35, 35, 35, 28, 0, 0, 0, 0, 0] }, "2026-10-28");
+    const cleaned = cleanHistory(history);
+    expect(cleaned.s["7"]["en:nm"]).toEqual([0, 100]);
+    expect(cleaned.s["7"]["en:ex"]).toEqual([35, 35]);
+    expect(cleanHistory(cleaned)).toEqual(cleaned);
+    expect(cleanHistory(undefined)).toBeUndefined();
   });
 });

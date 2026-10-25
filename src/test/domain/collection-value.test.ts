@@ -27,11 +27,20 @@ describe("owned copies and binder value", () => {
     const third = planned("tcgdex:base1-3:en");
     const copies = ownedCopies(binderWith([first, second, third]), cards);
     const value = deriveBinderValue(copies, new Map([[first.id, 250], [second.id, undefined], [third.id, 0]]));
-    expect(value).toEqual({ valueMinor: 750, pricedCopies: 3, ownedCopies: 5, ownedCards: 3, pricedCards: 1 });
+    expect(value).toEqual({ valueMinor: 750, pricedCopies: 3, ownedCopies: 5, ownedCards: 3, pricedCards: 1, unverifiedCopies: 0 });
+  });
+
+  it("leaves a price above the trusted limit out of the total and reports it", () => {
+    const cheap = planned("tcgdex:base1-1:en");
+    const placeholder = planned("tcgdex:base1-2:en", { quantity: 2 });
+    const copies = ownedCopies(binderWith([cheap, placeholder]), cards);
+    const value = deriveBinderValue(copies, new Map([[cheap.id, 400], [placeholder.id, 1_000_064]]));
+    expect(value).toMatchObject({ valueMinor: 400, pricedCopies: 1, unverifiedCopies: 2 });
+    expect(deriveBinderValue(copies, new Map([[placeholder.id, 500_000]])).unverifiedCopies).toBe(0);
   });
 
   it("has no value for an empty collection", () => {
-    expect(deriveBinderValue([], new Map())).toEqual({ valueMinor: 0, pricedCopies: 0, ownedCopies: 0, ownedCards: 0, pricedCards: 0 });
+    expect(deriveBinderValue([], new Map())).toEqual({ valueMinor: 0, pricedCopies: 0, ownedCopies: 0, ownedCards: 0, pricedCards: 0, unverifiedCopies: 0 });
   });
 });
 

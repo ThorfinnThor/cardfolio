@@ -1,5 +1,5 @@
 import { cardtraderCatalog, type CardTraderCatalog, type PriceCondition } from "@/data/cardtrader/catalog";
-import type { OwnedCopy } from "@/domain/collection-value";
+import { MAX_TRUSTED_PRICE_MINOR, type OwnedCopy } from "@/domain/collection-value";
 import type { CardSnapshot, ValuePoint, VariantSelection } from "@/domain/types";
 
 export interface PriceTrendPoint {
@@ -21,7 +21,7 @@ async function seriesOf(catalog: CardTraderCatalog, card: CardSnapshot, variant:
  */
 export async function cardPriceTrend(card: CardSnapshot, variant: VariantSelection, condition: PriceCondition, catalog: CardTraderCatalog = cardtraderCatalog): Promise<PriceTrendPoint[]> {
   const history = await seriesOf(catalog, card, variant, condition);
-  if (!history) return [];
+  if (!history || history.amounts.some((amount) => amount > MAX_TRUSTED_PRICE_MINOR)) return [];
   return history.dates.flatMap((date, index) => (history.amounts[index]! > 0 ? [{ date, amountMinor: history.amounts[index]! }] : []));
 }
 
@@ -39,7 +39,10 @@ export async function binderMarketHistory(copies: readonly OwnedCopy[], catalog:
   if (usable.length === 0) return [];
   const common = usable[0]!.history.dates.filter((date) => usable.every(({ history }) => history.dates.includes(date)));
   if (common.length < 2) return [];
-  const basket = usable.filter(({ history }) => common.every((date) => history.amounts[history.dates.indexOf(date)]! > 0));
+  const basket = usable.filter(({ history }) => common.every((date) => {
+    const amount = history.amounts[history.dates.indexOf(date)]!;
+    return amount > 0 && amount <= MAX_TRUSTED_PRICE_MINOR;
+  }));
   if (basket.length === 0) return [];
   const ownedTotal = copies.reduce((sum, owned) => sum + owned.copies, 0);
   const basketCopies = basket.reduce((sum, { owned }) => sum + owned.copies, 0);

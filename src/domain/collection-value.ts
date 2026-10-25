@@ -2,6 +2,13 @@ import type { Binder, CardSnapshot, OwnedCondition, PlannedCard, PurchasePrefere
 
 export const MAX_VALUE_POINTS = 400;
 
+/**
+ * A single cheapest listing above this (in cents) cannot be told from a placeholder price, so it is not added to the
+ * value; the panel says how many copies were left out. The sync already drops prices far above a cheaper condition of
+ * the same card; this catches the ones with nothing to compare against.
+ */
+export const MAX_TRUSTED_PRICE_MINOR = 500_000;
+
 export interface OwnedCopy {
   entry: PlannedCard;
   card: CardSnapshot;
@@ -18,6 +25,8 @@ export interface BinderValue {
   ownedCopies: number;
   ownedCards: number;
   pricedCards: number;
+  /** Copies whose price was above MAX_TRUSTED_PRICE_MINOR and is not counted. */
+  unverifiedCopies: number;
 }
 
 export function copiesOf(entry: PlannedCard): number {
@@ -51,15 +60,20 @@ export function deriveBinderValue(copies: readonly OwnedCopy[], prices: Readonly
   let pricedCopies = 0;
   let pricedCards = 0;
   let total = 0;
+  let unverifiedCopies = 0;
   for (const owned of copies) {
     total += owned.copies;
     const price = prices.get(owned.entry.id);
     if (price === undefined || price <= 0) continue;
+    if (price > MAX_TRUSTED_PRICE_MINOR) {
+      unverifiedCopies += owned.copies;
+      continue;
+    }
     valueMinor += price * owned.copies;
     pricedCopies += owned.copies;
     pricedCards += 1;
   }
-  return { valueMinor, pricedCopies, ownedCopies: total, ownedCards: copies.length, pricedCards };
+  return { valueMinor, pricedCopies, ownedCopies: total, ownedCards: copies.length, pricedCards, unverifiedCopies };
 }
 
 export function todayUtc(now: Date = new Date()): string {
