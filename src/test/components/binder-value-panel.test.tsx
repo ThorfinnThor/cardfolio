@@ -2,6 +2,7 @@ import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { BinderValuePanel, type ValueHistoryStore } from "@/components/foundation/BinderValuePanel";
+import { CardPriceTrend } from "@/components/foundation/CardPriceTrend";
 import { CopyDetailsForm } from "@/components/foundation/CopyDetailsForm";
 import type { GiftPriceRequest, PriceProvider } from "@/domain/gift-builder";
 import type { Binder, CardSnapshot, PlannedCard, ValuePoint } from "@/domain/types";
@@ -37,7 +38,7 @@ describe("BinderValuePanel", () => {
     expect(await screen.findByText(/10,00/)).toBeInTheDocument();
     expect(screen.getByText("2 von 3 vorhandenen Karten bepreist")).toBeInTheDocument();
     expect(screen.getByText(/Es gilt der Mindestzustand/)).toBeInTheDocument();
-    expect(screen.getByText(/Der Verlauf beginnt heute/)).toBeInTheDocument();
+    expect(screen.getByText(/Die Preisreihe füllt sich mit jedem Wochenpreis/)).toBeInTheDocument();
     expect(screen.getByText(/keine Anlageberatung/)).toBeInTheDocument();
     await waitFor(() => expect(store.saved).toHaveLength(1));
     expect(store.saved[0]![0]).toMatchObject({ valueMinor: 1000, pricedCopies: 2, ownedCopies: 3 });
@@ -47,7 +48,19 @@ describe("BinderValuePanel", () => {
     const earlier: ValuePoint = { date: "2026-10-01", valueMinor: 800, pricedCopies: 3, ownedCopies: 3 };
     render(<BinderValuePanel binder={binderWith([planned("tcgdex:base1-1:en")])} cards={cards} provider={provider({ "tcgdex:base1-1:en": 1000 })} store={memoryStore([earlier])} />);
     expect(await screen.findByRole("img", { name: /Wertverlauf von/ })).toBeInTheDocument();
-    expect(screen.getByText(/Seit .*: \+2,00/)).toBeInTheDocument();
+    expect(screen.getByText(/Verlauf seit .*: \+2,00/)).toBeInTheDocument();
+  });
+
+  it("prefers the weekly price movement of the owned cards once two weeks exist", async () => {
+    const weekly: ValuePoint[] = [
+      { date: "2026-10-21", valueMinor: 900, pricedCopies: 1, ownedCopies: 2 },
+      { date: "2026-10-28", valueMinor: 1000, pricedCopies: 1, ownedCopies: 2 },
+    ];
+    const binder = binderWith([planned("tcgdex:base1-1:en"), planned("tcgdex:base1-2:en")]);
+    render(<BinderValuePanel binder={binder} cards={cards} provider={provider({ "tcgdex:base1-1:en": 1000, "tcgdex:base1-2:en": 500 })} store={memoryStore()} marketHistory={async () => weekly} />);
+    expect(await screen.findByText(/Preisentwicklung deiner aktuellen Karten seit .*: \+1,00/)).toBeInTheDocument();
+    expect(screen.getByText("1 von 2 Karten hatten in jeder Woche ein Angebot und zählen für die Kurve.")).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: /Wertverlauf von/ })).toBeInTheDocument();
   });
 
   it("says so instead of showing zero when no card has a price", async () => {
@@ -69,5 +82,17 @@ describe("CopyDetailsForm", () => {
     expect(onChange).toHaveBeenLastCalledWith({ condition: "lightly-played" });
     rerender(<CopyDetailsForm entry={planned("tcgdex:base1-1:en", { quantity: 99 })} onChange={onChange} />);
     expect(screen.getByRole("button", { name: "Eine Karte mehr" })).toBeDisabled();
+  });
+});
+
+describe("CardPriceTrend", () => {
+  it("shows the price movement once two weeks exist and nothing before", async () => {
+    const entry = planned("tcgdex:base1-1:en");
+    const two = [{ date: "2026-10-21", amountMinor: 1000 }, { date: "2026-10-28", amountMinor: 1250 }];
+    const { rerender, container } = render(<CardPriceTrend card={card("1")} entry={entry} load={async () => two} />);
+    expect(await screen.findByText("Preisverlauf")).toBeInTheDocument();
+    expect(screen.getByText(/Preis seit .*: 10,00 € → 12,50 €/)).toBeInTheDocument();
+    rerender(<CardPriceTrend card={card("1")} entry={entry} load={async () => [two[0]!]} />);
+    await waitFor(() => expect(container).toBeEmptyDOMElement());
   });
 });

@@ -4,8 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 
 import { CardTraderGiftPriceProvider } from "@/data/pricing/cardtrader-price-provider";
 import { priceOwnedCopies } from "@/data/pricing/binder-value-service";
+import { binderMarketHistory } from "@/data/pricing/price-history";
 import { loadValueHistory, saveValueHistory } from "@/data/persistence/value-history";
-import { deriveBinderValue, ownedCopies, recordValuePoint, todayUtc, valueChange } from "@/domain/collection-value";
+import { deriveBinderValue, ownedCopies, type OwnedCopy, recordValuePoint, todayUtc, valueChange } from "@/domain/collection-value";
 import type { PriceProvider } from "@/domain/gift-builder";
 import type { Binder, CardSnapshot, UUID, ValuePoint } from "@/domain/types";
 
@@ -48,16 +49,19 @@ export function ValueSparkline({ history }: { history: readonly ValuePoint[] }) 
  * What the owned cards of the open binder are roughly worth: the cheapest CardTrader listing per card in its
  * condition, times the number of copies. One point per day is kept on this device for the history.
  */
-export function BinderValuePanel({ binder, cards, provider = defaultProvider, store = defaultStore }: {
+export function BinderValuePanel({ binder, cards, provider = defaultProvider, store = defaultStore, marketHistory = binderMarketHistory }: {
   binder: Binder;
   cards: ReadonlyMap<string, CardSnapshot>;
   provider?: PriceProvider;
   store?: ValueHistoryStore;
+  /** Weekly price movement of the owned cards, from the synced price series. */
+  marketHistory?: (copies: readonly OwnedCopy[]) => Promise<ValuePoint[]>;
 }) {
   const copies = useMemo(() => ownedCopies(binder, cards), [binder, cards]);
   const signature = useMemo(() => copies.map((owned) => `${owned.entry.id}:${owned.card.key}:${owned.condition}:${owned.copies}`).join("|"), [copies]);
   const [status, setStatus] = useState<Status>({ state: "idle" });
   const [history, setHistory] = useState<ValuePoint[]>([]);
+  const [market, setMarket] = useState<ValuePoint[]>([]);
   const binderId = binder.id;
 
   useEffect(() => {
@@ -79,15 +83,19 @@ export function BinderValuePanel({ binder, cards, provider = defaultProvider, st
         : saved;
       if (next !== saved) await store.save(binderId, next).catch(() => undefined);
       if (cancelled) return;
+      const weekly = await marketHistory(copies).catch(() => [] as ValuePoint[]);
+      if (cancelled) return;
       setHistory(next);
+      setMarket(weekly);
       setStatus({ state: "ready", valueMinor: value.valueMinor, pricedCopies: value.pricedCopies, ownedCopies: value.ownedCopies, unrecorded: copies.filter((owned) => !owned.conditionRecorded).length });
     })();
     return () => { cancelled = true; controller.abort(); };
     // `signature` stands for the owned cards, their condition and quantity.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [signature, binderId, provider, store]);
+  }, [signature, binderId, provider, store, marketHistory]);
 
-  const change = valueChange(history);
+  const weeklyMarket = market.length >= 2;
+  const change = valueChange(weeklyMarket ? market : history);
   return (
     <section className={styles.panel} aria-label="Sammlungswert">
       <h2>Sammlungswert</h2>
@@ -99,10 +107,11 @@ export function BinderValuePanel({ binder, cards, provider = defaultProvider, st
             <p className={styles.value}><span>ca.</span> <strong>{formatMoney(status.valueMinor, "EUR")}</strong></p>
             <p className={styles.coverage}>{status.pricedCopies} von {status.ownedCopies} vorhandenen Karten bepreist</p>
             {status.unrecorded > 0 ? <p className={styles.coverage}>{status.unrecorded === 1 ? "1 Karte ohne eingetragenen Zustand: Es gilt der Mindestzustand." : `${status.unrecorded} Karten ohne eingetragenen Zustand: Es gilt der Mindestzustand.`}</p> : null}
-            <ValueSparkline history={history} />
+            <ValueSparkline history={weeklyMarket ? market : history} />
             {change ? (
-              <p className={styles.coverage}>Seit {formatDate(change.since)}: {change.deltaMinor >= 0 ? "+" : "−"}{formatMoney(Math.abs(change.deltaMinor), "EUR")}</p>
-            ) : <p className={styles.coverage}>Der Verlauf beginnt heute. Öffne den Binder später wieder, dann siehst du hier die Entwicklung.</p>}
+              <p className={styles.coverage}>{weeklyMarket ? "Preisentwicklung deiner aktuellen Karten" : "Verlauf"} seit {formatDate(change.since)}: {change.deltaMinor >= 0 ? "+" : "−"}{formatMoney(Math.abs(change.deltaMinor), "EUR")}</p>
+            ) : <p className={styles.coverage}>Die Preisreihe füllt sich mit jedem Wochenpreis. Öffne den Binder später wieder, dann siehst du hier die Entwicklung.</p>}
+            {weeklyMarket ? <p className={styles.coverage}>{market[0]!.pricedCopies} von {market[0]!.ownedCopies} Karten hatten in jeder Woche ein Angebot und zählen für die Kurve.</p> : null}
           </>
         )
       ) : null}

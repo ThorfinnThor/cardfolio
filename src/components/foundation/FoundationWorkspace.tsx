@@ -75,6 +75,7 @@ import { catalogLabel, coverLeather } from "./binder-cover";
 import { BinderOverview } from "./BinderOverview";
 import { BinderSetProgress } from "./BinderSetProgress";
 import { BinderValuePanel } from "./BinderValuePanel";
+import { CardPriceTrend } from "./CardPriceTrend";
 import { CopyDetailsForm } from "./CopyDetailsForm";
 import { SetLogo } from "./SetLogo";
 import { GiftBuilderPanel } from "./GiftBuilderPanel";
@@ -2828,6 +2829,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
                       <div><dt>Zustand</dt><dd>{conditionProfile(contextEntry.preferences.minimumCondition).label}</dd></div>
                       <div><dt>Status</dt><dd data-tone={contextEntry.owned ? "ok" : "miss"}>{contextEntry.owned ? "Vorhanden" : "Fehlt"}</dd></div>
                     </dl>
+                    {FEATURES.cardtraderPrices && contextCard ? <CardPriceTrend card={contextCard} entry={contextEntry} /> : null}
                     {contextEntry.owned ? <CopyDetailsForm entry={contextEntry} onChange={(details) => void saveCopyDetails(contextEntry.id, details)} /> : null}
                     <div className={styles.contextActions}>
                       <button type="button" className={styles.primaryButton} onClick={() => void toggleOwned(contextEntry.id, !contextEntry.owned)}>{contextEntry.owned ? "Als fehlend markieren" : "Als vorhanden markieren"}</button>

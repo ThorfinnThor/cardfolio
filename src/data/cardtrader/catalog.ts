@@ -42,11 +42,28 @@ export const priceFileSchema = z.object({
   /** Seller countries of those offers, cheapest first, as "DE,IT". Absent in older files. */
   c: z.record(z.string(), z.string().regex(/^[A-Z]{2}(?:,[A-Z]{2})*$/)).optional(),
 });
+/** Weekly prices per blueprint and "language:condition" series; a 0 means no listing that week. */
+export const historyFileSchema = z.object({
+  id: z.number().int().positive(),
+  currency: z.literal("EUR"),
+  dates: z.array(z.string().regex(/^\d{4}-\d{2}-\d{2}$/)).max(200),
+  s: z.record(z.string(), z.record(z.string().regex(/^(?:en|de):(?:nm|ex|lp|pl)$/), z.array(z.number().int().nonnegative()).max(200))),
+});
 export const indexFileSchema = z.record(z.string().regex(/^(?:en|de):.+$/), z.number().int().positive());
 
 export type CardTraderBlueprint = z.infer<typeof blueprintSchema>;
 type ExpansionFile = z.infer<typeof expansionFileSchema>;
 type PriceFile = z.infer<typeof priceFileSchema>;
+type HistoryFile = z.infer<typeof historyFileSchema>;
+
+export interface CardTraderPriceHistory {
+  /** Dates of the weekly snapshots, oldest first. */
+  dates: readonly string[];
+  /** Cheapest EUR listing in cents per date; 0 when there was no listing that week. */
+  amounts: readonly number[];
+}
+
+const HISTORY_SLOT: Partial<Record<PriceCondition, string>> = { "near-mint": "nm", excellent: "ex", "lightly-played": "lp", played: "pl" };
 
 /** Collector numbers are padded differently between providers ("001" vs "1"); compare the normalised form. */
 export function normalizeCollectorNumber(value: string): string {
@@ -94,6 +111,7 @@ export class CardTraderCatalog {
   private index?: Promise<Record<string, number> | undefined>;
   private readonly expansions = new Map<number, Promise<ExpansionFile | undefined>>();
   private readonly prices = new Map<number, Promise<PriceFile | undefined>>();
+  private readonly histories = new Map<number, Promise<HistoryFile | undefined>>();
 
   constructor(private readonly load: Loader = defaultLoader) {}
 
@@ -127,6 +145,28 @@ export class CardTraderCatalog {
       this.prices.set(id, promise);
     }
     return promise;
+  }
+
+  private historyFile(id: number): Promise<HistoryFile | undefined> {
+    let promise = this.histories.get(id);
+    if (!promise) {
+      promise = this.safe(`history/${id}.json`, historyFileSchema);
+      this.histories.set(id, promise);
+    }
+    return promise;
+  }
+
+  /**
+   * The weekly price history of one card at one condition, or undefined when there is none (no file yet, "any" as the
+   * condition, or no listing in any week).
+   */
+  async priceHistory(match: CardTraderMatch, language: CardLanguage, minimum: PriceCondition): Promise<CardTraderPriceHistory | undefined> {
+    const slot = HISTORY_SLOT[minimum];
+    if (!slot) return undefined;
+    const file = await this.historyFile(match.expansionId);
+    const amounts = file?.s[String(match.blueprint.id)]?.[`${language}:${slot}`];
+    if (!file || !amounts || amounts.length !== file.dates.length || !amounts.some((amount) => amount > 0)) return undefined;
+    return { dates: file.dates, amounts };
   }
 
   /**
