@@ -1,0 +1,398 @@
+[
+ {
+  "id": "pl1-109",
+  "removed": "human-present",
+  "reason": "trainer portrait in card frame (not illustration); caption names no person",
+  "caption": "A detective in a trench coat stands in a desert-colored plain with red towers."
+ },
+ {
+  "id": "pl2-97",
+  "removed": "human-present",
+  "reason": "trainer portrait in card frame (not illustration); caption names no person",
+  "caption": "A miner in a helmet lies in a tight cave with a pickaxe."
+ },
+ {
+  "id": "pl1-7",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A dark blue Dialga in a lightning storm with a man glaring in the corner."
+ },
+ {
+  "id": "pl1-12",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A dark Dialga with glowing pink lightning and a man in the corner."
+ },
+ {
+  "id": "pl1-17",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Weavile leaps across a rocky bridge under a full moon with a man in the corner."
+ },
+ {
+  "id": "pl1-30",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Gyarados roars in a stormy night sea with a building on shore and a man in the corner."
+ },
+ {
+  "id": "pl1-40",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A blue Toxicroak crouches on dark ground with a man's hair at the corner."
+ },
+ {
+  "id": "pl1-47",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Crobat flies in a dim room with crates and a man in the corner."
+ },
+ {
+  "id": "pl1-50",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Houndoom snarls on a dark hillside at night with a man at the corner."
+ },
+ {
+  "id": "pl1-77",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A blue Honchkrow perches among ruins and a satellite dish with a man at the corner."
+ },
+ {
+  "id": "pl1-122",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A dark Dialga roars with a man at the corner."
+ },
+ {
+  "id": "pl1-125",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A dark Palkia in pink and black with a man at the corner."
+ },
+ {
+  "id": "pl2-2",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A gray Rhyperior hunches in a dark arena with a pink-haired man at the corner."
+ },
+ {
+  "id": "pl2-3",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A white Darkrai flies amid lightning over a dark city at night with a man at the corner."
+ },
+ {
+  "id": "pl2-4",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Buizel leaps over a blue grid floor with a white-haired man at the corner."
+ },
+ {
+  "id": "pl2-6",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A white Froslass drifts in an icy blue haze with a woman at the corner."
+ },
+ {
+  "id": "pl2-9",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Luxray leaps past a pagoda-like tower with a blond man at the corner."
+ },
+ {
+  "id": "pl2-11",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A blue Rampardos roars in an arena with a man in a red helmet at the corner."
+ },
+ {
+  "id": "pl2-16",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A large bell Pokémon hangs in a room with a man in glasses at the corner."
+ },
+ {
+  "id": "pl2-17",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A pink Drapion lunges across a floor with a green-haired man at the corner."
+ },
+ {
+  "id": "pl2-18",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "An Espeon leaps before a blue grid with a man in glasses at the corner."
+ },
+ {
+  "id": "pl2-20",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Gallade slices with green blades before a blue grid with a man at the corner."
+ },
+ {
+  "id": "pl2-23",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Golem crouches in a burst of golden light with an old man at the corner."
+ },
+ {
+  "id": "pl2-24",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A blue Heracross lunges with a green-haired man at the corner."
+ },
+ {
+  "id": "pl2-28",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Mr. Mime presses invisible walls on a stage with a man at the corner."
+ },
+ {
+  "id": "pl2-31",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Raichu dashes in front of a tower with a blond man at the corner."
+ },
+ {
+  "id": "pl2-32",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Rhyperior charges with a gray-haired man at the corner."
+ },
+ {
+  "id": "pl2-37",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Yanmega flies with a green-haired man at the corner."
+ },
+ {
+  "id": "pl2-38",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "An Alakazam holds spoons with a man in glasses at the corner."
+ },
+ {
+  "id": "pl2-39",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "An Electrode glows before buildings with lit windows at night with a man at the corner."
+ },
+ {
+  "id": "pl2-42",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Hippowdon roars in a dust cloud with a gray-haired man at the corner."
+ },
+ {
+  "id": "pl2-43",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "An Entei strikes amid flames with a red-haired person at the corner."
+ },
+ {
+  "id": "pl2-47",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Rapidash rears in a blaze of flames with a red-haired person at the corner."
+ },
+ {
+  "id": "pl2-48",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A red Scizor strikes with a green-haired man at the corner."
+ },
+ {
+  "id": "pl2-51",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A blue Steelix glows with a red-haired man at the corner."
+ },
+ {
+  "id": "pl2-54",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A blue Wailmer spouts water in a sandy golden haze with an old man at the corner."
+ },
+ {
+  "id": "pl2-55",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A purple Aerodactyl screeches with a man in a red helmet at the corner."
+ },
+ {
+  "id": "pl2-56",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A purple Ambipom holds a Pokémon-like tail hand aloft on rocky ground with a blue-haired person at the corner."
+ },
+ {
+  "id": "pl2-60",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A fluffy fox Pokémon dashes with flames behind and a red-haired person at the corner."
+ },
+ {
+  "id": "pl2-61",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A purple spiky Pokémon breaks out of a rocky hole with a teal-haired person at the corner."
+ },
+ {
+  "id": "pl2-62",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Gliscor glides with a gray-haired man at the corner."
+ },
+ {
+  "id": "pl2-65",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Houndoom snarls in front of flames with a red-haired person at the corner."
+ },
+ {
+  "id": "pl2-76",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A blue Quagsire dives with a white-haired man at the corner."
+ },
+ {
+  "id": "pl2-103",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "An Alakazam holds spoons in a dark starry setting with a man in glasses at the corner."
+ },
+ {
+  "id": "pl2-104",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Floatzel twists in a blue star-filled scene with a white-haired man at the corner."
+ },
+ {
+  "id": "pl2-106",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A green Gallade strikes in a starry purple scene with a man in glasses at the corner."
+ },
+ {
+  "id": "pl2-108",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A fiery Infernape springs forward with a red-haired person at the corner."
+ },
+ {
+  "id": "pl2-109",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A black and blue Luxray leaps in a starry purple scene with a blond man at the corner."
+ },
+ {
+  "id": "dpp-DP41",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "Toxicroak crouching among ruined fences on a dark starry ground, with a trainer portrait in the corner."
+ },
+ {
+  "id": "dpp-DP42",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "Carnivine hovering over a dark garden, with a trainer portrait in the corner."
+ },
+ {
+  "id": "dpp-DP43",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "Probopass with floating magnets on a black background, with a trainer portrait in the corner."
+ },
+ {
+  "id": "dpp-DP45",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "Charizard breathing fire against a dark starry background, with a trainer portrait in the corner."
+ },
+ {
+  "id": "dpp-DP46",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "Garchomp roaring amid purple swirls, with a trainer portrait in the corner."
+ },
+ {
+  "id": "dpp-DP47",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "Rayquaza roaring with a green body against a magenta background, with a trainer portrait in the corner."
+ },
+ {
+  "id": "pl1-41",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A bell Pokémon floats at night by ruined pillars with a girl in the corner."
+ },
+ {
+  "id": "pl1-88",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Glameow leaps in a messy room with a red-haired girl at the corner."
+ },
+ {
+  "id": "pl1-94",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Skuntank prowls rocks under a full moon with a girl at the corner."
+ },
+ {
+  "id": "pl2-8",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Lucario leaps through a scaffold with a pink-haired girl at the corner."
+ },
+ {
+  "id": "pl2-10",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A purple Mismagius floats in a stone hall with a pink-haired girl at the corner."
+ },
+ {
+  "id": "pl2-12",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Roserade holds red and blue berries with an orange-haired girl at the corner."
+ },
+ {
+  "id": "pl2-27",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Mamoswine charges in a cold blue setting with a girl at the corner."
+ },
+ {
+  "id": "pl2-40",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A purple Gengar grins among stone arches with a pink-haired girl at the corner."
+ },
+ {
+  "id": "pl2-46",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Machamp flexes with a pink-haired girl at the corner."
+ },
+ {
+  "id": "pl2-85",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Turtwig peeks over a fence with flowers and a girl at the corner."
+ },
+ {
+  "id": "pl2-110",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A purple Mismagius swoops in a sparkling blue scene with a girl at the corner."
+ },
+ {
+  "id": "pl2-35",
+  "removed": "human-present",
+  "reason": "only a trainer portrait in the card frame corner",
+  "caption": "A Vespiquen perches on its honeycomb while a green-haired man is at the corner."
+ }
+]
