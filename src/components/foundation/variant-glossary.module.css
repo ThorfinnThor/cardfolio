@@ -1,7 +1,7 @@
-.glossary { display: grid; gap: 0.5rem; padding: 0.7rem 0.9rem; border: 1px solid var(--cf-line2); border-radius: 10px; background: var(--cf-surface2); color: var(--cf-text2); }
-.glossary summary { width: fit-content; color: var(--cf-text); font-weight: 750; cursor: pointer; }
+.glossary { display: grid; gap: 0.5rem; padding: 0.6rem 0.8rem; font-size: 0.8rem; line-height: 1.45; border: 1px solid var(--cf-line2); border-radius: 10px; background: var(--cf-surface2); color: var(--cf-text2); }
+.glossary summary { width: fit-content; color: var(--cf-accent-text); font-family: inherit; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
 .glossary[open] summary { margin-bottom: 0.4rem; }
 .glossary dl { display: grid; gap: 0.5rem; margin: 0; }
 .glossary dt { color: var(--cf-text); font-weight: 700; }
 .glossary dd { margin: 0; line-height: 1.5; }
-.glossary p { margin: 0; line-height: 1.5; font-size: 0.9rem; }
+.glossary p { margin: 0; line-height: 1.45; font-size: 0.8rem; }

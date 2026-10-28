@@ -18,6 +18,14 @@ export function appPath(): string {
   return "/app/";
 }
 
+/**
+ * The app opened on the list of binders, so someone who wants to collect (and maybe already has an unfinished gift
+ * binder) is not taken straight back into the last binder.
+ */
+export function appOverviewPath(): string {
+  return `${appPath()}?start=1`;
+}
+
 export function homePath(language: PageLanguage): string {
   return language === "de" ? "/" : "/en/";
 }

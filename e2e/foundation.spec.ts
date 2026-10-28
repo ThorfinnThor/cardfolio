@@ -865,7 +865,7 @@ test("offers a lean gift entry without collector navigation", async ({ page }) =
   await expect(page.getByRole("heading", { name: "Ein Binder voller Karten vom Lieblings-Pokémon." })).toBeVisible();
   await expect(page.getByRole("complementary", { name: "Your Card Binder Navigation" })).toHaveCount(0);
   await expect(page.getByRole("tab")).toHaveCount(0);
-  await expect(page.getByRole("link", { name: "Ich sammle selbst" })).toHaveAttribute("href", "/app/");
+  await expect(page.getByRole("link", { name: "Ich sammle selbst" })).toHaveAttribute("href", "/app/?start=1");
   await expect(page.getByRole("link", { name: /Anleitung: Karten bei Cardmarket kaufen/ })).toHaveAttribute("href", "/anleitung/cardmarket/");
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(375);
 
@@ -1195,4 +1195,16 @@ test("quick add enters cards by collector number as owned, with their quantity",
   await page.reload();
   await page.getByRole("article", { name: /Bulbasaur, Slot 1/ }).click();
   await expect(page.getByRole("group", { name: "Menge" }).locator("output")).toHaveText("2");
+});
+
+test("\"Ich sammle selbst\" opens the list of binders instead of the last binder", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/app/");
+  await createBinderFromStart(page, "Meine Sammlung");
+  await expect(page.getByRole("button", { name: "Schnell erfassen" })).toBeVisible();
+
+  await page.goto("/app/?start=1");
+  await expect(page.getByRole("tablist", { name: "Binder erstellen" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Schnell erfassen" })).toHaveCount(0);
+  expect(new URL(page.url()).search).toBe("");
 });
