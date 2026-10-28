@@ -46,7 +46,7 @@ import { sortCatalogSearchItems, type CatalogResultSort } from "@/domain/catalog
 import { formatCollectorNumber, parseCatalogSearch } from "@/domain/catalog-search";
 import { createMissingItemsCsvExport, createMissingItemsTextExport } from "@/domain/missing-items-export";
 import { deriveMissingItems } from "@/domain/missing-items";
-import type { PageSelectionItem, PageSelectionTarget } from "@/domain/page-selection";
+import { mergeDuplicatePageSelectionItems, type PageSelectionItem, type PageSelectionTarget } from "@/domain/page-selection";
 import type { PageSelectionUndoToken } from "@/domain/reversible-page-selection";
 import type { CardmarketHandoffPart } from "@/domain/cardmarket-handoff";
 import type { TcgplayerMassEntryExport } from "@/domain/tcgplayer-export";
@@ -1410,15 +1410,23 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
       }
     }));
     if (token !== pageSelectionTokenRef.current) return;
-    const items = hydrated.filter((item): item is PageSelectionItem => Boolean(item));
+    const { items, mergedCount } = mergeDuplicatePageSelectionItems(
+      hydrated.filter((item): item is PageSelectionItem => Boolean(item)),
+    );
+    const notices = [
+      fallbackNames.length
+        ? `${fallbackNames.length} gewünschte deutsche ${fallbackNames.length === 1 ? "Version wurde" : "Versionen wurden"} nicht gefunden. Die englische Ausgabe ist sichtbar als Fallback geladen.`
+        : "",
+      mergedCount
+        ? `${mergedCount} doppelt gewählte ${mergedCount === 1 ? "Karte wurde" : "Karten wurden"} zusammengefasst.`
+        : "",
+    ].filter(Boolean);
     setPageSelectionRequest((current) => current && current.sourceItems === sourceItems
       ? {
           ...current,
           items,
           status: failedNames.length && !items.length ? "error" : "ready",
-          notice: fallbackNames.length
-            ? `${fallbackNames.length} gewünschte deutsche ${fallbackNames.length === 1 ? "Version wurde" : "Versionen wurden"} nicht gefunden. Die englische Ausgabe ist sichtbar als Fallback geladen.`
-            : undefined,
+          notice: notices.length ? notices.join(" ") : undefined,
           error: failedNames.length
             ? `${failedNames.length} Karte(n) konnten nicht als physische Ausgabe geladen werden: ${failedNames.join(", ")}.`
             : undefined,

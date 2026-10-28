@@ -4,6 +4,7 @@ import { addPage, createBinder, createPlannedCard, placeCard } from "@/domain/bi
 import {
   applyPageSelection,
   createPageSelectionItem,
+  mergeDuplicatePageSelectionItems,
   PageSelectionError,
   type PageSelectionDraft,
 } from "@/domain/page-selection";
@@ -425,5 +426,15 @@ describe("page selection domain", () => {
     );
     const entries = result.binder.pages[0].slots.filter((slot) => slot !== null);
     expect(entries.map((entry) => entry?.owned)).toEqual([true, false]);
+  });
+
+  it("keeps one item per card key and counts what was merged", () => {
+    const [first, second] = draft(2).items;
+    const duplicate = { ...first, owned: true };
+    const result = mergeDuplicatePageSelectionItems([first, second, duplicate]);
+
+    expect(result.items).toEqual([first, second]);
+    expect(result.mergedCount).toBe(1);
+    expect(mergeDuplicatePageSelectionItems([first, second]).mergedCount).toBe(0);
   });
 });
