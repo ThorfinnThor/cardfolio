@@ -141,6 +141,29 @@ export function availablePrintingValues(
   return ["shadowed", "shadowless"];
 }
 
+/** The plain finishes a card can be marked with (Normal, Holo, Reverse Holo); "other" and "unspecified" are left to the detailed form. */
+export function selectableFinishes(
+  availability?: CardVariantAvailability | CardVariantOptions,
+  edition: EditionValue = "unlimited",
+): FinishValue[] {
+  return availableFinishValues(availability, edition).filter((value) => value === "normal" || value === "holo" || value === "reverse");
+}
+
+/**
+ * The finish after one tap on the star. With nothing chosen yet the first tap means Holo (that is what the star says)
+ * when the card has one; later taps walk through the finishes the card really exists in.
+ */
+export function nextFinish(
+  variant: VariantSelection,
+  availability?: CardVariantAvailability | CardVariantOptions,
+): FinishValue {
+  const finishes = selectableFinishes(availability, variant.edition);
+  if (!finishes.length) return variant.finish;
+  const index = finishes.indexOf(variant.finish);
+  if (index < 0) return finishes.includes("holo") ? "holo" : finishes[0];
+  return finishes[(index + 1) % finishes.length];
+}
+
 export function createInitialVariantSelection(availability?: CardVariantAvailability): VariantSelection {
   const reportedFinishes = availability && areFinishesVerified(availability)
     ? [

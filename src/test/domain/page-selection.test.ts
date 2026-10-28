@@ -416,4 +416,14 @@ describe("page selection domain", () => {
       "page-not-found",
     );
   });
+
+  it("saves cards the collector already has as owned and the others as missing", () => {
+    const selection = draft(2);
+    const result = applyPageSelection(
+      { items: [{ ...selection.items[0], owned: true }, selection.items[1]] },
+      { kind: "new-binder", name: "Owned" },
+    );
+    const entries = result.binder.pages[0].slots.filter((slot) => slot !== null);
+    expect(entries.map((entry) => entry?.owned)).toEqual([true, false]);
+  });
 });

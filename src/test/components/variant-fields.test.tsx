@@ -56,7 +56,7 @@ describe("VariantFields", () => {
 
     expect(within(screen.getByRole("combobox", { name: "Edition" })).getByRole("option", { name: "First Edition" })).toBeInTheDocument();
     expect(within(screen.getByRole("combobox", { name: "Druckvariante" })).getByRole("option", { name: "Shadowless" })).toBeInTheDocument();
-    expect(screen.getByRole("status")).toHaveTextContent("Bestellwunsch vorbereitet");
+    expect(screen.getByRole("status")).toHaveTextContent("Ausführung festgelegt");
   });
 
   it("keeps unknown finishes manual while hiding impossible modern printings", () => {

@@ -417,8 +417,10 @@ test("reviews multiple cards and fills from the next free slot continuously", as
   await expect(search.getByText("2 Karten ausgewählt")).toBeVisible();
   await search.getByRole("button", { name: "Auswahl prüfen" }).click();
 
-  const review = page.getByRole("dialog", { name: "2 Karten als Auswahl übernehmen" });
-  for (const finish of await review.getByLabel("Ausführung der Karte").all()) await expect(finish).toHaveValue("normal");
+  const review = page.getByRole("dialog", { name: "2 Karten zum Binder hinzufügen" });
+  await expect(review.getByText("Normal · fehlt noch")).toHaveCount(2);
+  await review.getByRole("button", { name: "Habe ich: Ivysaur" }).click();
+  await expect(review.getByText("Normal · habe ich")).toHaveCount(1);
   await review.getByLabel("Ab nächstem freien Platz fortlaufend").check();
   const confirmSelection = review.getByRole("button", { name: "Auswahl übernehmen" });
   await expect(confirmSelection).toBeEnabled();

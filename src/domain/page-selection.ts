@@ -22,6 +22,8 @@ export interface PageSelectionItem {
   card: CardSnapshot;
   variant: VariantSelection;
   preferences: PurchasePreferences;
+  /** The collector already has this card; it is saved as owned instead of missing. */
+  owned?: boolean;
 }
 
 /**
@@ -325,7 +327,7 @@ export function applyPageSelection(
   let binder = resolved.binder;
   const placements: PageSelectionPlacement[] = [];
   draft.items.forEach((item, index) => {
-    const entry = createPlannedCard(item.card.key, item.variant, item.preferences);
+    const entry = { ...createPlannedCard(item.card.key, item.variant, item.preferences), owned: item.owned === true };
     const location = resolved.locations[index];
     binder = placeCard(binder, location, entry);
     placements.push({
