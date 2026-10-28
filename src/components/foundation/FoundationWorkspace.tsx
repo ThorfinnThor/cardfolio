@@ -38,6 +38,7 @@ import {
   type SlotLocation,
   type SupportedBinderLayout,
 } from "@/domain/binder-actions";
+import { appOverviewPath } from "@/content/routes";
 import { recordBackup } from "@/data/backup/backup-reminder";
 import { applyQuickAdd, planQuickAdd, type QuickAddChange, type QuickAddResult } from "@/domain/quick-add";
 import { deriveBinderStats } from "@/domain/binder-stats";
@@ -516,7 +517,16 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
   const [giftBinderIds, setGiftBinderIds] = useState<ReadonlySet<string>>(new Set());
   // The landing page and the guides link to /geschenk/?start=1 so the visitor lands in step 1, not on a second hero.
   useEffect(() => {
-    if (!giftShell) return;
+    if (!giftShell) {
+      // "Ich sammle selbst" links to /app/?start=1: show the list of binders, not the last binder again.
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("start") !== "1") return;
+      params.delete("start");
+      const query = params.toString();
+      window.history.replaceState(window.history.state, "", `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`);
+      setBinderManagerOpen(true);
+      return;
+    }
     // A link with a shared proposal opens the builder; the builder reads and clears the fragment.
     if (/^#vorschlag=/.test(window.location.hash)) {
       clearGiftResume();
@@ -2044,7 +2054,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
             <ThemeToggle className={styles.themeToggle} />
             <Link className={styles.giftBarLink} href="/anleitung/cardmarket/" target="_blank" rel="noopener noreferrer" aria-label="Anleitung: Karten bei Cardmarket kaufen (öffnet in neuem Tab)">Anleitung</Link>
             {giftShell
-              ? <Link className={styles.giftBarLink} href="/app/">Ich sammle selbst</Link>
+              ? <Link className={styles.giftBarLink} href={appOverviewPath()}>Ich sammle selbst</Link>
               : <button type="button" className={styles.giftBarLink} onClick={() => { setSetBinderWizardOpen(false); setMissingOpen(false); setMissingBeginner(false); setGiftBuilderOpen(false); setBinderManagerOpen(true); }}>Meine Binder</button>}
           </div>
         </header> : <header className={styles.topbar}>

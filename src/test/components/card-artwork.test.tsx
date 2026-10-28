@@ -40,6 +40,27 @@ describe("CardArtwork", () => {
     expect(onAvailable).toHaveBeenCalledTimes(1);
   });
 
+  describe("English picture of a German card", () => {
+    const german = { ref: { provider: "tcgdex" as const, id: "neo4-10", language: "de" as const }, name: "Dunkles Tornupto", setId: "neo4", setName: "Neo Destiny", collectorNumber: "10" };
+
+    it("is tried after the German pictures and labelled as English", () => {
+      render(<CardArtwork card={{ ...german, imageBaseUrl: "https://assets.tcgdex.net/de/neo/neo4/10" }} className="art" fallback={<span>Kein Bild</span>} />);
+      fireEvent.error(screen.getByRole("img"));
+      expect(screen.getByRole("img")).toHaveAttribute("src", "https://assets.tcgdex.net/en/neo/neo4/10/high.webp");
+      expect(screen.getByText("Bild auf Englisch")).toBeInTheDocument();
+    });
+
+    it("is the first picture when TCGdex lists no German one at all", () => {
+      render(<CardArtwork card={german} className="art" fallback={<span>Kein Bild</span>} />);
+      expect(screen.getByRole("img")).toHaveAttribute("src", "https://assets.tcgdex.net/en/neo/neo4/10/high.webp");
+    });
+
+    it("is not offered for English cards, which have no other language to fall back to", () => {
+      render(<CardArtwork card={{ ...german, ref: { ...german.ref, language: "en" } }} className="art" fallback={<span>Kein Bild</span>} />);
+      expect(screen.getByText("Kein Bild")).toBeInTheDocument();
+    });
+  });
+
   describe("CardTrader fallback", () => {
     const withSet = { ...card, setId: "base3" };
     const match = (img?: string) => ({ expansionId: 1, blueprint: { id: 7, n: "031", name: "Arbok", ...(img ? { img } : {}) } });

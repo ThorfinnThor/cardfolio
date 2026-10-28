@@ -6,7 +6,8 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 
 import { FEATURES } from "@/config/feature-flags";
 import { imageLanguage } from "@/data/catalog/image-fallbacks";
-import { cardImageUrl } from "@/data/catalog/images";
+import { cardImageUrl, inferredCardImageBaseUrl } from "@/data/catalog/images";
+import { catalogSetIndex } from "@/data/catalog/set-counts";
 import { cardtraderCatalog, cardtraderImageUrl } from "@/data/cardtrader/catalog";
 import type { CardSnapshot } from "@/domain/types";
 
@@ -19,6 +20,25 @@ const IMAGE_LANGUAGE_LABELS: Record<string, string> = {
   pt: "Bild auf Portugiesisch",
 };
 
+let seriesBySet: Map<string, string> | undefined;
+
+/**
+ * TCGdex has no German picture for about a quarter of the German cards. The English print of the same card (same set,
+ * same number) almost always has one, so it comes next, labelled "Bild auf Englisch" like any picture in another language.
+ */
+function englishPictureOfSameCard(card: Pick<CardSnapshot, "ref" | "collectorNumber"> & { setId?: string }): string | undefined {
+  if (card.ref.language !== "de" || !card.setId) return undefined;
+  // The catalogue id is "<set>-<local number>"; the collector number shown on the card can be padded differently.
+  const localId = card.ref.id.startsWith(`${card.setId}-`) ? card.ref.id.slice(card.setId.length + 1) : card.collectorNumber;
+  if (!localId) return undefined;
+  seriesBySet ??= new Map(catalogSetIndex().flatMap((entry) => {
+    const series = entry.series.en?.id ?? entry.series.de?.id;
+    return series ? [[entry.id, series] as const] : [];
+  }));
+  const series = seriesBySet.get(card.setId);
+  return series ? inferredCardImageBaseUrl("en", series, card.setId, localId) : undefined;
+}
+
 interface CardArtworkProps {
   card: Pick<CardSnapshot, "name" | "setName" | "collectorNumber" | "ref" | "imageBaseUrl" | "imageFallbackBaseUrl"> & { setId?: string; englishIdentity?: { name: string } };
   className: string;
@@ -28,9 +48,11 @@ interface CardArtworkProps {
 }
 
 export function CardArtwork({ card, className, fallback, onAvailable, onUnavailable }: CardArtworkProps) {
-  const candidates = useMemo(() => [card.imageBaseUrl, card.imageFallbackBaseUrl]
+  const candidates = useMemo(() => [card.imageBaseUrl, card.imageFallbackBaseUrl, englishPictureOfSameCard(card)]
     .filter((value): value is string => Boolean(value))
-    .filter((value, index, values) => values.indexOf(value) === index), [card.imageBaseUrl, card.imageFallbackBaseUrl]);
+    .filter((value, index, values) => values.indexOf(value) === index),
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- the English picture follows from these fields of the card
+  [card.imageBaseUrl, card.imageFallbackBaseUrl, card.ref.language, card.ref.id, card.setId, card.collectorNumber]);
   const signature = candidates.join("\n");
   const [attempt, setAttempt] = useState({ signature, candidateIndex: 0 });
   const candidateIndex = attempt.signature === signature ? attempt.candidateIndex : 0;

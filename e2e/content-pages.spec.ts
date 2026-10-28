@@ -30,7 +30,7 @@ test("the home page is a landing page with one clear way into the tool and a way
   await expect(page.locator("html")).toHaveAttribute("lang", "de");
   await expect(page.getByRole("heading", { level: 1, name: /Ein Binder voller Karten/ })).toBeVisible();
   await expect(page.getByRole("link", { name: "Geschenk-Binder gestalten" }).first()).toHaveAttribute("href", "/geschenk/?start=1");
-  await expect(page.getByRole("link", { name: "Ich sammle selbst" })).toHaveAttribute("href", "/app/");
+  await expect(page.getByRole("link", { name: "Ich sammle selbst" })).toHaveAttribute("href", "/app/?start=1");
   await expect(page.getByRole("heading", { name: "Was Your Card Binder macht" })).toBeVisible();
   await expect(page.getByText(/nicht mit Nintendo, Creatures Inc., GAME FREAK inc. oder The Pokémon Company verbunden/)).toBeVisible();
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://yourcardbinder.com/");

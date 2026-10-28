@@ -83,6 +83,10 @@ function PhotoStrip({ photos, caption, language }: { photos: readonly CardPhoto[
   );
 }
 
+/** The few guides a first-time visitor needs; the rest is one click away on the guide index. */
+const LANDING_GUIDE_IDS = ["gift", "condition", "marketplaces", "language-and-finish"] as const;
+const LANDING_SPECIES_COUNT = 6;
+
 function ToolCta({ language, label }: { language: PageLanguage; label: string }) {
   return <ToolLink href={TOOL_START_PATH} language={language} className={styles.cta}>{label}</ToolLink>;
 }
@@ -408,16 +412,19 @@ export function LandingSections({ language, species }: { language: PageLanguage;
         <h2>{copy.guidesHeading}</h2>
         <p>{copy.guidesText}</p>
         <ul>
-          {GUIDES.map((guide) => <li key={guide.id}><Link href={guidePath(language, guide)}>{guide[language].title}</Link></li>)}
+          {LANDING_GUIDE_IDS.flatMap((id) => {
+            const guide = guideById(id);
+            return guide ? [<li key={guide.id}><Link href={guidePath(language, guide)}>{guide[language].title}</Link></li>] : [];
+          })}
           {language === "de" ? <li><Link href="/anleitung/cardmarket/">{copy.buyingGuideLabel}</Link></li> : null}
         </ul>
-        <p><Link href={guideIndexPath(language)}>{language === "de" ? "Alle Ratgeber" : "All guides"}</Link></p>
+        <p><Link href={guideIndexPath(language)}>{language === "de" ? `Alle ${GUIDES.length} Ratgeber` : `All ${GUIDES.length} guides`}</Link></p>
       </section>
       <section className={`${styles.section} ${styles.spanAll}`}>
         <h2>{copy.speciesHeading}</h2>
         <p>{copy.speciesText}</p>
         <ul className={styles.cards}>
-          {species.map(({ entry, stats }) => (
+          {species.slice(0, LANDING_SPECIES_COUNT).map(({ entry, stats }) => (
             <li key={entry.slug}>
               <Link href={speciesPath(language, entry)}>
                 <strong>{entry.names[language]}</strong>
