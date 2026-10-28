@@ -101,6 +101,24 @@ export class PageSelectionError extends Error {
   }
 }
 
+/**
+ * The same printing can reach a selection twice, for example when it was
+ * picked once from the German and once from the English search results. Both
+ * resolve to one card key, so only the first item is kept.
+ */
+export function mergeDuplicatePageSelectionItems(items: PageSelectionItem[]): {
+  items: PageSelectionItem[];
+  mergedCount: number;
+} {
+  const seen = new Set<string>();
+  const unique = items.filter((item) => {
+    if (seen.has(item.card.key)) return false;
+    seen.add(item.card.key);
+    return true;
+  });
+  return { items: unique, mergedCount: items.length - unique.length };
+}
+
 export interface PageSelectionItemOptions {
   edition?: VariantSelection["edition"];
   printing?: NonNullable<VariantSelection["printing"]>;

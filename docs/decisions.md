@@ -668,3 +668,8 @@
 - **Request (owner).** Cards in a binder page should also be movable by drag and drop to another place.
 - **What.** Dragging existed only through a small handle that appeared on mouse hover. Now the whole card is the drag source: with the mouse after 7 px, by touch after a 220 ms press (scrolling still works before that; the touch tolerance is 8 px). The handle is gone. Dropping on an empty place moves, on a card swaps (`moveOrSwapCard`, unchanged); the drag picture shows a small card image and the name. A short hint under the page explains it, including the long press on phones. The "Verschieben" button stays for keyboard and for moves between pages.
 - **Not changed.** Moving to another page by drag is not part of this; no new dependency (`TouchSensor` is part of `@dnd-kit/core`).
+
+## 2026-10-28 — Same card picked twice no longer blocks the selection
+
+- **Problem.** Picking the same card once from the German and once from the English results made "Auswahl übernehmen" fail with "Card … occurs more than once in the selection", shown only as a banner behind the dialog.
+- **What.** Both resolve to one card key, so `mergeDuplicatePageSelectionItems` keeps the first and the dialog says "N doppelt gewählte Karten wurden zusammengefasst." (the existing notice line). `applyPageSelection` still rejects duplicates as a safety net.
