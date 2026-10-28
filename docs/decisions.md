@@ -662,3 +662,9 @@
 - **Request (owner).** The simple setting was missing in the binder itself: a star on the card for Holo and a dot for "I have it".
 - **What.** Every card in the binder grid carries the circle (top left, tick when owned) and the star (top right: ☆ Normal, ★ Holo, R Reverse Holo, dashed "?" while open). One tap saves at once (`setOwned`, `setCardVariant`); the tap does not open the card. The star walks only through the finishes the catalogue confirms for the card and appears as a fixed badge when the card exists in one finish only. The old text badge "Fehlt/Vorhanden" is gone (the state is in the circle, its label and the card panel). The drag handle moved below the star. Touch targets are 32 px with a larger hit area.
 - **Unchanged.** Edition, printing, own label and condition stay in "Version & Zustand festlegen"; cards with finish "Andere" keep a fixed star.
+
+## 2026-10-28 — Drag the whole card to another place
+
+- **Request (owner).** Cards in a binder page should also be movable by drag and drop to another place.
+- **What.** Dragging existed only through a small handle that appeared on mouse hover. Now the whole card is the drag source: with the mouse after 7 px, by touch after a 220 ms press (scrolling still works before that; the touch tolerance is 8 px). The handle is gone. Dropping on an empty place moves, on a card swaps (`moveOrSwapCard`, unchanged); the drag picture shows a small card image and the name. A short hint under the page explains it, including the long press on phones. The "Verschieben" button stays for keyboard and for moves between pages.
+- **Not changed.** Moving to another page by drag is not part of this; no new dependency (`TouchSensor` is part of `@dnd-kit/core`).

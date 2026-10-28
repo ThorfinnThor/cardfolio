@@ -624,11 +624,10 @@ test("confirms a lossless layout change and keeps mouse drag optional", async ({
   await expect(page.getByRole("article", { name: "Bulbasaur, Slot 1" })).toBeVisible();
   await expect(page.getByRole("article", { name: "Ivysaur, Slot 2" })).toBeVisible();
 
-  const handle = page.getByRole("article", { name: "Bulbasaur, Slot 1" }).locator('[title="Mit der Maus ziehen"]');
+  const source = page.getByRole("article", { name: "Bulbasaur, Slot 1" });
   const target = page.getByRole("article", { name: "Ivysaur, Slot 2" });
-  const targetHandle = target.locator('[title="Mit der Maus ziehen"]');
-  const sourceBox = await handle.boundingBox();
-  const targetBox = await targetHandle.boundingBox();
+  const sourceBox = await source.locator("img").boundingBox();
+  const targetBox = await target.locator("img").boundingBox();
   expect(sourceBox).toBeTruthy();
   expect(targetBox).toBeTruthy();
   const sourceX = (sourceBox?.x ?? 0) + (sourceBox?.width ?? 0) / 2;
