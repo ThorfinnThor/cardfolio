@@ -656,3 +656,9 @@
 - **Rules unchanged.** Every card still needs a complete variant that is valid for it; the confirm button stays off and says how many cards need the star. Edition and printing (First Edition, Shadowless, own label) stay in a small "Edition und Druck" part, shown only for cards where it matters. The wanted condition for missing cards is one choice for the whole selection (it still can be changed per card afterwards).
 - **Owned in the draft.** `PageSelectionItem.owned` (optional) is saved as `PlannedCard.owned`; no new field in the backup or in storage.
 - **Wording.** "Bestellwunsch vorbereitet" became "Ausführung festgelegt" (it also appears in the card editor and the gift builder, where "order wish" was wrong for collectors).
+
+## 2026-10-28 — Star and circle on the cards in the binder
+
+- **Request (owner).** The simple setting was missing in the binder itself: a star on the card for Holo and a dot for "I have it".
+- **What.** Every card in the binder grid carries the circle (top left, tick when owned) and the star (top right: ☆ Normal, ★ Holo, R Reverse Holo, dashed "?" while open). One tap saves at once (`setOwned`, `setCardVariant`); the tap does not open the card. The star walks only through the finishes the catalogue confirms for the card and appears as a fixed badge when the card exists in one finish only. The old text badge "Fehlt/Vorhanden" is gone (the state is in the circle, its label and the card panel). The drag handle moved below the star. Touch targets are 32 px with a larger hit area.
+- **Unchanged.** Edition, printing, own label and condition stay in "Version & Zustand festlegen"; cards with finish "Andere" keep a fixed star.

@@ -212,10 +212,20 @@
 }
 .slot > strong { overflow: hidden; padding-inline: 2px; font-size: 12px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
 .slot > small { overflow: hidden; color: var(--cf-muted); padding-inline: 2px; font-family: var(--cf-font-mono); font-size: 9.5px; text-overflow: ellipsis; white-space: nowrap; }
-.dragHandle { position: absolute; z-index: 3; top: 9px; right: 9px; width: 26px; min-height: 26px; display: inline-grid; place-items: center; border: 1px solid var(--cf-line); border-radius: 6px; background: var(--cf-glass); color: var(--cf-text2); opacity: 0; cursor: grab; touch-action: none; transition: opacity .15s; }
+.dragHandle { position: absolute; z-index: 3; top: 48px; right: 9px; width: 26px; min-height: 26px; display: inline-grid; place-items: center; border: 1px solid var(--cf-line); border-radius: 6px; background: var(--cf-glass); color: var(--cf-text2); opacity: 0; cursor: grab; touch-action: none; transition: opacity .15s; }
 .slot:hover .dragHandle, .slot:focus-within .dragHandle { opacity: 1; }
 .dragHandle:active { cursor: grabbing; }
 .dragOverlay { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--cf-accent); border-radius: 8px; background: var(--cf-surface); color: var(--cf-accent-text); padding: 10px 12px; box-shadow: 0 16px 36px var(--cf-sh-soft); font-size: 12px; font-weight: 700; }
+.slotStar, .slotDot { position: absolute; z-index: 3; top: 10px; display: grid; place-items: center; width: 32px; height: 32px; border: 2px solid rgb(255 255 255 / 90%); border-radius: 50%; box-shadow: 0 2px 8px rgb(0 0 0 / 35%); padding: 0; font-size: 17px; font-weight: 800; line-height: 1; }
+.slotStar { right: 10px; background: rgb(32 32 40 / 70%); color: #fff; cursor: pointer; }
+.slotStar[data-finish="holo"], .slotStar[data-finish="other"] { background: var(--cf-gold); color: #3b2a00; }
+.slotStar[data-finish="reverse"] { background: #4a8fe8; color: #fff; font-size: 14px; }
+.slotStar[data-finish="unspecified"] { border-style: dashed; border-color: var(--cf-gold); background: var(--cf-surface); color: var(--cf-gold-text); }
+.slotStar[data-static="true"] { cursor: default; }
+.slotDot { left: 10px; background: rgb(32 32 40 / 55%); color: #fff; cursor: pointer; }
+.slotDot[aria-pressed="true"] { background: var(--cf-ok); }
+.slotStar:not([data-static]):after, .slotDot:after { content: ""; position: absolute; inset: -7px; }
+.slotStar:focus-visible, .slotDot:focus-visible { outline: 3px solid var(--cf-accent); outline-offset: 2px; }
 .ownedBadge, .missingBadge { position: absolute; z-index: 2; top: 10px; left: 10px; display: inline-flex; align-items: center; gap: 3px; border-radius: 4px; padding: 2px 6px 2px 5px; font-family: var(--cf-font-mono); font-size: 8.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
 .ownedBadge { background: var(--cf-ok); color: var(--cf-on-ok); box-shadow: 0 2px 6px -2px rgb(0 0 0 / 40%); }
 .ownedBadge::before { content: "✓"; }

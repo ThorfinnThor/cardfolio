@@ -45,6 +45,8 @@ describe("BinderGrid", () => {
         onSelectCard={onSelectCard}
         onMove={vi.fn()}
         onRefreshCard={vi.fn()}
+        onToggleOwned={vi.fn()}
+        onChangeVariant={vi.fn()}
       />,
     );
 
@@ -72,6 +74,8 @@ describe("BinderGrid", () => {
         onSelectCard={vi.fn()}
         onMove={onMove}
         onRefreshCard={vi.fn()}
+        onToggleOwned={vi.fn()}
+        onChangeVariant={vi.fn()}
       />,
     );
 
@@ -100,6 +104,8 @@ describe("BinderGrid", () => {
         onSelectCard={vi.fn()}
         onMove={vi.fn()}
         onRefreshCard={onRefreshCard}
+        onToggleOwned={vi.fn()}
+        onChangeVariant={vi.fn()}
       />,
     );
 
@@ -128,9 +134,39 @@ describe("BinderGrid", () => {
         onSelectCard={vi.fn()}
         onMove={vi.fn()}
         onRefreshCard={vi.fn()}
+        onToggleOwned={vi.fn()}
+        onChangeVariant={vi.fn()}
       />,
     );
 
     expect(screen.getByText("Bild auf Deutsch")).toBeInTheDocument();
+  });
+
+  it("marks a card as owned with the circle and changes its finish with the star without opening the card", () => {
+    const onToggleOwned = vi.fn();
+    const onChangeVariant = vi.fn();
+    const onSelectCard = vi.fn();
+    render(
+      <BinderGrid
+        page={page}
+        columns={2}
+        cards={new Map([[card.key, card]])}
+        onOpenSearch={vi.fn()}
+        onSelectCard={onSelectCard}
+        onMove={vi.fn()}
+        onRefreshCard={vi.fn()}
+        onToggleOwned={onToggleOwned}
+        onChangeVariant={onChangeVariant}
+      />,
+    );
+
+    const dot = screen.getByRole("button", { name: "Habe ich: Bulbasaur" });
+    expect(dot).toHaveAttribute("aria-pressed", "false");
+    fireEvent.click(dot);
+    expect(onToggleOwned).toHaveBeenCalledWith(entry.id, true);
+
+    fireEvent.click(screen.getByRole("button", { name: "Glanz: Holo. Antippen zum Wechseln" }));
+    expect(onChangeVariant).toHaveBeenCalledWith(entry.id, { ...entry.variant, finish: "reverse" });
+    expect(onSelectCard).not.toHaveBeenCalled();
   });
 });

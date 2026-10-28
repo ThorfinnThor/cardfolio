@@ -18,8 +18,8 @@ import { useState, type CSSProperties, type ReactNode } from "react";
 
 import type { SlotLocation } from "@/domain/binder-actions";
 import { formatCollectorNumber } from "@/domain/catalog-search";
-import { formatVariantSelection } from "@/domain/variant-selection";
-import type { BinderPage, CardSnapshot, PlannedCard } from "@/domain/types";
+import { formatVariantSelection, nextFinish, selectableFinishes, variantAvailabilityForCard } from "@/domain/variant-selection";
+import type { BinderPage, CardSnapshot, PlannedCard, VariantSelection } from "@/domain/types";
 
 import { CardArtwork } from "./CardArtwork";
 import styles from "./foundation-workspace.module.css";
@@ -34,6 +34,10 @@ interface BinderGridProps {
   onSelectCard: (location: SlotLocation) => void;
   onMove: (from: SlotLocation, to: SlotLocation) => void;
   onRefreshCard: (card: CardSnapshot) => void;
+  /** The circle on a card: the collector has it or not. */
+  onToggleOwned: (entryId: string, owned: boolean) => void;
+  /** The star on a card: the finish the card has (Normal, Holo, Reverse Holo). */
+  onChangeVariant: (entryId: string, variant: VariantSelection) => void;
   /** Entry that was just marked as owned; receives a short gold pulse. */
   celebratedEntryId?: string;
 }
@@ -47,7 +51,12 @@ interface OccupiedSlotProps {
   celebrate: boolean;
   onSelectCard: (location: SlotLocation) => void;
   onRefreshCard: (card: CardSnapshot) => void;
+  onToggleOwned: (entryId: string, owned: boolean) => void;
+  onChangeVariant: (entryId: string, variant: VariantSelection) => void;
 }
+
+const finishWords = { normal: "Normal", holo: "Holo", reverse: "Reverse Holo", other: "Sonderausgabe", unspecified: "noch offen" } as const;
+const finishGlyphs = { normal: "☆", holo: "★", reverse: "R", other: "★", unspecified: "?" } as const;
 
 function sameLocation(first: SlotLocation | undefined, second: SlotLocation): boolean {
   return first?.pageId === second.pageId && first.slotIndex === second.slotIndex;
@@ -70,6 +79,8 @@ function OccupiedSlot({
   celebrate,
   onSelectCard,
   onRefreshCard,
+  onToggleOwned,
+  onChangeVariant,
 }: OccupiedSlotProps) {
   const { isDragging, listeners, setNodeRef, transform } = useDraggable({
     id: `card:${entry.id}`,
@@ -79,6 +90,11 @@ function OccupiedSlot({
     transform: CSS.Translate.toString(transform),
     opacity: isDragging ? 0.35 : undefined,
   };
+
+  const finishes = card ? selectableFinishes(variantAvailabilityForCard(card), entry.variant.finish === "other" ? "unlimited" : entry.variant.edition) : [];
+  const finish = entry.variant.finish;
+  const starChoosable = Boolean(card) && finish !== "other" && (finishes.length > 1 || (finishes.length === 1 && finish !== finishes[0]));
+  const starShown = starChoosable || finish === "holo" || finish === "reverse";
 
   return (
     <article
@@ -110,7 +126,26 @@ function OccupiedSlot({
               <button type="button" onClick={() => onRefreshCard(card)}>Kartendaten aktualisieren</button>
             </div>}
           />
-          <span className={entry.owned ? styles.ownedBadge : styles.missingBadge}>{entry.owned ? "Vorhanden" : "Fehlt"}</span>
+          <button
+            type="button"
+            className={styles.slotDot}
+            aria-pressed={entry.owned}
+            aria-label={`Habe ich: ${card.name}`}
+            title={entry.owned ? "Habe ich – antippen, wenn sie fehlt" : "Fehlt noch – antippen, wenn du sie hast"}
+            onClick={(event) => { event.stopPropagation(); onToggleOwned(entry.id, !entry.owned); }}
+          >{entry.owned ? "✓" : ""}</button>
+          {starChoosable ? (
+            <button
+              type="button"
+              className={styles.slotStar}
+              data-finish={finish}
+              aria-label={`Glanz: ${finishWords[finish]}. Antippen zum Wechseln`}
+              title="Glanz der Karte wechseln (Normal, Holo, Reverse Holo)"
+              onClick={(event) => { event.stopPropagation(); onChangeVariant(entry.id, { ...entry.variant, finish: nextFinish(entry.variant, variantAvailabilityForCard(card)) }); }}
+            >{finishGlyphs[finish]}</button>
+          ) : starShown ? (
+            <span className={styles.slotStar} data-finish={finish} data-static="true" title={`Diese Karte gibt es nur als ${finishWords[finish]}`}>{finishGlyphs[finish]}</span>
+          ) : null}
           <strong>{card.name}</strong>
           <small>{card.setName} · {formatCollectorNumber(card.collectorNumber, card.collectorTotal)}</small>
           <span className={styles.variantSummary}>{formatVariantSelection(entry.variant)}</span>
@@ -135,6 +170,8 @@ export function BinderGrid({
   onSelectCard,
   onMove,
   onRefreshCard,
+  onToggleOwned,
+  onChangeVariant,
   celebratedEntryId,
 }: BinderGridProps) {
   const sensors = useSensors(useSensor(MouseSensor, { activationConstraint: { distance: 7 } }));
@@ -170,6 +207,8 @@ export function BinderGrid({
                   celebrate={entry.id === celebratedEntryId}
                   onSelectCard={onSelectCard}
                   onRefreshCard={onRefreshCard}
+                  onToggleOwned={onToggleOwned}
+                  onChangeVariant={onChangeVariant}
                 />
               ) : (
                 <button
