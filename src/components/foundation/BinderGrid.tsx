@@ -5,6 +5,7 @@ import {
   DndContext,
   DragOverlay,
   MouseSensor,
+  TouchSensor,
   useDraggable,
   useDroppable,
   useSensor,
@@ -84,7 +85,7 @@ function OccupiedSlot({
 }: OccupiedSlotProps) {
   const { isDragging, listeners, setNodeRef, transform } = useDraggable({
     id: `card:${entry.id}`,
-    data: { location, label: card?.name ?? "Karte" },
+    data: { location, label: card?.name ?? "Karte", card },
   });
   const dragStyle: CSSProperties = {
     transform: CSS.Translate.toString(transform),
@@ -105,6 +106,7 @@ function OccupiedSlot({
       data-celebrate={celebrate || undefined}
       data-finish={entry.variant.finish}
       tabIndex={0}
+      {...listeners}
       aria-label={card ? `${card.name}, Slot ${location.slotIndex + 1}` : `Kartendaten fehlen, Slot ${location.slotIndex + 1}`}
       onClick={() => onSelectCard(location)}
       onKeyDown={(event) => {
@@ -113,9 +115,6 @@ function OccupiedSlot({
         onSelectCard(location);
       }}
     >
-      <span className={styles.dragHandle} title="Mit der Maus ziehen" aria-hidden="true" {...listeners}>
-        <GripVertical size={16} />
-      </span>
       {card ? (
         <>
           <CardArtwork
@@ -174,15 +173,20 @@ export function BinderGrid({
   onChangeVariant,
   celebratedEntryId,
 }: BinderGridProps) {
-  const sensors = useSensors(useSensor(MouseSensor, { activationConstraint: { distance: 7 } }));
-  const [dragLabel, setDragLabel] = useState<string>();
+  // A card is dragged by the whole card: with the mouse after a few pixels, by touch after a short press so that scrolling still works.
+  const sensors = useSensors(
+    useSensor(MouseSensor, { activationConstraint: { distance: 7 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 220, tolerance: 8 } }),
+  );
+  const [dragged, setDragged] = useState<{ label: string; card?: CardSnapshot }>();
 
   function dragStart(event: DragStartEvent) {
-    setDragLabel(typeof event.active.data.current?.label === "string" ? event.active.data.current.label : "Karte");
+    const data = event.active.data.current;
+    setDragged({ label: typeof data?.label === "string" ? data.label : "Karte", card: data?.card as CardSnapshot | undefined });
   }
 
   function dragEnd(event: DragEndEvent) {
-    setDragLabel(undefined);
+    setDragged(undefined);
     const from = event.active.data.current?.location as SlotLocation | undefined;
     const to = event.over?.data.current?.location as SlotLocation | undefined;
     if (!from || !to || sameLocation(from, to)) return;
@@ -190,7 +194,7 @@ export function BinderGrid({
   }
 
   return (
-    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={dragStart} onDragCancel={() => setDragLabel(undefined)} onDragEnd={dragEnd}>
+    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={dragStart} onDragCancel={() => setDragged(undefined)} onDragEnd={dragEnd}>
       <div className={styles.grid} style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}>
         {page.slots.map((entry, index) => {
           const location = { pageId: page.id, slotIndex: index };
@@ -229,8 +233,14 @@ export function BinderGrid({
           );
         })}
       </div>
+      {page.slots.some(Boolean) ? <p className={styles.dragHint}>Karten lassen sich auf einen anderen Platz ziehen. Am Handy die Karte kurz gedrückt halten, dann ziehen.</p> : null}
       <DragOverlay dropAnimation={null}>
-        {dragLabel ? <div className={styles.dragOverlay}><GripVertical size={16} /> {dragLabel}</div> : null}
+        {dragged ? (
+          <div className={styles.dragOverlay}>
+            {dragged.card ? <CardArtwork card={dragged.card} className={styles.dragThumb} fallback={<GripVertical size={16} />} /> : <GripVertical size={16} />}
+            <span>{dragged.label}</span>
+          </div>
+        ) : null}
       </DragOverlay>
     </DndContext>
   );
