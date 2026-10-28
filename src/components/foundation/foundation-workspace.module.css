@@ -448,22 +448,46 @@
 .semanticError, .semanticNoResults { display: grid; gap: 8px; margin-top: 12px; }
 .semanticError .error, .semanticNoResults .noResults { margin: 0; }
 .semanticError .secondaryButton, .semanticNoResults .secondaryButton { width: 100%; }
-.confirmDialog.pageSelectionDialog { width: min(100%, 780px); }
-.pageSelectionDialog .languageFilter div { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 320px; }
-.pageSelectionDialog .dialogActions { flex-wrap: wrap; }
+.confirmDialog.pageSelectionDialog { width: min(100%, 780px); padding-bottom: 0; }
+.pageSelectionDialog .languageFilter { margin-top: 0; }
+.pageSelectionDialog .languageFilter div { grid-template-columns: repeat(2, minmax(0, 1fr)); width: 220px; }
+.pageSelectionDialog .dialogActions { flex-wrap: wrap; margin-top: 0; }
 .pageSelectionDialog .dialogActions button { white-space: nowrap; }
 .pageSelectionDialog > p:not(.eyebrow) { margin-bottom: 12px; }
-.pageSelectionList { display: grid; gap: 8px; max-height: min(48vh, 520px); overflow-y: auto; margin-top: 12px; padding-right: 3px; }
-.pageSelectionItem { border: 1px solid var(--cf-line); border-radius: 8px; background: var(--cf-surface2); }
-.pageSelectionItem > summary { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 42px; padding: 8px 11px; color: var(--cf-text); font-size: 12px; font-weight: 650; cursor: pointer; }
-.pageSelectionItem > summary small { overflow: hidden; color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 9.5px; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
-.pageSelectionCard { display: grid; grid-template-columns: 120px minmax(0, 1fr); align-items: start; gap: 18px; border-top: 1px solid var(--cf-line); padding: 14px; font-size: 12.5px; line-height: 1.45; }
-.pageSelectionImage { display: block; position: sticky; top: 0; align-self: start; aspect-ratio: 63 / 88; overflow: hidden; border-radius: 6px; background: var(--cf-page); }
-.pageSelectionImage img { display: block; width: 100%; height: 100%; object-fit: contain; }
-.pageSelectionImage > span { display: block; padding: 3px 5px; color: var(--cf-muted); font-size: 10px; text-align: center; }
-.pageSelectionCard .variantForm { margin-top: 0; }
-.pageSelectionCard .variantHint { margin-top: 10px !important; font-size: 12px; line-height: 1.45; }
-.pageSelectionCard .variantForm label, .pageSelectionCard .variantAdvanced summary { font-size: 12px; }
+.selectionToolbar { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 10px 16px; margin-top: 14px; }
+.selectionBulk { display: flex; flex-wrap: wrap; gap: 6px; }
+.selectionBulk button { min-height: 36px; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-surface); color: var(--cf-text2); padding: 4px 11px; font-size: 12px; font-weight: 650; cursor: pointer; }
+.selectionBulk button:hover:not(:disabled) { border-color: var(--cf-accent); color: var(--cf-accent-text); }
+.selectionBulk button:disabled { cursor: default; opacity: .45; }
+.selectionGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 14px; margin: 16px 0 0; padding: 0; list-style: none; }
+.selectionTile { display: grid; align-content: start; gap: 4px; min-width: 0; border: 1px solid var(--cf-line); border-radius: 10px; background: var(--cf-surface2); padding: 10px; }
+.selectionTile[data-incomplete="true"] { border-color: var(--cf-gold); }
+.selectionTile[data-owned="true"] { border-color: var(--cf-ok); }
+.selectionTile strong { overflow: hidden; color: var(--cf-text); font-size: 13px; line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; }
+.selectionTile small { overflow: hidden; color: var(--cf-muted); font-family: var(--cf-font-mono); font-size: 9.5px; text-overflow: ellipsis; white-space: nowrap; }
+.selectionTileState { color: var(--cf-text2); font-size: 11.5px; line-height: 1.35; }
+.selectionTile[data-incomplete="true"] .selectionTileState { color: var(--cf-gold-text); font-weight: 650; }
+.selectionTile .variantAdvanced { margin-top: 4px; }
+.selectionTile .variantAdvanced summary { padding: 8px 10px; font-size: 11.5px; }
+.selectionTile .variantAdvanced > div { display: grid; gap: 10px; padding: 0 10px 10px; }
+.selectionTile .variantAdvanced label { display: grid; gap: 4px; color: var(--cf-text2); font-size: 11.5px; font-weight: 650; }
+.selectionTile .variantAdvanced label small { white-space: normal; font-family: inherit; font-size: 10.5px; }
+.selectionTile .variantAdvanced select, .selectionTile .variantAdvanced input { width: 100%; min-width: 0; min-height: 40px; border: 1px solid var(--cf-line2); border-radius: 8px; background: var(--cf-field); color: var(--cf-text); padding: 6px 8px; font-size: 12px; }
+.selectionTileImage { position: relative; }
+.selectionTileArt { position: relative; display: block; aspect-ratio: 63 / 88; overflow: hidden; border-radius: 6px; background: var(--cf-page); }
+.selectionTileArt img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.selectionTileArt > span { position: absolute; right: 0; bottom: 0; left: 0; background: rgb(0 0 0 / 62%); color: #fff; padding: 2px 5px; font-size: 10px; text-align: center; }
+.selectionStar, .selectionDot { position: absolute; top: 6px; display: grid; place-items: center; width: 40px; height: 40px; border: 2px solid rgb(255 255 255 / 85%); border-radius: 50%; box-shadow: 0 2px 8px rgb(0 0 0 / 35%); padding: 0; font-size: 20px; font-weight: 800; line-height: 1; }
+.selectionStar { right: 6px; background: rgb(32 32 40 / 78%); color: #fff; cursor: pointer; }
+.selectionStar[data-finish="holo"], .selectionStar[data-finish="other"] { background: var(--cf-gold); border-color: #fff; color: #3b2a00; }
+.selectionStar[data-finish="reverse"] { background: #4a8fe8; color: #fff; font-size: 17px; }
+.selectionStar[data-finish="unspecified"] { border-style: dashed; border-color: var(--cf-gold); background: var(--cf-surface); color: var(--cf-gold-text); }
+.selectionStar[data-static="true"] { cursor: default; }
+.selectionDot { left: 6px; background: rgb(32 32 40 / 55%); color: #fff; cursor: pointer; }
+.selectionDot[aria-pressed="true"] { background: var(--cf-ok); border-color: #fff; }
+.selectionStar:focus-visible, .selectionDot:focus-visible { outline: 3px solid var(--cf-accent); outline-offset: 2px; }
+.selectionFooter { position: sticky; bottom: 0; z-index: 1; margin: 16px -24px 0; border-top: 1px solid var(--cf-line); background: var(--cf-surface); padding: 12px 24px calc(14px + env(safe-area-inset-bottom)); }
+.selectionPending { margin: 0 0 8px; color: var(--cf-gold-text); font-size: 12px; font-weight: 650; line-height: 1.4; }
 .removeSelectionButton { min-height: 32px; margin-top: 9px; border: 1px solid color-mix(in srgb, var(--cf-danger) 45%, var(--cf-line2)); border-radius: 7px; background: transparent; color: var(--cf-miss-text); padding: 5px 9px; font-size: 11px; font-weight: 650; cursor: pointer; }
 .removeSelectionButton:hover { background: var(--cf-miss-soft); }
 .selectionTargetFieldset { display: grid; gap: 7px; margin: 16px 0 0; border: 1px solid var(--cf-line); border-radius: 8px; padding: 10px; }
@@ -604,9 +628,9 @@
   .noticeActions { flex-direction: column; }
   .importReport, .footer { align-items: flex-start; flex-direction: column; }
   .importReport > span { text-align: left; }
-  .pageSelectionDialog { max-height: calc(100dvh - 24px); padding: 17px; }
-  .pageSelectionList { max-height: 42vh; }
-  .pageSelectionCard { grid-template-columns: 84px minmax(0, 1fr); gap: 12px; padding: 10px; }
+  .pageSelectionDialog { max-height: calc(100dvh - 24px); padding: 17px; padding-bottom: 0; }
+  .selectionGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 10px; }
+  .selectionFooter { margin-inline: -17px; padding-inline: 17px; }
 }
 
 @media (max-width: 430px) {
@@ -626,9 +650,10 @@
   .semanticSelectionActions .clearSemanticTags { align-self: flex-start; }
   .semanticResultActions { flex-direction: column; }
   .semanticResultActions button { width: 100%; }
-  .pageSelectionCard { grid-template-columns: 1fr; }
-  .pageSelectionImage { position: static; width: 120px; }
-  .pageSelectionItem > summary { align-items: flex-start; flex-direction: column; }
+  .pageSelectionDialog .dialogActions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .pageSelectionDialog .dialogActions .confirmButton { grid-column: 1 / -1; grid-row: 1; min-height: 46px; }
+  .pageSelectionDialog .dialogActions button { white-space: normal; }
+  .selectionTile { padding: 8px; }
 }
 
 /* The gift bar keeps each link on one line; on a very narrow phone the links move to a second row instead of overflowing. */

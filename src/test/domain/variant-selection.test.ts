@@ -7,6 +7,8 @@ import {
   availablePrintingValues,
   createInitialVariantSelection,
   isVariantSelectionComplete,
+  nextFinish,
+  selectableFinishes,
   isProviderFallbackVariantSignal,
   isVariantSelectionValid,
   FIRST_EDITION_CARD_IDS,
@@ -197,5 +199,27 @@ describe("historical edition and printing policy", () => {
         expect(options.shadowless, `${language}/${set.id} Shadowless`).toBe(language === "en" && set.id === "base1");
       }
     }
+  });
+});
+
+describe("finish cycling for the star", () => {
+  const all = { normal: true, holo: true, reverse: true, firstEdition: false, shadowless: false };
+  const normalOrHolo = { ...all, reverse: false };
+  const unset = { finish: "unspecified", edition: "unlimited", printing: "shadowed" } as const;
+
+  it("offers only the plain finishes a card exists in", () => {
+    expect(selectableFinishes(normalOrHolo)).toEqual(["normal", "holo"]);
+    expect(selectableFinishes(all)).toEqual(["normal", "holo", "reverse"]);
+  });
+
+  it("starts with Holo when nothing is chosen and then walks through the finishes", () => {
+    expect(nextFinish(unset, normalOrHolo)).toBe("holo");
+    expect(nextFinish({ ...unset, finish: "holo" }, normalOrHolo)).toBe("normal");
+    expect(nextFinish({ ...unset, finish: "normal" }, all)).toBe("holo");
+    expect(nextFinish({ ...unset, finish: "reverse" }, all)).toBe("normal");
+  });
+
+  it("starts with the first finish when the card has no Holo", () => {
+    expect(nextFinish(unset, { ...all, holo: false })).toBe("normal");
   });
 });
