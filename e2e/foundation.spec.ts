@@ -429,6 +429,16 @@ test("reviews multiple cards and fills from the next free slot continuously", as
   await expect(page.getByRole("article", { name: "Bulbasaur, Slot 2" })).toBeVisible();
   await expect(page.getByRole("article", { name: "Ivysaur, Slot 3" })).toBeVisible();
   await expect(page.getByText("2 Karten wurden als Binderseite übernommen.")).toBeVisible();
+
+  // The circle on the card marks it as owned directly in the binder, and it stays after a reload.
+  const ivysaurDot = page.getByRole("article", { name: "Ivysaur, Slot 3" }).getByRole("button", { name: "Habe ich: Ivysaur" });
+  await expect(ivysaurDot).toHaveAttribute("aria-pressed", "true");
+  const bulbasaurDot = page.getByRole("article", { name: "Bulbasaur, Slot 2" }).getByRole("button", { name: "Habe ich: Bulbasaur" });
+  await expect(bulbasaurDot).toHaveAttribute("aria-pressed", "false");
+  await bulbasaurDot.click();
+  await expect(bulbasaurDot).toHaveAttribute("aria-pressed", "true");
+  await page.reload();
+  await expect(page.getByRole("article", { name: "Bulbasaur, Slot 2" }).getByRole("button", { name: "Habe ich: Bulbasaur" })).toHaveAttribute("aria-pressed", "true");
 });
 
 test("creates a reviewed set binder through the guided start", async ({ page }) => {

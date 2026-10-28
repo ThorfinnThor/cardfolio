@@ -1713,6 +1713,17 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
     }
   }
 
+  async function changeCardVariant(entryId: string, variant: VariantSelection) {
+    if (!activeBinder) return;
+    try {
+      setStorageStatus("saving");
+      await persistBinderChange(activeBinder.id, (binder) => setCardVariant(binder, entryId, variant));
+      setStorageStatus("saved");
+    } catch (error) {
+      handleStorageError(error, "Die Ausführung konnte nicht gespeichert werden.");
+    }
+  }
+
   async function addCardsQuickly(changes: QuickAddChange[], condition?: OwnedCondition) {
     if (!activeBinder) return;
     try {
@@ -2494,6 +2505,8 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
                     onSelectCard={(location) => { setContextLocation(location); setSelectedLocation(undefined); setSearchOpen(false); }}
                     onMove={(from, to) => void moveCard(from, to)}
                     onRefreshCard={(card) => void refreshCardSnapshot(card)}
+                    onToggleOwned={(entryId, owned) => void toggleOwned(entryId, owned)}
+                    onChangeVariant={(entryId, variant) => void changeCardVariant(entryId, variant)}
                     celebratedEntryId={celebratedEntryId}
                   />
                 </div>
