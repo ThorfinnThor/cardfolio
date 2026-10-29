@@ -68,7 +68,9 @@ export function PageSelectionReview({
   const complete = items.length > 0 && items.every((item) => item.card.physicalStatus !== "digital") && !pending.length;
   const allOwned = items.every((item) => item.owned);
   const noneOwned = items.every((item) => !item.owned);
-  const wantedCondition = items[0]?.preferences.minimumCondition ?? "any";
+  const missingItems = items.filter((item) => !item.owned);
+  const conditions = new Set(missingItems.map((item) => item.preferences.minimumCondition));
+  const sharedCondition = conditions.size === 1 ? [...conditions][0] : undefined;
   const [target, setTarget] = useTargetState(currentPageFits, newPageFits);
   const [binderName, setBinderName] = useBinderName();
 
@@ -142,14 +144,15 @@ export function PageSelectionReview({
             <span>Neuen Binder anlegen</span>
           </label>
         </fieldset>
-        {items.some((item) => !item.owned) && !loading ? (
+        {missingItems.length > 1 && !loading ? (
           <div className={styles.variantForm}>
             <label>
-              Gewünschter Zustand der fehlenden Karten
-              <select aria-label="Mindestzustand beim Kauf" value={wantedCondition} onChange={(event) => setWantedCondition(event.target.value as PurchasePreferences["minimumCondition"])}>
+              Zustand für alle fehlenden Karten
+              <select aria-label="Mindestzustand beim Kauf" value={sharedCondition ?? "mixed"} onChange={(event) => setWantedCondition(event.target.value as PurchasePreferences["minimumCondition"])}>
+                {sharedCondition ? null : <option value="mixed" disabled>Pro Karte verschieden</option>}
                 {conditionProfiles.map((profile) => <option value={profile.value} key={profile.value}>{profile.label}</option>)}
               </select>
-              <small>{conditionProfile(wantedCondition).providerSummary}</small>
+              <small>{sharedCondition ? conditionProfile(sharedCondition).providerSummary : "Jede Karte hat ihren eigenen Zustand. Hier wählen, um alle gleich zu setzen."}</small>
             </label>
           </div>
         ) : null}
@@ -242,11 +245,23 @@ function SelectionTile({ item, onChange, onRemove }: SelectionTileProps) {
       <small>{item.card.ref.language.toUpperCase()} · {item.card.setName} · Nr. {item.card.collectorNumber}</small>
       <span className={styles.selectionTileState}>{finish === "unspecified" ? "Stern antippen: Holo oder normal?" : word} · {owned ? "habe ich" : "fehlt noch"}</span>
       {!valid && finish !== "unspecified" ? <span className={styles.selectionTileState}>Bitte Angaben prüfen</span> : null}
+      {owned ? null : (
+        <label className={styles.selectionTileCondition}>
+          Mindestzustand
+          <select
+            aria-label={`Mindestzustand für ${item.card.name}`}
+            value={item.preferences.minimumCondition}
+            onChange={(event) => onChange((current) => ({ ...current, preferences: { ...current.preferences, minimumCondition: event.target.value as PurchasePreferences["minimumCondition"] } }))}
+          >
+            {conditionProfiles.map((profile) => <option value={profile.value} key={profile.value}>{profile.shortLabel}</option>)}
+          </select>
+        </label>
+      )}
       {needsDetails ? (
         <VariantAdvancedFields
           variant={item.variant}
           availability={availability}
-          summary="Edition und Druck"
+          summary="Edition und Druck (optional)"
           onVariantChange={(variant) => onChange((current) => ({ ...current, variant }))}
         />
       ) : null}

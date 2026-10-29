@@ -87,4 +87,34 @@ describe("PageSelectionReview", () => {
     expect(screen.getByRole("button", { name: "Habe ich: Bulbasaur" })).toHaveAttribute("aria-pressed", "true");
     expect(screen.queryByLabelText("Mindestzustand beim Kauf")).not.toBeInTheDocument();
   });
+
+  it("sets the wanted condition per card and for all missing cards at once", async () => {
+    const user = userEvent.setup();
+    const binder = createBinder("Review");
+    const second: PageSelectionItem = {
+      ...item,
+      card: { ...item.card, key: "tcgdex:base1-2:en", ref: { ...item.card.ref, id: "base1-2" }, name: "Ivysaur" },
+    };
+    let current = [item, second];
+    const onChange = vi.fn((update: (items: PageSelectionItem[]) => PageSelectionItem[]) => { current = update(current); });
+    const props = {
+      binder, pageId: binder.pages[0].id, language: "en" as const, loading: false, submitting: false,
+      onLanguageChange: vi.fn(), onChange, onRemove: vi.fn(), onContinueSearch: vi.fn(), onCancel: vi.fn(), onConfirm: vi.fn(),
+    };
+    const { rerender } = render(<PageSelectionReview items={current} {...props} />);
+
+    await user.selectOptions(screen.getByRole("combobox", { name: "Mindestzustand für Ivysaur" }), "near-mint");
+    expect(current.map((entry) => entry.preferences.minimumCondition)).toEqual(["any", "near-mint"]);
+    rerender(<PageSelectionReview items={current} {...props} />);
+    expect(screen.getByRole("combobox", { name: "Mindestzustand beim Kauf" })).toHaveDisplayValue("Pro Karte verschieden");
+
+    await user.selectOptions(screen.getByRole("combobox", { name: "Mindestzustand beim Kauf" }), "excellent");
+    expect(current.map((entry) => entry.preferences.minimumCondition)).toEqual(["excellent", "excellent"]);
+    rerender(<PageSelectionReview items={current} {...props} />);
+
+    await user.click(screen.getByRole("button", { name: "Habe ich: Ivysaur" }));
+    rerender(<PageSelectionReview items={current} {...props} />);
+    expect(screen.queryByRole("combobox", { name: "Mindestzustand für Ivysaur" })).not.toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "Mindestzustand für Bulbasaur" })).toBeInTheDocument();
+  });
 });
