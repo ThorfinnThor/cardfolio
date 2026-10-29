@@ -509,6 +509,8 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
   const [placeholdersOpen, setPlaceholdersOpen] = useState(false);
   const [catalogSelection, setCatalogSelection] = useState<CatalogSearchItem[]>([]);
   const [celebratedEntryId, setCelebratedEntryId] = useState<string>();
+  // True when the visitor arrived through "Ich sammle selbst" (/app/?start=1): the binder overview then opens on "Selbst gestalten".
+  const [collectorStart, setCollectorStart] = useState(false);
 
   // While a gift is being planned or bought the sidebar and collector toolbar are out of the way, so the
   // binder gets the full width. Collectors keep the normal layout everywhere else.
@@ -524,6 +526,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
       params.delete("start");
       const query = params.toString();
       window.history.replaceState(window.history.state, "", `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`);
+      setCollectorStart(true);
       setBinderManagerOpen(true);
       return;
     }
@@ -2138,6 +2141,8 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
           />
         ) : (
           <BinderOverview
+            key={collectorStart ? "collector-start" : "default-start"}
+            collectorStart={collectorStart}
             binders={binders}
             activeId={activeId}
             name={name}

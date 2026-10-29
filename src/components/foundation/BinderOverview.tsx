@@ -33,6 +33,8 @@ interface BinderOverviewProps {
   onSetStart?: (setId?: string) => void;
   /** Lean variant for the /geschenk/ entry: gift start only, no collector tools. */
   giftOnly?: boolean;
+  /** Arrived through "Ich sammle selbst": open on "Selbst gestalten" instead of the gift start. Read once on mount. */
+  collectorStart?: boolean;
   /** A saved gift binder that still has cards to buy: the start page offers to continue there. */
   continueGift?: { binder: Binder; missing: number; planned: number };
   onContinueGift?: (binder: Binder) => void;
@@ -56,12 +58,14 @@ export function BinderOverview({
   onThemeStart,
   onSetStart,
   giftOnly = false,
+  collectorStart = false,
   continueGift,
   onContinueGift,
 }: BinderOverviewProps) {
   const { locale } = useLocale();
-  const [startMode, setStartMode] = useState<"gift" | "theme" | "set" | "manual">("gift");
-  const [collectorModes, setCollectorModes] = useState(false);
+  // Someone who came through "Ich sammle selbst" starts on "Selbst gestalten" with all four starts in view, not on the gift start again.
+  const [startMode, setStartMode] = useState<"gift" | "theme" | "set" | "manual">(collectorStart && !giftOnly ? "manual" : "gift");
+  const [collectorModes, setCollectorModes] = useState(collectorStart && !giftOnly);
   // A first-time visitor sees only the gift start; collectors (or anyone who asks) get all four starts.
   const showStartTabs = !giftOnly && (collectorModes || binders.length > 0);
   const totalPlanned = binders.reduce((total, binder) => total + deriveBinderStats(binder).planned, 0);

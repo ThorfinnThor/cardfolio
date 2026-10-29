@@ -704,3 +704,9 @@
 - **Purchase guide.** The Cardmarket decklist carries names only. The guide now says in the prelude and in the last step that set, number and finish are not part of it and have to be compared with the binder. The four-step flow, the condition and language translation and the step list stay as they were.
 - **Selection bar.** The sticky bar under the card search used a 9 % tint as its only background, so cards showed through; it now sits on the surface colour.
 - **Left open (owner decision).** Default tab after "Ich sammle selbst", pictures in the "Ich kenne mich nicht aus" choice and in the motif choice, English browser language vs German content, a "Meintest du …?" search hint, and hiding binder offers for people who own a binder.
+
+## 2026-10-29 — "Ich sammle selbst" opens on "Selbst gestalten"
+
+- **Problem (user test).** After "Ich sammle selbst" the overview showed "Als Geschenk – empfohlen" again, as if the choice had been ignored.
+- **Decision (owner).** The visitor lands on the tab "Selbst gestalten", with all four starts visible; the gift start is one tab away.
+- **What.** `/app/?start=1` (the link behind "Ich sammle selbst") sets `collectorStart`; `BinderOverview` reads it on mount (`key` remounts it) and starts on `manual` with the start tabs shown, also for a first visit without binders. `/geschenk/` and a plain `/app/` still start on the gift start.

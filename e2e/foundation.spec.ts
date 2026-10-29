@@ -1235,4 +1235,14 @@ test("\"Ich sammle selbst\" opens the list of binders instead of the last binder
   await expect(page.getByRole("tablist", { name: "Binder erstellen" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Schnell erfassen" })).toHaveCount(0);
   expect(new URL(page.url()).search).toBe("");
+  await expect(page.getByRole("tab", { name: "Selbst gestalten" })).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByRole("tab", { name: /Als Geschenk/ })).toHaveAttribute("aria-selected", "false");
 });
+
+test("\"Ich sammle selbst\" lands on \"Selbst gestalten\" also for a first visit without binders", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/app/?start=1");
+  await expect(page.getByRole("tab", { name: "Selbst gestalten" })).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByRole("textbox", { name: "Wie soll dein Binder heißen?" })).toBeVisible();
+});
+
