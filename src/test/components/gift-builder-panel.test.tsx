@@ -257,7 +257,7 @@ describe("GiftBuilderPanel", () => {
     const loader = { loadCandidatePool: vi.fn(), hydrateCandidates: vi.fn() };
     render(<GiftBuilderPanel loader={loader} pricingEnabled onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
 
-    expect(screen.getByText("Die Karten kosten zusammen etwa so viel, aber nie mehr (ohne Versand).")).toBeInTheDocument();
+    expect(screen.getByText("Wir wählen Karten, die zusammen möglichst nicht mehr kosten (ohne Versand). Garantiert ist das nicht.")).toBeInTheDocument();
     for (const gone of ["Weitere Wünsche für das Geschenk", "Für wen?", "Anlass", "Stil", "Budgettoleranz", "Währung"]) {
       expect(screen.queryByText(gone, { exact: false })).not.toBeInTheDocument();
     }
@@ -848,11 +848,27 @@ describe("GiftBuilderPanel", () => {
     };
     render(<GiftBuilderPanel loader={loader} pricingEnabled onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
     fireEvent.click(screen.getByRole("radio", { name: "Schiggy" }));
-    fireEvent.change(screen.getByRole("spinbutton", { name: /Budget/ }), { target: { value: "4" } });
+    fireEvent.change(screen.getByRole("spinbutton", { name: /budget/i }), { target: { value: "4" } });
     fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
     await screen.findByText("9 / 9");
 
     expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("Der Versand bei Cardmarket kostet oft mehr als eine einzelne Karte"))).toBe(true);
+  });
+
+  it("names the exceeded target budget right at the total", async () => {
+    const pool = Array.from({ length: 9 }, (_, index) => germanCandidate(index + 1, 40));
+    const loader = {
+      loadCandidatePool: vi.fn(async () => pool.map((candidate) => ({ ref: candidate.card.ref, name: candidate.card.name, collectorNumber: candidate.card.collectorNumber }))),
+      hydrateCandidates: vi.fn(async () => pool),
+    };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+    fireEvent.click(screen.getByRole("radio", { name: "Schiggy" }));
+    fireEvent.change(screen.getByRole("spinbutton", { name: /Zielbudget/ }), { target: { value: "1" } });
+    fireEvent.click(screen.getByRole("button", { name: /Binder-Seite ansehen/i }));
+    await screen.findByText("9 / 9");
+
+    expect(screen.getByText(/über Zielbudget/)).toBeInTheDocument();
+    expect(screen.getAllByRole("status").some((status) => status.textContent?.includes("liegen über deinem Budget"))).toBe(true);
   });
 
   it("shows a plain message instead of raw validation output when card data cannot be read", async () => {

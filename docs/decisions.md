@@ -696,3 +696,11 @@
 - **Problem (user test).** With the search language on "Alle", "Auswahl prüfen" always loaded the English card (`searchLanguage === "de" ? "de" : "en"`), so a picked German hit (Glurak) turned into Charizard.
 - **What.** `pageSelectionLanguageFor` decides the review language: an explicit DE/EN search language wins; with "Alle" the language of the hits is used when it is uniform, and a new mode `own` (each card in the language of its hit) when they are mixed. The dialog shows neither toggle pressed in that mode and says so. The Deutsch/English toggle still switches all cards. No contract or persistence change; the card key already contains the language.
 - **Side effect.** The same card picked once in German and once in English is now two cards (different language, different key) instead of being merged; true duplicates are still merged.
+
+## 2026-10-29 — User-test follow-ups: budget wording, help text, purchase hints, selection bar
+
+- **Budget.** The gift field said the cards "cost about this much, but never more", while the same screen called the budget an orientation and `giftBudgetGuarantee` is off. The field is now "Zielbudget für die Karten" with an honest sentence (no guarantee), and a budget overrun is named at the total ("über Zielbudget (…)") with the warning above the binder page instead of below it.
+- **Help.** "Preisangaben sind deaktiviert" contradicted the shown prices. Gift estimates use the price data TCGdex delivers (Cardmarket or TCGplayer) and fall back to CardTrader, so the help says exactly that: non-binding estimates, TCGdex first, CardTrader second.
+- **Purchase guide.** The Cardmarket decklist carries names only. The guide now says in the prelude and in the last step that set, number and finish are not part of it and have to be compared with the binder. The four-step flow, the condition and language translation and the step list stay as they were.
+- **Selection bar.** The sticky bar under the card search used a 9 % tint as its only background, so cards showed through; it now sits on the surface colour.
+- **Left open (owner decision).** Default tab after "Ich sammle selbst", pictures in the "Ich kenne mich nicht aus" choice and in the motif choice, English browser language vs German content, a "Meintest du …?" search hint, and hiding binder offers for people who own a binder.
