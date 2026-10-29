@@ -993,9 +993,9 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
               const unavailable = planLimit !== undefined && count > 9 && count > planLimit;
               return <label key={count} className={styles.choice} data-unavailable={unavailable || undefined}><input type="radio" name="gift-count" checked={preferences.targetCardCount === count} disabled={unavailable} onChange={() => updatePreferences("targetCardCount", count)} />{count === 9 ? "1 Seite · 9 Karten" : count === 18 ? "2 Seiten · 18 Karten" : "4 Seiten · 36 Karten"}{unavailable ? <small> (nur {planLimit} verfügbar)</small> : null}</label>;
             })}</div></fieldset>
-            <label>Budget für die Karten
+            <label>Zielbudget für die Karten
               <span className={styles.moneyInput}><input type="number" min="1" step="1" required value={preferences.budgetMinor / 100} onChange={(event) => updatePreferences("budgetMinor", Math.max(1, Math.round(Number(event.target.value || 0) * 100)))} /><span className={styles.currencySuffix} aria-hidden="true">{preferences.currency === "EUR" ? "€" : "$"}</span></span>
-              <small>Die Karten kosten zusammen etwa so viel, aber nie mehr (ohne Versand).</small>
+              <small>Wir wählen Karten, die zusammen möglichst nicht mehr kosten (ohne Versand). Garantiert ist das nicht.</small>
             </label>
           </div>
           <p className={styles.localHint}>{pricingEnabled ? `Alles bleibt in diesem Browser. Kartenpreise sind unverbindliche Schätzungen ohne Versand und Steuern.${budgetGuaranteeEnabled ? "" : " Das Budget ist eine Orientierung."}` : "Alles bleibt in diesem Browser. Die Preisprüfung ist derzeit deaktiviert; das Budget kann noch nicht zugesagt werden."}</p>
@@ -1007,15 +1007,15 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
         <div className={styles.resultsStep}>
           <div className={styles.pageSummary} data-status={selection.budgetStatus}>
             <div><strong>{selection.selected.length} / {preferences.targetCardCount}</strong><span>Karten</span></div>
-            <div><strong>{pricingEnabled ? `${totals.unpriced > 0 ? "mind. " : ""}${formatMoney(totals.totalMinor, preferences.currency)}` : "Preisprüfung aus"}</strong><span>{pricingEnabled ? totals.unpriced > 0 ? `für ${totals.priced} von ${selection.selected.length} Karten` : "geschätzter Wert" : "keine Budgetzusage"}</span></div>
+            <div><strong>{pricingEnabled ? `${totals.unpriced > 0 ? "mind. " : ""}${formatMoney(totals.totalMinor, preferences.currency)}` : "Preisprüfung aus"}</strong><span>{pricingEnabled ? totals.unpriced > 0 ? `für ${totals.priced} von ${selection.selected.length} Karten` : selection.budgetStatus === "over" ? `über Zielbudget (${formatMoney(preferences.budgetMinor, preferences.currency)})` : "geschätzter Wert" : "keine Budgetzusage"}</span></div>
           </div>
+          {selection.budgetStatus === "over" ? <p className={styles.warning} role="status">Die geschätzten {formatMoney(selection.estimatedTotalMinor, preferences.currency)} liegen über deinem Budget von {formatMoney(preferences.budgetMinor, preferences.currency)}. Auch die günstigste vollständige Auswahl liegt derzeit darüber. Du kannst Wünsche oder Karten ändern.</p> : null}
           <GiftBinderSpread pages={spreadPages} inspectedKey={inspectedKey} onInspect={inspectCandidate} onSwap={swapCandidates} onImageUnavailable={markImageUnavailable} />
           {inspected ? renderInspector(inspected) : null}
           {!pricingEnabled ? <p className={styles.gateNotice} role="status">Die Preisprüfung ist derzeit noch deaktiviert. Karten können trotzdem ausgewählt und als normaler Binder gespeichert werden; es gibt keine Budgetzusage.</p> : null}
           {pricingEnabled && !budgetGuaranteeEnabled ? <p className={styles.gateNotice} role="status">Schätzwert – den endgültigen Preis siehst du beim Kartenanbieter.</p> : null}
           {pricingEnabled && hasBudgetSlack(selection.estimatedTotalMinor, preferences.budgetMinor) ? <p className={styles.gateNotice} role="status">Das liegt deutlich unter deinem Budget von {formatMoney(preferences.budgetMinor, preferences.currency)}: Für dieses Motiv gibt es nicht genug teurere Karten. Das Budget ist nur die Obergrenze – du kannst unter „Wünsche ändern“ mehr Karten wählen.</p> : null}
           {pricingEnabled && !hasBudgetSlack(selection.estimatedTotalMinor, preferences.budgetMinor) && cheapCards ? <p className={styles.gateNotice} role="status">Die Karten kosten im Schnitt nur etwa {formatMoney(Math.round(totals.totalMinor / totals.priced), preferences.currency)}. Der Versand bei Cardmarket kostet oft mehr als eine einzelne Karte. Tipp: Wähle weniger Karten oder ein höheres Budget, dann schlagen wir schönere Karten vor.</p> : null}
-          {selection.budgetStatus === "over" ? <p className={styles.warning} role="status">Die geschätzten {formatMoney(selection.estimatedTotalMinor, preferences.currency)} liegen über deinem Budget von {formatMoney(preferences.budgetMinor, preferences.currency)}. Auch die günstigste vollständige Auswahl liegt derzeit darüber. Du kannst Wünsche oder Karten ändern.</p> : null}
           {eraNote ? <p className={styles.gateNotice} role="status">{eraNote}</p> : null}
           {pricingEnabled && totals.unpriced > 0 ? <p className={styles.gateNotice} role="status">Für {totals.unpriced} {totals.unpriced === 1 ? "Karte" : "Karten"} gibt es keinen Marktpreis. Die Summe zählt nur Karten mit Preis.</p> : null}
           <details className={styles.conditionBox}>

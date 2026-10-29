@@ -132,6 +132,7 @@ export function GiftPurchaseGuide({
               <li>Your Card Binder verkauft nichts. Du kaufst die Karten bei <b>Cardmarket</b>, einem Marktplatz, auf dem viele Verkäufer ihre Karten anbieten.</li>
               <li>Du brauchst ein <b>Cardmarket-Konto</b>. Der Einkaufsassistent „Shopping Wizard“ funktioniert nur, wenn du angemeldet bist.</li>
               <li>Jede Sendung kostet <b>Versand</b>. Bei sehr günstigen Karten kann das einen großen Teil der Kosten ausmachen.</li>
+              <li>Die Liste enthält die Kartennamen. <b>Set, Nummer und Ausführung</b> (zum Beispiel Holo) gibt Cardmarket dabei nicht vor: Vergleiche die Angebote vor dem Kauf mit deinem Binder.</li>
             </ul>
           </aside>
         </> : null}
@@ -193,7 +194,7 @@ export function GiftPurchaseGuide({
             <li>Bei „Standort des Verkäufers“ empfehlen wir <b>Europa</b>. Dann sind mehr Verkäufer dabei und die Karten manchmal etwas günstiger. Der Versand dauert dafür vielleicht ein paar Tage länger.</li>
             <li>Wähle die Strategie. <b>„Bestellungen reduzieren“</b> sucht möglichst wenige Verkäufer und spart meist Versand, die Karten können etwas teurer sein. <b>„Preis reduzieren“</b> sucht den niedrigsten Kartenpreis, auch bei mehr Bestellungen. Bei vielen günstigen Karten ist „Bestellungen reduzieren“ meist sinnvoll. Klicke dann auf <b>„Wizard ausführen“</b>.</li>
             <li>Oben siehst du die <b>Gesamtsumme</b> inklusive Versand. Mit <b>„In den Warenkorb“</b> legst du alles auf einmal hinein. Klappt das nicht, lege die Angebote einzeln in den Warenkorb.</li>
-            <li>Prüfe vor dem Bezahlen Endpreis, Versand, Sprache und Zustand.</li>
+            <li>Prüfe vor dem Bezahlen Endpreis, Versand, Sprache und Zustand – und ob Set und Nummer zur Karte in deinem Binder passen.</li>
           </ol>
           <div className={styles.cardmarketGuideActions}>
             <button type="button" className={styles.cardmarketBackButton} onClick={() => setStep(3)}><ArrowLeft aria-hidden="true" size={16} /> Zurück</button>

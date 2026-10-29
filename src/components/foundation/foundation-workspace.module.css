@@ -401,7 +401,7 @@
 .resultActions button { width: 100%; min-height: 34px; }
 .resultActions button:last-child { width: auto; border-color: transparent; background: transparent; color: var(--cf-accent-text); padding-inline: 9px; }
 .resultActions button:last-child:hover { border-color: var(--cf-line2); background: var(--cf-surface2); }
-.selectionDock { position: sticky; bottom: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; border: 1px solid var(--cf-accent); border-radius: 9px; background: var(--cf-accent-soft); padding: 10px 11px; box-shadow: 0 -8px 20px -16px var(--cf-sh-deep); }
+.selectionDock { position: sticky; bottom: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; border: 1px solid var(--cf-accent); border-radius: 9px; background: linear-gradient(var(--cf-accent-soft), var(--cf-accent-soft)), var(--cf-surface); padding: 10px 11px; box-shadow: 0 -8px 20px -16px var(--cf-sh-deep); }
 .selectionDock > div:first-child { display: grid; gap: 3px; }
 .selectionDock strong { color: var(--cf-accent-text); font-size: 12px; }
 .selectionDock span { color: var(--cf-muted); font-size: 10px; }
