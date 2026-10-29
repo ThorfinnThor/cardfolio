@@ -115,24 +115,27 @@ export class CardTraderCatalog {
 
   constructor(private readonly load: Loader = defaultLoader) {}
 
-  private async safe<T>(path: string, schema: z.ZodType<T>): Promise<T | undefined> {
+  /** `onLoadFailure` runs when the file could not be fetched (not when it is invalid), so a cached miss can be dropped. */
+  private async safe<T>(path: string, schema: z.ZodType<T>, onLoadFailure?: () => void): Promise<T | undefined> {
     try {
       const parsed = schema.safeParse(await this.load(path));
       return parsed.success ? parsed.data : undefined;
     } catch {
+      onLoadFailure?.();
       return undefined;
     }
   }
 
   private expansionFor(language: CardLanguage, setId: string): Promise<number | undefined> {
-    this.index ??= this.safe("index.json", indexFileSchema);
+    // A failed download (network hiccup, a deploy in progress) must not hide every CardTrader image until the page is reloaded.
+    this.index ??= this.safe("index.json", indexFileSchema, () => { this.index = undefined; });
     return this.index.then((index) => index?.[`${language}:${setId}`]);
   }
 
   private expansion(id: number): Promise<ExpansionFile | undefined> {
     let promise = this.expansions.get(id);
     if (!promise) {
-      promise = this.safe(`expansions/${id}.json`, expansionFileSchema);
+      promise = this.safe(`expansions/${id}.json`, expansionFileSchema, () => { this.expansions.delete(id); });
       this.expansions.set(id, promise);
     }
     return promise;

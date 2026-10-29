@@ -684,3 +684,9 @@
 
 - **Problem (owner).** After the star/circle redesign the dialog had one condition field for the whole selection; the condition per card was no longer possible. "Edition und Druck" also looked like a mandatory step.
 - **What.** Every missing card has its own "Mindestzustand" select (short labels: Wie neu, Sehr gut, Gebraucht …; hidden once the circle says the card is owned). With two or more missing cards a shared field "Zustand für alle fehlenden Karten" sets all at once and shows "Pro Karte verschieden" when they differ. "Edition und Druck" is labelled "(optional)": it only appears for cards that exist as 1st edition or shadowless, and the defaults (Unlimited, with shadow) are used when nothing is changed. No contract change; `preferences.minimumCondition` was already per item.
+
+## 2026-10-29 — A failed CardTrader download is retried
+
+- **Observation (owner).** Many search results showed "Kein Bild", including cards whose set has a verified CardTrader mapping (McDonald's 2014/2018, Poké Card Creator Pack). In a clean local run the same cards show the CardTrader picture, so a one-off failed download of `index.json` or an expansion file (network hiccup, deploy in progress) was the likely cause: the miss was cached for the whole page visit and hid every CardTrader image until a reload.
+- **What.** `CardTraderCatalog` drops the cached miss when a file could not be fetched, so the next lookup tries again. An invalid file is still cached as a miss.
+- **Still without picture, by design.** Sets with no verified CardTrader mapping (McDonald's Collection 2022–2024, 30th Classic Collection, EX trainer kits) keep "Kein Bild"; mappings are only added through the reviewed audit, never guessed.
