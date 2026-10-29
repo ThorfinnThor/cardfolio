@@ -125,6 +125,7 @@ const translations: Record<string, string> = {
   "Ergebnisse": "Results",
   "Keine Ergebnisse": "No results",
   "Kein Bild": "No image",
+  "Jede Karte bleibt in der Sprache, in der du sie ausgewählt hast. Mit „Deutsch“ oder „English“ stellst du alle gleich um.": "Each card stays in the language you picked it in. Use \"German\" or \"English\" to switch them all.",
   "Freier Platz": "Empty slot",
   "Freie Plätze": "Empty slots",
   "Seite hinzufügen": "Add page",

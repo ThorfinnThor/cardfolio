@@ -5,6 +5,7 @@ import {
   applyPageSelection,
   createPageSelectionItem,
   mergeDuplicatePageSelectionItems,
+  pageSelectionLanguageFor,
   PageSelectionError,
   type PageSelectionDraft,
 } from "@/domain/page-selection";
@@ -436,5 +437,16 @@ describe("page selection domain", () => {
     expect(result.items).toEqual([first, second]);
     expect(result.mergedCount).toBe(1);
     expect(mergeDuplicatePageSelectionItems([first, second]).mergedCount).toBe(0);
+  });
+
+  it("starts the review in the language of the hits, never silently in English", () => {
+    const de = { ref: { language: "de" as CardLanguage } };
+    const en = { ref: { language: "en" as CardLanguage } };
+
+    expect(pageSelectionLanguageFor([de], "all")).toBe("de");
+    expect(pageSelectionLanguageFor([en, en], "all")).toBe("en");
+    expect(pageSelectionLanguageFor([de, en], "all")).toBe("own");
+    expect(pageSelectionLanguageFor([de, en], "en")).toBe("en");
+    expect(pageSelectionLanguageFor([en], "de")).toBe("de");
   });
 });

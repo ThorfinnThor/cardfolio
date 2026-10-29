@@ -46,7 +46,7 @@ import { sortCatalogSearchItems, type CatalogResultSort } from "@/domain/catalog
 import { formatCollectorNumber, parseCatalogSearch } from "@/domain/catalog-search";
 import { createMissingItemsCsvExport, createMissingItemsTextExport } from "@/domain/missing-items-export";
 import { deriveMissingItems } from "@/domain/missing-items";
-import { mergeDuplicatePageSelectionItems, type PageSelectionItem, type PageSelectionTarget } from "@/domain/page-selection";
+import { mergeDuplicatePageSelectionItems, pageSelectionLanguageFor, type PageSelectionItem, type PageSelectionLanguage, type PageSelectionTarget } from "@/domain/page-selection";
 import type { PageSelectionUndoToken } from "@/domain/reversible-page-selection";
 import type { CardmarketHandoffPart } from "@/domain/cardmarket-handoff";
 import type { TcgplayerMassEntryExport } from "@/domain/tcgplayer-export";
@@ -185,7 +185,7 @@ type SearchPreview = {
 type PageSelectionRequest = {
   sourceItems: CatalogSearchItem[];
   items: PageSelectionItem[];
-  language: "de" | "en";
+  language: PageSelectionLanguage;
   status: "loading" | "ready" | "error";
   notice?: string;
   error?: string;
@@ -1360,13 +1360,15 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
 
   async function hydratePageSelection(
     sourceItems: CatalogSearchItem[],
-    language: "de" | "en",
+    selectionLanguage: PageSelectionLanguage,
     token: number,
     preserveItems: PageSelectionItem[] = [],
   ) {
     const fallbackNames: string[] = [];
     const failedNames: string[] = [];
     const hydrated = await Promise.all(sourceItems.map(async (item): Promise<PageSelectionItem | undefined> => {
+      // "own": every card keeps the language of the search hit it was picked from.
+      const language = selectionLanguage === "own" ? item.ref.language : selectionLanguage;
       const requestedRef = { ...item.ref, language };
       try {
         const snapshot = await queryClient.fetchQuery({
@@ -1434,7 +1436,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
       : current);
   }
 
-  function reviewSemanticSelection(items: CatalogSearchItem[], preferredLanguage?: "de" | "en") {
+  function reviewSemanticSelection(items: CatalogSearchItem[], preferredLanguage?: PageSelectionLanguage) {
     if (!activeBinder || !items.length) return;
     const token = pageSelectionTokenRef.current + 1;
     pageSelectionTokenRef.current = token;
@@ -1455,7 +1457,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
 
   function reviewCatalogSelection() {
     if (!catalogSelection.length) return;
-    reviewSemanticSelection(catalogSelection, searchLanguage === "de" ? "de" : "en");
+    reviewSemanticSelection(catalogSelection, pageSelectionLanguageFor(catalogSelection, searchLanguage));
   }
 
   function changePageSelectionLanguage(language: "de" | "en") {

@@ -11,6 +11,7 @@ import {
 } from "./binder-actions";
 import type {
   Binder,
+  CardLanguage,
   CardSnapshot,
   PurchasePreferences,
   UUID,
@@ -117,6 +118,23 @@ export function mergeDuplicatePageSelectionItems(items: PageSelectionItem[]): {
     return true;
   });
   return { items: unique, mergedCount: items.length - unique.length };
+}
+
+/** "own": each card is shown in the language of the search hit it was picked from. */
+export type PageSelectionLanguage = "de" | "en" | "own";
+
+/**
+ * Language a review starts in. An explicit search language wins; with "all languages" the hits keep their own
+ * language, so a German hit is never silently replaced by the English card.
+ */
+export function pageSelectionLanguageFor(
+  hits: readonly { ref: { language: CardLanguage } }[],
+  searchLanguage: "de" | "en" | "all",
+): PageSelectionLanguage {
+  if (searchLanguage !== "all") return searchLanguage;
+  const languages = new Set(hits.map((hit) => hit.ref.language));
+  const [only] = languages;
+  return languages.size === 1 && (only === "de" || only === "en") ? only : "own";
 }
 
 export interface PageSelectionItemOptions {
