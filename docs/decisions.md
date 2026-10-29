@@ -673,3 +673,9 @@
 
 - **Problem.** Picking the same card once from the German and once from the English results made "Auswahl übernehmen" fail with "Card … occurs more than once in the selection", shown only as a banner behind the dialog.
 - **What.** Both resolve to one card key, so `mergeDuplicatePageSelectionItems` keeps the first and the dialog says "N doppelt gewählte Karten wurden zusammengefasst." (the existing notice line). `applyPageSelection` still rejects duplicates as a safety net.
+
+## 2026-10-29 — Selection dialog in two columns on a wide screen
+
+- **Request (owner).** On the desktop the selection dialog had to be scrolled; a horizontal layout would be more elegant. Other dialogs should be checked too.
+- **What.** From 1000 px width the dialog is 1180 px wide with two columns: cards left (as many 132 px tiles per row as fit), target, wanted condition, binder name and the buttons right (sticky, "Auswahl übernehmen" first). Below 1000 px nothing changes: one column with the sticky footer (`.selectionSide` is `display: contents` there). Pure CSS plus two wrapper elements; no contract, persistence or dependency change.
+- **Checked.** Measured at 1440×900: 2 cards fit without scrolling, 9 cards in two rows need about 80 px of scrolling at most (the right column stays in view). The other dialogs (variant, layout, rename, delete, placeholder print) already fit at 900 px height; the variant dialog only grows when its explanations are opened. The search drawer is a side drawer and stays as it is.

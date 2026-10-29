@@ -87,6 +87,7 @@ export function PageSelectionReview({
   return (
     <div className={styles.dialogBackdrop} role="presentation">
       <section className={`${styles.confirmDialog} ${styles.pageSelectionDialog}`} role="dialog" aria-modal="true" aria-labelledby="page-selection-heading">
+        <div className={styles.selectionMain}>
         <p className={styles.eyebrow}>Binderseite zusammenstellen</p>
         <h2 id="page-selection-heading">{items.length} {items.length === 1 ? "Karte" : "Karten"} zum Binder hinzufügen</h2>
         <p>Tippe auf den Stern oben rechts, wenn die Karte glänzt (Holo), und auf den Kreis oben links, wenn du sie schon hast. Gespeichert wird erst, wenn du übernimmst.</p>
@@ -120,6 +121,8 @@ export function PageSelectionReview({
             ))}
           </ul>
         ) : null}
+        </div>
+        <div className={styles.selectionSide}>
         <fieldset className={styles.selectionTargetFieldset} disabled={loading || submitting}>
           <legend>Übernahmeziel</legend>
           <label>
@@ -164,6 +167,7 @@ export function PageSelectionReview({
           <button type="button" className={styles.confirmButton} disabled={loading || submitting || !complete || !items.length || (target === "new-binder" && !binderName.trim())} onClick={() => onConfirm(target, binderName)}>
             {submitting ? "Wird gespeichert…" : "Auswahl übernehmen"}
           </button>
+        </div>
         </div>
         </div>
       </section>
