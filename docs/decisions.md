@@ -690,3 +690,9 @@
 - **Observation (owner).** Many search results showed "Kein Bild", including cards whose set has a verified CardTrader mapping (McDonald's 2014/2018, Poké Card Creator Pack). In a clean local run the same cards show the CardTrader picture, so a one-off failed download of `index.json` or an expansion file (network hiccup, deploy in progress) was the likely cause: the miss was cached for the whole page visit and hid every CardTrader image until a reload.
 - **What.** `CardTraderCatalog` drops the cached miss when a file could not be fetched, so the next lookup tries again. An invalid file is still cached as a miss.
 - **Still without picture, by design.** Sets with no verified CardTrader mapping (McDonald's Collection 2022–2024, 30th Classic Collection, EX trainer kits) keep "Kein Bild"; mappings are only added through the reviewed audit, never guessed.
+
+## 2026-10-29 — A search hit keeps its language in the selection review
+
+- **Problem (user test).** With the search language on "Alle", "Auswahl prüfen" always loaded the English card (`searchLanguage === "de" ? "de" : "en"`), so a picked German hit (Glurak) turned into Charizard.
+- **What.** `pageSelectionLanguageFor` decides the review language: an explicit DE/EN search language wins; with "Alle" the language of the hits is used when it is uniform, and a new mode `own` (each card in the language of its hit) when they are mixed. The dialog shows neither toggle pressed in that mode and says so. The Deutsch/English toggle still switches all cards. No contract or persistence change; the card key already contains the language.
+- **Side effect.** The same card picked once in German and once in English is now two cards (different language, different key) instead of being merged; true duplicates are still merged.

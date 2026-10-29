@@ -9,7 +9,7 @@ import {
   selectableFinishes,
   variantAvailabilityForCard,
 } from "@/domain/variant-selection";
-import type { PageSelectionItem } from "@/domain/page-selection";
+import type { PageSelectionItem, PageSelectionLanguage } from "@/domain/page-selection";
 import { useState } from "react";
 
 import { CardArtwork } from "./CardArtwork";
@@ -22,7 +22,7 @@ interface PageSelectionReviewProps {
   items: PageSelectionItem[];
   binder: Binder;
   pageId: string;
-  language: "de" | "en";
+  language: PageSelectionLanguage;
   loading: boolean;
   submitting: boolean;
   notice?: string;
@@ -100,6 +100,7 @@ export function PageSelectionReview({
               <button type="button" aria-pressed={language === "de"} disabled={loading} onClick={() => onLanguageChange("de")}>Deutsch</button>
               <button type="button" aria-pressed={language === "en"} disabled={loading} onClick={() => onLanguageChange("en")}>English</button>
             </div>
+            {language === "own" ? <small className={styles.variantHint}>Jede Karte bleibt in der Sprache, in der du sie ausgewählt hast. Mit „Deutsch“ oder „English“ stellst du alle gleich um.</small> : null}
           </fieldset>
           {items.length > 1 && !loading ? (
             <div className={styles.selectionBulk}>

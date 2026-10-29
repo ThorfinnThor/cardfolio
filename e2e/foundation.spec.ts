@@ -401,6 +401,23 @@ test("inserts one card and safely undoes the exact saved mutation", async ({ pag
   await expect(page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" })).toBeVisible();
 });
 
+test("keeps a German search hit German when the review opens from the all-languages search", async ({ page }) => {
+  await mockCatalog(page);
+  await page.goto("/app/");
+  await createBinderFromStart(page, "Sprache");
+
+  await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
+  const search = searchDialogOf(page);
+  await search.getByPlaceholder(SEARCH_PLACEHOLDER).fill("Glurak");
+  await resultTilesOf(page).filter({ hasText: "Glurak" }).getByRole("button", { name: "Auswählen" }).click();
+  await search.getByRole("button", { name: "Auswahl prüfen" }).click();
+
+  const review = page.getByRole("dialog", { name: "1 Karte zum Binder hinzufügen" });
+  await expect(review.getByRole("button", { name: "Deutsch" })).toHaveAttribute("aria-pressed", "true");
+  await expect(review.getByText("Glurak", { exact: true })).toBeVisible();
+  await expect(review.getByText("Charizard", { exact: true })).toHaveCount(0);
+});
+
 test("reviews multiple cards and fills from the next free slot continuously", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/app/");

@@ -117,4 +117,28 @@ describe("PageSelectionReview", () => {
     expect(screen.queryByRole("combobox", { name: "Mindestzustand für Ivysaur" })).not.toBeInTheDocument();
     expect(screen.getByRole("combobox", { name: "Mindestzustand für Bulbasaur" })).toBeInTheDocument();
   });
+
+  it("explains that mixed-language cards keep their own language", () => {
+    const binder = createBinder("Review");
+    render(
+      <PageSelectionReview
+        items={[item]}
+        binder={binder}
+        pageId={binder.pages[0].id}
+        language="own"
+        loading={false}
+        submitting={false}
+        onLanguageChange={vi.fn()}
+        onChange={vi.fn()}
+        onRemove={vi.fn()}
+        onContinueSearch={vi.fn()}
+        onCancel={vi.fn()}
+        onConfirm={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText(/Jede Karte bleibt in der Sprache/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Deutsch" })).toHaveAttribute("aria-pressed", "false");
+    expect(screen.getByRole("button", { name: "English" })).toHaveAttribute("aria-pressed", "false");
+  });
 });
