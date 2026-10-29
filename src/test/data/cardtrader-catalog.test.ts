@@ -153,4 +153,16 @@ describe("committed CardTrader data files", () => {
     expect(script).toContain('.split("/")[0].replace(/[^a-z0-9]+/g, "")');
     expect(script).toContain('.replace(/^0+(?=[a-z])/, "").replace(/^([a-z]*)0+(\\d)/, "$1$2")');
   });
+
+  it("retries a download that failed once instead of remembering the miss", async () => {
+    let failures = 1;
+    const catalog = new CardTraderCatalog(async (file) => {
+      if (failures > 0) { failures -= 1; throw new Error("offline"); }
+      return loaderFrom(FILES)(file);
+    });
+
+    expect(await catalog.blueprint("en", "base1", "1", "Alakazam")).toBeUndefined();
+    const match = await catalog.blueprint("en", "base1", "1", "Alakazam");
+    expect(match?.blueprint.name).toBe("Alakazam");
+  });
 });
