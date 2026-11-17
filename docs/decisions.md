@@ -730,3 +730,10 @@
 - **Cards.** One TCGdex card per Pokémon, checked on 2026-11-17 (they exist, the picture loads): `sv03.5-173/199/133/193/166/170/143/094/149/175` (151), `swsh9-079` (Lucario), `sv02-097` (Mimigma). The list sits in `POPULAR_POKEMON` (`image` = TCGdex image base).
 - **Images.** Loaded from `assets.tcgdex.net` as `low.webp` like every card picture; never stored or copied. A picture that fails to load disappears and the name stays. They are decorative (`alt=""`).
 - **Not changed.** The privacy policy (it already names card pictures from TCGdex); the owner decides whether the wording needs a sentence for this screen. The children's wish page keeps its text-only picks. Motif pictures are a separate step.
+
+## 2026-11-17 — Example cards next to the motifs of the gift builder
+
+- **Request (user test, owner approved).** The motif choice (Meer, Wald, Nacht …) was text only. Each of the 36 motifs now shows a small example card.
+- **Which card.** Picture themes (21): the best-ranked card that the artwork review marked "dominant" for the motif (same filter the builder uses for its proposal). Pokémon types and special card groups (15): the first card of the curated list ("showiest first"). A card is used for one motif only, so a card that would lead two motifs goes to the first one and the next card to the second (illustration and mega got their second card). The list is `MOTIF_PICTURES` in `gift-motif-pictures.ts`; a test checks that every card is still dominant or on its curated list.
+- **Images.** TCGdex pictures (`low.webp`) from `assets.tcgdex.net`, decorative, lazy, never stored; a picture that fails to load disappears. They load only when the motif choice is open. Privacy text unchanged (owner decides whether this screen needs a sentence).
+- **Note.** The card is the first reviewed one, not the most beautiful: some are older, plainer cards (for example Porygon for "Berge & Felsen"). Swapping one is a one-line change.

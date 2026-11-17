@@ -30,6 +30,7 @@ import { FIRST_EDITION_SET_IDS, createInitialVariantSelection, isVariantSelectio
 
 import { cardImageUrl } from "@/data/catalog/images";
 import { CardArtwork } from "./CardArtwork";
+import { MOTIF_PICTURES } from "./gift-motif-pictures";
 import { GiftBinderSpread, type SpreadPocket } from "./GiftBinderSpread";
 import { formatDate, formatMoney } from "./gift-format";
 import { GiftPurchaseSteps } from "./GiftPurchaseSteps";
@@ -212,13 +213,13 @@ function safeCandidate(candidate: GiftCardCandidate, pricingEnabled: boolean, cu
   };
 }
 
-/** A small card picture next to a quick pick; decorative, so it simply disappears when it cannot be loaded. */
-function PickArtwork({ imageBase }: { imageBase: string }) {
+/** A small card picture next to a choice; decorative, so it simply disappears when it cannot be loaded. */
+function PickArtwork({ imageBase, className = styles.pickImage }: { imageBase: string; className?: string }) {
   const [failed, setFailed] = useState(false);
   if (failed) return null;
   return (
     // eslint-disable-next-line @next/next/no-img-element -- remote TCGdex picture, never optimised or stored by the app
-    <img className={styles.pickImage} src={cardImageUrl(imageBase, "low")} alt="" width={63} height={88} loading="lazy" decoding="async" onError={() => setFailed(true)} />
+    <img className={className} src={cardImageUrl(imageBase, "low")} alt="" width={63} height={88} loading="lazy" decoding="async" onError={() => setFailed(true)} />
   );
 }
 
@@ -843,6 +844,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
           updatePreferences("preferredLanguage", "en");
         }}
       />
+      {MOTIF_PICTURES[theme.id] ? <PickArtwork imageBase={MOTIF_PICTURES[theme.id]!} className={styles.themeImage} /> : null}
       <strong>{theme.label}</strong>
       <span>{theme.description}</span>
     </label>;
