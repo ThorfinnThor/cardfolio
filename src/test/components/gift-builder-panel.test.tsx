@@ -15,7 +15,8 @@ const availableStandardPartner = {
     kind: "standard",
     enabled: true,
     verifiedAt: "2026-10-12",
-    reviewAfter: "2026-10-31",
+    // Relative to today: a fixed date silently turns the partner "stale" and hides the offer once it has passed.
+    reviewAfter: new Date(Date.now() + 30 * 86_400_000).toISOString().slice(0, 10),
     destinationUrl: "https://partner.example/9-pocket-binder",
     affiliate: { enabled: false },
     capabilities: { personalization: false, photoUpload: false },
@@ -741,6 +742,24 @@ describe("GiftBuilderPanel", () => {
       collectorNumber: String(index + 1),
     }));
   }
+
+  it("suggests a similar name when the typed Pokémon has no cards and fills it in on a click", async () => {
+    const loader = {
+      loadCandidatePool: vi.fn(async () => []),
+      hydrateCandidates: vi.fn(),
+      countSubjectCards: vi.fn(async ({ subjectQuery }: { subjectQuery: string }) => ({ count: subjectQuery === "Pikachu" ? 12 : 0, capped: false })),
+      suggestSubjectNames: vi.fn(async () => ["Pikachu"]),
+    };
+    render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    fireEvent.change(screen.getByRole("textbox", { name: "Lieblings-Pokémon" }), { target: { value: "Pikatschu" } });
+    expect(await screen.findByText(/Zu „Pikatschu“ haben wir keine Karten gefunden/)).toBeInTheDocument();
+    fireEvent.click(await screen.findByRole("button", { name: "Pikachu" }));
+
+    expect(screen.getByRole("textbox", { name: "Lieblings-Pokémon" })).toHaveValue("Pikachu");
+    expect(await screen.findByText(/Für „Pikachu“ gibt es 12 Karten/)).toBeInTheDocument();
+    expect(loader.suggestSubjectNames).toHaveBeenCalledWith("Pikatschu", "de", expect.anything());
+  });
 
   it("shows how many cards exist for the chosen Pokémon and only offers sizes that can be filled", async () => {
     const loader = { loadCandidatePool: vi.fn(async () => [...briefsOf(25), ...briefsOf(2, "Schiggy-Ballon-Trainer").map((item) => ({ ...item, name: "Schiggys Wagen" }))]), hydrateCandidates: vi.fn() };

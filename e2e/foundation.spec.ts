@@ -401,6 +401,27 @@ test("inserts one card and safely undoes the exact saved mutation", async ({ pag
   await expect(page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" })).toBeVisible();
 });
 
+test("offers a similar name when a typed name finds nothing", async ({ page }) => {
+  await mockCatalog(page);
+  await page.route((url) => url.hostname === "api.tcgdex.net" && url.pathname.endsWith("/cards") && url.searchParams.get("name") === "Pikatschu", async (route) => {
+    await route.fulfill({ body: "[]", headers, status: 200 });
+  });
+  await page.route((url) => url.hostname === "api.tcgdex.net" && url.pathname.endsWith("/cards") && url.searchParams.get("name") === "Pika", async (route) => {
+    await route.fulfill({ body: JSON.stringify([{ id: "base1-58", localId: "58", name: "Pikachu" }]), headers, status: 200 });
+  });
+  await page.goto("/app/");
+  await createBinderFromStart(page, "Tippfehler");
+
+  await page.getByRole("button", { name: "Freier Platz 1, Karte einsetzen" }).click();
+  const search = searchDialogOf(page);
+  const query = search.getByPlaceholder(SEARCH_PLACEHOLDER);
+  await query.fill("Pikatschu");
+  await expect(search.getByText(/Meintest du/)).toBeVisible();
+  await search.getByRole("button", { name: "Pikachu", exact: true }).click();
+  await expect(query).toHaveValue("Pikachu");
+  await expect(resultTilesOf(page).filter({ hasText: "Pikachu" }).first()).toBeVisible();
+});
+
 test("keeps a German search hit German when the review opens from the all-languages search", async ({ page }) => {
   await mockCatalog(page);
   await page.goto("/app/");
@@ -1246,3 +1267,22 @@ test("\"Ich sammle selbst\" lands on \"Selbst gestalten\" also for a first visit
   await expect(page.getByRole("textbox", { name: "Wie soll dein Binder heißen?" })).toBeVisible();
 });
 
+
+test.describe("an English browser", () => {
+  test.use({ locale: "en-US" });
+
+  test("still gets the German app and switches to a fully English one with the language button", async ({ page }) => {
+    await mockCatalog(page);
+    await page.goto("/app/");
+    await createBinderFromStart(page, "Sprache");
+    await expect(page.getByRole("button", { name: "Schnell erfassen" })).toBeVisible();
+    await expect(page.locator("html")).toHaveAttribute("lang", "de");
+
+    await page.getByRole("button", { name: "EN", exact: true }).click();
+    await expect(page.locator("html")).toHaveAttribute("lang", "en");
+    await expect(page.getByRole("button", { name: "Quick add" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Add card" }).first()).toBeVisible();
+    await page.reload();
+    await expect(page.getByRole("button", { name: "Quick add" })).toBeVisible();
+  });
+});

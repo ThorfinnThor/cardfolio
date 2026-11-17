@@ -7,6 +7,13 @@ export type AppLocale = "de" | "en";
 import { DISCLAIMER } from "@/content/disclaimer";
 
 import { fixedLocaleForPath } from "./fixed-locale";
+import * as domainTexts from "./translations-domain";
+import * as extraTexts from "./translations-extra";
+import { registerNestedTranslator } from "./nested";
+import * as giftTexts from "./translations-gift";
+import * as miscTexts from "./translations-misc";
+import * as missingTexts from "./translations-missing";
+import * as workspaceTexts from "./translations-workspace";
 
 const LOCALE_STORAGE_KEY = "cardfolio-locale";
 
@@ -802,6 +809,8 @@ const translations: Record<string, string> = {
 };
 
 /* The trademark notice is defined once in German and English; reuse it so the help page translates too. */
+Object.assign(translations, workspaceTexts.translations, missingTexts.translations, giftTexts.translations, miscTexts.translations, domainTexts.translations, extraTexts.translations);
+
 Object.assign(translations, {
   [DISCLAIMER.de.heading]: DISCLAIMER.en.heading,
   [DISCLAIMER.de.lines[0]!]: DISCLAIMER.en.lines[0]!,
@@ -882,6 +891,11 @@ const patterns: Array<[RegExp, (...matches: string[]) => string]> = [
   [/^Teil (\d+) von (\d+) · (\d+) Positionen$/, (part, total, entries) => `Part ${part} of ${total} · ${entries} entries`],
 ];
 
+patterns.push(...workspaceTexts.patterns, ...missingTexts.patterns, ...giftTexts.patterns, ...miscTexts.patterns, ...domainTexts.patterns);
+// The patterns of translations-extra.ts are the most specific ones and are tried first.
+patterns.unshift(...extraTexts.patterns);
+patterns.push(...extraTexts.fallbackPatterns);
+
 function translateCore(value: string): string {
   const exact = translations[value];
   if (exact) return exact;
@@ -892,17 +906,14 @@ function translateCore(value: string): string {
   return value;
 }
 
+registerNestedTranslator((value) => translateGermanText(value));
+
 export function translateGermanText(value: string): string {
   if (!value.trim()) return value;
   const leading = value.match(/^\s*/)?.[0] ?? "";
   const trailing = value.match(/\s*$/)?.[0] ?? "";
   const core = value.slice(leading.length, value.length - trailing.length).replace(/\s+/g, " ");
   return `${leading}${translateCore(core)}${trailing}`;
-}
-
-export function detectLocale(languages: readonly string[] | undefined): AppLocale {
-  const preferred = languages?.find(Boolean)?.toLowerCase();
-  return preferred?.startsWith("de") ? "de" : "en";
 }
 
 type LocaleContextValue = {
@@ -922,18 +933,51 @@ function shouldSkip(node: Node): boolean {
   return Boolean(element?.closest("script, style, code, pre, [data-no-translate], [contenteditable='true']"));
 }
 
+/**
+ * React renders `Seite {n} benennen` as three adjacent text nodes. A run of such siblings is translated as one string
+ * first ("Seite 3 benennen" → "Name page 3"); only when that finds nothing does each node get its own translation.
+ */
+function textRun(node: Text): Text[] {
+  let first: Text = node;
+  while (first.previousSibling?.nodeType === Node.TEXT_NODE) first = first.previousSibling as Text;
+  const run: Text[] = [];
+  for (let next: Node | null = first; next && next.nodeType === Node.TEXT_NODE; next = next.nextSibling) run.push(next as Text);
+  return run;
+}
+
+function sourceOf(node: Text): string {
+  const previous = textState.get(node);
+  return previous && node.data === previous.translated ? previous.source : node.data;
+}
+
 function localizeText(node: Text, locale: AppLocale): void {
   if (shouldSkip(node)) return;
-  const current = node.data;
-  const previous = textState.get(node);
+  const run = textRun(node);
   if (locale === "de") {
-    if (previous && current === previous.translated && current !== previous.source) node.data = previous.source;
+    for (const member of run) {
+      const previous = textState.get(member);
+      if (previous && member.data === previous.translated && member.data !== previous.source) member.data = previous.source;
+    }
     return;
   }
-  const source = previous && current === previous.translated ? previous.source : current;
-  const translated = translateGermanText(source);
-  textState.set(node, { source, translated });
-  if (current !== translated) node.data = translated;
+  const sources = run.map(sourceOf);
+  if (run.length > 1) {
+    const merged = sources.join("");
+    const translatedRun = translateGermanText(merged);
+    if (translatedRun !== merged) {
+      run.forEach((member, index) => {
+        const translated = index === 0 ? translatedRun : "";
+        textState.set(member, { source: sources[index]!, translated });
+        if (member.data !== translated) member.data = translated;
+      });
+      return;
+    }
+  }
+  run.forEach((member, index) => {
+    const translated = translateGermanText(sources[index]!);
+    textState.set(member, { source: sources[index]!, translated });
+    if (member.data !== translated) member.data = translated;
+  });
 }
 
 function localizeAttributes(element: Element, locale: AppLocale): void {
@@ -968,7 +1012,8 @@ function localizeSubtree(root: Node, locale: AppLocale): void {
   const textWalker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   let textNode = textWalker.nextNode();
   while (textNode) {
-    localizeText(textNode as Text, locale);
+    // A run of sibling text nodes is handled once, from its first node.
+    if (textNode.previousSibling?.nodeType !== Node.TEXT_NODE) localizeText(textNode as Text, locale);
     textNode = textWalker.nextNode();
   }
   const elementWalker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
@@ -984,9 +1029,8 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const stored = window.localStorage.getItem(LOCALE_STORAGE_KEY);
-    const initial = stored === "de" || stored === "en"
-      ? stored
-      : detectLocale(navigator.languages?.length ? navigator.languages : [navigator.language]);
+    // The browser language is deliberately not used: the German pages stay German until the visitor switches to English.
+    const initial: AppLocale = stored === "en" ? "en" : "de";
     queueMicrotask(() => updateLocale(initial));
   }, []);
 

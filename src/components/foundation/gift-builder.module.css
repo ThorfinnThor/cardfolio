@@ -131,6 +131,10 @@
 .purchaseOptions { display: grid; gap: 16px; }
 .purchaseCard { display: flex; flex-direction: column; justify-content: space-between; gap: 22px; min-width: 0; border: 0; border-top: 1px solid var(--cf-line); background: transparent; padding: 26px 0 0; }
 .purchaseCardFeatured { border-top: 0; padding-top: 0; }
+.purchaseCardFeatured[data-secondary] { border-top: 1px solid var(--cf-line); padding-top: 26px; }
+.purchaseCardCompact[data-first] { border-top: 0; padding-top: 0; }
+.binderChoice { display: grid; gap: 8px; margin: 0; border: 0; padding: 0; }
+.binderChoice legend { margin-bottom: 8px; padding: 0; color: var(--cf-text); font-size: 16px; font-weight: 700; }
 .purchaseNumber { display: inline-grid; width: 36px; height: 36px; margin-right: 10px; place-items: center; border-radius: 50%; background: var(--cf-accent); color: var(--cf-on-accent); font-size: 16px; font-weight: 800; vertical-align: 2px; }
 .purchaseCard > div { display: grid; align-content: start; gap: 8px; }
 .purchaseCard h2, .purchaseCard h3 { font-size: 24px; line-height: 1.2; }
@@ -169,6 +173,7 @@
 .popularPicks legend { margin-bottom: 4px; color: var(--cf-text); font-size: 16px; font-weight: 750; }
 .popularPicks > p { margin: 0; color: var(--cf-muted); font-size: 14px; line-height: 1.5; }
 .availability { margin: 0; color: var(--cf-text2); font-size: 14px; line-height: 1.5; }
+.suggestionButton { min-height: 32px; border: 0; background: transparent; color: var(--cf-accent-text); padding: 4px 2px; font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }
 .choice[data-unavailable="true"] { opacity: .5; cursor: not-allowed; }
 .choice small { color: var(--cf-muted); font-size: 12px; font-weight: 500; }
 .pickGrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }

@@ -20,6 +20,7 @@ import { missingItemReviewNote } from "@/domain/missing-items-export";
 import { cardmarketMinimumCondition, conditionProfile, conditionProfiles } from "@/domain/purchase-preferences";
 import { suggestMarketplaceRegion } from "@/domain/marketplace-region";
 import type { MarketplaceProductIdentityMapping } from "@/domain/marketplace-product-identity";
+import { useLocale } from "@/i18n/locale";
 import { ConditionGuide } from "./ConditionGuide";
 import { SetLogo } from "./SetLogo";
 import { GiftPurchaseGuide } from "./GiftPurchaseGuide";
@@ -122,10 +123,15 @@ export function MissingCardsPanel({
 }: MissingCardsPanelProps) {
   const [query, setQuery] = useState("");
   const [cardmarketPartIndex, setCardmarketPartIndex] = useState(0);
-  // The beginner guide starts with the provider that fits the browser language (a guess from the language
-  // setting only, no location is read); the region stays changeable. The guide itself exists for Cardmarket.
+  // The beginner guide starts with a suggested provider (language setting only, no location is read); the region stays
+  // changeable. The guide itself exists for Cardmarket.
+  const { locale } = useLocale();
+  // The German app suggests Cardmarket whatever the browser says (an English browser in Germany is common); only a visitor
+  // who switched the app to English gets the suggestion from the browser language.
   const [suggestedRegion] = useState<MarketplaceRegion | undefined>(() => beginner
-    ? suggestMarketplaceRegion(typeof navigator === "undefined" ? [] : navigator.languages?.length ? navigator.languages : [navigator.language])
+    ? locale === "de"
+      ? "europe"
+      : suggestMarketplaceRegion(typeof navigator === "undefined" ? [] : navigator.languages?.length ? navigator.languages : [navigator.language])
     : undefined);
   const suggestedChoice: MarketplaceChoice | undefined = suggestedRegion === "europe" && cardmarketEnabled
     ? "cardmarket"
@@ -295,7 +301,7 @@ export function MissingCardsPanel({
           <p className={styles.eyebrow}>{beginner ? "Karten besorgen" : "Kartenkauf"}</p>
           <h2 id="missing-cards-heading">{beginner && marketplaceChoice === "cardmarket" ? `${visibleQuantity} Karten bei Cardmarket kaufen` : `${visibleQuantity} Karten gemeinsam kaufen`}</h2>
           <p className={styles.intro}>{beginner ? "Your Card Binder hat die Liste für dich vorbereitet. In vier kurzen Schritten kommst du zu den Karten." : "Wähle deine Region. Your Card Binder bereitet danach die komplette Liste für den passenden Anbieter vor."}</p>
-          <p className={styles.subline}>{visibleItems.length} Positionen · gekauft wird erst beim Anbieter</p>
+          <p className={styles.subline}>{visibleItems.length} {visibleItems.length === 1 ? "Position" : "Positionen"} · gekauft wird erst beim Anbieter</p>
         </div>
         <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Fehlkartenansicht schließen"><X size={18} /></button>
       </div>
@@ -340,7 +346,7 @@ export function MissingCardsPanel({
       {beginner && !expertOpen && marketplaceChoice === "cardmarket" ? (
         <section className={styles.regionPick} aria-labelledby="region-pick-heading">
           <h3 id="region-pick-heading"><MapPin aria-hidden="true" size={20} /> Wo wohnst du?</h3>
-          <p>Der Marktplatz hängt vom Wohnort ab: In <b>Europa</b> kauft man vor allem bei <b>Cardmarket</b>, in den <b>USA</b> vor allem bei <b>TCGplayer</b>. Wir haben nach deiner Browser-Sprache vorausgewählt. Stimmt das nicht, wähle hier den richtigen Ort.</p>
+          <p>Der Marktplatz hängt vom Wohnort ab: In <b>Europa</b> kauft man vor allem bei <b>Cardmarket</b>, in den <b>USA</b> vor allem bei <b>TCGplayer</b>. Wir haben eine Region vorausgewählt. Stimmt das nicht, wähle hier den richtigen Ort.</p>
           <div className={styles.regionButtons} role="group" aria-label="Wohnort auswählen">
             <button type="button" aria-label="Europa & UK · Cardmarket" aria-pressed="true"><strong>Europa & UK</strong><small>Cardmarket</small><Check aria-hidden="true" size={16} /></button>
             <button type="button" aria-label="USA & Kanada · TCGplayer" aria-pressed="false" onClick={() => { chooseRegion("north-america"); setExpertOpen(true); }}><strong>USA & Kanada</strong><small>TCGplayer</small></button>
@@ -651,7 +657,9 @@ export function MissingCardsPanel({
                   <ol className={styles.cardmarketConditionSteps}>
                     <li>Alle Karten markieren</li>
                     <li>„Massenveränderung“ öffnen</li>
-                    <li>Mindestzustand {sharedCardmarketCondition ? <b>≥ {sharedCardmarketCondition.code}</b> : "passend zu den Your Card Binder-Angaben"} wählen</li>
+                    {locale === "en"
+                      ? <li>Set the minimum condition to {sharedCardmarketCondition ? <b>≥ {sharedCardmarketCondition.code}</b> : "match your Your Card Binder settings"}</li>
+                      : <li>Mindestzustand {sharedCardmarketCondition ? <b>≥ {sharedCardmarketCondition.code}</b> : "passend zu den Your Card Binder-Angaben"} wählen</li>}
                   </ol>
                 </div>
                 <div className={styles.cardmarketGuideActions}>

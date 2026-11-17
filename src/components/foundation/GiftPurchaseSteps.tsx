@@ -23,6 +23,7 @@ export function GiftPurchaseSteps({ planSize, onCardsPurchase }: GiftPurchaseSte
   const [binderOffers, setBinderOffers] = useState<BinderOffer[]>();
   const [partnerAdapter, setPartnerAdapter] = useState<BinderAffiliateAdapter>();
   const [partnerLoadError, setPartnerLoadError] = useState<string>();
+  const [hasBinder, setHasBinder] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -56,10 +57,9 @@ export function GiftPurchaseSteps({ planSize, onCardsPurchase }: GiftPurchaseSte
     ).slice(0, 6);
   }, [binderOffers, planSize]);
 
-  return (
-    <section className={styles.purchaseOptions} aria-label="Nächste Schritte: Binder bestellen und Karten kaufen">
-      <article className={`${styles.purchaseCard} ${styles.purchaseCardFeatured}`}>
-        <div><h2><span className={styles.purchaseNumber} aria-hidden="true">1</span> Binder auswählen und bestellen</h2><p>Wähle einen passenden 9-Pocket-Binder.</p>
+  const binderCard = (
+      <article className={`${styles.purchaseCard} ${styles.purchaseCardFeatured}`} data-secondary={hasBinder || undefined}>
+        <div><h2><span className={styles.purchaseNumber} aria-hidden="true">{hasBinder ? 2 : 1}</span> Binder auswählen und bestellen</h2><p>Wähle einen passenden 9-Pocket-Binder.</p>
           {partnerLoadError ? <p role="status">Angebote sind momentan nicht erreichbar. Du kannst den lokalen Binder weiter bearbeiten.</p> : null}
           {!partnerLoadError && !binderOffers ? <p role="status">Binder-Angebote werden geprüft…</p> : null}
           {!partnerLoadError && recommendedBinderOffers?.length === 0 ? <p role="status">Zurzeit ist kein geprüfter Binder-Shop verfügbar. Du kannst den lokalen Binder trotzdem weiter bearbeiten.</p> : null}
@@ -79,10 +79,24 @@ export function GiftPurchaseSteps({ planSize, onCardsPurchase }: GiftPurchaseSte
           {recommendedBinderOffers?.length ? <p className={styles.offerNote}>Aktuellen Preis, Verfügbarkeit und Versand prüfst du im Shop.</p> : null}
         </div>
       </article>
-      <article className={`${styles.purchaseCard} ${styles.purchaseCardCompact}`}>
-        <div><h2><span className={styles.purchaseNumber} aria-hidden="true">2</span> Karten kaufen</h2><p>Wähle einen Anbieter und übernimm die vorbereitete Einkaufsliste.</p><a className={styles.howtoLink} href="/anleitung/cardmarket/" target="_blank" rel="noopener noreferrer">Anleitung mit Bildern <ExternalLink aria-hidden="true" size={14} /></a></div>
+  );
+  const cardsCard = (
+      <article className={`${styles.purchaseCard} ${styles.purchaseCardCompact}`} data-first={hasBinder || undefined}>
+        <div><h2><span className={styles.purchaseNumber} aria-hidden="true">{hasBinder ? 1 : 2}</span> Karten kaufen</h2><p>Wähle einen Anbieter und übernimm die vorbereitete Einkaufsliste.</p><a className={styles.howtoLink} href="/anleitung/cardmarket/" target="_blank" rel="noopener noreferrer">Anleitung mit Bildern <ExternalLink aria-hidden="true" size={14} /></a></div>
         <button type="button" className={styles.primaryButton} aria-label="Karten besorgen" onClick={onCardsPurchase}><ShoppingBag aria-hidden="true" size={18} /> Karten jetzt kaufen <ArrowRight aria-hidden="true" size={18} /></button>
       </article>
+  );
+
+  return (
+    <section className={styles.purchaseOptions} aria-label="Nächste Schritte: Binder bestellen und Karten kaufen">
+      <fieldset className={styles.binderChoice}>
+        <legend>Hast du schon einen Binder?</legend>
+        <div className={styles.choiceRow}>
+          <label className={styles.choice}><input type="radio" name="gift-has-binder" checked={!hasBinder} onChange={() => setHasBinder(false)} />Nein, ich brauche einen</label>
+          <label className={styles.choice}><input type="radio" name="gift-has-binder" checked={hasBinder} onChange={() => setHasBinder(true)} />Ja, ich habe schon einen</label>
+        </div>
+      </fieldset>
+      {hasBinder ? <>{cardsCard}{binderCard}</> : <>{binderCard}{cardsCard}</>}
     </section>
   );
 }

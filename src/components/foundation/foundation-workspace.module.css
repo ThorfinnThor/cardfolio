@@ -707,3 +707,5 @@
   .selectionSide .dialogActions .confirmButton { order: -1; min-height: 44px; }
   .selectionSide .dialogActions button { width: 100%; }
 }
+
+.suggestionLink { min-height: 32px; border: 0; background: transparent; color: var(--cf-accent-text); padding: 4px 2px; font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }

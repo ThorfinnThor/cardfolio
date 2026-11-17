@@ -48,7 +48,7 @@ import {
 import styles from "./gift-builder.module.css";
 
 export interface GiftBuilderPanelProps {
-  loader: Pick<GiftCandidateLoader, "loadCandidatePool" | "hydrateCandidates"> & Partial<Pick<GiftCandidateLoader, "countSubjectCards">>;
+  loader: Pick<GiftCandidateLoader, "loadCandidatePool" | "hydrateCandidates"> & Partial<Pick<GiftCandidateLoader, "countSubjectCards" | "suggestSubjectNames">>;
   smartSearch?: Pick<SmartSearchAdapter, "search">;
   initialDiscoveryMode?: "pokemon" | "theme";
   initialSubjectQuery?: string;
@@ -246,7 +246,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
   const stepMounted = useRef(false);
   const cardsDetails = useRef<HTMLDetailsElement>(null);
   // How many cards exist for the chosen Pokémon, so a size that cannot be met is not offered.
-  const [availability, setAvailability] = useState<{ key: string; count: number; capped: boolean }>();
+  const [availability, setAvailability] = useState<{ key: string; count: number; capped: boolean; suggestions?: string[] }>();
   const availabilityKey = `${preferences.preferredLanguage ?? "de"}:${pokemonQuery.trim().toLocaleLowerCase("de")}`;
 
   const language: GiftLanguage = preferences.preferredLanguage ?? "de";
@@ -280,7 +280,13 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
             capped = items.length >= AVAILABILITY_CAP;
           }
           if (controller.signal.aborted) return;
-          setAvailability({ key: `${searchLanguage}:${subject.toLocaleLowerCase("de")}`, count, capped });
+          // Nothing found for a single name: look for a similar one ("Pikatschu" → "Pikachu"). Only a hint; failures are ignored.
+          let suggestions: string[] | undefined;
+          if (count === 0 && !subject.includes(",") && typeof loader.suggestSubjectNames === "function") {
+            suggestions = await loader.suggestSubjectNames(subject, searchLanguage, controller.signal).catch(() => []);
+            if (controller.signal.aborted) return;
+          }
+          setAvailability({ key: `${searchLanguage}:${subject.toLocaleLowerCase("de")}`, count, capped, suggestions });
           // A size the catalogue cannot fill is lowered to the largest one that it can.
           setPreferences((current) => current.targetCardCount > largestPlanSize(count) && !capped
             ? { ...current, targetCardCount: largestPlanSize(count) }
@@ -970,6 +976,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
               })}
             </div>
             {availabilityText ? <p className={styles.availability} role="status">{availabilityText}</p> : null}
+            {currentAvailability?.count === 0 && currentAvailability.suggestions?.length ? <p className={styles.availability}>Meintest du{" "}{currentAvailability.suggestions.map((name, index) => <span key={name}>{index > 0 ? " oder " : ""}<button type="button" className={styles.suggestionButton} onClick={() => choosePokemon(name)}>{name}</button></span>)}?</p> : null}
           </fieldset> : <fieldset className={styles.themePicker}>
             <legend>Wähle ein Motiv für die Seite</legend>
             <p>Zum Beispiel Meer, Wald oder Schnee. Wir zeigen Karten, auf denen das Motiv im Bild zu sehen ist.</p>
