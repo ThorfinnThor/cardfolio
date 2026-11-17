@@ -4,7 +4,7 @@ import type { Guide } from "./guides";
  * Pages about the picture themes and special card groups of the gift builder. Every page is written for its own
  * subject: its own question, its own sections and its own facts (counts and years come from the catalogue data,
  * checked on 2026-10-23). `live: false` keeps a page out of the routes, sitemap, hub and llms.txt until it is
- * released in a later wave; a test checks that no two pages share a pattern or large passages of text.
+ * released (all pages are live since 2026-11-17); a test checks that no two pages share a pattern or large passages of text.
  */
 export const MOTIF_GUIDES: readonly Guide[] = [
   {
@@ -116,7 +116,6 @@ export const MOTIF_GUIDES: readonly Guide[] = [
     photoIds: ["30th-043", "sm11-52", "sv08-090"],
     related: ["motif-sleeping", "gift", "binder-size"],
     themeId: "beach",
-    live: false,
     de: {
       slug: "pokemon-karten-am-strand",
       title: "Pokémon am Strand: Karten mit Sand, Wellen und Sonne",
@@ -386,7 +385,6 @@ export const MOTIF_GUIDES: readonly Guide[] = [
     photoIds: ["30th-044", "neo1-3", "sm12-157"],
     related: ["personalized-gift", "gift", "birthday-gift"],
     themeId: "friends",
-    live: false,
     de: {
       slug: "pokemon-karten-freunde",
       title: "Pokémon-Freunde: Karten, auf denen sie zu zweit oder in Gruppen auftreten",
@@ -484,7 +482,6 @@ export const MOTIF_GUIDES: readonly Guide[] = [
     photoIds: ["30th-043", "sm10-135", "swsh11-143"],
     related: ["motif-night", "gift", "birthday-gift"],
     themeId: "sleeping",
-    live: false,
     de: {
       slug: "schlafende-pokemon-karten",
       title: "Schlafende Pokémon: Karten zum Runterkommen",
@@ -578,7 +575,6 @@ export const MOTIF_GUIDES: readonly Guide[] = [
     photoIds: ["sv04.5-212", "sv04.5-093", "sv04.5-153"],
     related: ["motif-illustration", "condition", "marketplaces"],
     themeId: "shiny",
-    live: false,
     de: {
       slug: "shiny-pokemon-karten",
       title: "Shiny-Pokémon-Karten: drei Sets, in denen die Sonderfarben stecken",
@@ -672,7 +668,6 @@ export const MOTIF_GUIDES: readonly Guide[] = [
     photoIds: ["me05-114", "me02.5-290", "me01-158"],
     related: ["motif-illustration", "motif-shiny", "marketplaces"],
     themeId: "mega",
-    live: false,
     de: {
       slug: "mega-pokemon-karten",
       title: "Mega-Pokémon-Karten: die Rückkehr der Mega-Entwicklung 2025/26",
@@ -770,7 +765,6 @@ export const MOTIF_GUIDES: readonly Guide[] = [
     photoIds: ["base1-1", "base4-4", "neo1-7"],
     related: ["condition", "marketplaces", "gift"],
     themeId: "classics",
-    live: false,
     de: {
       slug: "klassische-pokemon-holo-karten",
       title: "Klassische Pokémon-Holokarten von 1999 bis 2002",
@@ -868,7 +862,6 @@ export const MOTIF_GUIDES: readonly Guide[] = [
     photoIds: ["me02-125", "sv03.5-169", "swsh3-191"],
     related: ["motif-night", "gift", "personalized-gift"],
     themeId: "type-fire",
-    live: false,
     de: {
       slug: "feuer-pokemon-karten",
       title: "Feuer-Pokémon-Karten: Auswahl nach Typ statt nach Bild",
