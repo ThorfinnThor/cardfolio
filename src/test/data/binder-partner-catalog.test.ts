@@ -43,7 +43,11 @@ describe("production binder partner catalog", () => {
   it("closes external routes after the documented review deadline", () => {
     const adapter = new ReviewedBinderAffiliateAdapter(parseBinderPartnerCatalog(partnerData));
 
-    expect(adapter.getOffer("vaultx-amazon-9-pocket", new Date("2026-11-20T00:00:00Z"))).toMatchObject({ status: "stale" });
-    expect(adapter.buildExternalUrl("vaultx-amazon-9-pocket", new Date("2026-11-20T00:00:00Z"))).toBeUndefined();
+    // Taken from the data, so a renewed review date does not need a test change.
+    const reviewAfter = partnerData.partners.find((partner) => partner.id === "vaultx-amazon-9-pocket")!.reviewAfter;
+    const afterDeadline = new Date(Date.parse(`${reviewAfter}T00:00:00Z`) + 24 * 60 * 60 * 1000);
+
+    expect(adapter.getOffer("vaultx-amazon-9-pocket", afterDeadline)).toMatchObject({ status: "stale" });
+    expect(adapter.buildExternalUrl("vaultx-amazon-9-pocket", afterDeadline)).toBeUndefined();
   });
 });
