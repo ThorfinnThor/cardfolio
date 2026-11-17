@@ -1214,6 +1214,8 @@ test("offers Pokémon types and special cards next to the picture themes", async
   await expect(page.getByRole("radio", { name: /Feuer-Pokémon/ })).toBeAttached();
   await expect(page.getByRole("radio", { name: /Klassische Holos/ })).toBeAttached();
   expect((await (await page.request.get("/data/semantic/curated-collections-v1.json")).json()).collections["type-fire"].length).toBeGreaterThanOrEqual(18);
+  // Every motif shows a small example card (21 picture themes, 11 types, 4 special card groups).
+  await expect(page.locator('label:has(input[name="gift-theme"]) img[src^="https://assets.tcgdex.net/"]')).toHaveCount(36);
 });
 
 test("a guide about a picture theme opens the builder with that theme chosen", async ({ page }) => {
