@@ -723,3 +723,10 @@
 
 - The owner re-checked all six Amazon binder offers on 2026-11-17 (page reachable, price, availability: all fine, prices unchanged). `reviewedAt`, `verifiedAt` and the price's `sourceUpdatedAt` are 2026-11-17, `reviewAfter` is 2026-12-17. After that date the offers close by themselves and `release:check` fails until the next review.
 - The deadline test reads the date from the data now, so the next review needs no test change.
+
+## 2026-11-17 — Card pictures next to the quick Pokémon picks ("Ich kenne mich nicht aus")
+
+- **Request (user test, owner approved the card list).** Beginners could not match names such as Glurak or Mimigma. In the helper mode every quick pick now shows a small picture of one card of that Pokémon; the normal mode (name known) stays text only and does not load them.
+- **Cards.** One TCGdex card per Pokémon, checked on 2026-11-17 (they exist, the picture loads): `sv03.5-173/199/133/193/166/170/143/094/149/175` (151), `swsh9-079` (Lucario), `sv02-097` (Mimigma). The list sits in `POPULAR_POKEMON` (`image` = TCGdex image base).
+- **Images.** Loaded from `assets.tcgdex.net` as `low.webp` like every card picture; never stored or copied. A picture that fails to load disappears and the name stays. They are decorative (`alt=""`).
+- **Not changed.** The privacy policy (it already names card pictures from TCGdex); the owner decides whether the wording needs a sentence for this screen. The children's wish page keeps its text-only picks. Motif pictures are a separate step.

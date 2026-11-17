@@ -743,6 +743,20 @@ describe("GiftBuilderPanel", () => {
     }));
   }
 
+  it("shows a small card picture next to each popular Pokémon only for buyers who ask for help", () => {
+    const loader = { loadCandidatePool: vi.fn(async () => []), hydrateCandidates: vi.fn() };
+    const { container } = render(<GiftBuilderPanel loader={loader} pricingEnabled={false} onCancel={vi.fn()} onCreateBinder={vi.fn()} onOpenBinder={vi.fn()} onCardsPurchase={vi.fn()} />);
+
+    expect(container.querySelectorAll('img[src^="https://assets.tcgdex.net/"]')).toHaveLength(0);
+    fireEvent.click(screen.getByRole("radio", { name: "Ich kenne mich nicht aus" }));
+    const images = [...container.querySelectorAll('img[src^="https://assets.tcgdex.net/"]')];
+    expect(images).toHaveLength(12);
+    expect(images.every((image) => image.getAttribute("src")!.endsWith("/low.webp") && image.getAttribute("alt") === "")).toBe(true);
+    fireEvent.error(images[0]!);
+    expect(container.querySelectorAll('img[src^="https://assets.tcgdex.net/"]')).toHaveLength(11);
+    expect(screen.getByRole("radio", { name: "Pikachu" })).toBeInTheDocument();
+  });
+
   it("suggests a similar name when the typed Pokémon has no cards and fills it in on a click", async () => {
     const loader = {
       loadCandidatePool: vi.fn(async () => []),

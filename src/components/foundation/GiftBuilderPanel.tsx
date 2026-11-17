@@ -28,6 +28,7 @@ import type { SmartSearchAdapter } from "@/domain/semantic-card-search";
 import type { CardSnapshot, CatalogSearchItem, PurchasePreferences, VariantSelection } from "@/domain/types";
 import { FIRST_EDITION_SET_IDS, createInitialVariantSelection, isVariantSelectionValid, variantAvailabilityForCard, variantSelectionIssue } from "@/domain/variant-selection";
 
+import { cardImageUrl } from "@/data/catalog/images";
 import { CardArtwork } from "./CardArtwork";
 import { GiftBinderSpread, type SpreadPocket } from "./GiftBinderSpread";
 import { formatDate, formatMoney } from "./gift-format";
@@ -209,6 +210,16 @@ function safeCandidate(candidate: GiftCardCandidate, pricingEnabled: boolean, cu
       issues: ["pricing-feature-gated"],
     },
   };
+}
+
+/** A small card picture next to a quick pick; decorative, so it simply disappears when it cannot be loaded. */
+function PickArtwork({ imageBase }: { imageBase: string }) {
+  const [failed, setFailed] = useState(false);
+  if (failed) return null;
+  return (
+    // eslint-disable-next-line @next/next/no-img-element -- remote TCGdex picture, never optimised or stored by the app
+    <img className={styles.pickImage} src={cardImageUrl(imageBase, "low")} alt="" width={63} height={88} loading="lazy" decoding="async" onError={() => setFailed(true)} />
+  );
 }
 
 export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "pokemon", initialSubjectQuery = initialPreferences.subjectQuery, initialThemeId, pricingEnabled, budgetGuaranteeEnabled = false, onCancel, onCreateBinder, onOpenBinder, onCardsPurchase }: GiftBuilderPanelProps) {
@@ -971,6 +982,7 @@ export function GiftBuilderPanel({ loader, smartSearch, initialDiscoveryMode = "
                 const name = popularPokemonName(entry, language);
                 return <label className={styles.pickChoice} key={entry.en}>
                   <input type="radio" name="gift-popular" checked={pokemonQuery.trim().toLocaleLowerCase("de") === name.toLocaleLowerCase("de")} onChange={() => choosePokemon(name)} />
+                  {pokemonHelp ? <PickArtwork imageBase={entry.image} /> : null}
                   <span>{name}</span>
                 </label>;
               })}
