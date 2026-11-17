@@ -1,15 +1,15 @@
 {
   "schemaVersion": 1,
   "enabled": true,
-  "reviewedAt": "2026-10-19",
+  "reviewedAt": "2026-11-17",
   "partners": [
     {
       "id": "vaultx-amazon-9-pocket",
       "displayName": "Vault X 9-Pocket Binder",
       "kind": "standard",
       "enabled": true,
-      "verifiedAt": "2026-10-19",
-      "reviewAfter": "2026-11-19",
+      "verifiedAt": "2026-11-17",
+      "reviewAfter": "2026-12-17",
       "destinationUrl": "https://www.amazon.de/dp/B01MTYY0IB",
       "affiliate": {
         "enabled": true,
@@ -32,7 +32,7 @@
         "amountMinor": 1799,
         "currency": "EUR",
         "qualifier": "fixed",
-        "sourceUpdatedAt": "2026-10-19"
+        "sourceUpdatedAt": "2026-11-17"
       },
       "evidenceUrls": [
         "https://www.amazon.de/dp/B01MTYY0IB"
@@ -43,8 +43,8 @@
       "displayName": "Ultra Pro Evoli 9-Pocket Zip PRO-Binder",
       "kind": "standard",
       "enabled": true,
-      "verifiedAt": "2026-10-19",
-      "reviewAfter": "2026-11-19",
+      "verifiedAt": "2026-11-17",
+      "reviewAfter": "2026-12-17",
       "destinationUrl": "https://www.amazon.de/dp/B0GRHHKR8G",
       "affiliate": {
         "enabled": true,
@@ -66,7 +66,7 @@
         "amountMinor": 3163,
         "currency": "EUR",
         "qualifier": "fixed",
-        "sourceUpdatedAt": "2026-10-19"
+        "sourceUpdatedAt": "2026-11-17"
       },
       "evidenceUrls": [
         "https://www.amazon.de/dp/B0GRHHKR8G"
@@ -77,8 +77,8 @@
       "displayName": "Ultimate Guard Zipfolio 360 Xenoskin",
       "kind": "standard",
       "enabled": true,
-      "verifiedAt": "2026-10-19",
-      "reviewAfter": "2026-11-19",
+      "verifiedAt": "2026-11-17",
+      "reviewAfter": "2026-12-17",
       "destinationUrl": "https://www.amazon.de/dp/B00VBQHKFU",
       "affiliate": {
         "enabled": true,
@@ -100,7 +100,7 @@
         "amountMinor": 2849,
         "currency": "EUR",
         "qualifier": "fixed",
-        "sourceUpdatedAt": "2026-10-19"
+        "sourceUpdatedAt": "2026-11-17"
       },
       "evidenceUrls": [
         "https://www.amazon.de/dp/B00VBQHKFU"
@@ -111,8 +111,8 @@
       "displayName": "Ultra Pro Gengar 9-Pocket Zip PRO-Binder",
       "kind": "standard",
       "enabled": true,
-      "verifiedAt": "2026-10-19",
-      "reviewAfter": "2026-11-19",
+      "verifiedAt": "2026-11-17",
+      "reviewAfter": "2026-12-17",
       "destinationUrl": "https://www.amazon.de/dp/B0FT4T733F",
       "affiliate": {
         "enabled": true,
@@ -134,7 +134,7 @@
         "amountMinor": 4699,
         "currency": "EUR",
         "qualifier": "fixed",
-        "sourceUpdatedAt": "2026-10-19"
+        "sourceUpdatedAt": "2026-11-17"
       },
       "evidenceUrls": [
         "https://www.amazon.de/dp/B0FT4T733F"
@@ -145,8 +145,8 @@
       "displayName": "Ultra Pro Lucario 9-Pocket Zip PRO-Binder",
       "kind": "standard",
       "enabled": true,
-      "verifiedAt": "2026-10-19",
-      "reviewAfter": "2026-11-19",
+      "verifiedAt": "2026-11-17",
+      "reviewAfter": "2026-12-17",
       "destinationUrl": "https://www.amazon.de/dp/B0DK7Y5QFY",
       "affiliate": {
         "enabled": true,
@@ -168,7 +168,7 @@
         "amountMinor": 4937,
         "currency": "EUR",
         "qualifier": "fixed",
-        "sourceUpdatedAt": "2026-10-19"
+        "sourceUpdatedAt": "2026-11-17"
       },
       "evidenceUrls": [
         "https://www.amazon.de/dp/B0DK7Y5QFY"
@@ -179,8 +179,8 @@
       "displayName": "Ultra Pro Pikachu 9-Pocket Zip PRO-Binder",
       "kind": "standard",
       "enabled": true,
-      "verifiedAt": "2026-10-19",
-      "reviewAfter": "2026-11-19",
+      "verifiedAt": "2026-11-17",
+      "reviewAfter": "2026-12-17",
       "destinationUrl": "https://www.amazon.de/dp/B09CLS5XNB",
       "affiliate": {
         "enabled": true,
@@ -202,7 +202,7 @@
         "amountMinor": 5447,
         "currency": "EUR",
         "qualifier": "fixed",
-        "sourceUpdatedAt": "2026-10-19"
+        "sourceUpdatedAt": "2026-11-17"
       },
       "evidenceUrls": [
         "https://www.amazon.de/dp/B09CLS5XNB"

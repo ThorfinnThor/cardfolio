@@ -718,3 +718,8 @@
 - **Guard.** `src/test/i18n/translation-coverage.test.ts` fails when a new standalone German text or aria-label is added in the app without an English entry. Texts inside sentences with several nodes cannot be judged statically; the end-to-end suite renders them.
 - **Checked by a crawl.** All texts the end-to-end flows render were compared with the dictionary; what remains German in English mode is catalogue data (German set names when the German search language is chosen) and texts the visitor typed.
 - **Also in this change.** "Meintest du …?" for a typed name without hits (card search and gift Pokémon field, `suggestNames`), and the question "Hast du schon einen Binder?" in the gift summary that puts buying the cards first when a binder exists.
+
+## 2026-11-17 — Binder offers reviewed again
+
+- The owner re-checked all six Amazon binder offers on 2026-11-17 (page reachable, price, availability: all fine, prices unchanged). `reviewedAt`, `verifiedAt` and the price's `sourceUpdatedAt` are 2026-11-17, `reviewAfter` is 2026-12-17. After that date the offers close by themselves and `release:check` fails until the next review.
+- The deadline test reads the date from the data now, so the next review needs no test change.
