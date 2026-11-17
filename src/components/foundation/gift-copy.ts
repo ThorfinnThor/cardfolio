@@ -9,19 +9,23 @@ export type GiftLanguage = "de" | "en";
  * catalogue in each language. The search runs on these names, so a quick pick
  * must follow the selected card language.
  */
+/**
+ * `image` is the TCGdex image base of one card that shows the Pokémon (checked 2026-11-17, picture only). It is loaded
+ * from assets.tcgdex.net like every other card picture and never stored.
+ */
 export const POPULAR_POKEMON = [
-  { de: "Pikachu", en: "Pikachu" },
-  { de: "Glurak", en: "Charizard" },
-  { de: "Evoli", en: "Eevee" },
-  { de: "Mew", en: "Mew" },
-  { de: "Bisasam", en: "Bulbasaur" },
-  { de: "Schiggy", en: "Squirtle" },
-  { de: "Relaxo", en: "Snorlax" },
-  { de: "Gengar", en: "Gengar" },
-  { de: "Lucario", en: "Lucario" },
-  { de: "Dragoran", en: "Dragonite" },
-  { de: "Mimigma", en: "Mimikyu" },
-  { de: "Enton", en: "Psyduck" },
+  { de: "Pikachu", en: "Pikachu", image: "https://assets.tcgdex.net/en/sv/sv03.5/173" },
+  { de: "Glurak", en: "Charizard", image: "https://assets.tcgdex.net/en/sv/sv03.5/199" },
+  { de: "Evoli", en: "Eevee", image: "https://assets.tcgdex.net/en/sv/sv03.5/133" },
+  { de: "Mew", en: "Mew", image: "https://assets.tcgdex.net/en/sv/sv03.5/193" },
+  { de: "Bisasam", en: "Bulbasaur", image: "https://assets.tcgdex.net/en/sv/sv03.5/166" },
+  { de: "Schiggy", en: "Squirtle", image: "https://assets.tcgdex.net/en/sv/sv03.5/170" },
+  { de: "Relaxo", en: "Snorlax", image: "https://assets.tcgdex.net/en/sv/sv03.5/143" },
+  { de: "Gengar", en: "Gengar", image: "https://assets.tcgdex.net/en/sv/sv03.5/094" },
+  { de: "Lucario", en: "Lucario", image: "https://assets.tcgdex.net/en/swsh/swsh9/079" },
+  { de: "Dragoran", en: "Dragonite", image: "https://assets.tcgdex.net/en/sv/sv03.5/149" },
+  { de: "Mimigma", en: "Mimikyu", image: "https://assets.tcgdex.net/en/sv/sv02/097" },
+  { de: "Enton", en: "Psyduck", image: "https://assets.tcgdex.net/en/sv/sv03.5/175" },
 ] as const;
 
 export function popularPokemonName(entry: (typeof POPULAR_POKEMON)[number], language: GiftLanguage): string {

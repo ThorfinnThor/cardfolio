@@ -179,6 +179,8 @@
 .pickGrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
 .pickChoice { position: relative; display: grid !important; place-items: center; min-height: 52px; border: 1px solid var(--cf-line2); border-radius: 9px; background: var(--cf-surface2); padding: 8px 6px; color: var(--cf-text) !important; font-size: 15px !important; font-weight: 700 !important; text-align: center; cursor: pointer; }
 .pickChoice:has(input:checked) { border-color: var(--cf-accent); background: var(--cf-accent-soft); color: var(--cf-accent-text) !important; box-shadow: inset 0 0 0 1px var(--cf-accent); }
+.pickChoice:has(.pickImage) { gap: 6px; align-content: start; }
+.pickImage { display: block; width: 56px; height: auto; aspect-ratio: 63 / 88; border-radius: 4px; object-fit: contain; box-shadow: 0 2px 8px rgb(0 0 0 / 22%); }
 .pickChoice input { position: absolute; width: 1px; height: 1px; min-height: 0; overflow: hidden; opacity: 0; pointer-events: none; }
 .pickChoice span { color: inherit !important; font-size: inherit !important; font-weight: inherit !important; }
 .pageSummary { display: flex; flex-wrap: wrap; gap: 8px 30px; border-bottom: 1px solid var(--cf-line); padding: 0 0 12px; }
