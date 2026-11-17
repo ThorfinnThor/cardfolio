@@ -161,21 +161,15 @@ describe("gift purchase guide", () => {
     expect(screen.queryByRole("heading", { name: "So bekommst du die Karten" })).not.toBeInTheDocument();
   });
 
-  it("starts with TCGplayer for a browser set to US English and keeps Cardmarket one click away", () => {
-    vi.spyOn(window.navigator, "languages", "get").mockReturnValue(["en-US", "en"]);
-    render(panel({ tcgplayerCardMappings: [] }));
+  it("suggests Cardmarket in the German app whatever the browser language is", () => {
+    for (const languages of [["en-US", "en"], ["en-AU", "en"]]) {
+      vi.spyOn(window.navigator, "languages", "get").mockReturnValue(languages);
+      render(panel({ tcgplayerCardMappings: [] }));
 
-    expect(screen.queryByRole("heading", { name: "So bekommst du die Karten" })).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "USA & Kanada · TCGplayer empfohlen" })).toHaveAttribute("aria-pressed", "true");
-    expect(screen.getByRole("heading", { name: "TCGplayer Mass Entry" })).toBeInTheDocument();
-  });
-
-  it("offers the provider choice without a recommendation for other regions", () => {
-    vi.spyOn(window.navigator, "languages", "get").mockReturnValue(["en-AU", "en"]);
-    render(panel());
-
-    expect(screen.queryByRole("heading", { name: "So bekommst du die Karten" })).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Andere Region · Versand prüfen" })).toBeInTheDocument();
+      expect(screen.queryByRole("heading", { name: "TCGplayer Mass Entry" })).not.toBeInTheDocument();
+      expect(screen.getAllByRole("link", { name: /kopieren & Cardmarket öffnen/ }).length).toBeGreaterThan(0);
+      cleanup();
+    }
   });
 
   it("points every step that needs it to the illustrated instructions", () => {

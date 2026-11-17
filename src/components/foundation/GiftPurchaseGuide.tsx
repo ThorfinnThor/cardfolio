@@ -3,6 +3,8 @@
 import { ArrowLeft, ArrowRight, Check, Clipboard, ExternalLink } from "lucide-react";
 import { useState } from "react";
 
+import { useLocale } from "@/i18n/locale";
+
 import styles from "./missing-cards-panel.module.css";
 import { useStepHistory } from "./step-history";
 
@@ -62,6 +64,7 @@ export function GiftPurchaseGuide({
   condition,
   language,
 }: GiftPurchaseGuideProps) {
+  const { locale } = useLocale();
   const [step, setStepDirect] = useState<GuideStep>(1);
   const setStep = useStepHistory("purchase-guide", step, setStepDirect);
   const languageName = language ? LANGUAGE_NAMES[language] : undefined;
@@ -143,7 +146,9 @@ export function GiftPurchaseGuide({
           <ol className={styles.cardmarketInstructionList}>
             <li>Melde dich bei Cardmarket an – oder lege dort ein Konto an.</li>
             <li>Lege eine neue <b>Wants-Liste</b> an (so nennt Cardmarket die Wunschliste): Name eintippen, <b>ohne Leerzeichen</b>, zum Beispiel „GeschenkEvoli“, dann auf <b>„Liste hinzufügen“</b> klicken.</li>
-            <li>Wähle <b>„Deck-Liste hinzufügen“</b>, klicke in das große Textfeld und füge die Liste mit <b>Strg+V</b> beziehungsweise <b>⌘V</b> ein.</li>
+            {locale === "en"
+              ? <li>Choose <b>“Add deck list”</b>, click into the large text box and paste the list with <b>Ctrl+V</b> or <b>⌘V</b>.</li>
+              : <li>Wähle <b>„Deck-Liste hinzufügen“</b>, klicke in das große Textfeld und füge die Liste mit <b>Strg+V</b> beziehungsweise <b>⌘V</b> ein.</li>}
             <li>Klicke auf den grünen Knopf <b>„Zu [Name deiner Liste] hinzufügen“</b>. Ein grünes Häkchen heißt: Karten hinzugefügt. Ein rotes Kreuz heißt: Karte nicht hinzugefügt.</li>
           </ol>
           <div className={styles.cardmarketGuideActions}>
@@ -176,7 +181,9 @@ export function GiftPurchaseGuide({
             <ol className={styles.cardmarketConditionSteps}>
               <li>Alle Karten markieren (Kästchen in der Titelzeile der Tabelle)</li>
               <li>„Massenveränderung“ öffnen</li>
-              <li>Bei „Mindest-Zustand“ {condition ? <b>{condition.code}</b> : "den passenden Wert"} wählen{languageName ? <>, bei „Sprachen“ <b>{languageName}</b></> : null} und „Ausgewählte ändern“ klicken</li>
+              {locale === "en"
+                ? <li>Under “Minimum condition” choose {condition ? <b>{condition.code}</b> : "the matching value"}{languageName ? <>, under “Languages” choose <b>{languageName}</b></> : null} and click “Change selected”</li>
+                : <li>Bei „Mindest-Zustand“ {condition ? <b>{condition.code}</b> : "den passenden Wert"} wählen{languageName ? <>, bei „Sprachen“ <b>{languageName}</b></> : null} und „Ausgewählte ändern“ klicken</li>}
             </ol>
           </div>
           <div className={styles.cardmarketGuideActions}>

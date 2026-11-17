@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, Check, Clipboard, ExternalLink } from "lucide-re
 import { useState } from "react";
 
 import type { TcgplayerMassEntryExport } from "@/domain/tcgplayer-export";
+import { useLocale } from "@/i18n/locale";
 
 import styles from "./missing-cards-panel.module.css";
 
@@ -27,6 +28,7 @@ function tally(values: readonly string[]): Array<[string, number]> {
 }
 
 export function TcgplayerGuide({ exported, onCopy }: { exported: TcgplayerMassEntryExport; onCopy?: (exported: TcgplayerMassEntryExport) => void }) {
+  const { locale } = useLocale();
   const [step, setStep] = useState<Step>(1);
   const prepared = exported.matches.filter((match) => match.line);
   const printings = tally(prepared.map((match) => match.printingHint));
@@ -81,8 +83,12 @@ export function TcgplayerGuide({ exported, onCopy }: { exported: TcgplayerMassEn
           <h5>Liste in Mass Entry prüfen</h5>
           <ol className={styles.cardmarketInstructionList}>
             {exported.massEntryPrefilled
-              ? <li>Die Karten stehen bereits <b>vorausgefüllt</b> im Feld <b>„Items“</b>. Sonst klicke in das Feld und füge sie mit <b>Strg+V</b> beziehungsweise <b>⌘V</b> ein.</li>
-              : <li>Klicke in das Feld <b>„Items“</b> und füge die Liste mit <b>Strg+V</b> beziehungsweise <b>⌘V</b> ein.</li>}
+              ? locale === "en"
+                ? <li>The cards are already <b>prefilled</b> in the <b>“Items”</b> field. Otherwise click into the field and paste them with <b>Ctrl+V</b> or <b>⌘V</b>.</li>
+                : <li>Die Karten stehen bereits <b>vorausgefüllt</b> im Feld <b>„Items“</b>. Sonst klicke in das Feld und füge sie mit <b>Strg+V</b> beziehungsweise <b>⌘V</b> ein.</li>
+              : locale === "en"
+                ? <li>Click into the <b>“Items”</b> field and paste the list with <b>Ctrl+V</b> or <b>⌘V</b>.</li>
+                : <li>Klicke in das Feld <b>„Items“</b> und füge die Liste mit <b>Strg+V</b> beziehungsweise <b>⌘V</b> ein.</li>}
             <li>Bei <b>„Select Product Line“</b> muss <b>Pokemon</b> stehen, und jede Karte sollte als eigene Zeile erscheinen.</li>
           </ol>
           <small>TCGplayer zeigt die Seite auf Englisch. Mit „Show Set/Series Codes“ siehst du die Set-Kürzel, falls eine Zeile nicht erkannt wird.</small>

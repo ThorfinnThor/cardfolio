@@ -1,3 +1,4 @@
+import { suggestCardNames } from "@/data/catalog/name-suggestions";
 import type { TCGdexGiftCardDetail } from "@/data/catalog/tcgdex";
 import { openAppDatabase, type GiftCandidateCacheRecord } from "@/data/persistence/db";
 import { eraOfSetId, type GiftEra } from "@/domain/gift-era";
@@ -178,6 +179,11 @@ export class GiftCandidateLoader {
       for (const item of items) if (matchesGiftSubject({ name: item.name }, input.subjectQuery)) keys.add(`${item.ref.provider}:${item.ref.id}:${item.ref.language}`);
     }
     return { count: keys.size, capped: scans.some(({ complete }) => !complete) };
+  }
+
+  /** Names close to a subject the catalogue does not know ("Pikatschu" → "Pikachu"). */
+  async suggestSubjectNames(subjectQuery: string, language: CardLanguage, signal?: AbortSignal): Promise<string[]> {
+    return suggestCardNames(this.catalog, subjectQuery, language, signal);
   }
 
   /** Hydrates only the explicitly supplied visible/shortlisted briefs. */

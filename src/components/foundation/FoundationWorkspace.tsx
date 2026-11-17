@@ -1,7 +1,7 @@
 "use client";
 
 import { LegalLinksInline } from "@/components/content/AppLegalFooter";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ListChecks, Archive, ArrowLeft, ArrowRight, BookOpen, CircleHelp, Copy, DatabaseBackup, ListFilter, ListPlus, Menu, Pencil, Printer, Search, Trash2, X } from "lucide-react";
 import Link from "next/link";
 import { type ChangeEvent, type FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -39,6 +39,7 @@ import {
   type SupportedBinderLayout,
 } from "@/domain/binder-actions";
 import { appOverviewPath } from "@/content/routes";
+import { suggestCardNames } from "@/data/catalog/name-suggestions";
 import { recordBackup } from "@/data/backup/backup-reminder";
 import { applyQuickAdd, planQuickAdd, type QuickAddChange, type QuickAddResult } from "@/domain/quick-add";
 import { deriveBinderStats } from "@/domain/binder-stats";
@@ -828,6 +829,21 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
     : searchLanguage === "en"
       ? Boolean(englishSearchQuery.data) && !searchIsRunning
       : Boolean(germanSearchQuery.data || englishSearchQuery.data) && !searchIsRunning;
+  // Nothing found for a typed name: look for a similar one ("Pikatschu" → "Pikachu"). Only a hint, so failures stay silent.
+  const typedName = parsedSearch.name?.trim() ?? "";
+  const nameSuggestions = useQuery({
+    queryKey: ["name-suggestions", searchLanguage, typedName.toLocaleLowerCase("de")],
+    queryFn: async ({ signal }) => {
+      for (const language of searchLanguage === "all" ? (["de", "en"] as const) : [searchLanguage]) {
+        const names = await suggestCardNames(catalog, typedName, language, signal);
+        if (names.length) return names;
+      }
+      return [];
+    },
+    enabled: hasCatalogSearchIntent && searchHasCompleted && !searchResults.length && !searchSetId && !searchSeriesId && typedName.length >= 4,
+    staleTime: 60 * 60 * 1_000,
+    retry: false,
+  });
   const searchError = searchLanguage === "de"
     ? germanSearchQuery.error
     : searchLanguage === "en"
@@ -2808,6 +2824,7 @@ export function FoundationWorkspace({ shell = "full" }: FoundationWorkspaceProps
                           {hasCatalogSearchIntent && searchHasCompleted && !searchResults.length ? (
                             <div className={styles.noResults}>
                               <p>Keine Karten mit diesen Filtern gefunden. Prüfe Name, Sprache, Serie oder Set.</p>
+                              {nameSuggestions.data?.length ? <p>Meintest du{" "}{nameSuggestions.data.map((name, index) => <span key={name}>{index > 0 ? " oder " : ""}<button type="button" className={styles.suggestionLink} onClick={() => setSearchText(name)}>{name}</button></span>)}?</p> : null}
                               <div className={styles.emptyActions}>
                                 {searchText.trim() ? <button type="button" className={styles.secondaryButton} onClick={() => setSearchText("")}>Suche löschen</button> : null}
                                 {searchSetId || searchSeriesId ? <button type="button" className={styles.secondaryButton} onClick={() => { setSearchSetId(""); setSearchSeriesId(""); }}>Set/Serie entfernen</button> : null}
