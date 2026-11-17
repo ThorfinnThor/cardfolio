@@ -853,7 +853,10 @@ test("creates an editable Gift Binder from the local-first wizard", async ({ pag
   await expect(page.getByText(/Die Kartenpreise sind Schätzwerte; Versand und Steuern sind nicht enthalten/i)).toBeVisible();
   await expect(page.getByText(/^Vault X 9-Pocket Binder/)).toBeVisible();
   await expect(page.getByText("17,99 €", { exact: true }).first()).toBeVisible();
-  await expect(page.getByText("Preis geprüft am 19.10.2026", { exact: true }).first()).toBeVisible();
+  // The shown date is the price date of the reviewed offer, so a renewed review needs no test change.
+  const partners = JSON.parse(await readFile("public/data/partners/binder-partners.v1.json", "utf8")) as { partners: { id: string; price: { sourceUpdatedAt: string } }[] };
+  const [year, month, day] = partners.partners.find((partner) => partner.id === "vaultx-amazon-9-pocket")!.price.sourceUpdatedAt.split("-");
+  await expect(page.getByText(`Preis geprüft am ${day}.${month}.${year}`, { exact: true }).first()).toBeVisible();
   await expect(page.getByText(/Werbelink: Your Card Binder kann bei einem Kauf eine Provision erhalten/i).first()).toBeVisible();
   await expect(page.getByText(/9-Pocket · Platz für bis zu 360 Karten/i).first()).toBeVisible();
   await expect(page.getByText("Alle passen zu deinem Plan")).toBeVisible();
