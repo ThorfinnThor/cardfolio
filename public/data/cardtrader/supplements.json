@@ -11,7 +11,7 @@
    "cards": [
     {
      "id": 126267,
-     "n": "0RC1/RC25",
+     "n": "RC1",
      "name": "Snivy",
      "rar": "Common",
      "img": "126267/preview_snivy-rc1-rc25-radiant-collection-legendary-treasure.jpg",
@@ -22,7 +22,7 @@
     },
     {
      "id": 126268,
-     "n": "0RC2/RC25",
+     "n": "RC2",
      "name": "Servine",
      "rar": "Common",
      "img": "126268/preview_servine-rc2-rc25-radiant-collection-legendary-treasure.jpg",
@@ -33,7 +33,7 @@
     },
     {
      "id": 126269,
-     "n": "0RC3/RC25",
+     "n": "RC3",
      "name": "Serperior",
      "rar": "Uncommon",
      "img": "126269/preview_serperior-rc3-rc25-radiant-collection-legendary-treasure.jpg",
@@ -44,7 +44,7 @@
     },
     {
      "id": 126270,
-     "n": "0RC4/RC25",
+     "n": "RC4",
      "name": "Growlithe",
      "rar": "Uncommon",
      "img": "126270/preview_growlithe-rc4-rc25-radiant-collection-legendary-treasure.jpg",
@@ -55,7 +55,7 @@
     },
     {
      "id": 126271,
-     "n": "0RC5/RC25",
+     "n": "RC5",
      "name": "Torchic",
      "rar": "Common",
      "img": "126271/preview_torchic-rc5-rc25-radiant-collection-legendary-treasure.jpg",
@@ -66,7 +66,7 @@
     },
     {
      "id": 126272,
-     "n": "0RC6/RC25",
+     "n": "RC6",
      "name": "Piplup",
      "rar": "Uncommon",
      "img": "126272/preview_piplup-rc6-rc25-radiant-collection-legendary-treasure.jpg",
@@ -77,7 +77,7 @@
     },
     {
      "id": 126273,
-     "n": "0RC7/RC25",
+     "n": "RC7",
      "name": "Pikachu",
      "rar": "Uncommon",
      "img": "126273/preview_pikachu-rc7-rc25-radiant-collection-legendary-treasure.jpg",
@@ -88,7 +88,7 @@
     },
     {
      "id": 126274,
-     "n": "0RC8/RC25",
+     "n": "RC8",
      "name": "Ralts",
      "rar": "Common",
      "img": "126274/preview_ralts-rc8-rc25-radiant-collection-legendary-treasure.jpg",
@@ -99,7 +99,7 @@
     },
     {
      "id": 126275,
-     "n": "0RC9/RC25",
+     "n": "RC9",
      "name": "Kirlia",
      "rar": "Common",
      "img": "126275/preview_kirlia-rc9-rc25-radiant-collection-legendary-treasure.jpg",
@@ -291,7 +291,7 @@
    "expansionId": 1470,
    "total": 1,
    "tcgdexListed": 1,
-   "skippedAmbiguous": 43,
+   "skippedAmbiguous": 44,
    "cards": [
     {
      "id": 110038,
@@ -465,10 +465,13 @@
     },
     {
      "id": 116603,
-     "n": "111/110",
+     "n": "111",
      "name": "Mew",
      "rar": "Promo",
      "img": "116603/preview_mew-non-holo-dvd-111-110-ex-holon-phantoms-promos.jpg",
+     "cm": [
+      923833
+     ],
      "tp": 162457
     },
     {
@@ -839,6 +842,16 @@
      "name": "Zekrom",
      "rar": "Holo Rare",
      "img": "377698/preview_zekrom-starlight-holo-060-185-miscellaneous-promos.png"
+    },
+    {
+     "id": 421763,
+     "n": "080s",
+     "name": "Misty's Vitality",
+     "rar": "Uncommon",
+     "img": "421763/preview_421763-misty-s-vitality-080-084-regional-championships-staff-miscellaneous-promos.png",
+     "cm": [
+      913948
+     ]
     }
    ]
   }

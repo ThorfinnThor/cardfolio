@@ -36,7 +36,7 @@
 {"id":115945,"n":"060","name":"Pikachu","rar":"Promo","img":"115945/preview_pikachu-san-diego-comic-con-promo-60-106-miscellaneous-promos.jpg","tp":187217},
 {"id":115946,"n":"069","name":"Torchic","rar":"Promo","img":"115946/preview_torchic-wizard-world-chicago-promo-69-106-miscellaneous-promos.jpg"},
 {"id":115947,"n":"070","name":"Treecko","rar":"Promo","img":"115947/preview_treecko-gencon-2006-promo-70-106-miscellaneous-promos.jpg","tp":213010},
-{"id":116603,"n":"111/110","name":"Mew","rar":"Promo","img":"116603/preview_mew-non-holo-dvd-111-110-ex-holon-phantoms-promos.jpg","tp":162457},
+{"id":116603,"n":"111","name":"Mew","rar":"Promo","img":"116603/preview_mew-non-holo-dvd-111-110-ex-holon-phantoms-promos.jpg","cm":[923833],"tp":162457},
 {"id":116787,"n":"064","name":"Skitty","rar":"Promo","img":"116787/preview_skitty-kraze-club-promo-64-92-miscellaneous-promos.jpg"},
 {"id":118096,"n":"029","name":"Lugia","rar":"Promo","img":"118096/preview_lugia-pokemon-rocks-america-29-115-miscellaneous-promos.jpg","tp":221299},
 {"id":118871,"n":"058","name":"Pichu","rar":"Promo","img":"118871/preview_pichu-e3-convention-58-165-japanese-back-expedition-base-set-promos.jpg"},
@@ -108,5 +108,7 @@
 {"id":374802,"n":"001","name":"Bulbasaur","rar":"Common","img":"374802/preview_bulbasaur-pokemon-day-promo-001-132-mep-black-star-promos.png","cm":[871308]},
 {"id":375726,"n":"062","name":"Pikachu","rar":"Common","img":"375726/preview_pikachu-nba-rain-city-showcase-062-193-miscellaneous-promos.jpg","cm":[793388],"tp":593275},
 {"id":377698,"n":"060s","name":"Zekrom","rar":"Holo Rare","img":"377698/preview_zekrom-starlight-holo-060-185-miscellaneous-promos.png"},
-{"id":412997,"n":"022","name":"Magikarp","rar":"Promo","img":"412997/preview_412997-magikarp-20th-anniversary-stamp-promo-22-83-miscellaneous-promos.jpg","cm":[722694]}
+{"id":412997,"n":"022","name":"Magikarp","rar":"Promo","img":"412997/preview_412997-magikarp-20th-anniversary-stamp-promo-22-83-miscellaneous-promos.jpg","cm":[722694]},
+{"id":421762,"n":"080","name":"Misty's Vitality","rar":"Uncommon","img":"421762/preview_421762-misty-s-vitality-080-084-regional-championships-miscellaneous-promos.png","cm":[913947]},
+{"id":421763,"n":"080s","name":"Misty's Vitality","rar":"Uncommon","img":"421763/preview_421763-misty-s-vitality-080-084-regional-championships-staff-miscellaneous-promos.png","cm":[913948]}
 ]}
